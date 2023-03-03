@@ -1,0 +1,405 @@
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Terraria;
+using Terraria.Audio;
+using Terraria.DataStructures;
+using Terraria.GameContent;
+using Terraria.GameContent.Events;
+using Terraria.ID;
+using Terraria.Localization;
+using Terraria.ModLoader;
+using V2.Core;
+using V2.NPCs.Voraria.TownNPCs;
+using V2.PlayerHandling;
+using static V2.Core.FoodTypeTags;
+
+namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
+{
+	public static class PartyGirlStuff
+	{
+		public static PartyGirl AsPartyGirl(this NPC npc)
+		{
+			if (!npc.TryGetGlobalNPC(out PartyGirl bellyPartyGirl))
+				throw new Exception("this instance of the Party Girl can't be pred or prey. that gut party you wanted to throw'll need to be rescheduled");
+
+			return bellyPartyGirl;
+		}
+		public static PartyGirlPredProfile PartyGirlPredProfile => new PartyGirlPredProfile();
+	}
+
+	public class PartyGirlPredProfile : ITownNPCProfile
+	{
+		private Asset<Texture2D> _defaultNoAlt;
+
+		public PartyGirlPredProfile()
+		{
+			if (Main.dedServ) // #if SERVER
+				return;
+
+			string npcFileTitleFilePath = "V2/NPCs/Vanilla/TownNPCs/PartyGirl/PartyGirl_WeightBase_BellyBase";
+			_defaultNoAlt = ModContent.Request<Texture2D>(npcFileTitleFilePath, AssetRequestMode.ImmediateLoad);
+		}
+
+		public int RollVariation() => 0;
+		public string GetNameForVariant(NPC npc) => npc.getNewNPCName();
+
+		public Asset<Texture2D> GetTextureNPCShouldUse(NPC npc)
+		{
+			if (npc.IsABestiaryIconDummy && !npc.ForcePartyHatOn)
+				return _defaultNoAlt;
+
+			string exactTextureToUse = "V2/NPCs/Vanilla/TownNPCs/PartyGirl/PartyGirl";
+			string weightString = "_WeightBase";
+			exactTextureToUse += weightString;
+			int bellySize = npc.AsPred().GetVisualBellySizeMethod.Invoke(npc);
+			string bellyString = "_Belly" + (bellySize == 0 ? "Base" : bellySize);
+			exactTextureToUse += bellyString;
+
+			return ModContent.Request<Texture2D>(exactTextureToUse, AssetRequestMode.ImmediateLoad);
+		}
+
+		public int GetHeadTextureIndex(NPC npc) => NPCHeadID.PartyGirl;
+	}
+
+	public partial class PartyGirl : GlobalNPC
+	{
+		public int HungerForEmpress { get; set; }
+		public static int MaxHungerForEmpress => V2Utils.WriteFrameCountAsANormalFuckingTimeMeasurement(seconds: 40);
+
+		public int SpecialGutFrameCounter;
+		public int SpecialGutFrame;
+		public int SpecialGutFrames;
+		public override bool InstancePerEntity => true;
+
+		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.type == NPCID.PartyGirl;
+
+		public override void SetDefaults(NPC npc)
+		{
+			npc.AsPred().Gender = EntityGender.Female;
+
+			npc.AsPred().stomachContents = new List<Prey>();
+			npc.AsPred().stomachContentsQueue = new List<Prey>();
+			npc.AsPred().maxStomachCapacity = 99999.0;
+
+			npc.AsPred().GetDigestionTickRateMethod = GetDigestionTickRate;
+			npc.AsPred().GetDigestionTickDamageMethod = GetDigestionTickDamage;
+
+			npc.AsPred().OnDigestionKillMethod = OnDigestionKill;
+
+			npc.AsPred().GetPreyAbsorptionRateMethod = GetPreyAbsorptionRate;
+
+			npc.AsPred().GetChatMethod = GetPartyGirlChat;
+
+			npc.AsPred().CanBeForceFedMethod = CanPartyGirlBeForceFed;
+			npc.AsPred().OnForceFedMethod = OnPartyGirlForceFed;
+
+			npc.AsPred().GetDigestedPlayerAdditionalDeathMessagesMethod = GetDigestedPlayerAdditionalDeathMessages;
+
+			npc.AsPred().GetVisualBellySizeMethod = GetVisualBellySize;
+
+			npc.AsPred().SpecialPredAIMethod = PartyGirlSpecialPredAI;
+
+			npc.AsPrey().FoodTypeTags = new List<FoodTypeTag>
+			{
+				new MeatTag()
+				{
+					FoodSubtypeTags = new List<(string subtype, double weight)>
+					{
+						("Human", 1.00)
+					}
+				},
+			};
+		}
+
+		public override ITownNPCProfile ModifyTownNPCProfile(NPC npc) => PartyGirlStuff.PartyGirlPredProfile;
+
+		public static bool PartyGirlSpecialPredAI(NPC npc)
+		{
+			if (npc.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.NPC && x.EntityID == NPCID.HallowBoss) is Prey sprinkles && sprinkles.WeightLeftToDigest > 5.0)
+			{
+				npc.width = 110;
+				npc.height = 64;
+				npc.velocity.X = 0;
+				npc.AsPartyGirl().SpecialGutFrames = 10;
+				npc.AsPartyGirl().SpecialGutFrameCounter += 1;
+				if (npc.AsPartyGirl().SpecialGutFrameCounter >= 9)
+				{
+					npc.AsPartyGirl().SpecialGutFrameCounter = 0;
+					npc.AsPartyGirl().SpecialGutFrame += 1;
+					npc.AsPartyGirl().SpecialGutFrame %= npc.AsPartyGirl().SpecialGutFrames;
+				}
+
+				if (!sprinkles.Dead)
+				{
+					for (int y = (int)Math.Round(npc.TrueCenter().Y) - 5; y < (int)Math.Round(npc.TrueCenter().Y); y++)
+					{
+						for (int x = (int)Math.Round(npc.TrueCenter().X) - 4; x < (int)Math.Round(npc.TrueCenter().X) + 4; x++)
+						{
+							WorldGen.KillTile(x, y);
+						}
+					}
+				}
+				return false;
+			}
+			else
+			{
+				npc.width = 14;
+				npc.height = 40;
+				npc.AsPartyGirl().SpecialGutFrames = 0;
+				npc.AsPartyGirl().SpecialGutFrame = 0;
+				npc.AsPartyGirl().SpecialGutFrameCounter = 0;
+			}
+
+			return true;
+		}
+
+		public override void PostAI(NPC npc)
+		{
+			if (npc.AsPrey().IsCurrentlyEaten)
+				return;
+
+			if (GetEmpressDigestionStage(npc) > 0)
+				return;
+
+			if (Main.GameUpdateCount % 60 != 0)
+				return;
+
+			if (NPC.AnyNPCs(NPCID.HallowBoss))
+			{
+				npc.AsPartyGirl().HungerForEmpress += 1;
+			}
+
+			static void RollForRandomGulp(ref bool gulp) => gulp |= Main.rand.NextBool(4, 100);
+
+			List<NPC> nearbyResidentNPCs = npc.GetNearbyResidentNPCs(out int npcsWithinHouse, out int npcsWithinVillage);
+			NPC foxBimbo = nearbyResidentNPCs.FirstOrDefault(x => x.type == NPCID.BestiaryGirl);
+			bool shouldSnackOnFoxBimbo = false;
+			RollForRandomGulp(ref shouldSnackOnFoxBimbo);
+			if (foxBimbo != null && foxBimbo.Distance(npc.Center) <= npc.AsPred().swallowRange && shouldSnackOnFoxBimbo)
+				PredNPC.Swallow(npc, foxBimbo);
+
+			NPC nurse = nearbyResidentNPCs.FirstOrDefault(x => x.type == NPCID.Nurse);
+			bool shouldSnackOnNurse = false;
+			RollForRandomGulp(ref shouldSnackOnNurse);
+			RollForRandomGulp(ref shouldSnackOnNurse);
+			RollForRandomGulp(ref shouldSnackOnNurse);
+			if (nurse != null && nurse.Distance(npc.Center) <= npc.AsPred().swallowRange && shouldSnackOnNurse)
+				PredNPC.Swallow(npc, nurse);
+			bool haveRoutineCheckUpWithNurse = false;
+			RollForRandomGulp(ref haveRoutineCheckUpWithNurse);
+			if (nurse != null && npc.Distance(npc.Center) <= nurse.AsPred().swallowRange && haveRoutineCheckUpWithNurse)
+				PredNPC.Swallow(nurse, npc);
+
+			NPC bestGirl = nearbyResidentNPCs.FirstOrDefault(x => x.type == NPCID.Stylist);
+			bool spendQualityTimeInAmber = false;
+			RollForRandomGulp(ref spendQualityTimeInAmber);
+			RollForRandomGulp(ref spendQualityTimeInAmber);
+			if (bestGirl != null && npc.Distance(npc.Center) <= bestGirl.AsPred().swallowRange && spendQualityTimeInAmber)
+				PredNPC.Swallow(bestGirl, npc);
+
+			NPC wizard = nearbyResidentNPCs.FirstOrDefault(x => x.type == NPCID.Wizard);
+			bool shouldSnackOnWizard = false;
+			RollForRandomGulp(ref shouldSnackOnWizard);
+			if (wizard != null && wizard.Distance(npc.Center) <= npc.AsPred().swallowRange && shouldSnackOnWizard)
+				PredNPC.Swallow(npc, wizard);
+
+			NPC scrooge = nearbyResidentNPCs.FirstOrDefault(x => x.type == NPCID.TaxCollector);
+			bool shouldSnackOnScrooge = false;
+			RollForRandomGulp(ref shouldSnackOnScrooge);
+			RollForRandomGulp(ref shouldSnackOnScrooge);
+			RollForRandomGulp(ref shouldSnackOnScrooge);
+			RollForRandomGulp(ref shouldSnackOnScrooge);
+			RollForRandomGulp(ref shouldSnackOnScrooge);
+			if (scrooge != null && scrooge.Distance(npc.Center) <= npc.AsPred().swallowRange && shouldSnackOnScrooge)
+				PredNPC.Swallow(npc, scrooge);
+
+			if (!Main.CurrentPlayer.active || Main.CurrentPlayer.dead || Main.CurrentPlayer.Distance(npc.Center) > npc.AsPred().swallowRange || Main.CurrentPlayer.AsPrey().IsCurrentlyEaten)
+				return;
+
+			bool shouldHostGutParty = false;
+			RollForRandomGulp(ref shouldHostGutParty);
+
+			if (shouldHostGutParty)
+			{
+				PredNPC.SwallowWithTextIfApplicable(
+					npc,
+					Main.CurrentPlayer,
+					"[c/7F7F7F:<Out of nowhere, " + npc.GivenName + " stuffs your entire body into her mouth, gulping you down in a single, smooth swallow. She giggles as your form rockets into her all-too-eager stomach.>]\n"
+				  + "There we go! I needed a little pre-party snack, and that cake did just the trick! Thanks for the treat! :D"
+				);
+			}
+		}
+
+		public override bool PreChatButtonClicked(NPC npc, bool firstButton)
+		{
+			return true;
+		}
+
+		public override void ModifyHitByProjectile(NPC npc, Projectile projectile, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
+		{
+			if (projectile.type is ProjectileID.HallowBossSplitShotCore
+								or ProjectileID.HallowBossRainbowStreak
+								or ProjectileID.HallowBossLastingRainbow
+								or ProjectileID.FairyQueenHymn
+								or ProjectileID.FairyQueenLance
+								or ProjectileID.FairyQueenSunDance)
+			{
+				double mult = 1.0;
+				mult -= (double)npc.AsPartyGirl().HungerForEmpress / (double)MaxHungerForEmpress;
+				mult = 0.2 + (mult * 0.8);
+				damage = (int)((double)damage * mult);
+			}
+		}
+
+		public static double GetDigestionTickRate(NPC npc, Prey prey)
+		{
+			double tickRate = 1.25;
+			if (prey.Type == PreyType.NPC && prey.EntityID == NPCID.HallowBoss)
+				return 4.0;
+			else
+			{
+				if (BirthdayParty.PartyIsUp)
+					tickRate *= 0.4;
+				if (prey.Type == PreyType.NPC && prey.EntityID is NPCID.BestiaryGirl or NPCID.Wizard)
+					tickRate *= 0.5;
+				if (prey.Type == PreyType.NPC && prey.EntityID == NPCID.TaxCollector)
+					tickRate *= 1.5;
+			}
+			return tickRate;
+		}
+
+		public static double GetDigestionTickDamage(NPC npc, Prey prey)
+		{
+			double digestionDamage = 15.0;
+			if (prey.Type == PreyType.NPC && prey.EntityID == NPCID.TaxCollector)
+				digestionDamage += 10.0;
+			if (prey.Type == PreyType.NPC && prey.EntityID == NPCID.HallowBoss)
+				digestionDamage += 85.0;
+
+			return digestionDamage;
+		}
+
+		public static void OnDigestionKill(NPC npc, Prey digestedPrey)
+		{
+			SoundEngine.PlaySound(
+				Main.rand.NextFromCollection(npc.AsPred().StandardBurps),
+				npc.TrueCenter() + new Vector2(npc.direction * 8f, -14f)
+			);
+		}
+
+		public static double GetPreyAbsorptionRate(NPC npc)
+		{
+			double baseAbsorptionRate = 1.0 / (double)V2Utils.WriteFrameCountAsANormalFuckingTimeMeasurement(
+				minutes: 1,
+				seconds: 10
+			);
+			return baseAbsorptionRate;
+		}
+
+		public static int GetEmpressDigestionStage(NPC npc)
+		{
+			Prey sprinkles = npc.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.NPC && x.EntityID == NPCID.HallowBoss);
+			if (sprinkles is null || sprinkles.WeightLeftToDigest < 5.0)
+				return 0;
+			else
+			{
+				if (!sprinkles.Dead)
+					return 1;
+				else
+				{
+					if (sprinkles.WeightLeftToDigest > 37.0)
+						return 1;
+					else if (sprinkles.WeightLeftToDigest > 34.0 && sprinkles.WeightLeftToDigest <= 37.0)
+						return 2;
+					else if (sprinkles.WeightLeftToDigest > 31.5 && sprinkles.WeightLeftToDigest <= 34.0)
+						return 3;
+					else if (sprinkles.WeightLeftToDigest > 29.0 && sprinkles.WeightLeftToDigest <= 31.5)
+						return 4;
+					else if (sprinkles.WeightLeftToDigest > 4.0)
+						return 5;
+					else
+						return 0;
+				}
+			}
+		}
+
+		public static int GetVisualBellySize(NPC npc)
+		{
+			return Math.Min(
+				(int)Math.Floor(5.0 * Math.Sqrt(PredNPC.GetCurrentBellyWeight(npc))),
+				5
+			);
+		}
+
+		public override void FindFrame(NPC npc, int frameHeight)
+		{
+			npc.frame.Width = 160;
+		}
+
+		public override void ModifyHoverBoundingBox(NPC npc, ref Rectangle boundingBox)
+		{
+			if (GetEmpressDigestionStage(npc) > 0)
+			{
+				boundingBox = new Rectangle(
+					(int)npc.Center.X - 55,
+					(int)npc.Center.Y - 32,
+					110,
+					66
+				);
+			}
+			else
+			{
+				boundingBox = new Rectangle(
+					(int)npc.Center.X - 18,
+					(int)npc.Center.Y - 27,
+					36,
+					54
+				);
+			}
+		}
+
+		public override bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+		{
+			if (npc.AsPrey().IsCurrentlyEaten)
+				return false;
+
+			if (GetEmpressDigestionStage(npc) > 0)
+			{
+				SpriteEffects spriteEffects = npc.direction switch
+				{
+					-1 => SpriteEffects.None,
+					_ => SpriteEffects.FlipHorizontally,
+				};
+				string exactTextureToUse = "V2/NPCs/Vanilla/TownNPCs/PartyGirl/PartyGirl";
+				string weightString = "_WeightBase";
+				exactTextureToUse += weightString;
+				int bellySize = npc.AsPred().GetVisualBellySizeMethod.Invoke(npc);
+				string bellyString = "_BossBelly_EmpressOfLight_DigestionStage" + GetEmpressDigestionStage(npc);
+				exactTextureToUse += bellyString;
+
+				Texture2D texture = ModContent.Request<Texture2D>(exactTextureToUse, AssetRequestMode.ImmediateLoad).Value;
+				Rectangle sourceRect = new Rectangle(0, npc.AsPartyGirl().SpecialGutFrame * 68, 110, 68);
+				spriteBatch.Draw
+				(
+					texture,
+					npc.Center - screenPos + new Vector2(0f, npc.gfxOffY),
+					sourceRect,
+					drawColor,
+					npc.rotation,
+					sourceRect.Size() / 2f,
+					1,
+					spriteEffects,
+					0f
+				);
+				return false;
+			}
+			return true;
+		}
+	}
+}

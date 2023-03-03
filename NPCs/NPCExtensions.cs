@@ -1,0 +1,79 @@
+﻿using Microsoft.Xna.Framework;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Terraria;
+using Terraria.ID;
+using V2.Core;
+using V2.PlayerHandling;
+
+namespace V2.NPCs
+{
+	public static class NPCExtensions
+	{
+		public static bool IsFoodFor(this NPC npc, Entity entity)
+		{
+			if (entity is NPC predNPC)
+			{
+				List<Prey> NPCAsPreyList = predNPC.AsPred().stomachContents.FindAll(x => x.Type == PreyType.NPC && x.Index == npc.whoAmI);
+				if (NPCAsPreyList != null && NPCAsPreyList.Count > 0)
+					return true;
+			}
+			else if (entity is Player predPlayer)
+			{
+				List<Prey> NPCAsPreyList = predPlayer.AsPred().stomachContents.FindAll(x => x.Type == PreyType.NPC && x.Index == npc.whoAmI);
+				if (NPCAsPreyList != null && NPCAsPreyList.Count > 0)
+					return true;
+			}
+			return false;
+		}
+
+		public static List<NPC> GetNearbyResidentNPCs(this NPC npc, out int npcsWithinHouse, out int npcsWithinVillage)
+		{
+			List<NPC> list = new List<NPC>();
+			npcsWithinHouse = 0;
+			npcsWithinVillage = 0;
+			Vector2 value = new Vector2(npc.homeTileX, npc.homeTileY);
+			if (npc.homeless)
+				value = new Vector2(npc.Center.X / 16f, npc.Center.Y / 16f);
+
+			for (int i = 0; i < 200; i++)
+			{
+				if (i == npc.whoAmI)
+					continue;
+
+				NPC nPC = Main.npc[i];
+				if (nPC.active && nPC.townNPC && !npc.IsNotReallyTownNPC() && !WorldGen.TownManager.CanNPCsLiveWithEachOther_ShopHelper(npc, nPC))
+				{
+					Vector2 value2 = new Vector2(nPC.homeTileX, nPC.homeTileY);
+					if (nPC.homeless)
+						value2 = nPC.Center / 16f;
+
+					float num = Vector2.Distance(value, value2);
+					if (num < 25f)
+					{
+						list.Add(nPC);
+						npcsWithinHouse++;
+					}
+					else if (num < 120f)
+					{
+						npcsWithinVillage++;
+					}
+				}
+			}
+
+			return list;
+		}
+
+		public static bool IsNotReallyTownNPC(this NPC npc)
+		{
+			int type = npc.type;
+			if (type == 37 || type == 368 || NPCID.Sets.ActsLikeTownNPC[type])
+				return true;
+
+			return false;
+		}
+	}
+}
