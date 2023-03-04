@@ -58,9 +58,6 @@ namespace V2.NPCs.Vanilla.TownNPCs.ArmsDealer
 			string bellyString = "_Belly" + (bellySize == 0 ? "Base" : bellySize);
 			exactTextureToUse += bellyString;
 
-			if (npc.altTexture == 1)
-				exactTextureToUse += "_Party";
-
 			return ModContent.Request<Texture2D>(exactTextureToUse, AssetRequestMode.ImmediateLoad);
 		}
 
