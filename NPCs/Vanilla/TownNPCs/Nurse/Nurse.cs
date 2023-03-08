@@ -610,6 +610,9 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 			if (npc.AsPrey().IsCurrentlyEaten)
 				return;
 
+			if (Main.GameUpdateCount % 60 != 0)
+				return;
+
 			if (npc.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.NPC && x.EntityID == NPCID.ArmsDealer) is Prey crushAsPrey)
 			{
 				NPC crush = Main.npc[crushAsPrey.Index];

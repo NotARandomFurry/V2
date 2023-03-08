@@ -290,18 +290,10 @@ namespace V2.NPCs
 		public static void UpdatePrey(NPC npc)
 		{
 			if (npc.AsPred().stomachContents is null)
-			{
-				if (Main.GameUpdateCount % 300 == 0 && ModContent.GetInstance<V2ServerSideConfigs>().DebugChatMessages)
-					Main.NewText(npc.FullName + " has nobody in their stomach!");
 				return;
-			}
 			npc.AsPred().stomachContents.RemoveAll(x => x.Dead && x.WeightLeftToDigest == 0);
 			if (npc.AsPred().stomachContents.Count <= 0)
-			{
-				if (Main.GameUpdateCount % 300 == 0 && ModContent.GetInstance<V2ServerSideConfigs>().DebugChatMessages)
-					Main.NewText(npc.FullName + " has nobody in their stomach!");
 				return;
-			}
 
 			foreach (Prey prey in npc.AsPred().stomachContents)
 			{

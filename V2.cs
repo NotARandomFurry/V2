@@ -46,6 +46,7 @@ namespace V2
 			VoreNPCBlacklist = new List<int>
 			{
 				NPCID.Angler,
+				NPCID.SleepingAngler,
 				NPCID.Princess,
 			};
 			if (ModContent.TryFind("Fargowiltas", "Deviantt", out ModNPC Deviantt))
@@ -88,8 +89,10 @@ namespace V2
 				}
 				else if (npcAsPred.SpecialPredAIMethod != null)
 				{
-					npcAsPred.SpecialPredAIMethod.Invoke(npc);
-					NPCLoader.PostAI(npc);
+					if (npcAsPred.SpecialPredAIMethod.Invoke(npc))
+						orig(npc);
+					else
+						NPCLoader.PostAI(npc);
 				}
 				else
 					orig(npc);

@@ -145,8 +145,9 @@ Mods: {
 					25: '''{Player} got fucking churned lmaooo'''
 					26: '''{Player} was mulched by {Pred}.'''
 					27: '''{Player} tried to swim in acid.'''
-					28: '''{Player} got got.'''
+					28: '''{Player} got got by {Pred}.'''
 					29: '''{Player} was eaten from the bottom up...or was it from the top down?'''
+					30: '''{Player} underwent a merciful euthanasia by digestion.'''
 					StomachSuffocation: {
 						1: '''{Player} ran out of air in {Pred}'s stomach.'''
 						2: '''{Pred}'s stomach didn't have enough air for {Player}.'''
@@ -250,6 +251,7 @@ Mods: {
 						5: '''{Player} suffered a blackout in {Pred}'s stomach.'''
 						6: '''{Player} was fixed.'''
 						7: '''{Player} was scrapped.'''
+						8: '''{Player} was turned into a battery by {Pred}.'''
 						Hardcore:
 							'''
 							{Player} has become the best battery {Pred}'s ever used, at the cost of their continued existence.
