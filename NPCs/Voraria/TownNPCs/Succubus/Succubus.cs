@@ -91,9 +91,14 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 			NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
 
 			NPC.Happiness
+				.SetNPCAffection(NPCID.BestiaryGirl, AffectionLevel.Love)
+				.SetNPCAffection(NPCID.Nurse, AffectionLevel.Like)
 				.SetNPCAffection(NPCID.Guide, AffectionLevel.Like)
+				.SetNPCAffection(NPCID.Stylist, AffectionLevel.Dislike)
 				.SetNPCAffection(NPCID.Princess, AffectionLevel.Dislike)
 				.SetNPCAffection(NPCID.Angler, AffectionLevel.Hate)
+				.SetNPCAffection(NPCID.TaxCollector, AffectionLevel.Hate)
+				.SetNPCAffection(NPCID.Dryad, AffectionLevel.Hate)
 				.SetBiomeAffection<OceanBiome>(AffectionLevel.Love)
 				.SetBiomeAffection<DesertBiome>(AffectionLevel.Like)
 				.SetBiomeAffection<SnowBiome>(AffectionLevel.Dislike)
