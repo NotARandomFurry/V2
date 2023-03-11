@@ -575,7 +575,7 @@ namespace V2.NPCs
 
 		/// <summary>
 		/// Calculates the current weight of the given predator's stomach, based on all the prey inside of it.<br/>
-		/// Used primarily in conjunction with <see cref="maxStomachCapacity"/> to safeguard against overeating.
+		/// Used primarily in conjunction with <see cref="maxStomachCapacity"/> to safeguard against overeating.<br/>
 		/// </summary>
 		/// <param name="pred">The predator whose stomach is to be weighed.</param>
 		/// <returns>The current total weight of the given predator's stomach.</returns>
@@ -586,7 +586,21 @@ namespace V2.NPCs
 			{
 				foreach (Prey prey in pred.AsPred().stomachContents)
 				{
-					totalBellyWeight += prey.GetPreyWeight();
+					totalBellyWeight += prey.WeightLeftToDigest;
+					if (prey.Dead)
+						continue;
+
+					switch (prey.Type)
+					{
+						case PreyType.Player:
+							Player preyPredPlayer = Main.player[prey.Index];
+							totalBellyWeight += PredPlayer.GetCurrentBellyWeight(preyPredPlayer);
+							break;
+						case PreyType.NPC:
+							NPC preyPredNPC = Main.npc[prey.Index];
+							totalBellyWeight += GetCurrentBellyWeight(preyPredNPC);
+							break;
+					}
 				}
 			}
 			return totalBellyWeight;

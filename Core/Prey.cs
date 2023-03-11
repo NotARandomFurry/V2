@@ -180,8 +180,9 @@ namespace V2.Core
 					return 1.0;
 				case PreyType.NPC:
 					NPC actualPrey = Main.npc[Index];
+					double actualPreyWeight = 0;
 					if (actualPrey.AsPrey().PreyBaseSizeOverrideMethod is not null)
-						return actualPrey.AsPrey().PreyBaseSizeOverrideMethod.Invoke(actualPrey);
+						actualPreyWeight = actualPrey.AsPrey().PreyBaseSizeOverrideMethod.Invoke(actualPrey);
 					else if (TypeTags is not null)
 					{
 						double preyWeight = 0.0;
@@ -192,7 +193,7 @@ namespace V2.Core
 								preyWeight += subtypeTag.weight;
 							}
 						}
-						return preyWeight;
+						actualPreyWeight = preyWeight;
 					}
 					else
 					{
@@ -200,8 +201,9 @@ namespace V2.Core
 						double refPlayerHeight = 42.0;
 						double playerToNPCWidthRatio = (double)actualPrey.width / refPlayerWidth;
 						double playerToNPCHeightRatio = (double)actualPrey.height / refPlayerHeight;
-						return playerToNPCWidthRatio * playerToNPCHeightRatio;
+						actualPreyWeight = playerToNPCWidthRatio * playerToNPCHeightRatio;
 					}
+					return actualPreyWeight;
 				case PreyType.Projectile:
 					return 1.0;
 				case PreyType.Item:
@@ -211,7 +213,5 @@ namespace V2.Core
 					return 1.0;
 			}
 		}
-
-		public double GetPreyWeight() => WeightLeftToDigest;
 	}
 }
