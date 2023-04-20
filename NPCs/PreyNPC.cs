@@ -48,6 +48,8 @@ namespace V2.NPCs
 		public delegate double DelegatePreyBaseSizeOverride(NPC npc);
 		public DelegatePreyBaseSizeOverride PreyBaseSizeOverrideMethod { get; set; }
 
+		public StatModifier StruggleStrength { get; set; }
+
 		public bool CanChatAsPrey { get; set; }
 
 		public SoundStyle? DigestedDeathSound;
@@ -62,6 +64,8 @@ namespace V2.NPCs
 
 			PreyAIMethod = null;
 			PreyBaseSizeOverrideMethod = null;
+
+			StruggleStrength = StatModifier.Default;
 
 			CanChatAsPrey = false;
 			DigestedDeathSound = null;
@@ -148,12 +152,12 @@ namespace V2.NPCs
 			}
 		}
 
-		public override bool? CanHitNPC(NPC npc, NPC target)
+		public override bool CanHitNPC(NPC npc, NPC target)
 		{
 			if (npc.AsPrey().IsCurrentlyEaten || target.AsPrey().IsCurrentlyEaten || npc.AsPrey().EatenSafetyFrames > 0)
 				return false;
 
-			return null;
+			return true;
 		}
 
 		public override bool CanHitPlayer(NPC npc, Player target, ref int cooldownSlot)
@@ -194,17 +198,17 @@ namespace V2.NPCs
 				boundingBox = Rectangle.Empty;
 		}
 
-		public override void ModifyHitNPC(NPC npc, NPC target, ref int damage, ref float knockback, ref bool crit)
+		public override void ModifyHitNPC(NPC npc, NPC target, ref NPC.HitModifiers modifiers)
 		{
 			if (target.type == ModContent.NPCType<Succubus>() && PredNPC.CanSwallow(target, npc))
 			{
-				damage = 0;
-				knockback = 0f;
-				crit = false;
+				modifiers.FinalDamage *= 0;
+				modifiers.Knockback.Base = 0f;
+				modifiers.DisableCrit();
 			}
 		}
 
-		public override void OnHitNPC(NPC npc, NPC target, int damage, float knockback, bool crit)
+		public override void OnHitNPC(NPC npc, NPC target, NPC.HitInfo hit)
 		{
 			if (target.type == ModContent.NPCType<Succubus>())
 			{

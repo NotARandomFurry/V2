@@ -17,6 +17,7 @@ using Terraria.ModLoader;
 using V2.Core;
 using V2.NPCs.Voraria.TownNPCs.Succubus;
 using V2.PlayerHandling;
+using V2.Sounds.Vore;
 using static V2.Core.FoodTypeTags;
 
 namespace V2.NPCs.Vanilla.TownNPCs.Nurse
@@ -93,20 +94,21 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 
 			npc.AsPred().ResetPredSpecificVariablesMethod = ResetPredSpecificVariables;
 
-			npc.AsPred().GetDigestionTickRateMethod = GetDigestionTickRate;
-			npc.AsPred().GetDigestionTickDamageMethod = GetDigestionTickDamage;
-
-			npc.AsPred().OnDigestionKillMethod = OnDigestionKill;
-
-			npc.AsPred().GetPreyAbsorptionRateMethod = GetPreyAbsorptionRate;
-
 			npc.AsPred().GetChatMethod = GetNurseChat;
 			npc.AsPred().ModifyChatButtonsMethod = ModifyChatButtons;
 
 			npc.AsPred().CanBeForceFedMethod = CanNurseBeForceFed;
 			npc.AsPred().OnForceFedMethod = OnNurseForceFed;
 
+			npc.AsPred().GetDigestionTickRateMethod = GetDigestionTickRate;
+			npc.AsPred().GetDigestionTickDamageMethod = GetDigestionTickDamage;
+
+			npc.AsPred().OnDigestionKillMethod = OnDigestionKill;
+			npc.AsPred().SmallBurps = Burps.Humanoid.Small;
+			npc.AsPred().StandardBurps = Burps.Humanoid.Standard;
 			npc.AsPred().GetDigestedPlayerAdditionalDeathMessagesMethod = GetDigestedPlayerAdditionalDeathMessages;
+
+			npc.AsPred().GetPreyAbsorptionRateMethod = GetPreyAbsorptionRate;
 
 			npc.AsPred().GetVisualBellySizeMethod = GetVisualBellySize;
 
@@ -627,7 +629,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 					crush.AsPrey().EatenSafetyFrames = 20;
 					npc.AsPred().stomachContents.Remove(crushAsPrey);
 					SoundEngine.PlaySound(
-						Main.rand.NextFromCollection(npc.AsPred().StandardBurps),
+						npc.AsPred().StandardBurps,
 						npc.TrueCenter() + new Vector2(npc.direction * 8f, -14f)
 					);
 					return;
@@ -1007,7 +1009,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 				npc.AsNurse().healPlayerIndex = -1;
 
 			SoundEngine.PlaySound(
-				Main.rand.NextFromCollection(npc.AsPred().StandardBurps),
+				digestedPrey.WeightLeftToDigest < 0.65 ? npc.AsPred().SmallBurps : npc.AsPred().StandardBurps,
 				npc.TrueCenter() + new Vector2(npc.direction * 8f, -14f)
 			);
 		}

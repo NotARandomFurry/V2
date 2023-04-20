@@ -85,7 +85,7 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 			npc.AsUnreasonablyThickFairy().MuffledScreechDelay = 0;
 		}
 
-		public override bool? CanHitNPC(NPC npc, NPC target)
+		public override bool CanHitNPC(NPC npc, NPC target)
 		{
 			if (target.type == NPCID.PartyGirl)
 			{
@@ -111,7 +111,7 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 					return false;
 				}
 			}
-			return null;
+			return true;
 		}
 
 		public static void UnreasonablyThickFairyPreyAI(NPC npc, Entity pred)

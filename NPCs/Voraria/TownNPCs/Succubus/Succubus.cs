@@ -16,6 +16,7 @@ using Terraria.Utilities;
 using V2.Core;
 using V2.Items.Voraria.Charms;
 using V2.PlayerHandling;
+using V2.Sounds.Vore;
 
 namespace V2.NPCs.Voraria.TownNPCs.Succubus
 {
@@ -123,19 +124,20 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 
 			NPC.AsPred().maxStomachCapacity = 2.2;
 
-			NPC.AsPred().GetDigestionTickRateMethod = GetDigestionTickRate;
-			NPC.AsPred().GetDigestionTickDamageMethod = GetDigestionTickDamage;
-
-			NPC.AsPred().OnDigestionKillMethod = OnDigestionKill;
-
-			NPC.AsPred().GetPreyAbsorptionRateMethod = GetPreyAbsorptionRate;
-
 			NPC.AsPred().GetChatMethod = GetSuccubusChat;
 
 			NPC.AsPred().CanBeForceFedMethod = CanSuccubusBeForceFed;
 			NPC.AsPred().OnForceFedMethod = OnSuccubusForceFed;
 
+			NPC.AsPred().GetDigestionTickRateMethod = GetDigestionTickRate;
+			NPC.AsPred().GetDigestionTickDamageMethod = GetDigestionTickDamage;
+
+			NPC.AsPred().OnDigestionKillMethod = OnDigestionKill;
+			NPC.AsPred().SmallBurps = Burps.Humanoid.Small;
+			NPC.AsPred().StandardBurps = Burps.Humanoid.Standard;
 			NPC.AsPred().GetDigestedPlayerAdditionalDeathMessagesMethod = GetDigestedPlayerAdditionalDeathMessages;
+
+			NPC.AsPred().GetPreyAbsorptionRateMethod = GetPreyAbsorptionRate;
 
 			NPC.AsPred().GetVisualBellySizeMethod = GetVisualBellySize;
 
@@ -146,7 +148,7 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 			NPC.lavaImmune = true;
 		}
 
-		public override bool CanTownNPCSpawn(int numTownNPCs, int money) => ModContent.GetInstance<MasterSystem>().freedSucc;
+		public override bool CanTownNPCSpawn(int numTownNPCs)/* tModPorter Suggestion: Copy the implementation of NPC.SpawnAllowed_Merchant in vanilla if you to count money, and be sure to set a flag when unlocked, so you don't count every tick. */ => ModContent.GetInstance<MasterSystem>().freedSucc;
 
 		public override ITownNPCProfile TownNPCProfile() => SuccubusStuff.SuccubusProfile;
 
@@ -443,10 +445,10 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 			button2 = "Help";
 		}
 
-		public override void OnChatButtonClicked(bool firstButton, ref bool shop)
+		public override void OnChatButtonClicked(bool firstButton, ref string shopName)
 		{
 			if (firstButton)
-				shop = true;
+				shopName = "Lucinda";
 			else
 			{
 				if (Main.CurrentPlayer.IsFoodFor(NPC, out bool pastTense) && !pastTense)
@@ -479,6 +481,14 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 					helpIndex %= 5;
 			}
 		}
+		public override void AddShops()
+		{
+			NPCShop succubusShop = new NPCShop(NPC.type, "Lucinda");
+			succubusShop.Add<CharmBetterDigestion>();
+			succubusShop.Add<CharmRegenFromAbsorption>();
+			succubusShop.Register();
+		}
+
 
 		public override void PostAI()
 		{
@@ -588,14 +598,6 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 			}
 		}
 
-		public override void SetupShop(Chest shop, ref int nextSlot)
-		{
-			shop.item[nextSlot].SetDefaults(ModContent.ItemType<CharmBetterDigestion>());
-			nextSlot++;
-			shop.item[nextSlot].SetDefaults(ModContent.ItemType<CharmRegenFromAbsorption>());
-			nextSlot++;
-		}
-
 		public override bool CanGoToStatue(bool toKingStatue) => !toKingStatue;
 
 		public override void TownNPCAttackStrength(ref int damage, ref float knockback)
@@ -634,7 +636,7 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 		public static void OnDigestionKill(NPC npc, Prey digestedPrey)
 		{
 			SoundEngine.PlaySound(
-				Main.rand.NextFromCollection(npc.AsPred().StandardBurps),
+				digestedPrey.WeightLeftToDigest < 0.75 ? npc.AsPred().SmallBurps : npc.AsPred().StandardBurps,
 				npc.TrueCenter() + new Vector2(npc.direction * 8f, -14f)
 			);
 		}

@@ -14,6 +14,7 @@ using System.Reflection;
 using Terraria.Chat;
 using Terraria.GameContent.Achievements;
 using ReLogic.Utilities;
+using V2.PlayerHandling;
 
 namespace V2.NPCs
 {
@@ -167,6 +168,8 @@ namespace V2.NPCs
 				if (npc.AsPrey().DigestedDeathSound != null)
 					SoundEngine.PlaySound(npc.AsPrey().DigestedDeathSound, npc.position);
 
+				if (npc.AsPrey().CurrentCaptor.Value.Predator is Player hungryPlayer)
+					PredPlayer.CountDigestionKillForBannersAndDropThem(hungryPlayer, npc);
 				npc.NPCLoot();
 			}
 			else

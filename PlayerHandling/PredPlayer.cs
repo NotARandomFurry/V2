@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
+using Terraria.Chat;
 using Terraria.DataStructures;
 using Terraria.GameInput;
 using Terraria.ID;
@@ -140,9 +141,9 @@ namespace V2.PlayerHandling
 			}
 		}
 
-		public List<SoundStyle> SmallBurps { get; set; }
-		public List<SoundStyle> StandardBurps { get; set; }
-		public List<SoundStyle> BigBurps { get; set; }
+		public SoundStyle SmallBurps { get; set; }
+		public SoundStyle StandardBurps { get; set; }
+		public SoundStyle BigBurps { get; set; }
 
 		public List<SoundStyle> SmallGulps { get; set; }
 		public List<SoundStyle> BigGulps { get; set; }
@@ -195,20 +196,8 @@ namespace V2.PlayerHandling
 			stomachContents = new List<Prey>();
 			stomachContentsQueue = new List<Prey>();
 
-			StandardBurps = new List<SoundStyle>
-			{
-				Burps.Standard1,
-				Burps.Standard2,
-				Burps.Standard3,
-				Burps.Standard4,
-				Burps.Standard5,
-				Burps.Standard6,
-				Burps.Standard7,
-				Burps.Standard8,
-				Burps.Standard9,
-				Burps.Standard10,
-				Burps.Standard11,
-			};
+			SmallBurps = Burps.Humanoid.Small;
+			StandardBurps = Burps.Humanoid.Standard;
 
 			SmallGulps = new List<SoundStyle>
 			{
@@ -343,6 +332,7 @@ namespace V2.PlayerHandling
 						{
 							case "NPC":
 								Swallow(Player, Main.npc[mealIndex]);
+								Player.lastCreatureHit = Item.NPCtoBanner(Main.npc[mealIndex].BannerID());
 								break;
 							case "player":
 								Swallow(Player, Main.player[mealIndex]);
@@ -385,7 +375,7 @@ namespace V2.PlayerHandling
 						Player.AsPred().stomachContents.Remove(prey);
 					}
 					SoundEngine.PlaySound(
-						Main.rand.NextFromCollection(StandardBurps),
+						prey.WeightLeftToDigest < 0.3 ? Player.AsPred().SmallBurps : Player.AsPred().StandardBurps,
 						Player.TrueCenter() + new Vector2(Player.direction * 8f, -14f)
 					);
 				}
@@ -537,7 +527,7 @@ namespace V2.PlayerHandling
 											player.AsPred().mealCount.Add("Terraria: Player", 0);
 										player.AsPred().mealCount["Terraria: Player"] += 1;
 										SoundEngine.PlaySound(
-											Main.rand.NextFromCollection(player.AsPred().StandardBurps),
+											player.AsPred().StandardBurps,
 											player.TrueCenter() + new Vector2(player.direction * 8f, -14f)
 										);
 									}
@@ -558,7 +548,7 @@ namespace V2.PlayerHandling
 											player.AsPred().mealCount.Add(preyNPCMod + ": " + preyNPC.TypeName, 0);
 										player.AsPred().mealCount[preyNPCMod + ": " + preyNPC.TypeName] += 1;
 										SoundEngine.PlaySound(
-											Main.rand.NextFromCollection(player.AsPred().StandardBurps),
+											prey.WeightLeftToDigest < 0.3 ? player.AsPred().SmallBurps : player.AsPred().StandardBurps,
 											player.TrueCenter() + new Vector2(player.direction * 8f, -14f)
 										);
 									}
@@ -658,14 +648,6 @@ namespace V2.PlayerHandling
 			return false;
 		}
 
-		public static int GetVisualBellySize(Player player)
-		{
-			return Math.Min(
-				(int)Math.Floor(5.0 * Math.Sqrt(GetCurrentBellyWeight(player))),
-				4
-			);
-		}
-
 		public static string GetDigestedPlayerDeathReason(Player player, Player prey)
 		{
 			if (player.whoAmI == prey.whoAmI)
@@ -753,11 +735,50 @@ namespace V2.PlayerHandling
 			Player.AsPred().stomachContents.Clear();
 		}
 
-		public override void OnRespawn(Player player)
+		public override void OnRespawn()
 		{
-			if (player.SpawnX != -1 && Main.rand.NextBool(7, 1000000))
+			if (Player.SpawnX != -1 && Main.rand.NextBool(7, 1000000))
 			{
-				Swallow(player, player);
+				Swallow(Player, Player);
+			}
+		}
+
+		public static void CountDigestionKillForBannersAndDropThem(Player player, NPC npc)
+		{
+			int num = Item.NPCtoBanner(npc.BannerID());
+			if (num <= 0 || npc.ExcludedFromDeathTally())
+				return;
+
+			NPC.killCount[num]++;
+			if (Main.netMode == 2)
+				NetMessage.SendData(83, -1, -1, null, num);
+
+			int num2 = ItemID.Sets.KillsToBanner[Item.BannerToItem(num)];
+			if (NPC.killCount[num] % num2 == 0 && num > 0)
+			{
+				int npcID = Item.BannerToNPC(num);
+				int num4 = npc.lastInteraction;
+				if (!Main.player[num4].active || Main.player[num4].dead)
+					num4 = npc.FindClosestPlayer();
+
+				NetworkText networkText = NetworkText.FromLiteral(Language.GetTextValueWith("Mods.V2.Death.DigestedEnemiesAnnouncement", new
+				{
+					Pred = player.name,
+					Number = NPC.killCount[num],
+					Prey = NetworkText.FromKey(Lang.GetNPCName(npcID).Key)
+				}));
+
+				if (Main.netMode == 0)
+					Main.NewText(networkText.ToString(), 250, 250, 0);
+				else if (Main.netMode == 2)
+					ChatHelper.BroadcastChatMessage(networkText, new Color(250, 250, 0));
+
+				int num5 = Item.BannerToItem(num);
+				Vector2 vector = npc.position;
+				if (num4 >= 0 && num4 < 255)
+					vector = Main.player[num4].position;
+
+				Item.NewItem(npc.GetSource_Loot(), (int)vector.X, (int)vector.Y, npc.width, npc.height, num5);
 			}
 		}
 
@@ -783,7 +804,7 @@ namespace V2.PlayerHandling
 		}
 
 
-		public override void clientClone(ModPlayer clientClone)
+		public override void CopyClientState(ModPlayer clientClone)/* tModPorter Suggestion: Replace Item.Clone usages with Item.CopyNetStateTo */
 		{
 			PredPlayer predClientClone = clientClone as PredPlayer;
 			predClientClone.stomachContents = Player.AsPred().stomachContents;
@@ -891,6 +912,14 @@ namespace V2.PlayerHandling
 			Player.AsPred().ABS.Base = binaryReader.ReadInt32();
 			Player.AsPred().ABS.Extra = binaryReader.ReadInt32();
 		}
+
+		public static int GetVisualBellySize(Player player)
+		{
+			return Math.Min(
+				(int)Math.Floor(5.0 * Math.Sqrt(GetCurrentBellyWeight(player))),
+				7
+			);
+		}
 	}
 
 	public class VoreTum : PlayerDrawLayer
@@ -901,175 +930,79 @@ namespace V2.PlayerHandling
 		{
 			Player player = drawInfo.drawPlayer;
 			int tumSize = PredPlayer.GetVisualBellySize(player);
+
+			void DrawTmuuy(ref PlayerDrawSet drawInfo, int size, int offsetX = 0, int offsetY = 0)
+			{
+				Texture2D tum = ModContent.Request<Texture2D>("V2/PlayerHandling/TumSprites/Bare_" + size, AssetRequestMode.ImmediateLoad).Value;
+				if (player.IsAirborne())
+					tum = ModContent.Request<Texture2D>("V2/PlayerHandling/TumSprites/Bare_" + size + "_Airborne", AssetRequestMode.ImmediateLoad).Value;
+				Vector2 tumLocation =
+					new Vector2(
+					(int)(
+						drawInfo.Position.X
+					  - Main.screenPosition.X
+					  - (float)(drawInfo.drawPlayer.bodyFrame.Width / 2)
+					  + (float)(drawInfo.drawPlayer.width / 2)
+					),
+						(int)(
+							drawInfo.Position.Y
+						  - Main.screenPosition.Y
+						  + (float)drawInfo.drawPlayer.height
+						  - (float)drawInfo.drawPlayer.bodyFrame.Height + 4f
+						)
+					)
+				  + drawInfo.drawPlayer.bodyPosition
+				  + new Vector2(
+					drawInfo.drawPlayer.bodyFrame.Width / 2,
+					drawInfo.drawPlayer.bodyFrame.Height / 2
+				);
+				tumLocation.Y += drawInfo.torsoOffset;
+				tumLocation.X += offsetX;
+				tumLocation.Y += offsetY;
+				if (player.direction == -1)
+					tumLocation.X -= (float)tum.Width + (offsetX * 2);
+				DrawData tumDraw = new DrawData(
+					tum,
+					tumLocation,
+					tum.Bounds,
+					drawInfo.colorBodySkin,
+					player.bodyRotation,
+					Vector2.Zero,
+					1f,
+					drawInfo.playerEffect,
+					0
+				);
+				tumDraw.shader = 0;
+				drawInfo.DrawDataCache.Add(tumDraw);
+			}
+
 			switch (tumSize)
 			{
 				case 0:
 				default:
+					//default:
 					// do absolutely nothing lol
 					break;
 				case 1:
-					Texture2D size1Tum = ModContent.Request<Texture2D>("V2/PlayerHandling/TumSprites/Bare_1", AssetRequestMode.ImmediateLoad).Value;
-					Vector2 size1TumLocation =
-						new Vector2(
-							(int)(
-								drawInfo.Position.X
-							  - Main.screenPosition.X
-							  - (float)(drawInfo.drawPlayer.bodyFrame.Width / 2)
-							  + (float)(drawInfo.drawPlayer.width / 2)
-							),
-							(int)(
-								drawInfo.Position.Y
-							  - Main.screenPosition.Y
-							  + (float)drawInfo.drawPlayer.height
-							  - (float)drawInfo.drawPlayer.bodyFrame.Height + 4f
-							)
-						)
-					  + drawInfo.drawPlayer.bodyPosition
-					  + new Vector2(
-							drawInfo.drawPlayer.bodyFrame.Width / 2,
-							drawInfo.drawPlayer.bodyFrame.Height / 2
-						);
-					size1TumLocation.Y += drawInfo.torsoOffset;
-					size1TumLocation.X += 2f;
-					size1TumLocation.Y += 6f;
-					if (player.direction == -1)
-						size1TumLocation.X -= (float)size1Tum.Width + 4f;
-					DrawData size1TumDraw = new DrawData(
-						size1Tum,
-						size1TumLocation,
-						size1Tum.Bounds,
-						drawInfo.colorBodySkin,
-						player.bodyRotation,
-						Vector2.Zero,
-						1f,
-						drawInfo.playerEffect,
-						0
-					);
-					size1TumDraw.shader = 0;
-					drawInfo.DrawDataCache.Add(size1TumDraw);
+					DrawTmuuy(ref drawInfo, 1, 0, 6);
 					break;
 				case 2:
-					Texture2D size2Tum = ModContent.Request<Texture2D>("V2/PlayerHandling/TumSprites/Bare_2", AssetRequestMode.ImmediateLoad).Value;
-					Vector2 size2TumLocation =
-						new Vector2(
-							(int)(
-								drawInfo.Position.X
-							  - Main.screenPosition.X
-							  - (float)(drawInfo.drawPlayer.bodyFrame.Width / 2)
-							  + (float)(drawInfo.drawPlayer.width / 2)
-							),
-							(int)(
-								drawInfo.Position.Y
-							  - Main.screenPosition.Y
-							  + (float)drawInfo.drawPlayer.height
-							  - (float)drawInfo.drawPlayer.bodyFrame.Height + 4f
-							)
-						)
-					  + drawInfo.drawPlayer.bodyPosition
-					  + new Vector2(
-							drawInfo.drawPlayer.bodyFrame.Width / 2,
-							drawInfo.drawPlayer.bodyFrame.Height / 2
-						);
-					size2TumLocation.Y += drawInfo.torsoOffset;
-					size2TumLocation.X += 2f;
-					size2TumLocation.Y += 6f;
-					if (player.direction == -1)
-						size2TumLocation.X -= (float)size2Tum.Width + 4f;
-					DrawData size2TumDraw = new DrawData(
-						size2Tum,
-						size2TumLocation,
-						size2Tum.Bounds,
-						drawInfo.colorBodySkin,
-						player.bodyRotation,
-						Vector2.Zero,
-						1f,
-						drawInfo.playerEffect,
-						0
-					);
-					size2TumDraw.shader = 0;
-					drawInfo.DrawDataCache.Add(size2TumDraw);
+					DrawTmuuy(ref drawInfo, 2, -2, 6);
 					break;
 				case 3:
-					Texture2D size3Tum = ModContent.Request<Texture2D>("V2/PlayerHandling/TumSprites/Bare_3", AssetRequestMode.ImmediateLoad).Value;
-					Vector2 size3TumLocation =
-						new Vector2(
-							(int)(
-								drawInfo.Position.X
-							  - Main.screenPosition.X
-							  - (float)(drawInfo.drawPlayer.bodyFrame.Width / 2)
-							  + (float)(drawInfo.drawPlayer.width / 2)
-							),
-							(int)(
-								drawInfo.Position.Y
-							  - Main.screenPosition.Y
-							  + (float)drawInfo.drawPlayer.height
-							  - (float)drawInfo.drawPlayer.bodyFrame.Height + 4f
-							)
-						)
-					  + drawInfo.drawPlayer.bodyPosition
-					  + new Vector2(
-							drawInfo.drawPlayer.bodyFrame.Width / 2,
-							drawInfo.drawPlayer.bodyFrame.Height / 2
-						);
-					size3TumLocation.Y += drawInfo.torsoOffset;
-					size3TumLocation.X -= 2f;
-					size3TumLocation.Y += 4f;
-					if (player.direction == -1)
-						size3TumLocation.X -= (float)size3Tum.Width - 4f;
-					DrawData size3TumDraw = new DrawData(
-						size3Tum,
-						size3TumLocation,
-						size3Tum.Bounds,
-						drawInfo.colorBodySkin,
-						player.bodyRotation,
-						Vector2.Zero,
-						1f,
-						drawInfo.playerEffect,
-						0
-					);
-					size3TumDraw.shader = 0;
-					drawInfo.DrawDataCache.Add(size3TumDraw);
+					DrawTmuuy(ref drawInfo, 3, player.IsAirborne() ? -4 : -2, 6);
 					break;
 				case 4:
-					Texture2D size4Tum = ModContent.Request<Texture2D>("V2/PlayerHandling/TumSprites/Bare_4", AssetRequestMode.ImmediateLoad).Value;
-					Vector2 size4TumLocation =
-						new Vector2(
-							(int)(
-								drawInfo.Position.X
-							  - Main.screenPosition.X
-							  - (float)(drawInfo.drawPlayer.bodyFrame.Width / 2)
-							  + (float)(drawInfo.drawPlayer.width / 2)
-							),
-							(int)(
-								drawInfo.Position.Y
-							  - Main.screenPosition.Y
-							  + (float)drawInfo.drawPlayer.height
-							  - (float)drawInfo.drawPlayer.bodyFrame.Height + 4f
-							)
-						)
-					  + drawInfo.drawPlayer.bodyPosition
-					  + new Vector2(
-							drawInfo.drawPlayer.bodyFrame.Width / 2,
-							drawInfo.drawPlayer.bodyFrame.Height / 2
-						);
-					size4TumLocation.Y += drawInfo.torsoOffset;
-					size4TumLocation.X -= 4f;
-					size4TumLocation.Y += 4f;
-					if (player.direction == -1)
-						size4TumLocation.X -= (float)size4Tum.Width - 8f;
-					DrawData size4TumDraw = new DrawData(
-						size4Tum,
-						size4TumLocation,
-						size4Tum.Bounds,
-						drawInfo.colorBodySkin,
-						player.bodyRotation,
-						Vector2.Zero,
-						1f,
-						drawInfo.playerEffect,
-						0
-					);
-					size4TumDraw.shader = 0;
-					drawInfo.DrawDataCache.Add(size4TumDraw);
+					DrawTmuuy(ref drawInfo, 4, -4, 2);
+					break;
+				case 5:
+					DrawTmuuy(ref drawInfo, 5, -4, 0);
+					break;
+				case 6:
+					DrawTmuuy(ref drawInfo, 6, -4, -2);
+					break;
+				case 7:
+					DrawTmuuy(ref drawInfo, 7, -6, -4);
 					break;
 			}
 		}

@@ -45,9 +45,9 @@ namespace V2.NPCs
 		public double maxStomachCapacity;
 		public float swallowRange;
 
-		public List<SoundStyle> SmallBurps { get; set; }
-		public List<SoundStyle> StandardBurps { get; set; }
-		public List<SoundStyle> BigBurps { get; set; }
+		public SoundStyle SmallBurps { get; set; }
+		public SoundStyle StandardBurps { get; set; }
+		public SoundStyle BigBurps { get; set; }
 
 		public List<SoundStyle> SmallGulps { get; set; }
 		public List<SoundStyle> BigGulps { get; set; }
@@ -117,20 +117,8 @@ namespace V2.NPCs
 			CanBeForceFedMethod = (NPC npc) => false;
 			OnForceFedMethod = null;
 
-			StandardBurps = new List<SoundStyle>
-			{
-				Burps.Standard1,
-				Burps.Standard2,
-				Burps.Standard3,
-				Burps.Standard4,
-				Burps.Standard5,
-				Burps.Standard6,
-				Burps.Standard7,
-				Burps.Standard8,
-				Burps.Standard9,
-				Burps.Standard10,
-				Burps.Standard11,
-			};
+			SmallBurps = Burps.Humanoid.Small;
+			StandardBurps = Burps.Humanoid.Standard;
 
 			SmallGulps = new List<SoundStyle>
 			{

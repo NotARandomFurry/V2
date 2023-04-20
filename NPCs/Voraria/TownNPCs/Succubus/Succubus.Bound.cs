@@ -85,7 +85,7 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 			button2 = "Don't Free";
 		}
 
-		public override void OnChatButtonClicked(bool firstButton, ref bool shop)
+		public override void OnChatButtonClicked(bool firstButton, ref string shopName)
 		{
 			if (firstButton)
 			{

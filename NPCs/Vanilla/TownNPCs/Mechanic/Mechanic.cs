@@ -13,6 +13,7 @@ using Terraria.ModLoader;
 using V2.Core;
 using V2.NPCs.Voraria.TownNPCs.Succubus;
 using V2.PlayerHandling;
+using V2.Sounds.Vore;
 using static V2.Core.FoodTypeTags;
 
 namespace V2.NPCs.Vanilla.TownNPCs.Mechanic
@@ -81,7 +82,6 @@ namespace V2.NPCs.Vanilla.TownNPCs.Mechanic
 			npc.AsPred().GetDigestionTickRateMethod = GetDigestionTickRate;
 			npc.AsPred().GetDigestionTickDamageMethod = GetDigestionTickDamage;
 
-			npc.AsPred().OnDigestionKillMethod = OnDigestionKill;
 			
 			npc.AsPred().GetPreyAbsorptionRateMethod = GetPreyAbsorptionRate;
 
@@ -90,6 +90,9 @@ namespace V2.NPCs.Vanilla.TownNPCs.Mechanic
 			npc.AsPred().CanBeForceFedMethod = CanMechanicBeForceFed;
 			npc.AsPred().OnForceFedMethod = OnMechanicForceFed;
 
+			npc.AsPred().OnDigestionKillMethod = OnDigestionKill;
+			npc.AsPred().SmallBurps = Burps.Humanoid.Small;
+			npc.AsPred().StandardBurps = Burps.Humanoid.Standard;
 			npc.AsPred().GetDigestedPlayerAdditionalDeathMessagesMethod = GetDigestedPlayerAdditionalDeathMessages;
 
 			npc.AsPred().GetVisualBellySizeMethod = GetVisualBellySize;
@@ -430,7 +433,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Mechanic
 		public static void OnDigestionKill(NPC npc, Prey digestedPrey)
 		{
 			SoundEngine.PlaySound(
-				Main.rand.NextFromCollection(npc.AsPred().StandardBurps),
+				npc.AsPred().StandardBurps,
 				npc.TrueCenter() + new Vector2(npc.direction * 8f, -14f)
 			);
 		}

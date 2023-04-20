@@ -1,5 +1,11 @@
 Mods: {
 	V2: {
+		Keybinds: {
+			Swallow.DisplayName: Mods.V2.Keybinds.Swallow.DisplayName
+			Regurgitate.DisplayName: Mods.V2.Keybinds.Regurgitate.DisplayName
+			Feed.DisplayName: Mods.V2.Keybinds.Feed.DisplayName
+		}
+
 		GameTips: {
 			MagicMirror:
 				'''
@@ -12,14 +18,16 @@ Mods: {
 				Obsidian Skin Potions are critically useful in exploring lava-heavy terrain, allowing the consumer to bathe in it without harm.
 				They also have the side effect of allowing the consumer to drink lava freely --- though, be warned, lava is VERY fattening.
 				'''
-			WiresFromMechanic:
+			WiresFromMechanic: You can buy Wires from the Mechanic and use them to create traps, pumping systems, systematic waifu-feeding factories, or other elaborate devices.
+			PartyGirlNeedsLotsOfSnacksToMoveIn:
 				'''
-				You can buy Wires from the Mechanic and use them to create traps, pumping systems, systematic waifu-feeding factories, or other elaborate devices.
+				The Party Girl won't move in unless your little stretch of the world is full of other townsfolk.
+				After all, what's a party without lots of totally willing guests to...invite to it?
 				'''
 			PredStats:
 				'''
 				As a pred, you have four stats: swallow strength (GLP), acid strength (ACI), stomach strength (TUM), and absorption strength (ABS).
-				Be sure to investigate what each one does, and play to your best strengths as you gobble up the universe!
+				Be sure to investigate what each one does, and play to your best strengths as you get ready to gulp down the universe!
 				'''
 			SwallowHotkey:
 				'''
@@ -38,25 +46,23 @@ Mods: {
 				Just don't expect to NOT get churned into more fat for their frame. The majority of preds don't really care about what you want.
 				'''
 		}
+
 		ItemName: {
 			Voraria: {
 				Charms: {
-					BetterDigestion: '''Acidic Charm'''
-					RegenFromAbsorption: '''Revitalization Charm'''
+					BetterDigestion: Acidic Charm
+					RegenFromAbsorption: Revitalization Charm
 				}
 			}
 		}
+
 		ItemTooltip: {
-			Generic: {
-				HoldSHIFTToLearnWhatTheFuckYourItemDoes: '''[c/FFFF00:Hold LEFT SHIFT for more information on this item's exact stats]'''
-			}
+			Generic.HoldSHIFTToLearnWhatTheFuckYourItemDoes: "[c/FFFF00:Hold LEFT SHIFT for more information on this item's exact stats]"
+
 			Vanilla: {
 				Accessories: {
 					Informational: {
-						REK3K:
-							'''
-							Displays number of enemies, kill and meal counts, and rare creatures
-							'''
+						REK3K: Displays number of enemies, kill and meal counts, and rare creatures
 						TallyCounter:
 							'''
 							Displays how many enemies have been killed in the world
@@ -65,6 +71,7 @@ Mods: {
 					}
 				}
 			}
+
 			Voraria: {
 				Charms: {
 					BetterDigestion: {
@@ -73,11 +80,9 @@ Mods: {
 							Makes your acids a little bit stronger
 							{$Mods.V2.ItemTooltip.Generic.HoldSHIFTToLearnWhatTheFuckYourItemDoes}
 							'''
-						Long:
-							'''
-							Increases your [c/00FF00:acid strength stat (ACI)] by [c/FFFF00:12].
-							'''
+						Long: Increases your [c/00FF00:acid strength stat (ACI)] by [c/FFFF00:12].
 					}
+
 					RegenFromAbsorption: {
 						Short:
 							'''
@@ -92,7 +97,7 @@ Mods: {
 							[c/FF7F7F:Regen Per Second] = [c/3FDF3F:Absorption Rate] * [c/DFDF3F:60]
 							The following equation represents the effectiveness of the regeneration:
 							[c/FF7F7F:Regen Multiplier] = [c/3FDF3F:Dead Prey In Stomach] / [c/3FDF3F:Total Prey In Stomach]
-							
+
 							Base Regeneration: [c/FFFF00:{BaseRegen}] [c/FF7F7F:health] and [c/7F7FFF:mana] per 1.0 prey unit digested
 							Max Regeneration: [c/FFFF00:{MaxRegen}] [c/FF7F7F:health] and [c/7F7FFF:mana] per second
 							Current Regeneration: [c/FFFF00:{CurrentRegen}] [c/FF7F7F:health] and [c/7F7FFF:mana] per second
@@ -101,182 +106,194 @@ Mods: {
 				}
 			}
 		}
-		InfoDisplayText: {
-			TallyCounterVore: {
-				InvalidMeal: '''Meal count unavailable'''
-			}
-		}
+
+		InfoDisplayName.TallyCounterVore: Meal Count
+		InfoDisplayText.TallyCounterVore.InvalidMeal: Meal count unavailable
+
 		Death: {
 			DrownedPlayer: {
 				GutSlut: {
-					1: '''{Player} mistook water for the stomach acid pools they're familiar with.'''
-					2: '''Maybe stick to drowning in people instead of ponds, {Player}.'''
-					3: '''{Player} probably has a thing for mermaids. Unfortunately, they couldn't find any hungry mermaids fast enough.'''
+					1: "{Player} mistook water for the stomach acid pools they're familiar with."
+					2: Maybe stick to drowning in people instead of ponds, {Player}.
+					3: "{Player} probably has a thing for mermaids. Unfortunately, they couldn't find any hungry mermaids fast enough."
 				}
 			}
+
 			DigestedPlayer: {
-				YouWereEaten: '''You were eaten...'''
-				Paradox: '''Awfully full of yourself today, aren't you, {Player}?'''
+				YouWereEaten: You were eaten...
+				Paradox: Awfully full of yourself today, aren't you, {Player}?
+
 				Universal: {
-					1: '''{Player} was eaten by {Pred}.'''
-					2: '''{Player} couldn't escape {Pred}'s stomach.'''
-					3: '''{Player}'s fruitless thrashing was finally stopped by {Pred}'s stomach acids.'''
-					4: '''{Pred}'s stomach was the last thing {Player} ever saw.'''
-					5: '''{Player} learned the hard way that napping in a gut isn't safe.'''
-					6: '''{Pred} mulched {Player} without a second thought.'''
-					7: '''{Player} slipped down {Pred}'s throat, never to be seen again.'''
-					8: '''{Pred} had {Player} as a quick snack.'''
-					9: '''{Player} was transmuted into chyme by {Pred}.'''
-					10: '''{Player}'s flesh was melted from the bone inside {Pred}'s stomach.'''
-					11: '''{Pred}'s stomach melted {Player} down.'''
-					12: '''{Pred}'s stomach acids were too much for {Player}.'''
-					13: '''{Player} was dissolved by {Pred}.'''
-					14: '''{Player} went on the other kind of acid trip.'''
-					15: '''{Player} got a little too soft.'''
-					16: '''{Pred} made a meal of {Player}.'''
-					17: '''{Player} became an idiot sandwich.'''
-					18: '''{Player} succumbed to {Pred}'s acids.'''
-					19: '''{Pred} now has Exquisitely Stuffed for a while, thanks to {Player}.'''
-					20: '''{Player} became a second breakfast for {Pred}.'''
-					21: '''{Player} tried to become a gastroenterologist from memory.'''
-					22: '''{Player} mistook pearly whites for pearly gates.'''
-					23: '''{Player} is a terrible dieting advisor.'''
-					24: '''{Player} thought the Iron Maiden sounded hot.'''
-					25: '''{Player} got fucking churned lmaooo'''
-					26: '''{Player} was mulched by {Pred}.'''
-					27: '''{Player} tried to swim in acid.'''
-					28: '''{Player} got got by {Pred}.'''
-					29: '''{Player} was eaten from the bottom up...or was it from the top down?'''
-					30: '''{Player} underwent a merciful euthanasia by digestion.'''
+					1: "{Player} was eaten by {Pred}."
+					2: "{Player} couldn't escape {Pred}'s stomach."
+					3: "{Player}'s fruitless thrashing was finally stopped by {Pred}'s stomach acids."
+					4: "{Pred}'s stomach was the last thing {Player} ever saw."
+					5: "{Player} learned the hard way that napping in a gut isn't safe."
+					6: "{Pred} mulched {Player} without a second thought."
+					7: "{Player} slipped down {Pred}'s throat, never to be seen again."
+					8: "{Pred} had {Player} as a quick snack."
+					9: "{Player} was transmuted into chyme by {Pred}."
+					10: "{Player}'s flesh was melted from the bone inside {Pred}'s stomach."
+					11: "{Pred}'s stomach melted {Player} down."
+					12: "{Pred}'s stomach acids were too much for {Player}."
+					13: "{Player} was dissolved by {Pred}."
+					14: "{Player} went on the other kind of acid trip."
+					15: "{Player} got a little too soft."
+					16: "{Pred} made a meal of {Player}."
+					17: "{Player} became an idiot sandwich."
+					18: "{Player} succumbed to {Pred}'s acids."
+					19: "{Pred} now has Exquisitely Stuffed for a while, thanks to {Player}."
+					20: "{Player} became a second breakfast for {Pred}."
+					21: "{Player} tried to become a gastroenterologist from memory."
+					22: "{Player} mistook pearly whites for pearly gates."
+					23: "{Player} is a terrible dieting advisor."
+					24: "{Player} thought the Iron Maiden sounded hot."
+					25: "{Player} got fucking churned lmaooo"
+					26: "{Player} was mulched by {Pred}."
+					27: "{Player} tried to swim in acid."
+					28: "{Player} got got by {Pred}."
+					29: "{Player} was eaten from the bottom up...or was it from the top down?"
+					30: "{Player} underwent a merciful euthanasia by digestion."
+
 					StomachSuffocation: {
-						1: '''{Player} ran out of air in {Pred}'s stomach.'''
-						2: '''{Pred}'s stomach didn't have enough air for {Player}.'''
+						1: "{Player} ran out of air in {Pred}'s stomach."
+						2: "{Pred}'s stomach didn't have enough air for {Player}."
 					}
+
 					Hardcore: {
-						1: '''{Player}'s legacy ended in the stomach of {Pred}.'''
-						2: '''{Pred}'s belly was too hardcore for even {Player} to handle.'''
-						3: '''{Pred} ended {Player}'s story with a contented belch.'''
-						4: '''{Player} might live on...as a nutritious soup in {Pred}'s gut.'''
-						5: '''{Player}'s family will never know who digested them.'''
+						1: "{Player}'s legacy ended in the stomach of {Pred}."
+						2: "{Pred}'s belly was too hardcore for even {Player} to handle."
+						3: "{Pred} ended {Player}'s story with a contented belch."
+						4: "{Player} might live on...as a nutritious soup in {Pred}'s gut."
+						5: "{Player}'s family will never know who digested them."
 					}
 				}
+
 				HumanoidPred: {
-					1: '''{Player} became ass fat for {Pred}.'''
-					2: '''{Player} helped to widen up {Pred}'s thighs.'''
-					3: '''{Player} gave {Pred} an extra waistband size.'''
+					1: "{Player} became ass fat for {Pred}."
+					2: "{Player} helped to widen up {Pred}'s thighs."
+					3: "{Player} gave {Pred} an extra waistband size."
 				}
+
 				SpecificNPC: {
 					Nurse: {
-						1: '''{Player} made a very healthy meal for {Pred}.'''
-						2: '''{Player} helped to keep {Pred}'s belly happy and healthy.'''
-						3: '''{Pred}'s digestive system was given a check-up by {Player}.'''
+						1: "{Player} made a very healthy meal for {Pred}."
+						2: "{Player} helped to keep {Pred}'s belly happy and healthy."
+						3: "{Pred}'s digestive system was given a check-up by {Player}."
 						4:
 							'''
 							{Pred} lost her medical license after adding {Player} to her hips...
 							...oh, wait. That's what she's qualified to do. Never mind.
 							'''
-						5: '''{Player} is now a victim of medical mealpractice.'''
-						6: '''{Player} was quarantined.'''
-						7: '''{Pred} prescribed {Player} a one-way trip to her backside...whether they got there is another story.'''
-						8: '''{Pred} gave {Player} a thorough examination by digestion.'''
+						5: "{Player} is now a victim of medical mealpractice."
+						6: "{Player} was quarantined."
+						7: "{Pred} prescribed {Player} a one-way trip to her backside...whether they got there is another story."
+						8: "{Pred} gave {Player} a thorough examination by digestion."
+
 						NoFundsForHeal: {
-							1: '''{Player} couldn't pay their medical fees.'''
-							2: '''{Player} thought free healthcare exists.'''
-							3: '''{Player} tried to undercut {Pred}, and learned the hard way how bad of an idea that is.'''
-							4: '''{Player}'s insurance didn't cover digestion.'''
+							1: "{Player} couldn't pay their medical fees."
+							2: "{Player} thought free healthcare exists."
+							3: "{Player} tried to undercut {Pred}, and learned the hard way how bad of an idea that is."
+							4: "{Player}'s insurance didn't cover digestion."
 						}
+
 						Hardcore:
 							'''
 							{Player} has become the newest victim of {Pred}'s medical mealpractice.
 							Mind you, most healthcare packages cover digestion reformation...but {Player} forgot to buy one.
 							'''
 					}
+
 					ArmsDealer: {
-						1: '''{Player} was locked and loaded into {Pred}'s gut.'''
-						2: '''{Pred} gave his stomach some target practice with {Player}.'''
+						1: "{Player} was locked and loaded into {Pred}'s gut."
+						2: "{Pred} gave his stomach some target practice with {Player}."
 						Hardcore:
 							'''
 							{Player} was chambered into {Pred}'s ruthless gut, never to be seen again.
 							The skilled gunman simply spent the rest of his day unwinding with some relaxing target practice as his prey melted away.
 							'''
 					}
+
 					Angel: {
-						1: '''{Player} was given a one-way ticket to the second Heaven that is {Pred}'s belly.'''
-						2: '''{Player} atoned for their sins (or, perhaps, committed more of them) within {Pred}'s confines.'''
-						3: '''{Player} will be thoroughly studying {Pred}'s internals.'''
-						4: '''{Player} was somehow a submissive enough snack to get {Pred} to melt them into gut fat. An impressive, if strange, performance.'''
+						1: "{Player} was given a one-way ticket to the second Heaven that is {Pred}'s belly."
+						2: "{Player} atoned for their sins (or, perhaps, committed more of them) within {Pred}'s confines."
+						3: "{Player} will be thoroughly studying {Pred}'s internals."
+						4: "{Player} was somehow a submissive enough snack to get {Pred} to melt them into gut fat. An impressive, if strange, performance."
 						Hardcore:
 							'''
 							{Pred}'s stomach sent {Player} to Heaven...which, in her case, happens to still be her stomach.
 							Ah, well. At least the rest of their days will be well-enjoyed as fat on her frame.
 							'''
 					}
+
 					Stylist: {
-						1: '''{Player} melted inside {Pred}'s stylish stomach.'''
+						1: "{Player} melted inside {Pred}'s stylish stomach."
 						2: '''{Pred}'s belly gave {Player} a "free" haircut.'''
-						3: '''{Pred} let {Player} marinate for a while in her stomach acids.'''
-						4: '''{Player} was snackrificed to {Pred}.'''
-						5: '''{Player} will look super stylish as a new layer of fat for {Pred}.'''
-						6: '''{Pred} just couldn't resist {Player}'s delectable hair.'''
-						7: '''Acid-worn seems to be a good look for {Player}'s hair.'''
-						7: '''{Player} helped {Pred} exercise her no-refunds policy.'''
-						BloodMoonHaircut: '''(Player) asked for a haircut at just the right time.'''
+						3: "{Pred} let {Player} marinate for a while in her stomach acids."
+						4: "{Player} was snackrificed to {Pred}."
+						5: "{Player} will look super stylish as a new layer of fat for {Pred}."
+						6: "{Pred} just couldn't resist {Player}'s delectable hair."
+						7: "{Player} helped {Pred} exercise her no-refunds policy."
+						BloodMoonHaircut: (Player) asked for a haircut at just the right time.
 						Hardcore:
 							'''
 							{Player} snackrificed their only life to its rightful holder: {Pred} the hair stylist.
 							May they find endless enjoyment as stylish stomach fat.
 							'''
 					}
+
 					Succubus: {
-						1: '''{Player} was forced to fatten up {Pred}'s demonic derriere.'''
-						2: '''{Player}'s body is now stored on {Pred}'s hellish hips.'''
-						3: '''{Pred} is one step closer to being the fattest demon in the world, thanks to {Player}.'''
-						4: '''{Player} helped thicken up {Pred}'s satanic sides even further.'''
-						5: '''{Pred} promised {Player} a fun time...and figured that a night of hanging off her midsection counts.'''
+						1: "{Player} was forced to fatten up {Pred}'s demonic derriere."
+						2: "{Player}'s body is now stored on {Pred}'s hellish hips."
+						3: "{Pred} is one step closer to being the fattest demon in the world, thanks to {Player}."
+						4: "{Player} helped thicken up {Pred}'s satanic sides even further."
+						5: "{Pred} promised {Player} a fun time...and figured that a night of hanging off her midsection counts."
+
 						StomachSuffocation: {
-							1: '''{Player}'s lungs couldn't handle {Pred}'s infernal internals.'''
-							2: '''{Pred}'s searing stomach scorched {Player}'s respiratory system.'''
+							1: "{Player}'s lungs couldn't handle {Pred}'s infernal internals."
+							2: "{Pred}'s searing stomach scorched {Player}'s respiratory system."
 						}
+
 						Hardcore:
 							'''
 							{Player}'s body and soul alike were churned into some new chest fat for {Pred}.
 							Maybe now, she'll be able to use that strength to become the apex pred she's wanted to be.
 							'''
 					}
+
 					Mechanic: {
 						1: '''{Pred}'s system converted {Player} into "potential energy".'''
-						2: '''{Player} helped to recharge {Pred}'s batteries.'''
-						3: '''{Pred} took a snack break with {Player}.'''
-						4: '''{Pred}'s system caused {Player} to short-circuit.'''
-						5: '''{Player} suffered a blackout in {Pred}'s stomach.'''
-						6: '''{Player} was fixed.'''
-						7: '''{Player} was scrapped.'''
-						8: '''{Player} was turned into a battery by {Pred}.'''
-						Hardcore:
-							'''
-							{Player} has become the best battery {Pred}'s ever used, at the cost of their continued existence.
-							'''
+						2: "{Player} helped to recharge {Pred}'s batteries."
+						3: "{Pred} took a snack break with {Player}."
+						4: "{Pred}'s system caused {Player} to short-circuit."
+						5: "{Player} suffered a blackout in {Pred}'s stomach."
+						6: "{Player} was fixed."
+						7: "{Player} was scrapped."
+						8: "{Player} was turned into a battery by {Pred}."
+						Hardcore: "{Player} has become the best battery {Pred}'s ever used, at the cost of their continued existence."
 					}
+
 					PartyGirl: {
-						1: '''{Pred} had {Player} as a pre-party pick-me-up.'''
-						2: '''{Player} will be the life of the party as {Pred}'s tum fat.'''
-						3: '''{Pred} thought {Player} tasted...almost as good as candy.'''
-						4: '''{Pred} melted {Player} into liquid confetti.'''
-						5: '''{Player} partied too hard in {Pred}'s belly.'''
+						1: "{Pred} had {Player} as a pre-party pick-me-up."
+						2: "{Player} will be the life of the party as {Pred}'s tum fat."
+						3: "{Pred} thought {Player} tasted...almost as good as candy."
+						4: "{Pred} melted {Player} into liquid confetti."
+						5: "{Player} partied too hard in {Pred}'s belly."
 						Hardcore:
 							'''
 							The last anyone ever saw of {Player} was a breathy, bubbly belch from {Pred}, bringing up a bundle of heated, half-liquid confetti.
 							At least the gut fat they left on her will keep her the life of the party for many weeks to come.
 							'''
 					}
+
 					Steampunker: {
-						1: '''{Pred} needed fuel for her engine; fuel which {Player} was all too eager to provide.'''
-						2: '''{Player} was flawlessly converted to steam inside {Pred}'s mechanisms.'''
-						3: '''{Pred} fed {Player} into her countless internal devices and doohickeys.'''
-						4: '''{Pred} hid {Player} away in her stomach, never to see the sun again.'''
-						5: '''{Player} wanted to know how steam is made. {Pred} happily demonstrated.'''
-						6: '''The only thing left of {Player} is a gutful of steam inside {Pred}.'''
-						7: '''{Pred}'s body has become a little bit denser, thanks to {Prey}.'''
+						1: "{Pred} needed fuel for her engine; fuel which {Player} was all too eager to provide."
+						2: "{Player} was flawlessly converted to steam inside {Pred}'s mechanisms."
+						3: "{Pred} fed {Player} into her countless internal devices and doohickeys."
+						4: "{Pred} hid {Player} away in her stomach, never to see the sun again."
+						5: "{Player} wanted to know how steam is made. {Pred} happily demonstrated."
+						6: The only thing left of {Player} is a gutful of steam inside {Pred}.
+						7: "{Pred}'s body has become a little bit denser, thanks to {Prey}."
 						Hardcore:
 							'''
 							No conclusive evidence will ever be found of where {Player} disappeared to.
@@ -285,135 +302,169 @@ Mods: {
 					}
 				}
 			}
-			DigestedTownNPC: '''{0} was eaten...'''
+
+			DigestedTownNPC: "{0} was eaten..."
+			DigestedEnemiesAnnouncement: "{Pred} has digested the {Number}th {Prey}!"
+
 			DigestedBoss: {
-				KS: '''King Slime has been digested by {Pred}!'''
-				EoC: '''The Eye of Cthulhu has been digested by {Pred}!'''
-				EoW: '''The Eater of Worlds has been digested by {Pred}!'''
-				BoC: '''The Brain of Cthulhu has been digested by {Pred}!'''
-				QB: '''A Queen Bee has been digested by {Pred}!'''
-				Skele: '''Skeletron has been digested by {Pred}!'''
-				Deerclops: '''A Deerclops has been digested by {Pred}!'''
-				WoF: '''The Wall of Flesh has been digested by {Pred}!'''
-				QS: '''Queen Slime has been digested by {Pred}!'''
-				Twins: '''The Twins have been digested by {Pred}!'''
-				Destro: '''The Destroyer has been digested by {Pred}!'''
-				SkelePrime: '''Skeletron Prime has been digested by {Pred}!'''
-				Plantera: '''Plantera has been digested by {Pred}!'''
-				Golem: '''Golem has been digested by {Pred}!'''
-				LightSnack: '''The Empress of Light has been rightfully digested by {Pred}!'''
-				Fishron: '''Duke Fishron has been digested by {Pred}!'''
-				Cultist: '''The Lunatic Cultist has been digested by {Pred}!'''
-				SolarPillar: '''The Solar Pillar has been digested by {Pred}!'''
-				VortexPillar: '''The Vortex Pillar has been digested by {Pred}!'''
-				NebulaPillar: '''The Nebula Pillar has been digested by {Pred}!'''
-				StardustPillar: '''The Stardust Pillar has been digested by {Pred}!'''
-				MoonLord: '''The Moon Lord has been digested by {Pred}!'''
+				KS: King Slime has been digested by {Pred}!
+				EoC: The Eye of Cthulhu has been digested by {Pred}!
+				EoW: The Eater of Worlds has been digested by {Pred}!
+				BoC: The Brain of Cthulhu has been digested by {Pred}!
+				QB: A Queen Bee has been digested by {Pred}!
+				Skele: Skeletron has been digested by {Pred}!
+				Deerclops: A Deerclops has been digested by {Pred}!
+				WoF: The Wall of Flesh has been digested by {Pred}!
+				QS: Queen Slime has been digested by {Pred}!
+				Twins: The Twins have been digested by {Pred}!
+				Destro: The Destroyer has been digested by {Pred}!
+				SkelePrime: Skeletron Prime has been digested by {Pred}!
+				Plantera: Plantera has been digested by {Pred}!
+				Golem: Golem has been digested by {Pred}!
+				LightSnack: The Empress of Light has been rightfully digested by {Pred}!
+				Fishron: Duke Fishron has been digested by {Pred}!
+				Cultist: The Lunatic Cultist has been digested by {Pred}!
+				SolarPillar: The Solar Pillar has been digested by {Pred}!
+				VortexPillar: The Vortex Pillar has been digested by {Pred}!
+				NebulaPillar: The Nebula Pillar has been digested by {Pred}!
+				StardustPillar: The Stardust Pillar has been digested by {Pred}!
+				MoonLord: The Moon Lord has been digested by {Pred}!
 			}
 		}
+
 		Menu: {
 			MiscVanilla: {
-				HairWindowGutCut: '''Gut Cut ({Price})'''
-				HairWindowGutCutFree: '''Gut Cut (Free)'''
+				HairWindowGutCut: Gut Cut ({Price})
+				HairWindowGutCutFree: Gut Cut (Free)
 			}
 		}
+
 		NPCName: {
-			BoundSuccubus: '''Bound Succubus'''
-			Succubus: '''Succubus'''
+			BoundSuccubus: Bound Succubus
+			Succubus: Succubus
 		}
+
 		TownNPCMood: {
 			Angel: {
-				Content: '''I- I'm doing wonderfully, thank you! Of course, i- if you'd like me to, I wouldn't object to...s- studying your internals...'''
-				NoHome: '''As...e- exciting as it is to study and experience the various i- ins and outs of the creatures of this world, I wouldn't mind a home to s- stay at in the downtime.'''
-				FarFromHome: '''W- wow! I've certainly traveled farther than usual today...wh- what predatory thing could I have been attempting to s- study this far out...?'''
+				Content: I- I'm doing wonderfully, thank you! Of course, i- if you'd like me to, I wouldn't object to...s- studying your internals...
+				NoHome: As...e- exciting as it is to study and experience the various i- ins and outs of the creatures of this world, I wouldn't mind a home to s- stay at in the downtime.
+				FarFromHome: W- wow! I've certainly traveled farther than usual today...wh- what predatory thing could I have been attempting to s- study this far out...?
+
 				Biomes: {
-					Jungle: '''I LOVE this location! Sure, it's aWfully hot and humid here...but just LOOK at all those hungry predators!~ Oh, I'll be able to do TONS of science with them! Sweet, sizzling, SCALDING science...~'''
-					Sky: '''It's always nice to be up in the skies...reminds me a lot of home. O- of course, it also doesn't have any of the complaining whenever I get e- eaten and start my...research.'''
-					Forest: '''I'm not sure I like it here. S- sure, it's very calm here, and the locals are nice, but there simply aren't enough things for me to...s- study, as it were.'''
-					Corruption: '''As fascinating as the specimens here are, this place is hardly suited for sustained housing! S- still...one must study the fallen to- well, to avoid BECOMING the fallen...a- and the subjects here certainly get the mind m- moving...'''
-					Crimson: '''This place is very...g- gorey. That said, the local...wildlife, if you can c- call them that, are certainly eager to...g- get me on my way into them...wh- which I don't mind all that m- much!'''
-					Dungeon: '''I DESPISE this place. There's nothing worth studying. There's nothing to even eat me in the first place aside from the slimes. The slimes here are pointless to study, as any information about them could be gleaned from other, more visually-pleasing and scientifically-stimulating slimes. I'd very much like to leave.'''
+					Jungle: I LOVE this location! Sure, it's aWfully hot and humid here...but just LOOK at all those hungry predators!~ Oh, I'll be able to do TONS of science with them! Sweet, sizzling, SCALDING science...~
+					Sky: It's always nice to be up in the skies...reminds me a lot of home. O- of course, it also doesn't have any of the complaining whenever I get e- eaten and start my...research.
+					Forest: I'm not sure I like it here. S- sure, it's very calm here, and the locals are nice, but there simply aren't enough things for me to...s- study, as it were.
+					Corruption: As fascinating as the specimens here are, this place is hardly suited for sustained housing! S- still...one must study the fallen to- well, to avoid BECOMING the fallen...a- and the subjects here certainly get the mind m- moving...
+					Crimson: This place is very...g- gorey. That said, the local...wildlife, if you can c- call them that, are certainly eager to...g- get me on my way into them...wh- which I don't mind all that m- much!
+					Dungeon: I DESPISE this place. There's nothing worth studying. There's nothing to even eat me in the first place aside from the slimes. The slimes here are pointless to study, as any information about them could be gleaned from other, more visually-pleasing and scientifically-stimulating slimes. I'd very much like to leave.
 				}
+
 				Neighbors: {
 					CrowdLevel: {
-						Alone: '''It's very quiet here. I suppose the solitude isn't AWFUL, but...would you be so kind as to deliver the occasional pred to sweep me off of my feet and onto their figure?...f- for purely scientific p- purposes, of course!'''
-						GoodCompany: '''I enjoy the company you've given me. Very amicable, and very willing to further my studies!...a- and give me a comfortable s- sytem to sit in and...e- enjoy myself to.'''
-						BadCompany: '''I don't really enjoy the company you've given me. As for why...well, it varies from person to person.'''
-						ThreesTheSweetSpot: '''Three is a c- crowd, they say...I- I say three is a healthy s- selection of potential p- predators to work with and analyze!...a- and throw myself into.'''
-						ThreesNotTheSweetSpot: '''Three is a crowd, they say. I- I say three WOULD be a healthy selection of potential predators to work with...i- if none of the elements were problematic.'''
-						TooCrowded: '''I- is it a valid complaint in the field of g- gastronomy to be suffering from ch- choice paralysis!?'''
+						Alone: It's very quiet here. I suppose the solitude isn't AWFUL, but...would you be so kind as to deliver the occasional pred to sweep me off of my feet and onto their figure?...f- for purely scientific p- purposes, of course!
+						GoodCompany: I enjoy the company you've given me. Very amicable, and very willing to further my studies!...a- and give me a comfortable s- sytem to sit in and...e- enjoy myself to.
+						BadCompany: I don't really enjoy the company you've given me. As for why...well, it varies from person to person.
+						ThreesTheSweetSpot: Three is a c- crowd, they say...I- I say three is a healthy s- selection of potential p- predators to work with and analyze!...a- and throw myself into.
+						ThreesNotTheSweetSpot: Three is a crowd, they say. I- I say three WOULD be a healthy selection of potential predators to work with...i- if none of the elements were problematic.
+						TooCrowded: I- is it a valid complaint in the field of g- gastronomy to be suffering from ch- choice paralysis!?
 					}
+
 					SpecificNPCs: {
-						LoveSuccubus: '''Th- the demon lady? Lucinda!? I- I do NOT have...I...oh, who am I kidding? I- I could NEVER be anything less than s- SMITTEN for that b- beautiful body...and that s- strong, searing s- stomach...PERFECT!~'''
-						LoveCadence: '''Qu- Queen Cadence? Oh...I- I would look HEAVENLY as p- padding on her rear...a- and I can just imagine her s- stomach...MMMF! O- oh, I want- ...n- no, I NEED her to annex me, YESTERDAY!~'''
-						LoveTavernkeep: '''{NPCName}...the tavernk- keeper. Ooohhhhh...j- just LOOK at those arms. Those m- massive, manly muscles...unf, my t- temperature's rising just THINKING about him! I- I can only imagine how s- strong and s- sturdy his s- s- stomach must be...~'''
-						LikeNurse: '''{NPCName} is such a wonderful woman, m- making sure everyone is happy, healthy, AND healthily hungry!...p- primarily because they can't really help me with my s- studies if they're too sick to e- eat me.'''
-						LikeDryad: '''Dryads are a very fascinating creature from external AND i- internal perspectives, so it should be no surprise that I find {NPCName} particularly fruitful to study!...a- and particularly...a- attractive.'''
-						DislikeZoologist: '''B- by all accounts, I should like {NPCName} more than I do. Her s- system...changes dramatically in certain conditions, providing a rare opportunity to s- study two states at once...and yet, it just bothers me. M- maybe it's just because other people's guts are the same experience each time...her b- belly is inconsistent by comparison.'''
-						DislikeArmsDealer: '''{NPCName} bothers me slightly. I- it's not even that he doesn't want to eat me, o- or that I don't let him; he's m- MORE than enthusiastic enough, a- and I don't mind studying him! The problem is, he's...n- not my type, but he keeps insisting he is.'''
-						DislikeAria: '''Cadence's daughter? U- um...well, she's certainly fascinating...most children are only able to swallow so much as a large grape before their teenage years. Still...I don't feel I should be around her. Th- the inherent...nature of my experiments m- may ultimately upset Cadence if Aria is nearby when they're...p- performed.'''
-						CadenceAndAria: '''I- I feel...conflicted. O- on one hand, I'm s- sure I would...g- garner invaluable information...wh- while plumping up C- Cadence's backside. O- on the other hand, as...s- stimulating as Her R- Royal Highnass may b- be to me, I- I'd rather keep my c- composure in the p- presence of her d- daughter. P- please look into a solution.'''
-						HateAngler: '''{NPCName}? Oh, that little fisherman's no fun. Too young to eat me, too young to get WHY I want to be eaten so much on any front...and he poses no scientifically significant qualities whatsoever!'''
+						LoveSuccubus: Th- the demon lady? Lucinda!? I- I do NOT have...I...oh, who am I kidding? I- I could NEVER be anything less than s- SMITTEN for that b- beautiful body...and that s- strong, searing s- stomach...PERFECT!~
+						LoveCadence: Qu- Queen Cadence? Oh...I- I would look HEAVENLY as p- padding on her rear...a- and I can just imagine her s- stomach...MMMF! O- oh, I want- ...n- no, I NEED her to annex me, YESTERDAY!~
+						LoveTavernkeep: "{NPCName}...the tavernk- keeper. Ooohhhhh...j- just LOOK at those arms. Those m- massive, manly muscles...unf, my t- temperature's rising just THINKING about him! I- I can only imagine how s- strong and s- sturdy his s- s- stomach must be...~"
+						LikeNurse: "{NPCName} is such a wonderful woman, m- making sure everyone is happy, healthy, AND healthily hungry!...p- primarily because they can't really help me with my s- studies if they're too sick to e- eat me."
+						LikeDryad: Dryads are a very fascinating creature from external AND i- internal perspectives, so it should be no surprise that I find {NPCName} particularly fruitful to study!...a- and particularly...a- attractive.
+						DislikeZoologist: B- by all accounts, I should like {NPCName} more than I do. Her s- system...changes dramatically in certain conditions, providing a rare opportunity to s- study two states at once...and yet, it just bothers me. M- maybe it's just because other people's guts are the same experience each time...her b- belly is inconsistent by comparison.
+						DislikeArmsDealer: "{NPCName} bothers me slightly. I- it's not even that he doesn't want to eat me, o- or that I don't let him; he's m- MORE than enthusiastic enough, a- and I don't mind studying him! The problem is, he's...n- not my type, but he keeps insisting he is."
+						DislikeAria: Cadence's daughter? U- um...well, she's certainly fascinating...most children are only able to swallow so much as a large grape before their teenage years. Still...I don't feel I should be around her. Th- the inherent...nature of my experiments m- may ultimately upset Cadence if Aria is nearby when they're...p- performed.
+						CadenceAndAria: I- I feel...conflicted. O- on one hand, I'm s- sure I would...g- garner invaluable information...wh- while plumping up C- Cadence's backside. O- on the other hand, as...s- stimulating as Her R- Royal Highnass may b- be to me, I- I'd rather keep my c- composure in the p- presence of her d- daughter. P- please look into a solution.
+						HateAngler: "{NPCName}? Oh, that little fisherman's no fun. Too young to eat me, too young to get WHY I want to be eaten so much on any front...and he poses no scientifically significant qualities whatsoever!"
+
 						Calamity: {
-							LikeAmidias: '''Th- that seahorse king is great! He always gives me all sorts of information about the- ...the marine life that once populated his old home! He, himself, is also quite...i- interesting...compared to most I meet!'''
-							LikeCirrus: '''It's q- quite fascinating to study Cirrus' internals! Sh- she always drinks so much to chase down her...m- meals, to the point one might think her liver is broken...b- but it's actually stronger than any normal person's! O- of course, she also has...q- quite the...a- appealing figure.'''
-							HateCalamitas: '''I once asked the witch to allow me to...s- study her internals for science...aand she threatened to burn me on the spot! Seriously, what did HER boss make her put up with to make her such a k- killjoy!?'''
+							LikeAmidias: Th- that seahorse king is great! He always gives me all sorts of information about the- ...the marine life that once populated his old home! He, himself, is also quite...i- interesting...compared to most I meet!
+							LikeCirrus: It's q- quite fascinating to study Cirrus' internals! Sh- she always drinks so much to chase down her...m- meals, to the point one might think her liver is broken...b- but it's actually stronger than any normal person's! O- of course, she also has...q- quite the...a- appealing figure.
+							HateCalamitas: I once asked the witch to allow me to...s- study her internals for science...aand she threatened to burn me on the spot! Seriously, what did HER boss make her put up with to make her such a k- killjoy!?
 						}
 					}
 				}
 			}
+
 			Succubus: {
-				Content: '''Aside from you not fillin' out my gut right now, I think I'm fine.'''
-				NoHome: '''My stomach's a good spot for a mortal morsel like you, but I need a real place to live if I'm gonna feed this gut of mine on the regular.'''
-				FarFromHome: '''Well, I've headed off a little far from home today, eh? Then again, it's all worth gettin' the right meal.'''
+				Content: Aside from you not fillin' out my gut right now, I think I'm fine.
+				NoHome: My stomach's a good spot for a mortal morsel like you, but I need a real place to live if I'm gonna feed this gut of mine on the regular.
+				FarFromHome: Well, I've headed off a little far from home today, eh? Then again, it's all worth gettin' the right meal.
+
 				Biomes: {
-					Ocean: '''It's great to be around the ocean, don'tcha think? Sittin' in the warm sand, lookin' over the sunset as your prey-stuffed gut churns and gurgles even the meatiest meals into more of ya...it's the BEST. My only regret's that I didn't come up here sooner'''
-					Desert: '''The desert's nice and warm, I have to say. Reminds me of home, in all the good ways, and it's a lot more open to boot. Plenty of prey to snatch up, too. I like it.'''
-					Tundra: '''It's way too cold around here, if you ask me. Food's a bit too fluffy for me, too. I'd kill for a warm lava bath right now; find me one, or at least a warmer place to crash.'''
-					Corruption: '''Seriously!? This place is awful! I can't even eat the stuff here; I might get food poisoning from how rotten it all is!'''
-					Crimson: '''I think you've officially put my appetite in a coma. Congratulations. I've never looked at a place like this before, and I'd never like to again.'''
-					Underworld: '''Home again...honestly, I'm already sick enough of bein' here. Either help me cram at LEAST half of that city into my gut, buildings included, or help me move outta here...again.'''
-					Dungeon: '''Look at this place...dark, moody, and not a single guy or gal to snack on in sight. It reminds me of home, in all the worst ways possible.'''
+					Ocean: It's great to be around the ocean, don'tcha think? Sittin' in the warm sand, lookin' over the sunset as your prey-stuffed gut churns and gurgles even the meatiest meals into more of ya...it's the BEST. My only regret's that I didn't come up here sooner
+					Desert: The desert's nice and warm, I have to say. Reminds me of home, in all the good ways, and it's a lot more open to boot. Plenty of prey to snatch up, too. I like it.
+					Tundra: It's way too cold around here, if you ask me. Food's a bit too fluffy for me, too. I'd kill for a warm lava bath right now; find me one, or at least a warmer place to crash.
+					Corruption: Seriously!? This place is awful! I can't even eat the stuff here; I might get food poisoning from how rotten it all is!
+					Crimson: I think you've officially put my appetite in a coma. Congratulations. I've never looked at a place like this before, and I'd never like to again.
+					Underworld: Home again...honestly, I'm already sick enough of bein' here. Either help me cram at LEAST half of that city into my gut, buildings included, or help me move outta here...again.
+					Dungeon: Look at this place...dark, moody, and not a single guy or gal to snack on in sight. It reminds me of home, in all the worst ways possible.
 				}
+
 				Neighbors: {
 					CrowdLevel: {
-						Alone: '''This area is pretty quiet, huh? Nobody to eat around here...but I guess the solitude ain't all that bad. Just be sure to gimme a sexy snack or seven every once in a while, alright?'''
-						GoodCompany: '''This area's pretty quiet...but there's still a couple decent snacks around.'''
-						BadCompany: '''This area's pretty quiet. Don't really like that, and I don't like the people you've got me with, either.'''
-						GoodCrowd: '''I'm lovin' it here...plenty of healthy, mortal meals around to gulp down and get nice and fat off of. You're the best, y'know that?'''
-						NeutralCrowd: '''It's a bit crowded here. Some good eats, sure, but you could probably stand to...burn off the fat, if you catch my drift.'''
-						BadCrowd: '''Seriously!? You REALLY had to cram me in with all the WORST of this lot!?'''
+						Alone: This area is pretty quiet, huh? Nobody to eat around here...but I guess the solitude ain't all that bad. Just be sure to gimme a sexy snack or seven every once in a while, alright?
+						GoodCompany: This area's pretty quiet...but there's still a couple decent snacks around.
+						BadCompany: This area's pretty quiet. Don't really like that, and I don't like the people you've got me with, either.
+						GoodCrowd: I'm lovin' it here...plenty of healthy, mortal meals around to gulp down and get nice and fat off of. You're the best, y'know that?
+						NeutralCrowd: It's a bit crowded here. Some good eats, sure, but you could probably stand to...burn off the fat, if you catch my drift.
+						BadCrowd: Seriously!? You REALLY had to cram me in with all the WORST of this lot!?
 					}
+
 					SpecificNPCs: {
-						LoveAngel: '''Promethia? That cute little angel that loves every chance she can get to cram herself into me? Hah...more like ProMEALthia, if you ask me.'''
-						LoveZoologist: '''That busty bimbo of a fox'll look GREAT hangin' off my chest. Mind bringing her over here?~'''
-						LikeNurse: '''You know, I think my gut needs a check-up from {NPCName}; it's just DYING to...get to know her a bit better. Think you can get her to find the time to stay on my waist for a while?~'''
-						LikeGuide: '''I can't figure out why, but something about the idea of melting {NPCName} down into fat gets me all giddy for some reason.'''
-						DislikeStylist: '''That hair stylist, Amber...she's a pretty spicy gal, isn't she? 'Course, that's nothing bad...I like spicy food. What I DON'T like is if that spice means they're not food. She's definitely spicy enough to try and eat me first. Not dumb enough to challenge that.'''
-						DislikeAria: '''That little princess, Aria...she's too "pure" for me, if you catch my drift. That, and I'd rather not piss off her mom; could probably mulch me in half a second flat if I did. Might be good to consider separating us.'''
-						DislikeCadence: '''Queen Cadence? As great as that blimp-sized booty on her would look blimping up mine instead...she's got a kid, and she's gulped preds way bigger and tougher than me. Don't have a hope in hell of eatin' her, so I'd rather just keep my distance...if you'll let me.'''
-						HateAngler: '''If it weren't for the fact that children are way too small to be decent meals, that scrawny little fisherman brat would be padding out my waistline right now. Keep your TRASH off my lawn, got it?'''
-						CadenceAndAria: '''I'm really not a fan of where you've got me here. Aria's too young for me to feel comfortable around her, and I think I'm just going to aggravate her mom if I say anything about it. Given I'd rather NOT end up adding to Cadence's ass, could I bother you to lemme stay somewhere else?'''
-						HateDryad: '''I'm really close to just using my stomach to solve the problem of {NPCName}'s constant preaching about "purity" and "cleansing". Pompous bitch can't make an ass of herself about my eating habits if she's busy fattening up mine, now, can she?'''
-						HateTaxCollector: '''You've already done the impossible twice; once to get me outta that shithole I called home, and once to take down that massive fleshbag from the other edge. Do it a third time and get {NPCName} to either shut the hell up or move out; I'm already more than sick of him.'''
+						LoveAngel: Promethia? That cute little angel that loves every chance she can get to cram herself into me? Hah...more like ProMEALthia, if you ask me.
+						LoveZoologist: That busty bimbo of a fox'll look GREAT hangin' off my chest. Mind bringing her over here?~
+						LikeNurse: You know, I think my gut needs a check-up from {NPCName}; it's just DYING to...get to know her a bit better. Think you can get her to find the time to stay on my waist for a while?~
+						LikeGuide: I can't figure out why, but something about the idea of melting {NPCName} down into fat gets me all giddy for some reason.
+						DislikeStylist: That hair stylist, Amber...she's a pretty spicy gal, isn't she? 'Course, that's nothing bad...I like spicy food. What I DON'T like is if that spice means they're not food. She's definitely spicy enough to try and eat me first. Not dumb enough to challenge that.
+						DislikeAria: That little princess, Aria...she's too "pure" for me, if you catch my drift. That, and I'd rather not piss off her mom; could probably mulch me in half a second flat if I did. Might be good to consider separating us.
+						DislikeCadence: Queen Cadence? As great as that blimp-sized booty on her would look blimping up mine instead...she's got a kid, and she's gulped preds way bigger and tougher than me. Don't have a hope in hell of eatin' her, so I'd rather just keep my distance...if you'll let me.
+						HateAngler: If it weren't for the fact that children are way too small to be decent meals, that scrawny little fisherman brat would be padding out my waistline right now. Keep your TRASH off my lawn, got it?
+						CadenceAndAria: I'm really not a fan of where you've got me here. Aria's too young for me to feel comfortable around her, and I think I'm just going to aggravate her mom if I say anything about it. Given I'd rather NOT end up adding to Cadence's ass, could I bother you to lemme stay somewhere else?
+						HateDryad: I'm really close to just using my stomach to solve the problem of {NPCName}'s constant preaching about "purity" and "cleansing". Pompous bitch can't make an ass of herself about my eating habits if she's busy fattening up mine, now, can she?
+						HateTaxCollector: You've already done the impossible twice; once to get me outta that shithole I called home, and once to take down that massive fleshbag from the other edge. Do it a third time and get {NPCName} to either shut the hell up or move out; I'm already more than sick of him.
+
 						Calamity: {
-							LoveCirrus: '''That royal bombshell, Cirrus? "Lethal alcohol contents" my demonic derrière! Just look at those thick-ass thighs and titanic tankers she hauls around! She'll make some grade-A+ gut fat, y'hear me?'''
-							DislikeCalamitas: '''There's bein' an apex predator, and then there's bein a stupid predator. Anyone tryin' to eat that grumpy old witch'll learn pretty fast that they're the latter...and I don't like that. Might scare off my food.'''
-							HateAmidias: '''That old seahorse is just no fun at all. Won't let me have any, either. I honestly don't even feel like eating him. He's just...he's THAT kinda guy, y'know? Anyway, move him.'''
+							LoveCirrus: That royal bombshell, Cirrus? "Lethal alcohol contents" my demonic derriï¿½re! Just look at those thick-ass thighs and titanic tankers she hauls around! She'll make some grade-A+ gut fat, y'hear me?
+							DislikeCalamitas: There's bein' an apex predator, and then there's bein a stupid predator. Anyone tryin' to eat that grumpy old witch'll learn pretty fast that they're the latter...and I don't like that. Might scare off my food.
+							HateAmidias: That old seahorse is just no fun at all. Won't let me have any, either. I honestly don't even feel like eating him. He's just...he's THAT kinda guy, y'know? Anyway, move him.
 						}
 					}
 				}
 			}
+
 			Steampunker: {
-				Content: '''I'm jolly good enough, thanks.'''
+				Content: I'm jolly good enough, thanks.
+
 				Neighbors: {
 					SpecificNPCs: {
-						LoveCyborg: '''It's quite a good show, having {NPCName} around. The old bucket of bolts and I always have plenty of lovely things to chit and chat about.'''
-						LikePainter: '''The painter? Yeah, {NPCName}'s a good sort. Spruces up my works all the time! Plenty nice bloke, he is.'''
-						HateMechanic: '''{NPCName}? She can put a sock right in it, for all I care! I'm NOT falling for her gaudy gizmos and gadgets!'''
+						LoveCyborg: It's quite a good show, having {NPCName} around. The old bucket of bolts and I always have plenty of lovely things to chit and chat about.
+						LikePainter: The painter? Yeah, {NPCName}'s a good sort. Spruces up my works all the time! Plenty nice bloke, he is.
+						HateMechanic: "{NPCName}? She can put a sock right in it, for all I care! I'm NOT falling for her gaudy gizmos and gadgets!"
 					}
 				}
 			}
+		}
+
+		Items: {
+			CharmBetterDigestion: {
+				DisplayName: Charm Better Digestion
+				Tooltip: ""
+			}
+
+			CharmRegenFromAbsorption: {
+				DisplayName: Charm Regen From Absorption
+				Tooltip: ""
+			}
+		}
+
+		NPCs: {
+			BoundSuccubus.DisplayName: Bound Succubus
+			Succubus.DisplayName: Succubus
 		}
 	}
 }

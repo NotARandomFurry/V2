@@ -1,6 +1,7 @@
 using Ionic.Zip;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using MonoMod.RuntimeDetour;
 using MonoMod.RuntimeDetour.HookGen;
 using System.Collections.Generic;
 using System.Reflection;
@@ -54,22 +55,19 @@ namespace V2
 		}
 
 		private delegate void orig_NPCAI(NPC npc);
-
-		private delegate void hook_NPCAI(orig_NPCAI orig, NPC npc);
-
+		internal static Hook NPCLoader_NPCAI_Hook;
 		private static readonly MethodInfo NPCLoader_NPCAI_MethodInfo =
 			typeof(Main).Assembly.GetType("Terraria.ModLoader.NPCLoader")!.GetMethod("NPCAI", BindingFlags.Public | BindingFlags.Static)!;
 
 		private delegate void orig_SetChatButtons(ref string button, ref string button2);
-
-		private delegate void hook_SetChatButtons(orig_SetChatButtons orig, ref string button, ref string button2);
-
+		internal static Hook NPCLoader_SetChatButtons_Hook;
 		private static readonly MethodInfo NPCLoader_SetChatButtons_MethodInfo =
 			typeof(Main).Assembly.GetType("Terraria.ModLoader.NPCLoader")!.GetMethod("SetChatButtons", BindingFlags.Public | BindingFlags.Static)!;
 
+
 		public static void EngageGameFuckery2VoraciousBoogaloo()
 		{
-			HookEndpointManager.Add<hook_NPCAI>(NPCLoader_NPCAI_MethodInfo, (orig_NPCAI orig, NPC npc) =>
+			NPCLoader_NPCAI_Hook = new Hook(NPCLoader_NPCAI_MethodInfo, (orig_NPCAI orig, NPC npc) =>
 			{
 				PredNPC npcAsPred = npc.AsPred(risky: true);
 				PreyNPC npcAsPrey = npc.AsPrey(risky: true);
@@ -97,8 +95,9 @@ namespace V2
 				else
 					orig(npc);
 			});
+			NPCLoader_NPCAI_Hook.Apply();
 
-			HookEndpointManager.Add<hook_SetChatButtons>(NPCLoader_SetChatButtons_MethodInfo, (orig_SetChatButtons orig, ref string button, ref string button2) =>
+			NPCLoader_SetChatButtons_Hook = new Hook(NPCLoader_SetChatButtons_MethodInfo, (orig_SetChatButtons orig, ref string button, ref string button2) =>
 			{
 				if (Main.player[Main.myPlayer].talkNPC >= 0)
 				{
@@ -110,10 +109,11 @@ namespace V2
 						npcAsPred.ModifyChatButtonsMethod.Invoke(npc, Main.player[Main.myPlayer], ref button, ref button2);
 				}
 			});
+			NPCLoader_SetChatButtons_Hook.Apply();
 
-			On.Terraria.Main.UpdateAudio_DecideOnNewMusic += (orig, instance) => MainDetours.UpdateAudio_DecideOnNewMusic();
+			On_Main.UpdateAudio_DecideOnNewMusic += (orig, instance) => MainDetours.UpdateAudio_DecideOnNewMusic();
 
-			On.Terraria.NPC.CanBeChasedBy += (orig, npc, attacker, ignoreDontTakeDamage) =>
+			On_NPC.CanBeChasedBy += (orig, npc, attacker, ignoreDontTakeDamage) =>
 			{
 				if (npc.active)
 				{
@@ -128,29 +128,37 @@ namespace V2
 
 				return orig(npc, attacker, ignoreDontTakeDamage);
 			};
-			On.Terraria.NPC.checkDead += (orig, npc) => NPCDetours.checkDead(npc);
-			On.Terraria.NPC.NPCLoot_DropHeals += (orig, npc, closestPlayer) =>
+			On_NPC.checkDead += (orig, npc) => NPCDetours.checkDead(npc);
+			On_NPC.NPCLoot_DropHeals += (orig, npc, closestPlayer) =>
 			{
 				if (!npc.AsPrey().Digested)
 					orig(npc, closestPlayer);
 			};
-			On.Terraria.NPC.NPCLoot_DropMoney += (orig, npc, closestPlayer) =>
+			On_NPC.NPCLoot_DropMoney += (orig, npc, closestPlayer) =>
 			{
 				if (!npc.AsPrey().Digested)
 					orig(npc, closestPlayer);
 			};
-			On.Terraria.NPC.NPCLoot_DropItems += (orig, npc, closestPlayer) =>
+			On_NPC.NPCLoot_DropItems += (orig, npc, closestPlayer) =>
 			{
 				if (!npc.AsPrey().Digested)
 					orig(npc, closestPlayer);
 			};
-			On.Terraria.NPC.DoDeathEvents_DropBossPotionsAndHearts += NoPotionsOrHeartsIfDigested;
-			On.Terraria.NPC.DoDeathEvents_CelebrateBossDeath += (orig, npc, typeName) => NPCDetours.DoDeathEvents_CelebrateBossDeath(npc, typeName);
+			On_NPC.DoDeathEvents_DropBossPotionsAndHearts += NoPotionsOrHeartsIfDigested;
+			On_NPC.DoDeathEvents_CelebrateBossDeath += (orig, npc, typeName) => NPCDetours.DoDeathEvents_CelebrateBossDeath(npc, typeName);
 
-			On.Terraria.Player.KillMe += (orig, player, damageSource, dmg, hitDirection, pvp) => PlayerDetours.KillMe(player, damageSource, dmg, hitDirection, pvp);
+			On_Player.KillMe += (orig, player, damageSource, dmg, hitDirection, pvp) => PlayerDetours.KillMe(player, damageSource, dmg, hitDirection, pvp);
 		}
 
-		private static void NoPotionsOrHeartsIfDigested(On.Terraria.NPC.orig_DoDeathEvents_DropBossPotionsAndHearts orig, NPC npc, ref string typeName)
+		public override void Unload()
+		{
+			NPCLoader_SetChatButtons_Hook.Undo();
+			NPCLoader_SetChatButtons_Hook = null;
+			NPCLoader_NPCAI_Hook.Undo();
+			NPCLoader_NPCAI_Hook = null;
+		}
+
+		private static void NoPotionsOrHeartsIfDigested(On_NPC.orig_DoDeathEvents_DropBossPotionsAndHearts orig, NPC npc, ref string typeName)
 		{
 			if (!npc.AsPrey().Digested)
 				orig(npc, ref typeName);

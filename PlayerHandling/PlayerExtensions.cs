@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using V2.Core;
 using V2.NPCs;
@@ -59,5 +60,19 @@ namespace V2.PlayerHandling
 				player.position.X + ((float)player.width / 2f),
 				player.position.Y + 21f + player.HeightOffsetHitboxCenter
 			);
+
+		public static bool IsAirborne(this Player player)
+		{
+			if (player.mount.Active)
+				return !MountID.Sets.Cart[player.mount.Type];
+
+			if (player.velocity.Y == 0f)
+				return false;
+
+			if (player.AsPrey().IsCurrentlyEaten)
+				return false;
+
+			return true;
+		}
 	}
 }

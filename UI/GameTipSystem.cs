@@ -18,6 +18,7 @@ namespace V2.UI
 			gameTips[GameTipID.MagicMirror].Hide();
 			gameTips[GameTipID.LavaAndObsidianSkinPotion].Hide();
 			gameTips[GameTipID.WiresFromMechanic].Hide();
+			gameTips[GameTipID.PartyGirlNeedsOtherNPCsToMoveIn].Hide();
 		}
 	}
 }

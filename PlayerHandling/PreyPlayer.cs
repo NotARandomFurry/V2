@@ -52,6 +52,9 @@ namespace V2.PlayerHandling
 		public bool Digested { get; set; }
 		public PredEntityReference? CurrentCaptor { get; set; }
 
+		public StatModifier StruggleStrength { get; set; }
+
+
 		public (int _swallowCount, int _gurgleCount) _timesEaten;
 		public int TotalTimesSwallowed
 		{
@@ -156,6 +159,8 @@ namespace V2.PlayerHandling
 					break;
 				}
 			}
+
+			Player.AsPrey().StruggleStrength = StatModifier.Default;
 		}
 
 		public override void UpdateDead()
@@ -452,7 +457,7 @@ namespace V2.PlayerHandling
 			}
 		}
 
-		public override void clientClone(ModPlayer clientClone)
+		public override void CopyClientState(ModPlayer clientClone)/* tModPorter Suggestion: Replace Item.Clone usages with Item.CopyNetStateTo */
 		{
 			PreyPlayer preyClientClone = clientClone as PreyPlayer;
 			preyClientClone.IsCurrentlyEaten = Player.AsPrey().IsCurrentlyEaten;

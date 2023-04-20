@@ -17,6 +17,7 @@ using Terraria.ModLoader;
 using V2.Core;
 using V2.NPCs.Voraria.TownNPCs;
 using V2.PlayerHandling;
+using V2.Sounds.Vore;
 using static V2.Core.FoodTypeTags;
 
 namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
@@ -85,21 +86,22 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 
 			npc.AsPred().stomachContents = new List<Prey>();
 			npc.AsPred().stomachContentsQueue = new List<Prey>();
-			npc.AsPred().maxStomachCapacity = 99999.0;
-
-			npc.AsPred().GetDigestionTickRateMethod = GetDigestionTickRate;
-			npc.AsPred().GetDigestionTickDamageMethod = GetDigestionTickDamage;
-
-			npc.AsPred().OnDigestionKillMethod = OnDigestionKill;
-
-			npc.AsPred().GetPreyAbsorptionRateMethod = GetPreyAbsorptionRate;
+			npc.AsPred().maxStomachCapacity = 999999.0;
 
 			npc.AsPred().GetChatMethod = GetPartyGirlChat;
 
 			npc.AsPred().CanBeForceFedMethod = CanPartyGirlBeForceFed;
 			npc.AsPred().OnForceFedMethod = OnPartyGirlForceFed;
 
+			npc.AsPred().GetDigestionTickRateMethod = GetDigestionTickRate;
+			npc.AsPred().GetDigestionTickDamageMethod = GetDigestionTickDamage;
+
+			npc.AsPred().OnDigestionKillMethod = OnDigestionKill;
+			npc.AsPred().SmallBurps = Burps.Humanoid.Small;
+			npc.AsPred().StandardBurps = Burps.Humanoid.Standard;
 			npc.AsPred().GetDigestedPlayerAdditionalDeathMessagesMethod = GetDigestedPlayerAdditionalDeathMessages;
+
+			npc.AsPred().GetPreyAbsorptionRateMethod = GetPreyAbsorptionRate;
 
 			npc.AsPred().GetVisualBellySizeMethod = GetVisualBellySize;
 
@@ -244,7 +246,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 			return true;
 		}
 
-		public override void ModifyHitByProjectile(NPC npc, Projectile projectile, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
+		public override void ModifyHitByProjectile(NPC npc, Projectile projectile, ref NPC.HitModifiers modifiers)
 		{
 			if (projectile.type is ProjectileID.HallowBossSplitShotCore
 								or ProjectileID.HallowBossRainbowStreak
@@ -256,7 +258,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 				double mult = 1.0;
 				mult -= (double)npc.AsPartyGirl().HungerForEmpress / (double)MaxHungerForEmpress;
 				mult = 0.2 + (mult * 0.8);
-				damage = (int)((double)damage * mult);
+				modifiers.FinalDamage *= (float)mult;
 			}
 		}
 
@@ -291,7 +293,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 		public static void OnDigestionKill(NPC npc, Prey digestedPrey)
 		{
 			SoundEngine.PlaySound(
-				Main.rand.NextFromCollection(npc.AsPred().StandardBurps),
+				npc.AsPred().StandardBurps,
 				npc.TrueCenter() + new Vector2(npc.direction * 8f, -14f)
 			);
 		}

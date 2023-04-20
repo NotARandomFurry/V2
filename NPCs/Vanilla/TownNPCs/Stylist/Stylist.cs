@@ -13,6 +13,7 @@ using Terraria.ModLoader;
 using V2.Core;
 using V2.NPCs.Voraria.TownNPCs.Succubus;
 using V2.PlayerHandling;
+using V2.Sounds.Vore;
 using static V2.Core.FoodTypeTags;
 
 namespace V2.NPCs.Vanilla.TownNPCs.Stylist
@@ -38,7 +39,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 			if (Main.dedServ) // #if SERVER
 				return;
 
-			string npcFileTitleFilePath = "V2/NPCs/Vanilla/TownNPCs/Stylist/Stylist_WeightBase_BellyBase";
+			string npcFileTitleFilePath = "V2/NPCs/Vanilla/TownNPCs/Stylist/Stylist_Default_WeightBase_BellyBase";
 			_defaultNoAlt = ModContent.Request<Texture2D>(npcFileTitleFilePath, AssetRequestMode.ImmediateLoad);
 		}
 
@@ -51,6 +52,10 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 				return _defaultNoAlt;
 
 			string exactTextureToUse = "V2/NPCs/Vanilla/TownNPCs/Stylist/Stylist";
+			string outfitString = "_Default";
+			if (npc.IsShimmerVariant)
+				outfitString = "_Shimmer";
+			exactTextureToUse += outfitString;
 			string weightString = "_WeightBase";
 			exactTextureToUse += weightString;
 			int bellySize = npc.AsPred().GetVisualBellySizeMethod.Invoke(npc);
@@ -78,19 +83,20 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 
 			npc.AsPred().maxStomachCapacity = 4.0;
 
-			npc.AsPred().GetDigestionTickRateMethod = GetDigestionTickRate;
-			npc.AsPred().GetDigestionTickDamageMethod = GetDigestionTickDamage;
-
-			npc.AsPred().OnDigestionKillMethod = OnDigestionKill;
-
-			npc.AsPred().GetPreyAbsorptionRateMethod = GetPreyAbsorptionRate;
-
 			npc.AsPred().GetChatMethod = GetStylistChat;
 
 			npc.AsPred().CanBeForceFedMethod = CanStylistBeForceFed;
 			npc.AsPred().OnForceFedMethod = OnStylistForceFed;
 
+			npc.AsPred().GetDigestionTickRateMethod = GetDigestionTickRate;
+			npc.AsPred().GetDigestionTickDamageMethod = GetDigestionTickDamage;
+
+			npc.AsPred().OnDigestionKillMethod = OnDigestionKill;
+			npc.AsPred().SmallBurps = Burps.Humanoid.Small;
+			npc.AsPred().StandardBurps = Burps.Humanoid.Standard;
 			npc.AsPred().GetDigestedPlayerAdditionalDeathMessagesMethod = GetDigestedPlayerAdditionalDeathMessages;
+
+			npc.AsPred().GetPreyAbsorptionRateMethod = GetPreyAbsorptionRate;
 
 			npc.AsPred().GetVisualBellySizeMethod = GetVisualBellySize;
 
@@ -651,7 +657,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 		public static void OnDigestionKill(NPC npc, Prey digestedPrey)
 		{
 			SoundEngine.PlaySound(
-				Main.rand.NextFromCollection(npc.AsPred().StandardBurps),
+				digestedPrey.WeightLeftToDigest < 0.3 ? npc.AsPred().SmallBurps : npc.AsPred().StandardBurps,
 				npc.TrueCenter() + new Vector2(npc.direction * 8f, -14f)
 			);
 		}

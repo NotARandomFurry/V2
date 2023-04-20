@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,11 +15,11 @@ namespace V2.Items.Vanilla.Accessories.Informational
 	{
 		public override string Texture => "V2/Items/Vanilla/Accessories/Informational/TallyCounter_VoreInfoDisplay_Icon";
 
-		protected override string DisplayNameInternal => "Meal Count";
+		public override LocalizedText DisplayName => Language.GetText("Mods.V2.InfoDisplayName.TallyCounterVore");
 
 		public override bool Active() => Main.player[Main.myPlayer].accJarOfSouls;
 
-		public override string DisplayValue()
+		public override string DisplayValue(ref Color displayColor)/* tModPorter Suggestion: Set displayColor to InactiveInfoTextColor if your display value is "zero"/shows no valuable information */
 		{
 			Player player = Main.player[Main.myPlayer];
 			if (player.AsPred().lastEntitySwallowed is null || player.AsPred().lastEntitySwallowedMod is null)

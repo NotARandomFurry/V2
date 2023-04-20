@@ -14,6 +14,7 @@ using Terraria.ModLoader;
 using V2.Core;
 using V2.NPCs.Voraria.TownNPCs.Succubus;
 using V2.PlayerHandling;
+using V2.Sounds.Vore;
 using static V2.Core.FoodTypeTags;
 
 namespace V2.NPCs.Vanilla.TownNPCs.ArmsDealer
@@ -77,19 +78,20 @@ namespace V2.NPCs.Vanilla.TownNPCs.ArmsDealer
 			npc.AsPred().stomachContentsQueue = new List<Prey>();
 			npc.AsPred().maxStomachCapacity = 1.75;
 
-			npc.AsPred().GetDigestionTickRateMethod = GetDigestionTickRate;
-			npc.AsPred().GetDigestionTickDamageMethod = GetDigestionTickDamage;
-
-			npc.AsPred().OnDigestionKillMethod = OnDigestionKill;
-
-			npc.AsPred().GetPreyAbsorptionRateMethod = GetPreyAbsorptionRate;
-
 			npc.AsPred().GetChatMethod = GetArmsDealerChat;
 
 			npc.AsPred().CanBeForceFedMethod = CanArmsDealerBeForceFed;
 			npc.AsPred().OnForceFedMethod = OnArmsDealerForceFed;
 
+			npc.AsPred().GetDigestionTickRateMethod = GetDigestionTickRate;
+			npc.AsPred().GetDigestionTickDamageMethod = GetDigestionTickDamage;
+
+			npc.AsPred().OnDigestionKillMethod = OnDigestionKill;
+			npc.AsPred().SmallBurps = Burps.Humanoid.Small;
+			npc.AsPred().StandardBurps = Burps.Humanoid.Standard;
 			npc.AsPred().GetDigestedPlayerAdditionalDeathMessagesMethod = GetDigestedPlayerAdditionalDeathMessages;
+
+			npc.AsPred().GetPreyAbsorptionRateMethod = GetPreyAbsorptionRate;
 
 			npc.AsPred().GetVisualBellySizeMethod = GetVisualBellySize;
 
@@ -351,7 +353,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.ArmsDealer
 		public static void OnDigestionKill(NPC npc, Prey digestedPrey)
 		{
 			SoundEngine.PlaySound(
-				Main.rand.NextFromCollection(npc.AsPred().StandardBurps),
+				digestedPrey.WeightLeftToDigest < 0.6 ? npc.AsPred().SmallBurps : npc.AsPred().StandardBurps,
 				npc.TrueCenter() + new Vector2(npc.direction * 8f, -14f)
 			);
 		}
