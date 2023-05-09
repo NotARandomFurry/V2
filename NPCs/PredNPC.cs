@@ -194,9 +194,12 @@ namespace V2.NPCs
 				if (V2.VoreNPCBlacklist.Contains(preyNPC.type))
 					return false;
 
+				bool tastesLikeSkittles = preyNPC.type == NPCID.HallowBoss && ModContent.GetInstance<V2ServerSideConfigs>().EasilyEdibleEmpress;
+				if (tastesLikeSkittles)
+					return true;
+
 				bool isThisAFuckingBoss = preyNPC.boss || (preyNPC.type >= NPCID.EaterofWorldsHead && preyNPC.type <= NPCID.EaterofWorldsTail); // I hate EoW
-				bool tastesLikeSkittles = pred.type == NPCID.PartyGirl && preyNPC.type == NPCID.HallowBoss;
-				if (isThisAFuckingBoss && !tastesLikeSkittles)
+				if (isThisAFuckingBoss)
 					return false;
 
 				Prey hypotheticalPrey = new Prey(preyNPC);

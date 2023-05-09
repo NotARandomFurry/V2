@@ -103,7 +103,7 @@ namespace V2.PlayerHandling
 		{
 			get
 			{
-				double baseStomachCapacity = 60.0;
+				double baseStomachCapacity = 3.0;
 				baseStomachCapacity += 0.04 * TUM.Total;
 				return StomachCapacityModifier.ApplyTo((float)baseStomachCapacity);
 			}
@@ -126,7 +126,7 @@ namespace V2.PlayerHandling
 			{
 				double basePreyAbsorptionRate = 0.2;
 				basePreyAbsorptionRate += 0.005 * ABS.Total;
-				basePreyAbsorptionRate *= 60.0;
+				basePreyAbsorptionRate *= 4.0;
 				return PreyAbsorptionRateModifier.ApplyTo((float)(basePreyAbsorptionRate / (60.0 * 60.0)));
 			}
 		}
@@ -416,9 +416,12 @@ namespace V2.PlayerHandling
 				if (V2.VoreNPCBlacklist.Contains(preyNPC.type))
 					return false;
 
-				bool isThisAFuckingBoss = preyNPC.boss || (preyNPC.type >= NPCID.EaterofWorldsHead && preyNPC.type <= NPCID.EaterofWorldsTail); // I hate EoW
 				bool tastesLikeSkittles = preyNPC.type == NPCID.HallowBoss && ModContent.GetInstance<V2ServerSideConfigs>().EasilyEdibleEmpress;
-				if (isThisAFuckingBoss && !tastesLikeSkittles)
+				if (tastesLikeSkittles)
+					return true;
+
+				bool isThisAFuckingBoss = preyNPC.boss || (preyNPC.type >= NPCID.EaterofWorldsHead && preyNPC.type <= NPCID.EaterofWorldsTail); // I hate EoW
+				if (isThisAFuckingBoss)
 					return false;
 
 				Prey hypotheticalPrey = new Prey(preyNPC);
@@ -606,15 +609,26 @@ namespace V2.PlayerHandling
 		/// Calculates the current weight of the given predator's stomach, based on all the prey inside of it.<br/>
 		/// Used primarily in conjunction with <see cref="StomachCapacity"/> to safeguard against overeating.<br/>
 		/// </summary>
-		/// <param name="pred">The predator whose stomach is to be weighed.</param>
-		/// <returns>The current total weight of the given predator's stomach.</returns>
-		public static double GetCurrentBellyWeight(Player pred)
+		/// <param name="pred">
+		/// The predatory player whose stomach is to be weighed.<br/>
+		/// </param>
+		/// <param name="onlyKicky">
+		/// If set to <see langword="true"/>, only counts out the weight of prey that is still alive (not in second digestion phase).<br/>
+		/// Defaults to false.<br/>
+		/// </param>
+		/// <returns>
+		/// The current total weight of the given predator player's stomach.<br/>
+		/// </returns>
+		public static double GetCurrentBellyWeight(Player pred, bool onlyKicky = false)
 		{
 			double totalBellyWeight = 0.0;
 			if (pred.AsPred().stomachContents is not null && pred.AsPred().stomachContents.Count > 0)
 			{
 				foreach (Prey prey in pred.AsPred().stomachContents)
 				{
+					if (prey.Dead && onlyKicky)
+						continue;
+
 					totalBellyWeight += prey.WeightLeftToDigest;
 					if (prey.Dead)
 						continue;
@@ -750,8 +764,8 @@ namespace V2.PlayerHandling
 				return;
 
 			NPC.killCount[num]++;
-			if (Main.netMode == 2)
-				NetMessage.SendData(83, -1, -1, null, num);
+			if (Main.netMode == NetmodeID.Server)
+				NetMessage.SendData(MessageID.NPCKillCountDeathTally, -1, -1, null, num);
 
 			int num2 = ItemID.Sets.KillsToBanner[Item.BannerToItem(num)];
 			if (NPC.killCount[num] % num2 == 0 && num > 0)
@@ -768,9 +782,9 @@ namespace V2.PlayerHandling
 					Prey = NetworkText.FromKey(Lang.GetNPCName(npcID).Key)
 				}));
 
-				if (Main.netMode == 0)
+				if (Main.netMode == NetmodeID.SinglePlayer)
 					Main.NewText(networkText.ToString(), 250, 250, 0);
-				else if (Main.netMode == 2)
+				else if (Main.netMode == NetmodeID.Server)
 					ChatHelper.BroadcastChatMessage(networkText, new Color(250, 250, 0));
 
 				int num5 = Item.BannerToItem(num);

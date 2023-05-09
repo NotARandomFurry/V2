@@ -14,6 +14,7 @@ namespace V2.PlayerHandling
 {
 	public static class PlayerExtensions
 	{
+		public static V2Player AsV2Player(this Player player) => player.GetModPlayer<V2Player>();
 		public static PredPlayer AsPred(this Player player) => player.GetModPlayer<PredPlayer>();
 		public static PreyPlayer AsPrey(this Player player) => player.GetModPlayer<PreyPlayer>();
 
