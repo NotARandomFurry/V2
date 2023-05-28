@@ -39,8 +39,8 @@ namespace V2
 		[Label("Pred Non-Preference")]
 		[Tooltip("Allows you to prevent preds of a certain gender from actively eating others in-game.\n"
 			   + "Applies to all entities, players included.\n"
-		//	   + "Will not affect any in-universe establishments about predators of the blacklisted gender.\n"
-		//	   + "Does not work for hermaphrodites, androgynous menaces, or otherwise functionally-genderless individuals.\n"
+			   + "Will not affect any in-universe establishments about predators of the blacklisted gender.\n"
+			   + "Does not work for hermaphrodites, androgynous menaces, or otherwise functionally-genderless individuals.\n"
 			   + "By default, does not blacklist any gender.")]
 		[OptionStrings(new string[] {
 			"Default (No Blacklist)",
@@ -64,7 +64,7 @@ namespace V2
 
 		[Label("Invoke The Second Law")]
 		[Tooltip("BALANCE BREAKAGE: Who cares?\n"
-			   + "Makes it possible for the Empress of Light to fit in stomachs of any capacity, and greatly increases digestion damage against her.\n"
+			   + "Makes it possible for the Empress of Light to fit in stomachs of any capacity, with preds of any swallow strength, and greatly increases digestion damage against her.\n"
 			   + "Defaults to false.\n"
 			   + "'Fairies are food, not friends'")]
 		[DefaultValue(false)]

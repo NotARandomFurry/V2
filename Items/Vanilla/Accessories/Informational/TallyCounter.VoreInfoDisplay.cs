@@ -18,12 +18,15 @@ namespace V2.Items.Vanilla.Accessories.Informational
 		public override LocalizedText DisplayName => Language.GetText("Mods.V2.InfoDisplayName.TallyCounterVore");
 
 		public override bool Active() => Main.player[Main.myPlayer].accJarOfSouls;
-
-		public override string DisplayValue(ref Color displayColor)/* tModPorter Suggestion: Set displayColor to InactiveInfoTextColor if your display value is "zero"/shows no valuable information */
+ 
+		public override string DisplayValue(ref Color displayColor)
 		{
 			Player player = Main.player[Main.myPlayer];
 			if (player.AsPred().lastEntitySwallowed is null || player.AsPred().lastEntitySwallowedMod is null)
+			{
+				displayColor = InactiveInfoTextColor;
 				return Language.GetTextValue("Mods.V2.InfoDisplayText.TallyCounterVore.InvalidMeal");
+			}
 
 			if (!player.AsPred().mealCount.ContainsKey(player.AsPred().lastEntitySwallowedMod + ": " + player.AsPred().lastEntitySwallowed))
 				return player.AsPred().lastEntitySwallowed + ": 0";

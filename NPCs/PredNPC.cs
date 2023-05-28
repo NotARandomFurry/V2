@@ -96,8 +96,6 @@ namespace V2.NPCs
 
 		public PredNPC()
 		{
-			Gender = EntityGender.Other;
-
 			stomachContents = new List<Prey>();
 			stomachContentsQueue = new List<Prey>();
 			maxStomachCapacity = 1.0;
@@ -168,23 +166,22 @@ namespace V2.NPCs
 					// do absolutely fucking nothing lmao
 					break;
 				case "No Male":
-					if (pred.AsPred().Gender == EntityGender.Male)
+					if (pred.AsV2NPC().Gender == EntityGender.Male)
 						return false;
 					break;
 				case "No Female":
-					if (pred.AsPred().Gender == EntityGender.Female)
+					if (pred.AsV2NPC().Gender == EntityGender.Female)
 						return false;
 					break;
 				case "No M or F...but why?":
-					if (pred.AsPred().Gender != EntityGender.Other)
+					if (pred.AsV2NPC().Gender != EntityGender.Other)
 						return false;
 					break;
 			}
 
 			if (prey is Player preyPlayer)
 			{
-				Prey hypotheticalPrey = new Prey(preyPlayer);
-				if (hypotheticalPrey.GetInitialPreyWeight() >= pred.AsPred().maxStomachCapacity - GetCurrentBellyWeight(pred))
+				if (Prey.GetInitialPreyWeight(preyPlayer) >= pred.AsPred().maxStomachCapacity - GetCurrentBellyWeight(pred))
 					return false;
 
 				return !preyPlayer.AsPrey().IsCurrentlyEaten;
@@ -202,8 +199,7 @@ namespace V2.NPCs
 				if (isThisAFuckingBoss)
 					return false;
 
-				Prey hypotheticalPrey = new Prey(preyNPC);
-				if (hypotheticalPrey.GetInitialPreyWeight() >= pred.AsPred().maxStomachCapacity - GetCurrentBellyWeight(pred))
+				if (Prey.GetInitialPreyWeight(preyNPC) >= pred.AsPred().maxStomachCapacity - GetCurrentBellyWeight(pred))
 					return false;
 
 				return !preyNPC.AsPrey().IsCurrentlyEaten;
@@ -413,16 +409,6 @@ namespace V2.NPCs
 		public override void PostAI(NPC npc)
 		{
 			UpdatePrey(npc);
-		}
-
-		public override void GetChat(NPC npc, ref string chat)
-		{
-			if (npc.AsPred().GetChatMethod is not null)
-			{
-				List<string> chatPool = npc.AsPred().GetChatMethod.Invoke(npc, Main.CurrentPlayer);
-				if (chatPool is not null)
-					chat = Main.rand.NextFromCollection(chatPool);
-			}
 		}
 
 		public static string GetDigestedPlayerDeathReason(NPC npc, Player player)

@@ -122,9 +122,9 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 			NPC.HitSound = SoundID.NPCHit1;
 			AnimationType = BaseTownNPC;
 
-			NPC.AsPred().maxStomachCapacity = 2.2;
+			NPC.AsV2NPC().GetChatMethod = GetSuccubusChat;
 
-			NPC.AsPred().GetChatMethod = GetSuccubusChat;
+			NPC.AsPred().maxStomachCapacity = 2.2;
 
 			NPC.AsPred().CanBeForceFedMethod = CanSuccubusBeForceFed;
 			NPC.AsPred().OnForceFedMethod = OnSuccubusForceFed;

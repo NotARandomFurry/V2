@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -8,6 +9,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI;
+using V2.UI.StylistAteThePublishButton;
 
 namespace V2.UI
 {
@@ -31,6 +33,7 @@ namespace V2.UI
 			StomachCapacityBarInterface.Activate();
 			StomachCapacityBarInterfaceLayer.SetState(StomachCapacityBarInterface);
 		}
+
 		public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
 		{
 			if (layers.FirstOrDefault(x => x.Name == "Vanilla: Hair Window") is LegacyGameInterfaceLayer hairStyleWindowLegacyLayer)

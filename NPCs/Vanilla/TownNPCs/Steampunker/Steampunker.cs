@@ -76,13 +76,13 @@ namespace V2.NPCs.Vanilla.TownNPCs.Steampunker
 
 		public override void SetDefaults(NPC npc)
 		{
-			npc.AsPred().Gender = EntityGender.Female;
+			npc.AsV2NPC().Gender = EntityGender.Female;
 
 			npc.AsPred().stomachContents = new List<Prey>();
 			npc.AsPred().stomachContentsQueue = new List<Prey>();
 			npc.AsPred().maxStomachCapacity = 50.0;
 
-			npc.AsPred().GetChatMethod = GetSteampunkerChat;
+			npc.AsV2NPC().GetChatMethod = GetSteampunkerChat;
 
 			npc.AsPred().CanBeForceFedMethod = CanSteampunkerBeForceFed;
 			npc.AsPred().OnForceFedMethod = OnSteampunkerForceFed;

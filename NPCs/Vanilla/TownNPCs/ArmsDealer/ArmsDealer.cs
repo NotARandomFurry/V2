@@ -72,13 +72,13 @@ namespace V2.NPCs.Vanilla.TownNPCs.ArmsDealer
 
 		public override void SetDefaults(NPC npc)
 		{
-			npc.AsPred().Gender = EntityGender.Male;
+			npc.AsV2NPC().Gender = EntityGender.Male;
 
 			npc.AsPred().stomachContents = new List<Prey>();
 			npc.AsPred().stomachContentsQueue = new List<Prey>();
 			npc.AsPred().maxStomachCapacity = 1.75;
 
-			npc.AsPred().GetChatMethod = GetArmsDealerChat;
+			npc.AsV2NPC().GetChatMethod = GetArmsDealerChat;
 
 			npc.AsPred().CanBeForceFedMethod = CanArmsDealerBeForceFed;
 			npc.AsPred().OnForceFedMethod = OnArmsDealerForceFed;

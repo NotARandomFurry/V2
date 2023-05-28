@@ -174,7 +174,7 @@ namespace V2.PlayerHandling
 			{
 				Player.velocity = Vector2.Zero;
 				if (Player.AsPrey().CurrentCaptor.HasValue)
-					Player.position = Player.AsPrey().CurrentCaptor.Value.Predator.position;
+					Player.position = Player.AsPrey().CurrentCaptor.Value.Predator.Center;
 			}
 		}
 
@@ -211,15 +211,15 @@ namespace V2.PlayerHandling
 							// do absolutely fucking nothing lmao
 							break;
 						case "No Male":
-							if (potentialPred.AsPred().Gender == EntityGender.Male)
+							if (potentialPred.AsV2NPC().Gender == EntityGender.Male)
 								continue;
 							break;
 						case "No Female":
-							if (potentialPred.AsPred().Gender == EntityGender.Female)
+							if (potentialPred.AsV2NPC().Gender == EntityGender.Female)
 								continue;
 							break;
 						case "No M or F...but why?":
-							if (potentialPred.AsPred().Gender != EntityGender.Other)
+							if (potentialPred.AsV2NPC().Gender != EntityGender.Other)
 								continue;
 							break;
 					}
@@ -412,6 +412,13 @@ namespace V2.PlayerHandling
 				SoundEngine.PlaySound(Player.Male ? PreyPlayerDigestionSounds.PlayerDigestingMale : PreyPlayerDigestionSounds.PlayerDigestingFemale, pred.position);
 				return false;
 			}
+		}
+
+		public static double GetCurrentTotalWeight(Player player)
+		{
+			double baseWeight = Prey.GetInitialPreyWeight(player);
+			double bellyWeight = PredPlayer.GetCurrentBellyWeight(player);
+			return baseWeight + bellyWeight;
 		}
 
 		public override bool PreKill(

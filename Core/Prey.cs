@@ -168,25 +168,31 @@ namespace V2.Core
 			}
 
 			Dead = false;
-			WeightLeftToDigest = GetInitialPreyWeight();
+			WeightLeftToDigest = GetInitialPreyWeight(this);
 			timeSpentInStomach = 0;
 		}
 
-		public double GetInitialPreyWeight()
+		public static double GetInitialPreyWeight(Entity entity)
 		{
-			switch (Type)
+			Prey prey = new Prey(entity);
+			return GetInitialPreyWeight(prey);
+		}
+
+		public static double GetInitialPreyWeight(Prey prey)
+		{
+			switch (prey.Type)
 			{
 				case PreyType.Player:
 					return 1.0;
 				case PreyType.NPC:
-					NPC actualPrey = Main.npc[Index];
+					NPC actualPrey = Main.npc[prey.Index];
 					double actualPreyWeight = 0;
 					if (actualPrey.AsPrey().PreyBaseSizeOverrideMethod is not null)
 						actualPreyWeight = actualPrey.AsPrey().PreyBaseSizeOverrideMethod.Invoke(actualPrey);
-					else if (TypeTags is not null)
+					else if (prey.TypeTags is not null)
 					{
 						double preyWeight = 0.0;
-						foreach (FoodTypeTag foodTypeTag in TypeTags)
+						foreach (FoodTypeTag foodTypeTag in prey.TypeTags)
 						{
 							foreach ((string subtype, double weight) subtypeTag in foodTypeTag.FoodSubtypeTags)
 							{

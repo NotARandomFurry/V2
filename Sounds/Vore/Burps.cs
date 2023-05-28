@@ -11,8 +11,8 @@ namespace V2.Sounds.Vore
 	{
 		public static class Humanoid
 		{
-			public static readonly SoundStyle Small = new SoundStyle("V2/Sounds/Vore/Burps/Humanoid/Small_", 1, 9, SoundType.Sound);
-			public static readonly SoundStyle Standard = new SoundStyle("V2/Sounds/Vore/Burps/Humanoid/Standard_", 1, 14, SoundType.Sound);
+			public static readonly SoundStyle Small = new SoundStyle("V2/Sounds/Vore/Burps/Humanoid/Small_", 1, 9, SoundType.Sound) with { MaxInstances = 0 };
+			public static readonly SoundStyle Standard = new SoundStyle("V2/Sounds/Vore/Burps/Humanoid/Standard_", 1, 14, SoundType.Sound) with { MaxInstances = 0 };
 		}
 	}
 }

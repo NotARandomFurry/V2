@@ -405,8 +405,7 @@ namespace V2.PlayerHandling
 
 			if (prey is Player preyPlayer)
 			{
-				Prey hypotheticalPrey = new Prey(preyPlayer);
-				if (hypotheticalPrey.GetInitialPreyWeight() > pred.AsPred().StomachCapacity - GetCurrentBellyWeight(pred))
+				if (Prey.GetInitialPreyWeight(preyPlayer) > pred.AsPred().StomachCapacity - GetCurrentBellyWeight(pred))
 					return false;
 
 				return !preyPlayer.AsPrey().IsCurrentlyEaten;
@@ -424,8 +423,7 @@ namespace V2.PlayerHandling
 				if (isThisAFuckingBoss)
 					return false;
 
-				Prey hypotheticalPrey = new Prey(preyNPC);
-				if (hypotheticalPrey.GetInitialPreyWeight() > pred.AsPred().StomachCapacity - GetCurrentBellyWeight(pred))
+				if (Prey.GetInitialPreyWeight(preyNPC) > pred.AsPred().StomachCapacity - GetCurrentBellyWeight(pred))
 					return false;
 
 				return !preyNPC.AsPrey().IsCurrentlyEaten;

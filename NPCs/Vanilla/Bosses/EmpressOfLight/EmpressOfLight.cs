@@ -24,23 +24,11 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 			return unreasonablyThickFairy;
 		}
 
-		public static SoundStyle MuffledFoodFairyMusic = new SoundStyle(
-			"V2/Sounds/MuffledMusic/EmpressOfLight",
-			SoundType.Sound
-		);
+		public static SoundStyle MuffledFoodFairyMusic = new SoundStyle("V2/Sounds/MuffledMusic/EmpressOfLight", SoundType.Sound) with { MaxInstances = 0 };
 
-		public static SoundStyle MuffledFoodFairyScreech1 = new SoundStyle(
-			"V2/Sounds/MuffledSounds/Item160",
-			SoundType.Sound
-		);
-		public static SoundStyle MuffledFoodFairyScreech2 = new SoundStyle(
-			"V2/Sounds/MuffledSounds/Item161",
-			SoundType.Sound
-		);
-		public static SoundStyle MuffledFoodFairyDeathScreech = new SoundStyle(
-			"V2/Sounds/MuffledSounds/NPC_Killed_65",
-			SoundType.Sound
-		);
+		public static SoundStyle MuffledFoodFairyScreech1 = new SoundStyle("V2/Sounds/MuffledSounds/Item160", SoundType.Sound) with { MaxInstances = 0 };
+		public static SoundStyle MuffledFoodFairyScreech2 = new SoundStyle("V2/Sounds/MuffledSounds/Item161", SoundType.Sound) with { MaxInstances = 0 };
+		public static SoundStyle MuffledFoodFairyDeathScreech = new SoundStyle("V2/Sounds/MuffledSounds/NPC_Killed_65", SoundType.Sound) with { MaxInstances = 0 };
 	}
 
 	public class UnreasonablyThickFairy : GlobalNPC
@@ -60,7 +48,7 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 
 		public override void SetDefaults(NPC npc)
 		{
-			npc.AsPred().Gender = EntityGender.Female;
+			npc.AsV2NPC().Gender = EntityGender.Female;
 
 			npc.AsPred().stomachContents = new List<Prey>();
 			npc.AsPred().stomachContentsQueue = new List<Prey>();

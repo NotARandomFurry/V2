@@ -32,7 +32,7 @@ namespace V2.NPCs
 		}
 	}
 
-	public class PreyNPC : GlobalNPC
+	public partial class PreyNPC : GlobalNPC
 	{
 		public List<FoodTypeTag> FoodTypeTags { get; set; }
 		public List<string> FoodFlavorTags { get; set; }
@@ -52,6 +52,7 @@ namespace V2.NPCs
 
 		public bool CanChatAsPrey { get; set; }
 
+		public SoundStyle? DigestingHitSound;
 		public SoundStyle? DigestedDeathSound;
 
 		public override bool InstancePerEntity => true;
@@ -68,6 +69,7 @@ namespace V2.NPCs
 			StruggleStrength = StatModifier.Default;
 
 			CanChatAsPrey = false;
+			DigestingHitSound = null;
 			DigestedDeathSound = null;
 		}
 
@@ -77,6 +79,7 @@ namespace V2.NPCs
 			npc.AsPrey().Digested = false;
 			npc.AsPrey().CurrentCaptor = null;
 			UpdateNPCEatenStatus(npc);
+			DetermineDigestingSounds(npc);
 		}
 
 		public static void UpdateNPCEatenStatus(NPC npc)
@@ -150,6 +153,14 @@ namespace V2.NPCs
 					break;
 				}
 			}
+		}
+
+		public static void DetermineDigestingSounds(NPC npc)
+		{
+			if (npc.HitSound is not null && DigestingHitSoundDatabase.ContainsKey(npc.HitSound.Value))
+				npc.AsPrey().DigestingHitSound = DigestingHitSoundDatabase[npc.HitSound.Value];
+			if (npc.DeathSound is not null && DigestedDeathSoundDatabase.ContainsKey(npc.DeathSound.Value))
+				npc.AsPrey().DigestedDeathSound = DigestedDeathSoundDatabase[npc.DeathSound.Value];
 		}
 
 		public override bool CanHitNPC(NPC npc, NPC target)
@@ -330,6 +341,13 @@ namespace V2.NPCs
 			}
 
 			return false;
+		}
+
+		public static double GetCurrentTotalWeight(NPC npc)
+		{
+			double baseWeight = Prey.GetInitialPreyWeight(npc);
+			double bellyWeight = PredNPC.GetCurrentBellyWeight(npc);
+			return baseWeight + bellyWeight;
 		}
 
 		public override bool CheckActive(NPC npc)

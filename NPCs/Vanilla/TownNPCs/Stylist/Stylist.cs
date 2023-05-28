@@ -79,11 +79,11 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 
 		public override void SetDefaults(NPC npc)
 		{
-			npc.AsPred().Gender = EntityGender.Female;
+			npc.AsV2NPC().Gender = EntityGender.Female;
 
 			npc.AsPred().maxStomachCapacity = 4.0;
 
-			npc.AsPred().GetChatMethod = GetStylistChat;
+			npc.AsV2NPC().GetChatMethod = GetStylistChat;
 
 			npc.AsPred().CanBeForceFedMethod = CanStylistBeForceFed;
 			npc.AsPred().OnForceFedMethod = OnStylistForceFed;

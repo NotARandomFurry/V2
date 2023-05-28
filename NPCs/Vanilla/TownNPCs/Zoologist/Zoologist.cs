@@ -17,7 +17,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Zoologist
 
 		public override void SetDefaults(NPC npc)
 		{
-			npc.AsPred().Gender = EntityGender.Female;
+			npc.AsV2NPC().Gender = EntityGender.Female;
 		}
 	}
 }

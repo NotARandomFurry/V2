@@ -88,14 +88,14 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 
 		public override void SetDefaults(NPC npc)
 		{
-			npc.AsPred().Gender = EntityGender.Female;
+			npc.AsV2NPC().Gender = EntityGender.Female;
 
 			npc.AsPred().maxStomachCapacity = 1.8;
 
 			npc.AsPred().ResetPredSpecificVariablesMethod = ResetPredSpecificVariables;
 
-			npc.AsPred().GetChatMethod = GetNurseChat;
-			npc.AsPred().ModifyChatButtonsMethod = ModifyChatButtons;
+			npc.AsV2NPC().GetChatMethod = GetNurseChat;
+			npc.AsV2NPC().ModifyChatButtonsMethod = ModifyChatButtons;
 
 			npc.AsPred().CanBeForceFedMethod = CanNurseBeForceFed;
 			npc.AsPred().OnForceFedMethod = OnNurseForceFed;
@@ -729,57 +729,69 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 			}
 		}
 
-		public static void ModifyChatButtons(NPC npc, Player player, ref string button1, ref string button2)
+		public static void ModifyChatButtons(NPC npc, Player player, ChatButtonInfo button1, ChatButtonInfo button2, ChatButtonInfo button3, ChatButtonInfo button4)
 		{
 			if (npc.AsNurse().healTypeChoice)
 			{
-				button1 = "Traditional";
-				button2 = "In-Stomach";
+				button1.Text = "Traditional";
+				button2.Text = "In-Stomach";
+				if (PredNPC.CanSwallow(npc, player))
+					button2.TextColor = Color.Gray;
 			}
 			else if (player.IsFoodFor(npc, out bool pastTense) && !pastTense && npc.AsNurse().healPlayerIndex == player.whoAmI)
 			{
 				if (npc.AsNurse().originalHealPrice > 0)
 				{
 					int originalPrice = (int)(npc.AsNurse().originalHealPrice * 0.80) + npc.AsNurse().healOvertime;
-					int num11 = 0;
-					int num12 = 0;
-					int num13 = 0;
-					int num14 = 0;
+					int platOvertimeFee = 0;
+					int goldOvertimeFee = 0;
+					int silverOvertimeFee = 0;
+					int copperOvertimeFee = 0;
 					if (originalPrice >= 1000000)
 					{
-						num11 = originalPrice / 1000000;
-						originalPrice -= num11 * 1000000;
+						platOvertimeFee = originalPrice / 1000000;
+						originalPrice -= platOvertimeFee * 1000000;
 					}
 
 					if (originalPrice >= 10000)
 					{
-						num12 = originalPrice / 10000;
-						originalPrice -= num12 * 10000;
+						goldOvertimeFee = originalPrice / 10000;
+						originalPrice -= goldOvertimeFee * 10000;
 					}
 
 					if (originalPrice >= 100)
 					{
-						num13 = originalPrice / 100;
-						originalPrice -= num13 * 100;
+						silverOvertimeFee = originalPrice / 100;
+						originalPrice -= silverOvertimeFee * 100;
 					}
 
 					if (originalPrice >= 1)
-						num14 = originalPrice;
+						copperOvertimeFee = originalPrice;
 
 					string button1Text = "Finish Healing (";
-					if (num11 > 0)
-						button1Text = button1Text + num11 + " " + Lang.inter[15].Value + " ";
+					if (platOvertimeFee > 0)
+						button1Text = button1Text + platOvertimeFee + " " + Lang.inter[15].Value + " ";
 
-					if (num12 > 0)
-						button1Text = button1Text + num12 + " " + Lang.inter[16].Value + " ";
+					if (goldOvertimeFee > 0)
+						button1Text = button1Text + goldOvertimeFee + " " + Lang.inter[16].Value + " ";
 
-					if (num13 > 0)
-						button1Text = button1Text + num13 + " " + Lang.inter[17].Value + " ";
+					if (silverOvertimeFee > 0)
+						button1Text = button1Text + silverOvertimeFee + " " + Lang.inter[17].Value + " ";
 
-					if (num14 > 0)
-						button1Text = button1Text + num14 + " " + Lang.inter[18].Value + " ";
+					if (copperOvertimeFee > 0)
+						button1Text = button1Text + copperOvertimeFee + " " + Lang.inter[18].Value + " ";
 
-					button1 = button1Text + ")";
+					button1.Text = button1Text + ")";
+
+					float num11 = (float)(int)Main.mouseTextColor / 255f;
+					if (platOvertimeFee > 0)
+						button1.TextColor = new Color((byte)(220f * num11), (byte)(220f * num11), (byte)(198f * num11), Main.mouseTextColor);
+					else if (goldOvertimeFee > 0)
+						button1.TextColor = new Color((byte)(224f * num11), (byte)(201f * num11), (byte)(92f * num11), Main.mouseTextColor);
+					else if (silverOvertimeFee > 0)
+						button1.TextColor = new Color((byte)(181f * num11), (byte)(192f * num11), (byte)(193f * num11), Main.mouseTextColor);
+					else if (copperOvertimeFee > 0)
+						button1.TextColor = new Color((byte)(246f * num11), (byte)(138f * num11), (byte)(96f * num11), Main.mouseTextColor);
 				}
 			}
 		}
