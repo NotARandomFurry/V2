@@ -1,9 +1,97 @@
 Mods: {
 	V2: {
 		Keybinds: {
-			Swallow.DisplayName: Mods.V2.Keybinds.Swallow.DisplayName
-			Regurgitate.DisplayName: Mods.V2.Keybinds.Regurgitate.DisplayName
-			Feed.DisplayName: Mods.V2.Keybinds.Feed.DisplayName
+			Swallow.DisplayName: Swallow
+			Regurgitate.DisplayName: Regurgitate
+			Feed.DisplayName: Feed
+			"Eat Items.DisplayName": Eat  Items
+		}
+
+		Configs: {
+			V2ServerConfig.DisplayName: Server-Side Options
+
+			Server: {
+				Insight: {
+					Header:
+						'''
+						Insight Options
+						[c/7F7F7F:(these let you make bug reports and other such things easier)]
+						'''
+
+					DebugChatMessages: {
+						Label: Send Debug Chat Messages
+						Tooltip:
+							'''
+							Displays debug messages in chat relating to the various vore mechanics.
+							Note that these may spam your chat, and should only be turned on if something is wrong.
+							Can help greatly in bug reporting.
+							Defaults to false.
+							'''
+					}
+				}
+
+				Personalization: {
+					Header:
+						'''
+						Personalization Options
+						[c/7F7F7F:(these let you fine-tune the experience to your preferences without breakin' the balance of the game)]
+						'''
+
+					NoRandomGulpsAgainstPlayers: {
+						Label: Selectively Hungry Town NPCs
+						Tooltip:
+							'''
+							Prevents town NPCs from randomly eating players.
+							Included for players who prefer being pred.
+							Does not prevent non-town NPCs from eating players where applicable.
+							Does not prevent town NPCs from randomly eating other town NPCs.
+							Defaults to false.
+							'''
+					}
+
+					GenderBlacklist: {
+						Label: Pred Non-Preference
+						Tooltip:
+							'''
+							Allows you to prevent preds of a certain gender from actively eating others in-game.
+							Applies to all entities, players included.
+							Will not affect any in-universe establishments about predators of the blacklisted gender.
+							Does not work for hermaphrodites, androgynous menaces, or otherwise functionally-genderless individuals.
+							By default, does not blacklist any gender.
+							'''
+					}
+				}
+
+				JustForFun: {
+					Header:
+						'''
+						Options Just For Fun
+						[c/7F7F7F:(these let you tell my balance intentions to go fuck themselves and just have some dumb fun with the game)]
+						'''
+
+					DefenseInDigestionCalcs: {
+						Label: Include Defense In Digestion Damage Calcs
+						Tooltip:
+							'''
+							BALANCE BREAKAGE: High
+							Determines whether or not digestion damage is affected by defense.
+							Affects ALL preds, not just players.
+							Defaults to true.
+							'''
+					}
+
+					EasilyEdibleEmpress: {
+						Label: Invoke The Second Law
+						Tooltip:
+							'''
+							BALANCE BREAKAGE: Who cares?
+							Makes it possible for the Empress of Light to fit in stomachs of any capacity, with preds of any swallow strength, and greatly increases digestion damage against her.
+							Defaults to false.
+							'Fairies are food, not friends or foes'
+							'''
+					}
+				}
+			}
 		}
 
 		GameTips: {
@@ -67,6 +155,26 @@ Mods: {
 							'''
 							Displays how many enemies have been killed in the world
 							Displays how many entities you've digested
+							'''
+					}
+				}
+
+				Consumables: {
+					LifeCrystal: {
+						Short:
+							'''
+							Has the ability to increase your maximum health by 20 when used or eaten
+							Has additional regenerative properties when eaten
+							{$Mods.V2.ItemTooltip.Generic.HoldSHIFTToLearnWhatTheFuckYourItemDoes}
+							'''
+						Long:
+							'''
+							When eaten:
+							- [c/{HealColor}:Heals for 20 health] instantly upon running out of durability
+							- Grants the Regeneration buff while digesting; this lingers for [c/FFFF00:{LifeCrystalEatRegenLength} seconds] once fully digested
+							Permanently [c/{HealColor}:increases maximum health by 20] when used or upon running out of durability via player digestion
+							This maximum health bonus can stack up to [c/{HealColor}:{LifeCrystalsMax}] times, after which point you cannot receive the bonus via normal use or digestion
+							Life crystals used/eaten on this character: [c/{LifeCrystalsUsedColor}:{LifeCrystalsUsed}]
 							'''
 					}
 				}
@@ -351,12 +459,12 @@ Mods: {
 				FarFromHome: W- wow! I've certainly traveled farther than usual today...wh- what predatory thing could I have been attempting to s- study this far out...?
 
 				Biomes: {
-					Jungle: I LOVE this location! Sure, it's aWfully hot and humid here...but just LOOK at all those hungry predators!~ Oh, I'll be able to do TONS of science with them! Sweet, sizzling, SCALDING science...~
-					Sky: It's always nice to be up in the skies...reminds me a lot of home. O- of course, it also doesn't have any of the complaining whenever I get e- eaten and start my...research.
+					Jungle: I absolutely LOVE this locale! Sure, it's awfully hot and humid here...but just LOOK at all those hungry predators!~ Oh, I'll be able to do TONS of science with them! Sweet, sizzling, SCALDING science...~
+					Sky: It's always nice to be up in the skies...reminds me a lot of home. O- of course, it also doesn't have any of the complaining whenever I get e- eaten and start my...r- research.
 					Forest: I'm not sure I like it here. S- sure, it's very calm here, and the locals are nice, but there simply aren't enough things for me to...s- study, as it were.
 					Corruption: As fascinating as the specimens here are, this place is hardly suited for sustained housing! S- still...one must study the fallen to- well, to avoid BECOMING the fallen...a- and the subjects here certainly get the mind m- moving...
 					Crimson: This place is very...g- gorey. That said, the local...wildlife, if you can c- call them that, are certainly eager to...g- get me on my way into them...wh- which I don't mind all that m- much!
-					Dungeon: I DESPISE this place. There's nothing worth studying. There's nothing to even eat me in the first place aside from the slimes. The slimes here are pointless to study, as any information about them could be gleaned from other, more visually-pleasing and scientifically-stimulating slimes. I'd very much like to leave.
+					Dungeon: I DESPISE this place. There's nothing worth studying. There's nothing to even EAT ME in the first place aside from the slimes. The slimes here are pointless to study, as ANY and all information about them could be gleaned from other, more visually-pleasing and scientifically-stimulating slimes. All of the humanoids I could be eaten by are specimens I could study literally ANYWHERE else. I'd very much like to leave.
 				}
 
 				Neighbors: {
@@ -370,7 +478,7 @@ Mods: {
 					}
 
 					SpecificNPCs: {
-						LoveSuccubus: Th- the demon lady? Lucinda!? I- I do NOT have...I...oh, who am I kidding? I- I could NEVER be anything less than s- SMITTEN for that b- beautiful body...and that s- strong, searing s- stomach...PERFECT!~
+						LoveSuccubus: Th- the demon lady? Lucinda!? I- I do NOT have...I d- don't...oh, who am I kidding? I- I could NEVER be anything less than s- SMITTEN for that b- beautiful body...and that s- strong, searing s- stomach...PERFECT!~
 						LoveCadence: Qu- Queen Cadence? Oh...I- I would look HEAVENLY as p- padding on her rear...a- and I can just imagine her s- stomach...MMMF! O- oh, I want- ...n- no, I NEED her to annex me, YESTERDAY!~
 						LoveTavernkeep: "{NPCName}...the tavernk- keeper. Ooohhhhh...j- just LOOK at those arms. Those m- massive, manly muscles...unf, my t- temperature's rising just THINKING about him! I- I can only imagine how s- strong and s- sturdy his s- s- stomach must be...~"
 						LikeNurse: "{NPCName} is such a wonderful woman, m- making sure everyone is happy, healthy, AND healthily hungry!...p- primarily because they can't really help me with my s- studies if they're too sick to e- eat me."
@@ -379,7 +487,7 @@ Mods: {
 						DislikeArmsDealer: "{NPCName} bothers me slightly. I- it's not even that he doesn't want to eat me, o- or that I don't let him; he's m- MORE than enthusiastic enough, a- and I don't mind studying him! The problem is, he's...n- not my type, but he keeps insisting he is."
 						DislikeAria: Cadence's daughter? U- um...well, she's certainly fascinating...most children are only able to swallow so much as a large grape before their teenage years. Still...I don't feel I should be around her. Th- the inherent...nature of my experiments m- may ultimately upset Cadence if Aria is nearby when they're...p- performed.
 						CadenceAndAria: I- I feel...conflicted. O- on one hand, I'm s- sure I would...g- garner invaluable information...wh- while plumping up C- Cadence's backside. O- on the other hand, as...s- stimulating as Her R- Royal Highnass may b- be to me, I- I'd rather keep my c- composure in the p- presence of her d- daughter. P- please look into a solution.
-						HateAngler: "{NPCName}? Oh, that little fisherman's no fun. Too young to eat me, too young to get WHY I want to be eaten so much on any front...and he poses no scientifically significant qualities whatsoever!"
+						HateAngler: "{NPCName}? Oh, that little fisherman's no fun. Too young to eat me, too young to get WHY I want to be eaten so much on any front...and he poses no scientifically significant qualities whatsoever except for how much of a little BRAT he is!"
 
 						Calamity: {
 							LikeAmidias: Th- that seahorse king is great! He always gives me all sorts of information about the- ...the marine life that once populated his old home! He, himself, is also quite...i- interesting...compared to most I meet!
@@ -396,8 +504,8 @@ Mods: {
 				FarFromHome: Well, I've headed off a little far from home today, eh? Then again, it's all worth gettin' the right meal.
 
 				Biomes: {
-					Ocean: It's great to be around the ocean, don'tcha think? Sittin' in the warm sand, lookin' over the sunset as your prey-stuffed gut churns and gurgles even the meatiest meals into more of ya...it's the BEST. My only regret's that I didn't come up here sooner
-					Desert: The desert's nice and warm, I have to say. Reminds me of home, in all the good ways, and it's a lot more open to boot. Plenty of prey to snatch up, too. I like it.
+					Ocean: It's great to be around the ocean, don'tcha think? Sittin' in the warm sand, lookin' over the sunset as your prey-stuffed gut churns and gurgles even the meatiest meals into more of ya...it's the BEST. My only regret's that I didn't come up here sooner.
+					Desert: The desert's nice and warm, I have to say. Reminds me of home, in all the good ways, and it's a lot more open to boot. Plenty of good prey to snatch up, too, if you know where to look. I like it.
 					Tundra: It's way too cold around here, if you ask me. Food's a bit too fluffy for me, too. I'd kill for a warm lava bath right now; find me one, or at least a warmer place to crash.
 					Corruption: Seriously!? This place is awful! I can't even eat the stuff here; I might get food poisoning from how rotten it all is!
 					Crimson: I think you've officially put my appetite in a coma. Congratulations. I've never looked at a place like this before, and I'd never like to again.
@@ -450,6 +558,35 @@ Mods: {
 			}
 		}
 
+		NPCs: {
+			BoundSuccubus.DisplayName: Bound Succubus
+
+			Succubus: {
+				DisplayName: Succubus
+
+				TownNPCMood: {
+					Content: "{$Mods.V2.TownNPCMood.Succubus.Content}"
+					NoHome: "{$Mods.V2.TownNPCMood.Succubus.NoHome}"
+					FarFromHome: "{$Mods.V2.TownNPCMood.Succubus.FarFromHome}"
+					LoveSpace: I love having so much space.
+					DislikeCrowded: I dislike how crowded I am.
+					HateCrowded: I hate how crowded I am.
+					LoveBiome: I love {BiomeName}.
+					LikeBiome: I like {BiomeName}.
+					DislikeBiome: I dislike {BiomeName}.
+					HateBiome: I hate {BiomeName}.
+					LoveNPC: I love {NPCName}.
+					LikeNPC: I like {NPCName}.
+					DislikeNPC: I dislike {NPCName}.
+					HateNPC: I hate {NPCName}.
+					LikeNPC_Princess: I like {NPCName}.
+					Princess_LovesNPC: I like {NPCName}.
+				}
+
+				Census.SpawnCondition: Find her and free her in the Underworld
+			}
+		}
+
 		Items: {
 			CharmBetterDigestion: {
 				DisplayName: Charm Better Digestion
@@ -460,11 +597,6 @@ Mods: {
 				DisplayName: Charm Regen From Absorption
 				Tooltip: ""
 			}
-		}
-
-		NPCs: {
-			BoundSuccubus.DisplayName: Bound Succubus
-			Succubus.DisplayName: Succubus
 		}
 	}
 }

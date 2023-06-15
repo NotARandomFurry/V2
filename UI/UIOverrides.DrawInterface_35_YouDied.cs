@@ -32,7 +32,7 @@ namespace V2.UI
 
 			float yOffsetFromScreenCenter = -60f;
 			string value = Lang.inter[38].Value;
-			if (player.AsPrey().Digested)
+			if (player.AsFood().Digested)
 				value = Language.GetTextValue("Mods.V2.Death.DigestedPlayer.YouWereEaten");
 			Main.spriteBatch.DrawString(
 				FontAssets.DeathText.Value,

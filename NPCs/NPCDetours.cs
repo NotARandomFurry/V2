@@ -79,8 +79,8 @@ namespace V2.NPCs
 			if (!NPCLoader.CheckDead(npc))
 				return;
 
-			if (npc.AsPrey().IsCurrentlyEaten)
-				npc.AsPrey().Digested = true;
+			if (npc.AsFood().IsCurrentlyEaten)
+				npc.AsFood().Digested = true;
 
 			FieldInfo noSpawnCycleInfo = typeof(NPC).GetField("noSpawnCycle", BindingFlags.NonPublic | BindingFlags.Static);
 			noSpawnCycleInfo.SetValue(null, true);
@@ -112,7 +112,7 @@ namespace V2.NPCs
 					}
 				}
 
-				bool shouldDropTombstone = !npc.AsPrey().Digested;
+				bool shouldDropTombstone = !npc.AsFood().Digested;
 				NetworkText fullNetName = npc.GetFullNetName();
 				int num2 = 19;
 				if (npc.type == NPCID.Angler || npc.type == NPCID.Princess || NPCID.Sets.IsTownPet[npc.type])
@@ -122,7 +122,7 @@ namespace V2.NPCs
 				}
 
 				NetworkText networkText = NetworkText.FromKey(Lang.misc[num2].Key, fullNetName);
-				if (npc.AsPrey().Digested)
+				if (npc.AsFood().Digested)
 					networkText = NetworkText.FromKey("Mods.V2.Death.DigestedTownNPC", fullNetName);
 
 				if (shouldDropTombstone)
@@ -163,12 +163,12 @@ namespace V2.NPCs
 				WorldGen.prioritizedTownNPCType = 0;
 
 
-			if (npc.AsPrey().Digested)
+			if (npc.AsFood().Digested)
 			{
-				if (npc.AsPrey().DigestedDeathSound != null)
-					SoundEngine.PlaySound(npc.AsPrey().DigestedDeathSound, npc.position);
+				if (npc.AsFood().DigestedDeathSound != null)
+					SoundEngine.PlaySound(npc.AsFood().DigestedDeathSound, npc.position);
 
-				if (npc.AsPrey().CurrentCaptor.Value.Predator is Player hungryPlayer)
+				if (npc.AsFood().CurrentCaptor.Value.Predator is Player hungryPlayer)
 					PredPlayer.CountDigestionKillForBannersAndDropThem(hungryPlayer, npc);
 				npc.NPCLoot();
 			}
@@ -586,10 +586,10 @@ namespace V2.NPCs
 
 		public static void DoDeathEvents_CelebrateBossDeath(NPC npc, string typeName)
 		{
-			if (npc.AsPrey().Digested)
+			if (npc.AsFood().Digested)
 			{
 				string localName = "";
-				Entity pred = npc.AsPrey().CurrentCaptor.Value.Predator;
+				Entity pred = npc.AsFood().CurrentCaptor.Value.Predator;
 				if (pred is NPC predNPC)
 				{
 					localName = predNPC.FullName;

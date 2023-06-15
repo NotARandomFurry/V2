@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using V2.Items;
 using V2.NPCs;
 using V2.PlayerHandling;
 using static V2.Core.FoodTypeTags;
@@ -134,10 +135,10 @@ namespace V2.Core
 	public class Prey
 	{
 		public PreyType Type { get; set; }
-		public int Index { get; set; }
-		public int EntityID { get; set; }
+		public Entity Instance { get; set; }
 		public List<FoodTypeTag> TypeTags { get; set; }
 		public bool Dead { get; set; }
+		public bool InventoryItem { get; set; }
 		public double WeightLeftToDigest { get; set; }
 
 		public int timeSpentInStomach;
@@ -147,7 +148,7 @@ namespace V2.Core
 			if (preyEntity is Player player)
 			{
 				Type = PreyType.Player;
-				Index = player.whoAmI;
+				Instance = player;
 				TypeTags = new List<FoodTypeTag>
 				{
 					new MeatTag()
@@ -162,9 +163,14 @@ namespace V2.Core
 			else if (preyEntity is NPC npc)
 			{
 				Type = PreyType.NPC;
-				Index = npc.whoAmI;
-				EntityID = npc.type;
-				TypeTags = npc.AsPrey().FoodTypeTags ?? null;
+				Instance = npc;
+				TypeTags = npc.AsFood().FoodTypeTags ?? null;
+			}
+			else if (preyEntity is Item item)
+			{
+				Type = PreyType.Item;
+				Instance = item;
+				TypeTags = item.AsFood().FoodTypeTags ?? null;
 			}
 
 			Dead = false;
@@ -185,10 +191,10 @@ namespace V2.Core
 				case PreyType.Player:
 					return 1.0;
 				case PreyType.NPC:
-					NPC actualPrey = Main.npc[prey.Index];
+					NPC actualPreyNPC = prey.Instance as NPC;
 					double actualPreyWeight = 0;
-					if (actualPrey.AsPrey().PreyBaseSizeOverrideMethod is not null)
-						actualPreyWeight = actualPrey.AsPrey().PreyBaseSizeOverrideMethod.Invoke(actualPrey);
+					if (actualPreyNPC.AsFood().PreyBaseSizeOverrideMethod is not null)
+						actualPreyWeight = actualPreyNPC.AsFood().PreyBaseSizeOverrideMethod.Invoke(actualPreyNPC);
 					else if (prey.TypeTags is not null)
 					{
 						double preyWeight = 0.0;
@@ -205,15 +211,16 @@ namespace V2.Core
 					{
 						double refPlayerWidth = 20.0;
 						double refPlayerHeight = 42.0;
-						double playerToNPCWidthRatio = (double)actualPrey.width / refPlayerWidth;
-						double playerToNPCHeightRatio = (double)actualPrey.height / refPlayerHeight;
+						double playerToNPCWidthRatio = (double)actualPreyNPC.width / refPlayerWidth;
+						double playerToNPCHeightRatio = (double)actualPreyNPC.height / refPlayerHeight;
 						actualPreyWeight = playerToNPCWidthRatio * playerToNPCHeightRatio;
 					}
 					return actualPreyWeight;
 				case PreyType.Projectile:
 					return 1.0;
 				case PreyType.Item:
-					return 1.0;
+					Item actualPreyItem = prey.Instance as Item;
+					return actualPreyItem.AsFood().Size;
 				default:
 					V2.Instance.Logger.Error("the type of the currently-weighed prey isn't recognized. I'll return its weight as 1.0 for now, but please be more careful");
 					return 1.0;

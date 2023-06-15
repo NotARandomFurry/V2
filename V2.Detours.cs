@@ -67,7 +67,7 @@ namespace V2
 			NPCLoader_NPCAI_Hook = new Hook(NPCLoader_NPCAI_MethodInfo, (orig_NPCAI orig, NPC npc) =>
 			{
 				PredNPC npcAsPred = npc.AsPred(risky: true);
-				PreyNPC npcAsPrey = npc.AsPrey(risky: true);
+				PreyNPC npcAsPrey = npc.AsFood(risky: true);
 				if (npcAsPred is null || npcAsPrey is null)
 					orig(npc);
 
@@ -100,7 +100,7 @@ namespace V2
 			{
 				if (npc.active)
 				{
-					PreyNPC npcAsPrey = npc.AsPrey(risky: true);
+					PreyNPC npcAsPrey = npc.AsFood(risky: true);
 					if (npcAsPrey is not null)
 					{
 						PreyNPC.UpdateNPCEatenStatus(npc);
@@ -114,17 +114,17 @@ namespace V2
 			On_NPC.checkDead += (orig, npc) => NPCDetours.checkDead(npc);
 			On_NPC.NPCLoot_DropHeals += (orig, npc, closestPlayer) =>
 			{
-				if (!npc.AsPrey().Digested)
+				if (!npc.AsFood().Digested)
 					orig(npc, closestPlayer);
 			};
 			On_NPC.NPCLoot_DropMoney += (orig, npc, closestPlayer) =>
 			{
-				if (!npc.AsPrey().Digested)
+				if (!npc.AsFood().Digested)
 					orig(npc, closestPlayer);
 			};
 			On_NPC.NPCLoot_DropItems += (orig, npc, closestPlayer) =>
 			{
-				if (!npc.AsPrey().Digested)
+				if (!npc.AsFood().Digested)
 					orig(npc, closestPlayer);
 			};
 			On_NPC.DoDeathEvents_DropBossPotionsAndHearts += NoPotionsOrHeartsIfDigested;
@@ -141,7 +141,7 @@ namespace V2
 
 		private static void NoPotionsOrHeartsIfDigested(On_NPC.orig_DoDeathEvents_DropBossPotionsAndHearts orig, NPC npc, ref string typeName)
 		{
-			if (!npc.AsPrey().Digested)
+			if (!npc.AsFood().Digested)
 				orig(npc, ref typeName);
 		}
 	}

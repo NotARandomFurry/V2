@@ -16,6 +16,7 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using V2.Core;
+using V2.Items;
 using V2.NPCs.Vanilla.TownNPCs.Nurse;
 using V2.PlayerHandling;
 using V2.Sounds.Vore;
@@ -160,7 +161,7 @@ namespace V2.NPCs
 			if (GetCurrentBellyWeight(pred) >= pred.AsPred().maxStomachCapacity)
 				return false;
 
-			switch (ModContent.GetInstance<V2ServerSideConfigs>().GenderBlacklist)
+			switch (ModContent.GetInstance<V2ServerConfig>().GenderBlacklist)
 			{
 				default:
 					// do absolutely fucking nothing lmao
@@ -184,14 +185,14 @@ namespace V2.NPCs
 				if (Prey.GetInitialPreyWeight(preyPlayer) >= pred.AsPred().maxStomachCapacity - GetCurrentBellyWeight(pred))
 					return false;
 
-				return !preyPlayer.AsPrey().IsCurrentlyEaten;
+				return !preyPlayer.AsFood().IsCurrentlyEaten;
 			}
 			else if (prey is NPC preyNPC)
 			{
 				if (V2.VoreNPCBlacklist.Contains(preyNPC.type))
 					return false;
 
-				bool tastesLikeSkittles = preyNPC.type == NPCID.HallowBoss && ModContent.GetInstance<V2ServerSideConfigs>().EasilyEdibleEmpress;
+				bool tastesLikeSkittles = preyNPC.type == NPCID.HallowBoss && ModContent.GetInstance<V2ServerConfig>().EasilyEdibleEmpress;
 				if (tastesLikeSkittles)
 					return true;
 
@@ -202,7 +203,7 @@ namespace V2.NPCs
 				if (Prey.GetInitialPreyWeight(preyNPC) >= pred.AsPred().maxStomachCapacity - GetCurrentBellyWeight(pred))
 					return false;
 
-				return !preyNPC.AsPrey().IsCurrentlyEaten;
+				return !preyNPC.AsFood().IsCurrentlyEaten;
 			}
 
 			return true;
@@ -234,12 +235,16 @@ namespace V2.NPCs
 				{
 					case PreyType.Player:
 						Player player = prey as Player;
-						player.AsPrey().TotalTimesSwallowed += 1;
-						player.AsPrey().IsCurrentlyEaten = true;
+						player.AsFood().TotalTimesSwallowed += 1;
+						player.AsFood().IsCurrentlyEaten = true;
 						break;
 					case PreyType.NPC:
 						NPC npc = prey as NPC;
 						PreyNPC.UpdateNPCEatenStatus(npc);
+						break;
+					case PreyType.Item:
+						Item item = prey as Item;
+						item.AsFood().OnSwallow?.Invoke(item, pred);
 						break;
 				}
 			}
@@ -285,22 +290,31 @@ namespace V2.NPCs
 			foreach (Prey prey in npc.AsPred().stomachContents)
 			{
 				prey.timeSpentInStomach++;
+
+				switch (prey.Type)
+				{
+					case PreyType.Item:
+						Item preyItem = prey.Instance as Item;
+						preyItem.AsFood().UpdateInStomach?.Invoke(preyItem, npc, prey.Dead);
+						break;
+				}
+
 				if (!prey.Dead)
 				{
 					if (prey.Type == PreyType.Player
 					 && npc.type == NPCID.Nurse
 					 && npc.AsNurse().healPlayerIndex != -1
-					 && npc.AsNurse().healPlayerIndex == prey.Index
+					 && npc.AsNurse().healPlayerIndex == (prey.Instance as Player).whoAmI
 					 && !npc.AsNurse().digestScamPatient)
 					{
-						Player healingPreyPlayer = Main.player[prey.Index];
+						Player healingPreyPlayer = prey.Instance as Player;
 						if (healingPreyPlayer.statLife >= healingPreyPlayer.statLifeMax2)
 							npc.AsNurse().healOvertime += 1;
 					}
 
 					if (npc.AsPred().GetDigestionTickRateMethod is null || npc.AsPred().GetDigestionTickDamageMethod is null)
 					{
-						if (ModContent.GetInstance<V2ServerSideConfigs>().DebugChatMessages)
+						if (ModContent.GetInstance<V2ServerConfig>().DebugChatMessages)
 							Main.NewText(npc.FullName + " has invalid digestion damage/tick rate methods!");
 						return;
 					}
@@ -312,7 +326,7 @@ namespace V2.NPCs
 						switch (prey.Type)
 						{
 							case PreyType.Player:
-								Player preyPlayer = Main.player[prey.Index];
+								Player preyPlayer = prey.Instance as Player;
 								bool shouldDigestPlayer = true;
 								bool shouldHealPlayer = npc.type == NPCID.Nurse && npc.AsNurse().healPlayerIndex != -1 && npc.AsNurse().healPlayerIndex == preyPlayer.whoAmI && !npc.AsNurse().digestScamPatient;
 								if (shouldHealPlayer)
@@ -341,26 +355,26 @@ namespace V2.NPCs
 								}
 								else if (shouldDigestPlayer)
 								{
-									prey.Dead = preyPlayer.AsPrey().TakeDigestionDamage(npc, digestionDamage);
-									if (ModContent.GetInstance<V2ServerSideConfigs>().DebugChatMessages)
+									prey.Dead = preyPlayer.AsFood().TakeDigestionDamage(npc, digestionDamage);
+									if (ModContent.GetInstance<V2ServerConfig>().DebugChatMessages)
 										Main.NewText("Successfully dealt digestion damage to prey: " + preyPlayer.name);
 									if (prey.Dead && npc.AsPred().OnDigestionKillMethod is not null)
 										npc.AsPred().OnDigestionKillMethod.Invoke(npc, prey);
 								}
-								else if (ModContent.GetInstance<V2ServerSideConfigs>().DebugChatMessages)
+								else if (ModContent.GetInstance<V2ServerConfig>().DebugChatMessages)
 									Main.NewText("Failed to deal digestion damage to prey: " + preyPlayer.name);
 								break;
 							case PreyType.NPC:
-								NPC preyNPC = Main.npc[prey.Index];
+								NPC preyNPC = prey.Instance as NPC;
 								bool shouldDigestNPC = true;
 								if (shouldDigestNPC)
 								{
-									if (preyNPC.type == NPCID.HallowBoss && ModContent.GetInstance<V2ServerSideConfigs>().EasilyEdibleEmpress)
+									if (preyNPC.type == NPCID.HallowBoss && ModContent.GetInstance<V2ServerConfig>().EasilyEdibleEmpress)
 										digestionDamage *= 50.0;
-									prey.Dead = preyNPC.AsPrey().TakeDigestionDamage(preyNPC, npc, digestionDamage);
-									if (ModContent.GetInstance<V2ServerSideConfigs>().DebugChatMessages)
+									prey.Dead = preyNPC.AsFood().TakeDigestionDamage(preyNPC, npc, digestionDamage);
+									if (ModContent.GetInstance<V2ServerConfig>().DebugChatMessages)
 										Main.NewText("Successfully dealt digestion damage to prey: " + preyNPC.GivenOrTypeName);
-									else if (ModContent.GetInstance<V2ServerSideConfigs>().DebugChatMessages)
+									else if (ModContent.GetInstance<V2ServerConfig>().DebugChatMessages)
 										Main.NewText("Failed to deal digestion damage to prey: " + preyNPC.GivenOrTypeName);
 									if (prey.Dead && npc.AsPred().OnDigestionKillMethod is not null)
 										npc.AsPred().OnDigestionKillMethod.Invoke(npc, prey);
@@ -380,10 +394,10 @@ namespace V2.NPCs
 				}
 			}
 
-			if (npc.AsPrey(risky: true) is null)
+			if (npc.AsFood(risky: true) is null)
 				return;
 
-			if (!npc.AsPrey().IsCurrentlyEaten && npc.AsPred().GetVisualBellySizeMethod is not null)
+			if (!npc.AsFood().IsCurrentlyEaten && npc.AsPred().GetVisualBellySizeMethod is not null)
 			{
 				bool stomachNoisesPlaying = SoundEngine.TryGetActiveSound(npc.AsPred().ActiveStomachNoises, out ActiveSound stomachNoises);
 				if (!stomachNoisesPlaying)
@@ -487,8 +501,8 @@ namespace V2.NPCs
 					});
 					// because EntityID is set automagically on initialization of a Prey instance, this isn't actually needed
 					// I'm keepin' it commented out for now just in case it does end up needed
-					// binaryWriter.Write(prey.EntityID);
-					binaryWriter.Write(prey.Index);
+					// binaryWriter.Write((prey.Instance as NPC).type);
+					binaryWriter.Write(prey.Instance.whoAmI);
 					binaryWriter.Write(prey.Dead);
 					binaryWriter.Write(prey.WeightLeftToDigest);
 				}
@@ -531,11 +545,11 @@ namespace V2.NPCs
 
 		public override void OnKill(NPC npc)
 		{
-			if (npc.AsPrey().IsCurrentlyEaten)
+			if (npc.AsFood().IsCurrentlyEaten)
 			{
 				foreach (Prey prey in npc.AsPred().stomachContents)
 				{
-					Entity betterPred = npc.AsPrey().CurrentCaptor.Value.Predator;
+					Entity betterPred = npc.AsFood().CurrentCaptor.Value.Predator;
 					if (betterPred is NPC npcPred)
 					{
 						npcPred.AsPred().stomachContentsQueue.Add(prey);
@@ -570,11 +584,11 @@ namespace V2.NPCs
 					switch (prey.Type)
 					{
 						case PreyType.Player:
-							Player preyPredPlayer = Main.player[prey.Index];
+							Player preyPredPlayer = prey.Instance as Player;
 							totalBellyWeight += PredPlayer.GetCurrentBellyWeight(preyPredPlayer);
 							break;
 						case PreyType.NPC:
-							NPC preyPredNPC = Main.npc[prey.Index];
+							NPC preyPredNPC = prey.Instance as NPC;
 							totalBellyWeight += GetCurrentBellyWeight(preyPredNPC);
 							break;
 					}

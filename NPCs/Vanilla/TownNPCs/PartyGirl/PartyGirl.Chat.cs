@@ -63,7 +63,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 			{
 				if (npc.AsPred().stomachContents.Count > 0)
 				{
-					if (npc.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.NPC && x.EntityID == NPCID.HallowBoss) is Prey sprinkles && GetEmpressDigestionStage(npc) > 0)
+					if (npc.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.HallowBoss) is Prey sprinkles && GetEmpressDigestionStage(npc) > 0)
 					{
 						partyGirlChatPool.AddRange(new List<string>
 						{
@@ -167,38 +167,27 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 								});
 								break;
 						}
-						if (npc.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.NPC && x.EntityID == NPCID.TaxCollector && !x.Dead) is Prey scroogeAsPrey)
+						if (npc.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.TaxCollector && !x.Dead) is Prey scroogeAsPrey)
 						{
-							NPC scrooge = Main.npc[scroogeAsPrey.Index];
+							NPC scrooge = scroogeAsPrey.Instance as NPC;
 							partyGirlChatPool.AddRange(new List<string>
 							{
 								"What? You know as well as I do he never liked my parties! It's only fair that I FORCE him to be part of 'em, by bein' part of me! I do NOT throw \"frivolous\" or \"childish\" parties, and I'm PERFECTLY responsible! HMPH! >:(",
 								"Huh? What ABOUT grumpy old " + scrooge.GivenName + "!? He hates parties, hates fun, hates colors, and hates me! He's WAY better off as my " + (BirthdayParty.PartyIsUp ? "mid-party" : "pre-party") + " lunch than he is skulking in the corner all the time!",
 							});
 						}
-						if (npc.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.NPC && x.EntityID == NPCID.Wizard && !x.Dead) is Prey harryWizardAsPrey)
+						if (npc.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.Wizard && !x.Dead) is Prey harryWizardAsPrey)
 						{
-							NPC harryWizard = Main.npc[harryWizardAsPrey.Index];
+							NPC harryWizard = harryWizardAsPrey.Instance as NPC;
 							partyGirlChatPool.AddRange(new List<string>
 							{
 								"Huh? Why'd I eat that wizard guy, " + harryWizard.GivenName + "? Well, it's honestly really simple. He makes really cool sparkly effects at my parties, so I figured I might be able to get those for myself sometime soon if he's in there long enough!",
 								"Don't worry about the magic guy! He's havin' a grand old time in my belly, and I'll make sure he keeps havin' a good time!",
 							});
 						}
-						if (npc.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.NPC && x.EntityID == NPCID.BestiaryGirl && !x.Dead) is Prey furryAsPrey)
+						if (npc.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.BestiaryGirl && !x.Dead) is Prey furryAsPrey)
 						{
-							NPC furry = Main.npc[furryAsPrey.Index];
-							partyGirlChatPool.AddRange(new List<string>
-							{
-								"Mmmm...y'know, " + furry.GivenName + " isn't just great at parties. She's also a great belly filler! Of course, she knows I don't mean anything bad by it...I was just in the mood for a snack, and she didn't mind!",
-								"The foxgal in my gut once asked me if I've ever eaten any cute little things...\n"
-							  + "\n"
-							  + "...don't tell her I said this, but I've eaten a LOT of different animals before. I think the \"cute little things\" she's talking about fit into that, pretty extensively.",
-							});
-						}
-						if (npc.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.NPC && x.EntityID == NPCID.BestiaryGirl && !x.Dead) is Prey saladAsPrey)
-						{
-							NPC furry = Main.npc[saladAsPrey.Index];
+							NPC furry = furryAsPrey.Instance as NPC;
 							partyGirlChatPool.AddRange(new List<string>
 							{
 								"Mmmm...y'know, " + furry.GivenName + " isn't just great at parties. She's also a great belly filler! Of course, she knows I don't mean anything bad by it...I was just in the mood for a snack, and she didn't mind!",
@@ -293,7 +282,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 								});
 							}
 						}
-						if (player.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.NPC && x.EntityID == NPCID.TaxCollector && !x.Dead) is Prey scroogeAsPrey)
+						if (player.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.TaxCollector && !x.Dead) is Prey scroogeAsPrey)
 						{
 							partyGirlChatPool.AddRange(new List<string>
 							{

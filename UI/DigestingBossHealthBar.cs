@@ -16,7 +16,7 @@ namespace V2.UI
 	{
 		public override bool PreDraw(SpriteBatch spriteBatch, NPC npc, ref BossBarDrawParams drawParams)
 		{
-			if (npc.AsPrey().IsCurrentlyEaten)
+			if (npc.AsFood().IsCurrentlyEaten)
 				drawParams.BarTexture = ModContent.Request<Texture2D>("V2/UI/DigestingBossHealthBar", AssetRequestMode.ImmediateLoad).Value;
 
 			return true;

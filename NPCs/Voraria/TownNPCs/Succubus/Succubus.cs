@@ -492,7 +492,7 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 
 		public override void PostAI()
 		{
-			if (NPC.AsPrey().IsCurrentlyEaten)
+			if (NPC.AsFood().IsCurrentlyEaten)
 				return;
 
 			if (NPC.AsPred().stomachContents.Count > 1)
@@ -541,10 +541,10 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 			if (scrooge != null && scrooge.Distance(NPC.Center) <= NPC.AsPred().swallowRange && shouldSnackOnScrooge)
 				PredNPC.Swallow(NPC, scrooge);
 
-			if (ModContent.GetInstance<V2ServerSideConfigs>().NoRandomGulpsAgainstPlayer)
+			if (ModContent.GetInstance<V2ServerConfig>().NoRandomGulpsAgainstPlayers)
 				return;
 
-			if (!Main.CurrentPlayer.active || Main.CurrentPlayer.dead || Main.CurrentPlayer.Distance(NPC.Center) > NPC.AsPred().swallowRange || Main.CurrentPlayer.AsPrey().IsCurrentlyEaten)
+			if (!Main.CurrentPlayer.active || Main.CurrentPlayer.dead || Main.CurrentPlayer.Distance(NPC.Center) > NPC.AsPred().swallowRange || Main.CurrentPlayer.AsFood().IsCurrentlyEaten)
 				return;
 
 			bool shouldSnackOnPlayer = false;
@@ -643,7 +643,7 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 
 		public static double GetPreyAbsorptionRate(NPC npc)
 		{
-			double baseAbsorptionRate = 1.0 / (double)V2Utils.WriteFrameCountAsANormalFuckingTimeMeasurement(
+			double baseAbsorptionRate = 1.0 / (double)V2Utils.SensibleTime(
 				minutes: 1,
 				seconds: 5
 			);

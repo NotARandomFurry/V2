@@ -22,6 +22,8 @@ namespace V2.UI
 		public double CapacityPerSegment => CapacityMax / (double)AmountOfCapacitySegments;
 
 		private int numCapacitySegments;
+		private static readonly int minCapacitySegments = 4;
+		private static readonly int maxCapacitySegments = 20;
 		/// <summary>
 		/// How many segments should be drawn for the stomach capacity bar.<br/>
 		/// Has a maximum of 20, similar to health and mana bars.<br/>
@@ -30,10 +32,10 @@ namespace V2.UI
 		{
 			get
 			{
-				if (numCapacitySegments < 4)
-					numCapacitySegments = 4;
-				if (numCapacitySegments > 20)
-					numCapacitySegments = 20;
+				if (numCapacitySegments < minCapacitySegments)
+					numCapacitySegments = minCapacitySegments;
+				if (numCapacitySegments > maxCapacitySegments)
+					numCapacitySegments = maxCapacitySegments;
 				return numCapacitySegments;
 			}
 			set => numCapacitySegments = value;
@@ -51,13 +53,13 @@ namespace V2.UI
 
 	public class StomachCapacityBarUI : UIState
 	{
-		public static bool Visible = false;
+		public static bool Visible { get; set; }
 
 		public override void Update(GameTime gameTime)
 		{
-			Player player = Main.LocalPlayer;
 			Visible = false;
-			if (PredPlayer.GetCurrentBellyWeight(player) > 0)
+			Player player = Main.LocalPlayer;
+			if (PredPlayer.GetCurrentBellyWeight(player) > 0 && !player.AsFood().IsCurrentlyEaten)
 				Visible = true;
 		}
 
@@ -84,6 +86,7 @@ namespace V2.UI
 			);
 			topLeftCorner.X -= 20 + (_capacitySegmentsCount * (_stomachCapacityPanelMiddle.Value.Width / 2));
 			topLeftCorner.Y += 32;
+			topLeftCorner += Main.LocalPlayer.Center - (Main.screenPosition + new Vector2(Main.screenWidth / 2, Main.screenHeight / 2));
 
 			for (int i = 0; i < _capacitySegmentsCount; i++)
 			{

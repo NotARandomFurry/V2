@@ -97,7 +97,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Mechanic
 
 			npc.AsPred().GetVisualBellySizeMethod = GetVisualBellySize;
 
-			npc.AsPrey().FoodTypeTags = new List<FoodTypeTag>
+			npc.AsFood().FoodTypeTags = new List<FoodTypeTag>
 			{
 				new MeatTag()
 				{
@@ -349,7 +349,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Mechanic
 
 		public override void PostAI(NPC npc)
 		{
-			if (npc.AsPrey().IsCurrentlyEaten)
+			if (npc.AsFood().IsCurrentlyEaten)
 				return;
 
 			static void RollForRandomGulp(ref bool gulp) => gulp |= Main.rand.NextBool(3, 100);
@@ -388,10 +388,10 @@ namespace V2.NPCs.Vanilla.TownNPCs.Mechanic
 			if (steamLass != null && steamLass.Distance(npc.Center) <= npc.AsPred().swallowRange && resolveSteamLass)
 				PredNPC.Swallow(npc, steamLass);
 
-			if (ModContent.GetInstance<V2ServerSideConfigs>().NoRandomGulpsAgainstPlayer)
+			if (ModContent.GetInstance<V2ServerConfig>().NoRandomGulpsAgainstPlayers)
 				return;
 
-			if (!Main.CurrentPlayer.active || Main.CurrentPlayer.dead || Main.CurrentPlayer.Distance(npc.Center) > npc.AsPred().swallowRange || Main.CurrentPlayer.AsPrey().IsCurrentlyEaten)
+			if (!Main.CurrentPlayer.active || Main.CurrentPlayer.dead || Main.CurrentPlayer.Distance(npc.Center) > npc.AsPred().swallowRange || Main.CurrentPlayer.AsFood().IsCurrentlyEaten)
 				return;
 
 			bool shouldHaveBrainFood = false;
@@ -401,7 +401,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Mechanic
 			{
 				List<string> potentialRandomGulpLines = new List<string>
 				{
-					"Sorry, " + Main.CurrentPlayer.name + ", but I need some brain food. You'll have to do.",
+					"Sorry, " + Main.CurrentPlayer.name + ", but I need some brain food. You will have to do.",
 					"I apologize for the interruption, but my body requires fuel to continue functioning. You will need to suffice.",
 				};
 				PredNPC.SwallowWithTextIfApplicable(
@@ -413,22 +413,9 @@ namespace V2.NPCs.Vanilla.TownNPCs.Mechanic
 			}
 		}
 
-		public override bool PreChatButtonClicked(NPC npc, bool firstButton)
-		{
-			if (Main.CurrentPlayer.IsFoodFor(npc, out bool pastTense) && !pastTense)
-			{
-				if (firstButton)
-				{
-					Main.npcChatText = "Unfortunately, any attempt to retrieve money from my digestive system would result in failure, as it's efficient enough to melt down metal alongside meat like yourself.";
-					return false;
-				}
-			}
-			return true;
-		}
+		public static double GetDigestionTickRate(NPC npc, Prey prey) => Main.bloodMoon ? 6.5 : 3.25;
 
-		public static double GetDigestionTickRate(NPC npc, Prey prey) => Main.bloodMoon ? 7.0 : 3.5;
-
-		public static double GetDigestionTickDamage(NPC npc, Prey prey) => 4.0;
+		public static double GetDigestionTickDamage(NPC npc, Prey prey) => 6.5;
 
 		public static void OnDigestionKill(NPC npc, Prey digestedPrey)
 		{
@@ -440,7 +427,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Mechanic
 
 		public static double GetPreyAbsorptionRate(NPC npc)
 		{
-			double baseAbsorptionRate = 1.0 / (double)V2Utils.WriteFrameCountAsANormalFuckingTimeMeasurement(
+			double baseAbsorptionRate = 1.0 / (double)V2Utils.SensibleTime(
 				minutes: 3,
 				seconds: 0
 			);

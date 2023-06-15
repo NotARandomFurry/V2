@@ -99,7 +99,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Steampunker
 
 			npc.AsPred().GetVisualBellySizeMethod = GetVisualBellySize;
 
-			npc.AsPrey().FoodTypeTags = new List<FoodTypeTag>
+			npc.AsFood().FoodTypeTags = new List<FoodTypeTag>
 			{
 				new MeatTag()
 				{
@@ -359,7 +359,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Steampunker
 
 		public override void PostAI(NPC npc)
 		{
-			if (npc.AsPrey().IsCurrentlyEaten)
+			if (npc.AsFood().IsCurrentlyEaten)
 				return;
 
 			static void RollForRandomGulp(ref bool gulp) => gulp |= Main.rand.NextBool(3, 100);
@@ -390,7 +390,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Steampunker
 
 		public static double GetPreyAbsorptionRate(NPC npc)
 		{
-			double baseAbsorptionRate = 1.0 / (double)V2Utils.WriteFrameCountAsANormalFuckingTimeMeasurement(
+			double baseAbsorptionRate = 1.0 / (double)V2Utils.SensibleTime(
 				minutes: 1,
 				seconds: 0
 			);

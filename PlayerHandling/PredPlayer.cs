@@ -20,6 +20,7 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using V2.Core;
+using V2.Items;
 using V2.NPCs;
 using V2.Sounds.Vore;
 
@@ -262,14 +263,30 @@ namespace V2.PlayerHandling
 			BuffExtensionTimeModifier = StatModifier.Default;
 		}
 
+		public override bool HoverSlot(Item[] inventory, int context, int slot)
+		{
+			if (inventory.Length == 59)
+			{
+				if (V2.ItemGulpHotkey.Current && V2.SwallowHotkey.JustPressed)
+				{
+					if (CanSwallow(Player, inventory[slot]))
+					{
+						Player.ForceDropItem(Player.Center, ref inventory[slot], out Item droppedItem);
+						Swallow(Player, droppedItem);
+					}
+				}
+			}
+			return false;
+		}
+
 		public override void PostItemCheck()
 		{
 			if (Main.netMode != NetmodeID.Server && Player.whoAmI == Main.myPlayer)
 			{
-				if (V2.SwallowHotkey.JustPressed)
+				if (V2.SwallowHotkey.JustPressed && !V2.ItemGulpHotkey.Current)
 				{
-					if (Player.AsPred().swallowAttemptCooldown > 0 || Player.AsPrey().IsCurrentlyEaten)
-						return;
+					if (Player.AsPred().swallowAttemptCooldown > 0 || Player.AsFood().IsCurrentlyEaten)
+						goto UpdatePrey;
 
 					Player.AsPred().swallowAttemptCooldown = 50;
 					string mealType = "none";
@@ -287,7 +304,7 @@ namespace V2.PlayerHandling
 						if (potentialMeal.realLife != -1 && potentialMeal.realLife != potentialMeal.whoAmI)
 							continue;
 
-						if (potentialMeal.AsPrey().IsCurrentlyEaten)
+						if (potentialMeal.AsFood().IsCurrentlyEaten)
 							continue;
 
 						if (!Collision.CanHit(Player.TrueCenter(), 1, 1, potentialMeal.TrueCenter(), 1, 1))
@@ -309,7 +326,7 @@ namespace V2.PlayerHandling
 						if (!potentialMeal.active || potentialMeal.whoAmI == Player.whoAmI)
 							continue;
 
-						if (potentialMeal.AsPrey().IsCurrentlyEaten)
+						if (potentialMeal.AsFood().IsCurrentlyEaten)
 							continue;
 
 						if (!Collision.CanHit(Player.TrueCenter(), 1, 1, potentialMeal.TrueCenter(), 1, 1))
@@ -341,11 +358,13 @@ namespace V2.PlayerHandling
 					}
 				}
 
-
 				if (V2.RegurgitateHotkey.JustPressed)
 				{
-					if (Player.AsPred().regurgitateAttemptCooldown > 0 || Player.AsPrey().IsCurrentlyEaten)
-						return;
+					if (Player.AsPred().regurgitateAttemptCooldown > 0 || Player.AsFood().IsCurrentlyEaten)
+						goto UpdatePrey;
+
+					if (Player.AsPred().stomachContents is null || Player.AsPred().stomachContents.Count <= 0)
+						goto UpdatePrey;
 
 					Player.AsPred().regurgitateAttemptCooldown = 90;
 					Prey prey = Player.AsPred().stomachContents.FindLast(x => !x.Dead);
@@ -353,40 +372,48 @@ namespace V2.PlayerHandling
 					{
 						Entity realPrey = prey.Type switch
 						{
-							PreyType.Player => Main.player[prey.Index],
-							PreyType.NPC => Main.npc[prey.Index],
-							PreyType.Projectile => Main.projectile[prey.Index],
-							PreyType.Item => Main.item[prey.Index],
+							PreyType.Player => prey.Instance as Player,
+							PreyType.NPC => prey.Instance as NPC,
+							PreyType.Projectile => prey.Instance as Projectile,
+							PreyType.Item => prey.Instance as Item,
+							PreyType.Custom => null,
 							_ => throw new NotImplementedException(),
 						};
 						realPrey.position = Player.TrueCenter() + new Vector2(Player.direction * 8f, -14f);
 						realPrey.velocity = new Vector2(Player.direction * 12.5f, -2.5f);
 						if (realPrey is NPC realPreyNPC)
 						{
-							realPreyNPC.AsPrey().IsCurrentlyEaten = false;
-							realPreyNPC.AsPrey().CurrentCaptor = null;
-							realPreyNPC.AsPrey().EatenSafetyFrames = 20;
+							realPreyNPC.AsFood().IsCurrentlyEaten = false;
+							realPreyNPC.AsFood().CurrentCaptor = null;
+							realPreyNPC.AsFood().EatenSafetyFrames = 20;
 						}
 						else if (realPrey is Player realPreyPlayer)
 						{
-							realPreyPlayer.AsPrey().IsCurrentlyEaten = false;
-							realPreyPlayer.AsPrey().CurrentCaptor = null;
+							realPreyPlayer.AsFood().IsCurrentlyEaten = false;
+							realPreyPlayer.AsFood().CurrentCaptor = null;
+						}
+						else if (realPrey is Item realPreyItem)
+						{
+							realPreyItem.AsFood().IsCurrentlyEaten = false;
+							realPreyItem.AsFood().CurrentCaptor = null;
+							realPreyItem.noGrabDelay = 60;
 						}
 						Player.AsPred().stomachContents.Remove(prey);
+						SoundEngine.PlaySound(
+							prey.WeightLeftToDigest <= 0.3 ? Player.AsPred().SmallBurps : Player.AsPred().StandardBurps,
+							Player.TrueCenter() + new Vector2(Player.direction * 8f, -14f)
+						);
 					}
-					SoundEngine.PlaySound(
-						prey.WeightLeftToDigest < 0.3 ? Player.AsPred().SmallBurps : Player.AsPred().StandardBurps,
-						Player.TrueCenter() + new Vector2(Player.direction * 8f, -14f)
-					);
 				}
 			}
 
+			UpdatePrey:
 			UpdatePrey(Player);
 		}
 		
 		public static bool CanSwallow(Player pred, Entity prey)
 		{
-			switch (ModContent.GetInstance<V2ServerSideConfigs>().GenderBlacklist)
+			switch (ModContent.GetInstance<V2ServerConfig>().GenderBlacklist)
 			{
 				default:
 					// do absolutely fucking nothing lmao
@@ -405,17 +432,15 @@ namespace V2.PlayerHandling
 
 			if (prey is Player preyPlayer)
 			{
-				if (Prey.GetInitialPreyWeight(preyPlayer) > pred.AsPred().StomachCapacity - GetCurrentBellyWeight(pred))
+				if (preyPlayer.AsFood().IsCurrentlyEaten)
 					return false;
-
-				return !preyPlayer.AsPrey().IsCurrentlyEaten;
 			}
 			else if (prey is NPC preyNPC)
 			{
 				if (V2.VoreNPCBlacklist.Contains(preyNPC.type))
 					return false;
 
-				bool tastesLikeSkittles = preyNPC.type == NPCID.HallowBoss && ModContent.GetInstance<V2ServerSideConfigs>().EasilyEdibleEmpress;
+				bool tastesLikeSkittles = preyNPC.type == NPCID.HallowBoss && ModContent.GetInstance<V2ServerConfig>().EasilyEdibleEmpress;
 				if (tastesLikeSkittles)
 					return true;
 
@@ -423,11 +448,23 @@ namespace V2.PlayerHandling
 				if (isThisAFuckingBoss)
 					return false;
 
-				if (Prey.GetInitialPreyWeight(preyNPC) > pred.AsPred().StomachCapacity - GetCurrentBellyWeight(pred))
+				if (preyNPC.AsFood().IsCurrentlyEaten)
+					return false;
+			}
+			else if (prey is Item preyItem)
+			{
+				if (preyItem.AsFood().MaxHealth == -1)
 					return false;
 
-				return !preyNPC.AsPrey().IsCurrentlyEaten;
+				if (preyItem.favorited)
+					return false;
+
+				if (preyItem.AsFood().IsCurrentlyEaten)
+					return false;
 			}
+
+			if (Prey.GetInitialPreyWeight(prey) > pred.AsPred().StomachCapacity - GetCurrentBellyWeight(pred))
+				return false;
 
 			return true;
 		}
@@ -448,7 +485,7 @@ namespace V2.PlayerHandling
 				pred.AsPred().stomachContents.Add(food);
 				SoundEngine.PlaySound(
 					Main.rand.NextFromCollection(
-						food.WeightLeftToDigest <= 0.2
+						food.WeightLeftToDigest <= 0.3
 						? pred.AsPred().SmallGulps
 						: pred.AsPred().BigGulps
 					),
@@ -458,8 +495,8 @@ namespace V2.PlayerHandling
 				{
 					case PreyType.NPC:
 						NPC npc = prey as NPC;
-						npc.AsPrey().IsCurrentlyEaten = true;
-						npc.AsPrey().CurrentCaptor = new PredEntityReference()
+						npc.AsFood().IsCurrentlyEaten = true;
+						npc.AsFood().CurrentCaptor = new PredEntityReference()
 						{
 							Predator = pred,
 							PreyInstance = food
@@ -474,20 +511,32 @@ namespace V2.PlayerHandling
 								}
 							}
 						}
+
 						pred.AsPred().lastEntitySwallowed = npc.TypeName;
 						pred.AsPred().lastEntitySwallowedMod = npc.ModNPC != null ? npc.ModNPC.Mod.DisplayName : "Terraria";
 						break;
 					case PreyType.Player:
 						Player player = prey as Player;
-						player.AsPrey().IsCurrentlyEaten = true;
-						player.AsPrey().CurrentCaptor = new PredEntityReference()
+						player.AsFood().IsCurrentlyEaten = true;
+						player.AsFood().CurrentCaptor = new PredEntityReference()
 						{
 							Predator = pred,
 							PreyInstance = food
 						};
-						player.AsPrey().TotalTimesSwallowed += 1;
+						player.AsFood().TotalTimesSwallowed += 1;
 						pred.AsPred().lastEntitySwallowed = "Player";
 						pred.AsPred().lastEntitySwallowedMod = "Terraria";
+						break;
+					case PreyType.Item:
+						Item item = prey as Item;
+						item.AsFood().IsCurrentlyEaten = true;
+						item.AsFood().CurrentCaptor = new PredEntityReference()
+						{
+							Predator = pred,
+							PreyInstance = food
+						};
+						pred.AsPred().lastEntitySwallowed = item.Name;
+						pred.AsPred().lastEntitySwallowedMod = item.ModItem != null ? item.ModItem.Mod.DisplayName : "Terraria";
 						break;
 				}
 			}
@@ -507,6 +556,15 @@ namespace V2.PlayerHandling
 			foreach (Prey prey in player.AsPred().stomachContents)
 			{
 				prey.timeSpentInStomach++;
+
+				switch (prey.Type)
+				{
+					case PreyType.Item:
+						Item preyItem = prey.Instance as Item;
+						preyItem.AsFood().UpdateInStomach?.Invoke(preyItem, player, prey.Dead);
+						break;
+				}
+
 				if (!prey.Dead)
 				{
 					double digestionDamage = player.AsPred().DigestionTickDamage;
@@ -517,11 +575,11 @@ namespace V2.PlayerHandling
 						switch (prey.Type)
 						{
 							case PreyType.Player:
-								Player preyPlayer = Main.player[prey.Index];
+								Player preyPlayer = prey.Instance as Player;
 								bool shouldDigestPlayer = !player.AsPred().SafeStomach;
 								if (shouldDigestPlayer)
 								{
-									prey.Dead = preyPlayer.AsPrey().TakeDigestionDamage(player, digestionDamage);
+									prey.Dead = preyPlayer.AsFood().TakeDigestionDamage(player, digestionDamage);
 									if (prey.Dead)
 									{
 										if (!player.AsPred().mealCount.ContainsKey("Terraria: Player"))
@@ -535,19 +593,38 @@ namespace V2.PlayerHandling
 								}
 								break;
 							case PreyType.NPC:
-								NPC preyNPC = Main.npc[prey.Index];
+								NPC preyNPC = prey.Instance as NPC;
 								bool shouldDigestNPC = !player.AsPred().SafeStomach;
 								if (shouldDigestNPC)
 								{
-									if (preyNPC.type == NPCID.HallowBoss && ModContent.GetInstance<V2ServerSideConfigs>().EasilyEdibleEmpress)
+									if (preyNPC.type == NPCID.HallowBoss && ModContent.GetInstance<V2ServerConfig>().EasilyEdibleEmpress)
 										digestionDamage *= 40.0;
-									prey.Dead = preyNPC.AsPrey().TakeDigestionDamage(preyNPC, player, digestionDamage);
+									prey.Dead = preyNPC.AsFood().TakeDigestionDamage(preyNPC, player, digestionDamage);
 									if (prey.Dead)
 									{
 										string preyNPCMod = preyNPC.ModNPC != null ? preyNPC.ModNPC.Mod.DisplayName : "Terraria";
 										if (!player.AsPred().mealCount.ContainsKey(preyNPCMod + ": " + preyNPC.TypeName))
 											player.AsPred().mealCount.Add(preyNPCMod + ": " + preyNPC.TypeName, 0);
 										player.AsPred().mealCount[preyNPCMod + ": " + preyNPC.TypeName] += 1;
+										SoundEngine.PlaySound(
+											prey.WeightLeftToDigest < 0.3 ? player.AsPred().SmallBurps : player.AsPred().StandardBurps,
+											player.TrueCenter() + new Vector2(player.direction * 8f, -14f)
+										);
+									}
+								}
+								break;
+							case PreyType.Item:
+								Item preyItem = prey.Instance as Item;
+								bool shouldDigestItem = !player.AsPred().SafeStomach;
+								if (shouldDigestItem)
+								{
+									prey.Dead = preyItem.TakeDigestionDamage(player, digestionDamage);
+									if (prey.Dead)
+									{
+										string preyItemMod = preyItem.ModItem != null ? preyItem.ModItem.Mod.DisplayName : "Terraria";
+										if (!player.AsPred().mealCount.ContainsKey(preyItemMod + ": " + preyItem.Name))
+											player.AsPred().mealCount.Add(preyItemMod + ": " + preyItem.Name, 0);
+										player.AsPred().mealCount[preyItemMod + ": " + preyItem.Name] += 1;
 										SoundEngine.PlaySound(
 											prey.WeightLeftToDigest < 0.3 ? player.AsPred().SmallBurps : player.AsPred().StandardBurps,
 											player.TrueCenter() + new Vector2(player.direction * 8f, -14f)
@@ -566,13 +643,13 @@ namespace V2.PlayerHandling
 				}
 			}
 
-			if (!player.AsPrey().IsCurrentlyEaten)
+			if (!player.AsFood().IsCurrentlyEaten)
 			{
 				bool stomachNoisesPlaying = SoundEngine.TryGetActiveSound(player.AsPred().ActiveStomachNoises, out ActiveSound stomachNoises);
 				if (!stomachNoisesPlaying)
 				{
 					player.AsPred().ActiveStomachNoises = SoundEngine.PlaySound(
-						StomachNoises.Muffled with { Volume = 0.2f + (0.1f * GetVisualBellySize(player)) },
+						StomachNoises.Muffled with { Volume = 0.25f + (0.15f * GetVisualBellySize(player)) },
 						player.TrueCenter()
 					);
 					SoundEngine.TryGetActiveSound(player.AsPred().ActiveStomachNoises, out stomachNoises);
@@ -634,11 +711,11 @@ namespace V2.PlayerHandling
 					switch (prey.Type)
 					{
 						case PreyType.Player:
-							Player preyPredPlayer = Main.player[prey.Index];
+							Player preyPredPlayer = prey.Instance as Player;
 							totalBellyWeight += GetCurrentBellyWeight(preyPredPlayer);
 							break;
 						case PreyType.NPC:
-							NPC preyPredNPC = Main.npc[prey.Index];
+							NPC preyPredNPC = prey.Instance as NPC;
 							totalBellyWeight += PredNPC.GetCurrentBellyWeight(preyPredNPC);
 							break;
 					}
@@ -723,11 +800,11 @@ namespace V2.PlayerHandling
 
 		public override void Kill(double damage, int hitDirection, bool pvp, PlayerDeathReason damageSource)
 		{
-			if (Player.AsPrey().IsCurrentlyEaten)
+			if (Player.AsFood().IsCurrentlyEaten)
 			{
 				foreach (Prey prey in Player.AsPred().stomachContents)
 				{
-					Entity betterPred = Player.AsPrey().CurrentCaptor.Value.Predator;
+					Entity betterPred = Player.AsFood().CurrentCaptor.Value.Predator;
 					if (betterPred is NPC npcPred)
 					{
 						npcPred.AsPred().stomachContentsQueue.Add(prey);
@@ -868,8 +945,8 @@ namespace V2.PlayerHandling
 				});
 				// because EntityID is set automagically on initialization of a Prey instance, this isn't actually needed
 				// I'm keepin' it commented out for now just in case it does end up needed
-				// binaryWriter.Write(prey.EntityID);
-				tumPacket.Write(prey.Index);
+				// binaryWriter.Write((prey.Instance as NPC).type);
+				tumPacket.Write(prey.Instance.whoAmI);
 				tumPacket.Write(prey.Dead);
 				tumPacket.Write(prey.WeightLeftToDigest);
 			}

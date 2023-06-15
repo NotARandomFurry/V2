@@ -46,9 +46,6 @@ namespace V2.NPCs
 		public delegate List<string> DelegateGetChat(NPC npc, Player player);
 		public DelegateGetChat GetChatMethod { get; set; }
 
-		public delegate void DelegateModifyChatButtons(NPC npc, Player player, ChatButtonInfo button1, ChatButtonInfo button2, ChatButtonInfo button3, ChatButtonInfo button4);
-		public DelegateModifyChatButtons ModifyChatButtonsMethod { get; set; }
-
 		public SlotId ActiveStomachNoises { get; set; }
 
 		public override bool InstancePerEntity => true;
@@ -58,9 +55,6 @@ namespace V2.NPCs
 		public V2NPC()
 		{
 			Gender = EntityGender.Other;
-
-			GetChatMethod = null;
-			ModifyChatButtonsMethod = null;
 
 			GetChatMethod = null;
 		}

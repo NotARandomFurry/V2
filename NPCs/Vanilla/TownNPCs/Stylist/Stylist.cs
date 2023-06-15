@@ -100,7 +100,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 
 			npc.AsPred().GetVisualBellySizeMethod = GetVisualBellySize;
 
-			npc.AsPrey().FoodTypeTags = new List<FoodTypeTag>
+			npc.AsFood().FoodTypeTags = new List<FoodTypeTag>
 			{
 				new MeatTag()
 				{
@@ -351,7 +351,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 								}
 								break;
 						}
-						if (npc.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.NPC && x.EntityID == NPCID.Dryad) is Prey dryadAsPrey)
+						if (npc.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.Dryad) is Prey dryadAsPrey)
 						{
 							if (!dryadAsPrey.Dead)
 							{
@@ -373,7 +373,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 								});
 							}
 						}
-						if (npc.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.NPC && x.EntityID == NPCID.PartyGirl) is Prey partyGirlAsPrey)
+						if (npc.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.PartyGirl) is Prey partyGirlAsPrey)
 						{
 							if (!partyGirlAsPrey.Dead)
 							{
@@ -486,7 +486,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 
 		public override void PostAI(NPC npc)
 		{
-			if (npc.AsPrey().IsCurrentlyEaten)
+			if (npc.AsFood().IsCurrentlyEaten)
 				return;
 
 			if (npc.AsPred().stomachContents.Count > 0)
@@ -505,10 +505,10 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 			if (salad != null && salad.Distance(npc.Center) <= npc.AsPred().swallowRange && shouldSnackOnSalad)
 				PredNPC.Swallow(npc, salad);
 
-			if (ModContent.GetInstance<V2ServerSideConfigs>().NoRandomGulpsAgainstPlayer)
+			if (ModContent.GetInstance<V2ServerConfig>().NoRandomGulpsAgainstPlayers)
 				return;
 
-			if (!Main.CurrentPlayer.active || Main.CurrentPlayer.dead || Main.CurrentPlayer.Distance(npc.Center) > npc.AsPred().swallowRange || Main.CurrentPlayer.AsPrey().IsCurrentlyEaten)
+			if (!Main.CurrentPlayer.active || Main.CurrentPlayer.dead || Main.CurrentPlayer.Distance(npc.Center) > npc.AsPred().swallowRange || Main.CurrentPlayer.AsFood().IsCurrentlyEaten)
 				return;
 
 			bool bald = Main.CurrentPlayer.hair == 16 || Main.CurrentPlayer.head == ArmorIDs.Head.MonkBrows;
@@ -561,66 +561,6 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 			}
 		}
 
-		public override bool PreChatButtonClicked(NPC npc, bool firstButton)
-		{
-			bool playerEatenAtAll = Main.CurrentPlayer.IsFoodFor(npc, out bool pastTense);
-			bool playerCurrentlyEaten = playerEatenAtAll && !pastTense;
-			if (playerCurrentlyEaten)
-			{
-				if (firstButton)
-				{
-					if (Main.bloodMoon)
-						Main.npcChatText = "The hell do you think you're gonna be able to buy in there? You're a snack, not a client, and it's not like you'll be needing anything I could sell you where you're going...";
-					else
-						Main.npcChatText = "Sorry, can't really sell you anything while I'm giving you a gut cut! Maybe later, after your cut's done, I'll getcha some of my deliciously dazzling hair dyes to spruce up your scalp!";
-				}
-				else
-				{
-					if (Main.bloodMoon)
-						Main.npcChatText = "My gut's a better haircut than anything you'll ever think up, dummy. Just shut up and let it do what it does best; turn rowdy meals into a better style.";
-					else
-						Main.npcChatText = "You're already getting a haircut in there, hun! My gut'll do any haircut you want, for free!...as long as you don't mind being a snack after the fact...";
-				}
-				return false;
-			}
-			else
-			{
-				if (Main.bloodMoon)
-				{
-					if (!firstButton)
-					{
-						PredNPC.SwallowWithTextIfApplicable(
-							npc,
-							Main.CurrentPlayer,
-							"[c/7F7F7F:<Without warning, " + npc.GivenName + " stuffs you down her throat, headfirst. As you quickly settle in thereafter, you find that her acids have already worked away at your hair.>]\n"
-						  + "There. That gives you your haircut, and gives me a good meal to make me less hungry for a while. Now, quiet down and digest."
-						);
-						return false;
-					}
-				}
-				else
-				{
-					if (!firstButton)
-					{
-						bool gutCut = Main.rand.NextBool(5, 100);
-						if (gutCut)
-						{
-							PredNPC.SwallowWithTextIfApplicable(
-								npc,
-								Main.CurrentPlayer,
-								"Actually, while you're asking about a haircut...I'm really hungry, and I know just the thing that'll solve both our problems at once!\n"
-							  + "[c/7F7F7F:<With little warning, " + npc.GivenName + " stuffs you down her throat, headfirst. She gives a pleasant hum as you settle into her stomach.>]\n"
-							  + "There! Now you can get my signature Gut Cut experience; it'll shave off exactly as much as you could ever want, give you a snazzy new acid-worn style, AND keep me from being hungry! Hope you like it, because there's a STRICT no-refund policy."
-							);
-							return false;
-						}
-					}
-				}
-			}
-
-			return true;
-		}
-
 		public static void GetDigestedPlayerAdditionalDeathMessages(NPC npc, Player player, List<string> deathReasonKeyList)
 		{
 			deathReasonKeyList.AddRange(new List<string>
@@ -664,7 +604,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 
 		public static double GetPreyAbsorptionRate(NPC npc)
 		{
-			double baseAbsorptionRate = 1.0 / (double)V2Utils.WriteFrameCountAsANormalFuckingTimeMeasurement(
+			double baseAbsorptionRate = 1.0 / (double)V2Utils.SensibleTime(
 				minutes: 1,
 				seconds: 45
 			);

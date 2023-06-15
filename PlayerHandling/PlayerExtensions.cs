@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 using V2.Core;
@@ -16,14 +17,14 @@ namespace V2.PlayerHandling
 	{
 		public static V2Player AsV2Player(this Player player) => player.GetModPlayer<V2Player>();
 		public static PredPlayer AsPred(this Player player) => player.GetModPlayer<PredPlayer>();
-		public static PreyPlayer AsPrey(this Player player) => player.GetModPlayer<PreyPlayer>();
+		public static PreyPlayer AsFood(this Player player) => player.GetModPlayer<PreyPlayer>();
 
 		public static bool IsFoodFor(this Player player, Entity entity, out bool pastTense)
 		{
 			pastTense = false;
 			if (entity is NPC predNPC)
 			{
-				List<Prey> playerAsPreyList = predNPC.AsPred().stomachContents.FindAll(x => x.Type == PreyType.Player && x.Index == player.whoAmI);
+				List<Prey> playerAsPreyList = predNPC.AsPred().stomachContents.FindAll(x => x.Type == PreyType.Player && x.Instance.whoAmI == player.whoAmI);
 				if (playerAsPreyList != null && playerAsPreyList.Count > 0)
 				{
 					if (playerAsPreyList.FirstOrDefault(x => !x.Dead) == null)
@@ -33,7 +34,7 @@ namespace V2.PlayerHandling
 			}
 			else if (entity is Player predPlayer)
 			{
-				List<Prey> playerAsPreyList = predPlayer.AsPred().stomachContents.FindAll(x => x.Type == PreyType.Player && x.Index == player.whoAmI);
+				List<Prey> playerAsPreyList = predPlayer.AsPred().stomachContents.FindAll(x => x.Type == PreyType.Player && x.Instance.whoAmI == player.whoAmI);
 				if (playerAsPreyList != null && playerAsPreyList.Count > 0)
 				{
 					if (playerAsPreyList.FirstOrDefault(x => !x.Dead) == null)
@@ -70,10 +71,42 @@ namespace V2.PlayerHandling
 			if (player.velocity.Y == 0f)
 				return false;
 
-			if (player.AsPrey().IsCurrentlyEaten)
+			if (player.AsFood().IsCurrentlyEaten)
 				return false;
 
 			return true;
+		}
+
+
+		/// <summary>
+		/// Drops the given <see cref="Item"/> from the player at the given position.<br/>
+		/// Only drops items that actually exist. Does not drop favorited items.<br/>
+		/// </summary>
+		/// <param name="player">The player from which to drop the given item.</param>
+		/// <param name="source">The source of the item drop.</param>
+		/// <param name="position">The position at which the item should be dropped.</param>
+		/// <param name="item">The item itself, ready to be dropped into the world.</param>
+		/// <param name="itemDrop">The item, now dropped into the world.</param>
+		public static void ForceDropItem(this Player player, Vector2 position, ref Item item, out Item itemDrop)
+		{
+			itemDrop = null;
+			if (item.IsAir)
+				return;
+			if (item.favorited)
+				return;
+
+			int itemDropId = Item.NewItem(player.GetSource_Misc("ThrowItem"), (int)position.X, (int)position.Y, player.width, player.height, item);
+			itemDrop = Main.item[itemDropId];
+
+			itemDrop.velocity.Y = (float)Main.rand.Next(-20, 1) * 0.2f;
+			itemDrop.velocity.X = (float)Main.rand.Next(-20, 21) * 0.2f;
+			itemDrop.noGrabDelay = 100;
+			itemDrop.newAndShiny = false;
+
+			if (Main.netMode == NetmodeID.MultiplayerClient)
+				NetMessage.SendData(MessageID.SyncItem, -1, -1, null, itemDropId);
+
+			item.TurnToAir();
 		}
 	}
 }

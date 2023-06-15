@@ -8,11 +8,11 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Remove="Core\EligibleNPCs\**" />
-    <EmbeddedResource Remove="Core\EligibleNPCs\**" />
-    <None Remove="Core\EligibleNPCs\**" />
+    <PackageReference Include="tModLoader.CodeAssist" Version="0.1.*" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="tModLoader.CodeAssist" Version="0.1.*" />
+    <Reference Include="BetterDialogue">
+      <HintPath>..\..\..\tModLoader-preview\ModReader\BetterDialogue\BetterDialogue.dll</HintPath>
+    </Reference>
   </ItemGroup>
 </Project>

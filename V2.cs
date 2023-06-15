@@ -28,6 +28,7 @@ namespace V2
 		public static ModKeybind SwallowHotkey;
 		public static ModKeybind RegurgitateHotkey;
 		public static ModKeybind FeedHotkey;
+		public static ModKeybind ItemGulpHotkey;
 
 		public static Asset<Texture2D> ChatBackground;
 
@@ -43,15 +44,13 @@ namespace V2
 			SwallowHotkey = KeybindLoader.RegisterKeybind(this, "Swallow", "V");
 			RegurgitateHotkey = KeybindLoader.RegisterKeybind(this, "Regurgitate", "X");
 			FeedHotkey = KeybindLoader.RegisterKeybind(this, "Feed", "G");
+			ItemGulpHotkey = KeybindLoader.RegisterKeybind(this, "Eat Items", "RightShift");
 
-			ChatBackground = ModContent.Request<Texture2D>("V2/UI/Chat_BigBack");
 			EngageVoraciousGameFuckery();
 		}
 
 		public override void Unload()
 		{
-			ChatBackground = null;
-
 			DisengageVoraciousGameFuckery();
 		}
 

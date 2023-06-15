@@ -95,7 +95,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.ArmsDealer
 
 			npc.AsPred().GetVisualBellySizeMethod = GetVisualBellySize;
 
-			npc.AsPrey().FoodTypeTags = new List<FoodTypeTag>
+			npc.AsFood().FoodTypeTags = new List<FoodTypeTag>
 			{
 				new MeatTag()
 				{
@@ -306,10 +306,10 @@ namespace V2.NPCs.Vanilla.TownNPCs.ArmsDealer
 
 		public override void PostAI(NPC npc)
 		{
-			if (npc.AsPrey().IsCurrentlyEaten)
+			if (npc.AsFood().IsCurrentlyEaten)
 				return;
 
-			if (npc.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.NPC && x.EntityID == NPCID.Nurse) is Prey crushAsPrey)
+			if (npc.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.Nurse) is Prey crushAsPrey)
 				return;
 
 			static void RollForRandomGulp(ref bool gulp) => gulp |= Main.rand.NextBool(2, 100);
@@ -321,10 +321,10 @@ namespace V2.NPCs.Vanilla.TownNPCs.ArmsDealer
 			if (helloNurse != null && helloNurse.Distance(npc.Center) <= npc.AsPred().swallowRange && snackOnCrush)
 				PredNPC.Swallow(npc, helloNurse);
 
-			if (ModContent.GetInstance<V2ServerSideConfigs>().NoRandomGulpsAgainstPlayer)
+			if (ModContent.GetInstance<V2ServerConfig>().NoRandomGulpsAgainstPlayers)
 				return;
 
-			if (!Main.CurrentPlayer.active || Main.CurrentPlayer.dead || Main.CurrentPlayer.Distance(npc.Center) > npc.AsPred().swallowRange || Main.CurrentPlayer.AsPrey().IsCurrentlyEaten)
+			if (!Main.CurrentPlayer.active || Main.CurrentPlayer.dead || Main.CurrentPlayer.Distance(npc.Center) > npc.AsPred().swallowRange || Main.CurrentPlayer.AsFood().IsCurrentlyEaten)
 				return;
 
 			bool decideToHuntPlayer = false;
@@ -360,7 +360,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.ArmsDealer
 
 		public static double GetPreyAbsorptionRate(NPC npc)
 		{
-			double baseAbsorptionRate = 1.0 / (double)V2Utils.WriteFrameCountAsANormalFuckingTimeMeasurement(
+			double baseAbsorptionRate = 1.0 / (double)V2Utils.SensibleTime(
 				minutes: 2,
 				seconds: 0
 			);

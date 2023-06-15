@@ -107,14 +107,14 @@ namespace V2.PlayerHandling
 			player.headVelocity.X = (float)Main.rand.Next(-20, 21) * 0.1f + (float)(2 * hitDirection);
 			player.bodyVelocity.X = (float)Main.rand.Next(-20, 21) * 0.1f + (float)(2 * hitDirection);
 			player.legVelocity.X = (float)Main.rand.Next(-20, 21) * 0.1f + (float)(2 * hitDirection);
-			if (player.stoned || !genGore || player.AsPrey().Digested)
+			if (player.stoned || !genGore || player.AsFood().Digested)
 			{
 				player.headPosition = Vector2.Zero;
 				player.bodyPosition = Vector2.Zero;
 				player.legPosition = Vector2.Zero;
 			}
 
-			if (genGore && !player.AsPrey().Digested)
+			if (genGore && !player.AsFood().Digested)
 			{
 				for (int j = 0; j < 100; j++)
 				{
@@ -191,7 +191,7 @@ namespace V2.PlayerHandling
 				}
 			}
 
-			if (!player.AsPrey().Digested)
+			if (!player.AsFood().Digested)
 				player.DropTombstone(coinsOwned, deathText, hitDirection);
 
 			if (player.whoAmI == Main.myPlayer)

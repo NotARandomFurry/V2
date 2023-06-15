@@ -45,7 +45,7 @@ namespace V2
 		/// - 30 is a half of a second.
 		/// </param>
 		/// <returns>The total number of frames that the effect should last for, for the purpose of setting time-related fields.</returns>
-		public static int WriteFrameCountAsANormalFuckingTimeMeasurement(int hours = 0, int minutes = 0, int seconds = 0, int frames = 0)
+		public static int SensibleTime(int hours = 0, int minutes = 0, int seconds = 0, int frames = 0)
 		{
 			int totalFrameCount = hours * 60 * 60 * 60;
 			totalFrameCount += minutes * 60 * 60;
@@ -173,7 +173,9 @@ namespace V2
 		// for the moment, what this does is search for each potential tooltip line before Tooltip0 in reverse order and return the first one that isn't null
 		public static bool FindLastTooltipLineBeforeFlavorText(List<TooltipLine> tooltips, out TooltipLine line)
 		{
-			line = tooltips.FirstOrDefault(x => x.Name == "Material")
+			line = tooltips.FirstOrDefault(x => x.Name == "V2SizeAsFood")
+				?? tooltips.FirstOrDefault(x => x.Name == "V2Durability")
+				?? tooltips.FirstOrDefault(x => x.Name == "Material")
 				?? tooltips.FirstOrDefault(x => x.Name == "Consumable")
 				?? tooltips.FirstOrDefault(x => x.Name == "Ammo")
 				?? tooltips.FirstOrDefault(x => x.Name == "Placeable")
@@ -200,6 +202,7 @@ namespace V2
 				?? tooltips.FirstOrDefault(x => x.Name == "Damage")
 				?? tooltips.FirstOrDefault(x => x.Name == "SocialDesc")
 				?? tooltips.FirstOrDefault(x => x.Name == "Social")
+				?? tooltips.FirstOrDefault(x => x.Name == "FavoriteNoNoms")
 				?? tooltips.FirstOrDefault(x => x.Name == "FavoriteDesc")
 				?? tooltips.FirstOrDefault(x => x.Name == "Favorite")
 				?? tooltips.FirstOrDefault(x => x.Name == "ItemName");

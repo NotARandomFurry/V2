@@ -80,7 +80,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 		public bool digestScamPatient;
 		public int healPlayerIndex;
 		public int armsDealerHealTime = 0;
-		public static int ArmsDealerMaxHealTime => V2Utils.WriteFrameCountAsANormalFuckingTimeMeasurement(minutes: 6);
+		public static int ArmsDealerMaxHealTime => V2Utils.SensibleTime(minutes: 6);
 
 		public override bool InstancePerEntity => true;
 
@@ -95,7 +95,6 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 			npc.AsPred().ResetPredSpecificVariablesMethod = ResetPredSpecificVariables;
 
 			npc.AsV2NPC().GetChatMethod = GetNurseChat;
-			npc.AsV2NPC().ModifyChatButtonsMethod = ModifyChatButtons;
 
 			npc.AsPred().CanBeForceFedMethod = CanNurseBeForceFed;
 			npc.AsPred().OnForceFedMethod = OnNurseForceFed;
@@ -119,7 +118,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 			npc.AsNurse().healPlayerIndex = -1;
 			npc.AsNurse().armsDealerHealTime = 0;
 
-			npc.AsPrey().FoodTypeTags = new List<FoodTypeTag>
+			npc.AsFood().FoodTypeTags = new List<FoodTypeTag>
 			{
 				new MeatTag()
 				{
@@ -146,6 +145,9 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 
 		public List<string> GetNurseChat(NPC npc, Player player)
 		{
+			npc.AsNurse().originalHealPrice = 0;
+			npc.AsNurse().healTypeChoice = false;
+
 			List<NPC> nearbyResidentNPCs = npc.GetNearbyResidentNPCs(out int npcsWithinHouse, out int npcsWithinVillage);
 			NPC guide = nearbyResidentNPCs.FirstOrDefault(x => x.type == NPCID.Guide);
 			NPC hopelessRomantic = nearbyResidentNPCs.FirstOrDefault(x => x.type == NPCID.ArmsDealer);
@@ -179,7 +181,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 					nurseChatPool.AddRange(new List<string>
 					{
 						"...just running a neuro assessment on you while you're in there...yup, full strength in all limbs.",
-						"You know, I just wish people the people I eat would stop sending themselves straight to my chest...",
+						"You know, I really wish the people I eat would stop sending themselves straight to my chest...",
 					});
 					if (hopelessRomantic != null)
 					{
@@ -503,28 +505,28 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 							"No, you can't fit someone in a PEG tube. Stop asking.",
 						});
 					}
-					if (player.AsPrey().TotalTimesDigested >= 5 && player.AsPrey().TotalTimesDigested <= 25)
+					if (player.AsFood().TotalTimesDigested >= 5 && player.AsFood().TotalTimesDigested <= 25)
 					{
 						nurseChatPool.AddRange(new List<string>
 						{
 							"...maybe you should be the one to ask me to say \"ahh\" for a change?",
-							"Hmm. You've already been mulched a total of...lemme check your chart..." + player.AsPrey().TotalTimesDigested + " times. Be a bit more careful.",
+							"Hmm. You've already been mulched a total of...lemme check your chart..." + player.AsFood().TotalTimesDigested + " times. Be a bit more careful.",
 						});
 					}
-					else if (player.AsPrey().TotalTimesDigested > 25 && player.AsPrey().TotalTimesDigested <= 100)
+					else if (player.AsFood().TotalTimesDigested > 25 && player.AsFood().TotalTimesDigested <= 100)
 					{
 						nurseChatPool.AddRange(new List<string>
 						{
 							"Shouldn't you be the one asking me to say \"ahh\"?",
-							"The preds around this world have eaten you " + player.AsPrey().TotalTimesDigested + " times already? Huh...wonder if any of them belched up a banner for you...",
+							"The preds around this world have eaten you " + player.AsFood().TotalTimesDigested + " times already? Huh...wonder if any of them belched up a banner for you...",
 						});
 					}
-					else if (player.AsPrey().TotalTimesDigested > 100)
+					else if (player.AsFood().TotalTimesDigested > 100)
 					{
 						nurseChatPool.AddRange(new List<string>
 						{
 							"Shouldn't you be the one asking me to say \"ahh\"? You've definitely gotten gurgled enough by now to seem like you'd want that.",
-							"Sheesh, you've been churned up " + player.AsPrey().TotalTimesDigested + " times!? Ever consider a change of profession? Maybe try moving in with someone who needs a dependable snack?",
+							"Sheesh, you've been churned up " + player.AsFood().TotalTimesDigested + " times!? Ever consider a change of profession? Maybe try moving in with someone who needs a dependable snack?",
 						});
 					}
 					if (Main.IsItAHappyWindyDay)
@@ -556,7 +558,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 			return nurseChatPool;
 		}
 
-		public static bool CanNurseBeForceFed(NPC npc) => npc.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.NPC && x.EntityID == NPCID.ArmsDealer) is null;
+		public static bool CanNurseBeForceFed(NPC npc) => npc.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.ArmsDealer) is null;
 
 		public static void OnNurseForceFed(NPC npc, Player player)
 		{
@@ -609,24 +611,24 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 
 		public override void PostAI(NPC npc)
 		{
-			if (npc.AsPrey().IsCurrentlyEaten)
+			if (npc.AsFood().IsCurrentlyEaten)
 				return;
 
 			if (Main.GameUpdateCount % 60 != 0)
 				return;
 
-			if (npc.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.NPC && x.EntityID == NPCID.ArmsDealer) is Prey crushAsPrey)
+			if (npc.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.ArmsDealer) is Prey crushAsPrey)
 			{
-				NPC crush = Main.npc[crushAsPrey.Index];
+				NPC crush = crushAsPrey.Instance as NPC;
 				npc.AsNurse().armsDealerHealTime += 1;
 				if (npc.AsNurse().armsDealerHealTime >= ArmsDealerMaxHealTime)
 				{
 					npc.AsNurse().armsDealerHealTime = 0;
 					crush.position = npc.TrueCenter() + new Vector2(npc.direction * 8f, -14f);
 					crush.velocity = new Vector2(npc.direction * 12.5f, -2.5f);
-					crush.AsPrey().IsCurrentlyEaten = false;
-					crush.AsPrey().CurrentCaptor = null;
-					crush.AsPrey().EatenSafetyFrames = 20;
+					crush.AsFood().IsCurrentlyEaten = false;
+					crush.AsFood().CurrentCaptor = null;
+					crush.AsFood().EatenSafetyFrames = 20;
 					npc.AsPred().stomachContents.Remove(crushAsPrey);
 					SoundEngine.PlaySound(
 						npc.AsPred().StandardBurps,
@@ -678,10 +680,10 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 			if (bestGirl != null && bestGirl.Distance(npc.Center) <= npc.AsPred().swallowRange && tryToStealBestGirlAss)
 				PredNPC.Swallow(npc, bestGirl);
 
-			if (ModContent.GetInstance<V2ServerSideConfigs>().NoRandomGulpsAgainstPlayer)
+			if (ModContent.GetInstance<V2ServerConfig>().NoRandomGulpsAgainstPlayers)
 				return;
 
-			if (!Main.CurrentPlayer.active || Main.CurrentPlayer.dead || Main.CurrentPlayer.Distance(npc.Center) > npc.AsPred().swallowRange || Main.CurrentPlayer.AsPrey().IsCurrentlyEaten)
+			if (!Main.CurrentPlayer.active || Main.CurrentPlayer.dead || Main.CurrentPlayer.Distance(npc.Center) > npc.AsPred().swallowRange || Main.CurrentPlayer.AsFood().IsCurrentlyEaten)
 				return;
 
 			bool shouldTryToAddPlayerToAss = false;
@@ -729,285 +731,9 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 			}
 		}
 
-		public static void ModifyChatButtons(NPC npc, Player player, ChatButtonInfo button1, ChatButtonInfo button2, ChatButtonInfo button3, ChatButtonInfo button4)
-		{
-			if (npc.AsNurse().healTypeChoice)
-			{
-				button1.Text = "Traditional";
-				button2.Text = "In-Stomach";
-				if (PredNPC.CanSwallow(npc, player))
-					button2.TextColor = Color.Gray;
-			}
-			else if (player.IsFoodFor(npc, out bool pastTense) && !pastTense && npc.AsNurse().healPlayerIndex == player.whoAmI)
-			{
-				if (npc.AsNurse().originalHealPrice > 0)
-				{
-					int originalPrice = (int)(npc.AsNurse().originalHealPrice * 0.80) + npc.AsNurse().healOvertime;
-					int platOvertimeFee = 0;
-					int goldOvertimeFee = 0;
-					int silverOvertimeFee = 0;
-					int copperOvertimeFee = 0;
-					if (originalPrice >= 1000000)
-					{
-						platOvertimeFee = originalPrice / 1000000;
-						originalPrice -= platOvertimeFee * 1000000;
-					}
-
-					if (originalPrice >= 10000)
-					{
-						goldOvertimeFee = originalPrice / 10000;
-						originalPrice -= goldOvertimeFee * 10000;
-					}
-
-					if (originalPrice >= 100)
-					{
-						silverOvertimeFee = originalPrice / 100;
-						originalPrice -= silverOvertimeFee * 100;
-					}
-
-					if (originalPrice >= 1)
-						copperOvertimeFee = originalPrice;
-
-					string button1Text = "Finish Healing (";
-					if (platOvertimeFee > 0)
-						button1Text = button1Text + platOvertimeFee + " " + Lang.inter[15].Value + " ";
-
-					if (goldOvertimeFee > 0)
-						button1Text = button1Text + goldOvertimeFee + " " + Lang.inter[16].Value + " ";
-
-					if (silverOvertimeFee > 0)
-						button1Text = button1Text + silverOvertimeFee + " " + Lang.inter[17].Value + " ";
-
-					if (copperOvertimeFee > 0)
-						button1Text = button1Text + copperOvertimeFee + " " + Lang.inter[18].Value + " ";
-
-					button1.Text = button1Text + ")";
-
-					float num11 = (float)(int)Main.mouseTextColor / 255f;
-					if (platOvertimeFee > 0)
-						button1.TextColor = new Color((byte)(220f * num11), (byte)(220f * num11), (byte)(198f * num11), Main.mouseTextColor);
-					else if (goldOvertimeFee > 0)
-						button1.TextColor = new Color((byte)(224f * num11), (byte)(201f * num11), (byte)(92f * num11), Main.mouseTextColor);
-					else if (silverOvertimeFee > 0)
-						button1.TextColor = new Color((byte)(181f * num11), (byte)(192f * num11), (byte)(193f * num11), Main.mouseTextColor);
-					else if (copperOvertimeFee > 0)
-						button1.TextColor = new Color((byte)(246f * num11), (byte)(138f * num11), (byte)(96f * num11), Main.mouseTextColor);
-				}
-			}
-		}
-
-		public override bool PreChatButtonClicked(NPC npc, bool firstButton)
-		{
-			if (Main.LocalPlayer.IsFoodFor(npc, out bool pastTense) && !pastTense)
-			{
-				if (npc.AsNurse().originalHealPrice > 0 && npc.AsNurse().healPlayerIndex == Main.LocalPlayer.whoAmI)
-				{
-					if (npc.AsNurse().healOvertime > 0)
-					{
-						if (Main.LocalPlayer.BuyItem((int)(npc.AsNurse().originalHealPrice * 0.80) + npc.AsNurse().healOvertime))
-						{
-							npc.AsPred().stomachContents.RemoveAll(x => x.Type == PreyType.Player && x.Index == Main.CurrentPlayer.whoAmI);
-							npc.AsNurse().healPlayerIndex = -1;
-							Main.npcChatText = "Ready to get out, then? Feels like you've got enough to pay in there, too. Alright, give me a moment...\n"
-											 + "[c/7F7F7F:<" + npc.GivenName + "'s stomach begins convulsing rhythmically as you begin to be forced back up her throat and out of her mouth. Once you're safely out of her stomach, she takes her payment before you have the chance to give it to her yourself.>]\n"
-											 + "There you go. Good as new, and you didn't even need to get melted into butt fat. Be grateful I gave you that much, and don't ask for a lollipop.";
-							npc.AsNurse().originalHealPrice = 0;
-							npc.AsNurse().healOvertime = 0;
-							npc.AsNurse().digestScamPatient = false;
-							return false;
-						}
-						else
-						{
-							npc.AsNurse().originalHealPrice = 0;
-							npc.AsNurse().healOvertime = 0;
-							npc.AsNurse().digestScamPatient = true;
-							Main.npcChatText = "Really? Trying to undercut ME on in-stomach healing? Why, you little prick...\n"
-											 + "[c/7F7F7F:<As if on cue, " + npc.GivenName + "'s stomach roars to life, acids already starting to flood in to melt you down just as readily as she'd healed you up only moments prior.>]\n"
-											 + "Hope you enjoyed the \"free\" treatment while it lasted, " + Main.LocalPlayer.name + ". You're about to find out firsthand why healthcare isn't free, cheapskate!";
-							return false;
-						}
-					}
-					else
-					{
-						Main.npcChatText = "Your healing's not even done yet. Sit still and be a good gut filler until we're done fixing you up.";
-						return false;
-					}
-				}
-				else if (npc.AsNurse().digestScamPatient)
-				{
-					if (firstButton)
-					{
-						Main.npcChatText = "Oh, what's that? You wanted to be healed, not hurt? Well, you shouldn't have tried to undercut me, then. Enjoy being a nutrient soup and my future ass fat.";
-						return false;
-					}
-				}
-				else
-				{
-					if (firstButton)
-					{
-						Main.npcChatText = "Aren't you in there to be a meal for me? I don't think I need to worry about healing you at the moment.";
-						return false;
-					}
-				}
-			}
-			else
-			{
-				if (npc.AsNurse().healTypeChoice)
-				{
-					if (firstButton)
-					{
-						int health = Main.LocalPlayer.statLifeMax2 - Main.LocalPlayer.statLife;
-						bool removeDebuffs = true;
-						PlayerLoader.ModifyNursePrice(Main.LocalPlayer, npc, health, removeDebuffs, ref npc.AsNurse().originalHealPrice);
-
-						if (npc.AsNurse().originalHealPrice > 0)
-						{
-							if (Main.LocalPlayer.BuyItem(npc.AsNurse().originalHealPrice))
-							{
-								AchievementsHelper.HandleNurseService(npc.AsNurse().originalHealPrice);
-								SoundEngine.PlaySound(SoundID.Item4);
-								SoundEngine.PlaySound(SoundID.Coins);
-								Main.LocalPlayer.HealEffect(health, true);
-								if ((double)Main.LocalPlayer.statLife < (double)Main.LocalPlayer.statLifeMax2 * 0.25)
-									Main.npcChatText = Lang.dialog(227);
-								else if ((double)Main.LocalPlayer.statLife < (double)Main.LocalPlayer.statLifeMax2 * 0.5)
-									Main.npcChatText = Lang.dialog(228);
-								else if ((double)Main.LocalPlayer.statLife < (double)Main.LocalPlayer.statLifeMax2 * 0.75)
-									Main.npcChatText = Lang.dialog(229);
-								else
-									Main.npcChatText = Lang.dialog(230);
-
-								Main.LocalPlayer.statLife += health;
-
-								if (!removeDebuffs) // no indent for better patching
-									goto SkipDebuffRemoval;
-
-								for (int l = 0; l < Player.MaxBuffs; l++)
-								{
-									int num24 = Main.LocalPlayer.buffType[l];
-									if (Main.debuff[num24] && Main.LocalPlayer.buffTime[l] > 0 && (num24 < 0 || !BuffID.Sets.NurseCannotRemoveDebuff[num24]))
-									{
-										Main.player[Main.myPlayer].DelBuff(l);
-										l = -1;
-									}
-								}
-
-								SkipDebuffRemoval:
-								PlayerLoader.PostNurseHeal(Main.LocalPlayer, npc, health, removeDebuffs, npc.AsNurse().originalHealPrice);
-							}
-							else
-							{
-								Main.npcChatText = Main.rand.NextFromCollection(new List<string> {
-									"You can't afford me. How unfortunate. Guess you'll have to stop wasting my time.",
-									"I'll never be able to go for lunch if you keep calling me for check-ups you can't afford. And trust me, that won't stop me from eating.",
-									"I don't work for free, and neither does my gut. Either cough up the cash for a traditional fix-up or get out.",
-								});
-							}
-						}
-						else
-						{
-							Main.npcChatText = Main.rand.NextFromCollection(new List<string> {
-								"I don't give happy endings, unless you consider the chance to fatten up my glutes to be one.",
-								"I'll never be able to go for lunch if you keep calling me for nothing. And trust me, that won't stop me from eating.",
-								"You keep wasting my time, I'll see if I can somehow churn you into more space in the hospital I run around back.",
-							});
-						}
-						npc.AsNurse().healTypeChoice = false;
-						npc.AsNurse().originalHealPrice = 0;
-						return false;
-					}
-					else
-					{
-						if (PredNPC.CanSwallow(npc, Main.LocalPlayer))
-						{
-							List<string> possibleGutHealLines = new List<string>
-							{
-								"...alright, then. Note that you'll be staying in there until the treatment's done; overtime costs extra, too.",
-								"You...SHOULD have enough to pay me. Fine, you can stay in me a little while.",
-								"...if you start working me and my gut overtime, you'll be on a one-way trip to bulking up my butt...hopefully. Got it?",
-							};
-							PredNPC.SwallowWithTextIfApplicable(
-								npc,
-								Main.LocalPlayer,
-								Main.rand.NextFromCollection(possibleGutHealLines) + "\n"
-							  + "[c/7F7F7F:<" + npc.GivenName + "'s stomach rumbles and grumbles in anticipation as she nonchalantly stuffs you headfirst into her mouth, soon depositing you into her waiting stomach. There don't seem to be any acids for the minute, and it's actually quite pleasant in here, though you realize she didn't ask for upfront payment...>]"
-							);
-							npc.AsNurse().healPlayerIndex = Main.myPlayer;
-							npc.AsNurse().healTypeChoice = false;
-						}
-						else
-						{
-							Main.npcChatText = "...I'm afraid I'm a bit too full to keep you inside me at the moment. Give me a little bit to digest, and I'm sure I'll be able to squeeze you in.";
-							npc.AsNurse().healTypeChoice = false;
-						}
-						return false;
-					}
-				}
-				else
-				{
-					if (firstButton)
-					{
-						int num4 = Main.player[Main.myPlayer].statLifeMax2 - Main.player[Main.myPlayer].statLife;
-						for (int j = 0; j < Player.MaxBuffs; j++)
-						{
-							int num5 = Main.player[Main.myPlayer].buffType[j];
-							if (Main.debuff[num5] && Main.player[Main.myPlayer].buffTime[j] > 60 && (num5 < 0 || !BuffID.Sets.NurseCannotRemoveDebuff[num5]))
-								num4 += 100;
-						}
-
-						int health = Main.LocalPlayer.statLifeMax2 - Main.LocalPlayer.statLife;
-						bool removeDebuffs = true;
-						string reason = "";
-						bool canHeal = true;
-						if (NPC.downedGolemBoss)
-							num4 *= 200;
-						else if (NPC.downedPlantBoss)
-							num4 *= 150;
-						else if (NPC.downedMechBossAny)
-							num4 *= 100;
-						else if (Main.hardMode)
-							num4 *= 60;
-						else if (NPC.downedBoss3 || NPC.downedQueenBee)
-							num4 *= 25;
-						else if (NPC.downedBoss2)
-							num4 *= 10;
-						else if (NPC.downedBoss1)
-							num4 *= 3;
-
-						if (Main.expertMode)
-							num4 *= 2;
-
-						int copperCoins = (int)((double)num4 * Main.player[Main.myPlayer].currentShoppingSettings.PriceAdjustment);
-						if (copperCoins > 0 && copperCoins < 1)
-							copperCoins = 1;
-						int originalHealPrice = copperCoins;
-						reason = Language.GetTextValue("tModLoader.DefaultNurseCantHealChat");
-						canHeal = PlayerLoader.ModifyNurseHeal(Main.player[Main.myPlayer], npc, ref health, ref removeDebuffs, ref reason);
-
-						if (copperCoins < 0)
-							copperCoins = 0;
-
-						if (canHeal)
-						{
-							npc.AsNurse().originalHealPrice = originalHealPrice;
-							npc.AsNurse().healOvertime = 0;
-							npc.AsNurse().healTypeChoice = true;
-							Main.npcChatText = "Alright, so you're looking to get patched up. Great, just great...you want the quick way, or the easy way?";
-						}
-						else
-						{
-							Main.npcChatText = reason;
-						}
-						return false;
-					}
-				}
-			}
-			return true;
-		}
-
 		public static double GetDigestionTickRate(NPC npc, Prey prey)
 		{
-			if (npc.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.NPC && x.EntityID == NPCID.ArmsDealer) is Prey crushAsPrey && !Main.bloodMoon)
+			if (npc.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.ArmsDealer) is Prey crushAsPrey && !Main.bloodMoon)
 				return 0.0;
 
 			return Main.bloodMoon ? 2.0 : 1.0;
@@ -1017,7 +743,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 
 		public static void OnDigestionKill(NPC npc, Prey digestedPrey)
 		{
-			if (npc.AsNurse().healPlayerIndex != -1 && digestedPrey.Type == PreyType.Player && digestedPrey.Index == npc.AsNurse().healPlayerIndex)
+			if (npc.AsNurse().healPlayerIndex != -1 && digestedPrey.Type == PreyType.Player && digestedPrey.Instance.whoAmI == npc.AsNurse().healPlayerIndex)
 				npc.AsNurse().healPlayerIndex = -1;
 
 			SoundEngine.PlaySound(
@@ -1028,7 +754,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 
 		public static double GetPreyAbsorptionRate(NPC npc)
 		{
-			double baseAbsorptionRate = 1.0 / (double)V2Utils.WriteFrameCountAsANormalFuckingTimeMeasurement(
+			double baseAbsorptionRate = 1.0 / (double)V2Utils.SensibleTime(
 				minutes: 2,
 				seconds: 30
 			);

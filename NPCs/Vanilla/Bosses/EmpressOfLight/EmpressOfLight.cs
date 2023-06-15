@@ -33,7 +33,7 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 
 	public class UnreasonablyThickFairy : GlobalNPC
 	{
-		public int MuffledScreechMinDelay => V2Utils.WriteFrameCountAsANormalFuckingTimeMeasurement(seconds: 4);
+		public int MuffledScreechMinDelay => V2Utils.SensibleTime(seconds: 4);
 		private int _muffledScreechDelay;
 		public int MuffledScreechDelay
 		{
@@ -54,11 +54,11 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 			npc.AsPred().stomachContentsQueue = new List<Prey>();
 			npc.AsPred().maxStomachCapacity = 40.0;
 
-			npc.AsPrey().PreyAIMethod = UnreasonablyThickFairyPreyAI;
+			npc.AsFood().PreyAIMethod = UnreasonablyThickFairyPreyAI;
 
-			npc.AsPrey().DigestedDeathSound = UnreasonablyThickFairyStuff.MuffledFoodFairyDeathScreech;
+			npc.AsFood().DigestedDeathSound = UnreasonablyThickFairyStuff.MuffledFoodFairyDeathScreech;
 
-			npc.AsPrey().FoodTypeTags = new List<FoodTypeTag>()
+			npc.AsFood().FoodTypeTags = new List<FoodTypeTag>()
 			{
 				new MeatTag()
 				{
@@ -77,7 +77,7 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 		{
 			if (target.type == NPCID.PartyGirl)
 			{
-				if (!npc.AsPrey().IsCurrentlyEaten && npc.Hitbox.Intersects(target.Hitbox) && target.AsPartyGirl().HungerForEmpress == PartyGirl.MaxHungerForEmpress && target.AsPred().stomachContents.Count == 0)
+				if (!npc.AsFood().IsCurrentlyEaten && npc.Hitbox.Intersects(target.Hitbox) && target.AsPartyGirl().HungerForEmpress == PartyGirl.MaxHungerForEmpress && target.AsPred().stomachContents.Count == 0)
 				{
 					PredNPC.Swallow(target, npc);
 					target.position.X += 14;

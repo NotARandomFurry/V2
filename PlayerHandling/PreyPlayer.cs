@@ -8,10 +8,12 @@ using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
+using Terraria.UI.Chat;
 using V2.Core;
 using V2.NPCs;
 
@@ -69,16 +71,26 @@ namespace V2.PlayerHandling
 
 		public override void Initialize()
 		{
+			Player.AsFood().IsCurrentlyEaten = false;
+			Player.AsFood().Digested = false;
+			Player.AsFood().CurrentCaptor = null;
 			// uncomment once achievements are available so the Ascended Acolyte race is...relatively fair for everyone
 			// Player.AsPrey().HasBeenDigestedByNPC = new int[NPCLoader.NPCCount];
 			// Player.AsPrey().HasBeenDigestedByNPCTotal = new int[NPCLoader.NPCCount];
 		}
 
+		public override void OnEnterWorld()
+		{
+			Player.AsFood().IsCurrentlyEaten = false;
+			Player.AsFood().Digested = false;
+			Player.AsFood().CurrentCaptor = null;
+		}
+
 		public override void ResetEffects()
 		{
-			Player.AsPrey().IsCurrentlyEaten = false;
-			Player.AsPrey().Digested = false;
-			Player.AsPrey().CurrentCaptor = null;
+			Player.AsFood().IsCurrentlyEaten = false;
+			Player.AsFood().Digested = false;
+			Player.AsFood().CurrentCaptor = null;
 			for (int i = 0; i < Main.maxNPCs; i++)
 			{
 				NPC potentialPred = Main.npc[i];
@@ -92,26 +104,26 @@ namespace V2.PlayerHandling
 				 && (pred.stomachContentsQueue is null || pred.stomachContentsQueue.Count <= 0))
 					continue;
 
-				if (pred.stomachContents.FirstOrDefault(x => !x.Dead && x.Type == PreyType.Player && x.Index == Player.whoAmI) is Prey prey)
+				if (pred.stomachContents.FirstOrDefault(x => !x.Dead && x.Type == PreyType.Player && x.Instance.whoAmI == Player.whoAmI) is Prey prey)
 				{
-					Player.AsPrey().IsCurrentlyEaten = true;
-					Player.AsPrey().EatenCameraPlacement = potentialPred.Center - (Main.ScreenSize.ToVector2() / 2f);
+					Player.AsFood().IsCurrentlyEaten = true;
+					Player.AsFood().EatenCameraPlacement = potentialPred.Center - (Main.ScreenSize.ToVector2() / 2f);
 					Player.position = potentialPred.Center - (Player.Size / 2f);
 					Player.noItems = true;
-					Player.AsPrey().CurrentCaptor = new PredEntityReference()
+					Player.AsFood().CurrentCaptor = new PredEntityReference()
 					{
 						Predator = potentialPred,
 						PreyInstance = prey
 					};
 					break;
 				}
-				if (pred.stomachContentsQueue.FirstOrDefault(x => !x.Dead && x.Type == PreyType.Player && x.Index == Player.whoAmI) is Prey queuedPrey)
+				if (pred.stomachContentsQueue.FirstOrDefault(x => !x.Dead && x.Type == PreyType.Player && x.Instance.whoAmI == Player.whoAmI) is Prey queuedPrey)
 				{
-					Player.AsPrey().IsCurrentlyEaten = true;
-					Player.AsPrey().EatenCameraPlacement = potentialPred.Center - (Main.ScreenSize.ToVector2() / 2f);
+					Player.AsFood().IsCurrentlyEaten = true;
+					Player.AsFood().EatenCameraPlacement = potentialPred.Center - (Main.ScreenSize.ToVector2() / 2f);
 					Player.position = potentialPred.Center - (Player.Size / 2f);
 					Player.noItems = true;
-					Player.AsPrey().CurrentCaptor = new PredEntityReference()
+					Player.AsFood().CurrentCaptor = new PredEntityReference()
 					{
 						Predator = potentialPred,
 						PreyInstance = queuedPrey
@@ -132,26 +144,26 @@ namespace V2.PlayerHandling
 				 && (potentialPred.AsPred().stomachContentsQueue is null || potentialPred.AsPred().stomachContentsQueue.Count <= 0))
 					continue;
 
-				if (pred.stomachContents.FirstOrDefault(x => !x.Dead && x.Type == PreyType.Player && x.Index == Player.whoAmI) is Prey prey)
+				if (pred.stomachContents.FirstOrDefault(x => !x.Dead && x.Type == PreyType.Player && x.Instance.whoAmI == Player.whoAmI) is Prey prey)
 				{
-					Player.AsPrey().IsCurrentlyEaten = true;
-					Player.AsPrey().EatenCameraPlacement = potentialPred.Center - (Main.ScreenSize.ToVector2() / 2f);
+					Player.AsFood().IsCurrentlyEaten = true;
+					Player.AsFood().EatenCameraPlacement = potentialPred.Center - (Main.ScreenSize.ToVector2() / 2f);
 					Player.position = potentialPred.Center - (Player.Size / 2f);
 					Player.noItems = true;
-					Player.AsPrey().CurrentCaptor = new PredEntityReference()
+					Player.AsFood().CurrentCaptor = new PredEntityReference()
 					{
 						Predator = potentialPred,
 						PreyInstance = prey
 					};
 					break;
 				}
-				if (pred.stomachContentsQueue.FirstOrDefault(x => !x.Dead && x.Type == PreyType.Player && x.Index == Player.whoAmI) is Prey queuedPrey)
+				if (pred.stomachContentsQueue.FirstOrDefault(x => !x.Dead && x.Type == PreyType.Player && x.Instance.whoAmI == Player.whoAmI) is Prey queuedPrey)
 				{
-					Player.AsPrey().IsCurrentlyEaten = true;
-					Player.AsPrey().EatenCameraPlacement = potentialPred.Center - (Main.ScreenSize.ToVector2() / 2f);
+					Player.AsFood().IsCurrentlyEaten = true;
+					Player.AsFood().EatenCameraPlacement = potentialPred.Center - (Main.ScreenSize.ToVector2() / 2f);
 					Player.position = potentialPred.Center - (Player.Size / 2f);
 					Player.noItems = true;
-					Player.AsPrey().CurrentCaptor = new PredEntityReference()
+					Player.AsFood().CurrentCaptor = new PredEntityReference()
 					{
 						Predator = potentialPred,
 						PreyInstance = queuedPrey
@@ -160,21 +172,21 @@ namespace V2.PlayerHandling
 				}
 			}
 
-			Player.AsPrey().StruggleStrength = StatModifier.Default;
+			Player.AsFood().StruggleStrength = StatModifier.Default;
 		}
 
 		public override void UpdateDead()
 		{
-			Player.AsPrey().IsCurrentlyEaten = false;
+			Player.AsFood().IsCurrentlyEaten = false;
 		}
 
 		public override void PreUpdateMovement()
 		{
-			if (Player.AsPrey().IsCurrentlyEaten)
+			if (Player.AsFood().IsCurrentlyEaten)
 			{
 				Player.velocity = Vector2.Zero;
-				if (Player.AsPrey().CurrentCaptor.HasValue)
-					Player.position = Player.AsPrey().CurrentCaptor.Value.Predator.Center;
+				if (Player.AsFood().CurrentCaptor.HasValue)
+					Player.position = Player.AsFood().CurrentCaptor.Value.Predator.Center;
 			}
 		}
 
@@ -182,11 +194,11 @@ namespace V2.PlayerHandling
 		{
 			if (V2.FeedHotkey.JustPressed)
 			{
-				if (ModContent.GetInstance<V2ServerSideConfigs>().DebugChatMessages)
+				if (ModContent.GetInstance<V2ServerConfig>().DebugChatMessages)
 					Main.NewText("Attempting to force-feed " + Player.name + " to nearby predators...");
-				if (Player.AsPrey().IsCurrentlyEaten)
+				if (Player.AsFood().IsCurrentlyEaten)
 				{
-					if (ModContent.GetInstance<V2ServerSideConfigs>().DebugChatMessages)
+					if (ModContent.GetInstance<V2ServerConfig>().DebugChatMessages)
 						Main.NewText("Force-feed attempt failed; " + Player.name + " is already busy being food.");
 					return;
 				}
@@ -202,10 +214,10 @@ namespace V2.PlayerHandling
 					if (!potentialPred.active)
 						continue;
 
-					if (potentialPred.AsPrey().IsCurrentlyEaten)
+					if (potentialPred.AsFood().IsCurrentlyEaten)
 						continue;
 
-					switch (ModContent.GetInstance<V2ServerSideConfigs>().GenderBlacklist)
+					switch (ModContent.GetInstance<V2ServerConfig>().GenderBlacklist)
 					{
 						default:
 							// do absolutely fucking nothing lmao
@@ -243,10 +255,10 @@ namespace V2.PlayerHandling
 					if (!potentialPred.active || potentialPred.whoAmI == Player.whoAmI)
 						continue;
 
-					if (potentialPred.AsPrey().IsCurrentlyEaten)
+					if (potentialPred.AsFood().IsCurrentlyEaten)
 						continue;
 
-					switch (ModContent.GetInstance<V2ServerSideConfigs>().GenderBlacklist)
+					switch (ModContent.GetInstance<V2ServerConfig>().GenderBlacklist)
 					{
 						default:
 							// do absolutely fucking nothing lmao
@@ -276,7 +288,7 @@ namespace V2.PlayerHandling
 
 				if (predType != "none" && predIndex != -1)
 				{
-					if (ModContent.GetInstance<V2ServerSideConfigs>().DebugChatMessages)
+					if (ModContent.GetInstance<V2ServerConfig>().DebugChatMessages)
 						Main.NewText("Pred found! Pred type: " + predType + ". Pred index: " + predIndex + ".\n"
 								   + "Cramming " + Player.name + " into the chosen stomach...");
 					string foodFor = "";
@@ -300,12 +312,12 @@ namespace V2.PlayerHandling
 							foodFor = predPlayer.name;
 							break;
 					}
-					if (ModContent.GetInstance<V2ServerSideConfigs>().DebugChatMessages)
+					if (ModContent.GetInstance<V2ServerConfig>().DebugChatMessages)
 						Main.NewText("Force-feed action successful; " + Player.name + " is now food for " + foodFor + ".");
 				}
 				else
 				{
-					if (ModContent.GetInstance<V2ServerSideConfigs>().DebugChatMessages)
+					if (ModContent.GetInstance<V2ServerConfig>().DebugChatMessages)
 						Main.NewText("Force-feed action failed; there are no suitable preds nearby to turn " + Player.name + " into a snack for.");
 					return;
 				}
@@ -314,7 +326,7 @@ namespace V2.PlayerHandling
 
 		public override bool CanBeHitByNPC(NPC npc, ref int cooldownSlot)
 		{
-			if (npc.AsPrey().IsCurrentlyEaten || Player.AsPrey().IsCurrentlyEaten)
+			if (npc.AsFood().IsCurrentlyEaten || Player.AsFood().IsCurrentlyEaten)
 				return false;
 
 			return true;
@@ -322,7 +334,7 @@ namespace V2.PlayerHandling
 
 		public override bool CanBeHitByProjectile(Projectile proj)
 		{
-			if (Player.AsPrey().IsCurrentlyEaten)
+			if (Player.AsFood().IsCurrentlyEaten)
 				return false;
 
 			return true;
@@ -330,7 +342,7 @@ namespace V2.PlayerHandling
 
 		public override void NaturalLifeRegen(ref float regen)
 		{
-			if (Player.AsPrey().IsCurrentlyEaten)
+			if (Player.AsFood().IsCurrentlyEaten)
 			{
 				Player.lifeRegen = 0;
 				Player.lifeRegenTime = 0;
@@ -341,8 +353,8 @@ namespace V2.PlayerHandling
 
 		public override void ModifyScreenPosition()
 		{
-			if (Player.AsPrey().IsCurrentlyEaten)
-				Main.screenPosition = Player.AsPrey().EatenCameraPlacement;
+			if (Player.AsFood().IsCurrentlyEaten)
+				Main.screenPosition = Player.AsFood().EatenCameraPlacement;
 		}
 
 		/// <summary>
@@ -354,7 +366,7 @@ namespace V2.PlayerHandling
 		public bool TakeDigestionDamage(Entity pred, double digestionDamage)
 		{
 			int trueDigestionDamage = Main.DamageVar((float)digestionDamage, Player.luck);
-			if (ModContent.GetInstance<V2ServerSideConfigs>().DefenseInDigestionCalcs)
+			if (ModContent.GetInstance<V2ServerConfig>().DefenseInDigestionCalcs)
 			{
 				trueDigestionDamage -= Player.statDefense / 2;
 				if (trueDigestionDamage < 0)
@@ -363,8 +375,8 @@ namespace V2.PlayerHandling
 			Player.statLife -= trueDigestionDamage;
 			if (Player.statLife <= 0)
 			{
-				Player.AsPrey().Digested = true;
-				Player.AsPrey().TotalTimesDigested += 1;
+				Player.AsFood().Digested = true;
+				Player.AsFood().TotalTimesDigested += 1;
 				if (pred is NPC predNPC)
 				{
 					// uncomment once achievements are available so the Ascended Acolyte race is...relatively fair for everyone
@@ -405,6 +417,8 @@ namespace V2.PlayerHandling
 				)];
 				digestionText.position.X = pred.Center.X;
 				digestionText.position.X += pred.direction * 14;
+				if (pred.direction == -1)
+					digestionText.position.X -= ChatManager.GetStringSize(FontAssets.CombatText[0].Value, digestionText.text, new Vector2(digestionText.scale)).X;
 				digestionText.position.Y = Player.Center.Y;
 				digestionText.position.Y += Player.height / 5f;
 				digestionText.velocity.X = pred.direction * 2.5f;
@@ -430,14 +444,14 @@ namespace V2.PlayerHandling
 			ref PlayerDeathReason damageSource
 		)
 		{
-			if (Player.AsPrey().Digested)
+			if (Player.AsFood().Digested)
 			{
 				playSound = false;
 				genGore = false;
 			}
 			if (damageSource.SourceOtherIndex == 1)
 			{
-				if (Player.AsPrey().TotalTimesDigested >= 20)
+				if (Player.AsFood().TotalTimesDigested >= 20)
 				{
 					damageSource.SourceCustomReason = Language.GetTextValueWith(
 						Main.rand.NextFromList(
@@ -459,7 +473,7 @@ namespace V2.PlayerHandling
 		{
 			foreach (PlayerDrawLayer drawLayer in PlayerDrawLayerLoader.Layers)
 			{
-				if (Player.AsPrey().IsCurrentlyEaten || Player.AsPrey().Digested)
+				if (!Main.gameMenu && (Player.AsFood().IsCurrentlyEaten || Player.AsFood().Digested))
 					drawLayer.Hide();
 			}
 		}
@@ -467,20 +481,20 @@ namespace V2.PlayerHandling
 		public override void CopyClientState(ModPlayer clientClone)/* tModPorter Suggestion: Replace Item.Clone usages with Item.CopyNetStateTo */
 		{
 			PreyPlayer preyClientClone = clientClone as PreyPlayer;
-			preyClientClone.IsCurrentlyEaten = Player.AsPrey().IsCurrentlyEaten;
-			preyClientClone.Digested = Player.AsPrey().Digested;
-			preyClientClone.CurrentCaptor = Player.AsPrey().CurrentCaptor;
+			preyClientClone.IsCurrentlyEaten = Player.AsFood().IsCurrentlyEaten;
+			preyClientClone.Digested = Player.AsFood().Digested;
+			preyClientClone.CurrentCaptor = Player.AsFood().CurrentCaptor;
 		}
 
 		public override void SendClientChanges(ModPlayer clientPlayer)
 		{
 			PreyPlayer preyClientClone = clientPlayer as PreyPlayer;
 
-			if (preyClientClone.IsCurrentlyEaten != Player.AsPrey().IsCurrentlyEaten)
+			if (preyClientClone.IsCurrentlyEaten != Player.AsFood().IsCurrentlyEaten)
 				SyncPlayer(-1, Main.myPlayer, false);
-			if (preyClientClone.Digested != Player.AsPrey().Digested)
+			if (preyClientClone.Digested != Player.AsFood().Digested)
 				SyncPlayer(-1, Main.myPlayer, false);
-			if (preyClientClone.CurrentCaptor.HasValue && Player.AsPrey().CurrentCaptor.HasValue && preyClientClone.CurrentCaptor.Value.Predator != Player.AsPrey().CurrentCaptor.Value.Predator)
+			if (preyClientClone.CurrentCaptor.HasValue && Player.AsFood().CurrentCaptor.HasValue && preyClientClone.CurrentCaptor.Value.Predator != Player.AsFood().CurrentCaptor.Value.Predator)
 				SyncPlayer(-1, Main.myPlayer, false);
 		}
 
@@ -489,12 +503,12 @@ namespace V2.PlayerHandling
 			ModPacket gutSlutPacket = Mod.GetPacket();
 			gutSlutPacket.Write((byte)V2.MessageType.PreyPlayerSync);
 			gutSlutPacket.Write((byte)Player.whoAmI);
-			gutSlutPacket.Write(Player.AsPrey().IsCurrentlyEaten);
-			gutSlutPacket.Write(Player.AsPrey().Digested);
-			if (Player.AsPrey().IsCurrentlyEaten && Player.AsPrey().CurrentCaptor.HasValue)
+			gutSlutPacket.Write(Player.AsFood().IsCurrentlyEaten);
+			gutSlutPacket.Write(Player.AsFood().Digested);
+			if (Player.AsFood().IsCurrentlyEaten && Player.AsFood().CurrentCaptor.HasValue)
 			{
 				gutSlutPacket.Write(true);
-				Entity pred = Player.AsPrey().CurrentCaptor.Value.Predator;
+				Entity pred = Player.AsFood().CurrentCaptor.Value.Predator;
 				if (pred is NPC predNPC)
 				{
 					gutSlutPacket.Write("NPC pred");
@@ -511,26 +525,26 @@ namespace V2.PlayerHandling
 
 		public void ReceivePlayerSync(BinaryReader binaryReader)
 		{
-			Player.AsPrey().IsCurrentlyEaten = binaryReader.ReadBoolean();
-			Player.AsPrey().Digested = binaryReader.ReadBoolean();
-			if (Player.AsPrey().IsCurrentlyEaten && binaryReader.ReadBoolean())
+			Player.AsFood().IsCurrentlyEaten = binaryReader.ReadBoolean();
+			Player.AsFood().Digested = binaryReader.ReadBoolean();
+			if (Player.AsFood().IsCurrentlyEaten && binaryReader.ReadBoolean())
 			{
 				switch (binaryReader.ReadString())
 				{
 					case "NPC pred":
 						int npcPredIndex = binaryReader.ReadInt32();
-						Player.AsPrey().CurrentCaptor = new PredEntityReference()
+						Player.AsFood().CurrentCaptor = new PredEntityReference()
 						{
 							Predator = Main.npc[npcPredIndex],
-							PreyInstance = Main.npc[npcPredIndex].AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.Player && x.Index == Player.whoAmI)
+							PreyInstance = Main.npc[npcPredIndex].AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.Player && x.Instance.whoAmI == Player.whoAmI)
 						};
 						break;
 					case "Player pred":
 						int playerPredIndex = binaryReader.ReadInt32();
-						Player.AsPrey().CurrentCaptor = new PredEntityReference()
+						Player.AsFood().CurrentCaptor = new PredEntityReference()
 						{
 							Predator = Main.player[playerPredIndex],
-							PreyInstance = Main.player[playerPredIndex].AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.Player && x.Index == Player.whoAmI)
+							PreyInstance = Main.player[playerPredIndex].AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.Player && x.Instance.whoAmI == Player.whoAmI)
 						};
 						break;
 				}

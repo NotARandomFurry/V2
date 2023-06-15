@@ -10,10 +10,10 @@ namespace V2.Items
 	public static class ItemExtensions
 	{
 		/// <summary>
-		/// Fetches the current item's attached DDItem instance, allowing for access to DD-specific item fields.
+		/// Fetches the current item's attached V2Item instance, allowing for access to Voraria-specific item fields.
 		/// </summary>
-		/// <param name="item">The item to fetch the attached DDItem instance for.</param>
-		/// <returns>The DDItem instance on the current item, if it has one; otherwise, null.</returns>
+		/// <param name="item">The item to fetch the attached V2Item instance for.</param>
+		/// <returns>The V2Item instance on the current item, if it has one; otherwise, null.</returns>
 		public static V2Item AsV2Item(this Item item)
 		{
 			if (item.IsAir)
@@ -25,6 +25,5 @@ namespace V2.Items
 			else
 				return null;
 		}
-
 	}
 }
