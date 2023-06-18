@@ -14,6 +14,7 @@ namespace V2.Items.Voraria.Charms
 {
 	public class CharmBetterDigestion : ModItem
 	{
+		public static int AcidStrengthBonus => 12;
 		public override void SetDefaults()
 		{
 			Item.SetNameOverride(Language.GetTextValue("Mods.V2.ItemName.Voraria.Charms.BetterDigestion"));
@@ -38,20 +39,13 @@ namespace V2.Items.Voraria.Charms
 
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
-			tooltips.RemoveAll(x => x.Name.Contains("Tooltip"));
-			if (V2Utils.FindLastTooltipLineBeforeFlavorText(tooltips, out TooltipLine line))
-			{
-				Player player = Main.LocalPlayer;
-				V2Utils.InsertNewTooltipLine(
-					ref tooltips,
-					line,
-					1,
-					"Tooltip",
-					!Main.keyState.IsKeyDown(Keys.LeftShift)
-					  ? Language.GetTextValue("Mods.V2.ItemTooltip.Voraria.Charms.BetterDigestion.Short")
-					  : Language.GetTextValue("Mods.V2.ItemTooltip.Voraria.Charms.BetterDigestion.Long")
-				);
-			}
+			tooltips.AddVorariaDynamicTooltip(
+				"Voraria.Charms.BetterDigestion",
+				new
+				{
+					AcidStrengthBonus
+				}
+			);
 		}
 	}
 }

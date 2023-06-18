@@ -4,13 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
+using V2.Core;
+using V2.NPCs;
+using V2.PlayerHandling;
+using V2.StatusEffects.Debuffs;
 
 namespace V2.Items.Vanilla.Weapons.Melee
 {
 	public class CactusSword : GlobalItem
 	{
+		public static int ThornsBuffTime => V2Utils.SensibleTime(seconds: 10);
 		public override bool InstancePerEntity => true;
 		public override bool AppliesToEntity(Item entity, bool lateInstantiation) => entity.type == ItemID.CactusSword;
 
@@ -19,39 +25,29 @@ namespace V2.Items.Vanilla.Weapons.Melee
 			entity.AsFood().MaxHealth = 51;
 			entity.AsFood().Size = 0.52;
 
-			entity.AsFood().OnSwallow += OnSwallow;
-			entity.AsFood().UpdateInStomach += UpdateInStomach;
-		}
+			entity.AsFood().OnSwallowDamage = 6;
+			entity.AsFood().OnSwallowDeathReason = "{0} tried to deepthroat a cactus.";
+			entity.AsFood().OnSwallowSoreThroatTime = V2Utils.SensibleTime(seconds: 3, frames: 30);
 
-		public static void OnSwallow(Item item, Entity pred)
-		{
-			if (pred is Player playerPred)
-				playerPred.statLife -= 6;
-			else if (pred is NPC NPCPred)
-				NPCPred.life -= 6;
+			entity.AsFood().UpdateInStomach += UpdateInStomach;
 		}
 
 		public static void UpdateInStomach(Item item, Entity pred, bool dead)
 		{
-			if (!dead)
-				return;
-
-			if (pred is Player playerPred)
-				playerPred.AddBuff(BuffID.Thorns, V2Utils.SensibleTime(seconds: 10));
-			else if (pred is NPC NPCPred)
-				NPCPred.AddBuff(BuffID.Thorns, V2Utils.SensibleTime(seconds: 10));
+			if (dead)
+				pred.AddStatus(BuffID.Thorns, ThornsBuffTime);
 		}
 
 		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
 		{
-			V2Utils.FindLastTooltipLineBeforeFlavorText(tooltips, out TooltipLine finalLine);
-			tooltips.Insert(
-				tooltips.IndexOf(finalLine) + 1,
-				new TooltipLine(
-					V2.Instance,
-					"FlavorText",
-					"Grants the Thorns buff while digesting and briefly after being fully digested"
-				)
+			tooltips.AddVorariaDynamicTooltip(
+				"Vanilla.Weapons.Melee.CactusSword",
+				new
+				{
+					CactusSwordSwallowDamage = item.AsFood().OnSwallowDamage,
+					CactusSwordSoreThroatTime = ((double)item.AsFood().OnSwallowSoreThroatTime / 60.0).CastToDecimalPlaces(2),
+					CactusSwordThornsTime = ((double)ThornsBuffTime / 60.0).CastToDecimalPlaces(2)
+				}
 			);
 		}
 	}

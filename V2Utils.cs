@@ -1,9 +1,12 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace V2
@@ -18,7 +21,7 @@ namespace V2
 		LateNightSnacking
 	}
 
-	public class V2Utils
+	public static class V2Utils
 	{
 		/// <summary>
 		/// Takes the given amount of time for an effect to last and converts it to a concrete frame count.<br/>
@@ -166,6 +169,39 @@ namespace V2
 			}
 		}
 
+		public static void AddVorariaDynamicTooltip(this List<TooltipLine> tooltips, string itemTooltipKey, object longTooltipVariables)
+		{
+			TooltipLine dynamicTooltip = new TooltipLine(
+				V2.Instance,
+				"VorariaDynamicTooltip",
+				(Main.keyState.IsKeyDown(Keys.LeftShift) && Main.keyState.IsKeyDown(Keys.LeftControl))
+				? Language.GetTextValue(
+					"Mods.V2.ItemTooltip." + itemTooltipKey + ".Flavor"
+				) : (Main.keyState.IsKeyDown(Keys.LeftShift)
+				? Language.GetTextValueWith(
+					"Mods.V2.ItemTooltip." + itemTooltipKey + ".Long",
+					longTooltipVariables
+				) : Language.GetTextValue("Mods.V2.ItemTooltip." + itemTooltipKey + ".Short"))
+			);
+			if (Main.keyState.IsKeyDown(Keys.LeftShift) && Main.keyState.IsKeyDown(Keys.LeftControl))
+			{
+				dynamicTooltip.OverrideColor = Color.Gray;
+			}
+			
+			if (tooltips.FirstOrDefault(x => x.Mod == "Terraria" && x.Name.Contains("Tooltip")) is TooltipLine tooltipLine)
+			{
+				tooltips.Insert(
+					tooltips.IndexOf(tooltipLine),
+					dynamicTooltip
+				);
+				tooltips.RemoveAll(x => x.Mod == "Terraria" && x.Name.Contains("Tooltip"));
+			}
+			else
+			{
+				tooltips.Add(dynamicTooltip);
+			}
+		}
+
 		public static int TileCountAsPixelCount(double tileCount) => (int)Math.Round(tileCount * 16.0);
 
 
@@ -173,7 +209,8 @@ namespace V2
 		// for the moment, what this does is search for each potential tooltip line before Tooltip0 in reverse order and return the first one that isn't null
 		public static bool FindLastTooltipLineBeforeFlavorText(List<TooltipLine> tooltips, out TooltipLine line)
 		{
-			line = tooltips.FirstOrDefault(x => x.Name == "V2SizeAsFood")
+			line = tooltips.FirstOrDefault(x => x.Name == "V2EdibleByNormalUse")
+				?? tooltips.FirstOrDefault(x => x.Name == "V2SizeAsFood")
 				?? tooltips.FirstOrDefault(x => x.Name == "V2Durability")
 				?? tooltips.FirstOrDefault(x => x.Name == "Material")
 				?? tooltips.FirstOrDefault(x => x.Name == "Consumable")

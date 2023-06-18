@@ -23,6 +23,7 @@ using V2.Core;
 using V2.Items;
 using V2.NPCs;
 using V2.Sounds.Vore;
+using V2.StatusEffects.Debuffs;
 
 namespace V2.PlayerHandling
 {
@@ -48,9 +49,6 @@ namespace V2.PlayerHandling
 	{
 		public List<Prey> stomachContents;
 		public List<Prey> stomachContentsQueue;
-
-		public int swallowAttemptCooldown;
-		public int regurgitateAttemptCooldown;
 
 		public double stomachache;
 
@@ -190,7 +188,146 @@ namespace V2.PlayerHandling
 		public double specialHealthRegenCount;
 		public double specialManaRegenCount;
 
+		public bool BlockSwallowAttempts {
+			get {
+				if (Player.AsFood().IsCurrentlyEaten)
+					return true;
+
+				if (Player.HasBuff(ModContent.BuffType<SoreThroat>()))
+					return true;
+
+				return false;
+			}
+		}
 		public SlotId ActiveStomachNoises { get; set; }
+
+		public StatModifier StomachSizeModifier;
+		public double StomachFullness
+		{
+			get
+			{
+				double totalBellyWeight = 0.0;
+				if (stomachContents is not null && stomachContents.Count > 0)
+				{
+					foreach (Prey prey in stomachContents)
+					{
+						totalBellyWeight += prey.WeightLeftToDigest;
+						if (prey.Dead)
+							continue;
+
+						switch (prey.Type)
+						{
+							case PreyType.Player:
+								Player preyPredPlayer = prey.Instance as Player;
+								totalBellyWeight += preyPredPlayer.AsPred().StomachWeight;
+								break;
+							case PreyType.NPC:
+								NPC preyPredNPC = prey.Instance as NPC;
+								totalBellyWeight += PredNPC.GetCurrentBellyWeight(preyPredNPC);
+								break;
+						}
+					}
+				}
+				return totalBellyWeight;
+			}
+		}
+
+		public double KickyStomachFullness
+		{
+			get
+			{
+				double totalBellyWeight = 0.0;
+				if (stomachContents is not null && stomachContents.Count > 0)
+				{
+					foreach (Prey prey in stomachContents)
+					{
+						if (prey.Dead)
+							continue;
+
+						totalBellyWeight += prey.WeightLeftToDigest;
+						if (prey.Dead)
+							continue;
+
+						switch (prey.Type)
+						{
+							case PreyType.Player:
+								Player preyPredPlayer = prey.Instance as Player;
+								totalBellyWeight += preyPredPlayer.AsPred().StomachWeight;
+								break;
+							case PreyType.NPC:
+								NPC preyPredNPC = prey.Instance as NPC;
+								totalBellyWeight += PredNPC.GetCurrentBellyWeight(preyPredNPC);
+								break;
+						}
+					}
+				}
+				return totalBellyWeight;
+			}
+		}
+
+		public StatModifier StomachWeightModifier;
+		public double StomachWeight
+		{
+			get
+			{
+				double totalBellyWeight = 0.0;
+				if (stomachContents is not null && stomachContents.Count > 0)
+				{
+					foreach (Prey prey in stomachContents)
+					{
+						totalBellyWeight += prey.WeightLeftToDigest;
+						if (prey.Dead)
+							continue;
+
+						switch (prey.Type)
+						{
+							case PreyType.Player:
+								Player preyPredPlayer = prey.Instance as Player;
+								totalBellyWeight += preyPredPlayer.AsPred().StomachWeight;
+								break;
+							case PreyType.NPC:
+								NPC preyPredNPC = prey.Instance as NPC;
+								totalBellyWeight += PredNPC.GetCurrentBellyWeight(preyPredNPC);
+								break;
+						}
+					}
+				}
+				return (double)StomachWeightModifier.ApplyTo((float)totalBellyWeight);
+			}
+		}
+
+		public double KickyStomachWeight
+		{
+			get
+			{
+				double totalBellyWeight = 0.0;
+				if (stomachContents is not null && stomachContents.Count > 0)
+				{
+					foreach (Prey prey in stomachContents)
+					{
+						if (prey.Dead)
+							continue;
+
+						totalBellyWeight += prey.WeightLeftToDigest;
+						if (prey.Dead)
+							continue;
+
+						switch (prey.Type)
+						{
+							case PreyType.Player:
+								Player preyPredPlayer = prey.Instance as Player;
+								totalBellyWeight += preyPredPlayer.AsPred().StomachWeight;
+								break;
+							case PreyType.NPC:
+								NPC preyPredNPC = prey.Instance as NPC;
+								totalBellyWeight += PredNPC.GetCurrentBellyWeight(preyPredNPC);
+								break;
+						}
+					}
+				}
+				return (double)StomachWeightModifier.ApplyTo((float)totalBellyWeight);
+			}
+		}
 
 		public override void Initialize()
 		{
@@ -242,13 +379,6 @@ namespace V2.PlayerHandling
 				Player.AsPred().stomachContentsQueue.Remove(Player.AsPred().stomachContentsQueue.First());
 			}
 
-			Player.AsPred().swallowAttemptCooldown -= 1;
-			if (Player.AsPred().swallowAttemptCooldown < 0)
-				Player.AsPred().swallowAttemptCooldown = 0;
-			Player.AsPred().regurgitateAttemptCooldown -= 1;
-			if (Player.AsPred().regurgitateAttemptCooldown < 0)
-				Player.AsPred().regurgitateAttemptCooldown = 0;
-
 			GLP.Extra = 0;
 			SwallowSizeModifier = StatModifier.Default;
 			StomachacheGraceTimeModifier = StatModifier.Default;
@@ -261,6 +391,8 @@ namespace V2.PlayerHandling
 			ABS.Extra = 0;
 			PreyAbsorptionRateModifier = StatModifier.Default;
 			BuffExtensionTimeModifier = StatModifier.Default;
+
+			StomachWeightModifier = StatModifier.Default;
 		}
 
 		public override bool HoverSlot(Item[] inventory, int context, int slot)
@@ -285,10 +417,9 @@ namespace V2.PlayerHandling
 			{
 				if (V2.SwallowHotkey.JustPressed && !V2.ItemGulpHotkey.Current)
 				{
-					if (Player.AsPred().swallowAttemptCooldown > 0 || Player.AsFood().IsCurrentlyEaten)
+					if (Player.AsPred().BlockSwallowAttempts)
 						goto UpdatePrey;
 
-					Player.AsPred().swallowAttemptCooldown = 50;
 					string mealType = "none";
 					int mealIndex = -1;
 					Vector2 playerLocation = Player.MountedCenter;
@@ -360,13 +491,12 @@ namespace V2.PlayerHandling
 
 				if (V2.RegurgitateHotkey.JustPressed)
 				{
-					if (Player.AsPred().regurgitateAttemptCooldown > 0 || Player.AsFood().IsCurrentlyEaten)
+					if (Player.AsPred().BlockSwallowAttempts)
 						goto UpdatePrey;
 
 					if (Player.AsPred().stomachContents is null || Player.AsPred().stomachContents.Count <= 0)
 						goto UpdatePrey;
 
-					Player.AsPred().regurgitateAttemptCooldown = 90;
 					Prey prey = Player.AsPred().stomachContents.FindLast(x => !x.Dead);
 					if (prey is not null)
 					{
@@ -413,6 +543,9 @@ namespace V2.PlayerHandling
 		
 		public static bool CanSwallow(Player pred, Entity prey)
 		{
+			if (pred.AsPred().BlockSwallowAttempts)
+				return false;
+
 			switch (ModContent.GetInstance<V2ServerConfig>().GenderBlacklist)
 			{
 				default:
@@ -463,7 +596,7 @@ namespace V2.PlayerHandling
 					return false;
 			}
 
-			if (Prey.GetInitialPreyWeight(prey) > pred.AsPred().StomachCapacity - GetCurrentBellyWeight(pred))
+			if (Prey.GetInitialPreySize(prey) > pred.AsPred().StomachCapacity - GetCurrentBellyWeight(pred))
 				return false;
 
 			return true;
@@ -483,14 +616,17 @@ namespace V2.PlayerHandling
 
 				Prey food = new Prey(prey);
 				pred.AsPred().stomachContents.Add(food);
-				SoundEngine.PlaySound(
-					Main.rand.NextFromCollection(
-						food.WeightLeftToDigest <= 0.3
-						? pred.AsPred().SmallGulps
-						: pred.AsPred().BigGulps
-					),
-					pred.Center
-				);
+				if (prey is not NPC preyNPC || preyNPC.realLife == -1)
+				{
+					SoundEngine.PlaySound(
+						Main.rand.NextFromCollection(
+							food.WeightLeftToDigest <= 0.3
+							? pred.AsPred().SmallGulps
+							: pred.AsPred().BigGulps
+						),
+						pred.Center
+					);
+				}
 				switch (food.Type)
 				{
 					case PreyType.NPC:
@@ -537,6 +673,20 @@ namespace V2.PlayerHandling
 						};
 						pred.AsPred().lastEntitySwallowed = item.Name;
 						pred.AsPred().lastEntitySwallowedMod = item.ModItem != null ? item.ModItem.Mod.DisplayName : "Terraria";
+
+						item.AsFood().OnSwallow?.Invoke(item, pred);
+						if (item.AsFood().OnSwallowDamage > 0 && item.AsFood().OnSwallowDeathReason is not null)
+						{
+							pred.Hurt(
+								damageSource: PlayerDeathReason.ByCustomReason(item.AsFood().OnSwallowDeathReason),
+								Damage: item.AsFood().OnSwallowDamage,
+								hitDirection: 0,
+								dodgeable: false,
+								scalingArmorPenetration: 1f
+							);
+						}
+						if (item.AsFood().OnSwallowSoreThroatTime > 0)
+							pred.AddBuff(ModContent.BuffType<SoreThroat>(), item.AsFood().OnSwallowSoreThroatTime);
 						break;
 				}
 			}
@@ -561,7 +711,8 @@ namespace V2.PlayerHandling
 				{
 					case PreyType.Item:
 						Item preyItem = prey.Instance as Item;
-						preyItem.AsFood().UpdateInStomach?.Invoke(preyItem, player, prey.Dead);
+						if (!preyItem.IsAir)
+							preyItem.AsFood().UpdateInStomach?.Invoke(preyItem, player, prey.Dead);
 						break;
 				}
 
@@ -615,6 +766,9 @@ namespace V2.PlayerHandling
 								break;
 							case PreyType.Item:
 								Item preyItem = prey.Instance as Item;
+								if (preyItem.IsAir)
+									break;
+
 								bool shouldDigestItem = !player.AsPred().SafeStomach;
 								if (shouldDigestItem)
 								{
@@ -624,7 +778,7 @@ namespace V2.PlayerHandling
 										string preyItemMod = preyItem.ModItem != null ? preyItem.ModItem.Mod.DisplayName : "Terraria";
 										if (!player.AsPred().mealCount.ContainsKey(preyItemMod + ": " + preyItem.Name))
 											player.AsPred().mealCount.Add(preyItemMod + ": " + preyItem.Name, 0);
-										player.AsPred().mealCount[preyItemMod + ": " + preyItem.Name] += 1;
+										player.AsPred().mealCount[preyItemMod + ": " + preyItem.Name] += preyItem.stack;
 										SoundEngine.PlaySound(
 											prey.WeightLeftToDigest < 0.3 ? player.AsPred().SmallBurps : player.AsPred().StandardBurps,
 											player.TrueCenter() + new Vector2(player.direction * 8f, -14f)
@@ -640,6 +794,15 @@ namespace V2.PlayerHandling
 					prey.WeightLeftToDigest -= player.AsPred().PreyAbsorptionRate / (double)player.AsPred().stomachContents.Count;
 					if (prey.WeightLeftToDigest < 0)
 						prey.WeightLeftToDigest = 0;
+
+					switch (prey.Type)
+					{
+						case PreyType.Item:
+							Item preyItem = prey.Instance as Item;
+							if (!preyItem.IsAir && prey.WeightLeftToDigest == 0)
+								preyItem.AsFood().FullyDigested = true;
+							break;
+					}
 				}
 			}
 
@@ -659,10 +822,8 @@ namespace V2.PlayerHandling
 					return;
 
 				stomachNoises.Position = player.TrueCenter();
-				stomachNoises.Volume = 0.2f;
-				stomachNoises.Volume += 0.1f * GetVisualBellySize(player);
-				if (stomachNoises.Volume > 0.75f)
-					stomachNoises.Volume = 0.75f;
+				stomachNoises.Volume = 0.25f;
+				stomachNoises.Volume += 0.15f * GetVisualBellySize(player);
 			}
 		}
 
@@ -672,11 +833,30 @@ namespace V2.PlayerHandling
 			{
 				specialHealthRegenCount -= 60.0;
 				Player.statLife += 1;
+				if (Player.statLife > Player.statLifeMax2)
+					Player.statLife = Player.statLifeMax2;
 			}
 			while (specialManaRegenCount >= 60.0)
 			{
 				specialManaRegenCount -= 60.0;
 				Player.statMana += 1;
+				if (Player.statMana > Player.statManaMax2)
+					Player.statMana = Player.statManaMax2;
+			}
+		}
+
+		public override void PostUpdateRunSpeeds()
+		{
+			if (!Player.mount.Active)
+			{
+				float weightMovementMult = (float)Math.Min(1.0, 1.0 / (Player.AsPred().StomachWeight + 1.0));
+				Player.maxRunSpeed *= weightMovementMult;
+				Player.accRunSpeed *= weightMovementMult;
+				Player.runAcceleration *= weightMovementMult;
+				Player.jumpSpeed *= weightMovementMult;
+				Player.jumpHeight = (int)Math.Round((float)Player.jumpHeight * weightMovementMult);
+				Player.gravity /= (2f + weightMovementMult) / 3f;
+				Player.maxFallSpeed /= weightMovementMult;
 			}
 		}
 

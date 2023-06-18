@@ -18,6 +18,7 @@ namespace V2.Items.Vanilla.Weapons.Melee
 		{
 			entity.AsFood().MaxHealth = 104;
 			entity.AsFood().Size = 0.18;
+			entity.AsFood().AcidResistTier = 2;
 		}
 	}
 }

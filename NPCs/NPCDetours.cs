@@ -25,10 +25,10 @@ namespace V2.NPCs
 			if (!npc.active || (npc.realLife >= 0 && npc.realLife != npc.whoAmI) || npc.life > 0)
 				return;
 
-			if (npc.type == 604 || npc.type == 605)
-				NPC.LadyBugKilled(npc.Center, npc.type == 605);
+			if (npc.type == NPCID.LadyBug || npc.type == NPCID.GoldLadyBug)
+				NPC.LadyBugKilled(npc.Center, npc.type == NPCID.GoldLadyBug);
 
-			if (npc.type == 397 || npc.type == 396)
+			if (npc.type == NPCID.MoonLordHand || npc.type == NPCID.MoonLordHead)
 			{
 				if (npc.ai[0] != -2f)
 				{
@@ -38,16 +38,21 @@ namespace V2.NPCs
 					npc.dontTakeDamage = true;
 					if (Main.netMode != 1)
 					{
-						int num = NPC.NewNPC(npc.GetSource_FromAI(), (int)npc.Center.X, (int)npc.Center.Y, 400);
-						Main.npc[num].ai[3] = npc.ai[3];
-						Main.npc[num].netUpdate = true;
+						NPC freedEye = NPC.NewNPCDirect(
+							npc.GetSource_FromAI(),
+							(int)npc.Center.X,
+							(int)npc.Center.Y,
+							NPCID.MoonLordFreeEye
+						);
+						freedEye.ai[3] = npc.ai[3];
+						freedEye.netUpdate = true;
 					}
 				}
 
 				return;
 			}
 
-			if (npc.type == 398 && npc.ai[0] != 2f)
+			if (npc.type == NPCID.MoonLordCore && npc.ai[0] != 2f)
 			{
 				npc.ai[0] = 2f;
 				npc.life = npc.lifeMax;
@@ -88,26 +93,25 @@ namespace V2.NPCs
 			{
 				if (Main.netMode != NetmodeID.Server)
 				{
-					int myPlayer = Main.myPlayer;
 					if (npc.type == NPCID.Guide)
 					{
-						if (Main.player[myPlayer].ladyBugLuckTimeLeft >= 0 && Main.player[myPlayer].active && !Main.player[myPlayer].dead)
+						if (Main.LocalPlayer.ladyBugLuckTimeLeft >= 0 && Main.LocalPlayer.active && !Main.LocalPlayer.dead)
 						{
 							int goodLuckTime = NPC.ladyBugGoodLuckTime / 3;
-							if (goodLuckTime > Main.player[myPlayer].ladyBugLuckTimeLeft)
+							if (goodLuckTime > Main.LocalPlayer.ladyBugLuckTimeLeft)
 							{
-								Main.player[myPlayer].ladyBugLuckTimeLeft = goodLuckTime;
-								Main.player[myPlayer].luckNeedsSync = true;
+								Main.LocalPlayer.ladyBugLuckTimeLeft = goodLuckTime;
+								Main.LocalPlayer.luckNeedsSync = true;
 							}
 						}
 					}
-					else if (npc.type != NPCID.Clothier && Main.player[myPlayer].active && !Main.player[myPlayer].dead)
+					else if (npc.type != NPCID.Clothier && Main.LocalPlayer.active && !Main.LocalPlayer.dead)
 					{
 						int badLuckTime = NPC.ladyBugBadLuckTime / 3;
-						if (badLuckTime < Main.player[myPlayer].ladyBugLuckTimeLeft)
+						if (badLuckTime < Main.LocalPlayer.ladyBugLuckTimeLeft)
 						{
-							Main.player[myPlayer].ladyBugLuckTimeLeft = badLuckTime;
-							Main.player[myPlayer].luckNeedsSync = true;
+							Main.LocalPlayer.ladyBugLuckTimeLeft = badLuckTime;
+							Main.LocalPlayer.luckNeedsSync = true;
 						}
 					}
 				}
@@ -170,6 +174,7 @@ namespace V2.NPCs
 
 				if (npc.AsFood().CurrentCaptor.Value.Predator is Player hungryPlayer)
 					PredPlayer.CountDigestionKillForBannersAndDropThem(hungryPlayer, npc);
+
 				npc.NPCLoot();
 			}
 			else
@@ -262,7 +267,9 @@ namespace V2.NPCs
 				bool lastSegment = true;
 				for (int i = 0; i < 200; i++)
 				{
-					if (i != npc.whoAmI && Main.npc[i].active && (Main.npc[i].type == 13 || Main.npc[i].type == 14 || Main.npc[i].type == 15))
+					NPC otherNPC = Main.npc[i];
+					bool isEoWSegment = otherNPC.type == NPCID.EaterofWorldsHead || otherNPC.type == NPCID.EaterofWorldsBody || otherNPC.type == NPCID.EaterofWorldsTail;
+					if (otherNPC.whoAmI != npc.whoAmI && otherNPC.active && isEoWSegment)
 					{
 						lastSegment = false;
 						break;
@@ -285,33 +292,32 @@ namespace V2.NPCs
 				if (!Main.snowMoon)
 					return;
 
-				int num = 0;
 				NetworkText networkText = NetworkText.Empty;
-				int[] array = new int[21] {
-				0,
-				25,
-				15,
-				10,
-				30,
-				100,
-				160,
-				180,
-				200,
-				250,
-				300,
-				375,
-				450,
-				525,
-				675,
-				850,
-				1025,
-				1325,
-				1550,
-				2000,
-				0
-			};
+				int[] neededScorePerWave = new int[21] {
+					0,
+					25,
+					15,
+					10,
+					30,
+					100,
+					160,
+					180,
+					200,
+					250,
+					300,
+					375,
+					450,
+					525,
+					675,
+					850,
+					1025,
+					1325,
+					1550,
+					2000,
+					0
+				};
 
-				num = array[NPC.waveNumber];
+				int neededScore = neededScorePerWave[NPC.waveNumber];
 				switch (NPC.waveNumber)
 				{
 					case 1:
@@ -373,59 +379,59 @@ namespace V2.NPCs
 						break;
 				}
 
-				float num2 = 0f;
+				float pointsFromKill = 0f;
 				switch (npc.type)
 				{
 					case 338:
 					case 339:
 					case 340:
-						num2 = 1f;
+						pointsFromKill = 1f;
 						break;
 					case 341:
-						num2 = 20f;
+						pointsFromKill = 20f;
 						break;
 					case 342:
-						num2 = 2f;
+						pointsFromKill = 2f;
 						break;
 					case 343:
-						num2 = 18f;
+						pointsFromKill = 18f;
 						break;
 					case 344:
-						num2 = 50f;
+						pointsFromKill = 50f;
 						break;
 					case 345:
-						num2 = 150f;
+						pointsFromKill = 150f;
 						break;
 					case 346:
-						num2 = 100f;
+						pointsFromKill = 100f;
 						break;
 					case 347:
-						num2 = 8f;
+						pointsFromKill = 8f;
 						break;
 					case 348:
 					case 349:
-						num2 = 4f;
+						pointsFromKill = 4f;
 						break;
 					case 350:
-						num2 = 3f;
+						pointsFromKill = 3f;
 						break;
 				}
 
 				if (Main.expertMode)
-					num2 *= 2f;
+					pointsFromKill *= 2f;
 
 				float num3 = NPC.waveKills;
-				NPC.waveKills += num2;
-				if (NPC.waveKills >= (float)num && num != 0)
+				NPC.waveKills += pointsFromKill;
+				if (NPC.waveKills >= (float)neededScore && neededScore != 0)
 				{
 					NPC.waveKills = 0f;
 					NPC.waveNumber++;
-					num = array[NPC.waveNumber];
+					neededScore = neededScorePerWave[NPC.waveNumber];
 					if (networkText != NetworkText.Empty)
 					{
-						if (Main.netMode == 0)
+						if (Main.netMode == NetmodeID.SinglePlayer)
 							Main.NewText(networkText.ToString(), 175, 75);
-						else if (Main.netMode == 2)
+						else if (Main.netMode == NetmodeID.Server)
 							ChatHelper.BroadcastChatMessage(networkText, new Color(175, 75, 255));
 
 						if (NPC.waveNumber == 15)
@@ -433,12 +439,12 @@ namespace V2.NPCs
 					}
 				}
 
-				if (NPC.waveKills != num3 && num2 != 0f)
+				if (NPC.waveKills != num3 && pointsFromKill != 0f)
 				{
-					if (Main.netMode != 1)
-						Main.ReportInvasionProgress((int)NPC.waveKills, num, 1, NPC.waveNumber);
+					if (Main.netMode != NetmodeID.MultiplayerClient)
+						Main.ReportInvasionProgress((int)NPC.waveKills, neededScore, 1, NPC.waveNumber);
 
-					if (Main.netMode == 2)
+					if (Main.netMode == NetmodeID.Server)
 						NetMessage.SendData(MessageID.InvasionProgressReport, -1, -1, null, Main.invasionProgress, Main.invasionProgressMax, 1f, NPC.waveNumber);
 				}
 			}
@@ -448,28 +454,27 @@ namespace V2.NPCs
 				if (!Main.pumpkinMoon)
 					return;
 
-				int num = 0;
 				NetworkText networkText = NetworkText.Empty;
-				int[] array = new int[16] {
-				0,
-				25,
-				40,
-				50,
-				80,
-				100,
-				160,
-				180,
-				200,
-				250,
-				300,
-				375,
-				450,
-				525,
-				675,
-				0
-			};
+				int[] neededScorePerWave = new int[16] {
+					0,
+					25,
+					40,
+					50,
+					80,
+					100,
+					160,
+					180,
+					200,
+					250,
+					300,
+					375,
+					450,
+					525,
+					675,
+					0
+				};
 
-				num = array[NPC.waveNumber];
+				int neededScore = neededScorePerWave[NPC.waveNumber];
 				switch (NPC.waveNumber)
 				{
 					case 1:
@@ -556,14 +561,14 @@ namespace V2.NPCs
 
 				float num3 = NPC.waveKills;
 				NPC.waveKills += num2;
-				if (NPC.waveKills >= (float)num && num != 0)
+				if (NPC.waveKills >= (float)neededScore && neededScore != 0)
 				{
 					NPC.waveKills = 0f;
 					NPC.waveNumber++;
-					num = array[NPC.waveNumber];
+					neededScore = neededScorePerWave[NPC.waveNumber];
 					if (networkText != NetworkText.Empty)
 					{
-						if (Main.netMode == 0)
+						if (Main.netMode == NetmodeID.SinglePlayer)
 							Main.NewText(networkText.ToString(), 175, 75);
 						else if (Main.netMode == NetmodeID.Server)
 							ChatHelper.BroadcastChatMessage(networkText, new Color(175, 75, 255));
@@ -575,8 +580,8 @@ namespace V2.NPCs
 
 				if (NPC.waveKills != num3 && num2 != 0f)
 				{
-					if (Main.netMode != 1)
-						Main.ReportInvasionProgress((int)NPC.waveKills, num, 2, NPC.waveNumber);
+					if (Main.netMode != NetmodeID.MultiplayerClient)
+						Main.ReportInvasionProgress((int)NPC.waveKills, neededScore, 2, NPC.waveNumber);
 
 					if (Main.netMode == NetmodeID.Server)
 						NetMessage.SendData(MessageID.InvasionProgressReport, -1, -1, null, Main.invasionProgress, Main.invasionProgressMax, 2f, NPC.waveNumber);

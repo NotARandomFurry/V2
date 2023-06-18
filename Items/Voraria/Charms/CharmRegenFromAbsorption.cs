@@ -15,7 +15,8 @@ namespace V2.Items.Voraria.Charms
 {
 	public class CharmRegenFromAbsorption : ModItem
 	{
-		public static double HealthRegenerationPerPlayerSizeDigested => 18.0;
+		public static double HealthRegenerationRatio => 1.5;
+		public static double ManaRegenerationRatio => 2.5;
 
 		public override void SetDefaults()
 		{
@@ -39,36 +40,30 @@ namespace V2.Items.Voraria.Charms
 			if (player.AsPred().stomachContents.Count > 0)
 			{
 				double effectiveness = (double)player.AsPred().stomachContents.FindAll(x => x.Dead).Count / (double)player.AsPred().stomachContents.Count;
-				player.AsPred().specialHealthRegenCount += (HealthRegenerationPerPlayerSizeDigested * player.AsPred().PreyAbsorptionRate * effectiveness).CastToDecimalPlaces(2);
-				player.AsPred().specialManaRegenCount += (HealthRegenerationPerPlayerSizeDigested * player.AsPred().PreyAbsorptionRate * effectiveness).CastToDecimalPlaces(2);
+				player.AsPred().specialHealthRegenCount += (HealthRegenerationRatio * player.AsPred().PreyAbsorptionRate * effectiveness).CastToDecimalPlaces(2);
+				player.AsPred().specialManaRegenCount += (ManaRegenerationRatio * player.AsPred().PreyAbsorptionRate * effectiveness).CastToDecimalPlaces(2);
 			}
 		}
 
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
-			tooltips.RemoveAll(x => x.Name.Contains("Tooltip"));
-			if (V2Utils.FindLastTooltipLineBeforeFlavorText(tooltips, out TooltipLine line))
-			{
-				Player player = Main.LocalPlayer;
-				double regenEffectiveness = 0.0;
-				if (player.AsPred().stomachContents.Count > 0)
-					regenEffectiveness = (double)player.AsPred().stomachContents.FindAll(x => x.Dead).Count / (double)player.AsPred().stomachContents.Count;
-				V2Utils.InsertNewTooltipLine(
-					ref tooltips,
-					line,
-					1,
-					"Tooltip",
-					!Main.keyState.IsKeyDown(Keys.LeftShift)
-					  ? Language.GetTextValue("Mods.V2.ItemTooltip.Voraria.Charms.RegenFromAbsorption.Short")
-					  : Language.GetTextValueWith("Mods.V2.ItemTooltip.Voraria.Charms.RegenFromAbsorption.Long",
-						new
-						{
-							BaseRegen = HealthRegenerationPerPlayerSizeDigested,
-							MaxRegen = (HealthRegenerationPerPlayerSizeDigested * player.AsPred().PreyAbsorptionRate).CastToDecimalPlaces(2),
-							CurrentRegen = (regenEffectiveness > 0.0 ? HealthRegenerationPerPlayerSizeDigested * player.AsPred().PreyAbsorptionRate * regenEffectiveness : 0.0).CastToDecimalPlaces(2)
-						})
-				);
-			}
+			Player player = Main.LocalPlayer;
+			double regenEffectiveness = 0.0;
+			if (player.AsPred().stomachContents.Count > 0)
+				regenEffectiveness = (double)player.AsPred().stomachContents.FindAll(x => x.Dead).Count / (double)player.AsPred().stomachContents.Count;
+			tooltips.AddVorariaDynamicTooltip(
+				"Voraria.Charms.RegenFromAbsorption",
+				new
+				{
+					HealthRegenerationRatio = HealthRegenerationRatio.ConvertToPercentageString(0),
+					ManaRegenerationRatio = ManaRegenerationRatio.ConvertToPercentageString(0),
+					RegenEffectiveness = regenEffectiveness.ConvertToPercentageString(2),
+					LivePreyRemaining = player.AsPred().stomachContents.FindAll(x => x.Dead).Count,
+					PreyRemaining = player.AsPred().stomachContents.Count,
+					CurrentHealthRegen = (regenEffectiveness > 0.0 ? HealthRegenerationRatio * player.AsPred().PreyAbsorptionRate * regenEffectiveness : 0.0).CastToDecimalPlaces(2),
+					CurrentManaRegen = (regenEffectiveness > 0.0 ? ManaRegenerationRatio * player.AsPred().PreyAbsorptionRate * regenEffectiveness : 0.0).CastToDecimalPlaces(2),
+				}
+			);
 		}
 	}
 }

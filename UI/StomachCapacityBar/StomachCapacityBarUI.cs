@@ -8,6 +8,7 @@ using Terraria.GameContent.UI.ResourceSets;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.UI;
+using V2.Core;
 using V2.Items;
 using V2.PlayerHandling;
 
@@ -15,7 +16,7 @@ namespace V2.UI
 {
 	public struct PlayerPredStatsSnapshot
 	{
-		public double BellyWeight;
+		public double Fullness;
 		public double CapacityMax;
 		public double KickyPreyPercentage;
 
@@ -43,7 +44,7 @@ namespace V2.UI
 
 		public PlayerPredStatsSnapshot(Player player)
 		{
-			BellyWeight = PredPlayer.GetCurrentBellyWeight(player);
+			Fullness = player.AsPred().StomachFullness;
 			CapacityMax = player.AsPred().StomachCapacity;
 			KickyPreyPercentage = PredPlayer.GetCurrentBellyWeight(player, onlyKicky: true) / CapacityMax;
 
@@ -151,10 +152,30 @@ namespace V2.UI
 				_stomachCapacityPanelRight.Value.Bounds,
 				Color.White
 			);
-		}
 
-		// Added by TML.
-		private PlayerPredStatsSnapshot preparedSnapshot;
+			Rectangle hoverRect = new Rectangle(
+				(int)topLeftCorner.X,
+				(int)topLeftCorner.Y + 4,
+				20 + (_capacitySegmentsCount * _stomachCapacityPanelMiddle.Value.Width) + _stomachCapacityPanelRight.Value.Width,
+				_stomachCapacityPanelMiddle.Value.Height
+			);
+			_stomachCapacityHovered = hoverRect.Contains(Main.MouseScreen.ToPoint());
+			if (_stomachCapacityHovered && !Main.mouseText)
+			{
+				Player localPlayer = Main.LocalPlayer;
+				localPlayer.cursorItemIconEnabled = false;
+				string text =
+					"Stomach Weight: "
+				  + localPlayer.AsPred().StomachFullness.CastToDecimalPlaces(2)
+				  + "/"
+				  + localPlayer.AsPred().StomachCapacity.CastToDecimalPlaces(2)
+				  + " ("
+				  + (localPlayer.AsPred().StomachFullness / localPlayer.AsPred().StomachCapacity).ConvertToPercentageString(2)
+				  + ")";
+				Main.instance.MouseTextHackZoom(text);
+				Main.mouseText = true;
+			}
+		}
 
 		private void PrepareFields(Player player)
 		{
@@ -162,66 +183,7 @@ namespace V2.UI
 
 			_capacitySegmentsCount = PlayerPredStatsSnapshot.AmountOfCapacitySegments;
 			_kickyPreyPercent = PlayerPredStatsSnapshot.KickyPreyPercentage;
-			_capacityPercent = (float)PlayerPredStatsSnapshot.BellyWeight / (float)PlayerPredStatsSnapshot.CapacityMax;
-
-			preparedSnapshot = PlayerPredStatsSnapshot;
-		}
-
-		private void CapacityFillingDrawer(int elementIndex, int firstElementIndex, int lastElementIndex, out Asset<Texture2D> sprite, out Vector2 offset, out float drawScale, out Rectangle? sourceRect)
-		{
-			sprite = _stomachCapacityFill;
-
-			// Make the filling draw from right to left (#HealthManaAPI)
-			/*
-			if (elementIndex >= _hpSegmentsCount - _hpFruitCount)
-			*/
-			if ((double)elementIndex / (double)_capacitySegmentsCount < _kickyPreyPercent)
-				sprite = _stomachCapacityFillKicky;
-
-			FillBarByValues(elementIndex, sprite, _capacitySegmentsCount, _capacityPercent, out offset, out drawScale, out sourceRect);
-
-			// Make the bar fillings draw from right to left (#HealthManaAPI)
-			int opposite = lastElementIndex - (elementIndex - firstElementIndex);
-			int drawIndexOffset = opposite - elementIndex;
-			offset.X += drawIndexOffset * sprite.Width();
-		}
-
-		public static void FillBarByValues(int elementIndex, Asset<Texture2D> sprite, int segmentsCount, float fillPercent, out Vector2 offset, out float drawScale, out Rectangle? sourceRect)
-		{
-			sourceRect = null;
-			offset = Vector2.Zero;
-			float num = 1f;
-			float num2 = 1f / (float)segmentsCount;
-
-			/*
-			float t = 1f - fillPercent;
-			*/
-			float t = fillPercent;
-			float lerpValue = Utils.GetLerpValue(num2 * (float)elementIndex, num2 * (float)(elementIndex + 1), t, clamped: true);
-
-			/*
-			num = 1f - lerpValue;
-			*/
-			num = lerpValue;
-			drawScale = 1f;
-			Rectangle value = sprite.Frame();
-			int num3 = (int)((float)value.Width * (1f - num));
-			offset.X += num3;
-			value.X += num3;
-			value.Width -= num3;
-			sourceRect = value;
-		}
-
-		public void TryToHover()
-		{
-			if (_stomachCapacityHovered && !Main.mouseText)
-			{
-				Player localPlayer = Main.LocalPlayer;
-				localPlayer.cursorItemIconEnabled = false;
-				string text = localPlayer.statLife + "/" + localPlayer.statLifeMax2;
-				Main.instance.MouseTextHackZoom(text);
-				Main.mouseText = true;
-			}
+			_capacityPercent = (float)PlayerPredStatsSnapshot.Fullness / (float)PlayerPredStatsSnapshot.CapacityMax;
 		}
 	}
 }

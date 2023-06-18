@@ -1,0 +1,98 @@
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Terraria;
+using Terraria.Audio;
+using Terraria.ID;
+using Terraria.Localization;
+using Terraria.ModLoader;
+using V2.Core;
+using V2.NPCs;
+using V2.PlayerHandling;
+using V2.Sounds.MuffledSounds;
+using V2.Sounds.Vore;
+
+namespace V2.Items.Vanilla.Consumables
+{
+	public class LifeFruit : GlobalItem
+	{
+		public static int DigestedHeal => 50;
+		public static int DigestedRegenTime => V2Utils.SensibleTime(minutes: 1, seconds: 30);
+		public static int StomachStrengthBonus => 2;
+		public static int AcidStrengthBonus => 1;
+		public override bool InstancePerEntity => true;
+		public override bool AppliesToEntity(Item entity, bool lateInstantiation) => entity.type == ItemID.LifeFruit;
+
+		public override void SetDefaults(Item entity)
+		{
+			entity.AsFood().MaxHealth = 500;
+			entity.AsFood().Size = 0.66;
+
+			entity.AsFood().UpdateInStomach += UpdateInStomach;
+			entity.AsFood().OnBreak += OnBreak;
+
+			entity.AsFood().LeftClickEdible = true;
+		}
+
+		public static void UpdateInStomach(Item item, Entity pred, bool dead)
+		{
+			if (dead)
+				pred.AddStatus(BuffID.Regeneration, DigestedRegenTime);
+		}
+
+		public static void OnBreak(Item item, Entity pred)
+		{
+			SoundEngine.PlaySound(StomachNoises.Muffled, pred.Center);
+
+			if (pred is Player playerPred)
+			{
+				if (playerPred.ConsumedLifeFruit < Player.LifeFruitMax && playerPred.ConsumedLifeCrystals == Player.LifeCrystalMax)
+				{
+					playerPred.statLifeMax += 5;
+					playerPred.statLifeMax2 += 5;
+					playerPred.ConsumedLifeFruit++;
+				}
+				playerPred.Heal(DigestedHeal);
+			}
+			else if (pred is NPC NPCPred)
+			{
+				NPCPred.life += DigestedHeal;
+				if (NPCPred.life > NPCPred.lifeMax)
+					NPCPred.life = NPCPred.lifeMax;
+			}
+		}
+
+		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
+		{
+			Player player = Main.LocalPlayer;
+			Color lifeFruitUsedColor = Color.Lerp(Color.DarkGoldenrod, Color.Goldenrod, (float)player.ConsumedLifeFruit / (float)Player.LifeFruitMax);
+			tooltips.AddVorariaDynamicTooltip(
+				"Vanilla.Consumables.LifeFruit",
+				new
+				{
+					LifeFruitEatHeal = DigestedHeal,
+					LifeFruitEatRegenLength = ((double)DigestedRegenTime / 60.0).CastToDecimalPlaces(2),
+					LifeFruitHealthBonusColor = Color.Goldenrod.Hex3(),
+					LifeFruitStomachStrengthBonus = StomachStrengthBonus,
+					LifeFruitAcidStrengthBonus = AcidStrengthBonus,
+					LifeFruitUsedColor = (lifeFruitUsedColor * ((int)Main.mouseTextColor / 255f)).Hex3(),
+					LifeFruitUsed = player.ConsumedLifeFruit,
+					LifeFruitMax = Player.LifeFruitMax,
+				}
+			);
+		}
+	}
+
+	public class LifeFruitPlayer : ModPlayer
+	{
+		public override void PreUpdateBuffs()
+		{
+			Player.AsPred().TUM.Extra += LifeFruit.StomachStrengthBonus * Player.ConsumedLifeFruit;
+			Player.AsPred().ACI.Extra += LifeFruit.AcidStrengthBonus * Player.ConsumedLifeFruit;
+		}
+	}
+}

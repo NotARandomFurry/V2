@@ -44,7 +44,7 @@ namespace V2
 			SwallowHotkey = KeybindLoader.RegisterKeybind(this, "Swallow", "V");
 			RegurgitateHotkey = KeybindLoader.RegisterKeybind(this, "Regurgitate", "X");
 			FeedHotkey = KeybindLoader.RegisterKeybind(this, "Feed", "G");
-			ItemGulpHotkey = KeybindLoader.RegisterKeybind(this, "Eat Items", "RightShift");
+			ItemGulpHotkey = KeybindLoader.RegisterKeybind(this, "EatItems", "RightShift");
 
 			EngageVoraciousGameFuckery();
 		}

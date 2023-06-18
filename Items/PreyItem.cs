@@ -10,6 +10,7 @@ using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using Terraria.UI.Chat;
@@ -96,15 +97,28 @@ namespace V2.Items
 		public PredEntityReference? CurrentCaptor { get; set; }
 
 		public int MaxHealth { get; set; }
-		public int Health { get; set; }
+		private int _health;
+		public int Health
+		{
+			get => _health;
+			set => _health = Math.Min(value, MaxHealth);
+		}
 		public double Size { get; set; }
+		public int AcidResistTier { get; set; }
+		public string MealSizeTextOverride { get; set; }
 
 		public delegate void DelegateOnSwallow(Item item, Entity pred);
 		public DelegateOnSwallow OnSwallow { get; set; }
+		public int OnSwallowDamage { get; set; }
+		public string OnSwallowDeathReason { get; set; }
+		public int OnSwallowSoreThroatTime { get; set; }
+
 		public delegate void DelegateUpdateInStomach(Item item, Entity pred, bool dead);
 		public DelegateUpdateInStomach UpdateInStomach { get; set; }
 		public delegate void DelegateOnBreak(Item item, Entity pred);
 		public DelegateOnBreak OnBreak { get; set; }
+
+		public bool LeftClickEdible { get; set; }
 
 		public override bool InstancePerEntity => true;
 
@@ -121,14 +135,24 @@ namespace V2.Items
 			MaxHealth = -1;
 			Health = -1;
 			Size = 0.0;
+			AcidResistTier = 0;
+			MealSizeTextOverride = null;
 
 			OnSwallow = null;
+			OnSwallowDamage = 0;
+			OnSwallowDeathReason = null;
+			OnSwallowSoreThroatTime = 0;
+
 			UpdateInStomach = null;
 			OnBreak = null;
+
+			LeftClickEdible = false;
 		}
 		
 		public static void UpdateItemEatenStatus(Item item)
 		{
+			item.AsFood().IsCurrentlyEaten = false;
+			item.AsFood().CurrentCaptor = null;
 			for (int i = 0; i < Main.maxNPCs; i++)
 			{
 				NPC potentialPred = Main.npc[i];
@@ -202,18 +226,17 @@ namespace V2.Items
 
 		public override void Update(Item item, ref float gravity, ref float maxFallSpeed)
 		{
-			item.AsFood().IsCurrentlyEaten = false;
-			item.AsFood().CurrentCaptor = null;
-			UpdateItemEatenStatus(item);
+			if (item.AsFood().FullyDigested)
+			{
+				item.TurnToAir();
+				return;
+			}
+			else
+				UpdateItemEatenStatus(item);
 
 			if (item.AsFood().IsCurrentlyEaten)
 			{
-				if (item.AsFood().FullyDigested)
-				{
-					item.TurnToAir();
-					return;
-				}
-				item.position = item.AsFood().CurrentCaptor.Value.Predator.position + new Vector2(0, 8 + item.height);
+				item.position = new Vector2(-1, -1);
 				item.width = 0;
 				item.height = 0;
 			}
@@ -226,25 +249,59 @@ namespace V2.Items
 
 		public override void UpdateInventory(Item item, Player player)
 		{
-			if (item.AsFood().MaxHealth != -1 && item.AsFood().Health == -1)
-				item.AsFood().Health = item.AsFood().MaxHealth;
+			if (item.AsFood().MaxHealth != -1)
+			{
+				if (item.AsFood().Health == -1 || item.AsFood().Health > item.AsFood().MaxHealth)
+					item.AsFood().Health = item.AsFood().MaxHealth;
+			}
 		}
 
-		public override void GrabRange(Item item, Player player, ref int grabRange)
+		public override bool CanUseItem(Item item, Player player)
 		{
-			if (item.AsFood().IsCurrentlyEaten)
-				grabRange = 0;
+			if (item.AsFood().LeftClickEdible)
+			{
+				if (item != player.inventory[58] && PredPlayer.CanSwallow(player, item))
+				{
+					player.ForceDropItem(player.Center, ref item, out Item itemDrop);
+					PredPlayer.Swallow(player, itemDrop);
+				}
+				return false;
+			}
+			return true;
 		}
 
-		public override bool PreDrawInWorld(Item item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
+		public override bool CanStack(Item destination, Item source)
 		{
-			if (item.AsFood().IsCurrentlyEaten)
+			if (destination.AsFood().Health != source.AsFood().Health)
 				return false;
 
 			return true;
 		}
 
-		public override bool CanPickup(Item item, Player player) => !item.AsFood().IsCurrentlyEaten;
+		public override bool CanStackInWorld(Item destination, Item source)
+		{
+			if (destination.AsFood().IsCurrentlyEaten || destination.AsFood().FullyDigested
+			 || source.AsFood().IsCurrentlyEaten || source.AsFood().FullyDigested)
+				return false;
+
+			return true;
+		}
+
+		public override void GrabRange(Item item, Player player, ref int grabRange)
+		{
+			if (item.AsFood().IsCurrentlyEaten || item.AsFood().FullyDigested)
+				grabRange = 0;
+		}
+
+		public override bool PreDrawInWorld(Item item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
+		{
+			if (item.AsFood().IsCurrentlyEaten || item.AsFood().FullyDigested)
+				return false;
+
+			return true;
+		}
+
+		public override bool CanPickup(Item item, Player player) => !(item.AsFood().IsCurrentlyEaten || item.AsFood().FullyDigested);
 
 		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
 		{
@@ -303,6 +360,10 @@ namespace V2.Items
 				sizeDescription = "Massive meal";
 			if (size >= 2.0)
 				sizeDescription = "Potentially, a vaguely satisfying meal";
+
+			if (item.AsFood().MealSizeTextOverride is not null or "")
+				sizeDescription = item.AsFood().MealSizeTextOverride;
+
 			tooltips.Insert(
 				tooltips.IndexOf(finalLine) + 2,
 				new TooltipLine(
@@ -311,6 +372,18 @@ namespace V2.Items
 					sizeDescription + " (size of " + size + ")"
 				)
 			);
+
+			if (item.AsFood().LeftClickEdible)
+			{
+				tooltips.Insert(
+					tooltips.IndexOf(finalLine) + 3,
+					new TooltipLine(
+						V2.Instance,
+						"V2EdibleByNormalUse",
+						Language.GetTextValue("Mods.V2.ItemTooltip.Generic.EdibleFromNormalUse")
+					)
+				);
+			}
 		}
 
 		public override void SaveData(Item item, TagCompound tag)

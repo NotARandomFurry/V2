@@ -69,6 +69,8 @@ namespace V2.PlayerHandling
 			set => _timesEaten._gurgleCount = value;
 		}
 
+		public int softenedStacks;
+
 		public override void Initialize()
 		{
 			Player.AsFood().IsCurrentlyEaten = false;
@@ -426,13 +428,6 @@ namespace V2.PlayerHandling
 				SoundEngine.PlaySound(Player.Male ? PreyPlayerDigestionSounds.PlayerDigestingMale : PreyPlayerDigestionSounds.PlayerDigestingFemale, pred.position);
 				return false;
 			}
-		}
-
-		public static double GetCurrentTotalWeight(Player player)
-		{
-			double baseWeight = Prey.GetInitialPreyWeight(player);
-			double bellyWeight = PredPlayer.GetCurrentBellyWeight(player);
-			return baseWeight + bellyWeight;
 		}
 
 		public override bool PreKill(

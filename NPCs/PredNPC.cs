@@ -20,6 +20,7 @@ using V2.Items;
 using V2.NPCs.Vanilla.TownNPCs.Nurse;
 using V2.PlayerHandling;
 using V2.Sounds.Vore;
+using V2.StatusEffects.Debuffs;
 
 namespace V2.NPCs
 {
@@ -182,7 +183,7 @@ namespace V2.NPCs
 
 			if (prey is Player preyPlayer)
 			{
-				if (Prey.GetInitialPreyWeight(preyPlayer) >= pred.AsPred().maxStomachCapacity - GetCurrentBellyWeight(pred))
+				if (Prey.GetInitialPreySize(preyPlayer) >= pred.AsPred().maxStomachCapacity - GetCurrentBellyWeight(pred))
 					return false;
 
 				return !preyPlayer.AsFood().IsCurrentlyEaten;
@@ -200,7 +201,7 @@ namespace V2.NPCs
 				if (isThisAFuckingBoss)
 					return false;
 
-				if (Prey.GetInitialPreyWeight(preyNPC) >= pred.AsPred().maxStomachCapacity - GetCurrentBellyWeight(pred))
+				if (Prey.GetInitialPreySize(preyNPC) >= pred.AsPred().maxStomachCapacity - GetCurrentBellyWeight(pred))
 					return false;
 
 				return !preyNPC.AsFood().IsCurrentlyEaten;
@@ -245,6 +246,20 @@ namespace V2.NPCs
 					case PreyType.Item:
 						Item item = prey as Item;
 						item.AsFood().OnSwallow?.Invoke(item, pred);
+						if (item.AsFood().OnSwallowDamage > 0)
+						{
+							pred.StrikeNPC(
+								new NPC.HitInfo
+								{
+									SourceDamage = item.AsFood().OnSwallowDamage,
+									DamageType = DamageClass.Default,
+									Crit = false,
+									HideCombatText = true
+								}
+							);
+						}
+						if (item.AsFood().OnSwallowSoreThroatTime > 0)
+							pred.AddBuff(ModContent.BuffType<SoreThroat>(), item.AsFood().OnSwallowSoreThroatTime);
 						break;
 				}
 			}
@@ -391,6 +406,14 @@ namespace V2.NPCs
 					prey.WeightLeftToDigest -= npc.AsPred().GetPreyAbsorptionRateMethod.Invoke(npc) / (double)npc.AsPred().stomachContents.Count;
 					if (prey.WeightLeftToDigest < 0)
 						prey.WeightLeftToDigest = 0;
+
+					switch (prey.Type)
+					{
+						case PreyType.Item:
+							Item item = prey.Instance as Item;
+							item.AsFood().FullyDigested = true;
+							break;
+					}
 				}
 			}
 
@@ -585,7 +608,7 @@ namespace V2.NPCs
 					{
 						case PreyType.Player:
 							Player preyPredPlayer = prey.Instance as Player;
-							totalBellyWeight += PredPlayer.GetCurrentBellyWeight(preyPredPlayer);
+							totalBellyWeight += preyPredPlayer.AsPred().StomachWeight;
 							break;
 						case PreyType.NPC:
 							NPC preyPredNPC = prey.Instance as NPC;

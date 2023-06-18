@@ -28,7 +28,7 @@ namespace V2.Core
 
 	public abstract class FoodTypeTag
 	{
-		public double TotalWeight
+		public double TotalSize
 		{
 			get
 			{
@@ -139,7 +139,10 @@ namespace V2.Core
 		public List<FoodTypeTag> TypeTags { get; set; }
 		public bool Dead { get; set; }
 		public bool InventoryItem { get; set; }
+		public double InitialWeight { get; set; }
+		public double InitialSize { get; set; }
 		public double WeightLeftToDigest { get; set; }
+		public double SizeLeftToDigest => WeightLeftToDigest / InitialWeight * InitialSize;
 
 		public int timeSpentInStomach;
 
@@ -174,17 +177,13 @@ namespace V2.Core
 			}
 
 			Dead = false;
-			WeightLeftToDigest = GetInitialPreyWeight(this);
+			InitialWeight = InitialSize = WeightLeftToDigest = GetInitialPreySize(this);
 			timeSpentInStomach = 0;
 		}
 
-		public static double GetInitialPreyWeight(Entity entity)
-		{
-			Prey prey = new Prey(entity);
-			return GetInitialPreyWeight(prey);
-		}
+		public static double GetInitialPreySize(Entity entity) => GetInitialPreySize(new Prey(entity));
 
-		public static double GetInitialPreyWeight(Prey prey)
+		public static double GetInitialPreySize(Prey prey)
 		{
 			switch (prey.Type)
 			{
@@ -220,7 +219,9 @@ namespace V2.Core
 					return 1.0;
 				case PreyType.Item:
 					Item actualPreyItem = prey.Instance as Item;
-					return actualPreyItem.AsFood().Size;
+					return actualPreyItem.CalculateSnackSize();
+				case PreyType.Custom:
+					return 1.0;
 				default:
 					V2.Instance.Logger.Error("the type of the currently-weighed prey isn't recognized. I'll return its weight as 1.0 for now, but please be more careful");
 					return 1.0;
