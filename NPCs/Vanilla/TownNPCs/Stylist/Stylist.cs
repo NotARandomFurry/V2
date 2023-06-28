@@ -120,7 +120,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 			NPC armsDealer = nearbyResidentNPCs.FirstOrDefault(x => x.type == NPCID.ArmsDealer);
 			NPC salad = nearbyResidentNPCs.FirstOrDefault(x => x.type == NPCID.Dryad);
 			NPC dyeTrader = nearbyResidentNPCs.FirstOrDefault(x => x.type == NPCID.DyeTrader);
-			NPC succubus = nearbyResidentNPCs.FirstOrDefault(x => x.type == ModContent.NPCType<Succubus>());
+			NPC succubus = nearbyResidentNPCs.FirstOrDefault(x => x.type == ModContent.NPCType<Lucinda>());
 			NPC partyGirl = nearbyResidentNPCs.FirstOrDefault(x => x.type == NPCID.PartyGirl);
 
 			List<string> stylistChatPool = new List<string>();
@@ -568,25 +568,25 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 				"Mods.V2.Death.DigestedPlayer.HumanoidPred.1",
 				"Mods.V2.Death.DigestedPlayer.HumanoidPred.2",
 				"Mods.V2.Death.DigestedPlayer.HumanoidPred.3",
-				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Stylist.1",
-				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Stylist.2",
-				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Stylist.3",
-				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Stylist.4",
-				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Stylist.5",
-				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Stylist.6",
-				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Stylist.7",
+				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Stylist.1",
+				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Stylist.2",
+				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Stylist.3",
+				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Stylist.4",
+				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Stylist.5",
+				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Stylist.6",
+				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Stylist.7",
 			});
 
 			if (Main.bloodMoon)
 			{
 				deathReasonKeyList.Clear();
-				deathReasonKeyList.Add("Mods.V2.Death.DigestedPlayer.SpecificNPC.Stylist.BloodMoonHaircut");
+				deathReasonKeyList.Add("Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Stylist.BloodMoonHaircut");
 			}
 
 			if (player.difficulty == PlayerDifficultyID.Hardcore)
 			{
 				deathReasonKeyList.Clear();
-				deathReasonKeyList.Add("Mods.V2.Death.DigestedPlayer.SpecificNPC.Stylist.Hardcore");
+				deathReasonKeyList.Add("Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Stylist.Hardcore");
 			}
 		}
 

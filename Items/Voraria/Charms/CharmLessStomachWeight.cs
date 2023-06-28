@@ -23,10 +23,11 @@ namespace V2.Items.Voraria.Charms
 			return Math.Min(1.0 - stomachCapacityPercent, 1.0 - FullnessEffectivenessLossThreshold) / (1.0 - FullnessEffectivenessLossThreshold);
 		}
 
+		public override LocalizedText DisplayName => Language.GetText("Mods.V2.ItemName.Voraria.Charms.LessStomachWeight");
+		public override LocalizedText Tooltip => Language.GetText("Mods.V2.ItemTooltip.Voraria.Charms.LessStomachWeight.Short");
+
 		public override void SetDefaults()
 		{
-			Item.SetNameOverride(Language.GetTextValue("Mods.V2.ItemName.Voraria.Charms.LessStomachWeight"));
-
 			Item.accessory = true;
 
 			Item.AsCharm().IsValidCharm = true;

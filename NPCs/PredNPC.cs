@@ -47,9 +47,9 @@ namespace V2.NPCs
 		public double maxStomachCapacity;
 		public float swallowRange;
 
-		public SoundStyle SmallBurps { get; set; }
-		public SoundStyle StandardBurps { get; set; }
-		public SoundStyle BigBurps { get; set; }
+		public SoundStyle? SmallBurps { get; set; }
+		public SoundStyle? StandardBurps { get; set; }
+		public SoundStyle? BigBurps { get; set; }
 
 		public List<SoundStyle> SmallGulps { get; set; }
 		public List<SoundStyle> BigGulps { get; set; }
@@ -117,8 +117,9 @@ namespace V2.NPCs
 			CanBeForceFedMethod = (NPC npc) => false;
 			OnForceFedMethod = null;
 
-			SmallBurps = Burps.Humanoid.Small;
-			StandardBurps = Burps.Humanoid.Standard;
+			SmallBurps = null;
+			StandardBurps = null;
+			BigBurps = null;
 
 			SmallGulps = new List<SoundStyle>
 			{
@@ -386,7 +387,7 @@ namespace V2.NPCs
 								{
 									if (preyNPC.type == NPCID.HallowBoss && ModContent.GetInstance<V2ServerConfig>().EasilyEdibleEmpress)
 										digestionDamage *= 50.0;
-									prey.Dead = preyNPC.AsFood().TakeDigestionDamage(preyNPC, npc, digestionDamage);
+									prey.Dead = PreyNPC.TakeDigestionDamage(preyNPC, npc, digestionDamage);
 									if (ModContent.GetInstance<V2ServerConfig>().DebugChatMessages)
 										Main.NewText("Successfully dealt digestion damage to prey: " + preyNPC.GivenOrTypeName);
 									else if (ModContent.GetInstance<V2ServerConfig>().DebugChatMessages)

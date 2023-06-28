@@ -17,17 +17,11 @@ using V2.PlayerHandling;
 
 namespace V2.NPCs.Voraria.TownNPCs.Succubus
 {
-	public class BoundSuccubus : ModNPC
+	public class LucindaBound : ModNPC
 	{
 		public override void SetStaticDefaults()
 		{
-			// Influences how the NPC looks in the Bestiary
-			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers(0)
-			{
-				Hide = true, // Draws the NPC in the bestiary as if its walking +1 tiles in the x direction
-			};
-
-			NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
+			NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, new NPCID.Sets.NPCBestiaryDrawModifiers(0) { Hide = true });
 		}
 
 		public override void SetDefaults()
@@ -52,6 +46,8 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 			NPC.lavaImmune = true;
 		}
 
+		public override void ModifyTypeName(ref string typeName) => typeName = "Bound Succubus";
+
 		public override float SpawnChance(NPCSpawnInfo spawnInfo)
 		{
 			if (ModContent.GetInstance<MasterSystem>().freedSucc)
@@ -60,7 +56,7 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 			if (!spawnInfo.Player.ZoneUnderworldHeight)
 				return 0f;
 
-			if (NPC.AnyNPCs(ModContent.NPCType<BoundSuccubus>()))
+			if (NPC.AnyNPCs(ModContent.NPCType<LucindaBound>()))
 				return 0f;
 
 			return 0.15f;
@@ -90,13 +86,13 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 			if (firstButton)
 			{
 				ModContent.GetInstance<MasterSystem>().freedSucc = true;
-				NPC.AI_000_TransformBoundNPC(Main.CurrentPlayer.whoAmI, ModContent.NPCType<Succubus>());
+				NPC.AI_000_TransformBoundNPC(Main.CurrentPlayer.whoAmI, ModContent.NPCType<Lucinda>());
 				Main.npcChatText = "There ya go! Wasn't that hard. Now, c'mere so I can reward you with some time in my gut...or, y'know, just some old trinkets from ol' Lucy to help you be a great pred like me.";
 			}
 			else
 			{
 				ModContent.GetInstance<MasterSystem>().freedSucc = true;
-				NPC.AI_000_TransformBoundNPC(Main.CurrentPlayer.whoAmI, ModContent.NPCType<Succubus>());
+				NPC.AI_000_TransformBoundNPC(Main.CurrentPlayer.whoAmI, ModContent.NPCType<Lucinda>());
 				PredNPC.SwallowWithTextIfApplicable(
 					NPC,
 					Main.CurrentPlayer,

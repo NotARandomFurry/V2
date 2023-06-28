@@ -16,12 +16,13 @@ namespace V2.Items.Voraria.Charms
 	public class CharmRegenFromAbsorption : ModItem
 	{
 		public static double HealthRegenerationRatio => 1.5;
-		public static double ManaRegenerationRatio => 2.5;
+		public static double ManaRegenerationRatio => 4.25;
+
+		public override LocalizedText DisplayName => Language.GetText("Mods.V2.ItemName.Voraria.Charms.RegenFromAbsorption");
+		public override LocalizedText Tooltip => Language.GetText("Mods.V2.ItemTooltip.Voraria.Charms.RegenFromAbsorption.Short");
 
 		public override void SetDefaults()
 		{
-			Item.SetNameOverride(Language.GetTextValue("Mods.V2.ItemName.Voraria.Charms.RegenFromAbsorption"));
-
 			Item.accessory = true;
 
 			Item.AsCharm().IsValidCharm = true;
@@ -40,8 +41,8 @@ namespace V2.Items.Voraria.Charms
 			if (player.AsPred().stomachContents.Count > 0)
 			{
 				double effectiveness = (double)player.AsPred().stomachContents.FindAll(x => x.Dead).Count / (double)player.AsPred().stomachContents.Count;
-				player.AsPred().specialHealthRegenCount += (HealthRegenerationRatio * player.AsPred().PreyAbsorptionRate * effectiveness).CastToDecimalPlaces(2);
-				player.AsPred().specialManaRegenCount += (ManaRegenerationRatio * player.AsPred().PreyAbsorptionRate * effectiveness).CastToDecimalPlaces(2);
+				player.AsPred().specialHealthRegenCount += HealthRegenerationRatio * player.AsPred().PreyAbsorptionRate * effectiveness;
+				player.AsPred().specialManaRegenCount += ManaRegenerationRatio * player.AsPred().PreyAbsorptionRate * effectiveness;
 			}
 		}
 
@@ -58,10 +59,10 @@ namespace V2.Items.Voraria.Charms
 					HealthRegenerationRatio = HealthRegenerationRatio.ConvertToPercentageString(0),
 					ManaRegenerationRatio = ManaRegenerationRatio.ConvertToPercentageString(0),
 					RegenEffectiveness = regenEffectiveness.ConvertToPercentageString(2),
-					LivePreyRemaining = player.AsPred().stomachContents.FindAll(x => x.Dead).Count,
+					LivePreyRemaining = player.AsPred().stomachContents.FindAll(x => !x.Dead).Count,
 					PreyRemaining = player.AsPred().stomachContents.Count,
-					CurrentHealthRegen = (regenEffectiveness > 0.0 ? HealthRegenerationRatio * player.AsPred().PreyAbsorptionRate * regenEffectiveness : 0.0).CastToDecimalPlaces(2),
-					CurrentManaRegen = (regenEffectiveness > 0.0 ? ManaRegenerationRatio * player.AsPred().PreyAbsorptionRate * regenEffectiveness : 0.0).CastToDecimalPlaces(2),
+					CurrentHealthRegen = ((regenEffectiveness > 0.0 ? HealthRegenerationRatio * player.AsPred().PreyAbsorptionRate * regenEffectiveness : 0.0) * 60.0).CastToDecimalPlaces(2),
+					CurrentManaRegen = ((regenEffectiveness > 0.0 ? ManaRegenerationRatio * player.AsPred().PreyAbsorptionRate * regenEffectiveness : 0.0) * 60.0).CastToDecimalPlaces(2),
 				}
 			);
 		}

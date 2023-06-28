@@ -29,7 +29,7 @@ namespace V2.Items.Vanilla.Consumables
 		public override void SetDefaults(Item entity)
 		{
 			entity.AsFood().MaxHealth = 400;
-			entity.AsFood().Size = 0.66;
+			entity.AsFood().Size = 0.45;
 
 			entity.AsFood().UpdateInStomach += UpdateInStomach;
 			entity.AsFood().OnBreak += OnBreak;

@@ -106,7 +106,11 @@ Mods: {
 				Obsidian Skin Potions are critically useful in exploring lava-heavy terrain, allowing the consumer to bathe in it without harm.
 				They also have the side effect of allowing the consumer to drink lava freely --- though, be warned, lava is VERY fattening.
 				'''
-			WiresFromMechanic: You can buy Wires from the Mechanic and use them to create traps, pumping systems, systematic waifu-feeding factories, or other elaborate devices.
+			WiresFromMechanic:
+				'''
+				You can buy Wires from the Mechanic and use them to create traps, pumping systems, systematic waifu-feeding factories,
+				or any number of other elaborate devices designed to make eating and getting eaten even easier than it already is.
+				'''
 			PartyGirlNeedsLotsOfSnacksToMoveIn:
 				'''
 				The Party Girl won't move in unless your little stretch of the world is full of other townsfolk.
@@ -503,34 +507,24 @@ Mods: {
 				Universal: {
 					1: "{Player} was eaten by {Pred}."
 					2: "{Player} couldn't escape {Pred}'s stomach."
-					3: "{Player}'s fruitless thrashing was finally stopped by {Pred}'s stomach acids."
-					4: "{Pred}'s stomach was the last thing {Player} ever saw."
-					5: "{Player} learned the hard way that napping in a gut isn't safe."
-					6: "{Pred} mulched {Player} without a second thought."
-					7: "{Player} slipped down {Pred}'s throat, never to be seen again."
-					8: "{Pred} had {Player} as a quick snack."
-					9: "{Player} was transmuted into chyme by {Pred}."
-					10: "{Player}'s flesh was melted from the bone inside {Pred}'s stomach."
-					11: "{Pred}'s stomach melted {Player} down."
-					12: "{Pred}'s stomach acids were too much for {Player}."
-					13: "{Player} was dissolved by {Pred}."
-					14: "{Player} went on the other kind of acid trip."
-					15: "{Player} got a little too soft."
-					16: "{Pred} made a meal of {Player}."
-					17: "{Player} became an idiot sandwich."
-					18: "{Player} succumbed to {Pred}'s acids."
-					19: "{Pred} now has Exquisitely Stuffed for a while, thanks to {Player}."
-					20: "{Player} became a second breakfast for {Pred}."
-					21: "{Player} tried to become a gastroenterologist from memory."
-					22: "{Player} mistook pearly whites for pearly gates."
-					23: "{Player} is a terrible dieting advisor."
-					24: "{Player} thought the Iron Maiden sounded hot."
-					25: "{Player} got fucking churned lmaooo"
-					26: "{Player} was mulched by {Pred}."
-					27: "{Player} tried to swim in acid."
-					28: "{Player} got got by {Pred}."
-					29: "{Player} was eaten from the bottom up...or was it from the top down?"
-					30: "{Player} underwent a merciful euthanasia by digestion."
+					3: "{Pred}'s stomach was the last thing {Player} ever saw."
+					4: "{Player} learned the hard way that napping in a gut isn't safe."
+					5: "{Pred} mulched {Player} without a second thought."
+					6: "{Player} slipped down {Pred}'s throat, never to be seen again."
+					7: "{Pred} had {Player} as a quick snack."
+					12: "{Pred} made a meal of {Player}."
+					13: "{Player} became an idiot sandwich."
+					14: "{Pred} now has Exquisitely Stuffed for a while, thanks to {Player}."
+					15: "{Player} became a second breakfast for {Pred}."
+					16: "{Player} tried to become a gastroenterologist from memory."
+					17: "{Player} mistook pearly whites for pearly gates."
+					18: "{Player} is a terrible dieting advisor."
+					19: "{Player} thought the Iron Maiden sounded hot."
+					20: "{Player} got fucking churned lmaooo"
+					21: "{Player} was mulched by {Pred}."
+					22: "{Player} got got by {Pred}."
+					23: "{Player} was eaten from the bottom up...or was it from the top down?"
+					34: "{Player} underwent a merciful euthanasia by digestion."
 
 					StomachSuffocation: {
 						1: "{Player} ran out of air in {Pred}'s stomach."
@@ -546,6 +540,28 @@ Mods: {
 					}
 				}
 
+				SpecificDigestionType: {
+					Acidic: {
+						1: "{Player}'s fruitless thrashing was finally stopped by {Pred}'s stomach acids."
+						2: "{Pred}'s stomach acids were too much for {Player}."
+						3: "{Player} went on the other kind of acid trip."
+						4: "{Player} succumbed to {Pred}'s acids."
+						5: "{Player} tried to swim in acid."
+						6: "{Player}'s flesh was melted from the bone inside {Pred}'s stomach."
+						7: "{Player} was transmuted into chyme by {Pred}."
+						8: "{Pred}'s stomach melted {Player} down."
+						9: "{Player} was dissolved by {Pred}."
+						10: "{Player} got a little too soft."
+					}
+					Thermal: {
+						1: "{Player} got torched."
+						2: "{Player} was smelted by {Pred}."
+						3: "{Player} burned to a fine crisp inside {Pred}."
+						4: "{Player} misjudged the digestive strength of fire."
+						5: "{Player} was burned to death in {Pred}'s stomach."
+					}
+				}
+
 				HumanoidPred: {
 					1: "{Player} became ass fat for {Pred}."
 					2: "{Player} helped to widen up {Pred}'s thighs."
@@ -553,129 +569,158 @@ Mods: {
 				}
 
 				SpecificNPC: {
-					Nurse: {
-						1: "{Player} made a very healthy meal for {Pred}."
-						2: "{Player} helped to keep {Pred}'s belly happy and healthy."
-						3: "{Pred}'s digestive system was given a check-up by {Player}."
-						4:
-							'''
-							{Pred} lost her medical license after adding {Player} to her hips...
-							...oh, wait. That's what she's qualified to do. Never mind.
-							'''
-						5: "{Player} is now a victim of medical mealpractice."
-						6: "{Player} was quarantined."
-						7: "{Pred} prescribed {Player} a one-way trip to her backside...whether they got there is another story."
-						8: "{Pred} gave {Player} a thorough examination by digestion."
+					Meteorite: {
+						MeteorMarble: {
+							1: "{Player} thought a Meteor Marble was crafted well enough to feed themselves to."
+							1: "{Player} made a Meteor Marble just a little too big to handle."
 
-						NoFundsForHeal: {
-							1: "{Player} couldn't pay their medical fees."
-							2: "{Player} thought free healthcare exists."
-							3: "{Player} tried to undercut {Pred}, and learned the hard way how bad of an idea that is."
-							4: "{Player}'s insurance didn't cover digestion."
+							Hardcore:
+								'''
+								Somehow, {Player} thought it was a good idea to make a Meteor Marble big enough to fit inside.
+								Fitting, then, that the last moments of their only life were spent crammed into that very same Meteor Marble.
+								Nobody will ever find what remains of them...for nothing does.
+								'''
+						}
+						MeteorMaiden: {
+							1: "{Player} was helplessly smitten for a refueling Meteor Maiden."
+							2: "{Player} helped to re-energize a Meteor Maiden after a long day's work by the latter."
+							3: "{Player} thought a Meteor Maiden's combustion chamber looked inviting."
+							4: "If Meteor Maidens had a rear or thighs to add prey to, {Player} would definitely be working to fatten them up right now."
+							5: "A Meteor Maiden saw {Player} as a sufficient fuel source, and secured them for herself."
+
+							Hardcore:
+								'''
+								A pleasant sound, almost like a belch, but bassier and rockier, rings out over the mountaintops.
+								{Player} has ended up as little more than a meal for a Meteor Maiden, never to be seen again.
+								Perhaps that Meteor Maiden will go on to eat the moon, and many celestial bodies beyond? Only time will tell...
+								'''
+						}
+					}
+					Townsfolk: {
+						Nurse: {
+							1: "{Player} made a very healthy meal for {Pred}."
+							2: "{Player} helped to keep {Pred}'s belly happy and healthy."
+							3: "{Pred}'s digestive system was given a check-up by {Player}."
+							4:
+								'''
+								{Pred} lost her medical license after adding {Player} to her hips...
+								...oh, wait. That's what she's qualified to do. Never mind.
+								'''
+							5: "{Player} is now a victim of medical mealpractice."
+							6: "{Player} was quarantined."
+							7: "{Pred} prescribed {Player} a one-way trip to her backside...whether they got there is another story."
+							8: "{Pred} gave {Player} a thorough examination by digestion."
+
+							NoFundsForHeal: {
+								1: "{Player} couldn't pay their medical fees."
+								2: "{Player} thought free healthcare exists."
+								3: "{Player} tried to undercut {Pred}, and learned the hard way how bad of an idea that is."
+								4: "{Player}'s insurance didn't cover digestion."
+							}
+
+							Hardcore:
+								'''
+								{Player} has become the newest victim of {Pred}'s medical mealpractice.
+								Mind you, most healthcare packages cover digestion reformation...but {Player} forgot to buy one.
+								'''
 						}
 
-						Hardcore:
-							'''
-							{Player} has become the newest victim of {Pred}'s medical mealpractice.
-							Mind you, most healthcare packages cover digestion reformation...but {Player} forgot to buy one.
-							'''
-					}
-
-					ArmsDealer: {
-						1: "{Player} was locked and loaded into {Pred}'s gut."
-						2: "{Pred} gave his stomach some target practice with {Player}."
-						Hardcore:
-							'''
-							{Player} was chambered into {Pred}'s ruthless gut, never to be seen again.
-							The skilled gunman simply spent the rest of his day unwinding with some relaxing target practice as his prey melted away.
-							'''
-					}
-
-					Angel: {
-						1: "{Player} was given a one-way ticket to the second Heaven that is {Pred}'s belly."
-						2: "{Player} atoned for their sins (or, perhaps, committed more of them) within {Pred}'s confines."
-						3: "{Player} will be thoroughly studying {Pred}'s internals."
-						4: "{Player} was somehow a submissive enough snack to get {Pred} to melt them into gut fat. An impressive, if strange, performance."
-						Hardcore:
-							'''
-							{Pred}'s stomach sent {Player} to Heaven...which, in her case, happens to still be her stomach.
-							Ah, well. At least the rest of their days will be well-enjoyed as fat on her frame.
-							'''
-					}
-
-					Stylist: {
-						1: "{Player} melted inside {Pred}'s stylish stomach."
-						2: '''{Pred}'s belly gave {Player} a "free" haircut.'''
-						3: "{Pred} let {Player} marinate for a while in her stomach acids."
-						4: "{Player} was snackrificed to {Pred}."
-						5: "{Player} will look super stylish as a new layer of fat for {Pred}."
-						6: "{Pred} just couldn't resist {Player}'s delectable hair."
-						7: "{Player} helped {Pred} exercise her no-refunds policy."
-						BloodMoonHaircut: (Player) asked for a haircut at just the right time.
-						Hardcore:
-							'''
-							{Player} snackrificed their only life to its rightful holder: {Pred} the hair stylist.
-							May they find endless enjoyment as stylish stomach fat.
-							'''
-					}
-
-					Succubus: {
-						1: "{Player} was forced to fatten up {Pred}'s demonic derriere."
-						2: "{Player}'s body is now stored on {Pred}'s hellish hips."
-						3: "{Pred} is one step closer to being the fattest demon in the world, thanks to {Player}."
-						4: "{Player} helped thicken up {Pred}'s satanic sides even further."
-						5: "{Pred} promised {Player} a fun time...and figured that a night of hanging off her midsection counts."
-
-						StomachSuffocation: {
-							1: "{Player}'s lungs couldn't handle {Pred}'s infernal internals."
-							2: "{Pred}'s searing stomach scorched {Player}'s respiratory system."
+						ArmsDealer: {
+							1: "{Player} was locked and loaded into {Pred}'s gut."
+							2: "{Pred} gave his stomach some target practice with {Player}."
+							Hardcore:
+								'''
+								{Player} was chambered into {Pred}'s ruthless gut, never to be seen again.
+								The skilled gunman simply spent the rest of his day unwinding with some relaxing target practice as his prey melted away.
+								'''
 						}
 
-						Hardcore:
-							'''
-							{Player}'s body and soul alike were churned into some new chest fat for {Pred}.
-							Maybe now, she'll be able to use that strength to become the apex pred she's wanted to be.
-							'''
+						Angel: {
+							1: "{Player} was given a one-way ticket to the second Heaven that is {Pred}'s belly."
+							2: "{Player} atoned for their sins (or, perhaps, committed more of them) within {Pred}'s confines."
+							3: "{Player} will be thoroughly studying {Pred}'s internals."
+							4: "{Player} was somehow a submissive enough snack to get {Pred} to melt them into gut fat. An impressive, if strange, performance."
+							Hardcore:
+								'''
+								{Pred}'s stomach sent {Player} to Heaven...which, in her case, happens to still be her stomach.
+								Ah, well. At least the rest of their days will be well-enjoyed as fat on her frame.
+								'''
+						}
+
+						Stylist: {
+							1: "{Player} melted inside {Pred}'s stylish stomach."
+							2: '''{Pred}'s belly gave {Player} a "free" haircut.'''
+							3: "{Pred} let {Player} marinate for a while in her stomach acids."
+							4: "{Player} was snackrificed to {Pred}."
+							5: "{Player} will look super stylish as a new layer of fat for {Pred}."
+							6: "{Pred} just couldn't resist {Player}'s delectable hair."
+							7: "{Player} helped {Pred} exercise her no-refunds policy."
+							BloodMoonHaircut: (Player) asked for a haircut at just the right time.
+							Hardcore:
+								'''
+								{Player} snackrificed their only life to its rightful holder: {Pred} the hair stylist.
+								May they find endless enjoyment as stylish stomach fat.
+								'''
 					}
 
-					Mechanic: {
-						1: '''{Pred}'s system converted {Player} into "potential energy".'''
-						2: "{Player} helped to recharge {Pred}'s batteries."
-						3: "{Pred} took a snack break with {Player}."
-						4: "{Pred}'s system caused {Player} to short-circuit."
-						5: "{Player} suffered a blackout in {Pred}'s stomach."
-						6: "{Player} was fixed."
-						7: "{Player} was scrapped."
-						8: "{Player} was turned into a battery by {Pred}."
-						Hardcore: "{Player} has become the best battery {Pred}'s ever used, at the cost of their continued existence."
-					}
+						Succubus: {
+							1: "{Player} was forced to fatten up {Pred}'s demonic derriere."
+							2: "{Player}'s body is now stored on {Pred}'s hellish hips."
+							3: "{Pred} is one step closer to being the fattest demon in the world, thanks to {Player}."
+							4: "{Player} helped thicken up {Pred}'s satanic sides even further."
+							5: "{Pred} promised {Player} a fun time...and figured that a night of hanging off her midsection counts."
 
-					PartyGirl: {
-						1: "{Pred} had {Player} as a pre-party pick-me-up."
-						2: "{Player} will be the life of the party as {Pred}'s tum fat."
-						3: "{Pred} thought {Player} tasted...almost as good as candy."
-						4: "{Pred} melted {Player} into liquid confetti."
-						5: "{Player} partied too hard in {Pred}'s belly."
-						Hardcore:
-							'''
-							The last anyone ever saw of {Player} was a breathy, bubbly belch from {Pred}, bringing up a bundle of heated, half-liquid confetti.
-							At least the gut fat they left on her will keep her the life of the party for many weeks to come.
-							'''
-					}
+							StomachSuffocation: {
+								1: "{Player}'s lungs couldn't handle {Pred}'s infernal internals."
+								2: "{Pred}'s searing stomach scorched {Player}'s respiratory system."
+							}
 
-					Steampunker: {
-						1: "{Pred} needed fuel for her engine; fuel which {Player} was all too eager to provide."
-						2: "{Player} was flawlessly converted to steam inside {Pred}'s mechanisms."
-						3: "{Pred} fed {Player} into her countless internal devices and doohickeys."
-						4: "{Pred} hid {Player} away in her stomach, never to see the sun again."
-						5: "{Player} wanted to know how steam is made. {Pred} happily demonstrated."
-						6: The only thing left of {Player} is a gutful of steam inside {Pred}.
-						7: "{Pred}'s body has become a little bit denser, thanks to {Prey}."
-						Hardcore:
-							'''
-							No conclusive evidence will ever be found of where {Player} disappeared to.
-							The only clue left behind? {Pred} having higher density than usual and belching up a healthy amount of steam.
-							'''
+							Hardcore:
+								'''
+								{Player}'s body and soul alike were churned into some new chest fat for {Pred}.
+								Maybe now, she'll be able to use that strength to become the apex pred she's wanted to be.
+								'''
+						}
+
+						Mechanic: {
+							1: '''{Pred}'s system converted {Player} into "potential energy".'''
+							2: "{Player} helped to recharge {Pred}'s batteries."
+							3: "{Pred} took a snack break with {Player}."
+							4: "{Pred}'s system caused {Player} to short-circuit."
+							5: "{Player} suffered a blackout in {Pred}'s stomach."
+							6: "{Player} was fixed."
+							7: "{Player} was scrapped."
+							8: "{Player} was turned into a battery by {Pred}."
+							Hardcore: "{Player} has become the best battery {Pred}'s ever used, at the cost of their continued existence."
+						}
+
+						PartyGirl: {
+							1: "{Pred} had {Player} as a pre-party pick-me-up."
+							2: "{Player} will be the life of the party as {Pred}'s tum fat."
+							3: "{Pred} thought {Player} tasted...almost as good as candy."
+							4: "{Pred} melted {Player} into liquid confetti."
+							5: "{Player} partied too hard in {Pred}'s belly."
+							Hardcore:
+								'''
+								The last anyone ever saw of {Player} was a breathy, bubbly belch from {Pred}, bringing up a bundle of heated, half-liquid confetti.
+								At least the gut fat they left on her will keep her the life of the party for many weeks to come.
+								'''
+						}
+
+						Steampunker: {
+							1: "{Pred} needed fuel for her engine; fuel which {Player} was all too eager to provide."
+							2: "{Player} was flawlessly converted to steam inside {Pred}'s mechanisms."
+							3: "{Pred} fed {Player} into her countless internal devices and doohickeys."
+							4: "{Pred} hid {Player} away in her stomach, never to see the sun again."
+							5: "{Player} wanted to know how steam is made. {Pred} happily demonstrated."
+							6: The only thing left of {Player} is a gutful of steam inside {Pred}.
+							7: "{Pred}'s body has become a little bit denser, thanks to {Prey}."
+							Hardcore:
+								'''
+								No conclusive evidence will ever be found of where {Player} disappeared to.
+								The only clue left behind? {Pred} having higher density than usual and belching up a healthy amount of steam.
+								'''
+						}
 					}
 				}
 			}
@@ -716,11 +761,6 @@ Mods: {
 			}
 		}
 
-		NPCName: {
-			BoundSuccubus: Bound Succubus
-			Succubus: Succubus
-		}
-
 		TownNPCMood: {
 			Angel: {
 				Content: I- I'm doing wonderfully, thank you! Of course, i- if you'd like me to, I wouldn't object to...s- studying your internals...
@@ -738,7 +778,7 @@ Mods: {
 
 				Neighbors: {
 					CrowdLevel: {
-						Alone: It's very quiet here. I suppose the solitude isn't AWFUL, but...would you be so kind as to deliver the occasional pred to sweep me off of my feet and onto their figure?...f- for purely scientific p- purposes, of course!
+						Alone: It's very quiet here. I suppose the solitude isn't AWFUL, but...would you be so kind as to d- deliver the occasional pred to sweep me off of my feet a- and onto their figure?...f- for purely scientific p- purposes, of course!
 						GoodCompany: I enjoy the company you've given me. Very amicable, and very willing to further my studies!...a- and give me a comfortable s- sytem to sit in and...e- enjoy myself to.
 						BadCompany: I don't really enjoy the company you've given me. As for why...well, it varies from person to person.
 						ThreesTheSweetSpot: Three is a c- crowd, they say...I- I say three is a healthy s- selection of potential p- predators to work with and analyze!...a- and throw myself into.
@@ -827,10 +867,59 @@ Mods: {
 			}
 		}
 
-		NPCs: {
-			BoundSuccubus.DisplayName: Bound Succubus
+		Bestiary: {
+			Meteorite: {
+				MeteorMarble:
+					'''
+					A small, curious construct which is never (at first) seen without its numerous small rocks orbiting its core. The core's inside is something of a compressive cage that burns anything (and, if made possible, anyONE) that enters.
+					'''
+				MeteorMaiden:
+					'''
+					A fascinating, almost woman-like construct, though built without the waist or anything under. The top and bottom halves of her torso can separate seemingly-infinitely to reveal a magically-formed stomach which torches anything inside. The sand-like slurry her digestive process makes has a wide variety of uses.
+					'''
+			}
+			TownNPCs: {
+				Succubus:
+					'''
+					Having lived on the outskirts of Desperai for many years before deciding to pack up and leave, Lucinda's a demon that just wants people to believe she's a strong, independent predator.
+					'''
+			}
+			Divine: {
+				Sinhunters: {
+					Promethia:
+						'''
+						If ever there was a word for a Sinhunter who never did their expected job, that word would be "Promethia". Being much more interested in studying the internals of other creatures than swallowing them herself, Promethia was exiled from the Holy Realm decades ago, and now searches the mortal plane for the perfect predator to become a part of.
+						'''
+					StJerne:
+						'''
+						A fearsome Sinhunter with over a millenium of experience under her belt, St. Jerne is the bane of any being that thinks they can threaten Her Twinkling Majesty. Even the most stoic of Sinhunters can have lofty aspirations, though, and very occasionally, a select few have noticed her looking longingly, almost hungrily, at Aurora's titanic form...
+						'''
+				}
+				Gods: {
+					Constitua:
+						'''
+						A truly unparalleled mechanic with a knack for working with otherworldly materials, Constitua is nothing if not amazingly gifted with their work. They are responsible for a vast quantity of the more modern-looking inventions across the Holy Realm, taking inspiration from mortals and immortals alike.
+						'''
+					Judico:
+						'''
+						The great judge of the Holy Realm; equal parts masculine and feminine, Judico truly seeks nothing more than fair, equal, and uncompromising judgement --- even for the deities he is obligated to call his peers. His path to monotheism has been laced with trouble after trouble, but victory is within his grasp...
+						'''
+					Aurora:
+						'''
+						The titanic woman known as the Mother of the Stars. Countless stars have both been birthed by her and ended up right back in her gargantuan gut to be churned into ever more fat for her figure; her truly immeasurably strong belches are said to be the source of the aurora borealis that paint vast swathes of space.
+						'''
+					Chrona:
+						'''
+						The endless march of time shall forget countless things. It shall not forget Chrona, the being that granted the flow of time to the universe, and in turn, was granted a place to reside.
+						'''
+				}
+			}
+		}
 
-			Succubus: {
+		NPCs: {
+			LucindaBound.DisplayName: Succubus
+
+			Lucinda: {
 				DisplayName: Succubus
 
 				TownNPCMood: {
@@ -840,10 +929,10 @@ Mods: {
 					LoveSpace: I love having so much space.
 					DislikeCrowded: I dislike how crowded I am.
 					HateCrowded: I hate how crowded I am.
-					LoveBiome: I love {BiomeName}.
-					LikeBiome: I like {BiomeName}.
-					DislikeBiome: I dislike {BiomeName}.
-					HateBiome: I hate {BiomeName}.
+					LoveBiome: It's great to be around the ocean, don'tcha think? Sittin' in the warm sand, lookin' over the sunset as your prey-stuffed gut churns and gurgles even the meatiest meals into more of ya...it's the BEST. My only regret's that I didn't come up here sooner.
+					LikeBiome: The desert's nice and warm, I have to say. Reminds me of home, in all the good ways, and it's a lot more open to boot. Plenty of good prey to snatch up, too, if you know where to look. I like it.
+					DislikeBiome: It's way too cold around here, if you ask me. Food's a bit too fluffy for me, too. I'd kill for a warm lava bath right now; find me one, or at least a warmer place to crash.
+					HateBiome: Seriously!? This place is awful! I can't even eat the stuff here; I might get food poisoning from how rotten it all is!
 					LoveNPC: I love {NPCName}.
 					LikeNPC: I like {NPCName}.
 					DislikeNPC: I dislike {NPCName}.
@@ -852,52 +941,62 @@ Mods: {
 					Princess_LovesNPC: I like {NPCName}.
 				}
 
-				Census.SpawnCondition: Find her and free her in the Underworld
-			}
-		}
+				HelpButton: {
+					DisplayName: Guidance
 
-		Items: {
-			Voraria: {
-				CharmBetterDigestion: {
-					DisplayName: Acidic Charm
-					Tooltip: ""
-				}
+					Tips: {
+						Intro:
+							'''
+							Lookin' to stay out of a pred's gut, huh? Well, I guess I can give ya a few tips.
+							Just be warned, I'll be givin' you everything I've got if you end up in MY gut; I'm just makin' sure nobody else gets ya first.
+							'''
+						PredStats:
+							'''
+							There are four main parts to any pred's digestive system: [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:throat strength, stomach strength, acid strength, and absorption strength].
+							Each one measures a different aspect of how well a gut and its friends can handle your food. Those terms are mainly used by the more...science-y types, though, so I'll keep it simple for ya.
+							'''
+						SwallowSize:
+							'''
+							A pred's throat can only handle so much before it starts to hurt. That's called their [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:swallow size] on paper.
+							The higher it is, the bigger the meals that can fit down their gullet, and the easier smaller meals go down. Simple enough, yeah?
+							So, don't wanna get eaten? Steer clear of preds that can get you down easy until you're sure you can gulp 'em down yourself.
+							'''
+						StomachCapacity:
+							'''
+							Just like your throat, [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:your gut can only hold so much] before it starts complainin'.
+							People have put together a ton of tools for that in this day and age, though....not that I ever need 'em.
+							If you can [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:bring some bulky stuff or a few friends] into a gut with you, I'm sure any pred'll feel the heartburn in no time.
+							'''
+						Struggles:
+							'''
+							Obviously, things don't like bein' in bellies most of the time; to get out, you'll have to [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.NegativeVoreEffect}:fight your way out] of there as long as you can.
+							Just be sure you don't run outta air or the acids don't get to you too quick. [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.NegativeVoreEffect}:Can't really fight back if you're already knocked out...]
+							'''
+						Stomachache:
+							'''
+							If you fight around too much, you'll [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.NegativeVoreEffect}:give your pred a bellyache], which usually brings 'em right back up.
+							Just be sure you don't end up food for a masochist if you have to kick around a lot to get out of a gut...like mine.
+							'''
+						Absorption:
+							'''
+							[c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.NegativeVoreEffect}:Once a pred's acids get their meal knocked out, or they run outta air], their gut can start [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:properly processin' that meal] into a nice sludge.
+							All you gotta do is keep yourself from gettin' to that point, and you're golden. That's just about all I can tell ya; it really is as simple as that.
+							'''
+						AlreadyDinnerForADemon:
+							'''
+							Help? What kinda help? Help gettin' mulched?
 
-				CharmRegenFromAbsorption: {
-					DisplayName: Revitalization Charm
-					Tooltip: {
-						Short:
+							...no, really. Don't you have some thick demon thighs to be fillin' out right about now?
 							'''
-							Grants health and mana regeneration while digesting dead prey
-							{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
-							'''
-						Long:
-							'''
-							[c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:While digesting dead prey:]
-							- [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.Heal}:Health is regenerated] at a rate of {HealthRegenerationRatio} of your [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:absorption rate].
-							- [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.ManaHeal}:Mana is regenerated] at a rate of {ManaRegenerationRatio} of your [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:absorption rate].
-							[c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.NegativeVoreEffect}:Effectiveness decreases if there are prey in your stomach still alive.]
-
-							Current Regeneration ({RegenEffectiveness} effectiveness with {LivePreyRemaining} out of {PreyRemaining} prey still alive):
-							- [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.Heal}:{CurrentHealthRegen} HP/sec]
-							- [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.ManaHeal}:{CurrentManaRegen} mana/sec]
-							'''
-						Flavor:
-							'''
-							An intermediate-level charm designed to ease the long-standing issue of one's
-							digestive system granting surprisingly little reprieve from the heat of battle.
-							As long as a surplus of food resides in the bearer's stomach, this charm will
-							convert some of the excess calories into mana to fuel a spell which revitalizes
-							the bearer both physically and magically. Of course, this spell can only work
-							as quickly as the bearer's belly can digest its meals.
-							'''
+						Invalid: ...what was I talkin' about again?
 					}
 				}
 
-				CharmLessStomachWeight: {
-					DisplayName: Lesser Disencumberance Charm
-					Tooltip: ""
-				}
+				Census.SpawnCondition:
+					'''
+					Find and free her in the Underworld
+					Whether you're nice about it or not doesn't matter
+					'''
 			}
 		}
 	}

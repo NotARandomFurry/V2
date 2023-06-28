@@ -213,7 +213,7 @@ namespace V2.NPCs
 
 		public override void ModifyHitNPC(NPC npc, NPC target, ref NPC.HitModifiers modifiers)
 		{
-			if (target.type == ModContent.NPCType<Succubus>() && PredNPC.CanSwallow(target, npc))
+			if (target.type == ModContent.NPCType<Lucinda>() && PredNPC.CanSwallow(target, npc))
 			{
 				modifiers.FinalDamage *= 0;
 				modifiers.Knockback.Base = 0f;
@@ -223,7 +223,7 @@ namespace V2.NPCs
 
 		public override void OnHitNPC(NPC npc, NPC target, NPC.HitInfo hit)
 		{
-			if (target.type == ModContent.NPCType<Succubus>())
+			if (target.type == ModContent.NPCType<Lucinda>())
 			{
 				PredNPC.Swallow(target, npc);
 			}
@@ -233,6 +233,14 @@ namespace V2.NPCs
 		{
 			if (npc.AsFood().IsCurrentlyEaten)
 				return npc.AsFood().CanChatAsPrey;
+
+			return null;
+		}
+
+		public override bool? DrawHealthBar(NPC npc, byte hbPosition, ref float scale, ref Vector2 position)
+		{
+			if (npc.AsFood().IsCurrentlyEaten)
+				return false;
 
 			return null;
 		}
@@ -294,7 +302,7 @@ namespace V2.NPCs
 		/// <param name="pred">The pred currently digesting this NPC.</param>
 		/// <param name="digestionDamage">The total amount of digestion damage to be dealt, before damage variation calculations.</param>
 		/// <returns>Whether or not the resulting digestion tick kills the NPC.</returns>
-		public bool TakeDigestionDamage(NPC npc, Entity pred, double digestionDamage)
+		public static bool TakeDigestionDamage(NPC npc, Entity pred, double digestionDamage)
 		{
 			if (npc.life <= 0)
 				return true;
@@ -325,14 +333,15 @@ namespace V2.NPCs
 			digestionText.position.Y += npc.height / 5f;
 			digestionText.velocity.X = pred.direction * 2.5f;
 			digestionText.velocity.Y = -4f;
-			SoundEngine.PlaySound(npc.HitSound.Value with { Volume = 0.5f }, pred.position);
+			if (npc.AsFood().DigestingHitSound.HasValue)
+				SoundEngine.PlaySound(npc.AsFood().DigestingHitSound.Value with { Volume = 1f }, pred.position);
+			else
+				SoundEngine.PlaySound(npc.HitSound.Value with { Volume = 0.35f }, pred.position);
 			if (npc.realLife != -1)
 			{
 				if (Main.npc[npc.realLife].life <= 0)
 				{
 					Main.npc[npc.realLife].life = 0;
-					Main.npc[npc.realLife].checkDead();
-					npc.AsFood().Digested = true;
 					return true;
 				}
 			}
@@ -340,7 +349,6 @@ namespace V2.NPCs
 			{
 				npc.life = 0;
 				npc.checkDead();
-				npc.AsFood().Digested = true;
 				return true;
 			}
 

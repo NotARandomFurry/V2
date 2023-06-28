@@ -30,7 +30,7 @@ namespace V2.Items.Vanilla.Consumables
 		public override void SetDefaults(Item entity)
 		{
 			entity.AsFood().MaxHealth = 500;
-			entity.AsFood().Size = 0.66;
+			entity.AsFood().Size = 0.34;
 
 			entity.AsFood().UpdateInStomach += UpdateInStomach;
 			entity.AsFood().OnBreak += OnBreak;
@@ -52,15 +52,16 @@ namespace V2.Items.Vanilla.Consumables
 			{
 				if (playerPred.ConsumedLifeFruit < Player.LifeFruitMax && playerPred.ConsumedLifeCrystals == Player.LifeCrystalMax)
 				{
-					playerPred.statLifeMax += 5;
-					playerPred.statLifeMax2 += 5;
-					playerPred.ConsumedLifeFruit++;
+					int lifeFruitLeftToMax = Math.Min(item.stack, Player.LifeFruitMax - playerPred.ConsumedLifeFruit);
+					playerPred.statLifeMax += 5 * lifeFruitLeftToMax;
+					playerPred.statLifeMax2 += 5 * lifeFruitLeftToMax;
+					playerPred.ConsumedLifeFruit += lifeFruitLeftToMax;
 				}
-				playerPred.Heal(DigestedHeal);
+				playerPred.Heal(DigestedHeal * item.stack);
 			}
 			else if (pred is NPC NPCPred)
 			{
-				NPCPred.life += DigestedHeal;
+				NPCPred.life += DigestedHeal * item.stack;
 				if (NPCPred.life > NPCPred.lifeMax)
 					NPCPred.life = NPCPred.lifeMax;
 			}

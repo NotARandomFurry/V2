@@ -125,7 +125,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Mechanic
 			NPC bootlegChippy = nearbyResidentNPCs.FirstOrDefault(x => x.type == NPCID.Clothier);
 			NPC bestGirl = nearbyResidentNPCs.FirstOrDefault(x => x.type == NPCID.Stylist);
 			NPC steamLass = nearbyResidentNPCs.FirstOrDefault(x => x.type == NPCID.Steampunker);
-			NPC succubus = nearbyResidentNPCs.FirstOrDefault(x => x.type == ModContent.NPCType<Succubus>());
+			NPC succubus = nearbyResidentNPCs.FirstOrDefault(x => x.type == ModContent.NPCType<Lucinda>());
 
 			List<string> mechanicChatPool = new List<string>();
 			V2Utils.FigureOutWhatTimeItIs(
@@ -331,19 +331,19 @@ namespace V2.NPCs.Vanilla.TownNPCs.Mechanic
 				"Mods.V2.Death.DigestedPlayer.HumanoidPred.1",
 				"Mods.V2.Death.DigestedPlayer.HumanoidPred.2",
 				"Mods.V2.Death.DigestedPlayer.HumanoidPred.3",
-				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Mechanic.1",
-				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Mechanic.2",
-				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Mechanic.3",
-				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Mechanic.4",
-				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Mechanic.5",
-				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Mechanic.6",
-				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Mechanic.7",
+				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Mechanic.1",
+				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Mechanic.2",
+				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Mechanic.3",
+				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Mechanic.4",
+				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Mechanic.5",
+				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Mechanic.6",
+				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Mechanic.7",
 			});
 
 			if (player.difficulty == PlayerDifficultyID.Hardcore)
 			{
 				deathReasonKeyList.Clear();
-				deathReasonKeyList.Add("Mods.V2.Death.DigestedPlayer.SpecificNPC.Mechanic.Hardcore");
+				deathReasonKeyList.Add("Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Mechanic.Hardcore");
 			}
 		}
 

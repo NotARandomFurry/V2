@@ -29,7 +29,7 @@ namespace V2.Items.Vanilla.Consumables
 		public override void SetDefaults(Item entity)
 		{
 			entity.AsFood().MaxHealth = 200;
-			entity.AsFood().Size = 0.68;
+			entity.AsFood().Size = 0.42;
 
 			entity.AsFood().UpdateInStomach += UpdateInStomach;
 			entity.AsFood().OnBreak += OnBreak;
@@ -52,16 +52,17 @@ namespace V2.Items.Vanilla.Consumables
 
 			if (pred is Player playerPred)
 			{
-				playerPred.statMana += DigestedManaHeal;
+				playerPred.statMana += DigestedManaHeal * item.stack;
 				if (playerPred.statMana > playerPred.statManaMax2)
 					playerPred.statMana = playerPred.statManaMax2;
 
-				if (playerPred.ConsumedManaCrystals >= Player.ManaCrystalMax)
-					return;
-
-				playerPred.statManaMax += 20;
-				playerPred.statManaMax2 += 20;
-				playerPred.ConsumedManaCrystals++;
+				if (playerPred.ConsumedManaCrystals < Player.ManaCrystalMax)
+				{
+					int manaCrystalsLeftToMax = Math.Min(item.stack, Player.ManaCrystalMax - playerPred.ConsumedManaCrystals);
+					playerPred.statManaMax += 20 * manaCrystalsLeftToMax;
+					playerPred.statManaMax2 += 20 * manaCrystalsLeftToMax;
+					playerPred.ConsumedManaCrystals += manaCrystalsLeftToMax;
+				}
 			}
 		}
 

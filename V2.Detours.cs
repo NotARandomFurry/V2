@@ -70,27 +70,28 @@ namespace V2
 				PreyNPC npcAsPrey = npc.AsFood(risky: true);
 				if (npcAsPred is null || npcAsPrey is null)
 					orig(npc);
-
-				if (npcAsPrey.IsCurrentlyEaten)
-				{
-					npc.velocity = Vector2.Zero;
-					if (npcAsPrey.CurrentCaptor.HasValue)
-					{
-						npc.position = npcAsPrey.CurrentCaptor.Value.Predator.position;
-						if (npcAsPrey.PreyAIMethod is not null)
-							npcAsPrey.PreyAIMethod.Invoke(npc, npcAsPrey.CurrentCaptor.Value.Predator);
-						NPCLoader.PostAI(npc);
-					}
-				}
-				else if (npcAsPred.SpecialPredAIMethod != null)
-				{
-					if (npcAsPred.SpecialPredAIMethod.Invoke(npc))
-						orig(npc);
-					else
-						NPCLoader.PostAI(npc);
-				}
 				else
-					orig(npc);
+				{
+					if (npcAsPrey.IsCurrentlyEaten)
+					{
+						npc.velocity = Vector2.Zero;
+						if (npcAsPrey.CurrentCaptor.HasValue)
+						{
+							npc.position = npcAsPrey.CurrentCaptor.Value.Predator.position;
+							npcAsPrey.PreyAIMethod?.Invoke(npc, npcAsPrey.CurrentCaptor.Value.Predator);
+							NPCLoader.PostAI(npc);
+						}
+					}
+					else if (npcAsPred.SpecialPredAIMethod != null)
+					{
+						if (npcAsPred.SpecialPredAIMethod.Invoke(npc))
+							orig(npc);
+						else
+							NPCLoader.PostAI(npc);
+					}
+					else
+						orig(npc);
+				}
 			});
 			NPCLoader_NPCAI_Hook.Apply();
 

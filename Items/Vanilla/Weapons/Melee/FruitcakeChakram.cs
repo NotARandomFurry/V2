@@ -39,6 +39,7 @@ namespace V2.Items.Vanilla.Weapons.Melee
 		public static void UpdateInStomach(Item item, Entity pred, bool dead)
 		{
 			pred.AddStatus(BuffID.Poisoned, PoisonTime);
+			pred.AddStatus(BuffID.Wrath, WrathTime);
 		}
 
 		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)

@@ -61,7 +61,7 @@ namespace V2.NPCs
 				return;
 			}
 
-			if ((npc.type == 517 || npc.type == 422 || npc.type == 507 || npc.type == 493) && npc.ai[2] != 1f)
+			if ((npc.type == NPCID.LunarTowerSolar || npc.type == NPCID.LunarTowerVortex || npc.type == NPCID.LunarTowerNebula || npc.type == NPCID.LunarTowerStardust) && npc.ai[2] != 1f)
 			{
 				npc.ai[2] = 1f;
 				npc.ai[1] = 0f;
@@ -71,7 +71,7 @@ namespace V2.NPCs
 				return;
 			}
 
-			if (npc.type == 548 && npc.ai[1] != 1f)
+			if (npc.type == NPCID.DD2EterniaCrystal && npc.ai[1] != 1f)
 			{
 				npc.ai[1] = 1f;
 				npc.ai[0] = 0f;

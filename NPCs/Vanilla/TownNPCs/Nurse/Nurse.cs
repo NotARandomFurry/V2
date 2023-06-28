@@ -153,7 +153,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 			NPC hopelessRomantic = nearbyResidentNPCs.FirstOrDefault(x => x.type == NPCID.ArmsDealer);
 			NPC salad = nearbyResidentNPCs.FirstOrDefault(x => x.type == NPCID.Dryad);
 			NPC carefreeSwitch = nearbyResidentNPCs.FirstOrDefault(x => x.type == NPCID.PartyGirl);
-			NPC succubus = nearbyResidentNPCs.FirstOrDefault(x => x.type == ModContent.NPCType<Succubus>());
+			NPC succubus = nearbyResidentNPCs.FirstOrDefault(x => x.type == ModContent.NPCType<Lucinda>());
 
 			List<string> nurseChatPool = new List<string>();
 			V2Utils.FigureOutWhatTimeItIs(
@@ -581,31 +581,31 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 				"Mods.V2.Death.DigestedPlayer.HumanoidPred.1",
 				"Mods.V2.Death.DigestedPlayer.HumanoidPred.2",
 				"Mods.V2.Death.DigestedPlayer.HumanoidPred.3",
-				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Nurse.1",
-				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Nurse.2",
-				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Nurse.3",
-				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Nurse.4",
-				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Nurse.5",
-				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Nurse.6",
-				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Nurse.7",
-				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Nurse.8",
+				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Nurse.1",
+				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Nurse.2",
+				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Nurse.3",
+				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Nurse.4",
+				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Nurse.5",
+				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Nurse.6",
+				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Nurse.7",
+				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Nurse.8",
 			});
 
 			if (player.IsFoodFor(npc, out bool pastTense) && !pastTense && npc.AsNurse().healPlayerIndex != -1 && npc.AsNurse().healPlayerIndex == player.whoAmI && npc.AsNurse().digestScamPatient)
 			{
 				deathReasonKeyList.AddRange(new List<string>
 				{
-					"Mods.V2.Death.DigestedPlayer.SpecificNPC.Nurse.NoFundsForHeal.1",
-					"Mods.V2.Death.DigestedPlayer.SpecificNPC.Nurse.NoFundsForHeal.2",
-					"Mods.V2.Death.DigestedPlayer.SpecificNPC.Nurse.NoFundsForHeal.3",
-					"Mods.V2.Death.DigestedPlayer.SpecificNPC.Nurse.NoFundsForHeal.4",
+					"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Nurse.NoFundsForHeal.1",
+					"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Nurse.NoFundsForHeal.2",
+					"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Nurse.NoFundsForHeal.3",
+					"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Nurse.NoFundsForHeal.4",
 				});
 			}
 
 			if (player.difficulty == PlayerDifficultyID.Hardcore)
 			{
 				deathReasonKeyList.Clear();
-				deathReasonKeyList.Add("Mods.V2.Death.DigestedPlayer.SpecificNPC.Nurse.Hardcore");
+				deathReasonKeyList.Add("Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Nurse.Hardcore");
 			}
 		}
 

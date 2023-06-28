@@ -1,4 +1,6 @@
-﻿using Microsoft.Xna.Framework;
+﻿using BetterDialogue;
+using Humanizer;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System;
@@ -8,6 +10,7 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.Enums;
 using Terraria.GameContent;
+using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.Personalities;
 using Terraria.ID;
 using Terraria.Localization;
@@ -15,6 +18,7 @@ using Terraria.ModLoader;
 using Terraria.Utilities;
 using V2.Core;
 using V2.Items.Voraria.Charms;
+using V2.NPCs.Voraria.TownNPCs.Succubus.ChatButtons;
 using V2.PlayerHandling;
 using V2.Sounds.Vore;
 
@@ -34,7 +38,7 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 			if (Main.dedServ) // #if SERVER
 				return;
 
-			string npcFileTitleFilePath = "V2/NPCs/Voraria/TownNPCs/Succubus/Succubus_WeightBase_BellyBase";
+			string npcFileTitleFilePath = "V2/NPCs/Voraria/TownNPCs/Succubus/Lucinda_WeightBase_BellyBase";
 			_defaultNoAlt = ModContent.Request<Texture2D>(npcFileTitleFilePath, AssetRequestMode.ImmediateLoad);
 		}
 
@@ -46,7 +50,7 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 			if (npc.IsABestiaryIconDummy && !npc.ForcePartyHatOn)
 				return _defaultNoAlt;
 
-			string exactTextureToUse = "V2/NPCs/Voraria/TownNPCs/Succubus/Succubus";
+			string exactTextureToUse = "V2/NPCs/Voraria/TownNPCs/Succubus/Lucinda";
 			string weightString = "_WeightBase";
 			exactTextureToUse += weightString;
 			int bellySize = npc.AsPred().GetVisualBellySizeMethod.Invoke(npc);
@@ -56,18 +60,18 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 			return ModContent.Request<Texture2D>(exactTextureToUse, AssetRequestMode.ImmediateLoad);
 		}
 
-		public int GetHeadTextureIndex(NPC npc) => ModContent.GetModHeadSlot("V2/NPCs/Voraria/TownNPCs/Succubus/Succubus_Head");
+		public int GetHeadTextureIndex(NPC npc) => ModContent.GetModHeadSlot("V2/NPCs/Voraria/TownNPCs/Succubus/Lucinda_Head");
 	}
 
 	[AutoloadHead]
-	public class Succubus : ModNPC
+	public class Lucinda : ModNPC
 	{
 		const int BaseTownNPC = NPCID.Dryad;
 
 		int helpIndex = 0;
 
-		public override string Texture => "V2/NPCs/Voraria/TownNPCs/Succubus/Succubus_WeightBase_BellyBase";
-		public override string HeadTexture => "V2/NPCs/Voraria/TownNPCs/Succubus/Succubus_Head";
+		public override string Texture => "V2/NPCs/Voraria/TownNPCs/Succubus/Lucinda_WeightBase_BellyBase";
+		public override string HeadTexture => "V2/NPCs/Voraria/TownNPCs/Succubus/Lucinda_Head";
 
 		public override void SetStaticDefaults()
 		{
@@ -84,9 +88,7 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers(0)
 			{
 				Velocity = 1f, // Draws the NPC in the bestiary as if its walking +1 tiles in the x direction
-				Direction = -1 // -1 is left and 1 is right. NPCs are drawn facing the left by default but ExamplePerson will be drawn facing the right
-							  // Rotation = MathHelper.ToRadians(180) // You can also change the rotation of an NPC. Rotation is measured in radians
-							  // If you want to see an example of manually modifying these when the NPC is drawn, see PreDraw
+				Direction = -1
 			};
 
 			NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
@@ -106,6 +108,16 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 				.SetBiomeAffection<CorruptionBiome>(AffectionLevel.Hate)
 				.SetBiomeAffection<CrimsonBiome>(AffectionLevel.Hate)
 				.SetBiomeAffection<DungeonBiome>(AffectionLevel.Hate);
+
+			BetterDialogue.BetterDialogue.RegisterShoppableNPC(NPC.type);
+		}
+
+		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+		{
+			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
+				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.TheUnderworld,
+				new FlavorTextBestiaryInfoElement("Mods.V2.Bestiary.TownNPCs.Succubus"),
+			});
 		}
 
 		public override void SetDefaults()
@@ -148,12 +160,16 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 			NPC.lavaImmune = true;
 		}
 
+		public override void ModifyTypeName(ref string typeName) => typeName = "Succubus";
+
 		public override bool CanTownNPCSpawn(int numTownNPCs)/* tModPorter Suggestion: Copy the implementation of NPC.SpawnAllowed_Merchant in vanilla if you to count money, and be sure to set a flag when unlocked, so you don't count every tick. */ => ModContent.GetInstance<MasterSystem>().freedSucc;
 
 		public override ITownNPCProfile TownNPCProfile() => SuccubusStuff.SuccubusProfile;
 
 		public static List<string> GetSuccubusChat(NPC npc, Player player)
 		{
+			LucindaHelpButton.HelpIndex = 0;
+
 			List<NPC> nearbyResidentNPCs = npc.GetNearbyResidentNPCs(out int npcsWithinHouse, out int npcsWithinVillage);
 			NPC bestGirl = nearbyResidentNPCs.FirstOrDefault(x => x.type == NPCID.Stylist);
 
@@ -196,10 +212,10 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 					succubusChatPool.AddRange(new List<string>
 					{
 						"Get outta my face, before I stuff you right into it. I'm REALLY hangry right now.",
-						"These blood moons always make me so irate...leave me alone, or I'll digest you!",
+						"These blood moons always get me so FUCKIN' MAD...leave me alone, or I'll digest you!",
 						"Just- could you just...agh, get in my belly or get lost!",
 						"I need to scream! After that, I'm gonna eat anything in my sight, you included!",
-						"Whaddaya want, gut-meat-to-be? Can't you see I'm pissed?",
+						"Whaddaya want, gut-meat-to-be? Can't you see I'm pissed!?",
 						"I'm in the worst mood possible tonight, meat. Stay outta my way, or you won't stay outta my stomach!",
 					});
 					if (npc.AsPred().stomachContents.Count > 0)
@@ -207,7 +223,7 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 						succubusChatPool.AddRange(new List<string>
 						{
 							"You think I'm full? You and those CHUMPS back home don't know SHIT about bein' full! Get me more or get in my gut, meatsack!",
-							"Me? Content? I'll have eaten the rest of the WORLD before I'm satisfied, starting with you if you don't scram!",
+							"Me? Content? I'll have eaten the rest of the WORLD before I'm satisfied, startin' with you if you don't scram!",
 						});
 						if (playerIsFood && playerWasAlreadyDigested)
 						{
@@ -273,7 +289,7 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 					{
 						succubusChatPool.AddRange(new List<string>
 						{
-							"Hey. Looking to spend some time on the waistline of an apex pred?",
+							"Hey. Looking to spend some time on the waistline of an incredible pred like me?",
 							"Huh? Am I hungry? I'm ALWAYS hungry, morsel. Hungry for SNACKS like you! YEAH!",
 							"Not lookin' to head back home, at least for the moment, so maybe keep some good food around, yeah?",
 							"Got any rowdy townsfolk you need taken care of? I'll be sure to put 'em to REAL good- ...what do you mean, you don't?",
@@ -439,53 +455,12 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 			return succubusChatPool;
 		}
 
-		public override void SetChatButtons(ref string button, ref string button2)
-		{
-			button = Language.GetTextValue("LegacyInterface.28");
-			button2 = "Help";
-		}
-
-		public override void OnChatButtonClicked(bool firstButton, ref string shopName)
-		{
-			if (firstButton)
-				shopName = "Lucinda";
-			else
-			{
-				if (Main.CurrentPlayer.IsFoodFor(NPC, out bool pastTense) && !pastTense)
-				{
-					Main.npcChatText = "Help? What kinda help? Help gettin' mulched?\n"
-									 + "\n"
-									 + "...no, really. Don't you have some thick demon thighs to be fillin' out right about now?";
-					return;
-				}
-
-				Main.npcChatText = helpIndex switch
-				{
-					0 => "Alright, future food, listen up. You wanna learn how to eat or be eaten in this world, you need to learn from the best.\n"
-					   + "So, while I hopefully have your UNDIVIDED attention, I'm gonna teach you how to melt some poor chumps into fat on that gut of yours.",
-					1 => "A lot of people in this world are gonna want to eat you; simple as that.\n"
-					   + "Your job, therefore, is to eat those other people first, or at LEAST fill out my starving stomach if you're gonna get eaten at all.",
-					2 => "Some predatory creatures will have to get close to you to eat you; others might just wanna yank you towards their waiting maw for an easy swallow-up.\n"
-					   + "Conversely, less predatory creatures might try to find a way to hide from you, since you'll churn 'em into a bigger butt if they don't.\n"
-					   + "You'll have to learn what each potential prey's preferred hunting and hiding methods are, and plan your approach accordingly to get 'em into your gut.",
-					3 => "Once you have your prey down, it's just a war of attrition. A war your stomach is sure to win, but a war nonetheless.\n"
-					   + "You're not the apex just for trying, though; tellin' you that much from experience.\n"
-					   + "You'll want to have something, or someone, on hand to help train your belly to keep big things in it.\n"
-					   + "Just ask around! I'm sure SOMEONE'S willing to take a break from whatever they're doing to sit on your waist for a little while...",
-					4 => "Lastly, some people won't initially want to eat you; keep these people in mind. They're almost always great belly fillers for later.\n"
-					   + "...and, with that being said, I think that's everything you need to know. Ready to pad my waistline yet, or are you feeling like going out and hunting?",
-					_ => "If you get this message, you already know how to be a pred. Have some thick demon thighs for dinner or something."
-				};
-				helpIndex++;
-				if (helpIndex >= 0)
-					helpIndex %= 5;
-			}
-		}
 		public override void AddShops()
 		{
-			NPCShop succubusShop = new NPCShop(NPC.type, "Lucinda");
+			NPCShop succubusShop = new NPCShop(NPC.type, "Shop");
 			succubusShop.Add<CharmBetterDigestion>();
 			succubusShop.Add<CharmRegenFromAbsorption>();
+			succubusShop.Add<CharmLessStomachWeight>();
 			succubusShop.Register();
 		}
 
@@ -585,16 +560,16 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 				"Mods.V2.Death.DigestedPlayer.HumanoidPred.1",
 				"Mods.V2.Death.DigestedPlayer.HumanoidPred.2",
 				"Mods.V2.Death.DigestedPlayer.HumanoidPred.3",
-				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Succubus.1",
-				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Succubus.2",
-				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Succubus.3",
-				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Succubus.4",
-				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Succubus.5",
+				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Succubus.1",
+				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Succubus.2",
+				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Succubus.3",
+				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Succubus.4",
+				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Succubus.5",
 			});
 			if (player.difficulty == PlayerDifficultyID.Hardcore)
 			{
 				deathReasonKeyList.Clear();
-				deathReasonKeyList.Add("Mods.V2.Death.DigestedPlayer.SpecificNPC.Succubus.Hardcore");
+				deathReasonKeyList.Add("Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Succubus.Hardcore");
 			}
 		}
 

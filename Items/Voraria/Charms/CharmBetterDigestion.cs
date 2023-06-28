@@ -15,10 +15,11 @@ namespace V2.Items.Voraria.Charms
 	public class CharmBetterDigestion : ModItem
 	{
 		public static int AcidStrengthBonus => 12;
+
+		public override LocalizedText DisplayName => Language.GetText("Mods.V2.ItemName.Voraria.Charms.BetterDigestion");
+		public override LocalizedText Tooltip => Language.GetText("Mods.V2.ItemTooltip.Voraria.Charms.BetterDigestion.Short");
 		public override void SetDefaults()
 		{
-			Item.SetNameOverride(Language.GetTextValue("Mods.V2.ItemName.Voraria.Charms.BetterDigestion"));
-
 			Item.accessory = true;
 
 			Item.AsCharm().IsValidCharm = true;

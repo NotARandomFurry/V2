@@ -750,7 +750,7 @@ namespace V2.PlayerHandling
 								{
 									if (preyNPC.type == NPCID.HallowBoss && ModContent.GetInstance<V2ServerConfig>().EasilyEdibleEmpress)
 										digestionDamage *= 40.0;
-									prey.Dead = preyNPC.AsFood().TakeDigestionDamage(preyNPC, player, digestionDamage);
+									prey.Dead = PreyNPC.TakeDigestionDamage(preyNPC, player, digestionDamage);
 									if (prey.Dead)
 									{
 										string preyNPCMod = preyNPC.ModNPC != null ? preyNPC.ModNPC.Mod.DisplayName : "Terraria";

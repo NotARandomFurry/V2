@@ -293,14 +293,14 @@ namespace V2.NPCs.Vanilla.TownNPCs.ArmsDealer
 				"Mods.V2.Death.DigestedPlayer.HumanoidPred.1",
 				"Mods.V2.Death.DigestedPlayer.HumanoidPred.2",
 				"Mods.V2.Death.DigestedPlayer.HumanoidPred.3",
-				"Mods.V2.Death.DigestedPlayer.SpecificNPC.ArmsDealer.1",
-				"Mods.V2.Death.DigestedPlayer.SpecificNPC.ArmsDealer.2",
+				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.ArmsDealer.1",
+				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.ArmsDealer.2",
 			});
 
 			if (player.difficulty == PlayerDifficultyID.Hardcore)
 			{
 				deathReasonKeyList.Clear();
-				deathReasonKeyList.Add("Mods.V2.Death.DigestedPlayer.SpecificNPC.Nurse.Hardcore");
+				deathReasonKeyList.Add("Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Nurse.Hardcore");
 			}
 		}
 

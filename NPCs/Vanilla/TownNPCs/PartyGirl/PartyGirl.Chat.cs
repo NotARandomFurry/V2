@@ -15,7 +15,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 		public static List<string> GetPartyGirlChat(NPC npc, Player player)
 		{
 			List<NPC> nearbyResidentNPCs = npc.GetNearbyResidentNPCs(out int npcsWithinHouse, out int npcsWithinVillage);
-			NPC succubus = nearbyResidentNPCs.FirstOrDefault(x => x.type == ModContent.NPCType<Succubus>());
+			NPC succubus = nearbyResidentNPCs.FirstOrDefault(x => x.type == ModContent.NPCType<Lucinda>());
 			NPC bestGirl = nearbyResidentNPCs.FirstOrDefault(x => x.type == NPCID.Stylist);
 
 			List<string> partyGirlChatPool = new List<string>();
@@ -341,17 +341,17 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 				"Mods.V2.Death.DigestedPlayer.HumanoidPred.1",
 				"Mods.V2.Death.DigestedPlayer.HumanoidPred.2",
 				"Mods.V2.Death.DigestedPlayer.HumanoidPred.3",
-				"Mods.V2.Death.DigestedPlayer.SpecificNPC.PartyGirl.1",
-				"Mods.V2.Death.DigestedPlayer.SpecificNPC.PartyGirl.2",
-				"Mods.V2.Death.DigestedPlayer.SpecificNPC.PartyGirl.3",
-				"Mods.V2.Death.DigestedPlayer.SpecificNPC.PartyGirl.4",
-				"Mods.V2.Death.DigestedPlayer.SpecificNPC.PartyGirl.5",
+				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.PartyGirl.1",
+				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.PartyGirl.2",
+				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.PartyGirl.3",
+				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.PartyGirl.4",
+				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.PartyGirl.5",
 			});
 
 			if (player.difficulty == PlayerDifficultyID.Hardcore)
 			{
 				deathReasonKeyList.Clear();
-				deathReasonKeyList.Add("Mods.V2.Death.DigestedPlayer.SpecificNPC.PartyGirl.Hardcore");
+				deathReasonKeyList.Add("Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.PartyGirl.Hardcore");
 			}
 		}
 	}

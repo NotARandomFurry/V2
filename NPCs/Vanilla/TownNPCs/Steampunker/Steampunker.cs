@@ -129,7 +129,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Steampunker
 			NPC bootlegChippy = nearbyResidentNPCs.FirstOrDefault(x => x.type == NPCID.Clothier);
 			NPC wireWoman = nearbyResidentNPCs.FirstOrDefault(x => x.type == NPCID.Mechanic);
 			NPC bestGirl = nearbyResidentNPCs.FirstOrDefault(x => x.type == NPCID.Stylist);
-			NPC succubus = nearbyResidentNPCs.FirstOrDefault(x => x.type == ModContent.NPCType<Succubus>());
+			NPC succubus = nearbyResidentNPCs.FirstOrDefault(x => x.type == ModContent.NPCType<Lucinda>());
 
 			List<string> steampunkerChatPool = new List<string>();
 			V2Utils.FigureOutWhatTimeItIs(
@@ -341,19 +341,19 @@ namespace V2.NPCs.Vanilla.TownNPCs.Steampunker
 				"Mods.V2.Death.DigestedPlayer.HumanoidPred.1",
 				"Mods.V2.Death.DigestedPlayer.HumanoidPred.2",
 				"Mods.V2.Death.DigestedPlayer.HumanoidPred.3",
-				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Steampunker.1",
-				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Steampunker.2",
-				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Steampunker.3",
-				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Steampunker.4",
-				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Steampunker.5",
-				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Steampunker.6",
-				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Steampunker.7",
+				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Steampunker.1",
+				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Steampunker.2",
+				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Steampunker.3",
+				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Steampunker.4",
+				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Steampunker.5",
+				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Steampunker.6",
+				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Steampunker.7",
 			});
 
 			if (player.difficulty == PlayerDifficultyID.Hardcore)
 			{
 				deathReasonKeyList.Clear();
-				deathReasonKeyList.Add("Mods.V2.Death.DigestedPlayer.SpecificNPC.Steampunker.Hardcore");
+				deathReasonKeyList.Add("Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Steampunker.Hardcore");
 			}
 		}
 

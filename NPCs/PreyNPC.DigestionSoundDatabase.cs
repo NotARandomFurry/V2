@@ -20,14 +20,14 @@ namespace V2.NPCs
 {
 	public partial class PreyNPC : GlobalNPC
 	{
-		public static Dictionary<SoundStyle, SoundStyle> DigestingHitSoundDatabase = new Dictionary<SoundStyle, SoundStyle>
+		public static Dictionary<SoundStyle, SoundStyle> DigestingHitSoundDatabase { get; set; } = new Dictionary<SoundStyle, SoundStyle>
 		{
 			{ SoundID.NPCHit1, MuffledNPCSounds.NPCHit1 },
 			{ SoundID.NPCHit2, MuffledNPCSounds.NPCHit2 },
 			{ SoundID.NPCHit3, MuffledNPCSounds.NPCHit3 },
 			{ SoundID.NPCHit4, MuffledNPCSounds.NPCHit4 },
 		};
-		public static Dictionary<SoundStyle, SoundStyle> DigestedDeathSoundDatabase = new Dictionary<SoundStyle, SoundStyle>
+		public static Dictionary<SoundStyle, SoundStyle> DigestedDeathSoundDatabase { get; set; } = new Dictionary<SoundStyle, SoundStyle>
 		{
 			{ SoundID.NPCDeath1, MuffledNPCSounds.NPCDeath1 },
 			{ SoundID.NPCDeath2, MuffledNPCSounds.NPCDeath2 },
