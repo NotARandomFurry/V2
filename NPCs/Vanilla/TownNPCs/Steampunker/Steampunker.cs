@@ -341,6 +341,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Steampunker
 				"Mods.V2.Death.DigestedPlayer.HumanoidPred.1",
 				"Mods.V2.Death.DigestedPlayer.HumanoidPred.2",
 				"Mods.V2.Death.DigestedPlayer.HumanoidPred.3",
+				"Mods.V2.Death.DigestedPlayer.HumanoidPred.4",
 				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Steampunker.1",
 				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Steampunker.2",
 				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Steampunker.3",

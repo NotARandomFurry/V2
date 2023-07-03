@@ -293,6 +293,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.ArmsDealer
 				"Mods.V2.Death.DigestedPlayer.HumanoidPred.1",
 				"Mods.V2.Death.DigestedPlayer.HumanoidPred.2",
 				"Mods.V2.Death.DigestedPlayer.HumanoidPred.3",
+				"Mods.V2.Death.DigestedPlayer.HumanoidPred.4",
 				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.ArmsDealer.1",
 				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.ArmsDealer.2",
 			});

@@ -560,6 +560,7 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 				"Mods.V2.Death.DigestedPlayer.HumanoidPred.1",
 				"Mods.V2.Death.DigestedPlayer.HumanoidPred.2",
 				"Mods.V2.Death.DigestedPlayer.HumanoidPred.3",
+				"Mods.V2.Death.DigestedPlayer.HumanoidPred.4",
 				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Succubus.1",
 				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Succubus.2",
 				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Succubus.3",

@@ -27,9 +27,9 @@ namespace V2.NPCs.Vanilla.Meteorite
 	public class MeteorHead : GlobalNPC
 	{
 		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.type == NPCID.MeteorHead;
-		public override void SetBestiary(NPC npc, BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+		public override void SetStaticDefaults()
 		{
-			NPCID.Sets.NPCBestiaryDrawOffset.Add(NPCID.MeteorHead, new NPCID.Sets.NPCBestiaryDrawModifiers(0) { Hide = true });
+			NPCID.Sets.NPCBestiaryDrawOffset[NPCID.MeteorHead] = new NPCID.Sets.NPCBestiaryDrawModifiers(0) { Hide = true };
 		}
 
 		public override void EditSpawnPool(IDictionary<int, float> pool, NPCSpawnInfo spawnInfo)

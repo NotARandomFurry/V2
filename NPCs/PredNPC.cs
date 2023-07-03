@@ -52,6 +52,7 @@ namespace V2.NPCs
 		public SoundStyle? BigBurps { get; set; }
 
 		public List<SoundStyle> SmallGulps { get; set; }
+		public double SmallGulpThreshold { get; set; }
 		public List<SoundStyle> BigGulps { get; set; }
 
 		public delegate void DelegateResetPredSpecificVariables(NPC npc);
@@ -128,6 +129,7 @@ namespace V2.NPCs
 				Gulps.Short3,
 				Gulps.Short4,
 			};
+			SmallGulpThreshold = 0.2;
 			BigGulps = new List<SoundStyle>
 			{
 				Gulps.Standard1,
@@ -227,7 +229,7 @@ namespace V2.NPCs
 				pred.AsPred().stomachContents.Add(food);
 				SoundEngine.PlaySound(
 					Main.rand.NextFromCollection(
-						food.WeightLeftToDigest <= 0.2
+						food.WeightLeftToDigest <= pred.AsPred().SmallGulpThreshold
 						? pred.AsPred().SmallGulps
 						: pred.AsPred().BigGulps
 					),
@@ -473,15 +475,6 @@ namespace V2.NPCs
 				"Mods.V2.Death.DigestedPlayer.Universal.18",
 				"Mods.V2.Death.DigestedPlayer.Universal.19",
 				"Mods.V2.Death.DigestedPlayer.Universal.20",
-				"Mods.V2.Death.DigestedPlayer.Universal.21",
-				"Mods.V2.Death.DigestedPlayer.Universal.22",
-				"Mods.V2.Death.DigestedPlayer.Universal.23",
-				"Mods.V2.Death.DigestedPlayer.Universal.24",
-				"Mods.V2.Death.DigestedPlayer.Universal.25",
-				"Mods.V2.Death.DigestedPlayer.Universal.26",
-				"Mods.V2.Death.DigestedPlayer.Universal.27",
-				"Mods.V2.Death.DigestedPlayer.Universal.28",
-				"Mods.V2.Death.DigestedPlayer.Universal.29",
 			};
 			if (player.difficulty == PlayerDifficultyID.Hardcore)
 			{

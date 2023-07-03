@@ -512,19 +512,19 @@ Mods: {
 					5: "{Pred} mulched {Player} without a second thought."
 					6: "{Player} slipped down {Pred}'s throat, never to be seen again."
 					7: "{Pred} had {Player} as a quick snack."
-					12: "{Pred} made a meal of {Player}."
-					13: "{Player} became an idiot sandwich."
-					14: "{Pred} now has Exquisitely Stuffed for a while, thanks to {Player}."
-					15: "{Player} became a second breakfast for {Pred}."
-					16: "{Player} tried to become a gastroenterologist from memory."
-					17: "{Player} mistook pearly whites for pearly gates."
-					18: "{Player} is a terrible dieting advisor."
-					19: "{Player} thought the Iron Maiden sounded hot."
-					20: "{Player} got fucking churned lmaooo"
-					21: "{Player} was mulched by {Pred}."
-					22: "{Player} got got by {Pred}."
-					23: "{Player} was eaten from the bottom up...or was it from the top down?"
-					34: "{Player} underwent a merciful euthanasia by digestion."
+					8: "{Pred} made a meal of {Player}."
+					9: "{Player} became an idiot sandwich."
+					10: "{Pred} now has Exquisitely Stuffed for a while, thanks to {Player}."
+					11: "{Player} became a second breakfast for {Pred}."
+					12: "{Player} tried to become a gastroenterologist from memory."
+					13: "{Player} mistook pearly whites for pearly gates."
+					14: "{Player} is a terrible dieting advisor."
+					15: "{Player} thought the Iron Maiden sounded hot."
+					16: "{Player} got fucking churned lmaooo"
+					17: "{Player} was mulched by {Pred}."
+					18: "{Player} got got by {Pred}."
+					19: "{Player} was eaten from the bottom up...or was it from the top down?"
+					20: "{Player} underwent a merciful euthanasia by digestion."
 
 					StomachSuffocation: {
 						1: "{Player} ran out of air in {Pred}'s stomach."
@@ -553,6 +553,7 @@ Mods: {
 						9: "{Player} was dissolved by {Pred}."
 						10: "{Player} got a little too soft."
 					}
+
 					Thermal: {
 						1: "{Player} got torched."
 						2: "{Player} was smelted by {Pred}."
@@ -566,14 +567,14 @@ Mods: {
 					1: "{Player} became ass fat for {Pred}."
 					2: "{Player} helped to widen up {Pred}'s thighs."
 					3: "{Player} gave {Pred} an extra waistband size."
+					4: "{Player} decided to bulk up {Pred}'s booty a little."
 				}
 
 				SpecificNPC: {
 					Meteorite: {
 						MeteorMarble: {
 							1: "{Player} thought a Meteor Marble was crafted well enough to feed themselves to."
-							1: "{Player} made a Meteor Marble just a little too big to handle."
-
+							2: "{Player} found a Meteor Marble that was just a little too big to handle."
 							Hardcore:
 								'''
 								Somehow, {Player} thought it was a good idea to make a Meteor Marble big enough to fit inside.
@@ -581,21 +582,22 @@ Mods: {
 								Nobody will ever find what remains of them...for nothing does.
 								'''
 						}
+
 						MeteorMaiden: {
 							1: "{Player} was helplessly smitten for a refueling Meteor Maiden."
 							2: "{Player} helped to re-energize a Meteor Maiden after a long day's work by the latter."
 							3: "{Player} thought a Meteor Maiden's combustion chamber looked inviting."
-							4: "If Meteor Maidens had a rear or thighs to add prey to, {Player} would definitely be working to fatten them up right now."
-							5: "A Meteor Maiden saw {Player} as a sufficient fuel source, and secured them for herself."
-
+							4: If Meteor Maidens had a rear or thighs to add prey to, {Player} would definitely be working to fatten them up right now.
+							5: A Meteor Maiden saw {Player} as a sufficient fuel source, and secured them for herself.
 							Hardcore:
 								'''
 								A pleasant sound, almost like a belch, but bassier and rockier, rings out over the mountaintops.
 								{Player} has ended up as little more than a meal for a Meteor Maiden, never to be seen again.
-								Perhaps that Meteor Maiden will go on to eat the moon, and many celestial bodies beyond? Only time will tell...
+								Perhaps that Meteor Maiden will go on to eat a moon or seven, and countless celestial bodies beyond? Only time will tell...
 								'''
 						}
 					}
+
 					Townsfolk: {
 						Nurse: {
 							1: "{Player} made a very healthy meal for {Pred}."
@@ -661,7 +663,7 @@ Mods: {
 								{Player} snackrificed their only life to its rightful holder: {Pred} the hair stylist.
 								May they find endless enjoyment as stylish stomach fat.
 								'''
-					}
+						}
 
 						Succubus: {
 							1: "{Player} was forced to fatten up {Pred}'s demonic derriere."
@@ -700,6 +702,7 @@ Mods: {
 							3: "{Pred} thought {Player} tasted...almost as good as candy."
 							4: "{Pred} melted {Player} into liquid confetti."
 							5: "{Player} partied too hard in {Pred}'s belly."
+							6: "{Player} was sloshed to the beat of the drums by {Pred}."
 							Hardcore:
 								'''
 								The last anyone ever saw of {Player} was a breathy, bubbly belch from {Pred}, bringing up a bundle of heated, half-liquid confetti.
@@ -717,8 +720,21 @@ Mods: {
 							7: "{Pred}'s body has become a little bit denser, thanks to {Prey}."
 							Hardcore:
 								'''
-								No conclusive evidence will ever be found of where {Player} disappeared to.
+								No conclusive evidence will ever be found of where {Player}'s one life disappeared to.
 								The only clue left behind? {Pred} having higher density than usual and belching up a healthy amount of steam.
+								'''
+						}
+					}
+
+					Bosses: {
+						UnreasonablyThickFairy: {
+							1: "{Player} became a light snack for the Empress."
+							2: The Empress' gut blinded {Player} just a little too long.
+							3: "{Player} was too enamored by the Empress' shiny stomach walls to fight their way out."
+							Hardcore:
+								'''
+								{Player} was, sadly, far too enamored by the Empress' mesmerizingly twinkly tummy walls to fight their way out.
+								The only evidence left of their only chance at existence will be a fresh new layer of fat on her already-thick thighs.
 								'''
 						}
 					}
@@ -869,49 +885,23 @@ Mods: {
 
 		Bestiary: {
 			Meteorite: {
-				MeteorMarble:
-					'''
-					A small, curious construct which is never (at first) seen without its numerous small rocks orbiting its core. The core's inside is something of a compressive cage that burns anything (and, if made possible, anyONE) that enters.
-					'''
-				MeteorMaiden:
-					'''
-					A fascinating, almost woman-like construct, though built without the waist or anything under. The top and bottom halves of her torso can separate seemingly-infinitely to reveal a magically-formed stomach which torches anything inside. The sand-like slurry her digestive process makes has a wide variety of uses.
-					'''
+				MeteorMarble: A small, curious construct which is never (at first) seen without its numerous small rocks orbiting its core. The core's inside is something of a compressive cage that burns anything (and, if made possible, anyONE) that enters.
+				MeteorMaiden: A fascinating, almost woman-like construct, though built without the waist or anything under. The top and bottom halves of her torso can separate seemingly-infinitely to reveal a magically-formed stomach which torches anything inside. The sand-like slurry her digestive process makes has a wide variety of uses.
 			}
-			TownNPCs: {
-				Succubus:
-					'''
-					Having lived on the outskirts of Desperai for many years before deciding to pack up and leave, Lucinda's a demon that just wants people to believe she's a strong, independent predator.
-					'''
-			}
+
+			TownNPCs.Succubus: Having lived on the outskirts of Desperai for many years before deciding to pack up and leave, Lucinda's a demon that just wants people to believe she's a strong, independent predator.
+
 			Divine: {
 				Sinhunters: {
-					Promethia:
-						'''
-						If ever there was a word for a Sinhunter who never did their expected job, that word would be "Promethia". Being much more interested in studying the internals of other creatures than swallowing them herself, Promethia was exiled from the Holy Realm decades ago, and now searches the mortal plane for the perfect predator to become a part of.
-						'''
-					StJerne:
-						'''
-						A fearsome Sinhunter with over a millenium of experience under her belt, St. Jerne is the bane of any being that thinks they can threaten Her Twinkling Majesty. Even the most stoic of Sinhunters can have lofty aspirations, though, and very occasionally, a select few have noticed her looking longingly, almost hungrily, at Aurora's titanic form...
-						'''
+					Promethia: If ever there was a word for a Sinhunter who never did their expected job, that word would be "Promethia". Being much more interested in studying the internals of other creatures than swallowing them herself, Promethia was exiled from the Holy Realm decades ago, and now searches the mortal plane for the perfect predator to become a part of.
+					StJerne: A fearsome Sinhunter with over a millenium of experience under her belt, St. Jerne is the bane of any being that thinks they can threaten Her Twinkling Majesty. Even the most stoic of Sinhunters can have lofty aspirations, though, and very occasionally, a select few have noticed her looking longingly, almost hungrily, at Aurora's titanic form...
 				}
+
 				Gods: {
-					Constitua:
-						'''
-						A truly unparalleled mechanic with a knack for working with otherworldly materials, Constitua is nothing if not amazingly gifted with their work. They are responsible for a vast quantity of the more modern-looking inventions across the Holy Realm, taking inspiration from mortals and immortals alike.
-						'''
-					Judico:
-						'''
-						The great judge of the Holy Realm; equal parts masculine and feminine, Judico truly seeks nothing more than fair, equal, and uncompromising judgement --- even for the deities he is obligated to call his peers. His path to monotheism has been laced with trouble after trouble, but victory is within his grasp...
-						'''
-					Aurora:
-						'''
-						The titanic woman known as the Mother of the Stars. Countless stars have both been birthed by her and ended up right back in her gargantuan gut to be churned into ever more fat for her figure; her truly immeasurably strong belches are said to be the source of the aurora borealis that paint vast swathes of space.
-						'''
-					Chrona:
-						'''
-						The endless march of time shall forget countless things. It shall not forget Chrona, the being that granted the flow of time to the universe, and in turn, was granted a place to reside.
-						'''
+					Constitua: A truly unparalleled mechanic with a knack for working with otherworldly materials, Constitua is nothing if not amazingly gifted with their work. They are responsible for a vast quantity of the more modern-looking inventions across the Holy Realm, taking inspiration from mortals and immortals alike.
+					Judico: The great judge of the Holy Realm; equal parts masculine and feminine, Judico truly seeks nothing more than fair, equal, and uncompromising judgement --- even for the deities he is obligated to call his peers. His path to monotheism has been laced with trouble after trouble, but victory is within his grasp...
+					Aurora: The titanic woman known as the Mother of the Stars. Countless stars have both been birthed by her and ended up right back in her gargantuan gut to be churned into ever more fat for her figure; her truly immeasurably strong belches are said to be the source of the aurora borealis that paint vast swathes of space.
+					Chrona: The endless march of time shall forget countless things. It shall not forget Chrona, the being that granted the flow of time to the universe, and in turn, was granted a place to reside.
 				}
 			}
 		}
@@ -923,9 +913,9 @@ Mods: {
 				DisplayName: Succubus
 
 				TownNPCMood: {
-					Content: "{$Mods.V2.TownNPCMood.Succubus.Content}"
-					NoHome: "{$Mods.V2.TownNPCMood.Succubus.NoHome}"
-					FarFromHome: "{$Mods.V2.TownNPCMood.Succubus.FarFromHome}"
+					Content: Aside from you not fillin' out my gut right now, I think I'm fine.
+					NoHome: My stomach's a good spot for a mortal morsel like you, but I need a real place to live if I'm gonna feed this gut of mine on the regular.
+					FarFromHome: Well, I've headed off a little far from home today, eh? Then again, it's all worth gettin' the right meal.
 					LoveSpace: I love having so much space.
 					DislikeCrowded: I dislike how crowded I am.
 					HateCrowded: I hate how crowded I am.
@@ -997,6 +987,21 @@ Mods: {
 					Find and free her in the Underworld
 					Whether you're nice about it or not doesn't matter
 					'''
+			}
+
+			MeteorMarble: {
+				DisplayName: Meteor Marble
+
+				TownNPCMood: {
+					Content: I am content.
+					NoHome: I hate not having a home.
+					FarFromHome: I am too far from home.
+					LoveSpace: I love having so much space.
+					DislikeCrowded: I dislike how crowded I am.
+					HateCrowded: I hate how crowded I am.
+					LikeNPC_Princess: I like {NPCName}.
+					Princess_LovesNPC: I like {NPCName}.
+				}
 			}
 		}
 	}

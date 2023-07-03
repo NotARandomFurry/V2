@@ -95,9 +95,8 @@ namespace V2.NPCs.Voraria.Meteorite
 				"Mods.V2.Death.DigestedPlayer.SpecificDigestionType.Thermal.1",
 				"Mods.V2.Death.DigestedPlayer.SpecificDigestionType.Thermal.2",
 				"Mods.V2.Death.DigestedPlayer.SpecificDigestionType.Thermal.3",
-				"Mods.V2.Death.DigestedPlayer.SpecificDigestionType.Thermal.1",
-				"Mods.V2.Death.DigestedPlayer.SpecificDigestionType.Thermal.2",
-				"Mods.V2.Death.DigestedPlayer.SpecificDigestionType.Thermal.3",
+				"Mods.V2.Death.DigestedPlayer.SpecificDigestionType.Thermal.4",
+				"Mods.V2.Death.DigestedPlayer.SpecificDigestionType.Thermal.5",
 				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Meteorite.MeteorMarble.1",
 				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Meteorite.MeteorMarble.2",
 			});

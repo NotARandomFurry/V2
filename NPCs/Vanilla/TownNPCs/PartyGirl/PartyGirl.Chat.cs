@@ -306,11 +306,11 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 					player,
 					Main.rand.NextFromCollection(new List<string>
 					{
-					"Huh? Well, that bag of sprinkles DID fill me up pretty good...but I can never say no to a little dessert!",
-					"Do I want a second course? Well, not really a second course, but a quick post-dinner snack is fine! Come on in!",
-					"You wanna join the fairy? Well, I guess I can squeeze you in! Just hold still and lemme get you settled in!",
+						"Huh? Well, that bag of sprinkles DID fill me up pretty good...but I can never say no to a little dessert!",
+						"Do I want a second course? Well, not really a second course, but a quick post-dinner snack is fine! Come on in!",
+						"You wanna join the fairy? Well, I guess I can squeeze you in! Just hold still and lemme get you settled in!",
 					}) + "\n"
-				  + "[c/7F7F7F:<Preparing herself briefly before reaching over her gut and picking you up, " + npc.GivenName + " nonchalantly tosses you down her throat, humming with glee as you end up joining the Empress inside her titanic tum.>]"
+				  + "[c/7F7F7F:<Preparing herself briefly before reaching over her gut and picking you up, " + npc.GivenName + " nonchalantly tosses you down her suddenly-cavernous throat all at once, humming with glee as you end up joining the Empress inside her titanic tum.>]"
 				);
 			}
 			else
@@ -320,9 +320,9 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 					player,
 					Main.rand.NextFromCollection(new List<string>
 					{
-					"You want me to eatcha?...eh, probably a good change of pace from all the balloons and party favors I eat. Come on in!",
-					"You wanna be a cake for me? Aww...how can I say no to that? Get over here and get in my belly, hehee!",
-					"A pre-party snack? Hmm...well, I guess we'll be the life of the party with you inside me! Besides, I can't host a party on an empty tum!",
+						"You want me to eatcha?...eh, probably a good change of pace from all the balloons and party favors I eat. Come on in!",
+						"You wanna be a cake for me? Aww...how can I say no to that? Get over here and get in my belly, hehee!",
+						"A pre-party snack? Hmm...well, I guess we'll be the life of the party with you inside me! Besides, I can't host a party on an empty tum!",
 					}) + "\n"
 				  + "[c/7F7F7F:<Before you can even BEGIN to force yourself into her, " + npc.GivenName + " happily crams your entire body into her mouth at once, gulping down your form in full to fill out her gut in a single, smooth swallow. She happily pats her newly-filled gut with a hum of gratitude.>]"
 				);
@@ -341,11 +341,13 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 				"Mods.V2.Death.DigestedPlayer.HumanoidPred.1",
 				"Mods.V2.Death.DigestedPlayer.HumanoidPred.2",
 				"Mods.V2.Death.DigestedPlayer.HumanoidPred.3",
+				"Mods.V2.Death.DigestedPlayer.HumanoidPred.4",
 				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.PartyGirl.1",
 				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.PartyGirl.2",
 				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.PartyGirl.3",
 				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.PartyGirl.4",
 				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.PartyGirl.5",
+				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.PartyGirl.6",
 			});
 
 			if (player.difficulty == PlayerDifficultyID.Hardcore)

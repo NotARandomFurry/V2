@@ -581,6 +581,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 				"Mods.V2.Death.DigestedPlayer.HumanoidPred.1",
 				"Mods.V2.Death.DigestedPlayer.HumanoidPred.2",
 				"Mods.V2.Death.DigestedPlayer.HumanoidPred.3",
+				"Mods.V2.Death.DigestedPlayer.HumanoidPred.4",
 				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Nurse.1",
 				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Nurse.2",
 				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Nurse.3",

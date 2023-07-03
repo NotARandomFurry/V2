@@ -1,4 +1,7 @@
-﻿using ReLogic.Utilities;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
+using ReLogic.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,10 +9,13 @@ using System.Text;
 using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 using V2.Core;
 using V2.NPCs.Vanilla.TownNPCs.PartyGirl;
+using V2.PlayerHandling;
+using V2.Sounds.Vore;
 using static V2.Core.FoodTypeTags;
 
 namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
@@ -52,7 +58,20 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 
 			npc.AsPred().stomachContents = new List<Prey>();
 			npc.AsPred().stomachContentsQueue = new List<Prey>();
-			npc.AsPred().maxStomachCapacity = 40.0;
+			npc.AsPred().maxStomachCapacity = 100.0;
+
+			npc.AsPred().CanBeForceFedMethod = CanUnreasonablyThickFairyBeForceFed;
+			npc.AsPred().swallowRange = V2Utils.TileCountAsPixelCount(12.5);
+			npc.AsPred().SmallGulpThreshold = 3.75;
+
+			npc.AsPred().GetDigestionTickDamageMethod = GetDigestionTickDamage;
+			npc.AsPred().GetDigestionTickRateMethod = GetDigestionTickRate;
+
+			npc.AsPred().SmallBurps = Burps.Humanoid.Small;
+			npc.AsPred().StandardBurps = Burps.Humanoid.Standard;
+			npc.AsPred().GetDigestedPlayerAdditionalDeathMessagesMethod = GetDigestedPlayerAdditionalDeathMessages;
+
+			npc.AsPred().GetVisualBellySizeMethod = GetVisualBellySize;
 
 			npc.AsFood().PreyAIMethod = UnreasonablyThickFairyPreyAI;
 
@@ -73,6 +92,19 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 			npc.AsUnreasonablyThickFairy().MuffledScreechDelay = 0;
 		}
 
+		public override bool CanHitPlayer(NPC npc, Player target, ref int cooldownSlot)
+		{
+			if (npc.ai[0] == 8f)
+			{
+				if (!npc.AsFood().IsCurrentlyEaten && npc.Hitbox.Intersects(target.Hitbox) && PredNPC.CanSwallow(npc, target))
+				{
+					PredNPC.Swallow(npc, target);
+					return false;
+				}
+			}
+			return true;
+		}
+
 		public override bool CanHitNPC(NPC npc, NPC target)
 		{
 			if (target.type == NPCID.PartyGirl)
@@ -88,6 +120,9 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 					for (int i = 0; i < Main.maxProjectiles; i++)
 					{
 						Projectile projectile = Main.projectile[i];
+						if (!projectile.active)
+							continue;
+
 						if (projectile.type is ProjectileID.HallowBossSplitShotCore
 											or ProjectileID.HallowBossRainbowStreak
 											or ProjectileID.HallowBossLastingRainbow
@@ -99,7 +134,97 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 					return false;
 				}
 			}
+
+			if (npc.ai[0] == 8f)
+			{
+				if (!npc.AsFood().IsCurrentlyEaten && npc.Hitbox.Intersects(target.Hitbox) && PredNPC.CanSwallow(npc, target))
+				{
+					PredNPC.Swallow(npc, target);
+					return false;
+				}
+			}
 			return true;
+		}
+
+		public static bool CanUnreasonablyThickFairyBeForceFed(NPC npc) => true;
+
+		public static void GetDigestedPlayerAdditionalDeathMessages(NPC npc, Player player, List<string> deathReasonKeyList)
+		{
+			deathReasonKeyList.AddRange(new List<string>
+			{
+				"Mods.V2.Death.DigestedPlayer.HumanoidPred.1",
+				"Mods.V2.Death.DigestedPlayer.HumanoidPred.2",
+				"Mods.V2.Death.DigestedPlayer.HumanoidPred.3",
+				"Mods.V2.Death.DigestedPlayer.HumanoidPred.4",
+				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Bosses.UnreasonablyThickFairy.1",
+				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Bosses.UnreasonablyThickFairy.2",
+				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Bosses.UnreasonablyThickFairy.3",
+			});
+			if (player.difficulty == PlayerDifficultyID.Hardcore)
+			{
+				deathReasonKeyList.Clear();
+				deathReasonKeyList.Add("Mods.V2.Death.DigestedPlayer.SpecificNPC.Bosses.UnreasonablyThickFairy.Hardcore");
+			}
+		}
+
+		public static double GetDigestionTickRate(NPC npc, Prey prey) => Main.dayTime ? 12.0 : Main.bloodMoon ? 6.0 : 3.0;
+		public static double GetDigestionTickDamage(NPC npc, Prey prey) => Main.dayTime ? 100.0 : 38.0;
+
+		public static void OnDigestionKill(NPC npc, Prey digestedPrey)
+		{
+			SoundEngine.PlaySound(
+				digestedPrey.WeightLeftToDigest < 3.75 ? npc.AsPred().SmallBurps : npc.AsPred().StandardBurps,
+				npc.TrueCenter() + new Vector2(0f, -50f)
+			);
+		}
+
+		public static double GetPreyAbsorptionRate(NPC npc)
+		{
+			double baseAbsorptionRate = 1.0 / (double)V2Utils.SensibleTime(
+				minutes: 2,
+				seconds: 0
+			);
+			if (npc.AI_120_HallowBoss_IsGenuinelyEnraged())
+				return baseAbsorptionRate * 3.0;
+			else if (npc.AI_120_HallowBoss_IsInPhase2())
+				return baseAbsorptionRate * 1.5;
+			else
+				return baseAbsorptionRate;
+		}
+
+		public static int GetVisualBellySize(NPC npc)
+		{
+			return Math.Min(
+				(int)Math.Floor(1.15 * Math.Sqrt(PredNPC.GetCurrentBellyWeight(npc))),
+				6
+			);
+		}
+
+		public override bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+		{
+			string exactTextureToUse = "V2/NPCs/Vanilla/Bosses/EmpressOfLight/EmpressOfLight_MainBody";
+			string weightString = "_WeightBase";
+			exactTextureToUse += weightString;
+			int bellySize = npc.AsPred().GetVisualBellySizeMethod.Invoke(npc);
+			string bellyString = "_Belly" + (bellySize == 0 ? "Base" : bellySize);
+			exactTextureToUse += bellyString;
+
+			TextureAssets.Npc[NPCID.HallowBoss] = ModContent.Request<Texture2D>(exactTextureToUse, AssetRequestMode.ImmediateLoad);
+			return true;
+		}
+
+		public override void PostDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+		{
+			TextureAssets.Npc[NPCID.HallowBoss] = ModContent.Request<Texture2D>("Terraria/Images/NPC_" + NPCID.HallowBoss, AssetRequestMode.ImmediateLoad);
+		}
+
+		public static bool UnreasonablyThickFairyPredAI(NPC npc)
+		{
+			if (npc.target != -1 || !Main.player[npc.target].IsFoodFor(npc, out bool pastTense) || pastTense)
+				return true;
+
+			npc.velocity *= 0.90f;
+			return false;
 		}
 
 		public static void UnreasonablyThickFairyPreyAI(NPC npc, Entity pred)
