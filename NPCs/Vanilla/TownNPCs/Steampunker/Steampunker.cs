@@ -78,15 +78,16 @@ namespace V2.NPCs.Vanilla.TownNPCs.Steampunker
 		{
 			npc.AsV2NPC().Gender = EntityGender.Female;
 
+			npc.AsV2NPC().GetChatMethod = GetSteampunkerChat;
+
 			npc.AsPred().stomachContents = new List<Prey>();
 			npc.AsPred().stomachContentsQueue = new List<Prey>();
 			npc.AsPred().maxStomachCapacity = 50.0;
 
-			npc.AsV2NPC().GetChatMethod = GetSteampunkerChat;
-
 			npc.AsPred().CanBeForceFedMethod = CanSteampunkerBeForceFed;
 			npc.AsPred().OnForceFedMethod = OnSteampunkerForceFed;
 
+			npc.AsPred().DigestionType = EntityDigestionType.Acidic;
 			npc.AsPred().GetDigestionTickRateMethod = GetDigestionTickRate;
 			npc.AsPred().GetDigestionTickDamageMethod = GetDigestionTickDamage;
 
@@ -94,7 +95,6 @@ namespace V2.NPCs.Vanilla.TownNPCs.Steampunker
 			npc.AsPred().SmallBurps = Burps.Humanoid.Small;
 			npc.AsPred().StandardBurps = Burps.Humanoid.Standard;
 			npc.AsPred().GetDigestedPlayerAdditionalDeathMessagesMethod = GetDigestedPlayerAdditionalDeathMessages;
-
 			npc.AsPred().GetPreyAbsorptionRateMethod = GetPreyAbsorptionRate;
 
 			npc.AsPred().GetVisualBellySizeMethod = GetVisualBellySize;

@@ -74,15 +74,16 @@ namespace V2.NPCs.Vanilla.TownNPCs.ArmsDealer
 		{
 			npc.AsV2NPC().Gender = EntityGender.Male;
 
+			npc.AsV2NPC().GetChatMethod = GetArmsDealerChat;
+
 			npc.AsPred().stomachContents = new List<Prey>();
 			npc.AsPred().stomachContentsQueue = new List<Prey>();
 			npc.AsPred().maxStomachCapacity = 1.75;
 
-			npc.AsV2NPC().GetChatMethod = GetArmsDealerChat;
-
 			npc.AsPred().CanBeForceFedMethod = CanArmsDealerBeForceFed;
 			npc.AsPred().OnForceFedMethod = OnArmsDealerForceFed;
 
+			npc.AsPred().DigestionType = EntityDigestionType.Acidic;
 			npc.AsPred().GetDigestionTickRateMethod = GetDigestionTickRate;
 			npc.AsPred().GetDigestionTickDamageMethod = GetDigestionTickDamage;
 
@@ -90,7 +91,6 @@ namespace V2.NPCs.Vanilla.TownNPCs.ArmsDealer
 			npc.AsPred().SmallBurps = Burps.Humanoid.Small;
 			npc.AsPred().StandardBurps = Burps.Humanoid.Standard;
 			npc.AsPred().GetDigestedPlayerAdditionalDeathMessagesMethod = GetDigestedPlayerAdditionalDeathMessages;
-
 			npc.AsPred().GetPreyAbsorptionRateMethod = GetPreyAbsorptionRate;
 
 			npc.AsPred().GetVisualBellySizeMethod = GetVisualBellySize;

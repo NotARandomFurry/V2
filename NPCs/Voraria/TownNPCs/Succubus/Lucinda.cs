@@ -108,8 +108,6 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 				.SetBiomeAffection<CorruptionBiome>(AffectionLevel.Hate)
 				.SetBiomeAffection<CrimsonBiome>(AffectionLevel.Hate)
 				.SetBiomeAffection<DungeonBiome>(AffectionLevel.Hate);
-
-			BetterDialogue.BetterDialogue.RegisterShoppableNPC(NPC.type);
 		}
 
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
@@ -141,6 +139,7 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 			NPC.AsPred().CanBeForceFedMethod = CanSuccubusBeForceFed;
 			NPC.AsPred().OnForceFedMethod = OnSuccubusForceFed;
 
+			NPC.AsPred().DigestionType = EntityDigestionType.Acidic;
 			NPC.AsPred().GetDigestionTickRateMethod = GetDigestionTickRate;
 			NPC.AsPred().GetDigestionTickDamageMethod = GetDigestionTickDamage;
 

@@ -62,7 +62,6 @@ namespace V2
 				orig(gameTime);
 			});
 			*/
-
 			// and now, the rest of the detours
 			NPCLoader_NPCAI_Hook = new Hook(NPCLoader_NPCAI_MethodInfo, (orig_NPCAI orig, NPC npc) =>
 			{

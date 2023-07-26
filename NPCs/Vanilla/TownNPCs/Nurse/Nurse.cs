@@ -90,15 +90,16 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 		{
 			npc.AsV2NPC().Gender = EntityGender.Female;
 
+			npc.AsV2NPC().GetChatMethod = GetNurseChat;
+
 			npc.AsPred().maxStomachCapacity = 1.8;
 
 			npc.AsPred().ResetPredSpecificVariablesMethod = ResetPredSpecificVariables;
 
-			npc.AsV2NPC().GetChatMethod = GetNurseChat;
-
 			npc.AsPred().CanBeForceFedMethod = CanNurseBeForceFed;
 			npc.AsPred().OnForceFedMethod = OnNurseForceFed;
 
+			npc.AsPred().DigestionType = EntityDigestionType.Acidic;
 			npc.AsPred().GetDigestionTickRateMethod = GetDigestionTickRate;
 			npc.AsPred().GetDigestionTickDamageMethod = GetDigestionTickDamage;
 
@@ -106,7 +107,6 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 			npc.AsPred().SmallBurps = Burps.Humanoid.Small;
 			npc.AsPred().StandardBurps = Burps.Humanoid.Standard;
 			npc.AsPred().GetDigestedPlayerAdditionalDeathMessagesMethod = GetDigestedPlayerAdditionalDeathMessages;
-
 			npc.AsPred().GetPreyAbsorptionRateMethod = GetPreyAbsorptionRate;
 
 			npc.AsPred().GetVisualBellySizeMethod = GetVisualBellySize;

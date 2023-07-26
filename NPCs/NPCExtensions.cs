@@ -8,6 +8,7 @@ using Terraria;
 using Terraria.ID;
 using V2.Core;
 using V2.PlayerHandling;
+using V2.StatusEffects.Debuffs;
 
 namespace V2.NPCs
 {
@@ -75,5 +76,41 @@ namespace V2.NPCs
 
 			return false;
 		}
+
+		public static void DoContactGulpage(this NPC npc)
+		{
+			if (npc.AsFood().IsCurrentlyEaten)
+				return;
+
+			for (int i = 0; i < Main.maxNPCs; i++)
+			{
+				NPC preyNPC = Main.npc[i];
+				if (preyNPC.active && preyNPC.life > 0 && preyNPC.whoAmI != npc.whoAmI)
+				{
+					if (npc.Hitbox.Intersects(preyNPC.Hitbox) && PredNPC.CanSwallow(npc, preyNPC))
+						PredNPC.Swallow(npc, preyNPC);
+				}
+			}
+			for (int i = 0; i < Main.maxPlayers; i++)
+			{
+				Player preyPlayer = Main.player[i];
+				if (preyPlayer.active && !preyPlayer.dead)
+				{
+					if (npc.Hitbox.Intersects(preyPlayer.Hitbox) && PredNPC.CanSwallow(npc, preyPlayer))
+						PredNPC.Swallow(npc, preyPlayer);
+				}
+			}
+			for (int i = 0; i < Main.maxItems; i++)
+			{
+				Item preyItem = Main.item[i];
+				if (preyItem.active)
+				{
+					if (npc.Hitbox.Intersects(preyItem.Hitbox) && PredNPC.CanSwallow(npc, preyItem))
+						PredNPC.Swallow(npc, preyItem);
+				}
+			}
+		}
+
+		public static int SoftenedStacks(this NPC npc) => Math.Min(Softened.MaxStacks, (int)Math.Floor((double)npc.AsFood().SoftenedDigestionDamageTaken / (npc.lifeMax * Softened.MaxHealthDigestedForOneStack)));
 	}
 }

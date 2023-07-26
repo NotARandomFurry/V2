@@ -16,6 +16,8 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse.ChatButtons
 	{
 		public override string Text(NPC npc, Player player) => "Traditional";
 
+		public override double Priority => NurseHeal.Priority;
+
 		public override bool IsActive(NPC npc, Player player) => npc.type == NPCID.Nurse && npc.AsNurse().healTypeChoice;
 
 		public override void OnClick(NPC npc, Player player)

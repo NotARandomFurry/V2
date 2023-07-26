@@ -1,23 +1,10 @@
-using Ionic.Zip;
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using MonoMod.RuntimeDetour;
-using MonoMod.RuntimeDetour.HookGen;
 using ReLogic.Content;
 using System.Collections.Generic;
-using System.Reflection;
-using Terraria;
-using Terraria.GameContent;
-using Terraria.Graphics;
-using Terraria.Graphics.Renderers;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.UI.Gamepad;
-using V2.Core.MainDetours;
-using V2.NPCs;
-using V2.PlayerHandling;
-using V2.UI;
+using V2.NPCs.Voraria.TownNPCs.Succubus;
 
 namespace V2
 {
@@ -25,12 +12,15 @@ namespace V2
 	{
 		internal static V2 Instance;
 
-		public static ModKeybind SwallowHotkey;
-		public static ModKeybind RegurgitateHotkey;
-		public static ModKeybind FeedHotkey;
-		public static ModKeybind ItemGulpHotkey;
-
-		public static Asset<Texture2D> ChatBackground;
+		public static ModKeybind SwallowHotkey { get; set; }
+		public static ModKeybind RegurgitateHotkey { get; set; }
+		public static ModKeybind FeedHotkey { get; set; }
+		public static ModKeybind ItemGulpHotkey { get; set; }
+		public static ModKeybind StruggleUpHotkey { get; set; }
+		public static ModKeybind StruggleLeftHotkey { get; set; }
+		public static ModKeybind StruggleRightHotkey { get; set; }
+		public static ModKeybind StruggleDownHotkey { get; set; }
+		public static ModKeybind StruggleSpecialHotkey { get; set; }
 
 		public static List<int> VoreNPCBlacklist { get; set; }
 
@@ -45,6 +35,15 @@ namespace V2
 			RegurgitateHotkey = KeybindLoader.RegisterKeybind(this, "Regurgitate", "X");
 			FeedHotkey = KeybindLoader.RegisterKeybind(this, "Feed", "G");
 			ItemGulpHotkey = KeybindLoader.RegisterKeybind(this, "EatItems", "RightShift");
+			StruggleUpHotkey = KeybindLoader.RegisterKeybind(this, "StruggleUp", "Up");
+			StruggleLeftHotkey = KeybindLoader.RegisterKeybind(this, "StruggleLeft", "Left");
+			StruggleRightHotkey = KeybindLoader.RegisterKeybind(this, "StruggleRight", "Right");
+			StruggleDownHotkey = KeybindLoader.RegisterKeybind(this, "StruggleDown", "Down");
+			StruggleSpecialHotkey = KeybindLoader.RegisterKeybind(this, "StruggleSpecial", "Space");
+
+			BetterDialogue.BetterDialogue.SupportedNPCs.Add(ModContent.NPCType<Lucinda>());
+
+			BetterDialogue.BetterDialogue.RegisterShoppableNPC(ModContent.NPCType<Lucinda>());
 
 			EngageVoraciousGameFuckery();
 		}

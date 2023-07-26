@@ -68,6 +68,8 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse.ChatButtons
 			return buttonText;
 		}
 
+		public override double Priority => NurseHeal.Priority;
+
 		public override Color? OverrideColor(NPC npc, Player player)
 		{
 			if (npc.AsNurse().healOvertime > 0)

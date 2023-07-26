@@ -81,13 +81,14 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 		{
 			npc.AsV2NPC().Gender = EntityGender.Female;
 
-			npc.AsPred().maxStomachCapacity = 4.0;
-
 			npc.AsV2NPC().GetChatMethod = GetStylistChat;
+
+			npc.AsPred().maxStomachCapacity = 4.0;
 
 			npc.AsPred().CanBeForceFedMethod = CanStylistBeForceFed;
 			npc.AsPred().OnForceFedMethod = OnStylistForceFed;
 
+			npc.AsPred().DigestionType = EntityDigestionType.Acidic;
 			npc.AsPred().GetDigestionTickRateMethod = GetDigestionTickRate;
 			npc.AsPred().GetDigestionTickDamageMethod = GetDigestionTickDamage;
 
@@ -95,7 +96,6 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 			npc.AsPred().SmallBurps = Burps.Humanoid.Small;
 			npc.AsPred().StandardBurps = Burps.Humanoid.Standard;
 			npc.AsPred().GetDigestedPlayerAdditionalDeathMessagesMethod = GetDigestedPlayerAdditionalDeathMessages;
-
 			npc.AsPred().GetPreyAbsorptionRateMethod = GetPreyAbsorptionRate;
 
 			npc.AsPred().GetVisualBellySizeMethod = GetVisualBellySize;

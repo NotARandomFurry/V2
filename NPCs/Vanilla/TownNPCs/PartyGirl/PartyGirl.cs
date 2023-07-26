@@ -84,15 +84,16 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 		{
 			npc.AsV2NPC().Gender = EntityGender.Female;
 
+			npc.AsV2NPC().GetChatMethod = GetPartyGirlChat;
+
 			npc.AsPred().stomachContents = new List<Prey>();
 			npc.AsPred().stomachContentsQueue = new List<Prey>();
 			npc.AsPred().maxStomachCapacity = 999999.0;
 
-			npc.AsV2NPC().GetChatMethod = GetPartyGirlChat;
-
 			npc.AsPred().CanBeForceFedMethod = CanPartyGirlBeForceFed;
 			npc.AsPred().OnForceFedMethod = OnPartyGirlForceFed;
 
+			npc.AsPred().DigestionType = EntityDigestionType.Acidic;
 			npc.AsPred().GetDigestionTickRateMethod = GetDigestionTickRate;
 			npc.AsPred().GetDigestionTickDamageMethod = GetDigestionTickDamage;
 

@@ -12,47 +12,9 @@ using V2.Core;
 using V2.Items;
 using V2.PlayerHandling;
 
-namespace V2.UI.StomachCapacityBar
+namespace V2.UI
 {
-	public struct PlayerPredStatsSnapshot
-	{
-		public double Fullness;
-		public double CapacityMax;
-		public double KickyPreyPercentage;
-
-		public double CapacityPerSegment => CapacityMax / (double)AmountOfCapacitySegments;
-
-		private int numCapacitySegments;
-		private static readonly int minCapacitySegments = 4;
-		private static readonly int maxCapacitySegments = 20;
-		/// <summary>
-		/// How many segments should be drawn for the stomach capacity bar.<br/>
-		/// Has a maximum of 20, similar to health and mana bars.<br/>
-		/// </summary>
-		public int AmountOfCapacitySegments
-		{
-			get
-			{
-				if (numCapacitySegments < minCapacitySegments)
-					numCapacitySegments = minCapacitySegments;
-				if (numCapacitySegments > maxCapacitySegments)
-					numCapacitySegments = maxCapacitySegments;
-				return numCapacitySegments;
-			}
-			set => numCapacitySegments = value;
-		}
-
-		public PlayerPredStatsSnapshot(Player player)
-		{
-			Fullness = player.AsPred().StomachFullness;
-			CapacityMax = player.AsPred().StomachCapacity;
-			KickyPreyPercentage = PredPlayer.GetCurrentBellyWeight(player, onlyKicky: true) / CapacityMax;
-
-			numCapacitySegments = (int)(CapacityMax / 0.2);
-		}
-	}
-
-	public class StomachCapacityBarUI : UIState
+	public class StomachacheMeterUI : UIState
 	{
 		public static bool Visible { get; set; }
 
@@ -65,7 +27,7 @@ namespace V2.UI.StomachCapacityBar
 		}
 
 		private int _capacitySegmentsCount;
-		private double _kickyPreyPercent;
+		private double _struggleStrength;
 		private float _capacityPercent;
 		private bool _stomachCapacityHovered;
 		private Asset<Texture2D> _stomachCapacityFill = ModContent.Request<Texture2D>("V2/UI/StomachCapacityBar/StomachCapacityBar_Fill", AssetRequestMode.ImmediateLoad);

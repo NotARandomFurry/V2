@@ -44,6 +44,7 @@ namespace V2.NPCs
 		public EntityGender Gender;
 		public List<Prey> stomachContents;
 		public List<Prey> stomachContentsQueue;
+		public EntityDigestionType DigestionType;
 		public double maxStomachCapacity;
 		public float swallowRange;
 
@@ -189,7 +190,8 @@ namespace V2.NPCs
 				if (Prey.GetInitialPreySize(preyPlayer) >= pred.AsPred().maxStomachCapacity - GetCurrentBellyWeight(pred))
 					return false;
 
-				return !preyPlayer.AsFood().IsCurrentlyEaten;
+				if (preyPlayer.AsFood().IsCurrentlyEaten)
+					return false;
 			}
 			else if (prey is NPC preyNPC)
 			{
@@ -198,16 +200,28 @@ namespace V2.NPCs
 
 				bool tastesLikeSkittles = preyNPC.type == NPCID.HallowBoss && ModContent.GetInstance<V2ServerConfig>().EasilyEdibleEmpress;
 				if (tastesLikeSkittles)
-					return true;
+					return !preyNPC.AsFood().IsCurrentlyEaten;
 
 				bool isThisAFuckingBoss = preyNPC.boss || (preyNPC.type >= NPCID.EaterofWorldsHead && preyNPC.type <= NPCID.EaterofWorldsTail); // I hate EoW
-				if (isThisAFuckingBoss)
+				if (isThisAFuckingBoss && !pred.boss)
 					return false;
 
 				if (Prey.GetInitialPreySize(preyNPC) >= pred.AsPred().maxStomachCapacity - GetCurrentBellyWeight(pred))
 					return false;
 
-				return !preyNPC.AsFood().IsCurrentlyEaten;
+				if (preyNPC.AsFood().IsCurrentlyEaten)
+					return false;
+			}
+			else if (prey is Item preyItem)
+			{
+				if (preyItem.AsFood().MaxHealth == -1)
+					return false;
+
+				if (preyItem.favorited)
+					return false;
+
+				if (preyItem.AsFood().IsCurrentlyEaten)
+					return false;
 			}
 
 			return true;
@@ -476,17 +490,37 @@ namespace V2.NPCs
 				"Mods.V2.Death.DigestedPlayer.Universal.19",
 				"Mods.V2.Death.DigestedPlayer.Universal.20",
 			};
-			if (player.difficulty == PlayerDifficultyID.Hardcore)
+			switch (npc.AsPred().DigestionType)
 			{
-				deathMessageKeyList.AddRange(new List<string>
-				{
-					"Mods.V2.Death.DigestedPlayer.Hardcore.1",
-					"Mods.V2.Death.DigestedPlayer.Hardcore.2",
-					"Mods.V2.Death.DigestedPlayer.Hardcore.3",
-					"Mods.V2.Death.DigestedPlayer.Hardcore.4",
-					"Mods.V2.Death.DigestedPlayer.Hardcore.5",
-				});
+				case EntityDigestionType.Acidic:
+					deathMessageKeyList.AddRange(new List<string>
+					{
+						"Mods.V2.Death.DigestedPlayer.SpecificDigestionType.Acidic.1",
+						"Mods.V2.Death.DigestedPlayer.SpecificDigestionType.Acidic.2",
+						"Mods.V2.Death.DigestedPlayer.SpecificDigestionType.Acidic.3",
+						"Mods.V2.Death.DigestedPlayer.SpecificDigestionType.Acidic.4",
+						"Mods.V2.Death.DigestedPlayer.SpecificDigestionType.Acidic.5",
+						"Mods.V2.Death.DigestedPlayer.SpecificDigestionType.Acidic.6",
+						"Mods.V2.Death.DigestedPlayer.SpecificDigestionType.Acidic.7",
+						"Mods.V2.Death.DigestedPlayer.SpecificDigestionType.Acidic.8",
+						"Mods.V2.Death.DigestedPlayer.SpecificDigestionType.Acidic.9",
+						"Mods.V2.Death.DigestedPlayer.SpecificDigestionType.Acidic.10",
+					});
+					break;
+				case EntityDigestionType.Thermal:
+					deathMessageKeyList.AddRange(new List<string>
+					{
+						"Mods.V2.Death.DigestedPlayer.SpecificDigestionType.Thermal.1",
+						"Mods.V2.Death.DigestedPlayer.SpecificDigestionType.Thermal.2",
+						"Mods.V2.Death.DigestedPlayer.SpecificDigestionType.Thermal.3",
+						"Mods.V2.Death.DigestedPlayer.SpecificDigestionType.Thermal.4",
+						"Mods.V2.Death.DigestedPlayer.SpecificDigestionType.Thermal.5",
+					});
+					break;
+				case EntityDigestionType.Other:
+					break;
 			}
+
 			if (npc.AsPred().GetDigestedPlayerAdditionalDeathMessagesMethod is not null)
 				npc.AsPred().GetDigestedPlayerAdditionalDeathMessagesMethod.Invoke(npc, player, deathMessageKeyList);
 			string finalDeathReasonKey = Main.rand.NextFromCollection(deathMessageKeyList);

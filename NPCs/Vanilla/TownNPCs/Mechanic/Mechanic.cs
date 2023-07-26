@@ -77,23 +77,22 @@ namespace V2.NPCs.Vanilla.TownNPCs.Mechanic
 		{
 			npc.AsV2NPC().Gender = EntityGender.Female;
 
-			npc.AsPred().maxStomachCapacity = 1.75;
-
-			npc.AsPred().GetDigestionTickRateMethod = GetDigestionTickRate;
-			npc.AsPred().GetDigestionTickDamageMethod = GetDigestionTickDamage;
-
-			
-			npc.AsPred().GetPreyAbsorptionRateMethod = GetPreyAbsorptionRate;
-
 			npc.AsV2NPC().GetChatMethod = GetMechanicChat;
+
+			npc.AsPred().maxStomachCapacity = 1.75;
 
 			npc.AsPred().CanBeForceFedMethod = CanMechanicBeForceFed;
 			npc.AsPred().OnForceFedMethod = OnMechanicForceFed;
+
+			npc.AsPred().DigestionType = EntityDigestionType.Acidic;
+			npc.AsPred().GetDigestionTickRateMethod = GetDigestionTickRate;
+			npc.AsPred().GetDigestionTickDamageMethod = GetDigestionTickDamage;
 
 			npc.AsPred().OnDigestionKillMethod = OnDigestionKill;
 			npc.AsPred().SmallBurps = Burps.Humanoid.Small;
 			npc.AsPred().StandardBurps = Burps.Humanoid.Standard;
 			npc.AsPred().GetDigestedPlayerAdditionalDeathMessagesMethod = GetDigestedPlayerAdditionalDeathMessages;
+			npc.AsPred().GetPreyAbsorptionRateMethod = GetPreyAbsorptionRate;
 
 			npc.AsPred().GetVisualBellySizeMethod = GetVisualBellySize;
 

@@ -16,6 +16,7 @@ using Terraria.ModLoader.IO;
 using Terraria.UI.Chat;
 using V2.Core;
 using V2.NPCs;
+using V2.StatusEffects.Debuffs;
 
 namespace V2.PlayerHandling
 {
@@ -54,7 +55,7 @@ namespace V2.PlayerHandling
 		public bool Digested { get; set; }
 		public PredEntityReference? CurrentCaptor { get; set; }
 
-		public StatModifier StruggleStrength { get; set; }
+		public StatModifier StruggleStrengthModifier { get; set; }
 
 
 		public (int _swallowCount, int _gurgleCount) _timesEaten;
@@ -69,7 +70,14 @@ namespace V2.PlayerHandling
 			set => _timesEaten._gurgleCount = value;
 		}
 
-		public int softenedStacks;
+		public StatModifier TakenDigestionDamageModifier { get; set; }
+
+		public double SoftenedDigestionDamageTaken { get; set; }
+		public StatModifier SoftenedDigestionDamageModifier { get; set; }
+		public int SoftenedWearoffDelay { get; set; }
+		public static int SoftenedWearoffMaxDelay => V2Utils.SensibleTime(seconds: 2, frames: 30);
+		public StatModifier SoftenedWearoffRateModifier { get; set; }
+		public int SoftenedStacks => Math.Min(Softened.MaxStacks, (int)Math.Floor((double)Player.AsFood().SoftenedDigestionDamageTaken / (Player.statLifeMax * Softened.MaxHealthDigestedForOneStack)));
 
 		public override void Initialize()
 		{
@@ -79,6 +87,9 @@ namespace V2.PlayerHandling
 			// uncomment once achievements are available so the Ascended Acolyte race is...relatively fair for everyone
 			// Player.AsPrey().HasBeenDigestedByNPC = new int[NPCLoader.NPCCount];
 			// Player.AsPrey().HasBeenDigestedByNPCTotal = new int[NPCLoader.NPCCount];
+
+			Player.AsFood().SoftenedDigestionDamageTaken = 0;
+			Player.AsFood().SoftenedWearoffDelay = 0;
 		}
 
 		public override void OnEnterWorld()
@@ -86,6 +97,9 @@ namespace V2.PlayerHandling
 			Player.AsFood().IsCurrentlyEaten = false;
 			Player.AsFood().Digested = false;
 			Player.AsFood().CurrentCaptor = null;
+
+			Player.AsFood().SoftenedDigestionDamageTaken = 0;
+			Player.AsFood().SoftenedWearoffDelay = 0;
 		}
 
 		public override void ResetEffects()
@@ -174,12 +188,26 @@ namespace V2.PlayerHandling
 				}
 			}
 
-			Player.AsFood().StruggleStrength = StatModifier.Default;
+			Player.AsFood().StruggleStrengthModifier = StatModifier.Default;
+
+			Player.AsFood().TakenDigestionDamageModifier = StatModifier.Default;
+
+			if (!Player.HasBuff(ModContent.BuffType<Softened>()))
+				Player.AddBuff(ModContent.BuffType<Softened>(), 3);
+			Player.AsFood().SoftenedDigestionDamageModifier = StatModifier.Default;
+			Player.AsFood().SoftenedWearoffRateModifier = StatModifier.Default;
+			if (Player.AsFood().SoftenedWearoffDelay > 0)
+				Player.AsFood().SoftenedWearoffDelay--;
+			else if (Player.AsFood().SoftenedDigestionDamageTaken > 0)
+				Player.AsFood().SoftenedDigestionDamageTaken -= Player.AsFood().SoftenedWearoffRateModifier.ApplyTo((float)(25.0 / 60.0));
 		}
 
 		public override void UpdateDead()
 		{
 			Player.AsFood().IsCurrentlyEaten = false;
+
+			Player.AsFood().SoftenedDigestionDamageTaken = 0;
+			Player.AsFood().SoftenedWearoffDelay = 0;
 		}
 
 		public override void PreUpdateMovement()
@@ -374,6 +402,9 @@ namespace V2.PlayerHandling
 				if (trueDigestionDamage < 0)
 					trueDigestionDamage = 0;
 			}
+			trueDigestionDamage = (int)Math.Floor(Player.AsFood().TakenDigestionDamageModifier.ApplyTo(trueDigestionDamage));
+			Player.AsFood().SoftenedDigestionDamageTaken += Player.AsFood().SoftenedDigestionDamageModifier.ApplyTo(trueDigestionDamage);
+			Player.AsFood().SoftenedWearoffDelay = SoftenedWearoffMaxDelay;
 			Player.statLife -= trueDigestionDamage;
 			if (Player.statLife <= 0)
 			{

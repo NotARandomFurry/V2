@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -30,11 +31,11 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 			return unreasonablyThickFairy;
 		}
 
-		public static SoundStyle MuffledFoodFairyMusic = new SoundStyle("V2/Sounds/MuffledMusic/EmpressOfLight", SoundType.Sound) with { MaxInstances = 0 };
+		public static SoundStyle MuffledFoodFairyMusic => new SoundStyle("V2/Sounds/MuffledMusic/EmpressOfLight", SoundType.Sound) with { MaxInstances = 0 };
 
-		public static SoundStyle MuffledFoodFairyScreech1 = new SoundStyle("V2/Sounds/MuffledSounds/Item160", SoundType.Sound) with { MaxInstances = 0 };
-		public static SoundStyle MuffledFoodFairyScreech2 = new SoundStyle("V2/Sounds/MuffledSounds/Item161", SoundType.Sound) with { MaxInstances = 0 };
-		public static SoundStyle MuffledFoodFairyDeathScreech = new SoundStyle("V2/Sounds/MuffledSounds/NPC_Killed_65", SoundType.Sound) with { MaxInstances = 0 };
+		public static SoundStyle MuffledFoodFairyScreech1 => new SoundStyle("V2/Sounds/MuffledSounds/Item160", SoundType.Sound) with { MaxInstances = 0 };
+		public static SoundStyle MuffledFoodFairyScreech2 => new SoundStyle("V2/Sounds/MuffledSounds/Item161", SoundType.Sound) with { MaxInstances = 0 };
+		public static SoundStyle MuffledFoodFairyDeathScreech => new SoundStyle("V2/Sounds/MuffledSounds/NPC_Killed_65", SoundType.Sound) with { MaxInstances = 0 };
 	}
 
 	public class UnreasonablyThickFairy : GlobalNPC
@@ -58,12 +59,13 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 
 			npc.AsPred().stomachContents = new List<Prey>();
 			npc.AsPred().stomachContentsQueue = new List<Prey>();
-			npc.AsPred().maxStomachCapacity = 100.0;
+			npc.AsPred().maxStomachCapacity = 200.0;
 
 			npc.AsPred().CanBeForceFedMethod = CanUnreasonablyThickFairyBeForceFed;
 			npc.AsPred().swallowRange = V2Utils.TileCountAsPixelCount(12.5);
 			npc.AsPred().SmallGulpThreshold = 3.75;
 
+			npc.AsPred().DigestionType = EntityDigestionType.Acidic;
 			npc.AsPred().GetDigestionTickDamageMethod = GetDigestionTickDamage;
 			npc.AsPred().GetDigestionTickRateMethod = GetDigestionTickRate;
 
@@ -73,6 +75,7 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 
 			npc.AsPred().GetVisualBellySizeMethod = GetVisualBellySize;
 
+			npc.AsPred().SpecialPredAIMethod = UnreasonablyThickFairyPredAI;
 			npc.AsFood().PreyAIMethod = UnreasonablyThickFairyPreyAI;
 
 			npc.AsFood().DigestedDeathSound = UnreasonablyThickFairyStuff.MuffledFoodFairyDeathScreech;
@@ -90,19 +93,6 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 			};
 
 			npc.AsUnreasonablyThickFairy().MuffledScreechDelay = 0;
-		}
-
-		public override bool CanHitPlayer(NPC npc, Player target, ref int cooldownSlot)
-		{
-			if (npc.ai[0] == 8f)
-			{
-				if (!npc.AsFood().IsCurrentlyEaten && npc.Hitbox.Intersects(target.Hitbox) && PredNPC.CanSwallow(npc, target))
-				{
-					PredNPC.Swallow(npc, target);
-					return false;
-				}
-			}
-			return true;
 		}
 
 		public override bool CanHitNPC(NPC npc, NPC target)
@@ -134,16 +124,13 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 					return false;
 				}
 			}
-
-			if (npc.ai[0] == 8f)
-			{
-				if (!npc.AsFood().IsCurrentlyEaten && npc.Hitbox.Intersects(target.Hitbox) && PredNPC.CanSwallow(npc, target))
-				{
-					PredNPC.Swallow(npc, target);
-					return false;
-				}
-			}
 			return true;
+		}
+
+		public override void PostAI(NPC npc)
+		{
+			if (npc.ai[0] is 8f or 9f)
+				npc.DoContactGulpage();
 		}
 
 		public static bool CanUnreasonablyThickFairyBeForceFed(NPC npc) => true;
@@ -167,13 +154,31 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 			}
 		}
 
-		public static double GetDigestionTickRate(NPC npc, Prey prey) => Main.dayTime ? 12.0 : Main.bloodMoon ? 6.0 : 3.0;
-		public static double GetDigestionTickDamage(NPC npc, Prey prey) => Main.dayTime ? 100.0 : 38.0;
+		public static double GetDigestionTickRate(NPC npc, Prey prey)
+		{
+			if (npc.AI_120_HallowBoss_IsGenuinelyEnraged())
+				return 12.0;
+			else if (Main.bloodMoon)
+			{
+				if (npc.AI_120_HallowBoss_IsInPhase2())
+					return 9.0;
+				else
+					return 6.0;
+			}
+			else
+			{
+				if (npc.AI_120_HallowBoss_IsInPhase2())
+					return 4.5;
+				else
+					return 3.0;
+			}
+		}
+		public static double GetDigestionTickDamage(NPC npc, Prey prey) => Main.dayTime ? 150.0 : 37.5;
 
 		public static void OnDigestionKill(NPC npc, Prey digestedPrey)
 		{
 			SoundEngine.PlaySound(
-				digestedPrey.WeightLeftToDigest < 3.75 ? npc.AsPred().SmallBurps : npc.AsPred().StandardBurps,
+				digestedPrey.WeightLeftToDigest < npc.AsPred().SmallGulpThreshold ? npc.AsPred().SmallBurps : npc.AsPred().StandardBurps,
 				npc.TrueCenter() + new Vector2(0f, -50f)
 			);
 		}
@@ -181,11 +186,11 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 		public static double GetPreyAbsorptionRate(NPC npc)
 		{
 			double baseAbsorptionRate = 1.0 / (double)V2Utils.SensibleTime(
-				minutes: 2,
-				seconds: 0
+				minutes: 0,
+				seconds: 35
 			);
 			if (npc.AI_120_HallowBoss_IsGenuinelyEnraged())
-				return baseAbsorptionRate * 3.0;
+				return baseAbsorptionRate * 5.0;
 			else if (npc.AI_120_HallowBoss_IsInPhase2())
 				return baseAbsorptionRate * 1.5;
 			else
@@ -195,7 +200,7 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 		public static int GetVisualBellySize(NPC npc)
 		{
 			return Math.Min(
-				(int)Math.Floor(1.15 * Math.Sqrt(PredNPC.GetCurrentBellyWeight(npc))),
+				(int)Math.Floor(1.75 * Math.Sqrt(PredNPC.GetCurrentBellyWeight(npc))),
 				6
 			);
 		}
@@ -220,10 +225,60 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 
 		public static bool UnreasonablyThickFairyPredAI(NPC npc)
 		{
-			if (npc.target != -1 || !Main.player[npc.target].IsFoodFor(npc, out bool pastTense) || pastTense)
+			if (npc.target == -1 || !Main.player[npc.target].IsFoodFor(npc, out bool pastTense) || pastTense)
 				return true;
 
-			npc.velocity *= 0.90f;
+			if (npc.ai[0] is 8f or 9f)
+			{
+				float num = 0.5f;
+				float num2 = 12f;
+				int num33 = ((npc.ai[0] != 8f) ? 1 : (-1));
+				if (npc.ai[1] <= 40f)
+				{
+					if (npc.ai[1] == 20f)
+						SoundEngine.PlaySound(SoundID.Item160, npc.Center);
+
+					NPCAimedTarget targetData3 = npc.GetTargetData();
+					Vector2 destination = (targetData3.Invalid ? npc.Center : targetData3.Center) + new Vector2(num33 * -550, 0f);
+					npc.SimpleFlyMovement(npc.DirectionTo(destination).SafeNormalize(Vector2.Zero) * num2, num * 2f);
+					if (npc.ai[1] == 40f)
+						npc.velocity *= 0.3f;
+				}
+				else if (npc.ai[1] <= 90f)
+				{
+					npc.velocity = Vector2.Lerp(value2: new Vector2(num33 * 50, 0f), value1: npc.velocity, amount: 0.05f);
+					if (npc.ai[1] == 90f)
+						npc.velocity *= 0.7f;
+				}
+				else
+				{
+					npc.velocity *= 0.92f;
+				}
+
+				bool flag = npc.AI_120_HallowBoss_IsInPhase2();
+				bool flag2 = Main.expertMode;
+				int num17 = 0;
+				if (flag)
+					num17 += 15;
+
+				if (flag2)
+					num17 += 5;
+				float num32 = 20 - num17;
+				npc.ai[1] += 1f;
+				if (npc.ai[1] >= 90f + num32)
+				{
+					npc.ai[0] = 1f;
+					npc.ai[1] = 0f;
+					npc.netUpdate = true;
+				}
+			}
+			else
+			{
+				npc.ai[0] = 1f;
+				npc.ai[1] = 0f;
+				npc.velocity *= 0.85f;
+				npc.netUpdate = true;
+			}
 			return false;
 		}
 

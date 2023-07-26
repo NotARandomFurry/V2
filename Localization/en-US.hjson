@@ -5,6 +5,11 @@ Mods: {
 			Regurgitate.DisplayName: Regurgitate
 			Feed.DisplayName: Feed
 			EatItems.DisplayName: Eat Items
+			StruggleUp.DisplayName: Struggle Upwards
+			StruggleLeft.DisplayName: Struggle Leftwards
+			StruggleRight.DisplayName: Struggle Rightwards
+			StruggleDown.DisplayName: Struggle Downwards
+			StruggleSpecial.DisplayName: Special Struggle
 		}
 
 		Configs: {
@@ -193,38 +198,6 @@ Mods: {
 				}
 
 				Consumables: {
-					DigestionUpgradeTablets: {
-						Short:
-							'''
-							Can only be eaten once you've fully gained the stomach-strengthening effects of Life Crystals and Life Fruit
-							Permanently alters your biology using a delayed-effect bioalteration spell once fully digested
-							This mixes nitric acid into the structure of your stomach acid, turning it into aqua regia (royal water)
-							This change makes your stomach much stronger and allows you to digest things you wouldn't normally be able to
-							{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
-							'''
-						Long:
-							'''
-							This item can only be eaten once you have eaten and digested at least {LifeCrystalsMax} Life Crystals and at least {LifeFruitMax} Life Fruits.
-							[c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:Increases your acid strength stat (ACI) by 40.]
-							[c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:Increases your absorption strength stat (ABS) by 20.]
-							[c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:Causes your stomach to bypass almost all material-based acid resistances.]
-							This upgrade is permanent, but only takes effect once the pack is fully digested.
-							'''
-						Flavor:
-							'''
-							Despite how often these things were flaunted around as the future of predatory
-							prowess and a marvel of modern magical bioengineering back in the day, the real
-							marvel is that these somehow pose no significant health risks despite mixing an
-							entire secondary acid into an already-powerful stomach. The label on the side
-							suggests eating the entire pack...including the pack itself. The pack supposedly
-							has much better nutritional value than the pills, so...bottoms up.
-							Obtaining more than one pack of these tablets is prohibited by Avarsician law and
-							punishable by...well, predominantly fucking about and learning what for. It's not
-							exactly hard to guess why a spell that assumes you haven't taken the pills at all
-							is bad if you've already melted down a full pack of them before.
-							'''
-					}
-
 					LifeCrystal: {
 						Short:
 							'''
@@ -414,7 +387,7 @@ Mods: {
 					LessStomachWeight: {
 						Short:
 							'''
-							Makes your stomach lighter, but becomes less effective if you're too full
+							Makes your stomach lighter, but only if you're not too full
 							{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
 							'''
 						Long:
@@ -424,11 +397,11 @@ Mods: {
 							'''
 						Flavor:
 							'''
-							An intermediate-level charm designed to make one's stomach much less of a burden
-							to lug around while it's full of sweet, sloshy calories. While it works in most
-							cases, it does this by passively generating a layer of helium inside of the
-							bearer's stomach; thus, if there isn't sufficient room to provide said helium
-							deposits, the charm becomes substantially less effective.
+							A beginner-level charm designed to make one's stomach less of a burden to lug
+							around while it's full of sweet, sloshy calories. While it works in most cases,
+							it does this by passively generating a layer of helium inside of the bearer's
+							stomach; thus, if there isn't sufficient room to provide said helium deposits,
+							the charm becomes substantially less effective.
 							'''
 					}
 
@@ -460,6 +433,84 @@ Mods: {
 							'''
 					}
 				}
+
+				Consumables: {
+					DigestionRepairScroll: {
+						Short:
+							'''
+							Using this item requires a  will instantly relieve you of most of the downsides of predator or preything lifestyles
+							When this is used, a full day must pass before another one can be used
+							{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+							'''
+						Long:
+							'''
+							This item can only be used once at least one full day has passed since the last time it was used.
+							Upon usage, it will instantly:
+							- [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:Fully repair all items in your inventory] that have taken digestion damage and can be repaired.
+							- [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:Remove all Softened stacks still applied to you] from any lingering acid burns from recent encounters.
+							- [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:Clear all indigestion-related debuffs you may have] from particularly troublesome meals.
+							'''
+						Flavor:
+							'''
+							It's a scroll, inscribed with countless runes that you've never seen before;
+							notably, they look surprisingly similar, yet so very different, from musical
+							notes...
+
+							...which would help, if the scroll bothered to say anything about the actual
+							composition of the piece. Whoever wrote this sheet music didn't think it through
+							very well from the perspective of one who might want to play it.
+
+							In any event, incomprehensible as it may be at a cursory glance, as you go to
+							look at it closer, the runes fade into the background somewhat, and a second
+							layer of text fades in which is actually comprehensible to the average person:
+
+							[c/FF3FBF:CHORUS (sing this part):
+							From heavens inward and a cauldron outward, her divine graces shall smile.
+							By Melodia's song, this verse, when not wrong, shall save from a fate all too vile.
+
+							If you face the Veil, the edge of what you hail, when a chance predator leaves you weak,
+							By Melodia's song, sing this verse along, and your strength shall return to thy peak.]
+
+							[c/7F1F5F:POST-CHORUS (composer's note):
+							But the song must rest, asleep in its nest, 'fore its strength can relearn its own peak,
+							So by my sacred song, please don't use this wrong; I've no care for the melodically weak.]
+
+							...you can't help but wonder if Promethia stole this from someone.
+							'''
+					}
+
+					DigestionUpgradeTablets: {
+						Short:
+							'''
+							Can only be eaten once you've fully gained the stomach-strengthening effects of Life Crystals, Mana Crystals, and Life Fruit
+							Permanently modifies your digestive system using a delayed-effect bioalteration spell once fully digested
+							This mixes nitric acid into the structure of your stomach acid, turning it into aqua regia (royal water)
+							This change makes your stomach much stronger and allows you to digest things you wouldn't normally be able to
+							{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+							'''
+						Long:
+							'''
+							This item can only be eaten once you have eaten and digested at least {LifeCrystalsMax} Life Crystals, at least {ManaCrystalsMax} Mana Crystals, and at least {LifeFruitMax} Life Fruits.
+							[c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:Increases your acid strength stat (ACI) by 40.]
+							[c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:Increases your absorption strength stat (ABS) by 20.]
+							[c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:Causes your stomach to bypass almost all material-based acid resistances.]
+							This upgrade is permanent, but only takes effect once the pack is fully digested.
+							'''
+						Flavor:
+							'''
+							Despite how often these things were flaunted around as the future of predatory
+							prowess and a marvel of modern magical bioengineering back in the day, the real
+							marvel is that these somehow pose no significant health risks despite mixing an
+							entire secondary acid into an already-powerful stomach. The label on the side
+							suggests eating the entire pack...including the pack itself. The pack supposedly
+							has much better nutritional value than the pills, so...bottoms up.
+							Obtaining more than one pack of these tablets is prohibited by Avarsician law and
+							punishable by...well, predominantly fucking about and learning what for. It's not
+							exactly hard to guess why a spell that assumes you haven't taken the pills at all
+							is bad if you've already melted down a full pack of them before.
+							'''
+					}
+				}
 			}
 		}
 
@@ -470,13 +521,30 @@ Mods: {
 			Debuffs: {
 				Softened: {
 					Name: Softened
-					Description:
-						'''
-						Decreases defense by {SoftenedDefReduction} per stack
-						Increases taken digestion damage by {SoftenedDigestiveAid} per stack
-						Up to {SoftenedMaxStacks} can be applied on you
-						'You're definitely starting to melt'
-						'''
+
+					Description: {
+						Base:
+							'''
+							A stack of this debuff is applied for every [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.NegativeVoreEffect}:{SoftenedMaxHealthThreshold} of your BASE maximum health you take in digestion damage.]
+							Up to [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.NegativeVoreEffect}:{SoftenedMaxStacks}] can be applied on you (current: [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.NegativeVoreEffect}:{SoftenedStacks}]).
+							[c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.NegativeVoreEffect}:Decreases defense by {SoftenedDefReduction}] per stack (current: [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.NegativeVoreEffect}:{SoftenedCurrentDefReduction}]).
+							[c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.NegativeVoreEffect}:Increases taken digestion damage by {SoftenedDigestiveAid}] per stack (current: [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.NegativeVoreEffect}:{SoftenedCurrentDigestiveAid}]).
+							'''
+
+						Flavor: {
+							0: You've stayed acid-free for a good while, haven't you?
+							1: You feel a light itch in a few places
+							2: You're starting to itch a good deal more
+							3: Your skin is starting to sting, badly
+							4: Your skin feels like it's burning
+							5: You feel patches of skin starting to decay
+							6: Your skin is starting to melt off
+							7: Your predator's stomach has picked up the pace now
+							8: The muscles beneath your bones are melting away now
+							9: You can barely fight the acidic onslaught anymore
+							10: Say your goodbyes; they're more likely to escape this gut than you are
+						}
+					}
 				}
 
 				SoreThroat: {
@@ -529,14 +597,6 @@ Mods: {
 					StomachSuffocation: {
 						1: "{Player} ran out of air in {Pred}'s stomach."
 						2: "{Pred}'s stomach didn't have enough air for {Player}."
-					}
-
-					Hardcore: {
-						1: "{Player}'s legacy ended in the stomach of {Pred}."
-						2: "{Pred}'s belly was too hardcore for even {Player} to handle."
-						3: "{Pred} ended {Player}'s story with a contented belch."
-						4: "{Player} might live on...as a nutritious soup in {Pred}'s gut."
-						5: "{Player}'s family will never know who digested them."
 					}
 				}
 
@@ -808,16 +868,16 @@ Mods: {
 						LoveTavernkeep: "{NPCName}...the tavernk- keeper. Ooohhhhh...j- just LOOK at those arms. Those m- massive, manly muscles...unf, my t- temperature's rising just THINKING about him! I- I can only imagine how s- strong and s- sturdy his s- s- stomach must be...~"
 						LikeNurse: "{NPCName} is such a wonderful woman, m- making sure everyone is happy, healthy, AND healthily hungry!...p- primarily because they can't really help me with my s- studies if they're too sick to e- eat me."
 						LikeDryad: Dryads are a very fascinating creature from external AND i- internal perspectives, so it should be no surprise that I find {NPCName} particularly fruitful to study!...a- and particularly...a- attractive.
-						DislikeZoologist: B- by all accounts, I should like {NPCName} more than I do. Her s- system...changes dramatically in certain conditions, providing a rare opportunity to s- study two states at once...and yet, it just bothers me. M- maybe it's just because other people's guts are the same experience each time...her b- belly is inconsistent by comparison.
+						DislikeZoologist: B- by all accounts, I should like {NPCName} more than I do. Her s- system...changes dramatically in certain conditions, providing a rare opportunity to s- study two states at once...and yet, it just bothers me. M- maybe it's just because other people's i- internals are the same experience each time...her s- stomach is inconsistent by comparison.
 						DislikeArmsDealer: "{NPCName} bothers me slightly. I- it's not even that he doesn't want to eat me, o- or that I don't let him; he's m- MORE than enthusiastic enough, a- and I don't mind studying him! The problem is, he's...n- not my type, but he keeps insisting he is."
-						DislikeAria: Cadence's daughter? U- um...well, she's certainly fascinating...most children are only able to swallow so much as a large grape before their teenage years. Still...I don't feel I should be around her. Th- the inherent...nature of my experiments m- may ultimately upset Cadence if Aria is nearby when they're...p- performed.
+						DislikeAria: Cadence's daughter? U- um...well, she's certainly fascinating...most children her age are only able to swallow so much as a large grape before their teenage years. Still...I don't feel I should be around her. Th- the inherent...nature of my experiments m- may ultimately upset Cadence if Aria is nearby when they're...p- performed.
 						CadenceAndAria: I- I feel...conflicted. O- on one hand, I'm s- sure I would...g- garner invaluable information...wh- while plumping up C- Cadence's backside. O- on the other hand, as...s- stimulating as Her R- Royal Highnass may b- be to me, I- I'd rather keep my c- composure in the p- presence of her d- daughter. P- please look into a solution.
 						HateAngler: "{NPCName}? Oh, that little fisherman's no fun. Too young to eat me, too young to get WHY I want to be eaten so much on any front...and he poses no scientifically significant qualities whatsoever except for how much of a little BRAT he is!"
 
 						Calamity: {
 							LikeAmidias: Th- that seahorse king is great! He always gives me all sorts of information about the- ...the marine life that once populated his old home! He, himself, is also quite...i- interesting...compared to most I meet!
 							LikeCirrus: It's q- quite fascinating to study Cirrus' internals! Sh- she always drinks so much to chase down her...m- meals, to the point one might think her liver is broken...b- but it's actually stronger than any normal person's! O- of course, she also has...q- quite the...a- appealing figure.
-							HateCalamitas: I once asked the witch to allow me to...s- study her internals for science...aand she threatened to burn me on the spot! Seriously, what did HER boss make her put up with to make her such a k- killjoy!?
+							HateCalamitas: I once asked the witch to allow me to...s- study her internals for science...a- and she threatened to burn me on the spot for asking! Seriously, what did HER boss make her put up with to make her such a k- killjoy!?
 						}
 					}
 				}
@@ -889,19 +949,19 @@ Mods: {
 				MeteorMaiden: A fascinating, almost woman-like construct, though built without the waist or anything under. The top and bottom halves of her torso can separate seemingly-infinitely to reveal a magically-formed stomach which torches anything inside. The sand-like slurry her digestive process makes has a wide variety of uses.
 			}
 
-			TownNPCs.Succubus: Having lived on the outskirts of Desperai for many years before deciding to pack up and leave, Lucinda's a demon that just wants people to believe she's a strong, independent predator.
+			TownNPCs.Succubus: Having lived on the outskirts of Desperai for many years before deciding to pack up and leave, Lucinda's a demon that just wants people to believe she's a strong, independent predator who doesn't NEED no stupid charms!...even though she can barely hold her prey the same way her superiors could.
 
 			Divine: {
 				Sinhunters: {
-					Promethia: If ever there was a word for a Sinhunter who never did their expected job, that word would be "Promethia". Being much more interested in studying the internals of other creatures than swallowing them herself, Promethia was exiled from the Holy Realm decades ago, and now searches the mortal plane for the perfect predator to become a part of.
+					Promethia: If ever there was a word for a Sinhunter who never did their expected job, that word would be "Promethia". Being much more interested in studying the internals of other creatures than swallowing them herself, Promethia was exiled from the Divine Realm decades ago, and now searches the mortal plane for the perfect predator to become a part of.
 					StJerne: A fearsome Sinhunter with over a millenium of experience under her belt, St. Jerne is the bane of any being that thinks they can threaten Her Twinkling Majesty. Even the most stoic of Sinhunters can have lofty aspirations, though, and very occasionally, a select few have noticed her looking longingly, almost hungrily, at Aurora's titanic form...
 				}
 
 				Gods: {
-					Constitua: A truly unparalleled mechanic with a knack for working with otherworldly materials, Constitua is nothing if not amazingly gifted with their work. They are responsible for a vast quantity of the more modern-looking inventions across the Holy Realm, taking inspiration from mortals and immortals alike.
-					Judico: The great judge of the Holy Realm; equal parts masculine and feminine, Judico truly seeks nothing more than fair, equal, and uncompromising judgement --- even for the deities he is obligated to call his peers. His path to monotheism has been laced with trouble after trouble, but victory is within his grasp...
+					Constitua: A truly unparalleled mechanic with a knack for working with otherworldly materials, Constitua is nothing if not amazingly gifted with their work. They are responsible for a vast quantity of the more modern-looking inventions across the Divine Realm, taking inspiration from mortals and immortals alike.
+					Judico: The great judge of the Divine Realm; equal parts masculine and feminine, Judico truly seeks nothing more than fair, equal, and uncompromising judgement --- even for the deities he is obligated to call his peers. His path to monotheism has been laced with trouble after trouble, but victory is within his grasp...
 					Aurora: The titanic woman known as the Mother of the Stars. Countless stars have both been birthed by her and ended up right back in her gargantuan gut to be churned into ever more fat for her figure; her truly immeasurably strong belches are said to be the source of the aurora borealis that paint vast swathes of space.
-					Chrona: The endless march of time shall forget countless things. It shall not forget Chrona, the being that granted the flow of time to the universe, and in turn, was granted a place to reside.
+					Chrona: The endless march of time shall forget countless things. It shall not forget Chrona, the being that granted the flow of time to the universe, and in turn, was granted a place to reside as the supreme ruler of the Divine Realm and all creatures within it. To devour their soul would be to upend the very treads of time itself for a midday meal.
 				}
 			}
 		}
@@ -965,7 +1025,7 @@ Mods: {
 						Stomachache:
 							'''
 							If you fight around too much, you'll [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.NegativeVoreEffect}:give your pred a bellyache], which usually brings 'em right back up.
-							Just be sure you don't end up food for a masochist if you have to kick around a lot to get out of a gut...like mine.
+							Just be sure you don't end up food for a masochist if you have to kick around a lot to get out of their gut. 
 							'''
 						Absorption:
 							'''
@@ -977,6 +1037,7 @@ Mods: {
 							Help? What kinda help? Help gettin' mulched?
 
 							...no, really. Don't you have some thick demon thighs to be fillin' out right about now?
+							Seriously, if you got gulped this easy, you're a pretty lousy pred...
 							'''
 						Invalid: ...what was I talkin' about again?
 					}
@@ -989,20 +1050,7 @@ Mods: {
 					'''
 			}
 
-			MeteorMarble: {
-				DisplayName: Meteor Marble
-
-				TownNPCMood: {
-					Content: I am content.
-					NoHome: I hate not having a home.
-					FarFromHome: I am too far from home.
-					LoveSpace: I love having so much space.
-					DislikeCrowded: I dislike how crowded I am.
-					HateCrowded: I hate how crowded I am.
-					LikeNPC_Princess: I like {NPCName}.
-					Princess_LovesNPC: I like {NPCName}.
-				}
-			}
+			MeteorMarble.DisplayName: Meteor Marble
 		}
 	}
 }

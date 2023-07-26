@@ -55,8 +55,7 @@ namespace V2.NPCs.Voraria.Meteorite
 		}
 		public override void SetDefaults()
 		{
-			NPC.townNPC = true;
-			NPC.friendly = true;
+			NPC.friendly = false;
 			NPC.width = 10;
 			NPC.height = 10;
 			NPC.aiStyle = -1;
@@ -68,6 +67,7 @@ namespace V2.NPCs.Voraria.Meteorite
 
 			NPC.AsPred().maxStomachCapacity = 0.4;
 
+			NPC.AsPred().DigestionType = EntityDigestionType.Thermal;
 			NPC.AsPred().GetDigestionTickRateMethod = GetDigestionTickRate;
 			NPC.AsPred().GetDigestionTickDamageMethod = GetDigestionTickDamage;
 
@@ -129,7 +129,7 @@ namespace V2.NPCs.Voraria.Meteorite
 
 		public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)
 		{
-			base.ApplyDifficultyAndPlayerScaling(numPlayers, balance, bossAdjustment);
+			
 		}
 	}
 }

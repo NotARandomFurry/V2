@@ -16,6 +16,7 @@ using Terraria.UI.Chat;
 using V2.Core;
 using V2.NPCs.Voraria.TownNPCs.Succubus;
 using V2.PlayerHandling;
+using V2.StatusEffects.Debuffs;
 
 namespace V2.NPCs
 {
@@ -50,13 +51,20 @@ namespace V2.NPCs
 		public delegate double DelegatePreyBaseSizeOverride(NPC npc);
 		public DelegatePreyBaseSizeOverride PreyBaseSizeOverrideMethod { get; set; }
 
-		public StatModifier StruggleStrength { get; set; }
+		public StatModifier StruggleStrengthModifier { get; set; }
 
 		public bool CanChatAsPrey { get; set; }
 
 		public SoundStyle? DigestingHitSound;
 		public SoundStyle? DigestedDeathSound;
+		
+		public StatModifier TakenDigestionDamageModifier { get; set; }
 
+		public double SoftenedDigestionDamageTaken { get; set; }
+		public StatModifier SoftenedDigestionDamageModifier { get; set; }
+		public int SoftenedWearoffDelay { get; set; }
+		public static int SoftenedWearoffMaxDelay => V2Utils.SensibleTime(seconds: 2, frames: 30);
+		public StatModifier SoftenedWearoffRateModifier { get; set; }
 		public override bool InstancePerEntity => true;
 		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => true;
 
@@ -68,8 +76,6 @@ namespace V2.NPCs
 			PreyAIMethod = null;
 			PreyBaseSizeOverrideMethod = null;
 
-			StruggleStrength = StatModifier.Default;
-
 			CanChatAsPrey = false;
 			DigestingHitSound = null;
 			DigestedDeathSound = null;
@@ -80,6 +86,21 @@ namespace V2.NPCs
 			npc.AsFood().IsCurrentlyEaten = false;
 			npc.AsFood().Digested = false;
 			npc.AsFood().CurrentCaptor = null;
+
+			StruggleStrengthModifier = StatModifier.Default;
+
+
+			npc.AsFood().TakenDigestionDamageModifier = StatModifier.Default;
+
+			if (!npc.HasBuff(ModContent.BuffType<Softened>()))
+				npc.AddBuff(ModContent.BuffType<Softened>(), 3);
+			npc.AsFood().SoftenedDigestionDamageModifier = StatModifier.Default;
+			npc.AsFood().SoftenedWearoffRateModifier = StatModifier.Default;
+			if (npc.AsFood().SoftenedWearoffDelay > 0)
+				npc.AsFood().SoftenedWearoffDelay--;
+			else if (npc.AsFood().SoftenedDigestionDamageTaken > 0)
+				npc.AsFood().SoftenedDigestionDamageTaken -= npc.AsFood().SoftenedWearoffRateModifier.ApplyTo((float)(25.0 / 60.0));
+
 			UpdateNPCEatenStatus(npc);
 			DetermineDigestingSounds(npc);
 		}
@@ -314,6 +335,9 @@ namespace V2.NPCs
 				if (trueDigestionDamage < 0)
 					trueDigestionDamage = 0;
 			}
+			trueDigestionDamage = (int)Math.Floor(npc.AsFood().TakenDigestionDamageModifier.ApplyTo(trueDigestionDamage));
+			npc.AsFood().SoftenedDigestionDamageTaken += npc.AsFood().SoftenedDigestionDamageModifier.ApplyTo(trueDigestionDamage);
+			npc.AsFood().SoftenedWearoffDelay = SoftenedWearoffMaxDelay;
 			if (npc.realLife != -1)
 				Main.npc[npc.realLife].life -= trueDigestionDamage;
 			else

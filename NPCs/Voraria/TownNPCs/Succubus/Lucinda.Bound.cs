@@ -39,6 +39,8 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 
 			NPC.AsPred().maxStomachCapacity = 2.2;
 
+			NPC.AsPred().DigestionType = EntityDigestionType.Acidic;
+
 			NPC.buffImmune[BuffID.OnFire] = true;
 			NPC.buffImmune[BuffID.OnFire3] = true;
 			NPC.buffImmune[BuffID.Burning] = true;
