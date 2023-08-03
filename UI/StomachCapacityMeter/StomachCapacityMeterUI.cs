@@ -12,9 +12,9 @@ using V2.Core;
 using V2.Items;
 using V2.PlayerHandling;
 
-namespace V2.UI.StomachCapacityBar
+namespace V2.UI.StomachCapacityMeter
 {
-	public struct PlayerPredStatsSnapshot
+	public struct PlayerPredStomachCapacitySnapshot
 	{
 		public double Fullness;
 		public double CapacityMax;
@@ -24,7 +24,7 @@ namespace V2.UI.StomachCapacityBar
 
 		private int numCapacitySegments;
 		private static readonly int minCapacitySegments = 4;
-		private static readonly int maxCapacitySegments = 20;
+		private static readonly int maxCapacitySegments = 15;
 		/// <summary>
 		/// How many segments should be drawn for the stomach capacity bar.<br/>
 		/// Has a maximum of 20, similar to health and mana bars.<br/>
@@ -42,7 +42,7 @@ namespace V2.UI.StomachCapacityBar
 			set => numCapacitySegments = value;
 		}
 
-		public PlayerPredStatsSnapshot(Player player)
+		public PlayerPredStomachCapacitySnapshot(Player player)
 		{
 			Fullness = player.AsPred().StomachFullness;
 			CapacityMax = player.AsPred().StomachCapacity;
@@ -52,7 +52,7 @@ namespace V2.UI.StomachCapacityBar
 		}
 	}
 
-	public class StomachCapacityBarUI : UIState
+	public class StomachCapacityMeterUI : UIState
 	{
 		public static bool Visible { get; set; }
 
@@ -68,11 +68,11 @@ namespace V2.UI.StomachCapacityBar
 		private double _kickyPreyPercent;
 		private float _capacityPercent;
 		private bool _stomachCapacityHovered;
-		private Asset<Texture2D> _stomachCapacityFill = ModContent.Request<Texture2D>("V2/UI/StomachCapacityBar/StomachCapacityBar_Fill", AssetRequestMode.ImmediateLoad);
-		private Asset<Texture2D> _stomachCapacityFillKicky = ModContent.Request<Texture2D>("V2/UI/StomachCapacityBar/StomachCapacityBar_Fill_Kicky", AssetRequestMode.ImmediateLoad);
-		private Asset<Texture2D> _stomachCapacityPanelLeft = ModContent.Request<Texture2D>("V2/UI/StomachCapacityBar/StomachCapacityBar_Panel_Left", AssetRequestMode.ImmediateLoad);
-		private Asset<Texture2D> _stomachCapacityPanelMiddle = ModContent.Request<Texture2D>("V2/UI/StomachCapacityBar/StomachCapacityBar_Panel_Middle", AssetRequestMode.ImmediateLoad);
-		private Asset<Texture2D> _stomachCapacityPanelRight = ModContent.Request<Texture2D>("V2/UI/StomachCapacityBar/StomachCapacityBar_Panel_Right", AssetRequestMode.ImmediateLoad);
+		private Asset<Texture2D> _stomachCapacityFill = ModContent.Request<Texture2D>("V2/UI/StomachCapacityMeter/StomachCapacityMeter_Fill", AssetRequestMode.ImmediateLoad);
+		private Asset<Texture2D> _stomachCapacityFillKicky = ModContent.Request<Texture2D>("V2/UI/StomachCapacityMeter/StomachCapacityMeter_Fill_Kicky", AssetRequestMode.ImmediateLoad);
+		private Asset<Texture2D> _stomachCapacityPanelLeft = ModContent.Request<Texture2D>("V2/UI/StomachCapacityMeter/StomachCapacityMeter_Panel_Left", AssetRequestMode.ImmediateLoad);
+		private Asset<Texture2D> _stomachCapacityPanelMiddle = ModContent.Request<Texture2D>("V2/UI/StomachCapacityMeter/StomachCapacityMeter_Panel_Middle", AssetRequestMode.ImmediateLoad);
+		private Asset<Texture2D> _stomachCapacityPanelRight = ModContent.Request<Texture2D>("V2/UI/StomachCapacityMeter/StomachCapacityMeter_Panel_Right", AssetRequestMode.ImmediateLoad);
 
 		public override void Draw(SpriteBatch spriteBatch)
 		{
@@ -179,7 +179,7 @@ namespace V2.UI.StomachCapacityBar
 
 		private void PrepareFields(Player player)
 		{
-			PlayerPredStatsSnapshot PlayerPredStatsSnapshot = new PlayerPredStatsSnapshot(player);
+			PlayerPredStomachCapacitySnapshot PlayerPredStatsSnapshot = new PlayerPredStomachCapacitySnapshot(player);
 
 			_capacitySegmentsCount = PlayerPredStatsSnapshot.AmountOfCapacitySegments;
 			_kickyPreyPercent = PlayerPredStatsSnapshot.KickyPreyPercentage;

@@ -12,8 +12,43 @@ using V2.Core;
 using V2.Items;
 using V2.PlayerHandling;
 
-namespace V2.UI
+namespace V2.UI.StomachacheMeter
 {
+	public struct PlayerPredStomachacheSnapshot
+	{
+		public double Stomachache;
+		public double StomachacheMax;
+
+		public double StomachacheValuePerSegment => StomachacheMax / (double)AmountOfStomachacheMeterSegments;
+
+		private int numCapacitySegments;
+		private static readonly int minCapacitySegments = 4;
+		private static readonly int maxCapacitySegments = 20;
+		/// <summary>
+		/// How many segments should be drawn for the stomach capacity bar.<br/>
+		/// Has a maximum of 20, similar to health and mana bars.<br/>
+		/// </summary>
+		public int AmountOfStomachacheMeterSegments
+		{
+			get
+			{
+				if (numCapacitySegments < minCapacitySegments)
+					numCapacitySegments = minCapacitySegments;
+				if (numCapacitySegments > maxCapacitySegments)
+					numCapacitySegments = maxCapacitySegments;
+				return numCapacitySegments;
+			}
+			set => numCapacitySegments = value;
+		}
+
+		public PlayerPredStomachacheSnapshot(Player player)
+		{
+			Stomachache = player.AsPred().Stomachache;
+			StomachacheMax = player.AsPred().StomachacheMeterCapacity;
+
+			numCapacitySegments = (int)(StomachacheMax / 20.0);
+		}
+	}
 	public class StomachacheMeterUI : UIState
 	{
 		public static bool Visible { get; set; }
@@ -26,15 +61,13 @@ namespace V2.UI
 				Visible = true;
 		}
 
-		private int _capacitySegmentsCount;
-		private double _struggleStrength;
-		private float _capacityPercent;
-		private bool _stomachCapacityHovered;
-		private Asset<Texture2D> _stomachCapacityFill = ModContent.Request<Texture2D>("V2/UI/StomachCapacityBar/StomachCapacityBar_Fill", AssetRequestMode.ImmediateLoad);
-		private Asset<Texture2D> _stomachCapacityFillKicky = ModContent.Request<Texture2D>("V2/UI/StomachCapacityBar/StomachCapacityBar_Fill_Kicky", AssetRequestMode.ImmediateLoad);
-		private Asset<Texture2D> _stomachCapacityPanelLeft = ModContent.Request<Texture2D>("V2/UI/StomachCapacityBar/StomachCapacityBar_Panel_Left", AssetRequestMode.ImmediateLoad);
-		private Asset<Texture2D> _stomachCapacityPanelMiddle = ModContent.Request<Texture2D>("V2/UI/StomachCapacityBar/StomachCapacityBar_Panel_Middle", AssetRequestMode.ImmediateLoad);
-		private Asset<Texture2D> _stomachCapacityPanelRight = ModContent.Request<Texture2D>("V2/UI/StomachCapacityBar/StomachCapacityBar_Panel_Right", AssetRequestMode.ImmediateLoad);
+		private int _stomachacheSegments;
+		private float _stomachachePercent;
+		private bool _stomachacheHovered;
+		private Asset<Texture2D> _stomachacheFill = ModContent.Request<Texture2D>("V2/UI/StomachacheMeter/StomachacheMeter_Fill", AssetRequestMode.ImmediateLoad);
+		private Asset<Texture2D> _stomachachePanelLeft = ModContent.Request<Texture2D>("V2/UI/StomachacheMeter/StomachacheMeter_Panel_Left", AssetRequestMode.ImmediateLoad);
+		private Asset<Texture2D> _stomachachePanelMiddle = ModContent.Request<Texture2D>("V2/UI/StomachacheMeter/StomachacheMeter_Panel_Middle", AssetRequestMode.ImmediateLoad);
+		private Asset<Texture2D> _stomachachePanelRight = ModContent.Request<Texture2D>("V2/UI/StomachacheMeter/StomachacheMeter_Panel_Right", AssetRequestMode.ImmediateLoad);
 
 		public override void Draw(SpriteBatch spriteBatch)
 		{
@@ -47,92 +80,73 @@ namespace V2.UI
 				Main.screenWidth / 2,
 				Main.screenHeight / 2
 			);
-			topLeftCorner.X -= 20 + (_capacitySegmentsCount * (_stomachCapacityPanelMiddle.Value.Width / 2));
-			topLeftCorner.Y += 32;
+			topLeftCorner.X -= 14 + (_stomachacheSegments * (_stomachachePanelMiddle.Value.Width / 2));
+			topLeftCorner.Y -= 40;
 			topLeftCorner += Main.LocalPlayer.Center - (Main.screenPosition + new Vector2(Main.screenWidth / 2, Main.screenHeight / 2));
 
-			for (int i = 0; i < _capacitySegmentsCount; i++)
+			for (int i = 0; i < _stomachacheSegments; i++)
 			{
 				spriteBatch.Draw(
-					_stomachCapacityPanelMiddle.Value,
-					topLeftCorner + new Vector2(20 + (i * _stomachCapacityPanelMiddle.Value.Width), 4),
-					_stomachCapacityPanelMiddle.Value.Bounds,
+					_stomachachePanelMiddle.Value,
+					topLeftCorner + new Vector2(14 + (i * _stomachachePanelMiddle.Value.Width), 6),
+					_stomachachePanelMiddle.Value.Bounds,
 					Color.White
 				);
 			}
 
-			for (int i = 0; i < _capacitySegmentsCount; i++)
+			for (int i = 0; i < _stomachacheSegments; i++)
 			{
-				if ((double)i / (double)_capacitySegmentsCount >= _capacityPercent)
+				if ((double)i / (double)_stomachacheSegments >= _stomachachePercent)
 					continue;
 
-				Texture2D fillTexture = _stomachCapacityFill.Value;
+				Texture2D fillTexture = _stomachacheFill.Value;
 				Rectangle fullDrawRect = fillTexture.Bounds;
-				if (((double)i + 1.0) / (double)_capacitySegmentsCount > _capacityPercent)
+				if (((double)i + 1.0) / (double)_stomachacheSegments > _stomachachePercent)
 				{
-					double fullRatio = (double)i / (double)_capacitySegmentsCount;
-					fullRatio = _capacityPercent - fullRatio;
-					fullRatio *= (double)_capacitySegmentsCount;
+					double fullRatio = (double)i / (double)_stomachacheSegments;
+					fullRatio = _stomachachePercent - fullRatio;
+					fullRatio *= (double)_stomachacheSegments;
 					fullDrawRect.Width = (int)Math.Ceiling((double)fullDrawRect.Width * fullRatio);
 				}
 				spriteBatch.Draw(
 					fillTexture,
-					topLeftCorner + new Vector2(20 + (i * _stomachCapacityPanelMiddle.Value.Width), 10),
+					topLeftCorner + new Vector2(14 + (i * _stomachachePanelMiddle.Value.Width), 6),
 					fullDrawRect,
-					Color.White
-				);
-
-				if (_kickyPreyPercent <= 0 || (double)i / (double)_capacitySegmentsCount >= _kickyPreyPercent)
-					continue;
-
-				Texture2D kickyFillTexture = _stomachCapacityFillKicky.Value;
-				Rectangle kickyDrawRect = kickyFillTexture.Bounds;
-				if (((double)i + 1.0) / (double)_capacitySegmentsCount > _kickyPreyPercent)
-				{
-					double kickyRatio = (double)i / (double)_capacitySegmentsCount;
-					kickyRatio = _kickyPreyPercent - kickyRatio;
-					kickyRatio *= (double)_capacitySegmentsCount;
-					kickyDrawRect.Width = (int)Math.Ceiling((double)kickyDrawRect.Width * kickyRatio);
-				}
-				spriteBatch.Draw(
-					kickyFillTexture,
-					topLeftCorner + new Vector2(20 + (i * _stomachCapacityPanelMiddle.Value.Width), 10),
-					kickyDrawRect,
 					Color.White
 				);
 			}
 
 			spriteBatch.Draw(
-				_stomachCapacityPanelLeft.Value,
+				_stomachachePanelLeft.Value,
 				topLeftCorner,
-				_stomachCapacityPanelLeft.Value.Bounds,
+				_stomachachePanelLeft.Value.Bounds,
 				Color.White
 			);
 			spriteBatch.Draw(
-				_stomachCapacityPanelRight.Value,
-				topLeftCorner + new Vector2(20 + (_capacitySegmentsCount * _stomachCapacityPanelMiddle.Value.Width), 4),
-				_stomachCapacityPanelRight.Value.Bounds,
+				_stomachachePanelRight.Value,
+				topLeftCorner + new Vector2(10 + (_stomachacheSegments * _stomachachePanelMiddle.Value.Width), 0),
+				_stomachachePanelRight.Value.Bounds,
 				Color.White
 			);
 
 			Rectangle hoverRect = new Rectangle(
 				(int)topLeftCorner.X,
 				(int)topLeftCorner.Y + 4,
-				20 + (_capacitySegmentsCount * _stomachCapacityPanelMiddle.Value.Width) + _stomachCapacityPanelRight.Value.Width,
-				_stomachCapacityPanelMiddle.Value.Height
+				20 + (_stomachacheSegments * _stomachachePanelMiddle.Value.Width) + _stomachachePanelRight.Value.Width,
+				_stomachachePanelMiddle.Value.Height
 			);
-			_stomachCapacityHovered = hoverRect.Contains(Main.MouseScreen.ToPoint());
-			if (_stomachCapacityHovered && !Main.mouseText)
+			_stomachacheHovered = hoverRect.Contains(Main.MouseScreen.ToPoint());
+			if (_stomachacheHovered && !Main.mouseText)
 			{
 				Player localPlayer = Main.LocalPlayer;
 				localPlayer.cursorItemIconEnabled = false;
 				string text =
 					"Stomach Weight: "
-				  + localPlayer.AsPred().StomachFullness.CastToDecimalPlaces(2)
+				  + localPlayer.AsPred().Stomachache.CastToDecimalPlaces(2)
 				  + "/"
-				  + localPlayer.AsPred().StomachCapacity.CastToDecimalPlaces(2)
+				  + localPlayer.AsPred().StomachacheMeterCapacity.CastToDecimalPlaces(2)
 				  + " ("
-				  + (localPlayer.AsPred().StomachFullness / localPlayer.AsPred().StomachCapacity).ConvertToPercentageString(2)
+				  + (localPlayer.AsPred().Stomachache / localPlayer.AsPred().StomachacheMeterCapacity).ConvertToPercentageString(2)
 				  + ")";
 				Main.instance.MouseTextHackZoom(text);
 				Main.mouseText = true;
@@ -141,11 +155,10 @@ namespace V2.UI
 
 		private void PrepareFields(Player player)
 		{
-			PlayerPredStatsSnapshot PlayerPredStatsSnapshot = new PlayerPredStatsSnapshot(player);
+			PlayerPredStomachacheSnapshot PlayerPredStatsSnapshot = new PlayerPredStomachacheSnapshot(player);
 
-			_capacitySegmentsCount = PlayerPredStatsSnapshot.AmountOfCapacitySegments;
-			_kickyPreyPercent = PlayerPredStatsSnapshot.KickyPreyPercentage;
-			_capacityPercent = (float)PlayerPredStatsSnapshot.Fullness / (float)PlayerPredStatsSnapshot.CapacityMax;
+			_stomachacheSegments = PlayerPredStatsSnapshot.AmountOfStomachacheMeterSegments;
+			_stomachachePercent = (float)PlayerPredStatsSnapshot.Stomachache / (float)PlayerPredStatsSnapshot.StomachacheMax;
 		}
 	}
 }

@@ -1,15 +1,11 @@
-﻿using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI;
-using V2.UI.StylistAteThePublishButton;
+using V2.UI.StomachacheMeter;
+using V2.UI.StomachCapacityMeter;
 
 namespace V2.UI
 {
@@ -19,7 +15,10 @@ namespace V2.UI
 		public HeldItemDrawingUI HeldItemInterface;
 
 		public UserInterface StomachCapacityBarInterfaceLayer;
-		public StomachCapacityBarUI StomachCapacityBarInterface;
+		public StomachCapacityMeterUI StomachCapacityBarInterface;
+
+		public UserInterface StomachacheMeterInterfaceLayer;
+		public StomachacheMeterUI StomachacheMeterInterface;
 
 		public override void OnWorldLoad()
 		{
@@ -29,9 +28,14 @@ namespace V2.UI
 			HeldItemInterfaceLayer.SetState(HeldItemInterface);
 
 			StomachCapacityBarInterfaceLayer = new UserInterface();
-			StomachCapacityBarInterface = new StomachCapacityBarUI();
+			StomachCapacityBarInterface = new StomachCapacityMeterUI();
 			StomachCapacityBarInterface.Activate();
 			StomachCapacityBarInterfaceLayer.SetState(StomachCapacityBarInterface);
+
+			StomachacheMeterInterfaceLayer = new UserInterface();
+			StomachacheMeterInterface = new StomachacheMeterUI();
+			StomachacheMeterInterface.Activate();
+			StomachacheMeterInterfaceLayer.SetState(StomachacheMeterInterface);
 		}
 
 		public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
@@ -76,8 +80,10 @@ namespace V2.UI
 
 			int OverriddenHairWindowIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Hair Window (Voraria II Override)"));
 			if (OverriddenHairWindowIndex != -1)
-				AddInterfaceLayer(layers, StomachCapacityBarInterfaceLayer, StomachCapacityBarInterface, OverriddenHairWindowIndex, true, "Stomach Capacity");
-
+			{
+				AddInterfaceLayer(layers, StomachCapacityBarInterfaceLayer, StomachCapacityBarInterface, OverriddenHairWindowIndex, true, "Stomach Capacity Meter");
+				AddInterfaceLayer(layers, StomachacheMeterInterfaceLayer, StomachacheMeterInterface, OverriddenHairWindowIndex + 1, true, "Stomachache Meter");
+			}
 			int MouseTextIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Mouse Text"));
 			if (MouseTextIndex != -1)
 				AddInterfaceLayer(layers, HeldItemInterfaceLayer, HeldItemInterface, MouseTextIndex, true, "Held Item");

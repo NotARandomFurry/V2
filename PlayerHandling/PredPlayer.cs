@@ -50,7 +50,7 @@ namespace V2.PlayerHandling
 		public List<Prey> stomachContents;
 		public List<Prey> stomachContentsQueue;
 
-		public double stomachache;
+		public double Stomachache;
 
 		public int predLevel;
 

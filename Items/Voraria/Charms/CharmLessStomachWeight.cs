@@ -15,7 +15,7 @@ namespace V2.Items.Voraria.Charms
 {
 	public class CharmLessStomachWeight : ModItem
 	{
-		public static double WeightReduction => 0.20;
+		public static double MaxWeightReduction => 0.20;
 		public static double FullnessEffectivenessLossThreshold => 0.75;
 		public static double WeightReductionEffectiveness(Player player)
 		{
@@ -43,7 +43,7 @@ namespace V2.Items.Voraria.Charms
 
 		public static void CharmEffects(Player player)
 		{
-			player.AsPred().StomachWeightModifier -= (float)(WeightReduction * WeightReductionEffectiveness(player));
+			player.AsPred().StomachWeightModifier -= (float)(MaxWeightReduction * WeightReductionEffectiveness(player));
 		}
 
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
@@ -52,9 +52,9 @@ namespace V2.Items.Voraria.Charms
 				"Voraria.Charms.LessStomachWeight",
 				new
 				{
-					MaxWeightReduction = WeightReduction.ConvertToPercentageString(2),
+					WeightReduction = MaxWeightReduction.ConvertToPercentageString(2),
 					FullnessEffectivenessLossThreshold = FullnessEffectivenessLossThreshold.ConvertToPercentageString(2),
-					CurrentWeightReduction = (WeightReduction * WeightReductionEffectiveness(Main.LocalPlayer)).ConvertToPercentageString(2),
+					CurrentWeightReduction = (MaxWeightReduction * WeightReductionEffectiveness(Main.LocalPlayer)).ConvertToPercentageString(2),
 				}
 			);
 		}

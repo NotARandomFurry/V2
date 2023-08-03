@@ -173,7 +173,7 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 					return 3.0;
 			}
 		}
-		public static double GetDigestionTickDamage(NPC npc, Prey prey) => Main.dayTime ? 150.0 : 37.5;
+		public static double GetDigestionTickDamage(NPC npc, Prey prey) => Main.dayTime ? 1000.0 : 120.0;
 
 		public static void OnDigestionKill(NPC npc, Prey digestedPrey)
 		{
@@ -187,12 +187,12 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 		{
 			double baseAbsorptionRate = 1.0 / (double)V2Utils.SensibleTime(
 				minutes: 0,
-				seconds: 35
+				seconds: 23
 			);
 			if (npc.AI_120_HallowBoss_IsGenuinelyEnraged())
-				return baseAbsorptionRate * 5.0;
+				return baseAbsorptionRate * 10.0;
 			else if (npc.AI_120_HallowBoss_IsInPhase2())
-				return baseAbsorptionRate * 1.5;
+				return baseAbsorptionRate * 1.75;
 			else
 				return baseAbsorptionRate;
 		}
