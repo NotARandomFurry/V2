@@ -131,6 +131,12 @@ Mods: {
 				By pressing the Swallow hotkey while near something, or someONE, you'd like to eat, you can send 'em right down your throat!
 				Just be warned that some food won't stay down as easy as others...
 				'''
+			HaveARefreshingDrink:
+				'''
+				Bothered by the immense amounts of liquids everywhere? No worries!
+				If you hold the Swallow keybind while submerged, you'll let whatever refreshing drink you're in slide right into your throat!
+				Be aware, though, that some drinks are a lot more dangerous to your system...you'll need special tools to make them stomach-safe.
+				'''
 			RegurgitateHotkey:
 				'''
 				If you find that a particularly feisty meal's giving you trouble, you can always use the Regurgitate hotkey to bring them back up!
@@ -148,6 +154,28 @@ Mods: {
 				By holding the Eat Items keybind and pressing Swallow while hovering over an item, you can send it right into your belly!
 				Several items will also have unique effects when eaten and digested...be sure to check out what your snacks do in their tooltips!
 				'''
+		}
+
+		PredPlayerGoals: {
+			Starter: {
+				Name: Starter
+				Subtitle: New Pred
+				Description:
+					'''
+					Just getting started on the wonderful world of...well, eating the
+					world, one meal at a time? Here are some of the first things you
+					ought to do to make sure you and your gut can be as ready as can
+					be to get some proper good eats in you!
+					'''
+				FirstLivePrey: {
+					Name: First Timer
+					Description:
+						'''
+						Eat and digest your first live prey.
+						‘We all start somewhere.’
+						'''
+				}
+			}
 		}
 
 		ItemName: {
@@ -187,6 +215,13 @@ Mods: {
 
 			Vanilla: {
 				Accessories: {
+					Utility: {
+						ShimmerCloak: {
+							Grants immunity to Shimmering
+							Hold <down> to temporarily bypass this immunity
+							Allows you to safely drink shimmer
+						}
+					}
 					Informational: {
 						REK3K: Displays number of enemies, kill and meal counts, and rare creatures
 						TallyCounter:
@@ -280,7 +315,7 @@ Mods: {
 							'''
 							When eaten by anything:
 							- [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.ManaHeal}:Restores 100 mana] instantly upon running out of durability.
-							- Grants the Mana Regeneration buff while digesting; this lingers for [c/FFFF00:{ManaCrystalEatManaRegenLength} seconds] once fully digested.
+							- [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveEffect}:Grants the Mana Regeneration buff] while digesting; this lingers for [c/FFFF00:{ManaCrystalEatManaRegenLength} seconds] once fully digested.
 							When eaten by a player, upon running out of durability:
 							- Permanently [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.ManaHeal}:increases maximum mana by 20].
 							- Permanently [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:increases stomach capacity by {ManaCrystalStomachCapacityBonus}].
@@ -454,9 +489,7 @@ Mods: {
 							'''
 							It's a scroll, inscribed with countless runes that you've never seen before;
 							notably, they look surprisingly similar, yet so very different, from musical
-							notes...
-
-							...which would help, if the scroll bothered to say anything about the actual
+							notes...which would help, if the scroll bothered to say anything about the actual
 							composition of the piece. Whoever wrote this sheet music didn't think it through
 							very well from the perspective of one who might want to play it.
 
@@ -464,16 +497,16 @@ Mods: {
 							look at it closer, the runes fade into the background somewhat, and a second
 							layer of text fades in which is actually comprehensible to the average person:
 
-							[c/FF3FBF:CHORUS (sing this part):
-							From heavens inward and a cauldron outward, her divine graces shall smile.
+							[c/FF3FBF:CHORUS (sing this part, in D# major):
+							From heavens inward and a cauldron outward, the Conductress' graces shall smile.
 							By Melodia's song, this verse, when not wrong, shall save from a fate all too vile.
 
-							If you face the Veil, the edge of what you hail, when a chance predator leaves you weak,
-							By Melodia's song, sing this verse along, and your strength shall return to thy peak.]
+							If you near face the Veil, the edge of our great hail, when a chance predator leaves you weak,
+							By Melodia's song, sing these verses along, and your strength shall return to thy peak.]
 
 							[c/7F1F5F:POST-CHORUS (composer's note):
-							But the song must rest, asleep in its nest, 'fore its strength can relearn its own peak,
-							So by my sacred song, please don't use this wrong; I've no care for the melodically weak.]
+							But the song must rest, asleep in its nest, 'fore its strength can remend its own peak,
+							So by my sacred song, don't you dare sing this wrong; I've no care for the melodically weak.]
 
 							...you can't help but wonder if Promethia stole this from someone.
 							'''
@@ -482,10 +515,10 @@ Mods: {
 					DigestionUpgradeTablets: {
 						Short:
 							'''
-							Can only be eaten once you've fully gained the stomach-strengthening effects of Life Crystals, Mana Crystals, and Life Fruit
+							Can only be eaten once you've fully gained the stomach-strengthening effects of Life Fruit and enchanted your stomach acids beforehand
 							Permanently modifies your digestive system using a delayed-effect bioalteration spell once fully digested
 							This mixes nitric acid into the structure of your stomach acid, turning it into aqua regia (royal water)
-							This change makes your stomach much stronger and allows you to digest things you wouldn't normally be able to
+							This change makes your stomach significantly better at digesting things, and allows you to digest more things you wouldn't normally be able to
 							{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
 							'''
 						Long:
@@ -519,9 +552,27 @@ Mods: {
 
 		StatusEffects: {
 			Debuffs: {
+				MoltenStomach: {
+					Name: Molten Stomach
+					Description:
+						'''
+						[c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.NegativeVoreEffect}:Your stomach is getting melted from the inside by the lava you drank.]
+						[c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.NegativeVoreEffect}:Maybe don't drink lava without a way to prevent this outcome.]
+						'do you are have stupid'
+						'''
+				}
+				ShimmeringStomach: {
+					Name: Shimmering Stomach
+					Description:
+						'''
+						[c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.NegativeVoreEffect}:Your stomach is about to end up quantum-superimposed on itself.]
+						[c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.NegativeVoreEffect}:Don't drink shimmer without a way to prevent this outcome.]
+						'Fool ya once, shame on me. Fool ya twice...'
+						'''
+				}
+
 				Softened: {
 					Name: Softened
-
 					Description: {
 						Base:
 							'''
@@ -551,7 +602,7 @@ Mods: {
 					Name: Sore Throat
 					Description:
 						'''
-						[c/FF3F00:Prevents swallowing anything orally]
+						[c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.NegativeVoreEffect}:Prevents swallowing anything orally]
 						Does not stop other methods of consumption
 						'Something's bothering your throat pretty bad'
 						'''
@@ -801,6 +852,19 @@ Mods: {
 				}
 			}
 
+			OverlyHungryPlayer: {
+				UnsafeLavaDrink: {
+					1: "{Player} had a drink that was a little too warm."
+					2: "{Player} learned why demons bathe in lava more often than drinking it."
+					3: "{Player} was smelted from the inside out."
+				}
+				UnsafeShimmerDrink: {
+					1: "{Player}'s stomach ended up where their stomach should be, while it was still already there. Quantum mechanics are fun!"
+					2: "{Player} thought the Empress' bathwater would look sparklier in their gut."
+					3: "{Player} decided to see if shimmer would make their belly glowy and glimmery. It did...for about 5 seconds before they died."
+				}
+			}
+
 			DigestedTownNPC: "{0} was eaten..."
 			DigestedEnemiesAnnouncement: "{Pred} has digested the {Number}th {Prey}!"
 
@@ -827,6 +891,7 @@ Mods: {
 				NebulaPillar: The Nebula Pillar has been digested by {Pred}!
 				StardustPillar: The Stardust Pillar has been digested by {Pred}!
 				MoonLord: The Moon Lord has been digested by {Pred}!
+				Default: "{BossName} has been digested by {Pred}!"
 			}
 		}
 

@@ -41,12 +41,13 @@ namespace V2.NPCs
 
 	public class PredNPC : GlobalNPC
 	{
-		public EntityGender Gender;
+		public EntityGender Gender { get; set; }
 		public List<Prey> stomachContents;
 		public List<Prey> stomachContentsQueue;
-		public EntityDigestionType DigestionType;
-		public double maxStomachCapacity;
-		public float swallowRange;
+		public EntityDigestionType DigestionType { get; set; }
+		public double MaxStomachCapacity { get; set; }
+		public float MaxSwallowRange { get; set; }
+		public double ExtraWeight { get; set; }
 
 		public SoundStyle? SmallBurps { get; set; }
 		public SoundStyle? StandardBurps { get; set; }
@@ -59,6 +60,18 @@ namespace V2.NPCs
 		public delegate void DelegateResetPredSpecificVariables(NPC npc);
 		public DelegateResetPredSpecificVariables ResetPredSpecificVariablesMethod { get; set; }
 
+		public delegate List<string> DelegateGetTownNPCChat(NPC npc, Player player);
+		public DelegateGetTownNPCChat GetChatMethod { get; set; }
+
+		public delegate bool DelegateCanBeForceFed(NPC npc);
+		public DelegateCanBeForceFed CanBeForceFedMethod { get; set; }
+
+		public delegate void DelegateOnForceFed(NPC npc, Player player);
+		public DelegateOnForceFed OnForceFedMethod { get; set; }
+
+		public delegate bool DelegateSpecialPredAI(NPC npc);
+		public DelegateSpecialPredAI SpecialPredAIMethod { get; set; }
+
 		public delegate double DelegateGetDigestionTickRate(NPC npc, Prey prey);
 		public DelegateGetDigestionTickRate GetDigestionTickRateMethod { get; set; }
 
@@ -68,29 +81,17 @@ namespace V2.NPCs
 		public delegate void DelegateOnDigestionKill(NPC npc, Prey digestedPrey);
 		public DelegateOnDigestionKill OnDigestionKillMethod { get; set; }
 
-		public delegate double DelegateGetPreyAbsorptionRate(NPC npc);
-		public DelegateGetPreyAbsorptionRate GetPreyAbsorptionRateMethod { get; set; }
-
-		public delegate List<string> DelegateGetTownNPCChat(NPC npc, Player player);
-		public DelegateGetTownNPCChat GetChatMethod { get; set; }
-
 		public delegate void DelegateGetDigestedPlayerAdditionalDeathMessages(NPC npc, Player player, List<string> deathMessageKeyList);
 		public DelegateGetDigestedPlayerAdditionalDeathMessages GetDigestedPlayerAdditionalDeathMessagesMethod { get; set; }
+
+		public delegate double DelegateGetPreyAbsorptionRate(NPC npc);
+		public DelegateGetPreyAbsorptionRate GetPreyAbsorptionRateMethod { get; set; }
 
 		public delegate int DelegateGetVisualBellySize(NPC npc);
 		public DelegateGetVisualBellySize GetVisualBellySizeMethod { get; set; }
 
-		public delegate bool DelegateSpecialPredAI(NPC npc);
-		public DelegateSpecialPredAI SpecialPredAIMethod { get; set; }
-
-		public delegate bool DelegateCanBeForceFed(NPC npc);
-		public DelegateCanBeForceFed CanBeForceFedMethod { get; set; }
-
-		public delegate void DelegateOnForceFed(NPC npc, Player player);
-		public DelegateOnForceFed OnForceFedMethod { get; set; }
-
-		public delegate void DelegateModifyChatButtons(NPC npc, Player player, ref string button, ref string button2);
-		public DelegateModifyChatButtons ModifyChatButtonsMethod { get; set; }
+		public delegate int DelegateGetVisualWeightStage(NPC npc);
+		public DelegateGetVisualWeightStage GetVisualWeightStageMethod { get; set; }
 
 		public SlotId ActiveStomachNoises { get; set; }
 
@@ -102,19 +103,22 @@ namespace V2.NPCs
 		{
 			stomachContents = new List<Prey>();
 			stomachContentsQueue = new List<Prey>();
-			maxStomachCapacity = 1.0;
-			swallowRange = 36f;
-
+			MaxStomachCapacity = 1.0;
+			MaxSwallowRange = 36f;
+			ExtraWeight = 0.0;
+			
 			// This is where all the defaults methods get set.
 			ResetPredSpecificVariablesMethod = null;
 			GetDigestionTickRateMethod = null;
 			GetDigestionTickDamageMethod = null;
 			GetPreyAbsorptionRateMethod = null;
 			GetChatMethod = null;
-			GetVisualBellySizeMethod = null;
 			SpecialPredAIMethod = null;
 
 			OnDigestionKillMethod = null;
+
+			GetVisualBellySizeMethod = null;
+			GetVisualWeightStageMethod = null;
 
 			CanBeForceFedMethod = (NPC npc) => false;
 			OnForceFedMethod = null;
@@ -163,7 +167,7 @@ namespace V2.NPCs
 			if (V2.VoreNPCBlacklist.Contains(pred.type))
 				return false;
 
-			if (GetCurrentBellyWeight(pred) >= pred.AsPred().maxStomachCapacity)
+			if (GetCurrentBellyWeight(pred) >= pred.AsPred().MaxStomachCapacity)
 				return false;
 
 			switch (ModContent.GetInstance<V2ServerConfig>().GenderBlacklist)
@@ -187,7 +191,7 @@ namespace V2.NPCs
 
 			if (prey is Player preyPlayer)
 			{
-				if (Prey.GetInitialPreySize(preyPlayer) >= pred.AsPred().maxStomachCapacity - GetCurrentBellyWeight(pred))
+				if (Prey.GetInitialPreySize(preyPlayer) >= pred.AsPred().MaxStomachCapacity - GetCurrentBellyWeight(pred))
 					return false;
 
 				if (preyPlayer.AsFood().IsCurrentlyEaten)
@@ -206,7 +210,7 @@ namespace V2.NPCs
 				if (isThisAFuckingBoss && !pred.boss)
 					return false;
 
-				if (Prey.GetInitialPreySize(preyNPC) >= pred.AsPred().maxStomachCapacity - GetCurrentBellyWeight(pred))
+				if (Prey.GetInitialPreySize(preyNPC) >= pred.AsPred().MaxStomachCapacity - GetCurrentBellyWeight(pred))
 					return false;
 
 				if (preyNPC.AsFood().IsCurrentlyEaten)
@@ -315,7 +319,7 @@ namespace V2.NPCs
 		{
 			if (npc.AsPred().stomachContents is null)
 				return;
-			npc.AsPred().stomachContents.RemoveAll(x => x.Dead && x.WeightLeftToDigest == 0);
+			npc.AsPred().stomachContents.RemoveAll(x => x.NoHealth && x.WeightLeftToDigest == 0);
 			if (npc.AsPred().stomachContents.Count <= 0)
 				return;
 
@@ -327,11 +331,11 @@ namespace V2.NPCs
 				{
 					case PreyType.Item:
 						Item preyItem = prey.Instance as Item;
-						preyItem.AsFood().UpdateInStomach?.Invoke(preyItem, npc, prey.Dead);
+						preyItem.AsFood().UpdateInStomach?.Invoke(preyItem, npc, prey.NoHealth);
 						break;
 				}
 
-				if (!prey.Dead)
+				if (!prey.NoHealth)
 				{
 					if (prey.Type == PreyType.Player
 					 && npc.type == NPCID.Nurse
@@ -366,7 +370,7 @@ namespace V2.NPCs
 									bool shouldFurtherHealPlayer = preyPlayer.statLife < preyPlayer.statLifeMax2;
 									if (shouldFurtherHealPlayer)
 									{
-										prey.Dead = false;
+										prey.NoHealth = false;
 										preyPlayer.statLife += (int)Math.Round(digestionDamage);
 										if (preyPlayer.statLife > preyPlayer.statLifeMax2)
 											preyPlayer.statLife = preyPlayer.statLifeMax2;
@@ -387,10 +391,10 @@ namespace V2.NPCs
 								}
 								else if (shouldDigestPlayer)
 								{
-									prey.Dead = preyPlayer.AsFood().TakeDigestionDamage(npc, digestionDamage);
+									prey.NoHealth = preyPlayer.AsFood().TakeDigestionDamage(npc, digestionDamage);
 									if (ModContent.GetInstance<V2ServerConfig>().DebugChatMessages)
 										Main.NewText("Successfully dealt digestion damage to prey: " + preyPlayer.name);
-									if (prey.Dead && npc.AsPred().OnDigestionKillMethod is not null)
+									if (prey.NoHealth && npc.AsPred().OnDigestionKillMethod is not null)
 										npc.AsPred().OnDigestionKillMethod.Invoke(npc, prey);
 								}
 								else if (ModContent.GetInstance<V2ServerConfig>().DebugChatMessages)
@@ -403,12 +407,12 @@ namespace V2.NPCs
 								{
 									if (preyNPC.type == NPCID.HallowBoss && ModContent.GetInstance<V2ServerConfig>().EasilyEdibleEmpress)
 										digestionDamage *= 50.0;
-									prey.Dead = PreyNPC.TakeDigestionDamage(preyNPC, npc, digestionDamage);
+									prey.NoHealth = PreyNPC.TakeDigestionDamage(preyNPC, npc, digestionDamage);
 									if (ModContent.GetInstance<V2ServerConfig>().DebugChatMessages)
 										Main.NewText("Successfully dealt digestion damage to prey: " + preyNPC.GivenOrTypeName);
 									else if (ModContent.GetInstance<V2ServerConfig>().DebugChatMessages)
 										Main.NewText("Failed to deal digestion damage to prey: " + preyNPC.GivenOrTypeName);
-									if (prey.Dead && npc.AsPred().OnDigestionKillMethod is not null)
+									if (prey.NoHealth && npc.AsPred().OnDigestionKillMethod is not null)
 										npc.AsPred().OnDigestionKillMethod.Invoke(npc, prey);
 								}
 								break;
@@ -420,10 +424,17 @@ namespace V2.NPCs
 					if (npc.AsPred().GetPreyAbsorptionRateMethod is null)
 						continue;
 
-					prey.WeightLeftToDigest -= npc.AsPred().GetPreyAbsorptionRateMethod.Invoke(npc) / (double)npc.AsPred().stomachContents.Count;
-					if (prey.WeightLeftToDigest < 0)
+					double digestedWeightPerTick = npc.AsPred().GetPreyAbsorptionRateMethod.Invoke(npc) / (double)npc.AsPred().stomachContents.Count;
+					if (prey.WeightLeftToDigest <= digestedWeightPerTick)
+					{
+						npc.AsPred().ExtraWeight += prey.WeightLeftToDigest * 0.4;
 						prey.WeightLeftToDigest = 0;
-
+					}
+					else
+					{
+						npc.AsPred().ExtraWeight += digestedWeightPerTick * 0.4;
+						prey.WeightLeftToDigest -= digestedWeightPerTick;
+					}
 					switch (prey.Type)
 					{
 						case PreyType.Item:
@@ -554,7 +565,7 @@ namespace V2.NPCs
 					// I'm keepin' it commented out for now just in case it does end up needed
 					// binaryWriter.Write((prey.Instance as NPC).type);
 					binaryWriter.Write(prey.Instance.whoAmI);
-					binaryWriter.Write(prey.Dead);
+					binaryWriter.Write(prey.NoHealth);
 					binaryWriter.Write(prey.WeightLeftToDigest);
 				}
 			}
@@ -586,7 +597,7 @@ namespace V2.NPCs
 					});
 					if (preyDead)
 					{
-						prey.Dead = true;
+						prey.NoHealth = true;
 						prey.WeightLeftToDigest = preyWeightLeft;
 					}
 					npc.AsPred().stomachContents.Add(prey);
@@ -617,7 +628,7 @@ namespace V2.NPCs
 
 		/// <summary>
 		/// Calculates the current weight of the given predator's stomach, based on all the prey inside of it.<br/>
-		/// Used primarily in conjunction with <see cref="maxStomachCapacity"/> to safeguard against overeating.<br/>
+		/// Used primarily in conjunction with <see cref="MaxStomachCapacity"/> to safeguard against overeating.<br/>
 		/// </summary>
 		/// <param name="pred">The predator whose stomach is to be weighed.</param>
 		/// <returns>The current total weight of the given predator's stomach.</returns>
@@ -629,7 +640,7 @@ namespace V2.NPCs
 				foreach (Prey prey in pred.AsPred().stomachContents)
 				{
 					totalBellyWeight += prey.WeightLeftToDigest;
-					if (prey.Dead)
+					if (prey.NoHealth)
 						continue;
 
 					switch (prey.Type)
@@ -654,7 +665,7 @@ namespace V2.NPCs
 			{
 				foreach (Prey prey in pred.AsPred().stomachContents)
 				{
-					if (!prey.Dead)
+					if (!prey.NoHealth)
 						return true;
 				}
 			}

@@ -75,7 +75,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 						  + "\n"
 						  + "I don't, because I already know they'd love it! I'm the best belly party hostess around, after all!",
 						});
-						if (!sprinkles.Dead)
+						if (!sprinkles.NoHealth)
 						{
 							partyGirlChatPool.AddRange(new List<string>
 							{
@@ -167,7 +167,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 								});
 								break;
 						}
-						if (npc.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.TaxCollector && !x.Dead) is Prey scroogeAsPrey)
+						if (npc.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.TaxCollector && !x.NoHealth) is Prey scroogeAsPrey)
 						{
 							NPC scrooge = scroogeAsPrey.Instance as NPC;
 							partyGirlChatPool.AddRange(new List<string>
@@ -176,7 +176,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 								"Huh? What ABOUT grumpy old " + scrooge.GivenName + "!? He hates parties, hates fun, hates colors, and hates me! He's WAY better off as my " + (BirthdayParty.PartyIsUp ? "mid-party" : "pre-party") + " lunch than he is skulking in the corner all the time!",
 							});
 						}
-						if (npc.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.Wizard && !x.Dead) is Prey harryWizardAsPrey)
+						if (npc.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.Wizard && !x.NoHealth) is Prey harryWizardAsPrey)
 						{
 							NPC harryWizard = harryWizardAsPrey.Instance as NPC;
 							partyGirlChatPool.AddRange(new List<string>
@@ -185,7 +185,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 								"Don't worry about the magic guy! He's havin' a grand old time in my belly, and I'll make sure he keeps havin' a good time!",
 							});
 						}
-						if (npc.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.BestiaryGirl && !x.Dead) is Prey furryAsPrey)
+						if (npc.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.BestiaryGirl && !x.NoHealth) is Prey furryAsPrey)
 						{
 							NPC furry = furryAsPrey.Instance as NPC;
 							partyGirlChatPool.AddRange(new List<string>
@@ -282,7 +282,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 								});
 							}
 						}
-						if (player.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.TaxCollector && !x.Dead) is Prey scroogeAsPrey)
+						if (player.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.TaxCollector && !x.NoHealth) is Prey scroogeAsPrey)
 						{
 							partyGirlChatPool.AddRange(new List<string>
 							{

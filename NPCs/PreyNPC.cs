@@ -65,6 +65,7 @@ namespace V2.NPCs
 		public int SoftenedWearoffDelay { get; set; }
 		public static int SoftenedWearoffMaxDelay => V2Utils.SensibleTime(seconds: 2, frames: 30);
 		public StatModifier SoftenedWearoffRateModifier { get; set; }
+
 		public override bool InstancePerEntity => true;
 		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => true;
 
@@ -120,7 +121,7 @@ namespace V2.NPCs
 				 && (pred.stomachContentsQueue is null || pred.stomachContentsQueue.Count <= 0))
 					continue;
 
-				if (pred.stomachContents.FirstOrDefault(x => !x.Dead && x.Type == PreyType.NPC && (x.Instance.whoAmI == npc.whoAmI || x.Instance.whoAmI == npc.realLife)) is Prey prey)
+				if (pred.stomachContents.FirstOrDefault(x => !x.NoHealth && x.Type == PreyType.NPC && (x.Instance.whoAmI == npc.whoAmI || x.Instance.whoAmI == npc.realLife)) is Prey prey)
 				{
 					npc.AsFood().IsCurrentlyEaten = true;
 					npc.position = potentialPred.Center - (npc.Size / 2f);
@@ -131,7 +132,7 @@ namespace V2.NPCs
 					};
 					break;
 				}
-				if (pred.stomachContentsQueue.FirstOrDefault(x => !x.Dead && x.Type == PreyType.NPC && (x.Instance.whoAmI == npc.whoAmI || x.Instance.whoAmI == npc.realLife)) is Prey queuedPrey)
+				if (pred.stomachContentsQueue.FirstOrDefault(x => !x.NoHealth && x.Type == PreyType.NPC && (x.Instance.whoAmI == npc.whoAmI || x.Instance.whoAmI == npc.realLife)) is Prey queuedPrey)
 				{
 					npc.AsFood().IsCurrentlyEaten = true;
 					npc.position = potentialPred.Center - (npc.Size / 2f);
@@ -153,7 +154,7 @@ namespace V2.NPCs
 				 && (potentialPred.AsPred().stomachContentsQueue is null || potentialPred.AsPred().stomachContentsQueue.Count <= 0))
 					continue;
 
-				if (potentialPred.AsPred().stomachContents.FirstOrDefault(x => !x.Dead && x.Type == PreyType.NPC && (x.Instance.whoAmI == npc.whoAmI || x.Instance.whoAmI == npc.realLife)) is Prey prey)
+				if (potentialPred.AsPred().stomachContents.FirstOrDefault(x => !x.NoHealth && x.Type == PreyType.NPC && (x.Instance.whoAmI == npc.whoAmI || x.Instance.whoAmI == npc.realLife)) is Prey prey)
 				{
 					npc.AsFood().IsCurrentlyEaten = true;
 					npc.position = potentialPred.Center - (npc.Size / 2f);
@@ -164,7 +165,7 @@ namespace V2.NPCs
 					};
 					break;
 				}
-				if (potentialPred.AsPred().stomachContentsQueue.FirstOrDefault(x => !x.Dead && x.Type == PreyType.NPC && (x.Instance.whoAmI == npc.whoAmI || x.Instance.whoAmI == npc.realLife)) is Prey queuedPrey)
+				if (potentialPred.AsPred().stomachContentsQueue.FirstOrDefault(x => !x.NoHealth && x.Type == PreyType.NPC && (x.Instance.whoAmI == npc.whoAmI || x.Instance.whoAmI == npc.realLife)) is Prey queuedPrey)
 				{
 					npc.AsFood().IsCurrentlyEaten = true;
 					npc.position = potentialPred.Center - (npc.Size / 2f);

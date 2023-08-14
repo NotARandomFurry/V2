@@ -632,11 +632,11 @@ namespace V2.NPCs
 				};
 				if (Main.netMode == NetmodeID.SinglePlayer)
 				{
-					Main.NewText(Language.GetTextValueWith("Mods.V2.Death.DigestedBoss." + gurgledBossKey, new { Pred = localName }), 175, 75);
+					Main.NewText(Language.GetTextValueWith("Mods.V2.Death.DigestedBoss." + gurgledBossKey, new { Pred = localName, BossName = npc.TypeName }), 175, 75);
 				}
 				else if (Main.netMode == NetmodeID.Server)
 				{
-					ChatHelper.BroadcastChatMessage(NetworkText.FromKey("Mods.V2.Death.DigestedBoss." + gurgledBossKey, new { Pred = networkName }), new Color(175, 75, 255));
+					ChatHelper.BroadcastChatMessage(NetworkText.FromKey("Mods.V2.Death.DigestedBoss." + gurgledBossKey, new { Pred = networkName, BossName = npc.TypeName }), new Color(175, 75, 255));
 				}
 			}
 			else

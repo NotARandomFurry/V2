@@ -78,7 +78,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.ArmsDealer
 
 			npc.AsPred().stomachContents = new List<Prey>();
 			npc.AsPred().stomachContentsQueue = new List<Prey>();
-			npc.AsPred().maxStomachCapacity = 1.75;
+			npc.AsPred().MaxStomachCapacity = 1.75;
 
 			npc.AsPred().CanBeForceFedMethod = CanArmsDealerBeForceFed;
 			npc.AsPred().OnForceFedMethod = OnArmsDealerForceFed;
@@ -319,19 +319,19 @@ namespace V2.NPCs.Vanilla.TownNPCs.ArmsDealer
 			NPC helloNurse = nearbyResidentNPCs.FirstOrDefault(x => x.type == NPCID.Nurse);
 			bool snackOnCrush = false;
 			RollForRandomGulp(ref snackOnCrush);
-			if (helloNurse != null && helloNurse.Distance(npc.Center) <= npc.AsPred().swallowRange && snackOnCrush)
+			if (helloNurse != null && helloNurse.Distance(npc.Center) <= npc.AsPred().MaxSwallowRange && snackOnCrush)
 				PredNPC.Swallow(npc, helloNurse);
 
 			if (ModContent.GetInstance<V2ServerConfig>().NoRandomGulpsAgainstPlayers)
 				return;
 
-			if (!Main.CurrentPlayer.active || Main.CurrentPlayer.dead || Main.CurrentPlayer.Distance(npc.Center) > npc.AsPred().swallowRange || Main.CurrentPlayer.AsFood().IsCurrentlyEaten)
+			if (!Main.CurrentPlayer.active || Main.CurrentPlayer.dead || Main.CurrentPlayer.Distance(npc.Center) > npc.AsPred().MaxSwallowRange || Main.CurrentPlayer.AsFood().IsCurrentlyEaten)
 				return;
 
 			bool decideToHuntPlayer = false;
 			RollForRandomGulp(ref decideToHuntPlayer);
 
-			if (Main.netMode != NetmodeID.Server && Main.CurrentPlayer.whoAmI == Main.myPlayer && Main.CurrentPlayer.Distance(npc.Center) <= npc.AsPred().swallowRange && decideToHuntPlayer)
+			if (Main.netMode != NetmodeID.Server && Main.CurrentPlayer.whoAmI == Main.myPlayer && Main.CurrentPlayer.Distance(npc.Center) <= npc.AsPred().MaxSwallowRange && decideToHuntPlayer)
 			{
 				List<string> potentialRandomGulpLines = new List<string>
 				{

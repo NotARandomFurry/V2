@@ -120,7 +120,7 @@ namespace V2.PlayerHandling
 				 && (pred.stomachContentsQueue is null || pred.stomachContentsQueue.Count <= 0))
 					continue;
 
-				if (pred.stomachContents.FirstOrDefault(x => !x.Dead && x.Type == PreyType.Player && x.Instance.whoAmI == Player.whoAmI) is Prey prey)
+				if (pred.stomachContents.FirstOrDefault(x => !x.NoHealth && x.Type == PreyType.Player && x.Instance.whoAmI == Player.whoAmI) is Prey prey)
 				{
 					Player.AsFood().IsCurrentlyEaten = true;
 					Player.AsFood().EatenCameraPlacement = potentialPred.Center - (Main.ScreenSize.ToVector2() / 2f);
@@ -133,7 +133,7 @@ namespace V2.PlayerHandling
 					};
 					break;
 				}
-				if (pred.stomachContentsQueue.FirstOrDefault(x => !x.Dead && x.Type == PreyType.Player && x.Instance.whoAmI == Player.whoAmI) is Prey queuedPrey)
+				if (pred.stomachContentsQueue.FirstOrDefault(x => !x.NoHealth && x.Type == PreyType.Player && x.Instance.whoAmI == Player.whoAmI) is Prey queuedPrey)
 				{
 					Player.AsFood().IsCurrentlyEaten = true;
 					Player.AsFood().EatenCameraPlacement = potentialPred.Center - (Main.ScreenSize.ToVector2() / 2f);
@@ -160,7 +160,7 @@ namespace V2.PlayerHandling
 				 && (potentialPred.AsPred().stomachContentsQueue is null || potentialPred.AsPred().stomachContentsQueue.Count <= 0))
 					continue;
 
-				if (pred.stomachContents.FirstOrDefault(x => !x.Dead && x.Type == PreyType.Player && x.Instance.whoAmI == Player.whoAmI) is Prey prey)
+				if (pred.stomachContents.FirstOrDefault(x => !x.NoHealth && x.Type == PreyType.Player && x.Instance.whoAmI == Player.whoAmI) is Prey prey)
 				{
 					Player.AsFood().IsCurrentlyEaten = true;
 					Player.AsFood().EatenCameraPlacement = potentialPred.Center - (Main.ScreenSize.ToVector2() / 2f);
@@ -173,7 +173,7 @@ namespace V2.PlayerHandling
 					};
 					break;
 				}
-				if (pred.stomachContentsQueue.FirstOrDefault(x => !x.Dead && x.Type == PreyType.Player && x.Instance.whoAmI == Player.whoAmI) is Prey queuedPrey)
+				if (pred.stomachContentsQueue.FirstOrDefault(x => !x.NoHealth && x.Type == PreyType.Player && x.Instance.whoAmI == Player.whoAmI) is Prey queuedPrey)
 				{
 					Player.AsFood().IsCurrentlyEaten = true;
 					Player.AsFood().EatenCameraPlacement = potentialPred.Center - (Main.ScreenSize.ToVector2() / 2f);

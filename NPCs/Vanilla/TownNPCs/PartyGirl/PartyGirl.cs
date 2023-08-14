@@ -88,7 +88,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 
 			npc.AsPred().stomachContents = new List<Prey>();
 			npc.AsPred().stomachContentsQueue = new List<Prey>();
-			npc.AsPred().maxStomachCapacity = 999999.0;
+			npc.AsPred().MaxStomachCapacity = 999999.0;
 
 			npc.AsPred().CanBeForceFedMethod = CanPartyGirlBeForceFed;
 			npc.AsPred().OnForceFedMethod = OnPartyGirlForceFed;
@@ -138,7 +138,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 					npc.AsPartyGirl().SpecialGutFrame %= npc.AsPartyGirl().SpecialGutFrames;
 				}
 
-				if (!sprinkles.Dead)
+				if (!sprinkles.NoHealth)
 				{
 					for (int y = (int)Math.Round(npc.TrueCenter().Y) - 5; y < (int)Math.Round(npc.TrueCenter().Y); y++)
 					{
@@ -184,7 +184,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 			NPC foxBimbo = nearbyResidentNPCs.FirstOrDefault(x => x.type == NPCID.BestiaryGirl);
 			bool shouldSnackOnFoxBimbo = false;
 			RollForRandomGulp(ref shouldSnackOnFoxBimbo);
-			if (foxBimbo != null && foxBimbo.Distance(npc.Center) <= npc.AsPred().swallowRange && shouldSnackOnFoxBimbo)
+			if (foxBimbo != null && foxBimbo.Distance(npc.Center) <= npc.AsPred().MaxSwallowRange && shouldSnackOnFoxBimbo)
 				PredNPC.Swallow(npc, foxBimbo);
 
 			NPC nurse = nearbyResidentNPCs.FirstOrDefault(x => x.type == NPCID.Nurse);
@@ -192,24 +192,24 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 			RollForRandomGulp(ref shouldSnackOnNurse);
 			RollForRandomGulp(ref shouldSnackOnNurse);
 			RollForRandomGulp(ref shouldSnackOnNurse);
-			if (nurse != null && nurse.Distance(npc.Center) <= npc.AsPred().swallowRange && shouldSnackOnNurse)
+			if (nurse != null && nurse.Distance(npc.Center) <= npc.AsPred().MaxSwallowRange && shouldSnackOnNurse)
 				PredNPC.Swallow(npc, nurse);
 			bool haveRoutineCheckUpWithNurse = false;
 			RollForRandomGulp(ref haveRoutineCheckUpWithNurse);
-			if (nurse != null && npc.Distance(npc.Center) <= nurse.AsPred().swallowRange && haveRoutineCheckUpWithNurse)
+			if (nurse != null && npc.Distance(npc.Center) <= nurse.AsPred().MaxSwallowRange && haveRoutineCheckUpWithNurse)
 				PredNPC.Swallow(nurse, npc);
 
 			NPC bestGirl = nearbyResidentNPCs.FirstOrDefault(x => x.type == NPCID.Stylist);
 			bool spendQualityTimeInAmber = false;
 			RollForRandomGulp(ref spendQualityTimeInAmber);
 			RollForRandomGulp(ref spendQualityTimeInAmber);
-			if (bestGirl != null && npc.Distance(npc.Center) <= bestGirl.AsPred().swallowRange && spendQualityTimeInAmber)
+			if (bestGirl != null && npc.Distance(npc.Center) <= bestGirl.AsPred().MaxSwallowRange && spendQualityTimeInAmber)
 				PredNPC.Swallow(bestGirl, npc);
 
 			NPC wizard = nearbyResidentNPCs.FirstOrDefault(x => x.type == NPCID.Wizard);
 			bool shouldSnackOnWizard = false;
 			RollForRandomGulp(ref shouldSnackOnWizard);
-			if (wizard != null && wizard.Distance(npc.Center) <= npc.AsPred().swallowRange && shouldSnackOnWizard)
+			if (wizard != null && wizard.Distance(npc.Center) <= npc.AsPred().MaxSwallowRange && shouldSnackOnWizard)
 				PredNPC.Swallow(npc, wizard);
 
 			NPC scrooge = nearbyResidentNPCs.FirstOrDefault(x => x.type == NPCID.TaxCollector);
@@ -219,13 +219,13 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 			RollForRandomGulp(ref shouldSnackOnScrooge);
 			RollForRandomGulp(ref shouldSnackOnScrooge);
 			RollForRandomGulp(ref shouldSnackOnScrooge);
-			if (scrooge != null && scrooge.Distance(npc.Center) <= npc.AsPred().swallowRange && shouldSnackOnScrooge)
+			if (scrooge != null && scrooge.Distance(npc.Center) <= npc.AsPred().MaxSwallowRange && shouldSnackOnScrooge)
 				PredNPC.Swallow(npc, scrooge);
 
 			if (ModContent.GetInstance<V2ServerConfig>().NoRandomGulpsAgainstPlayers)
 				return;
 
-			if (!Main.CurrentPlayer.active || Main.CurrentPlayer.dead || Main.CurrentPlayer.Distance(npc.Center) > npc.AsPred().swallowRange || Main.CurrentPlayer.AsFood().IsCurrentlyEaten)
+			if (!Main.CurrentPlayer.active || Main.CurrentPlayer.dead || Main.CurrentPlayer.Distance(npc.Center) > npc.AsPred().MaxSwallowRange || Main.CurrentPlayer.AsFood().IsCurrentlyEaten)
 				return;
 
 			bool shouldHostGutParty = false;
@@ -310,7 +310,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 				return 0;
 			else
 			{
-				if (!sprinkles.Dead)
+				if (!sprinkles.NoHealth)
 					return 1;
 				else
 				{

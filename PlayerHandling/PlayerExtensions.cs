@@ -27,7 +27,7 @@ namespace V2.PlayerHandling
 				List<Prey> playerAsPreyList = predNPC.AsPred().stomachContents.FindAll(x => x.Type == PreyType.Player && x.Instance.whoAmI == player.whoAmI);
 				if (playerAsPreyList != null && playerAsPreyList.Count > 0)
 				{
-					if (playerAsPreyList.FirstOrDefault(x => !x.Dead) == null)
+					if (playerAsPreyList.FirstOrDefault(x => !x.NoHealth) == null)
 						pastTense = true;
 					return true;
 				}
@@ -37,7 +37,7 @@ namespace V2.PlayerHandling
 				List<Prey> playerAsPreyList = predPlayer.AsPred().stomachContents.FindAll(x => x.Type == PreyType.Player && x.Instance.whoAmI == player.whoAmI);
 				if (playerAsPreyList != null && playerAsPreyList.Count > 0)
 				{
-					if (playerAsPreyList.FirstOrDefault(x => !x.Dead) == null)
+					if (playerAsPreyList.FirstOrDefault(x => !x.NoHealth) == null)
 						pastTense = true;
 					return true;
 				}

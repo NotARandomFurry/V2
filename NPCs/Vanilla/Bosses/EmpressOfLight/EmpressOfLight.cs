@@ -21,26 +21,26 @@ using static V2.Core.FoodTypeTags;
 
 namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 {
-	public static class UnreasonablyThickFairyStuff
+	public static class CandyFairyStuff
 	{
-		public static UnreasonablyThickFairy AsUnreasonablyThickFairy(this NPC npc)
+		public static CandyFairy AsCandyFairy(this NPC npc)
 		{
-			if (!npc.TryGetGlobalNPC(out UnreasonablyThickFairy unreasonablyThickFairy))
-				throw new Exception("this instance of the Empress of Light, sadly, can't be pred or prey. the unreasonably thick fairy can't be food today, I guess");
+			if (!npc.TryGetGlobalNPC(out CandyFairy unreasonablyThickFairy))
+				throw new Exception("this instance of the Empress of Light, sadly, can't be pred or prey. the unreasonably thick candy fairy can't be food today, I guess");
 
 			return unreasonablyThickFairy;
 		}
 
-		public static SoundStyle MuffledFoodFairyMusic => new SoundStyle("V2/Sounds/MuffledMusic/EmpressOfLight", SoundType.Sound) with { MaxInstances = 0 };
+		public static SoundStyle MuffledCandyFairyMusic => new SoundStyle("V2/Sounds/MuffledMusic/EmpressOfLight", SoundType.Sound) with { MaxInstances = 0 };
 
-		public static SoundStyle MuffledFoodFairyScreech1 => new SoundStyle("V2/Sounds/MuffledSounds/Item160", SoundType.Sound) with { MaxInstances = 0 };
-		public static SoundStyle MuffledFoodFairyScreech2 => new SoundStyle("V2/Sounds/MuffledSounds/Item161", SoundType.Sound) with { MaxInstances = 0 };
-		public static SoundStyle MuffledFoodFairyDeathScreech => new SoundStyle("V2/Sounds/MuffledSounds/NPC_Killed_65", SoundType.Sound) with { MaxInstances = 0 };
+		public static SoundStyle MuffledCandyFairyScreech1 => new SoundStyle("V2/Sounds/MuffledSounds/Item160", SoundType.Sound) with { MaxInstances = 0 };
+		public static SoundStyle MuffledCandyFairyScreech2 => new SoundStyle("V2/Sounds/MuffledSounds/Item161", SoundType.Sound) with { MaxInstances = 0 };
+		public static SoundStyle MuffledCandyFairyDeathScreech => new SoundStyle("V2/Sounds/MuffledSounds/NPC_Killed_65", SoundType.Sound) with { MaxInstances = 0 };
 	}
 
-	public class UnreasonablyThickFairy : GlobalNPC
+	public class CandyFairy : GlobalNPC
 	{
-		public int MuffledScreechMinDelay => V2Utils.SensibleTime(seconds: 4);
+		public static int MuffledScreechMinDelay => V2Utils.SensibleTime(seconds: 5);
 		private int _muffledScreechDelay;
 		public int MuffledScreechDelay
 		{
@@ -59,10 +59,10 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 
 			npc.AsPred().stomachContents = new List<Prey>();
 			npc.AsPred().stomachContentsQueue = new List<Prey>();
-			npc.AsPred().maxStomachCapacity = 200.0;
+			npc.AsPred().MaxStomachCapacity = 200.0;
 
 			npc.AsPred().CanBeForceFedMethod = CanUnreasonablyThickFairyBeForceFed;
-			npc.AsPred().swallowRange = V2Utils.TileCountAsPixelCount(12.5);
+			npc.AsPred().MaxSwallowRange = V2Utils.TileCountAsPixelCount(12.5);
 			npc.AsPred().SmallGulpThreshold = 3.75;
 
 			npc.AsPred().DigestionType = EntityDigestionType.Acidic;
@@ -72,13 +72,15 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 			npc.AsPred().SmallBurps = Burps.Humanoid.Small;
 			npc.AsPred().StandardBurps = Burps.Humanoid.Standard;
 			npc.AsPred().GetDigestedPlayerAdditionalDeathMessagesMethod = GetDigestedPlayerAdditionalDeathMessages;
+			npc.AsPred().GetPreyAbsorptionRateMethod = GetPreyAbsorptionRate;
 
 			npc.AsPred().GetVisualBellySizeMethod = GetVisualBellySize;
+			npc.AsPred().GetVisualWeightStageMethod = GetVisualWeightStage;
 
 			npc.AsPred().SpecialPredAIMethod = UnreasonablyThickFairyPredAI;
 			npc.AsFood().PreyAIMethod = UnreasonablyThickFairyPreyAI;
 
-			npc.AsFood().DigestedDeathSound = UnreasonablyThickFairyStuff.MuffledFoodFairyDeathScreech;
+			npc.AsFood().DigestedDeathSound = CandyFairyStuff.MuffledCandyFairyDeathScreech;
 
 			npc.AsFood().FoodTypeTags = new List<FoodTypeTag>()
 			{
@@ -92,7 +94,7 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 				}
 			};
 
-			npc.AsUnreasonablyThickFairy().MuffledScreechDelay = 0;
+			npc.AsCandyFairy().MuffledScreechDelay = 0;
 		}
 
 		public override bool CanHitNPC(NPC npc, NPC target)
@@ -187,14 +189,13 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 		{
 			double baseAbsorptionRate = 1.0 / (double)V2Utils.SensibleTime(
 				minutes: 0,
-				seconds: 23
+				seconds: 30
 			);
-			if (npc.AI_120_HallowBoss_IsGenuinelyEnraged())
-				return baseAbsorptionRate * 10.0;
-			else if (npc.AI_120_HallowBoss_IsInPhase2())
-				return baseAbsorptionRate * 1.75;
-			else
-				return baseAbsorptionRate;
+			if (Main.dayTime)
+				baseAbsorptionRate *= 10.0;
+			if (npc.AI_120_HallowBoss_IsInPhase2())
+				baseAbsorptionRate *= 1.75;
+			return baseAbsorptionRate;
 		}
 
 		public static int GetVisualBellySize(NPC npc)
@@ -205,16 +206,24 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 			);
 		}
 
+		public static int GetVisualWeightStage(NPC npc)
+		{
+			return Math.Min(
+				(int)Math.Floor(0.20 * Math.Sqrt(npc.AsPred().ExtraWeight)),
+				2
+			);
+		}
+
 		public override bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
 		{
-			string exactTextureToUse = "V2/NPCs/Vanilla/Bosses/EmpressOfLight/EmpressOfLight_MainBody";
-			string weightString = "_WeightBase";
-			exactTextureToUse += weightString;
+			int weightStage = npc.AsPred().GetVisualWeightStageMethod.Invoke(npc);
+			string weightString = "_Weight" + (weightStage == 0 ? "Base" : weightStage);
 			int bellySize = npc.AsPred().GetVisualBellySizeMethod.Invoke(npc);
 			string bellyString = "_Belly" + (bellySize == 0 ? "Base" : bellySize);
-			exactTextureToUse += bellyString;
 
-			TextureAssets.Npc[NPCID.HallowBoss] = ModContent.Request<Texture2D>(exactTextureToUse, AssetRequestMode.ImmediateLoad);
+			string exactMainBodyTexture = "V2/NPCs/Vanilla/Bosses/EmpressOfLight/EmpressOfLight_MainBody" + weightString + bellyString;
+			TextureAssets.Npc[NPCID.HallowBoss] = ModContent.Request<Texture2D>(exactMainBodyTexture, AssetRequestMode.ImmediateLoad);
+			TextureAssets.Extra[ExtrasID.HallowBossSkirt] = ModContent.Request<Texture2D>("V2/NPCs/Vanilla/Bosses/EmpressOfLight/EmpressOfLight_SkirtOverlay", AssetRequestMode.ImmediateLoad);
 			return true;
 		}
 
@@ -284,14 +293,14 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 
 		public static void UnreasonablyThickFairyPreyAI(NPC npc, Entity pred)
 		{
-			bool muffledMusicPlaying = SoundEngine.TryGetActiveSound(npc.AsUnreasonablyThickFairy().MuffledMusic, out ActiveSound muffledMusic);
+			bool muffledMusicPlaying = SoundEngine.TryGetActiveSound(npc.AsCandyFairy().MuffledMusic, out ActiveSound muffledMusic);
 			if (!muffledMusicPlaying)
 			{
-				npc.AsUnreasonablyThickFairy().MuffledMusic = SoundEngine.PlaySound(
-					UnreasonablyThickFairyStuff.MuffledFoodFairyMusic,
+				npc.AsCandyFairy().MuffledMusic = SoundEngine.PlaySound(
+					CandyFairyStuff.MuffledCandyFairyMusic,
 					pred.TrueCenter()
 				);
-				SoundEngine.TryGetActiveSound(npc.AsUnreasonablyThickFairy().MuffledMusic, out muffledMusic);
+				SoundEngine.TryGetActiveSound(npc.AsCandyFairy().MuffledMusic, out muffledMusic);
 			}
 
 			if (muffledMusic is null)
@@ -300,18 +309,19 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 			muffledMusic.Position = pred.TrueCenter();
 			muffledMusic.Volume = (float)npc.life / (float)npc.lifeMax;
 
-			npc.AsUnreasonablyThickFairy().MuffledScreechDelay -= 1;
-			if (npc.AsUnreasonablyThickFairy().MuffledScreechDelay == 0 && Main.rand.NextBool(230))
+			npc.AsCandyFairy().MuffledScreechDelay -= 1;
+			if (npc.AsCandyFairy().MuffledScreechDelay == 0 && Main.rand.NextBool(200))
 			{
-				npc.AsUnreasonablyThickFairy().MuffledScreechDelay = npc.AsUnreasonablyThickFairy().MuffledScreechMinDelay;
+				npc.AsCandyFairy().MuffledScreechDelay = MuffledScreechMinDelay;
 				SoundEngine.PlaySound(
 					(
 						Main.rand.NextBool()
-						  ? UnreasonablyThickFairyStuff.MuffledFoodFairyScreech1
-						  : UnreasonablyThickFairyStuff.MuffledFoodFairyScreech2
+						  ? CandyFairyStuff.MuffledCandyFairyScreech1
+						  : CandyFairyStuff.MuffledCandyFairyScreech2
 					)
 					with
 					{
+						Volume = 1f,
 						PitchVariance = 0.07f
 					}
 				);

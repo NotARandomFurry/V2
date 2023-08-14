@@ -83,7 +83,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 
 			npc.AsV2NPC().GetChatMethod = GetStylistChat;
 
-			npc.AsPred().maxStomachCapacity = 4.0;
+			npc.AsPred().MaxStomachCapacity = 4.0;
 
 			npc.AsPred().CanBeForceFedMethod = CanStylistBeForceFed;
 			npc.AsPred().OnForceFedMethod = OnStylistForceFed;
@@ -353,7 +353,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 						}
 						if (npc.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.Dryad) is Prey dryadAsPrey)
 						{
-							if (!dryadAsPrey.Dead)
+							if (!dryadAsPrey.NoHealth)
 							{
 								stylistChatPool.AddRange(new List<string>
 								{
@@ -375,7 +375,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 						}
 						if (npc.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.PartyGirl) is Prey partyGirlAsPrey)
 						{
-							if (!partyGirlAsPrey.Dead)
+							if (!partyGirlAsPrey.NoHealth)
 							{
 								stylistChatPool.AddRange(new List<string>
 								{
@@ -502,13 +502,13 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 			bool shouldSnackOnSalad = false;
 			RollForRandomGulp(ref shouldSnackOnSalad);
 			RollForRandomGulp(ref shouldSnackOnSalad);
-			if (salad != null && salad.Distance(npc.Center) <= npc.AsPred().swallowRange && shouldSnackOnSalad)
+			if (salad != null && salad.Distance(npc.Center) <= npc.AsPred().MaxSwallowRange && shouldSnackOnSalad)
 				PredNPC.Swallow(npc, salad);
 
 			if (ModContent.GetInstance<V2ServerConfig>().NoRandomGulpsAgainstPlayers)
 				return;
 
-			if (!Main.CurrentPlayer.active || Main.CurrentPlayer.dead || Main.CurrentPlayer.Distance(npc.Center) > npc.AsPred().swallowRange || Main.CurrentPlayer.AsFood().IsCurrentlyEaten)
+			if (!Main.CurrentPlayer.active || Main.CurrentPlayer.dead || Main.CurrentPlayer.Distance(npc.Center) > npc.AsPred().MaxSwallowRange || Main.CurrentPlayer.AsFood().IsCurrentlyEaten)
 				return;
 
 			bool bald = Main.CurrentPlayer.hair == 16 || Main.CurrentPlayer.head == ArmorIDs.Head.MonkBrows;

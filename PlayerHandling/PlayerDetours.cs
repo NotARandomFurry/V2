@@ -75,7 +75,7 @@ namespace V2.PlayerHandling
 							Main.item[num].noGrabDelay = 100;
 							Main.item[num].favorited = false;
 							Main.item[num].newAndShiny = false;
-							if (Main.netMode == 1)
+							if (Main.netMode == NetmodeID.MultiplayerClient)
 								NetMessage.SendData(MessageID.SyncItem, -1, -1, null, num);
 
 							player.inventory[i].SetDefaults();

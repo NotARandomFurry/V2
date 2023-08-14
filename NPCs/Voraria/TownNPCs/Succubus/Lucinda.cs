@@ -68,8 +68,6 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 	{
 		const int BaseTownNPC = NPCID.Dryad;
 
-		int helpIndex = 0;
-
 		public override string Texture => "V2/NPCs/Voraria/TownNPCs/Succubus/Lucinda_WeightBase_BellyBase";
 		public override string HeadTexture => "V2/NPCs/Voraria/TownNPCs/Succubus/Lucinda_Head";
 
@@ -134,7 +132,7 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 
 			NPC.AsV2NPC().GetChatMethod = GetSuccubusChat;
 
-			NPC.AsPred().maxStomachCapacity = 2.2;
+			NPC.AsPred().MaxStomachCapacity = 2.2;
 
 			NPC.AsPred().CanBeForceFedMethod = CanSuccubusBeForceFed;
 			NPC.AsPred().OnForceFedMethod = OnSuccubusForceFed;
@@ -482,21 +480,21 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 			bool shouldSnackOnGuide = false;
 			RollForRandomGulp(ref shouldSnackOnGuide);
 			RollForRandomGulp(ref shouldSnackOnGuide);
-			if (guide != null && guide.Distance(NPC.Center) <= NPC.AsPred().swallowRange && shouldSnackOnGuide)
+			if (guide != null && guide.Distance(NPC.Center) <= NPC.AsPred().MaxSwallowRange && shouldSnackOnGuide)
 				PredNPC.Swallow(NPC, guide);
 
 			NPC foxBimbo = nearbyResidentNPCs.FirstOrDefault(x => x.type == NPCID.BestiaryGirl);
 			bool shouldSnackOnFoxBimbo = false;
 			RollForRandomGulp(ref shouldSnackOnFoxBimbo);
 			RollForRandomGulp(ref shouldSnackOnFoxBimbo);
-			if (foxBimbo != null && foxBimbo.Distance(NPC.Center) <= NPC.AsPred().swallowRange && shouldSnackOnFoxBimbo)
+			if (foxBimbo != null && foxBimbo.Distance(NPC.Center) <= NPC.AsPred().MaxSwallowRange && shouldSnackOnFoxBimbo)
 				PredNPC.Swallow(NPC, foxBimbo);
 
 			NPC nurse = nearbyResidentNPCs.FirstOrDefault(x => x.type == NPCID.Nurse);
 			bool shouldSnackOnNurse = false;
 			RollForRandomGulp(ref shouldSnackOnNurse);
 			RollForRandomGulp(ref shouldSnackOnNurse);
-			if (nurse != null && nurse.Distance(NPC.Center) <= NPC.AsPred().swallowRange && shouldSnackOnNurse)
+			if (nurse != null && nurse.Distance(NPC.Center) <= NPC.AsPred().MaxSwallowRange && shouldSnackOnNurse)
 				PredNPC.Swallow(NPC, nurse);
 
 			NPC salad = nearbyResidentNPCs.FirstOrDefault(x => x.type == NPCID.Dryad);
@@ -504,7 +502,7 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 			RollForRandomGulp(ref shouldSnackOnSalad);
 			RollForRandomGulp(ref shouldSnackOnSalad);
 			RollForRandomGulp(ref shouldSnackOnSalad);
-			if (salad != null && salad.Distance(NPC.Center) <= NPC.AsPred().swallowRange && shouldSnackOnSalad)
+			if (salad != null && salad.Distance(NPC.Center) <= NPC.AsPred().MaxSwallowRange && shouldSnackOnSalad)
 				PredNPC.Swallow(NPC, salad);
 
 			NPC scrooge = nearbyResidentNPCs.FirstOrDefault(x => x.type == NPCID.TaxCollector);
@@ -512,13 +510,13 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 			RollForRandomGulp(ref shouldSnackOnScrooge);
 			RollForRandomGulp(ref shouldSnackOnScrooge);
 			RollForRandomGulp(ref shouldSnackOnScrooge);
-			if (scrooge != null && scrooge.Distance(NPC.Center) <= NPC.AsPred().swallowRange && shouldSnackOnScrooge)
+			if (scrooge != null && scrooge.Distance(NPC.Center) <= NPC.AsPred().MaxSwallowRange && shouldSnackOnScrooge)
 				PredNPC.Swallow(NPC, scrooge);
 
 			if (ModContent.GetInstance<V2ServerConfig>().NoRandomGulpsAgainstPlayers)
 				return;
 
-			if (!Main.CurrentPlayer.active || Main.CurrentPlayer.dead || Main.CurrentPlayer.Distance(NPC.Center) > NPC.AsPred().swallowRange || Main.CurrentPlayer.AsFood().IsCurrentlyEaten)
+			if (!Main.CurrentPlayer.active || Main.CurrentPlayer.dead || Main.CurrentPlayer.Distance(NPC.Center) > NPC.AsPred().MaxSwallowRange || Main.CurrentPlayer.AsFood().IsCurrentlyEaten)
 				return;
 
 			bool shouldSnackOnPlayer = false;

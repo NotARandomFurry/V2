@@ -65,7 +65,7 @@ namespace V2.NPCs.Voraria.Meteorite
 			NPC.knockBackResist = 0.5f;
 			NPC.HitSound = SoundID.NPCHit1;
 
-			NPC.AsPred().maxStomachCapacity = 0.4;
+			NPC.AsPred().MaxStomachCapacity = 0.4;
 
 			NPC.AsPred().DigestionType = EntityDigestionType.Thermal;
 			NPC.AsPred().GetDigestionTickRateMethod = GetDigestionTickRate;

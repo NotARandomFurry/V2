@@ -92,7 +92,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 
 			npc.AsV2NPC().GetChatMethod = GetNurseChat;
 
-			npc.AsPred().maxStomachCapacity = 1.8;
+			npc.AsPred().MaxStomachCapacity = 1.8;
 
 			npc.AsPred().ResetPredSpecificVariablesMethod = ResetPredSpecificVariables;
 
@@ -651,13 +651,13 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 			NPC hopelessRomantic = nearbyResidentNPCs.FirstOrDefault(x => x.type == NPCID.ArmsDealer);
 			bool gulpDownCrush = false;
 			RollForRandomGulp(ref gulpDownCrush);
-			if (hopelessRomantic != null && hopelessRomantic.Distance(npc.Center) <= npc.AsPred().swallowRange && npc.AsPred().stomachContents.Count == 0 && gulpDownCrush)
+			if (hopelessRomantic != null && hopelessRomantic.Distance(npc.Center) <= npc.AsPred().MaxSwallowRange && npc.AsPred().stomachContents.Count == 0 && gulpDownCrush)
 				PredNPC.Swallow(npc, hopelessRomantic);
 
 			NPC guide = nearbyResidentNPCs.FirstOrDefault(x => x.type == NPCID.Guide);
 			bool placeGuideInQuarantine = false;
 			RollForRandomGulp(ref placeGuideInQuarantine);
-			if (guide != null && guide.Distance(npc.Center) <= npc.AsPred().swallowRange && placeGuideInQuarantine)
+			if (guide != null && guide.Distance(npc.Center) <= npc.AsPred().MaxSwallowRange && placeGuideInQuarantine)
 				PredNPC.Swallow(npc, guide);
 
 			NPC salad = nearbyResidentNPCs.FirstOrDefault(x => x.type == NPCID.Dryad);
@@ -665,32 +665,32 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 			RollForRandomGulp(ref tryToStealSaladAss);
 			RollForRandomGulp(ref tryToStealSaladAss);
 			RollForRandomGulp(ref tryToStealSaladAss);
-			if (salad != null && salad.Distance(npc.Center) <= npc.AsPred().swallowRange && tryToStealSaladAss)
+			if (salad != null && salad.Distance(npc.Center) <= npc.AsPred().MaxSwallowRange && tryToStealSaladAss)
 				PredNPC.Swallow(npc, salad);
 
 			NPC partyGirl = nearbyResidentNPCs.FirstOrDefault(x => x.type == NPCID.PartyGirl);
 			bool tryToConvertCakeLoverIntoCake = false;
 			RollForRandomGulp(ref tryToConvertCakeLoverIntoCake);
-			if (partyGirl != null && partyGirl.Distance(npc.Center) <= npc.AsPred().swallowRange && tryToConvertCakeLoverIntoCake)
+			if (partyGirl != null && partyGirl.Distance(npc.Center) <= npc.AsPred().MaxSwallowRange && tryToConvertCakeLoverIntoCake)
 				PredNPC.Swallow(npc, partyGirl);
 
 			NPC bestGirl = nearbyResidentNPCs.FirstOrDefault(x => x.type == NPCID.Stylist);
 			bool tryToStealBestGirlAss = false;
 			RollForRandomGulp(ref tryToStealBestGirlAss);
 			RollForRandomGulp(ref tryToStealBestGirlAss);
-			if (bestGirl != null && bestGirl.Distance(npc.Center) <= npc.AsPred().swallowRange && tryToStealBestGirlAss)
+			if (bestGirl != null && bestGirl.Distance(npc.Center) <= npc.AsPred().MaxSwallowRange && tryToStealBestGirlAss)
 				PredNPC.Swallow(npc, bestGirl);
 
 			if (ModContent.GetInstance<V2ServerConfig>().NoRandomGulpsAgainstPlayers)
 				return;
 
-			if (!Main.CurrentPlayer.active || Main.CurrentPlayer.dead || Main.CurrentPlayer.Distance(npc.Center) > npc.AsPred().swallowRange || Main.CurrentPlayer.AsFood().IsCurrentlyEaten)
+			if (!Main.CurrentPlayer.active || Main.CurrentPlayer.dead || Main.CurrentPlayer.Distance(npc.Center) > npc.AsPred().MaxSwallowRange || Main.CurrentPlayer.AsFood().IsCurrentlyEaten)
 				return;
 
 			bool shouldTryToAddPlayerToAss = false;
 			RollForRandomGulp(ref shouldTryToAddPlayerToAss);
 
-			if (Main.netMode != NetmodeID.Server && Main.CurrentPlayer.whoAmI == Main.myPlayer && Main.CurrentPlayer.Distance(npc.Center) <= npc.AsPred().swallowRange && shouldTryToAddPlayerToAss)
+			if (Main.netMode != NetmodeID.Server && Main.CurrentPlayer.whoAmI == Main.myPlayer && Main.CurrentPlayer.Distance(npc.Center) <= npc.AsPred().MaxSwallowRange && shouldTryToAddPlayerToAss)
 			{
 				if (Main.CurrentPlayer.statLife < (double)Main.CurrentPlayer.statLifeMax2 / 2.0)
 				{

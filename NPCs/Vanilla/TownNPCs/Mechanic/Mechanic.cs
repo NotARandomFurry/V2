@@ -79,7 +79,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Mechanic
 
 			npc.AsV2NPC().GetChatMethod = GetMechanicChat;
 
-			npc.AsPred().maxStomachCapacity = 1.75;
+			npc.AsPred().MaxStomachCapacity = 1.75;
 
 			npc.AsPred().CanBeForceFedMethod = CanMechanicBeForceFed;
 			npc.AsPred().OnForceFedMethod = OnMechanicForceFed;
@@ -359,14 +359,14 @@ namespace V2.NPCs.Vanilla.TownNPCs.Mechanic
 			bool resolveHopelessRomantic = false;
 			RollForRandomGulp(ref resolveHopelessRomantic);
 			RollForRandomGulp(ref resolveHopelessRomantic);
-			if (hopelessRomantic != null && hopelessRomantic.Distance(npc.Center) <= npc.AsPred().swallowRange && resolveHopelessRomantic)
+			if (hopelessRomantic != null && hopelessRomantic.Distance(npc.Center) <= npc.AsPred().MaxSwallowRange && resolveHopelessRomantic)
 				PredNPC.Swallow(npc, hopelessRomantic);
 
 			NPC bestGirl = nearbyResidentNPCs.FirstOrDefault(x => x.type == NPCID.Stylist);
 			bool resolveBestGirl = false;
 			RollForRandomGulp(ref resolveBestGirl);
 			RollForRandomGulp(ref resolveBestGirl);
-			if (bestGirl != null && bestGirl.Distance(npc.Center) <= npc.AsPred().swallowRange && resolveBestGirl)
+			if (bestGirl != null && bestGirl.Distance(npc.Center) <= npc.AsPred().MaxSwallowRange && resolveBestGirl)
 				PredNPC.Swallow(npc, bestGirl);
 
 			NPC bootlegChippy = nearbyResidentNPCs.FirstOrDefault(x => x.type == NPCID.Clothier);
@@ -375,7 +375,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Mechanic
 			RollForRandomGulp(ref resolveBootlegChippy);
 			RollForRandomGulp(ref resolveBootlegChippy);
 			RollForRandomGulp(ref resolveBootlegChippy);
-			if (bootlegChippy != null && bootlegChippy.Distance(npc.Center) <= npc.AsPred().swallowRange && resolveBootlegChippy)
+			if (bootlegChippy != null && bootlegChippy.Distance(npc.Center) <= npc.AsPred().MaxSwallowRange && resolveBootlegChippy)
 				PredNPC.Swallow(npc, bootlegChippy);
 
 			NPC steamLass = nearbyResidentNPCs.FirstOrDefault(x => x.type == NPCID.Steampunker);
@@ -385,19 +385,19 @@ namespace V2.NPCs.Vanilla.TownNPCs.Mechanic
 			RollForRandomGulp(ref resolveSteamLass);
 			RollForRandomGulp(ref resolveSteamLass);
 			RollForRandomGulp(ref resolveSteamLass);
-			if (steamLass != null && steamLass.Distance(npc.Center) <= npc.AsPred().swallowRange && resolveSteamLass)
+			if (steamLass != null && steamLass.Distance(npc.Center) <= npc.AsPred().MaxSwallowRange && resolveSteamLass)
 				PredNPC.Swallow(npc, steamLass);
 
 			if (ModContent.GetInstance<V2ServerConfig>().NoRandomGulpsAgainstPlayers)
 				return;
 
-			if (!Main.CurrentPlayer.active || Main.CurrentPlayer.dead || Main.CurrentPlayer.Distance(npc.Center) > npc.AsPred().swallowRange || Main.CurrentPlayer.AsFood().IsCurrentlyEaten)
+			if (!Main.CurrentPlayer.active || Main.CurrentPlayer.dead || Main.CurrentPlayer.Distance(npc.Center) > npc.AsPred().MaxSwallowRange || Main.CurrentPlayer.AsFood().IsCurrentlyEaten)
 				return;
 
 			bool shouldHaveBrainFood = false;
 			RollForRandomGulp(ref shouldHaveBrainFood);
 
-			if (Main.netMode != NetmodeID.Server && Main.CurrentPlayer.whoAmI == Main.myPlayer && Main.CurrentPlayer.Distance(npc.Center) <= npc.AsPred().swallowRange && shouldHaveBrainFood)
+			if (Main.netMode != NetmodeID.Server && Main.CurrentPlayer.whoAmI == Main.myPlayer && Main.CurrentPlayer.Distance(npc.Center) <= npc.AsPred().MaxSwallowRange && shouldHaveBrainFood)
 			{
 				List<string> potentialRandomGulpLines = new List<string>
 				{

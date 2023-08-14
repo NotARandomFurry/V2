@@ -40,7 +40,7 @@ namespace V2.Items.Voraria.Charms
 		{
 			if (player.AsPred().stomachContents.Count > 0)
 			{
-				double effectiveness = (double)player.AsPred().stomachContents.FindAll(x => x.Dead).Count / (double)player.AsPred().stomachContents.Count;
+				double effectiveness = (double)player.AsPred().stomachContents.FindAll(x => x.NoHealth).Count / (double)player.AsPred().stomachContents.Count;
 				player.AsPred().specialHealthRegenCount += HealthRegenerationRatio * player.AsPred().PreyAbsorptionRate * effectiveness;
 				player.AsPred().specialManaRegenCount += ManaRegenerationRatio * player.AsPred().PreyAbsorptionRate * effectiveness;
 			}
@@ -51,7 +51,7 @@ namespace V2.Items.Voraria.Charms
 			Player player = Main.LocalPlayer;
 			double regenEffectiveness = 0.0;
 			if (player.AsPred().stomachContents.Count > 0)
-				regenEffectiveness = (double)player.AsPred().stomachContents.FindAll(x => x.Dead).Count / (double)player.AsPred().stomachContents.Count;
+				regenEffectiveness = (double)player.AsPred().stomachContents.FindAll(x => x.NoHealth).Count / (double)player.AsPred().stomachContents.Count;
 			tooltips.AddVorariaDynamicTooltip(
 				"Voraria.Charms.RegenFromAbsorption",
 				new
@@ -59,7 +59,7 @@ namespace V2.Items.Voraria.Charms
 					HealthRegenerationRatio = HealthRegenerationRatio.ConvertToPercentageString(0),
 					ManaRegenerationRatio = ManaRegenerationRatio.ConvertToPercentageString(0),
 					RegenEffectiveness = regenEffectiveness.ConvertToPercentageString(2),
-					LivePreyRemaining = player.AsPred().stomachContents.FindAll(x => !x.Dead).Count,
+					LivePreyRemaining = player.AsPred().stomachContents.FindAll(x => !x.NoHealth).Count,
 					PreyRemaining = player.AsPred().stomachContents.Count,
 					CurrentHealthRegen = ((regenEffectiveness > 0.0 ? HealthRegenerationRatio * player.AsPred().PreyAbsorptionRate * regenEffectiveness : 0.0) * 60.0).CastToDecimalPlaces(2),
 					CurrentManaRegen = ((regenEffectiveness > 0.0 ? ManaRegenerationRatio * player.AsPred().PreyAbsorptionRate * regenEffectiveness : 0.0) * 60.0).CastToDecimalPlaces(2),

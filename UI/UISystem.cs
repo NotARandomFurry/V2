@@ -4,6 +4,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI;
+using V2.UI.PredStatsMenu;
 using V2.UI.StomachacheMeter;
 using V2.UI.StomachCapacityMeter;
 
@@ -19,6 +20,11 @@ namespace V2.UI
 
 		public UserInterface StomachacheMeterInterfaceLayer;
 		public StomachacheMeterUI StomachacheMeterInterface;
+
+		public UserInterface PredStatsMenuMouthInterfaceLayer;
+		public PredStatsMenuMouthUI PredStatsMenuMouthInterface;
+		public UserInterface PredStatsMenuInterfaceLayer;
+		public PredStatsMenuUI PredStatsMenuInterface;
 
 		public override void OnWorldLoad()
 		{
@@ -36,6 +42,15 @@ namespace V2.UI
 			StomachacheMeterInterface = new StomachacheMeterUI();
 			StomachacheMeterInterface.Activate();
 			StomachacheMeterInterfaceLayer.SetState(StomachacheMeterInterface);
+
+			PredStatsMenuMouthInterfaceLayer = new UserInterface();
+			PredStatsMenuMouthInterface = new PredStatsMenuMouthUI();
+			PredStatsMenuMouthInterface.Activate();
+			PredStatsMenuMouthInterfaceLayer.SetState(PredStatsMenuMouthInterface);
+			PredStatsMenuInterfaceLayer = new UserInterface();
+			PredStatsMenuInterface = new PredStatsMenuUI();
+			PredStatsMenuInterface.Activate();
+			PredStatsMenuInterfaceLayer.SetState(PredStatsMenuInterface);
 		}
 
 		public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
@@ -83,13 +98,15 @@ namespace V2.UI
 			{
 				AddInterfaceLayer(layers, StomachCapacityBarInterfaceLayer, StomachCapacityBarInterface, OverriddenHairWindowIndex, true, "Stomach Capacity Meter");
 				AddInterfaceLayer(layers, StomachacheMeterInterfaceLayer, StomachacheMeterInterface, OverriddenHairWindowIndex + 1, true, "Stomachache Meter");
+				AddInterfaceLayer(layers, PredStatsMenuInterfaceLayer, PredStatsMenuInterface, OverriddenHairWindowIndex + 2, true, "Pred Stats Menu");
+				AddInterfaceLayer(layers, PredStatsMenuMouthInterfaceLayer, PredStatsMenuMouthInterface, OverriddenHairWindowIndex + 3, true, "Pred Stats Menu's Hungry Mouth");
 			}
 			int MouseTextIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Mouse Text"));
 			if (MouseTextIndex != -1)
 				AddInterfaceLayer(layers, HeldItemInterfaceLayer, HeldItemInterface, MouseTextIndex, true, "Held Item");
 		}
 
-		public void AddInterfaceLayer(List<GameInterfaceLayer> layers, UserInterface userInterface, UIState state, int index, bool visible, string customName = null)
+		public static void AddInterfaceLayer(List<GameInterfaceLayer> layers, UserInterface userInterface, UIState state, int index, bool visible, string customName = null)
 		{
 			string name;
 			if (customName == null)

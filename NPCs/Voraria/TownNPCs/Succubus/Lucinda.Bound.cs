@@ -37,7 +37,7 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 			NPC.knockBackResist = 0f;
 			NPC.HitSound = SoundID.NPCHit1;
 
-			NPC.AsPred().maxStomachCapacity = 2.2;
+			NPC.AsPred().MaxStomachCapacity = 2.2;
 
 			NPC.AsPred().DigestionType = EntityDigestionType.Acidic;
 

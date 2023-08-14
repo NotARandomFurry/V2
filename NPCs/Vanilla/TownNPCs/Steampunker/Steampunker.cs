@@ -82,7 +82,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Steampunker
 
 			npc.AsPred().stomachContents = new List<Prey>();
 			npc.AsPred().stomachContentsQueue = new List<Prey>();
-			npc.AsPred().maxStomachCapacity = 50.0;
+			npc.AsPred().MaxStomachCapacity = 50.0;
 
 			npc.AsPred().CanBeForceFedMethod = CanSteampunkerBeForceFed;
 			npc.AsPred().OnForceFedMethod = OnSteampunkerForceFed;
@@ -373,7 +373,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Steampunker
 			RollForRandomGulp(ref proveToWireWomanThatSteamisBetter);
 			RollForRandomGulp(ref proveToWireWomanThatSteamisBetter);
 			RollForRandomGulp(ref proveToWireWomanThatSteamisBetter);
-			if (wireWoman != null && wireWoman.Distance(npc.Center) <= npc.AsPred().swallowRange && proveToWireWomanThatSteamisBetter)
+			if (wireWoman != null && wireWoman.Distance(npc.Center) <= npc.AsPred().MaxSwallowRange && proveToWireWomanThatSteamisBetter)
 				PredNPC.Swallow(npc, wireWoman);
 		}
 

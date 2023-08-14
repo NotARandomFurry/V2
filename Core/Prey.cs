@@ -22,6 +22,7 @@ namespace V2.Core
 		NPC,
 		Projectile,
 		Item,
+		Liquid,
 		Custom,
 		Undefined
 	};
@@ -33,9 +34,9 @@ namespace V2.Core
 			get
 			{
 				double fullWeight = 0.0;
-				foreach ((string subtype, double weight) validSubtype in FoodSubtypeTags)
+				foreach ((string subtype, double weight) in FoodSubtypeTags)
 				{
-					fullWeight += validSubtype.weight;
+					fullWeight += weight;
 				}
 				return fullWeight;
 			}
@@ -45,7 +46,7 @@ namespace V2.Core
 
 		public abstract List<string> ValidFoodSubtypes { get; }
 
-		public abstract List<(string subtype, double weight)> FoodSubtypeTags { get; set; }
+		public List<(string subtype, double weight)> FoodSubtypeTags { get; set; }
 	}
 
 	/// <summary>
@@ -64,7 +65,6 @@ namespace V2.Core
 				"Bark",
 				"Green",
 			};
-			public override List<(string subtype, double weight)> FoodSubtypeTags { get; set; }
 		}
 		public class MeatTag : FoodTypeTag
 		{
@@ -80,7 +80,6 @@ namespace V2.Core
 				"Insect",
 				"Arachnid",
 			};
-			public override List<(string subtype, double weight)> FoodSubtypeTags { get; set; }
 		}
 		public class MetalTag : FoodTypeTag
 		{
@@ -103,7 +102,6 @@ namespace V2.Core
 				"Adamantite",
 				"Titanium",
 			};
-			public override List<(string subtype, double weight)> FoodSubtypeTags { get; set; }
 		}
 		public class UndeadTag : FoodTypeTag
 		{
@@ -114,7 +112,18 @@ namespace V2.Core
 				"Zombie",
 				"Skeleton",
 			};
-			public override List<(string subtype, double weight)> FoodSubtypeTags { get; set; }
+		}
+		public class LiquidTag : FoodTypeTag
+		{
+			public override string Name => "Liquid";
+
+			public override List<string> ValidFoodSubtypes => new List<string>
+			{
+				"Water",
+				"Lava",
+				"Honey",
+				"Shimmer",
+			};
 		}
 	}
 
@@ -137,7 +146,7 @@ namespace V2.Core
 		public PreyType Type { get; set; }
 		public Entity Instance { get; set; }
 		public List<FoodTypeTag> TypeTags { get; set; }
-		public bool Dead { get; set; }
+		public bool NoHealth { get; set; }
 		public bool InventoryItem { get; set; }
 		public double InitialWeight { get; set; }
 		public double InitialSize { get; set; }
@@ -176,9 +185,36 @@ namespace V2.Core
 				TypeTags = item.AsFood().FoodTypeTags ?? null;
 			}
 
-			Dead = false;
+			NoHealth = false;
 			InitialWeight = InitialSize = WeightLeftToDigest = GetInitialPreySize(this);
 			timeSpentInStomach = 0;
+		}
+
+		public Prey(int liquidType, int liquidAmount)
+		{
+			Type = PreyType.Liquid;
+			Instance = null;
+			NoHealth = true;
+			TypeTags = new List<FoodTypeTag>
+			{
+				new LiquidTag() {
+					FoodSubtypeTags = new List<(string subtype, double weight)>
+					{
+						(
+							liquidType switch
+							{
+								LiquidID.Water => "Water",
+								LiquidID.Lava => "Lava",
+								LiquidID.Honey => "Honey",
+								LiquidID.Shimmer => "Shimmer",
+								_ => throw new NotImplementedException(),
+							},
+							liquidAmount
+						)
+					}
+				}
+			};
+			InitialWeight = liquidAmount;
 		}
 
 		public static double GetInitialPreySize(Entity entity) => GetInitialPreySize(new Prey(entity));
@@ -199,9 +235,9 @@ namespace V2.Core
 						double preyWeight = 0.0;
 						foreach (FoodTypeTag foodTypeTag in prey.TypeTags)
 						{
-							foreach ((string subtype, double weight) subtypeTag in foodTypeTag.FoodSubtypeTags)
+							foreach ((string subtype, double weight) in foodTypeTag.FoodSubtypeTags)
 							{
-								preyWeight += subtypeTag.weight;
+								preyWeight += weight;
 							}
 						}
 						actualPreyWeight = preyWeight;
