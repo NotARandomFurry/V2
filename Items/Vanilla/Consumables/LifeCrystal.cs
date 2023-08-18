@@ -22,7 +22,6 @@ namespace V2.Items.Vanilla.Consumables
 	{
 		public static int DigestedHeal => 25;
 		public static int DigestedRegenTime => V2Utils.SensibleTime(seconds: 35);
-		public static float StomachacheMeterCapacityBonus => 0.01f;
 		public override bool InstancePerEntity => true;
 		public override bool AppliesToEntity(Item entity, bool lateInstantiation) => entity.type == ItemID.LifeCrystal;
 
@@ -77,7 +76,6 @@ namespace V2.Items.Vanilla.Consumables
 				{
 					LifeCrystalEatHeal = DigestedHeal,
 					LifeCrystalEatRegenLength = ((double)DigestedRegenTime / 60.0).CastToDecimalPlaces(2),
-					LifeCrystalStomachacheMeterBonus = StomachacheMeterCapacityBonus.ConvertToPercentageString(2), 
 					LifeCrystalsUsedColor = (lifeCrystalsUsedColor * ((int)Main.mouseTextColor / 255f)).Hex3(),
 					LifeCrystalsUsed = player.ConsumedLifeCrystals,
 					LifeCrystalsMax = Player.LifeCrystalMax
@@ -90,7 +88,7 @@ namespace V2.Items.Vanilla.Consumables
 	{
 		public override void PreUpdateBuffs()
 		{
-			Player.AsPred().StomachacheMeterCapacityModifier += LifeCrystal.StomachacheMeterCapacityBonus * Player.ConsumedLifeCrystals;
+			Player.AsPred().TUM.Base += (int)Math.Floor(Player.ConsumedLifeCrystals / 3.0);
 		}
 	}
 }

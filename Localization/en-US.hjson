@@ -167,12 +167,13 @@ Mods: {
 					ought to do to make sure you and your gut can be as ready as can
 					be to get some proper good eats in you!
 					'''
+
 				FirstLivePrey: {
-					Name: First Timer
+					Name: Dessert Before Breakfast
 					Description:
 						'''
-						Eat and digest your first live prey.
-						‘We all start somewhere.’
+						Eat and digest a slime of any color.
+						‘A great source of sugar!...very flammable sugar, but still!’
 						'''
 				}
 			}
@@ -181,7 +182,7 @@ Mods: {
 		ItemName: {
 			Voraria: {
 				Charms: {
-					BetterDigestion: Acidic Charm
+					BetterDigestion: Lesser Acidic Charm
 					LessStomachWeight: Lesser Disencumberance Charm
 					RegenFromAbsorption: Revitalization Charm
 				}
@@ -215,13 +216,13 @@ Mods: {
 
 			Vanilla: {
 				Accessories: {
-					Utility: {
-						ShimmerCloak: {
-							Grants immunity to Shimmering
-							Hold <down> to temporarily bypass this immunity
-							Allows you to safely drink shimmer
-						}
-					}
+					Utility.ShimmerCloak:
+						'''
+						Grants immunity to Intangibility
+						Hold <down> to temporarily bypass this immunity
+						Allows you to safely drink shimmer
+						'''
+
 					Informational: {
 						REK3K: Displays number of enemies, kill and meal counts, and rare creatures
 						TallyCounter:
@@ -246,8 +247,8 @@ Mods: {
 							- [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveEffect}:Grants the Regeneration buff] while digesting; this lingers for [c/FFFF00:{LifeCrystalEatRegenLength} seconds] once fully digested.
 							When eaten by a player, upon running out of durability:
 							- Permanently [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.Heal}:increases maximum health by 20].
-							- Permanently [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:increases the capacity of the stomachache meter by {LifeCrystalStomachacheMeterBonus}].
-							  - The above two bonuses can stack up to {LifeCrystalsMax} times.
+							- For every 3 crystals eaten total, permanently [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:increase the TUM stat by 1].
+							  - The above two bonuses can stack for up to {LifeCrystalsMax} crystals eaten.
 							Life Crystals eaten by this character (max. {LifeCrystalsMax}): [c/{LifeCrystalsUsedColor}:{LifeCrystalsUsed}].
 							'''
 						Flavor:
@@ -318,8 +319,8 @@ Mods: {
 							- [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveEffect}:Grants the Mana Regeneration buff] while digesting; this lingers for [c/FFFF00:{ManaCrystalEatManaRegenLength} seconds] once fully digested.
 							When eaten by a player, upon running out of durability:
 							- Permanently [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.ManaHeal}:increases maximum mana by 20].
-							- Permanently [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:increases stomach capacity by {ManaCrystalStomachCapacityBonus}].
-							  - The above two bonuses can stack up to {ManaCrystalsMax} times.
+							- For every 3 crystals total eaten, permanently [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:increases the ABS stat by 1].
+							  - The above two bonuses can stack for up to {ManaCrystalsMax} crystals eaten.
 							Mana Crystals eaten by this character (max. {ManaCrystalsMax}): [c/{ManaCrystalsUsedColor}:{ManaCrystalsUsed}].
 							'''
 						Flavor:
@@ -561,6 +562,7 @@ Mods: {
 						'do you are have stupid'
 						'''
 				}
+
 				ShimmeringStomach: {
 					Name: Shimmering Stomach
 					Description:
@@ -573,6 +575,7 @@ Mods: {
 
 				Softened: {
 					Name: Softened
+
 					Description: {
 						Base:
 							'''
@@ -858,6 +861,7 @@ Mods: {
 					2: "{Player} learned why demons bathe in lava more often than drinking it."
 					3: "{Player} was smelted from the inside out."
 				}
+
 				UnsafeShimmerDrink: {
 					1: "{Player}'s stomach ended up where their stomach should be, while it was still already there. Quantum mechanics are fun!"
 					2: "{Player} thought the Empress' bathwater would look sparklier in their gut."

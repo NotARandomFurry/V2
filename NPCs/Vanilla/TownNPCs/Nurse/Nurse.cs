@@ -706,7 +706,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 					PredNPC.SwallowWithTextIfApplicable(
 						npc,
 						Main.CurrentPlayer,
-						"[c/7F7F7F:<" + npc.GivenName + "'s stomach growls softly; she proceeds to grab you and slowly guide you down her throat. As you settle in her stomach, you find that there aren't any acids to be found, and the air is stunningly breathable.>]\n"
+						"[c/7F7F7F:<" + npc.GivenName + "'s stomach growls softly; she proceeds to grab you and slowly guide you down her throat. As you settle in her middle, you find that there aren't any acids to be found, and the air is stunningly breathable.>]\n"
 					  + "Don't worry, just putting you in quarantine before you ask. " + Main.rand.NextFromCollection(potentialRandomGulpLines)
 					);
 				}
@@ -725,7 +725,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 					PredNPC.SwallowWithTextIfApplicable(
 						npc,
 						Main.CurrentPlayer,
-						"[c/7F7F7F:<" + npc.GivenName + "'s stomach growls impatiently; she proceeds to grab you and cram you down her throat, doing her best to hurry you down so that her stomach can get to work.>]\n"
+						"[c/7F7F7F:<" + npc.GivenName + "'s stomach growls impatiently; she proceeds to grab you and cram you down her throazat, doing her best to hurry you down so that her belly can get to work.>]\n"
 					  + "Don't worry, just taking a quick lunch break. " + Main.rand.NextFromCollection(potentialRandomGulpLines)
 					);
 				}
@@ -737,10 +737,10 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 			if (npc.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.ArmsDealer) is Prey crushAsPrey && !Main.bloodMoon)
 				return 0.0;
 
-			return Main.bloodMoon ? 2.0 : 1.0;
+			return Main.bloodMoon ? 2.3 : 1.15;
 		}
 
-		public static double GetDigestionTickDamage(NPC npc, Prey prey) => 10.0;
+		public static double GetDigestionTickDamage(NPC npc, Prey prey) => 12.5;
 
 		public static void OnDigestionKill(NPC npc, Prey digestedPrey)
 		{

@@ -53,9 +53,9 @@ namespace V2.NPCs
 		public SoundStyle? StandardBurps { get; set; }
 		public SoundStyle? BigBurps { get; set; }
 
-		public List<SoundStyle> SmallGulps { get; set; }
+		public SoundStyle SmallGulps { get; set; }
 		public double SmallGulpThreshold { get; set; }
-		public List<SoundStyle> BigGulps { get; set; }
+		public SoundStyle BigGulps { get; set; }
 
 		public delegate void DelegateResetPredSpecificVariables(NPC npc);
 		public DelegateResetPredSpecificVariables ResetPredSpecificVariablesMethod { get; set; }
@@ -127,27 +127,9 @@ namespace V2.NPCs
 			StandardBurps = null;
 			BigBurps = null;
 
-			SmallGulps = new List<SoundStyle>
-			{
-				Gulps.Short1,
-				Gulps.Short2,
-				Gulps.Short3,
-				Gulps.Short4,
-			};
+			SmallGulps = Gulps.Short;
 			SmallGulpThreshold = 0.2;
-			BigGulps = new List<SoundStyle>
-			{
-				Gulps.Standard1,
-				Gulps.Standard2,
-				Gulps.Standard3,
-				Gulps.Standard4,
-				Gulps.Standard5,
-				Gulps.Standard6,
-				Gulps.Standard7,
-				Gulps.Standard8,
-				Gulps.Standard9,
-				Gulps.Standard10,
-			};
+			BigGulps = Gulps.Standard;
 		}
 
 		public override void ResetEffects(NPC npc)
@@ -246,11 +228,9 @@ namespace V2.NPCs
 				Prey food = new Prey(prey);
 				pred.AsPred().stomachContents.Add(food);
 				SoundEngine.PlaySound(
-					Main.rand.NextFromCollection(
-						food.WeightLeftToDigest <= pred.AsPred().SmallGulpThreshold
+					food.WeightLeftToDigest <= pred.AsPred().SmallGulpThreshold
 						? pred.AsPred().SmallGulps
-						: pred.AsPred().BigGulps
-					),
+						: pred.AsPred().BigGulps,
 					pred.Center
 				);
 				switch (food.Type)

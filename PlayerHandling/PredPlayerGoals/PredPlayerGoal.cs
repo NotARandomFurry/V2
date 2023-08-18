@@ -12,6 +12,7 @@ namespace V2.PlayerHandling.PredPlayerGoals
 	public abstract class PredPlayerGoal : ModType
 	{
 		public static FirstLivePrey FirstLivePrey { get; set; } = new FirstLivePrey();
+		public static FirstItemEaten FirstItemEaten { get; set; } = new FirstItemEaten();
 
 		protected sealed override void Register()
 		{

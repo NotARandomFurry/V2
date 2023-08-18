@@ -192,6 +192,13 @@ namespace V2.Core
 
 		public Prey(int liquidType, int liquidAmount)
 		{
+			double liquidAmountReal = liquidAmount / 256.0 * (liquidType switch
+			{
+				LiquidID.Lava => 4.0,
+				LiquidID.Honey => 1.5,
+				LiquidID.Shimmer => 0.75,
+				_ => 1.0,
+			});
 			Type = PreyType.Liquid;
 			Instance = null;
 			NoHealth = true;
@@ -207,14 +214,14 @@ namespace V2.Core
 								LiquidID.Lava => "Lava",
 								LiquidID.Honey => "Honey",
 								LiquidID.Shimmer => "Shimmer",
-								_ => throw new NotImplementedException(),
+								_ => "Some Other Liquid",
 							},
-							liquidAmount
+							liquidAmountReal
 						)
 					}
 				}
 			};
-			InitialWeight = liquidAmount;
+			InitialWeight = InitialSize = WeightLeftToDigest = liquidAmountReal;
 		}
 
 		public static double GetInitialPreySize(Entity entity) => GetInitialPreySize(new Prey(entity));

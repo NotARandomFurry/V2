@@ -20,6 +20,7 @@ using V2.Core.MainDetours;
 using V2.NPCs;
 using V2.PlayerHandling;
 using V2.UI;
+using V2.UI.PredStatsMenu;
 using V2.UI.StylistAteThePublishButton;
 
 namespace V2
@@ -95,6 +96,11 @@ namespace V2
 			NPCLoader_NPCAI_Hook.Apply();
 
 			On_Main.UpdateAudio_DecideOnNewMusic += (orig, instance) => MainDetours.UpdateAudio_DecideOnNewMusic();
+			On_Main.DrawInterface_36_Cursor += (orig) =>
+			{
+				if (PredStatsMenuMouthUI.MouthState is not (PredStatsMenuMouthState.EatingCursor or PredStatsMenuMouthState.RegurgitatingCursor))
+					orig();
+			};
 
 			On_NPC.CanBeChasedBy += (orig, npc, attacker, ignoreDontTakeDamage) =>
 			{
@@ -131,6 +137,11 @@ namespace V2
 			On_NPC.DoDeathEvents_CelebrateBossDeath += (orig, npc, typeName) => NPCDetours.DoDeathEvents_CelebrateBossDeath(npc, typeName);
 
 			On_Player.KillMe += (orig, player, damageSource, dmg, hitDirection, pvp) => PlayerDetours.KillMe(player, damageSource, dmg, hitDirection, pvp);
+			On_Player.ToggleInv += (orig, player) =>
+			{
+				if (!player.AsPred().InPredStatsMenu || Main.gamePaused)
+					orig(player);
+			};
 		}
 
 		public static void DisengageVoraciousGameFuckery()

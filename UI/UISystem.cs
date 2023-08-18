@@ -4,6 +4,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI;
+using V2.PlayerHandling;
 using V2.UI.PredStatsMenu;
 using V2.UI.StomachacheMeter;
 using V2.UI.StomachCapacityMeter;
@@ -12,6 +13,9 @@ namespace V2.UI
 {
 	public class UISystem : ModSystem
 	{
+		public UserInterface MouseRestrictionDummyLayer;
+		public MouseRestrictionDummyUI MouseRestrictionDummy;
+
 		public UserInterface HeldItemInterfaceLayer;
 		public HeldItemDrawingUI HeldItemInterface;
 
@@ -28,6 +32,11 @@ namespace V2.UI
 
 		public override void OnWorldLoad()
 		{
+			MouseRestrictionDummyLayer = new UserInterface();
+			MouseRestrictionDummy = new MouseRestrictionDummyUI();
+			MouseRestrictionDummy.Activate();
+			MouseRestrictionDummyLayer.SetState(MouseRestrictionDummy);
+
 			HeldItemInterfaceLayer = new UserInterface();
 			HeldItemInterface = new HeldItemDrawingUI();
 			HeldItemInterface.Activate();
@@ -91,6 +100,10 @@ namespace V2.UI
 						InterfaceScaleType.UI
 					)
 				);
+			}
+			if (layers.FirstOrDefault(x => x.Name == "Vanilla: Cursor") is LegacyGameInterfaceLayer cursorLegacyLayer)
+			{
+				AddInterfaceLayer(layers, MouseRestrictionDummyLayer, MouseRestrictionDummy, layers.IndexOf(cursorLegacyLayer), true, "Voraria II: Mouse Restriction Dummy State");
 			}
 
 			int OverriddenHairWindowIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Hair Window (Voraria II Override)"));

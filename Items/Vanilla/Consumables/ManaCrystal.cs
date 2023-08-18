@@ -22,7 +22,6 @@ namespace V2.Items.Vanilla.Consumables
 	{
 		public static int DigestedManaHeal => 100;
 		public static int DigestedManaRegenTime => V2Utils.SensibleTime(seconds: 2, frames: 30);
-		public static float StomachCapacityBonus => 0.01f;
 		public override bool InstancePerEntity => true;
 		public override bool AppliesToEntity(Item entity, bool lateInstantiation) => entity.type == ItemID.ManaCrystal;
 
@@ -76,7 +75,6 @@ namespace V2.Items.Vanilla.Consumables
 				{
 					ManaCrystalEatManaHeal = DigestedManaHeal,
 					ManaCrystalEatManaRegenLength = ((double)DigestedManaRegenTime / 60.0).CastToDecimalPlaces(2),
-					ManaCrystalStomachCapacityBonus = StomachCapacityBonus.ConvertToPercentageString(2),
 					ManaCrystalsUsedColor = (manaCrystalsUsedColor * ((int)Main.mouseTextColor / 255f)).Hex3(),
 					ManaCrystalsUsed = player.ConsumedManaCrystals,
 					ManaCrystalsMax = Player.ManaCrystalMax
@@ -89,7 +87,7 @@ namespace V2.Items.Vanilla.Consumables
 	{
 		public override void PreUpdateBuffs()
 		{
-			Player.AsPred().StomachCapacityModifier += ManaCrystal.StomachCapacityBonus * Player.ConsumedManaCrystals;
+			Player.AsPred().ABS.Base += (int)Math.Floor(Player.ConsumedManaCrystals / 3.0);
 		}
 	}
 }

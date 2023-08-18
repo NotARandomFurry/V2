@@ -30,18 +30,21 @@ namespace V2.PlayerHandling
 {
 	public class PredStat
 	{
+		public int Spent { get; set; }
 		public int Base { get; set; }
 		public int Extra { get; set; }
-		public int Total => Base + Extra;
+		public int Total => Spent + Base + Extra;
 
 		public PredStat()
 		{
+			Spent = 0;
 			Base = 0;
 			Extra = 0;
 		}
 
 		public void Reset()
 		{
+			Spent = 0;
 			Base = 0;
 			Extra = 0;
 		}
@@ -66,10 +69,31 @@ namespace V2.PlayerHandling
 		{
 			get
 			{
-				double baseSwallowSize = 0.8;
+				double baseSwallowSize = 0.4;
 				baseSwallowSize += 0.08 * GLP.Total;
 				return SwallowSizeModifier.ApplyTo((float)baseSwallowSize);
 			}
+		}
+		public StatModifier LiquidSwallowSizeModifier;
+		public int LiquidSwallowSize
+		{
+			get
+			{
+				int baseLiquidSwallowSize = 20;
+				baseLiquidSwallowSize += GLP.Total;
+				return (int)Math.Round(LiquidSwallowSizeModifier.ApplyTo((float)baseLiquidSwallowSize));
+			}
+		}
+		public double EffectiveLiquidSwallowSize(int liquidType)
+		{
+			double effectiveBaseLiquidSwallowSize = (double)LiquidSwallowSize / 256.0;
+			return liquidType switch
+			{
+				LiquidID.Lava => effectiveBaseLiquidSwallowSize * 4.0,
+				LiquidID.Honey => effectiveBaseLiquidSwallowSize * 1.5,
+				LiquidID.Shimmer => effectiveBaseLiquidSwallowSize * 0.75,
+				_ => effectiveBaseLiquidSwallowSize,
+			};
 		}
 		public StatModifier StruggleGraceTimeModifier;
 		public double StruggleGraceTime
@@ -108,7 +132,7 @@ namespace V2.PlayerHandling
 		{
 			get
 			{
-				double baseStomachCapacity = 3.0;
+				double baseStomachCapacity = 0.80;
 				baseStomachCapacity += 0.04 * TUM.Total;
 				return StomachCapacityModifier.ApplyTo((float)baseStomachCapacity);
 			}
@@ -160,8 +184,8 @@ namespace V2.PlayerHandling
 		public SoundStyle StandardBurps { get; set; }
 		public SoundStyle BigBurps { get; set; }
 
-		public List<SoundStyle> SmallGulps { get; set; }
-		public List<SoundStyle> BigGulps { get; set; }
+		public SoundStyle SmallGulps { get; set; }
+		public SoundStyle BigGulps { get; set; }
 
 		public bool charmBracelet;
 		public int CharmBraceletSlots
@@ -398,26 +422,8 @@ namespace V2.PlayerHandling
 			SmallBurps = Burps.Humanoid.Small;
 			StandardBurps = Burps.Humanoid.Standard;
 
-			SmallGulps = new List<SoundStyle>
-			{
-				Gulps.Short1,
-				Gulps.Short2,
-				Gulps.Short3,
-				Gulps.Short4,
-			};
-			BigGulps = new List<SoundStyle>
-			{
-				Gulps.Standard1,
-				Gulps.Standard2,
-				Gulps.Standard3,
-				Gulps.Standard4,
-				Gulps.Standard5,
-				Gulps.Standard6,
-				Gulps.Standard7,
-				Gulps.Standard8,
-				Gulps.Standard9,
-				Gulps.Standard10,
-			};
+			SmallGulps = Gulps.Short;
+			BigGulps = Gulps.Standard;
 
 			GLP = new PredStat();
 			ACI = new PredStat();
@@ -434,10 +440,8 @@ namespace V2.PlayerHandling
 			PrimedForShimmerStomachDeath = false;
 
 			Goals = new List<(string goalName, bool complete)>();
-			foreach (PredPlayerGoal registeredGoal in PredPlayerGoalLoader.PredPlayerGoals)
-			{
-				Goals.Add((registeredGoal.Name, false));
-			}
+
+			InPredStatsMenu = false;
 		}
 
 		public override void ResetEffects()
@@ -448,15 +452,20 @@ namespace V2.PlayerHandling
 				Player.AsPred().stomachContentsQueue.Remove(Player.AsPred().stomachContentsQueue.First());
 			}
 
+			GLP.Base = 0;
 			GLP.Extra = 0;
 			SwallowSizeModifier = StatModifier.Default;
+			LiquidSwallowSizeModifier = StatModifier.Default;
 			StruggleGraceTimeModifier = StatModifier.Default;
-			ACI.Extra = 0;
-			DigestionTickDamageModifier = StatModifier.Default;
-			DigestionTickRateModifier = StatModifier.Default;
+			TUM.Base = 0;
 			TUM.Extra = 0;
 			StomachCapacityModifier = StatModifier.Default;
 			StomachacheMeterCapacityModifier = StatModifier.Default;
+			ACI.Base = 0;
+			ACI.Extra = 0;
+			DigestionTickDamageModifier = StatModifier.Default;
+			DigestionTickRateModifier = StatModifier.Default;
+			ABS.Base = 0;
 			ABS.Extra = 0;
 			PreyAbsorptionRateModifier = StatModifier.Default;
 			BuffExtensionTimeModifier = StatModifier.Default;
@@ -480,9 +489,59 @@ namespace V2.PlayerHandling
 			return false;
 		}
 
+		public override void UpdateBadLifeRegen()
+		{
+			if (Player.AsPred().MoltenTummy)
+			{
+				if (Player.lifeRegen > 0)
+					Player.lifeRegen = 0;
+				Player.lifeRegen -= 75;
+				Player.lifeRegenTime = 0;
+			}
+		}
+
+		public override void PostUpdateMiscEffects()
+		{
+			bool isEveryoneAsleep = Main.CurrentFrameFlags.SleepingPlayersCount == Main.CurrentFrameFlags.ActivePlayersCount && Main.CurrentFrameFlags.SleepingPlayersCount > 0;
+			if (isEveryoneAsleep)
+			{
+				Player.AsPred().DigestionTickRateModifier *= 5.0f;
+				Player.AsPred().PreyAbsorptionRateModifier *= 5.0f;
+			}
+			while (specialHealthRegenCount >= 60.0)
+			{
+				specialHealthRegenCount -= 60.0;
+				Player.statLife += 1;
+				if (Player.statLife > Player.statLifeMax2)
+					Player.statLife = Player.statLifeMax2;
+			}
+			while (specialManaRegenCount >= 60.0)
+			{
+				specialManaRegenCount -= 60.0;
+				Player.statMana += 1;
+				if (Player.statMana > Player.statManaMax2)
+					Player.statMana = Player.statManaMax2;
+			}
+		}
+
+		public override void PostUpdateRunSpeeds()
+		{
+			if (!Player.mount.Active)
+			{
+				float weightMovementMult = (float)Math.Min(1.0, 1.0 / (Player.AsPred().StomachWeight + 1.0));
+				Player.maxRunSpeed *= weightMovementMult;
+				Player.accRunSpeed *= weightMovementMult;
+				Player.runAcceleration *= weightMovementMult;
+				Player.jumpSpeed *= weightMovementMult;
+				Player.jumpHeight = (int)Math.Round((float)Player.jumpHeight * weightMovementMult);
+				Player.gravity /= (2f + weightMovementMult) / 3f;
+				Player.maxFallSpeed /= weightMovementMult;
+			}
+		}
+
 		public override void PostItemCheck()
 		{
-			if (Main.netMode != NetmodeID.Server && Player.whoAmI == Main.myPlayer && Player.AsPred().BlockSwallowAttempts)
+			if (Main.netMode != NetmodeID.Server && Player.whoAmI == Main.myPlayer && !Player.AsPred().BlockSwallowAttempts)
 			{
 				#region Swallowing nearby prey
 				if (V2.SwallowHotkey.JustPressed && !(Main.playerInventory && V2.ItemGulpHotkey.Current))
@@ -558,15 +617,15 @@ namespace V2.PlayerHandling
 				#endregion
 				#region Drinking liquids
 				bool inAnyLiquid = Player.wet || Player.lavaWet || Player.honeyWet || Player.shimmerWet;
-				if (V2.SwallowHotkey.Current && inAnyLiquid)
+				if (V2.SwallowHotkey.Current && inAnyLiquid && Main.GameUpdateCount % 30 == 0)
 				{
-					Point playerTileLocation = (Player.position + new Vector2(0f, -16f)).ToTileCoordinates();
+					Point playerTileLocation = (Player.Center + new Vector2(0, -10)).ToTileCoordinates();
 					Tile tile = Main.tile[playerTileLocation];
-					if (tile.LiquidAmount > 0)
+					if (tile.LiquidAmount > 0 && Player.AsPred().StomachCapacity - GetCurrentBellyWeight(Player) >= Player.AsPred().EffectiveLiquidSwallowSize(tile.LiquidType))
 					{
 						Player.AsPred().stomachContents.Add(new Prey(
 							tile.LiquidType,
-							tile.LiquidAmount > 3 ? 3 : tile.LiquidAmount
+							(tile.LiquidAmount > Player.AsPred().LiquidSwallowSize) ? Player.AsPred().LiquidSwallowSize : tile.LiquidAmount
 						));
 						switch (tile.LiquidType)
 						{
@@ -584,22 +643,18 @@ namespace V2.PlayerHandling
 								}
 								break;
 						}
-						if (tile.LiquidAmount <= 3)
+						if (tile.LiquidAmount <= (byte)Player.AsPred().LiquidSwallowSize)
 						{
 							tile.LiquidAmount = 0;
 							tile.LiquidType = 0;
 						}
 						else
-							tile.LiquidAmount -= 3;
+							tile.LiquidAmount -= (byte)Player.AsPred().LiquidSwallowSize;
 
-
-						if (Main.GameUpdateCount % 65 == 0)
-						{
-							SoundEngine.PlaySound(
-								Main.rand.NextFromCollection(Player.AsPred().SmallGulps),
-								Player.position + new Vector2(0f, -16f)
-							);
-						}
+						SoundEngine.PlaySound(
+							Player.AsPred().SmallGulps with { Volume = 0.45f, Pitch = 0.25f },
+							Player.position + new Vector2(0f, -10f)
+						);
 					}
 				}
 				#endregion
@@ -728,11 +783,9 @@ namespace V2.PlayerHandling
 				if (prey is not NPC preyNPC || preyNPC.realLife == -1)
 				{
 					SoundEngine.PlaySound(
-						Main.rand.NextFromCollection(
-							food.WeightLeftToDigest <= 0.3
-							? pred.AsPred().SmallGulps
-							: pred.AsPred().BigGulps
-						),
+						food.WeightLeftToDigest <= 0.3
+						? pred.AsPred().SmallGulps
+						: pred.AsPred().BigGulps,
 						pred.Center
 					);
 				}
@@ -983,50 +1036,6 @@ namespace V2.PlayerHandling
 			}
 		}
 
-		public override void UpdateBadLifeRegen()
-		{
-			if (Player.AsPred().MoltenTummy)
-			{
-				if (Player.lifeRegen > 0)
-					Player.lifeRegen = 0;
-				Player.lifeRegen -= 75;
-				Player.lifeRegenTime = 0;
-			}
-		}
-
-		public override void PostUpdateMiscEffects()
-		{
-			while (specialHealthRegenCount >= 60.0)
-			{
-				specialHealthRegenCount -= 60.0;
-				Player.statLife += 1;
-				if (Player.statLife > Player.statLifeMax2)
-					Player.statLife = Player.statLifeMax2;
-			}
-			while (specialManaRegenCount >= 60.0)
-			{
-				specialManaRegenCount -= 60.0;
-				Player.statMana += 1;
-				if (Player.statMana > Player.statManaMax2)
-					Player.statMana = Player.statManaMax2;
-			}
-		}
-
-		public override void PostUpdateRunSpeeds()
-		{
-			if (!Player.mount.Active)
-			{
-				float weightMovementMult = (float)Math.Min(1.0, 1.0 / (Player.AsPred().StomachWeight + 1.0));
-				Player.maxRunSpeed *= weightMovementMult;
-				Player.accRunSpeed *= weightMovementMult;
-				Player.runAcceleration *= weightMovementMult;
-				Player.jumpSpeed *= weightMovementMult;
-				Player.jumpHeight = (int)Math.Round((float)Player.jumpHeight * weightMovementMult);
-				Player.gravity /= (2f + weightMovementMult) / 3f;
-				Player.maxFallSpeed /= weightMovementMult;
-			}
-		}
-
 		/// <summary>
 		/// Calculates the current weight of the given predator's stomach, based on all the prey inside of it.<br/>
 		/// Used primarily in conjunction with <see cref="StomachCapacity"/> to safeguard against overeating.<br/>
@@ -1262,6 +1271,7 @@ namespace V2.PlayerHandling
 		public override void LoadData(TagCompound tag)
 		{
 			mealCount = new Dictionary<string, int>();
+			Goals = new List<(string goalName, bool complete)>();
 			foreach (KeyValuePair<string, object> keyValuePair in tag)
 			{
 				if (keyValuePair.Key.StartsWith("[DIGESTED] "))
@@ -1284,14 +1294,6 @@ namespace V2.PlayerHandling
 		{
 			PredPlayer predClientClone = clientClone as PredPlayer;
 			predClientClone.stomachContents = Player.AsPred().stomachContents;
-			predClientClone.GLP.Base = Player.AsPred().GLP.Base;
-			predClientClone.GLP.Extra = Player.AsPred().GLP.Extra;
-			predClientClone.ACI.Base = Player.AsPred().ACI.Base;
-			predClientClone.ACI.Extra = Player.AsPred().ACI.Extra;
-			predClientClone.TUM.Base = Player.AsPred().TUM.Base;
-			predClientClone.TUM.Extra = Player.AsPred().TUM.Extra;
-			predClientClone.ABS.Base = Player.AsPred().ABS.Base;
-			predClientClone.ABS.Extra = Player.AsPred().ABS.Extra;
 		}
 
 		public override void SendClientChanges(ModPlayer clientPlayer)
@@ -1303,15 +1305,6 @@ namespace V2.PlayerHandling
 				if (predClientClone.stomachContents.IndexOf(prey) != Player.AsPred().stomachContents.IndexOf(prey))
 					SyncPlayer(-1, Main.myPlayer, false);
 			}
-
-			if (predClientClone.GLP.Base != Player.AsPred().GLP.Base || predClientClone.GLP.Extra != Player.AsPred().GLP.Extra)
-				SyncPlayer(-1, Main.myPlayer, false);
-			if (predClientClone.ACI.Base != Player.AsPred().ACI.Base || predClientClone.ACI.Extra != Player.AsPred().ACI.Extra)
-				SyncPlayer(-1, Main.myPlayer, false);
-			if (predClientClone.TUM.Base != Player.AsPred().TUM.Base || predClientClone.TUM.Extra != Player.AsPred().TUM.Extra)
-				SyncPlayer(-1, Main.myPlayer, false);
-			if (predClientClone.ABS.Base != Player.AsPred().ABS.Base || predClientClone.ABS.Extra != Player.AsPred().ABS.Extra)
-				SyncPlayer(-1, Main.myPlayer, false);
 		}
 
 		public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)

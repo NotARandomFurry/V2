@@ -17,6 +17,12 @@ namespace V2.PlayerHandling.PredPlayerGoals
 			PredPlayerGoals = new List<PredPlayerGoal>()
 			{
 				PredPlayerGoal.FirstLivePrey,
+				PredPlayerGoal.FirstItemEaten,
+			};
+
+			ProgressionStages = new List<ProgressionStage>()
+			{
+				ProgressionStage.Starter,
 			};
 		}
 	}

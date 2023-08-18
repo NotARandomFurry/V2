@@ -301,7 +301,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.ArmsDealer
 			if (player.difficulty == PlayerDifficultyID.Hardcore)
 			{
 				deathReasonKeyList.Clear();
-				deathReasonKeyList.Add("Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Nurse.Hardcore");
+				deathReasonKeyList.Add("Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.ArmsDealer.Hardcore");
 			}
 		}
 
