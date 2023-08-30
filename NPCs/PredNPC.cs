@@ -63,11 +63,13 @@ namespace V2.NPCs
 		public delegate List<string> DelegateGetTownNPCChat(NPC npc, Player player);
 		public DelegateGetTownNPCChat GetChatMethod { get; set; }
 
+		public bool NonPreferenceBypass { get; set; }
 		public delegate bool DelegateCanBeForceFed(NPC npc);
 		public DelegateCanBeForceFed CanBeForceFedMethod { get; set; }
 
 		public delegate void DelegateOnForceFed(NPC npc, Player player);
 		public DelegateOnForceFed OnForceFedMethod { get; set; }
+
 
 		public delegate bool DelegateSpecialPredAI(NPC npc);
 		public DelegateSpecialPredAI SpecialPredAIMethod { get; set; }
@@ -115,13 +117,14 @@ namespace V2.NPCs
 			GetChatMethod = null;
 			SpecialPredAIMethod = null;
 
+			NonPreferenceBypass = false;
+			CanBeForceFedMethod = (NPC npc) => false;
+			OnForceFedMethod = null;
+
 			OnDigestionKillMethod = null;
 
 			GetVisualBellySizeMethod = null;
 			GetVisualWeightStageMethod = null;
-
-			CanBeForceFedMethod = (NPC npc) => false;
-			OnForceFedMethod = null;
 
 			SmallBurps = null;
 			StandardBurps = null;

@@ -170,7 +170,7 @@ namespace V2.UI.StomachCapacityMeter
 				  + "/"
 				  + localPlayer.AsPred().StomachCapacity.CastToDecimalPlaces(2)
 				  + " ("
-				  + (localPlayer.AsPred().StomachFullness / localPlayer.AsPred().StomachCapacity).ConvertToPercentageString(2)
+				  + (localPlayer.AsPred().StomachFullness / localPlayer.AsPred().StomachCapacity).ToPercentage(2)
 				  + ")";
 				Main.instance.MouseTextHackZoom(text);
 				Main.mouseText = true;

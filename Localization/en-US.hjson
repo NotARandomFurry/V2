@@ -59,9 +59,10 @@ Mods: {
 						Tooltip:
 							'''
 							Allows you to prevent preds of a certain gender from actively eating others in-game.
-							Applies to all entities, players included.
-							Will not affect any in-universe establishments about predators of the blacklisted gender.
-							Does not work for hermaphrodites, androgynous menaces, or otherwise functionally-genderless individuals.
+							Generally applies to all entities, players included. However:
+							- Will not affect any in-universe establishments about predators of the blacklisted gender.
+							- Does not work for hermaphrodites, androgynous menaces, or otherwise functionally-genderless individuals.
+							- Certain powerful entities reserve the right and ability to completely bypass any blacklist set by this option.
 							By default, does not blacklist any gender.
 							'''
 					}
@@ -156,6 +157,258 @@ Mods: {
 				'''
 		}
 
+		PredStatsMenu: {
+			StatDescription: {
+				HoldSHIFTToSeeDescription: "[c/7F7F7F:Hold LEFT SHIFT to see more detailed descriptions of the following statistics.]"
+
+				GLP: {
+					Description:
+						'''
+						[c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:Swallow Strength (GLP)] decides how good your throat is at getting your
+						meals down and keeping them there while your stomach does its thing.
+
+						[c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:Influences the maximum size of prey you can swallow.]
+						[c/7F7F7F:| {BaseSwallowSize} base.]
+						[c/7F7F7F:| +{SwallowSizePerLevel} per stat point invested.]
+						[c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:Influences the rate at which you drink liquids you are submerged in.]
+						[c/7F7F7F:| {BaseDrinkRate} tiles/second base.]
+						[c/7F7F7F:| +{DrinkRatePer5Levels} tiles/second per 5 stat points invested.]
+						[c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:Influences the struggle "grace period" after swallowing live prey.]
+						[c/7F7F7F:| {BaseStruggleGraceTime}sec base.]
+						[c/7F7F7F:| +{StruggleGraceTimePer5Levels}sec per 5 stat points invested.]
+						'''
+
+					RelevantStats: {
+						Normal:
+							'''
+							Total GLP: [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:{GLPTotal}]
+							[c/7F7F7F:| {GLPSpent} from permanent bonuses]
+							[c/7F7F7F:| {GLPBase} from permanent bonuses]
+							[c/7F7F7F:| {GLPExtra} from temporary bonuses (potions, charms, etc.)]
+
+							{$Mods.V2.PredStatsMenu.StatDescription.HoldSHIFTToSeeDescription}
+							Swallow Size: {PreySwallowSize}
+							Drinking Rate: {LiquidSwallowRate} tiles/second
+							Struggle Grace Period: {StruggleGracePeriod}
+							'''
+						Chronological:
+							'''
+							Total GLP: [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:∞]
+							[c/7F7F7F:| ∞ from digesting at least one Timekeeper]
+
+							Swallow Size: [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:∞]
+							Drinking Rate: [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:Countless universes/second, should you will it]
+							Struggle Grace Period: [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:Unnecessary]
+							'''
+					}
+				}
+
+				TUM: {
+					Description:
+						'''
+						[c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:Stomach Strength (TUM)] decides how good that hungry tummy of yours is at
+						making sure all those tasty treats you pack into it can be successfully
+						detained to be digested.
+
+						[c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:Influences the maximum size your stomach can comfortably reach.]
+						[c/7F7F7F:| {BaseStomachCapacity} base.]
+						[c/7F7F7F:| +{StomachCapacityPerLevel} per stat point invested.]
+						[c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:Influences the capacity of the stomachache meter.]
+						[c/7F7F7F:| {BaseStomachacheMeterCapacity} base.]
+						[c/7F7F7F:| +{StomachacheMeterCapacityPer5Levels} per 5 stat points invested.]
+
+						If this stat is LOWER than your prey's total STR stat, [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.NegativeVoreEffect}:struggle charts]
+						[c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.NegativeVoreEffect}:between you and your belly's contents are re-weighted against you]
+						[c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.NegativeVoreEffect}:proportional to the difference.]
+						If this stat is HIGHER than your prey's total STR stat, [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:struggle charts]
+						[c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:between you and your belly's contents are re-weighted in your favor]
+						[c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:proportional to the difference.]
+						'''
+
+					RelevantStats: {
+						Normal:
+							'''
+							Total TUM: [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:{TUMTotal}]
+							[c/7F7F7F:| {TUMSpent} from invested stat points]
+							[c/7F7F7F:| {TUMBase} from permanent bonuses]
+							[c/7F7F7F:| {TUMExtra} from temporary bonuses (potions, charms, etc.)]
+
+							{$Mods.V2.PredStatsMenu.StatDescription.HoldSHIFTToSeeDescription}
+							Stomach Capacity: {StomachCapacity}
+							Stomachache Meter Capacity: {StomachacheMeterCapacity}
+							General Struggle Chart Difficulty: {StruggleChartEstimatedDifficulty}
+							'''
+						Chronological:
+							'''
+							Total TUM: [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:∞]
+							[c/7F7F7F:| ∞ from digesting at least one Timekeeper]
+
+							Stomach Capacity: [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:∞]
+							Stomachache Meter Capacity: [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:∞]
+							General Struggle Chart Difficulty: [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:Even entire universes can't "struggle" inside someone as gluttonous as you]
+							'''
+					}
+				}
+
+				ACI: {
+					Description:
+						'''
+						[c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:Acid Strength (ACI)] decides how good your stomach acids are at eating away
+						at your prey until they just can't take it anymore, ready to be churned into a
+						nutritious sludge in your gut.
+
+						[c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:Influences your base digestion tick damage.]
+						[c/7F7F7F:| {BaseDigestionDamage} base.]
+						[c/7F7F7F:| +{DigestionDamagePerLevel} per stat point invested.]
+						[c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:Influences the rate at which your belly deals digestion damage.]
+						[c/7F7F7F:| {BaseDigestionRate} ticks/second base.]
+						[c/7F7F7F:| +{DigestionRatePer5Levels} ticks/second per 5 stat points invested.]
+
+						[c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.NegativeVoreEffect}:Certain items, such as gold, tungsten, certain clothing pieces, and plastics,]
+						[c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.NegativeVoreEffect}:cannot be properly digested by normal stomach acids alone.] In order to digest
+						these items, you will need to either use external digestive aids, or upgrade
+						your stomach acids in a more specialized manner.
+						'''
+
+					RelevantStats: {
+						Normal:
+							'''
+							Total ACI: [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:{ACITotal}]
+							[c/7F7F7F:| {ACISpent} from invested stat points]
+							[c/7F7F7F:| {ACIBase} from permanent bonuses]
+							[c/7F7F7F:| {ACIExtra} from temporary bonuses (potions, charms, etc.)]
+
+							{$Mods.V2.PredStatsMenu.StatDescription.HoldSHIFTToSeeDescription}
+							Digestion Tick Base Damage: {DigestionDamage}
+							Digestion Tick Rate: {DigestionRate} ticks/second
+							{AcidTierWithDescription}
+							'''
+						Chronological:
+							'''
+							Total ACI: [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:∞]
+							[c/7F7F7F:| ∞ from digesting at least one Timekeeper]
+
+							Digestion Damage: ∞
+							Digestion Damage Tick Rate: ∞
+							Stomach Acid Tier: [c/FFFF00:Chronological (∞)]
+							Your will to gobble up the entire world, the whole of the Divine Realm included, has gone
+							through in full, granting you a now-former Timekeeper's control over the very flow of time.
+							What was once a living, breathing universe with countless creatures residing in it has been
+							reduced to naught but pudge for your tummy, yet you're still starving.
+
+							Thankfully, there exist a virtually infinite number of other universes out there, all with
+							one newfound shared purpose: as an endless food supply for you. Your acids are reality's
+							new singular constant, dissolving entire planes of existence in moments, should you will it.
+
+							Reality is your buffet. All that exists, has ever existed, and ever will have existed is
+							doomed to end up as fat for your frame in time.
+							Bon appetit.
+							'''
+					}
+
+					AcidTiers: {
+						NormalBeta:
+							'''
+							Stomach Acid Tier: [c/9F9F9F:Normal (1)]
+							Your stomach acids are just as mundane as the next predator's. [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.NegativeVoreEffect}:Bones,]
+							[c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.NegativeVoreEffect}:clothing, and various other materials are easily able to survive your hungry]
+							[c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.NegativeVoreEffect}:tummy, despite its best efforts to melt them down.]
+
+							[c/601818:The next acid upgrade method has not yet been implemented!]
+							[c/C03030:Please wait until a future update implements the next acid upgrade method.]
+							'''
+						Normal:
+							'''
+							Stomach Acid Tier: [c/9F9F9F:Normal (1)]
+							Your stomach acids are just as mundane as the next predator's. [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.NegativeVoreEffect}:Bones,]
+							[c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.NegativeVoreEffect}:clothing, and various other materials are easily able to survive your hungry]
+							[c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.NegativeVoreEffect}:tummy, despite its best efforts to melt them down.]
+
+							An old enchantress from Avarsici is rumored to live below the surface of the tundra.
+							She's no less wise or witty for it, and may be able to help remedy this fault, for a price...
+							'''
+						Recursive:
+							'''
+							Stomach Acid Tier: [c/FF4FFF:Recursive (2)]
+							Your stomach acids have been enchanted to digest prey recursively as a token of gratitude from a
+							rather...eccentric micro-grade fairy enchantress who now lives in the depths of the frozen tundra.
+							Bones and clothing can no longer escape their fate of being fat on your frame anywhere near as easily.
+							However, [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.NegativeVoreEffect}:plastics and various metals still manage to evade your gut's gastric assault with ease.]
+
+							That said, there were advertisements in the enchantress' room about a product made and sold
+							entirely within Avarsician borders which can resolve this problem...
+							'''
+						Royal:
+							'''
+							Stomach Acid Tier: [c/167200:Royal (3)]
+							Your stomach acids, thanks to a bioalteration spell produced and sold en masse in Avarsici's own
+							borders, are now mixed with nitric acid to create what most simply call "royal acids".
+							Now, nothing of this plane can escape the will of your stomach.
+							However, be aware that [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.NegativeVoreEffect}:various items of otherworldly origin] are still impervious to your gastrointestinal gauntlet.
+							Additionally, you still [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.NegativeVoreEffect}:cannot hold and digest the souls of your prey] without the help of a charm or pred ability.
+
+							There is little short of a deity's blessing that could grant you greater digestive potential.
+							'''
+						Divine:
+							'''
+							Stomach Acid Tier: [c/167200:Divine (4)]
+							By the will of Melodia, as gratitude for bringing her star songbird back to her, your royal acids
+							have been further granted the privilege which only a Sinhunter can otherwise enjoy.
+							Nothing shall escape your stomach --- you can even hold and digest non-divine souls innately, and
+							not even the delicacies of the Divine Realm can outlast your supreme digestive system.
+							Thus, all your battles with breakfast (and other meals) are now a war of attrition --- one which,
+							should you will it, you are destined to win.
+
+							An even greater boost would be necessary to begin digesting the souls of the Divine Realm's
+							inhabitants on your quest to truly become the apex...but where would one even BEGIN to gain such
+							raw, unadultered gastric strength?
+							'''
+					}
+				}
+
+				ABS: {
+					Description:
+						'''
+						[c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:Absorption Strength (ABS)] decides how good your digestive tract is at
+						ensuring that every last (digestible) trace of your prey is properly refined into
+						rich, soft cellulite to be packed onto your bottomless belly's surface (and, of
+						course, any other areas of preference).
+
+						[c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:Influences the speed at which your body absorbs prey.]
+						[c/7F7F7F:| {BaseAbsorbRate} weight/minute at base.]
+						[c/7F7F7F:| +{AbsorbRatePerLevel} weight/minute per stat point invested.]
+						[c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:Influences the duration of status effects from eaten food and drink.]
+						[c/7F7F7F:| +{BuffExtendPer5Levels} buff duration per 5 stat points invested.]
+						[c/7F7F7F:| -{DebuffLossPer5Levels} debuff duration per 5 stat points invested.]
+						'''
+
+					RelevantStats: {
+						Normal:
+							'''
+							Total ABS: [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:{ABSTotal}]
+							[c/7F7F7F:| {ABSSpent} from invested stat points]
+							[c/7F7F7F:| {ABSBase} from permanent bonuses]
+							[c/7F7F7F:| {ABSExtra} from temporary bonuses (potions, charms, etc.)]
+
+							{$Mods.V2.PredStatsMenu.StatDescription.HoldSHIFTToSeeDescription}
+							Absorption: {AbsorptionRate} weight/minute
+							Buffs from eaten prey have their duration increased by {BuffExtensionTime}
+							Debuffs from eaten prey have their duration decreased by {DebuffDisextensionTime}
+							'''
+						Chronological:
+							'''
+							Total ABS: [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:∞]
+							[c/7F7F7F:| ∞ from digesting at least one Timekeeper]
+
+							Absorption: ∞ weight/minute
+							Buffs from eaten prey are infinite and infinitely stackable
+							Debuffs are never gained from eaten prey at all
+							'''
+					}
+				}
+			}
+		}
+
 		PredPlayerGoals: {
 			Starter: {
 				Name: Starter
@@ -169,11 +422,29 @@ Mods: {
 					'''
 
 				FirstLivePrey: {
-					Name: Dessert Before Breakfast
+					Name: First Chyme
 					Description:
 						'''
-						Eat and digest a slime of any color.
-						‘A great source of sugar!...very flammable sugar, but still!’
+						Eat and digest your first live prey.
+						'We all start somewhere.'
+						'''
+				}
+
+				FirstItemEaten: {
+					Name: Taking Inventory
+					Description:
+						'''
+						Pluck something out of your normal inventory and into your internal “inventory”.
+						'Just couldn't wait until you found a squirmy snack to swallow, eh?'
+						'''
+				}
+
+				FirstDrink: {
+					Name: Taking Inventory
+					Description:
+						'''
+						Pluck something out of your normal inventory and into your internal “inventory”.
+						'Just couldn't wait until you found a squirmy snack to swallow, eh?'
 						'''
 				}
 			}

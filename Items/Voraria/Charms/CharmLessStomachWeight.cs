@@ -52,9 +52,9 @@ namespace V2.Items.Voraria.Charms
 				"Voraria.Charms.LessStomachWeight",
 				new
 				{
-					WeightReduction = MaxWeightReduction.ConvertToPercentageString(2),
-					FullnessEffectivenessLossThreshold = FullnessEffectivenessLossThreshold.ConvertToPercentageString(2),
-					CurrentWeightReduction = (MaxWeightReduction * WeightReductionEffectiveness(Main.LocalPlayer)).ConvertToPercentageString(2),
+					WeightReduction = MaxWeightReduction.ToPercentage(2),
+					FullnessEffectivenessLossThreshold = FullnessEffectivenessLossThreshold.ToPercentage(2),
+					CurrentWeightReduction = (MaxWeightReduction * WeightReductionEffectiveness(Main.LocalPlayer)).ToPercentage(2),
 				}
 			);
 		}

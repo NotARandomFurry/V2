@@ -60,33 +60,37 @@ namespace V2.PlayerHandling
 
 		public bool InPredStatsMenu { get; set; }
 		public List<(string goalName, bool complete)> Goals { get; set; }
-		public int AvailableStatPoints { get; set; }
-		public int AllocatedStatPoints { get; set; }
 		public int TotalStatPoints { get; set; }
+		public int AllocatedStatPoints => GLP.Spent + TUM.Spent + ACI.Spent + ABS.Spent;
+		public int AvailableStatPoints => TotalStatPoints - AllocatedStatPoints;
 		public PredStat GLP { get; set; }
 		public StatModifier SwallowSizeModifier;
+		public static double BaseSwallowSize => 0.4;
+		public static double SwallowSizePerLevel => 0.08;
 		public double SwallowSize
 		{
 			get
 			{
-				double baseSwallowSize = 0.4;
-				baseSwallowSize += 0.08 * GLP.Total;
+				double baseSwallowSize = BaseSwallowSize;
+				baseSwallowSize += SwallowSizePerLevel * GLP.Total;
 				return SwallowSizeModifier.ApplyTo((float)baseSwallowSize);
 			}
 		}
+		public static int BaseLiquidSwallowSize => 5;
+		public static int LiquidSwallowSizePer5Levels => 1;
 		public StatModifier LiquidSwallowSizeModifier;
 		public int LiquidSwallowSize
 		{
 			get
 			{
-				int baseLiquidSwallowSize = 20;
-				baseLiquidSwallowSize += GLP.Total;
+				int baseLiquidSwallowSize = BaseLiquidSwallowSize;
+				baseLiquidSwallowSize += LiquidSwallowSizePer5Levels * (int)Math.Floor(GLP.Total / 5.0);
 				return (int)Math.Round(LiquidSwallowSizeModifier.ApplyTo((float)baseLiquidSwallowSize));
 			}
 		}
 		public double EffectiveLiquidSwallowSize(int liquidType)
 		{
-			double effectiveBaseLiquidSwallowSize = (double)LiquidSwallowSize / 256.0;
+			double effectiveBaseLiquidSwallowSize = (double)LiquidSwallowSize / 255.0;
 			return liquidType switch
 			{
 				LiquidID.Lava => effectiveBaseLiquidSwallowSize * 4.0,
@@ -96,87 +100,117 @@ namespace V2.PlayerHandling
 			};
 		}
 		public StatModifier StruggleGraceTimeModifier;
+		public static double BaseStruggleGraceTime => 0.8;
+		public static double StruggleGraceTimePer5Levels => 0.1;
 		public double StruggleGraceTime
 		{
 			get
 			{
-				double baseGracePeriod = 0.8;
-				baseGracePeriod += 0.1 * (GLP.Total / 5);
+				double baseGracePeriod = BaseStruggleGraceTime;
+				baseGracePeriod += StruggleGraceTimePer5Levels * Math.Floor(GLP.Total / 5.0);
 				return StruggleGraceTimeModifier.ApplyTo((float)baseGracePeriod);
 			}
 		}
-		public PredStat ACI { get; set; }
-		public StatModifier DigestionTickDamageModifier;
-		public double DigestionTickDamage
+		public string StruggleGraceTimeReadable
 		{
 			get
 			{
-				double baseDigestionDamage = 6.0;
-				baseDigestionDamage += 0.75 * ACI.Total;
-				return DigestionTickDamageModifier.ApplyTo((float)baseDigestionDamage);
-			}
-		}
-		public StatModifier DigestionTickRateModifier;
-		public double DigestionTickRate
-		{
-			get
-			{
-				double baseDigestionRate = 1.0;
-				baseDigestionRate += 0.1 * (ACI.Total / 5);
-				return DigestionTickRateModifier.ApplyTo((float)baseDigestionRate);
+				double seconds = StruggleGraceTime.CastToDecimalPlaces(2);
+				int minutes = 0;
+				while (seconds > 60.0)
+				{
+					minutes += 1;
+					seconds -= 60.0;
+				}
+
+				if (minutes > 0)
+					return minutes + "min" + seconds + "sec";
+				else
+					return seconds + "sec";
 			}
 		}
 		public PredStat TUM { get; set; }
 		public StatModifier StomachCapacityModifier;
+		public static double BaseStomachCapacity => 0.80;
+		public static double StomachCapacityPerLevel => 0.04;
 		public double StomachCapacity
 		{
 			get
 			{
-				double baseStomachCapacity = 0.80;
-				baseStomachCapacity += 0.04 * TUM.Total;
+				double baseStomachCapacity = BaseStomachCapacity;
+				baseStomachCapacity += StomachCapacityPerLevel * TUM.Total;
 				return StomachCapacityModifier.ApplyTo((float)baseStomachCapacity);
 			}
 		}
 		public StatModifier StomachacheMeterCapacityModifier;
+		public static double BaseStomachacheMeterCapacity => 0.80;
+		public static double StomachacheMeterCapacityPer5Levels => 10.0;
 		public double StomachacheMeterCapacity
 		{
 			get
 			{
-				double baseStomachacheMeterCapacity = 100.0;
-				baseStomachacheMeterCapacity += 10.0 * (TUM.Total / 5);
+				double baseStomachacheMeterCapacity = BaseStomachacheMeterCapacity;
+				baseStomachacheMeterCapacity += StomachacheMeterCapacityPer5Levels * Math.Floor(TUM.Total / 5.0);
 				return StomachacheMeterCapacityModifier.ApplyTo((float)baseStomachacheMeterCapacity);
+			}
+		}
+		public PredStat ACI { get; set; }
+		public StatModifier DigestionTickDamageModifier;
+		public static double BaseDigestionTickDamage => 6.0;
+		public static double DigestionTickDamagePerLevel => 0.75;
+		public double DigestionTickDamage
+		{
+			get
+			{
+				double baseDigestionDamage = BaseDigestionTickDamage;
+				baseDigestionDamage += DigestionTickDamagePerLevel * ACI.Total;
+				return DigestionTickDamageModifier.ApplyTo((float)baseDigestionDamage);
+			}
+		}
+		public StatModifier DigestionTickRateModifier;
+		public static double BaseDigestionTickRate => 1.0;
+		public static double DigestionTickRatePer5Levels => 0.1;
+		public double DigestionTickRate
+		{
+			get
+			{
+				double baseDigestionRate = BaseDigestionTickRate;
+				baseDigestionRate += DigestionTickRatePer5Levels * Math.Floor(ACI.Total / 5.0);
+				return DigestionTickRateModifier.ApplyTo((float)baseDigestionRate);
 			}
 		}
 		public PredStat ABS { get; set; }
 		public StatModifier PreyAbsorptionRateModifier;
+		public static double BasePreyAbsorptionRate => 0.2;
+		public static double PreyAbsorptionRatePerLevel => 0.02;
 		public double PreyAbsorptionRate
 		{
 			get
 			{
-				double basePreyAbsorptionRate = 0.2;
-				basePreyAbsorptionRate += 0.01 * ABS.Total;
-				basePreyAbsorptionRate *= 4.0;
-				return PreyAbsorptionRateModifier.ApplyTo((float)(basePreyAbsorptionRate / (double)V2Utils.SensibleTime(minutes: 1)));
+				double basePreyAbsorptionRate = BasePreyAbsorptionRate;
+				basePreyAbsorptionRate += PreyAbsorptionRatePerLevel * ABS.Total;
+				return PreyAbsorptionRateModifier.ApplyTo((float)basePreyAbsorptionRate);
 			}
 		}
+		public double PreyAbsorptionRatePerTick => PreyAbsorptionRate / (double)V2Utils.SensibleTime(minutes: 1);
 		public StatModifier BuffExtensionTimeModifier;
+		public static double BuffExtensionTimePer5Levels => 0.04;
 		public double BuffExtensionTime
 		{
 			get
 			{
-				double baseBuffExtensionTime = 0.0;
-				baseBuffExtensionTime += 0.04 * (ABS.Total / 5);
+				double baseBuffExtensionTime = BuffExtensionTimePer5Levels * Math.Floor(ABS.Total / 5.0);
 				return BuffExtensionTimeModifier.ApplyTo((float)baseBuffExtensionTime);
 			}
 		}
 		public StatModifier DebuffDisextensionTimeModifier;
+		public static double DebuffDisextensionTimePer5Levels => 0.02;
 		public double DebuffDisextensionTime
 		{
 			get
 			{
-				double baseBuffExtensionTime = 0.0;
-				baseBuffExtensionTime += 0.04 * (ABS.Total / 5);
-				return DebuffDisextensionTimeModifier.ApplyTo((float)baseBuffExtensionTime);
+				double baseDebuffDisextensionTime = DebuffDisextensionTimePer5Levels * Math.Floor(ABS.Total / 5.0);
+				return DebuffDisextensionTimeModifier.ApplyTo((float)baseDebuffDisextensionTime);
 			}
 		}
 
@@ -617,7 +651,7 @@ namespace V2.PlayerHandling
 				#endregion
 				#region Drinking liquids
 				bool inAnyLiquid = Player.wet || Player.lavaWet || Player.honeyWet || Player.shimmerWet;
-				if (V2.SwallowHotkey.Current && inAnyLiquid && Main.GameUpdateCount % 30 == 0)
+				if (V2.SwallowHotkey.Current && inAnyLiquid && Main.GameUpdateCount % 4 == 0)
 				{
 					Point playerTileLocation = (Player.Center + new Vector2(0, -10)).ToTileCoordinates();
 					Tile tile = Main.tile[playerTileLocation];
@@ -636,7 +670,7 @@ namespace V2.PlayerHandling
 							case LiquidID.Honey:
 								break;
 							case LiquidID.Shimmer:
-								if (!Player.AsPred().CanDrinkShimmerSafe)
+								if (!Player.AsPred().CanDrinkShimmerSafe && !Player.AsPred().PrimedForShimmerStomachDeath)
 								{
 									Player.AddBuff(ModContent.BuffType<ShimmeringStomach>(), 300);
 									Player.AsPred().PrimedForShimmerStomachDeath = true;
@@ -650,6 +684,8 @@ namespace V2.PlayerHandling
 						}
 						else
 							tile.LiquidAmount -= (byte)Player.AsPred().LiquidSwallowSize;
+
+						WorldGen.SquareTileFrame(playerTileLocation.X, playerTileLocation.Y);
 
 						SoundEngine.PlaySound(
 							Player.AsPred().SmallGulps with { Volume = 0.45f, Pitch = 0.25f },
@@ -953,7 +989,7 @@ namespace V2.PlayerHandling
 				}
 				else
 				{
-					prey.WeightLeftToDigest -= player.AsPred().PreyAbsorptionRate / (double)player.AsPred().stomachContents.Count;
+					prey.WeightLeftToDigest -= player.AsPred().PreyAbsorptionRatePerTick / (double)player.AsPred().stomachContents.Count;
 					if (prey.WeightLeftToDigest < 0)
 						prey.WeightLeftToDigest = 0;
 

@@ -92,8 +92,8 @@ namespace V2.Items.Vanilla.Consumables
 	{
 		public override void PreUpdateBuffs()
 		{
-			Player.AsPred().TUM.Extra += LifeFruit.StomachStrengthBonus * Player.ConsumedLifeFruit;
-			Player.AsPred().ACI.Extra += LifeFruit.AcidStrengthBonus * Player.ConsumedLifeFruit;
+			Player.AsPred().TUM.Base += LifeFruit.StomachStrengthBonus * Player.ConsumedLifeFruit;
+			Player.AsPred().ACI.Base += LifeFruit.AcidStrengthBonus * Player.ConsumedLifeFruit;
 		}
 	}
 }

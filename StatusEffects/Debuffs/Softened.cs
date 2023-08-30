@@ -43,13 +43,13 @@ namespace V2.StatusEffects.Debuffs
 				"Mods.V2.StatusEffects.Debuffs.Softened.Description.Base",
 				new
 				{
-					SoftenedMaxHealthThreshold = MaxHealthDigestedForOneStack.ConvertToPercentageString(1),
+					SoftenedMaxHealthThreshold = MaxHealthDigestedForOneStack.ToPercentage(1),
 					SoftenedMaxStacks = MaxStacks,
 					SoftenedStacks = Main.LocalPlayer.AsFood().SoftenedStacks,
-					SoftenedDefReduction = DefenseReductionPerStack.ConvertToPercentageString(1),
-					SoftenedCurrentDefReduction = (Main.LocalPlayer.AsFood().SoftenedStacks * DefenseReductionPerStack).ConvertToPercentageString(1),
-					SoftenedDigestiveAid = DigestionDamageIncreasePerStack.ConvertToPercentageString(1),
-					SoftenedCurrentDigestiveAid = (Main.LocalPlayer.AsFood().SoftenedStacks * DigestionDamageIncreasePerStack).ConvertToPercentageString(1),
+					SoftenedDefReduction = DefenseReductionPerStack.ToPercentage(1),
+					SoftenedCurrentDefReduction = (Main.LocalPlayer.AsFood().SoftenedStacks * DefenseReductionPerStack).ToPercentage(1),
+					SoftenedDigestiveAid = DigestionDamageIncreasePerStack.ToPercentage(1),
+					SoftenedCurrentDigestiveAid = (Main.LocalPlayer.AsFood().SoftenedStacks * DigestionDamageIncreasePerStack).ToPercentage(1),
 				}
 			);
 			string dynamicFlavorText = "'" + Language.GetTextValue("Mods.V2.StatusEffects.Debuffs.Softened.Description.Flavor." + Main.LocalPlayer.AsFood().SoftenedStacks) + "'";

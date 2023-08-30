@@ -328,7 +328,7 @@ namespace V2.Items
 				new TooltipLine(
 					V2.Instance,
 					"V2Durability",
-					"Durability left: " + Health + " / " + MaxHealth + " ([c/" + (duraPercentColor * ((int)Main.mouseTextColor / 255f)).Hex3() + ":" + healthRemainingRatio.ConvertToPercentageString(2) + "])"
+					"Durability left: " + Health + " / " + MaxHealth + " ([c/" + (duraPercentColor * ((int)Main.mouseTextColor / 255f)).Hex3() + ":" + healthRemainingRatio.ToPercentage(2) + "])"
 				)
 			);
 

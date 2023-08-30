@@ -10,6 +10,7 @@ namespace V2.PlayerHandling.PredPlayerGoals.Starter
 {
 	public class FirstItemEaten : PredPlayerGoal
 	{
+		public override string InternalName => "FirstItemEaten";
 		public override string DisplayName(Player pred) => Language.GetTextValue("Mods.V2.PredPlayerGoals.Starter.FirstItemEaten.Name");
 		public override string Description(Player pred) => Language.GetTextValue("Mods.V2.PredPlayerGoals.Starter.FirstItemEaten.Description");
 

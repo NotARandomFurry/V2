@@ -20,7 +20,7 @@ namespace V2.UI
 	public class MouseRestrictionDummyUI : UIState
 	{
 		private static Asset<Texture2D> _predStatsMenuBackground = ModContent.Request<Texture2D>("V2/UI/PredStatsMenu/PredStatsMenu_Background", AssetRequestMode.ImmediateLoad);
-		public override void Update(GameTime gameTime)
+		public override void Draw(SpriteBatch spriteBatch)
 		{
 			Player player = Main.LocalPlayer;
 			if (player.AsPred().InPredStatsMenu)

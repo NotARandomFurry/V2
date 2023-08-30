@@ -146,7 +146,7 @@ namespace V2.UI.StomachacheMeter
 				  + "/"
 				  + localPlayer.AsPred().StomachacheMeterCapacity.CastToDecimalPlaces(2)
 				  + " ("
-				  + (localPlayer.AsPred().Stomachache / localPlayer.AsPred().StomachacheMeterCapacity).ConvertToPercentageString(2)
+				  + (localPlayer.AsPred().Stomachache / localPlayer.AsPred().StomachacheMeterCapacity).ToPercentage(2)
 				  + ")";
 				Main.instance.MouseTextHackZoom(text);
 				Main.mouseText = true;

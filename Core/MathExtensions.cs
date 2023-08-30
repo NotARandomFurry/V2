@@ -17,13 +17,13 @@ namespace V2.Core
 		/// <param name="doubleToConvert">
 		/// The <see cref="double"/> to be converted into a percentage-based value.
 		/// </param>
-		/// <param name="decimalPlaces">
+		/// <param name="maxDecimalPlaces">
 		/// The maximum number of decimal places to allow for the converted percentage.
 		/// </param>
 		/// <returns>
 		/// The provided <see cref="double"/>, as a percentage-based value.
 		/// </returns>
-		public static string ConvertToPercentageString(this double doubleToConvert, int decimalPlaces = 0) => CastToDecimalPlaces(doubleToConvert * 100.0, decimalPlaces) + "%";
+		public static string ToPercentage(this double doubleToConvert, int maxDecimalPlaces = 0) => CastToDecimalPlaces(doubleToConvert * 100.0, maxDecimalPlaces) + "%";
 		/// <summary>
 		/// Converts the given <see cref="float"/> to a percentage-based value.<br/>
 		/// Mainly for use in tooltips.<br/>
@@ -31,13 +31,13 @@ namespace V2.Core
 		/// <param name="floatToConvert">
 		/// The <see cref="float"/> to be converted into a percentage-based value.
 		/// </param>
-		/// <param name="decimalPlaces">
+		/// <param name="maxDecimalPlaces">
 		/// The maximum number of decimal places to allow for the converted percentage.
 		/// </param>
 		/// <returns>
 		/// The provided <see cref="float"/>, as a percentage-based value.
 		/// </returns>
-		public static string ConvertToPercentageString(this float floatToConvert, int decimalPlaces = 0) => CastToDecimalPlaces(floatToConvert * 100f, decimalPlaces) + "%";
+		public static string ToPercentage(this float floatToConvert, int maxDecimalPlaces = 0) => CastToDecimalPlaces(floatToConvert * 100f, maxDecimalPlaces) + "%";
 
 	}
 }
