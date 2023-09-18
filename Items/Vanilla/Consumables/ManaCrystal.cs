@@ -13,6 +13,8 @@ using Terraria.ModLoader;
 using V2.Core;
 using V2.NPCs;
 using V2.PlayerHandling;
+using V2.PlayerHandling.PredPlayerGoals.Amateur;
+using V2.PlayerHandling.PredPlayerGoals.Beginner;
 using V2.Sounds.MuffledSounds;
 using V2.Sounds.Vore;
 
@@ -51,10 +53,6 @@ namespace V2.Items.Vanilla.Consumables
 
 			if (pred is Player playerPred)
 			{
-				playerPred.statMana += DigestedManaHeal * item.stack;
-				if (playerPred.statMana > playerPred.statManaMax2)
-					playerPred.statMana = playerPred.statManaMax2;
-
 				if (playerPred.ConsumedManaCrystals < Player.ManaCrystalMax)
 				{
 					int manaCrystalsLeftToMax = Math.Min(item.stack, Player.ManaCrystalMax - playerPred.ConsumedManaCrystals);
@@ -62,6 +60,13 @@ namespace V2.Items.Vanilla.Consumables
 					playerPred.statManaMax2 += 20 * manaCrystalsLeftToMax;
 					playerPred.ConsumedManaCrystals += manaCrystalsLeftToMax;
 				}
+				playerPred.statMana += DigestedManaHeal * item.stack;
+				if (playerPred.statMana > playerPred.statManaMax2)
+					playerPred.statMana = playerPred.statManaMax2;
+
+				ModContent.GetInstance<EatFirstManaCrystal>().TrySetCompletion(playerPred);
+				if (playerPred.ConsumedLifeCrystals == Player.LifeCrystalMax && playerPred.ConsumedManaCrystals == Player.ManaCrystalMax)
+					ModContent.GetInstance<EatMaxLifeAndManaCrystals>().TrySetCompletion(playerPred);
 			}
 		}
 

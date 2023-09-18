@@ -17,6 +17,7 @@ using Terraria.UI.Chat;
 using V2.Core;
 using V2.NPCs;
 using V2.PlayerHandling;
+using V2.PlayerHandling.PredPlayerGoals.Starter;
 using V2.UI;
 
 namespace V2.Items
@@ -79,18 +80,11 @@ namespace V2.Items
 			}
 		}
 
-		public static double CalculateSnackSize(this Item item)
-		{
-			double size = item.AsFood().Size;
-			return size * item.stack;
-		}
+		public static double CalculateSnackSize(this Item item) => item.AsFood().Size * item.stack;
 	}
 
 	public class PreyItem : GlobalItem
 	{
-		public List<FoodTypeTag> FoodTypeTags { get; set; }
-		public List<string> FoodFlavorTags { get; set; }
-
 		public bool IsCurrentlyEaten { get; set; }
 		public bool Digested { get; set; }
 		public bool FullyDigested { get; set; }
@@ -124,9 +118,6 @@ namespace V2.Items
 
 		public PreyItem()
 		{
-			FoodTypeTags = null;
-			FoodFlavorTags = null;
-
 			IsCurrentlyEaten = false;
 			Digested = false;
 			FullyDigested = false;
@@ -315,7 +306,7 @@ namespace V2.Items
 					new TooltipLine(
 						V2.Instance,
 						"FavoriteNoNoms",
-						"Swallowing from inventory will be blocked, but digestion damage from wearing/holding still applies"
+						"Swallowing from inventory will be blocked, but can still be digested by other means"
 					)
 				);
 			}

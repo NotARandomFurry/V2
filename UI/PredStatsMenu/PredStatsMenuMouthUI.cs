@@ -54,6 +54,7 @@ namespace V2.UI.PredStatsMenu
 		private int _mawHoverTime { get; set; }
 		private int _mawSwallowTime { get; set; }
 		private static Asset<Texture2D> _predStatsMenuEntryMaw = ModContent.Request<Texture2D>("V2/UI/PredStatsMenu/PredStatsMenuMouth_Panel", AssetRequestMode.ImmediateLoad);
+		private static Asset<Texture2D> _predStatsMenuBackground = ModContent.Request<Texture2D>("V2/UI/PredStatsMenu/PredStatsMenu_Background", AssetRequestMode.ImmediateLoad);
 
 		public override void Update(GameTime gameTime)
 		{
@@ -180,51 +181,67 @@ namespace V2.UI.PredStatsMenu
 					y = 2;
 					break;
 				case PredStatsMenuMouthState.EatingCursor:
+					Main.LocalPlayer.mouseInterface = true;
 					if (_mawSwallowTime >= 300)
 					{
+						Vector2 backdropPos = new Vector2(
+							(Main.screenWidth - _predStatsMenuBackground.Value.Width) / 2,
+							(Main.screenHeight - _predStatsMenuBackground.Value.Height) / 2
+						);
+						Mouse.SetPosition((int)backdropPos.X + 350, (int)backdropPos.Y + 40);
 						MouthState = PredStatsMenuMouthState.YourCursorGotFuckingGulpedIdiot;
 						goto case PredStatsMenuMouthState.YourCursorGotFuckingGulpedIdiot;
 					}
-					switch (_mawSwallowTime)
+					else
 					{
-						case 0:
-							SoundEngine.PlaySound(
-								Gulps.Short with { Volume = 1f },
-								MouthPosition
-							);
-							break;
-						case 80:
-							SoundEngine.PlaySound(
-								Gulps.Standard with { Volume = 1f },
-								MouthPosition
-							);
-							break;
-						case 200:
-							SoundEngine.PlaySound(
-								Gulps.Standard with { Volume = 1f, Pitch = -0.35f },
-								MouthPosition
-							);
-							break;
+						switch (_mawSwallowTime)
+						{
+							case 0:
+								SoundEngine.PlaySound(
+									Gulps.Short with { Volume = 1f },
+									Main.screenPosition + MouthPosition
+								);
+								break;
+							case 80:
+								SoundEngine.PlaySound(
+									Gulps.Standard with { Volume = 1f },
+									Main.screenPosition + MouthPosition
+								);
+								break;
+							case 200:
+								SoundEngine.PlaySound(
+									Gulps.Standard with { Volume = 1f, Pitch = -0.35f },
+									Main.screenPosition + MouthPosition
+								);
+								break;
+						}
+						_mawSwallowTime += 1;
+						Mouse.SetPosition((int)MouthPosition.X - 50, (int)MouthPosition.Y - 50);
 					}
-					_mawSwallowTime += 1;
 					DecideCursorGettingGulpedFrame(true);
 					break;
 				case PredStatsMenuMouthState.YourCursorGotFuckingGulpedIdiot:
 					DecideCursorGettingGulpedFrame(false);
 					break;
 				case PredStatsMenuMouthState.RegurgitatingCursor:
+					Main.LocalPlayer.mouseInterface = true;
 					if (_mawSwallowTime <= 0)
 					{
-						Mouse.SetPosition((int)MouthPosition.X, (int)MouthPosition.Y);
 						SoundEngine.PlaySound(
-							Burps.Humanoid.Small with { Volume = 0.9f }
+							Burps.Humanoid.Small with { Volume = 0.9f },
+							Main.screenPosition + MouthPosition
 						);
 						Main.LocalPlayer.AsPred().InPredStatsMenu = false;
 						_mawHoverTime = 145;
+						Mouse.SetPosition((int)MouthPosition.X, (int)MouthPosition.Y);
 						MouthState = PredStatsMenuMouthState.Hovered;
 						goto case PredStatsMenuMouthState.Hovered;
 					}
-					_mawSwallowTime -= 1;
+					else
+					{
+						_mawSwallowTime -= 1;
+						Mouse.SetPosition((int)MouthPosition.X - 50, (int)MouthPosition.Y - 50);
+					}
 					DecideCursorGettingGulpedFrame(true);
 					break;
 			}

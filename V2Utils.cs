@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.Localization;
 using Terraria.ModLoader;
 
@@ -185,6 +186,18 @@ namespace V2
 			);
 			if (Main.keyState.IsKeyDown(Keys.LeftShift) && Main.keyState.IsKeyDown(Keys.LeftControl))
 			{
+				string tooltipFlavorText = "";
+				string[] tooltipFlavorTextLines = Utils.WordwrapString(dynamicTooltip.Text, FontAssets.MouseText.Value, 900, 25, out _);
+				foreach (string piece in tooltipFlavorTextLines)
+				{
+					if (piece is not null && piece != "")
+					{
+						tooltipFlavorText += piece;
+						if (!piece.Contains("\n"))
+							tooltipFlavorText += "\n";
+					}
+				}
+				dynamicTooltip.Text = tooltipFlavorText;
 				dynamicTooltip.OverrideColor = Color.Gray;
 			}
 			

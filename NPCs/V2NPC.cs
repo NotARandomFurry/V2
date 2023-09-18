@@ -46,8 +46,6 @@ namespace V2.NPCs
 		public delegate List<string> DelegateGetChat(NPC npc, Player player);
 		public DelegateGetChat GetChatMethod { get; set; }
 
-		public SlotId ActiveStomachNoises { get; set; }
-
 		public override bool InstancePerEntity => true;
 
 		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => true;

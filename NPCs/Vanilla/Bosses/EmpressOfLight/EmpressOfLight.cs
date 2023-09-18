@@ -17,7 +17,6 @@ using V2.Core;
 using V2.NPCs.Vanilla.TownNPCs.PartyGirl;
 using V2.PlayerHandling;
 using V2.Sounds.Vore;
-using static V2.Core.FoodTypeTags;
 
 namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 {
@@ -51,14 +50,13 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 
 		public override bool InstancePerEntity => true;
 
-		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.type == NPCID.HallowBoss;
+		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.netID == NPCID.HallowBoss;
 
 		public override void SetDefaults(NPC npc)
 		{
 			npc.AsV2NPC().Gender = EntityGender.Female;
 
-			npc.AsPred().stomachContents = new List<Prey>();
-			npc.AsPred().stomachContentsQueue = new List<Prey>();
+			npc.AsFood().Size = 41.4;
 			npc.AsPred().MaxStomachCapacity = 200.0;
 
 			npc.AsPred().CanBeForceFedMethod = CanUnreasonablyThickFairyBeForceFed;
@@ -81,18 +79,6 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 			npc.AsFood().PreyAIMethod = UnreasonablyThickFairyPreyAI;
 
 			npc.AsFood().DigestedDeathSound = CandyFairyStuff.MuffledCandyFairyDeathScreech;
-
-			npc.AsFood().FoodTypeTags = new List<FoodTypeTag>()
-			{
-				new MeatTag()
-				{
-					FoodSubtypeTags = new List<(string subtype, double weight)>
-					{
-						("Human", 35.0),
-						("Insect", 5.0)
-					}
-				}
-			};
 
 			npc.AsCandyFairy().MuffledScreechDelay = 0;
 		}

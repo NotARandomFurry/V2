@@ -1,0 +1,1465 @@
+Keybinds: {
+	Swallow.DisplayName: Swallow
+	Regurgitate.DisplayName: Regurgitate
+	Feed.DisplayName: Feed
+	EatItems.DisplayName: Eat Items
+	StruggleUp.DisplayName: Struggle Upwards
+	StruggleLeft.DisplayName: Struggle Leftwards
+	StruggleRight.DisplayName: Struggle Rightwards
+	StruggleDown.DisplayName: Struggle Downwards
+	StruggleSpecial.DisplayName: Special Struggle
+}
+
+Configs: {
+	V2ServerConfig.DisplayName: Server-Side Options
+
+	Server: {
+		Insight: {
+			Header:
+				'''
+				Insight Options
+				[c/7F7F7F:(these let you make bug reports and other such things easier)]
+				'''
+
+			DebugChatMessages: {
+				Label: Send Debug Chat Messages
+				Tooltip:
+					'''
+					Displays debug messages in chat relating to the various vore mechanics.
+					Note that these may spam your chat, and should only be turned on if something is wrong.
+					Can help greatly in bug reporting.
+					Defaults to false.
+					'''
+			}
+		}
+
+		Personalization: {
+			Header:
+				'''
+				Personalization Options
+				[c/7F7F7F:(these let you fine-tune the experience to your preferences without breakin' the balance of the game)]
+				'''
+
+			NoRandomGulpsAgainstPlayers: {
+				Label: Selectively Hungry Town NPCs
+				Tooltip:
+					'''
+					Prevents town NPCs from randomly eating players.
+					Included for players who prefer being pred.
+					Does not prevent non-town NPCs from eating players where applicable.
+					Does not prevent town NPCs from randomly eating other town NPCs.
+					Defaults to false.
+					'''
+			}
+
+			GenderBlacklist: {
+				Label: Pred Non-Preference
+				Tooltip:
+					'''
+					Allows you to prevent preds of a certain gender from actively eating others in-game.
+					Generally applies to all entities, players included. However:
+					- Will not affect any in-universe establishments about predators of the blacklisted gender.
+					- Does not work for hermaphrodites, androgynous menaces, or otherwise functionally-genderless individuals.
+					- Certain powerful entities reserve the right and ability to completely bypass any blacklist set by this option.
+					By default, does not blacklist any gender.
+					'''
+			}
+		}
+
+		JustForFun: {
+			Header:
+				'''
+				Options Just For Fun
+				[c/7F7F7F:(these let you tell my balance intentions to go fuck themselves and just have some dumb fun with the game)]
+				'''
+
+			DefenseInDigestionCalcs: {
+				Label: Include Defense In Digestion Damage Calcs
+				Tooltip:
+					'''
+					BALANCE BREAKAGE: High
+					Determines whether or not digestion damage is affected by defense.
+					Affects ALL preds, not just players.
+					Defaults to true.
+					'''
+			}
+
+			EasilyEdibleEmpress: {
+				Label: Invoke The Second Law
+				Tooltip:
+					'''
+					BALANCE BREAKAGE: Who cares?
+					Makes it possible for the Empress of Light to fit in stomachs of any capacity, with preds of any swallow strength, and greatly increases digestion damage against her.
+					Defaults to false.
+					'Fairies are food. They can also be friends or foes, but they are ALWAYS food. No exceptions.'
+					'''
+			}
+		}
+	}
+}
+
+GameTips: {
+	MagicMirror:
+		'''
+		If you come across a Magic Mirror, using it will teleport you back to your spawn point...
+
+		...usually. Just don't try to use it in tight, dark spaces.
+		'''
+	LavaAndObsidianSkinPotion:
+		'''
+		Obsidian Skin Potions are critically useful in exploring lava-heavy terrain, allowing the consumer to bathe in it without harm.
+		They also have the side effect of allowing the consumer to drink lava freely --- though, be warned, lava is VERY fattening.
+		'''
+	WiresFromMechanic:
+		'''
+		You can buy Wires from the Mechanic and use them to create traps, pumping systems, systematic waifu-feeding factories,
+		or any number of other elaborate devices designed to make eating and getting eaten even easier than it already is.
+		'''
+	PartyGirlNeedsLotsOfSnacksToMoveIn:
+		'''
+		The Party Girl won't move in unless your little stretch of the world is full of other townsfolk.
+		After all, what's a party without lots of totally willing guests to...invite to it?
+		'''
+	PredStats:
+		'''
+		As a pred, you have four stats: swallow strength (GLP), acid strength (ACI), stomach strength (TUM), and absorption strength (ABS).
+		Be sure to investigate what each one does, and play to your best strengths as you get ready to gulp down the universe!
+		'''
+	SwallowHotkey:
+		'''
+		By pressing the Swallow hotkey while near something, or someONE, you'd like to eat, you can send 'em right down your throat!
+		Just be warned that some food won't stay down as easy as others...
+		'''
+	HaveARefreshingDrink:
+		'''
+		Bothered by the immense amounts of liquids everywhere? No worries!
+		If you hold the Swallow keybind while submerged, you'll let whatever refreshing drink you're in slide right into your throat!
+		Be aware, though, that some drinks are a lot more dangerous to your system...you'll need special tools to make them stomach-safe.
+		'''
+	RegurgitateHotkey:
+		'''
+		If you find that a particularly feisty meal's giving you trouble, you can always use the Regurgitate hotkey to bring them back up!
+
+		...just be sure they don't eat you themselves after doing so. An eye for an eye'll get the whole planet mulched.
+		'''
+	FeedHotkey:
+		'''
+		If you're a preything that sees a nice tum to sleep in, feel free to use the Feed hotkey to cram yourself down its owner's throat.
+		Just don't expect to NOT get churned into more fat for their frame. The majority of preds don't really care about what you want.
+		'''
+	ItemNomsHotkey:
+		'''
+		Feeling a bit hungry, but don't want to feast on the squirmy snacks all around you? Just look through your inventory!
+		By holding the Eat Items keybind and pressing Swallow while hovering over an item, you can send it right into your belly!
+		Several items will also have unique effects when eaten and digested...be sure to check out what your snacks do in their tooltips!
+		'''
+}
+
+PredStatsMenu: {
+	StatSliceHover:
+		'''
+		[c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:{PredStatName} ({PredStatShorthand})]
+		[c/BFBFBF:{SpentPoints} points invested]
+
+		[c/7F7F7F:Left-click to add 1 point]
+		[c/7F7F7F:Right-click to remove 1 point]
+		'''
+
+	StatDescription: {
+		HoldSHIFTToSeeDescription: "[c/7F7F7F:Hold LEFT SHIFT to see more detailed descriptions of the following statistics.]"
+
+		GLP: {
+			Description:
+				'''
+				[c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:Swallow Strength (GLP)] decides how good your throat is at getting your meals down and keeping them there while your stomach does its thing.
+
+				[c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:Influences the maximum size of prey you can swallow.]
+				[c/7F7F7F:| {BaseSwallowSize} base.]
+				[c/7F7F7F:| +{SwallowSizePerLevel} per stat point invested.]
+				[c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:Influences the rate at which you can drink liquids.]
+				[c/7F7F7F:| {BaseDrinkRate} tiles/second base.]
+				[c/7F7F7F:| +{DrinkRatePer5Levels} tiles/second per 5 stat points invested.]
+				[c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:Influences the struggle "grace period" after swallowing live prey.]
+				[c/7F7F7F:| {BaseStruggleGraceTime}sec base.]
+				[c/7F7F7F:| +{StruggleGraceTimePer5Levels}sec per 5 stat points invested.]
+				'''
+
+			RelevantStats: {
+				Normal:
+					'''
+					Total GLP: [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:{GLPTotal}]
+					[c/7F7F7F:| {GLPSpent} from permanent bonuses]
+					[c/7F7F7F:| {GLPBase} from permanent bonuses]
+					[c/7F7F7F:| {GLPExtra} from temporary bonuses (potions, charms, etc.)]
+
+					{$Mods.V2.PredStatsMenu.StatDescription.HoldSHIFTToSeeDescription}
+					Swallow Size: {PreySwallowSize}
+					Drinking Rate: {LiquidSwallowRate} tiles/second
+					Struggle Grace Period: {StruggleGracePeriod}
+					'''
+				Chronological:
+					'''
+					Total GLP: [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:∞]
+					[c/7F7F7F:| ∞ from digesting at least one Timekeeper]
+
+					Swallow Size: [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:∞]
+					Drinking Rate: [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:Countless universes/second, should you will it]
+					Struggle Grace Period: [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:Unnecessary]
+					'''
+			}
+		}
+
+		TUM: {
+			Description:
+				'''
+				[c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:Stomach Strength (TUM)] decides how good that hungry tummy of yours is at making sure all those tasty treats you pack into it can be successfully detained to be digested.
+
+				[c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:Influences the maximum size your stomach can comfortably reach.]
+				[c/7F7F7F:| {BaseStomachCapacity} base.]
+				[c/7F7F7F:| +{StomachCapacityPerLevel} per stat point invested.]
+				[c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:Influences the capacity of the stomachache meter.]
+				[c/7F7F7F:| {BaseStomachacheMeterCapacity} base.]
+				[c/7F7F7F:| +{StomachacheMeterCapacityPer5Levels} per 5 stat points invested.]
+
+				If this stat is LOWER than your prey's total STR stat, [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.NegativeVoreEffect}:struggle charts between you and your belly's contents are re-weighted against you proportional to the difference.]
+				If this stat is HIGHER than your prey's total STR stat, [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:struggle charts between you and your belly's contents are re-weighted in your favor proportional to the difference.]
+				'''
+
+			RelevantStats: {
+				Normal:
+					'''
+					Total TUM: [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:{TUMTotal}]
+					[c/7F7F7F:| {TUMSpent} from invested stat points]
+					[c/7F7F7F:| {TUMBase} from permanent bonuses]
+					[c/7F7F7F:| {TUMExtra} from temporary bonuses (potions, charms, etc.)]
+
+					{$Mods.V2.PredStatsMenu.StatDescription.HoldSHIFTToSeeDescription}
+					Stomach Capacity: {StomachCapacity}
+					Stomachache Meter Capacity: {StomachacheMeterCapacity}
+					General Struggle Chart Difficulty: {StruggleChartEstimatedDifficulty}
+					'''
+				Chronological:
+					'''
+					Total TUM: [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:∞]
+					[c/7F7F7F:| ∞ from digesting at least one Timekeeper]
+
+					Stomach Capacity: [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:∞]
+					Stomachache Meter Capacity: [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:∞]
+					General Struggle Chart Difficulty: [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:Even entire universes can't "struggle" inside someone as gluttonous as you]
+					'''
+			}
+		}
+
+		ACI: {
+			Description:
+				'''
+				[c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:Acid Strength (ACI)] decides how good your stomach acids are at eating away at your prey until they just can't take it anymore, ready to be churned into a nutritious sludge in your gut.
+
+				[c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:Influences your base digestion tick damage.]
+				[c/7F7F7F:| {BaseDigestionDamage} base.]
+				[c/7F7F7F:| +{DigestionDamagePerLevel} per stat point invested.]
+				[c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:Influences the rate at which your belly deals digestion damage.]
+				[c/7F7F7F:| {BaseDigestionRate} ticks/second base.]
+				[c/7F7F7F:| +{DigestionRatePer5Levels} ticks/second per 5 stat points invested.]
+
+				[c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.NegativeVoreEffect}:Certain items, such as bones, metals, certain clothing pieces, and plastics, cannot be properly digested by normal stomach acids alone.] In order to digest these items, you will need to either use external digestive aids, or upgrade your stomach acids in a more specialized manner.
+				'''
+
+			RelevantStats: {
+				Normal:
+					'''
+					Total ACI: [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:{ACITotal}]
+					[c/7F7F7F:| {ACISpent} from invested stat points]
+					[c/7F7F7F:| {ACIBase} from permanent bonuses]
+					[c/7F7F7F:| {ACIExtra} from temporary bonuses (potions, charms, etc.)]
+
+					{$Mods.V2.PredStatsMenu.StatDescription.HoldSHIFTToSeeDescription}
+					Digestion Tick Base Damage: {DigestionDamage}
+					Digestion Tick Rate: {DigestionRate} ticks/second
+					{AcidTierWithDescription}
+					'''
+				Chronological:
+					'''
+					Total ACI: [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:∞]
+					[c/7F7F7F:| ∞ from digesting at least one Timekeeper]
+
+					Digestion Damage: ∞
+					Digestion Damage Tick Rate: ∞
+					Stomach Acid Tier: [c/FFFF00:Chronological (∞)]
+					Your will to gobble up the entire world, the whole of the Divine Realm included, has gone through in full, granting you a now-former Timekeeper's control over the very flow of time.
+					What was once a living, breathing universe with countless creatures residing in it has been reduced to naught but pudge for your tummy, yet you're still absolutely starving.
+
+					Thankfully, there exist a virtually infinite number of other universes out there, all with one newfound shared purpose: as an endless food supply for you. Your acids are reality's new great constant, dissolving entire bubbles of existence in moments, should you will it.
+
+					Reality is your buffet. All that exists, has ever existed, and ever will have existed is doomed- no, DESTINED to end up as fat for your frame in time.
+					Bon appetit.
+					'''
+			}
+
+			AcidTiers: {
+				NormalBeta:
+					'''
+					Stomach Acid Tier: [c/9F9F9F:Normal (1)]
+					Your stomach acids are just as mundane as the next predator's.
+					[c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.NegativeVoreEffect}:Bones, clothing, and various other materials are easily able to survive your hungry tummy, despite its best efforts to melt them down.]
+
+					[c/601818:The next acid upgrade method has not yet been implemented!]
+					[c/C03030:Please wait until a future update implements the next acid upgrade method.]
+					'''
+				Normal:
+					'''
+					Stomach Acid Tier: [c/9F9F9F:Normal (1)]
+					Your stomach acids are just as mundane as the next predator's.
+					[c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.NegativeVoreEffect}:Bones, clothing, and various other materials are easily able to survive your hungry tummy, despite its best efforts to melt them down.]
+
+					An old enchantress from Avarsici is rumored to live below the surface of the tundra.
+					She's no less wise or witty for it, and may be able to help remedy this fault, for a price...
+					'''
+				Recursive:
+					'''
+					Stomach Acid Tier: [c/FF4FFF:Recursive (2)]
+					Your stomach acids have been enchanted to digest prey recursively as a token of gratitude from a rather...eccentric micro-grade fairy enchantress who now lives in the depths of the frozen tundra.
+					Bones and clothing can no longer escape their fate of being fat on your frame anywhere near as easily. However, [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.NegativeVoreEffect}:plastics and various metals still manage to evade your gut's gastric assault with ease.]
+
+					That said, there were advertisements in the enchantress' room about a product made and sold
+					entirely within Avarsician borders which can resolve this problem...
+					'''
+				Royal:
+					'''
+					Stomach Acid Tier: [c/167200:Royal (3)]
+					Your stomach acids, thanks to a bioalteration spell produced and sold en masse in Avarsici's own borders, are now mixed with nitric acid to create what most simply call "royal acids".
+					Now, virtually nothing of this plane can escape the will of your stomach.
+					However, be aware that [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.NegativeVoreEffect}:various items of otherworldly origin] are still impervious to your glorious gastrointestinal gauntlet.
+					Additionally, you still [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.NegativeVoreEffect}:cannot hold and digest the souls of your prey] without the help of a charm or pred ability.
+
+					There is little short of a deity's blessing that could grant you greater digestive potential.
+					'''
+				Divine:
+					'''
+					Stomach Acid Tier: [c/167200:Divine (4)]
+					By the will of Melodia, as gratitude for bringing her star songbird back to her, your royal acids have been further granted the privilege which only a Sinhunter can otherwise enjoy.
+					Nothing shall escape your stomach --- you can even hold and digest non-divine souls innately, and not even the delicacies of the Divine Realm can outlast your supreme digestive system.
+					Thus, all your battles with breakfast (and other meals) are now a war of attrition --- one which, should you will it, you are destined to win.
+
+					An even greater boost would be necessary to begin digesting the souls of the Divine Realm's inhabitants on your quest to truly become the apex...but where would one even BEGIN to gain such raw, unadulterated gastric strength?
+					'''
+			}
+		}
+
+		ABS: {
+			Description:
+				'''
+				[c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:Absorption Strength (ABS)] decides how good your digestive tract is at ensuring that every last (digestible) trace of your prey is properly refined into rich, soft cellulite to be packed onto your bottomless belly's surface (and, of course, any other areas of preference).
+
+				[c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:Influences the speed at which your body absorbs prey.]
+				[c/7F7F7F:| {BaseAbsorbRate} weight/minute at base.]
+				[c/7F7F7F:| +{AbsorbRatePerLevel} weight/minute per stat point invested.]
+				[c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:Influences the duration of status effects from eaten food and drink.]
+				[c/7F7F7F:| +{BuffExtendPer5Levels} buff duration per 5 stat points invested.]
+				[c/7F7F7F:| -{DebuffLossPer5Levels} debuff duration per 5 stat points invested.]
+				'''
+
+			RelevantStats: {
+				Normal:
+					'''
+					Total ABS: [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:{ABSTotal}]
+					[c/7F7F7F:| {ABSSpent} from invested stat points]
+					[c/7F7F7F:| {ABSBase} from permanent bonuses]
+					[c/7F7F7F:| {ABSExtra} from temporary bonuses (potions, charms, etc.)]
+
+					{$Mods.V2.PredStatsMenu.StatDescription.HoldSHIFTToSeeDescription}
+					Absorption: {AbsorptionRate} weight/minute
+					Buffs from eaten prey have their duration increased by {BuffExtensionTime}
+					Debuffs from eaten prey have their duration decreased by {DebuffDisextensionTime}
+					'''
+				Chronological:
+					'''
+					Total ABS: [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:∞]
+					[c/7F7F7F:| ∞ from digesting at least one Timekeeper]
+
+					Absorption: ∞ weight/minute
+					Buffs from eaten prey are infinite and infinitely stackable
+					Debuffs are never gained from eaten prey at all
+					'''
+			}
+		}
+	}
+}
+
+PredPlayerGoals: {
+	Starter: {
+		Name: Starter
+		Subtitle: New Game
+		Description:
+			'''
+			Just getting started on the wonderful world of...well, eating the world, one meal at a time? No worries; you're already free to start snacking!
+			Here are some of the first things you ought to do to make sure you and your gut are as ready as can be to get some proper good eats in you!
+			'''
+
+		FirstLivePrey: {
+			Name: First Chyme
+			Description:
+				'''
+				Eat and digest your first live prey.
+				'We all start somewhere.'
+				'''
+		}
+
+		FirstItemEaten: {
+			Name: Taking Inventory
+			Description:
+				'''
+				Pluck something out of your normal inventory and into your internal "inventory".
+				'Just couldn't wait until you found a squirmier snack to swallow, eh?'
+				'''
+		}
+
+		FirstDrink: {
+			Name: A Refreshing Drink
+			Description:
+				'''
+				Drink a bit of water.
+				'Even the best preds need a nice, cold drink every now and again! You might even get some seafood every so often as you drink, too!'
+				'''
+		}
+	}
+
+	Beginner: {
+		Name: Beginner
+		Subtitle: Early to Mid Pre-Hardmode
+		Description:
+			'''
+			Okay, so you know the basics now, but there's still a nigh-endless supply of succulent, mouth-watering MEAT out there for you to sink those pearly whites into as they sink into your gut.
+			Try to snag a good few courses of breakfast to help yourself get used to swallowing and digesting bigger and/or squirmier meals.
+			'''
+
+		EatSnowFlinx: {
+			Name: It Was So Fluffy!
+			Description:
+				'''
+				Eat and digest a snow flinx.
+				'The fur honestly just bothers the throat on the way down...it's a really comfy feeling to have one in your belly, though. It's like gulping down a huge pillow or three.'
+				'''
+		}
+
+		SleepSpeedsDigestion: {
+			Name: Digestive Nap
+			Description:
+				'''
+				Sleep in a bed for a little while to help digest a big meal better.
+				'Everyone knows a good, long nap is the #1 way to turn friends and foes alike into tum fat after putting in all that hard work to eat them!'
+				'''
+		}
+
+		TooFull: {
+			Name: Overstuffed
+			Description:
+				'''
+				Stay at or near your maximum capacity for a full minute.
+				'Eyes bigger than your stomach, eh? Happens to every newbie pred, and for good reason. It’s hard to pace yourself sometimes, what with so much thick, juicy MEAT walking around everywhere...'
+				'''
+		}
+
+		ColorfulSoup: {
+			Name: Dessert Before Breakfast
+			Description:
+				'''
+				Snack on a Green, Blue, and Purple Slime all at once.
+				'A great source of sugar!...very flammable sugar, but still!'
+				'''
+		}
+
+		EatPinky: {
+			Name: Too Sweet To Live
+			Description:
+				'''
+				Eat and digest Pinky.
+				'The little thing tastes like cotton candy, and it’s small enough for just about anyone to swallow! How could someone bear to NOT gobble this little delicacy up on the spot?'
+				'''
+		}
+
+		EatFirstLifeCrystal: {
+			Name: Healthy Rock Candy
+			Description:
+				'''
+				Eat and digest a Life Crystal.
+				'Tastes like cherry.'
+				'''
+		}
+
+		EatFirstManaCrystal: {
+			Name: Magically Delicious
+			Description:
+				'''
+				Eat and digest a Mana Crystal.
+				'Tastes like blue raspberry.'
+				'''
+		}
+
+		DrinkHoney: {
+			Name: A Revitalizing Drink
+			Description:
+				'''
+				Drink a bit of honey.
+				'All good things must come to an end...inside a tum like yours. Honey just so happens to be entirely too many of those good things to NOT end up churned into belly fat. It's delicious, it fills you up perfectly, it's deliciously fattening...it even gives you a bit more health as you melt it down! What's there not to love about it?'
+				'''
+		}
+	}
+
+	Amateur: {
+		Name: Amateur
+		Subtitle: Mid to Late Pre-Hardmode
+		Description:
+			'''
+			You're starting to get the hang of eating now. By now, you should be able to pack away at least another person your size...if not a bit more.
+			Feel free to start hunting down the meals in this section to help train up your system even more; eating just one person at once simply won't do for much longer!
+			'''
+
+		EatNymph: {
+			Name: Damsel In Digest
+			Description:
+				'''
+				Eat and digest a hungry nymph.
+				'You could make a scarf out of her hair, y'know. Hang onto it.'
+				'''
+		}
+
+		EatMaxLifeAndManaCrystals: {
+			Name: Topped Off (For Now)
+			Description:
+				'''
+				Eat and digest a total of 15 Life Crystals and 9 Mana Crystals.
+				'Feeling strong enough to snack on some properly lively prey yet, or do you need a bit more?'
+				'''
+		}
+
+		DigestOnLawnChair: {
+			Name: Beach Day
+			Description:
+				'''
+				After scarfing down a filling meal, relax in the sun for a while.
+				'Feeling the fresh, cool breeze blow against your belly as it mulches a satisfying, squirmy meal inside...it's great, isn't it?'
+				'''
+		}
+
+		FastFood: {
+			Name: Fast Food
+			Description:
+				'''
+				Gobble up 4 distinct live prey (that are actually a challenge) within 2 seconds.
+				'Be sure you don't catch hiccups!'
+				'''
+		}
+	}
+}
+
+ItemName: {
+	Voraria: {
+		Consumables: {
+			Catchables.Pinky: Pinky
+			DigestionRepairScroll: Scroll of Divine Indigestion
+		}
+
+		Charms: {
+			BetterDigestion: Lesser Acidic Charm
+			LessStomachWeight: Lesser Disencumberance Charm
+			RegenFromAbsorption: Revitalization Charm
+		}
+	}
+}
+
+ItemTooltip: {
+	Generic: {
+		CommonColorCodes: {
+			Heal: FF3F4F
+			ManaHeal: 31D1E2
+			PositiveEffect: 5FFF5F
+			NegativeEffect: FFBF5F
+			PositiveVoreEffect: 00BF00
+			NegativeVoreEffect: BF5F00
+		}
+
+		HoldForInDepthFunctionAndLore:
+			'''
+			[c/7F7F7F:Hold LEFT SHIFT for more information on this item's exact function]
+			[c/7F7F7F:Hold LEFT SHIFT and LEFT CONTROL for some neat flavor text about this item]
+			'''
+		EdibleFromNormalUse: Using this item causes you to eat it, but it can't be used as a mouse item
+
+		AcidResistTier: {
+			1: Immune to normal stomach acids
+			2: Immune to normal and enchanted stomach acids
+			3: Immune to normal and enchanted stomach acids, as well as aqua regia
+		}
+	}
+
+	Vanilla: {
+		Accessories: {
+			Utility.ShimmerCloak:
+				'''
+				Grants immunity to Intangibility
+				Hold <down> to temporarily bypass this immunity
+				Allows you to safely drink shimmer
+				'''
+
+			Informational: {
+				REK3K: Displays number of enemies, kill and meal counts, and rare creatures
+				TallyCounter:
+					'''
+					Displays how many enemies have been killed in the world
+					Displays how many entities you've digested
+					'''
+			}
+		}
+
+		Consumables: {
+			LifeCrystal: {
+				Short:
+					'''
+					Provides a few revitalizing effects when eaten
+					{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+					'''
+				Long:
+					'''
+					When eaten by anything:
+					- [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.Heal}:Heals for {LifeCrystalEatHeal} health] instantly upon running out of durability.
+					- [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveEffect}:Grants the Regeneration buff] while digesting; this lingers for [c/FFFF00:{LifeCrystalEatRegenLength} seconds] once fully digested.
+					When eaten by a player, upon running out of durability:
+					- Permanently [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.Heal}:increases maximum health by 20].
+					- For every 3 crystals eaten total, permanently [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:increase the TUM stat by 1].
+					  - The above two bonuses can stack for up to {LifeCrystalsMax} crystals eaten.
+					Life Crystals eaten by this character (max. {LifeCrystalsMax}): [c/{LifeCrystalsUsedColor}:{LifeCrystalsUsed}].
+					'''
+				Flavor:
+					'''
+					A mysterious crystal which forms in the deeper caverns of Terraria, drawing all manner of curious and craving adventurers in to examine it. Upon exposing the crystal to a sufficient onslaught of gastric acid, the crystal lends its power to the consumer, greatly increasing their vitality...though part of the effect only occurs up to a certain number of times. The means by which this strange phenomenon occurs are poorly understood, but have led many to believe a powerful being created these crystals with the intention of leeting them be eaten by worldly creatures in need of strength to hunt. While this was initially thought to be an unfounded claim, the fact that powerful predators have caught truly unnaturally perfect prey in the past suggests otherwise...
+					Those who have eaten Life Crystals before note that doing so feels a lot like eating rock candy, with a notable cherry-like flavor. The first person to do it ended up famous worldwide for quite some time because of a number of hilariously inept, yet somehow successful achievements. A pity he ended up getting gulped down and gurgled by a gleeful, gluttonous ghost.
+					'''
+			}
+
+			LifeFruit: {
+				Short:
+					'''
+					Provides a swathe of truly revitalizing effects when eaten
+					{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+					'''
+				Long:
+					'''
+					When eaten by anything:
+					- [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.Heal}:Heals for {LifeFruitEatHeal} health] instantly upon running out of durability.
+					- [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveEffect}:Grants the Regeneration buff] while digesting; this lingers for [c/FFFF00:{LifeFruitEatRegenLength} seconds] once fully digested.
+					When eaten by a player who has eaten at least 15 Life Crystals, upon running out of durability:
+					- Permanently [c/{LifeFruitHealthBonusColor}:increases maximum health by 5].
+					- Permanently [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:increases stomach strength (TUM) by {LifeFruitStomachStrengthBonus}].
+					- Permanently [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:increases acid strength (ACI) by {LifeFruitAcidStrengthBonus}].
+					  - The above three bonuses can stack up to {LifeFruitMax} times.
+					Life Fruit eaten by this character (max. {LifeFruitMax}): [c/{LifeFruitUsedColor}:{LifeFruitUsed}].
+					'''
+				Flavor:
+					'''
+					A mysterious crop only ever found in the depths of a specific jungle on Terraria, this delectable fruit seems like only a rare delicacy at first...but when sufficient residual mana sourced from Life Crystals' magic swirls within the body of the consumer, it bestows upon them and their stomach greater power than a Life Crystal ever could. Many have speculated these were coerced into growing in much the same way that Life Crystals are thought to have been...and given that angels from a plane beyond have documentedly visited our planet and even been eaten by particularly ambitious predators on it, this isn't such an outlandish claim.
+					While rather few have managed to taste the fruit in full, due to a certain trio of feminine floral demis deep in the jungle craving them and those who would seek out their craved snacks at all times, those who have managed to gulp down these fruits have reported a pleasant and tasteful combination of orange and mango flavors as the main appeal of the Life Fruit as an exotic snack option.
+					'''
+			}
+
+			ManaCrystal: {
+				Short:
+					'''
+					Provides a handful of magically beneficial effects when eaten
+					{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+					'''
+				Long:
+					'''
+					When eaten by anything:
+					- [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.ManaHeal}:Restores 100 mana] instantly upon running out of durability.
+					- [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveEffect}:Grants the Mana Regeneration buff] while digesting; this lingers for [c/FFFF00:{ManaCrystalEatManaRegenLength} seconds] once fully digested.
+					When eaten by a player, upon running out of durability:
+					- Permanently [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.ManaHeal}:increases maximum mana by 20].
+					- For every 3 crystals total eaten, permanently [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:increases the ABS stat by 1].
+					  - The above two bonuses can stack for up to {ManaCrystalsMax} crystals eaten.
+					Mana Crystals eaten by this character (max. {ManaCrystalsMax}): [c/{ManaCrystalsUsedColor}:{ManaCrystalsUsed}].
+					'''
+				Flavor: Very commonly made and just as commonly munched on, these oversized star-shaped batches of blue-raspberry-flavored rock candy are infused with residual mana from pieces of the stars above, making them readily provide those who eat them with additional space in their mana reserves. Many have speculated that there could be less eating-oriented approaches to using these, but why would you care about that when you can munch on such a big batch of blue-raspberry-flavored rock candy?
+			}
+		}
+
+		Weapons: {
+			Melee: {
+				CactusSword: {
+					Short:
+						'''
+						Hurts your throat a noteworthy bit to swallow
+						While digesting, enemies that hit you take damage themselves
+						{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+						'''
+					Long:
+						'''
+						When eaten:
+						- [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.NegativeEffect}:Deals {CactusSwordSwallowDamage} damage to the pred] when swallowed.
+						- [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.NegativeEffect}:Inflicts {$Mods.V2.StatusEffects.Debuffs.SoreThroat.Name} for {CactusSwordSoreThroatTime} seconds] when swallowed.
+						- [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveEffect}:Grants the Thorns buff] while digesting, and for [c/FFFF7F:{CactusSwordThornsTime} seconds] longer once fully digested.
+						'''
+					Flavor: A dubiously-wieldy sword fashioned from cactus cuttings. While its prickly nature makes it fairly usable as a weapon, one has to wonder how it would taste...and if there's any way to get around the discomforting amount of spines it still has.
+				}
+
+				FruitcakeChakram: {
+					Short:
+						'''
+						Throw it to get it as far away from yourself as possible; alternatively, you can eat it
+						No matter how angry eating it makes you, it is unfortunately the best way to rid the world of this menace
+						{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+						'''
+					Long:
+						'''
+						When eaten:
+						- [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.NegativeEffect}:Deals {FruitcakeChakramSwallowDamage} damage to the pred] when swallowed, because it just tastes that bad.
+						- [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.NegativeEffect}:Inflicts {$Mods.V2.StatusEffects.Debuffs.SoreThroat.Name} for {FruitcakeChakramSoreThroatTime} seconds] when swallowed; see above
+						- [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.NegativeEffect}:Inflicts the Poison debuff] while in your stomach, and for [c/FFFF7F:{FruitcakeChakramPoisonTime} seconds] longer once fully digested; see above.
+						- [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveEffect}:Grants the Wrath buff] while in your stomach, and for [c/FFFF7F:{FruitcakeChakramWrathTime} seconds] longer once fully digested, because needing to eat this thing makes one VERY angry.
+						'''
+					Flavor:
+						'''
+						A single look at this abominable crime against catering makes you wonder if it was ever supposed to be food in the first place. The mere THOUGHT of gracing this...THING with death by digestion almost seems too good a mercy for it.
+
+						You're not alone in that assessment, either. Fruitcake was first made long ago by a rather...eccentric baker in a territory previously owned by one of the many, MANY royals that have made their mark on Terraria over the years.
+
+						It is now banned within any and all Avarsician borders; the very kingdom whose then-prince Markus Caldera originally annexed the country (and its queen) as a way to prove his worth (and, to his credit, he WAS successful on both fronts) as heir to the throne.
+						The Apex Convocation unanimously agreed to ban it from Desperais, and despite the hundreds of years and countless shifts in the seat fillings that have passed since that initial ruling, that ban has never been lifted.
+						Countless other territories outside of these two notable powers also ban it, and only ever for one reason: the mere existence of this concept is slander against the good name of bakers the planet over.
+
+						The only use this has is as a weapon, and POTENTIALLY as emergency rations if all else is gone.
+						'''
+				}
+			}
+		}
+	}
+
+	Voraria: {
+		Charms: {
+			BetterDigestion: {
+				Short:
+					'''
+					Makes your acids a little bit stronger
+					{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+					'''
+				Long: "[c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:Increases your acid strength stat (ACI) by {AcidStrengthBonus}]."
+				Flavor: A beginner-level charm designed to make the bearer's stomach acids substantially more potent than if they were to go without it. Very useful for first-time predators who could really use that extra kick to their digestive juices to secure their first few big meals, though sadly not particularly worthwhile past those starting stages.
+			}
+
+			LessStomachWeight: {
+				Short:
+					'''
+					Makes your stomach lighter, but only if you're not too full
+					{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+					'''
+				Long:
+					'''
+					[c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:Decreases stomach weight by {WeightReduction}.]
+					If your stomach is at {FullnessEffectivenessLossThreshold} fullness or more, [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.NegativeVoreEffect}:this effect becomes less effective the less capacity you have to spare.]
+					'''
+				Flavor: A beginner-level charm designed to make one's stomach less of a burden to lug around while it's full of sweet, sloshy calories. While it works in most cases, it does this by passively generating a layer of helium inside of the bearer's stomach; thus, if there isn't sufficient room to provide said helium deposits, the charm becomes substantially less effective.
+			}
+
+			RegenFromAbsorption: {
+				Short:
+					'''
+					Grants health and mana regeneration while digesting dead prey
+					{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+					'''
+				Long:
+					'''
+					[c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:While digesting dead prey:]
+					- [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.Heal}:Health is regenerated] at a rate of {HealthRegenerationRatio} of your [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:absorption rate].
+					- [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.ManaHeal}:Mana is regenerated] at a rate of {ManaRegenerationRatio} of your [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:absorption rate].
+					[c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.NegativeVoreEffect}:Effectiveness decreases if there are prey in your stomach still alive.]
+
+					Current Regeneration ({RegenEffectiveness} effectiveness with {LivePreyRemaining} out of {PreyRemaining} prey still alive):
+					- [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.Heal}:{CurrentHealthRegen} HP/sec]
+					- [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.ManaHeal}:{CurrentManaRegen} mana/sec]
+					'''
+				Flavor: An intermediate-level charm designed to ease the long-standing issue of one's digestive system granting surprisingly little reprieve from the heat of battle. As long as a surplus of food resides in the bearer's stomach, this charm will convert some of the excess calories into mana to fuel a spell which revitalizes the bearer both physically and magically. Of course, this spell can only work as quickly as the bearer's belly can digest its meals.
+			}
+		}
+
+		Consumables: {
+			Catchables: {
+				Pinky: {
+					Short:
+						'''
+						When used, a delicious little Pinky is released into the world
+						Hold the Swallow key while using this item to instantly gulp down the released Pinky
+						Has a very pleasantly sweet taste, granting a few buffs when eaten
+						{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+						'''
+					Long:
+						'''
+						When eaten by anything:
+						- [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.Heal}:Heals for {PinkyEatHeal} health] instantly upon running out of health.
+						- [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveEffect}:Grants the Happy! buff] while in a stomach; this lingers for [c/FFFF00:{PinkyEatHappyLength} seconds] once fully digested.
+						- [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveEffect}:Grants the Regeneration buff] while digesting; this lingers for [c/FFFF00:{PinkyEatRegenLength} seconds] once fully digested.
+						May have any number of positive consequences if given to someone as a sweet treat of a gift.
+						'''
+					Flavor:
+						'''
+						With how diverse slimes are in size, shape, and savor, it's no surprise that some slimes end up hunted almost exclusively for their beloved flavor. No slime embodies this more directly than the Pinky, a very small slime which is HIGHLY prized for the following traits:
+						1) Its bite-size nature, allowing even the smallest and most inexperienced of predators to swallow it with relative ease.
+						2) Its lovely flavor, which much resembles cotton candy, though almost all are uncertain as to where this sweet flavoring actually originated.
+						3) Its vibrant pink coloration, from which it gets its name.
+						'''
+				}
+			}
+
+			DigestionRepairScroll: {
+				Short:
+					'''
+					Using this item will instantly relieve you of most of the downsides of predator or preything lifestyles
+					When this is used, a full day must pass before another one can be used
+					{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+					'''
+				Long:
+					'''
+					This item can only be used once at least one full day has passed since the last time it was used.
+					Upon usage, it will instantly:
+					- [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:Fully repair all items in your inventory] that have taken digestion damage and can be repaired.
+					- [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:Remove all Softened stacks still applied to you] from any lingering acid burns from recent encounters.
+					- [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:Clear all indigestion-related debuffs you may have] from particularly troublesome meals.
+					'''
+				Flavor:
+					'''
+					It's a scroll, inscribed with countless runes that you've never seen before; notably, they look surprisingly similar to, yet so very different from, musical notes...which would help, if the scroll bothered to say anything about the actual composition of the piece. Whoever wrote this sheet music didn't think it through very well from the perspective of one who might want to play it.
+					In any event, incomprehensible as it may be at a cursory glance, as you go to look at it closer, the runes fade into the background somewhat, and a second layer of text fades in which is actually comprehensible to the average person:
+
+					[c/FF3FBF:CHORUS (sing in D# major):]
+					[c/FF3FBF:From heavens inward and a cauldron outward, the Conductress' graces shall smile.]
+					[c/FF3FBF:By Melodia's song, this verse, when not wrong, shall save from a fate all too vile.]
+
+					[c/FF3FBF:I near face the Veil, the edge of our great hail, as a chance predator's left me weak,]
+					[c/FF3FBF:So by Melodia's song, I sing a chorus along, for my strength to return to its peak.]
+
+					[c/7F1F5F:POST-CHORUS (composer's note):]
+					[c/7F1F5F:But the song must rest, asleep in its nest, 'fore its strength can remend its own peak,]
+					[c/7F1F5F:So by my sacred song, don't dare sing this wrong; I've no care for the melodically weak.]
+
+					...you can't help but wonder if Promethia stole this from someone.
+					'''
+			}
+
+			DigestionUpgradeTablets: {
+				Short:
+					'''
+					Can only be eaten once you've fully gained the stomach-strengthening effects of Life Fruit and enchanted your stomach acids beforehand
+					Permanently modifies your digestive system using a delayed-effect bioalteration spell once fully digested
+					This mixes nitric acid into the structure of your stomach acid, turning it into aqua regia (royal water)
+					This change makes your stomach significantly better at digesting things, and allows you to digest more things you wouldn't normally be able to
+					{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+					'''
+				Long:
+					'''
+					This item can only be eaten once you have eaten and digested at least {LifeCrystalsMax} Life Crystals, at least {ManaCrystalsMax} Mana Crystals, and at least {LifeFruitMax} Life Fruits.
+					[c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:Permanently grants +40 ACI.]
+					[c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:Permanently grants +20 ABS.]
+					[c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:Raises your acid tier to Royal (2).]
+					This upgrade is permanent, but only takes effect once the pack is fully digested.
+					'''
+				Flavor:
+					'''
+					Despite how often these things were flaunted around as the future of predatory prowess and a marvel of modern magical bioengineering back in the day, the real marvel is that these somehow pose no significant health risks despite mixing an entire secondary acid into an already-powerful stomach. The label on the side suggests eating the entire pack...including the pack itself. The pack supposedly has much better nutritional value than the pills, so...bottoms up.
+					Obtaining more than one pack of these tablets is prohibited by Avarsician law and punishable by...well, predominantly fucking about and learning what for. It's not exactly hard to guess why a spell that assumes you haven't taken the pills at all is bad if you've already melted down a full pack of them before.
+					'''
+			}
+		}
+	}
+}
+
+InfoDisplayName.TallyCounterVore: Meal Count
+InfoDisplayText.TallyCounterVore.InvalidMeal: Meal count unavailable
+
+StatusEffects: {
+	Debuffs: {
+		MoltenStomach: {
+			Name: Molten Stomach
+			Description:
+				'''
+				[c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.NegativeVoreEffect}:Your stomach is getting melted from the inside by the lava you drank.]
+				[c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.NegativeVoreEffect}:Maybe don't drink lava without a way to prevent this outcome.]
+				'do you are have stupid'
+				'''
+		}
+
+		ShimmeringStomach: {
+			Name: Shimmering Stomach
+			Description:
+				'''
+				[c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.NegativeVoreEffect}:Your stomach is about to end up quantum-superimposed on itself.]
+				[c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.NegativeVoreEffect}:Don't drink shimmer without a way to prevent this outcome.]
+				'Fool ya once, shame on me. Fool ya twice...'
+				'''
+		}
+
+		Softened: {
+			Name: Softened
+
+			Description: {
+				Base:
+					'''
+					A stack of this debuff is applied for every [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.NegativeVoreEffect}:{SoftenedMaxHealthThreshold} of your BASE maximum health you take in digestion damage.]
+					Up to [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.NegativeVoreEffect}:{SoftenedMaxStacks}] can be applied on you (current: [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.NegativeVoreEffect}:{SoftenedStacks}]).
+					[c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.NegativeVoreEffect}:Decreases defense by {SoftenedDefReduction}] per stack (current: [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.NegativeVoreEffect}:{SoftenedCurrentDefReduction}]).
+					[c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.NegativeVoreEffect}:Increases taken digestion damage by {SoftenedDigestiveAid}] per stack (current: [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.NegativeVoreEffect}:{SoftenedCurrentDigestiveAid}]).
+					'''
+
+				Flavor: {
+					0: You've stayed acid-free for a good while, haven't you?
+					1: You feel a light itch in a few places
+					2: You're starting to itch a good deal more
+					3: Your skin is starting to sting, badly
+					4: Your skin feels like it's burning
+					5: You feel patches of skin starting to decay
+					6: Your skin is starting to melt off
+					7: Your predator's stomach has picked up the pace now
+					8: The muscles beneath your bones are melting away now
+					9: You can barely fight the acidic onslaught anymore
+					10: Say your goodbyes; they're more likely to escape this gut than you are
+				}
+			}
+		}
+
+		SoreThroat: {
+			Name: Sore Throat
+			Description:
+				'''
+				[c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.NegativeVoreEffect}:Prevents swallowing anything orally]
+				Does not stop other methods of consumption
+				'Something's bothering your throat pretty bad'
+				'''
+		}
+	}
+}
+
+Death: {
+	DrownedPlayer: {
+		GutSlut: {
+			1: "{Player} mistook water for the stomach acid pools they're familiar with."
+			2: Maybe stick to drowning in people instead of ponds, {Player}.
+			3: "{Player} probably has a thing for mermaids. Unfortunately, they couldn't find any hungry mermaids fast enough."
+		}
+	}
+
+	DigestedPlayer: {
+		YouWereEaten: You were eaten...
+		Paradox: Awfully full of yourself today, aren't you, {Player}?
+
+		Universal: {
+			1: "{Player} was eaten by {Pred}."
+			2: "{Player} couldn't escape {Pred}'s stomach."
+			3: "{Pred}'s stomach was the last thing {Player} ever saw."
+			4: "{Player} learned the hard way that napping in a gut isn't safe."
+			5: "{Pred} mulched {Player} without a second thought."
+			6: "{Player} slipped down {Pred}'s throat, never to be seen again."
+			7: "{Pred} had {Player} as a quick snack."
+			8: "{Pred} made a meal of {Player}."
+			9: "{Player} became an idiot sandwich."
+			10: "{Pred} now has Exquisitely Stuffed for a while, thanks to {Player}."
+			11: "{Player} became a second breakfast for {Pred}."
+			12: "{Player} tried to become a gastroenterologist from memory."
+			13: "{Player} mistook pearly whites for pearly gates."
+			14: "{Player} is a terrible dieting advisor."
+			15: "{Player} thought the Iron Maiden sounded hot."
+			16: "{Player} got fucking churned lmaooo"
+			17: "{Player} was mulched by {Pred}."
+			18: "{Player} got got by {Pred}."
+			19: "{Player} was eaten from the bottom up...or was it from the top down?"
+			20: "{Player} underwent a merciful euthanasia by digestion."
+			21: "{Player} was snackrificed to {Pred}."
+
+			StomachSuffocation: {
+				1: "{Player} ran out of air in {Pred}'s stomach."
+				2: "{Pred}'s stomach didn't have enough air for {Player}."
+			}
+		}
+
+		SpecificDigestionType: {
+			Acidic: {
+				1: "{Player}'s fruitless thrashing was finally stopped by {Pred}'s stomach acids."
+				2: "{Pred}'s stomach acids were too much for {Player}."
+				3: "{Player} went on the other kind of acid trip."
+				4: "{Player} succumbed to {Pred}'s acids."
+				5: "{Player} tried to swim in acid."
+				6: "{Player}'s flesh was melted from the bone inside {Pred}'s stomach."
+				7: "{Player} was transmuted into chyme by {Pred}."
+				8: "{Pred}'s stomach melted {Player} down."
+				9: "{Player} was dissolved by {Pred}."
+				10: "{Player} got a little too soft."
+			}
+
+			Thermal: {
+				1: "{Player} got torched."
+				2: "{Player} was smelted by {Pred}."
+				3: "{Player} burned to a fine crisp inside {Pred}."
+				4: "{Player} misjudged the digestive strength of fire."
+				5: "{Player} was burned to death in {Pred}'s stomach."
+			}
+		}
+
+		HumanoidPred: {
+			1: "{Player} became ass fat for {Pred}."
+			2: "{Player} helped to widen up {Pred}'s thighs."
+			3: "{Player} gave {Pred} an extra waistband size."
+			4: "{Player} decided to bulk up {Pred}'s booty a little."
+		}
+
+		SlimePred: {
+			1: "{Player} wanted to eat a tasty dessert, but ended up part of one instead."
+			2: A wobbly {Pred} managed to dissolve {Player}.
+		}
+
+		SpecificNPC: {
+			Forest: {
+				Pinky: {
+					1: "{Pred} turned {Player} into some pretty pink gel."
+					2: "{Player} got a little too into a cute little {Pred}."
+					Hardcore:
+						'''
+						The Pinky is often seen as one of the weakest species of slime, and for good reason.
+						Their small size makes it difficult for them to ever devour human-sized prey or larger.
+						So how, then, did {Player}'s only life manage to get ended by one of these tiny little treats?
+						At least whatever, or WHOever, eats their new home will be getting a VERY filling dessert...
+						'''
+				}
+			}
+
+			Meteorite: {
+				MeteorMarble: {
+					1: "{Player} thought a Meteor Marble was crafted well enough to feed themselves to."
+					2: "{Player} found a Meteor Marble that was just a little too big to handle."
+					Hardcore:
+						'''
+						Somehow, {Player} thought it was a good idea to make a Meteor Marble big enough to fit inside.
+						Fitting, then, that the last moments of their only life were spent crammed into that very same Meteor Marble.
+						Nobody will ever find what remains of them...for nothing does.
+						'''
+				}
+
+				MeteorMaiden: {
+					1: "{Player} was helplessly smitten for a refueling Meteor Maiden."
+					2: "{Player} helped to re-energize a Meteor Maiden after a long day's work by the latter."
+					3: "{Player} thought a Meteor Maiden's combustion chamber looked inviting."
+					4: If Meteor Maidens had a rear or thighs to add prey to, {Player} would definitely be working to fatten them up right now.
+					5: A Meteor Maiden saw {Player} as a sufficient fuel source, and secured them for herself.
+					Hardcore:
+						'''
+						A pleasant sound, almost like a belch, but bassier and rockier, rings out over the mountaintops.
+						{Player} has ended up as little more than a meal for a Meteor Maiden, never to be seen again.
+						Perhaps that Meteor Maiden will go on to eat a moon or seven, and countless celestial bodies beyond? Only time will tell...
+						'''
+				}
+			}
+
+			Townsfolk: {
+				Nurse: {
+					1: "{Player} made a very healthy meal for {Pred}."
+					2: "{Player} helped to keep {Pred}'s belly happy and healthy."
+					3: "{Pred}'s digestive system was given a check-up by {Player}."
+					4:
+						'''
+						{Pred} lost her medical license after adding {Player} to her hips...
+						...oh, wait. That's what she's qualified to do. Never mind.
+						'''
+					5: "{Player} is now a victim of medical mealpractice."
+					6: "{Player} was quarantined."
+					7: "{Pred} prescribed {Player} a one-way trip to her backside...whether they got there is another story."
+					8: "{Pred} gave {Player} a thorough examination by digestion."
+
+					NoFundsForHeal: {
+						1: "{Player} couldn't pay their medical fees."
+						2: "{Player} thought free healthcare exists."
+						3: "{Player} tried to undercut {Pred}, and learned the hard way how bad of an idea that is."
+						4: "{Player}'s insurance didn't cover digestion."
+					}
+
+					Hardcore:
+						'''
+						{Player} has become the newest victim of {Pred}'s medical mealpractice.
+						Mind you, most healthcare packages cover digestion reformation...but {Player} forgot to buy one.
+						'''
+				}
+
+				ArmsDealer: {
+					1: "{Player} was locked and loaded into {Pred}'s gut."
+					2: "{Pred} gave his stomach some target practice with {Player}."
+					Hardcore:
+						'''
+						{Player} was chambered into {Pred}'s ruthless gut, never to be seen again.
+						The skilled gunman simply spent the rest of his day unwinding with some relaxing target practice as his prey melted away.
+						'''
+				}
+
+				Angel: {
+					1: "{Player} was given a one-way ticket to the second Heaven that is {Pred}'s belly."
+					2: "{Player} atoned for their sins (or, perhaps, committed more of them) within {Pred}'s confines."
+					3: "{Player} will be thoroughly studying {Pred}'s internals."
+					4: "{Player} was somehow a submissive enough snack to get {Pred} to melt them into gut fat. An impressive, if strange, performance."
+					Hardcore:
+						'''
+						{Pred}'s stomach sent {Player} to heaven...which, in her case, happens to also be her stomach.
+						Ah, well. At least the rest of their days will be well-enjoyed as soft, doughy fat rounding out her tummy.
+						'''
+				}
+
+				Stylist: {
+					1: "{Player} melted inside {Pred}'s stylish stomach."
+					2: '''{Pred}'s belly gave {Player} a "free" haircut.'''
+					3: "{Pred} let {Player} marinate for a while in her stomach acids."
+					4: "{Player} will look super stylish as a new layer of fat for {Pred}."
+					5: "{Pred} just couldn't resist {Player}'s delectable hair."
+					6: "{Player} helped {Pred} exercise her no-refunds policy."
+					BloodMoonHaircut: (Player) asked for a haircut at just the right time.
+					Hardcore:
+						'''
+						{Player} snackrificed their only life to its rightful holder: {Pred} the hair stylist.
+						May they find endless enjoyment as stylish stomach fat.
+						'''
+				}
+
+				Succubus: {
+					1: "{Player} was forced to fatten up {Pred}'s demonic derriere."
+					2: "{Player}'s body is now stored on {Pred}'s hellish hips."
+					3: "{Pred} is one step closer to being the fattest demon in the world, thanks to {Player}."
+					4: "{Player} helped thicken up {Pred}'s satanic sides even further."
+					5: "{Pred} promised {Player} a fun time...and figured that a night of hanging off her midsection counts."
+
+					StomachSuffocation: {
+						1: "{Player}'s lungs couldn't handle {Pred}'s infernal internals."
+						2: "{Pred}'s searing stomach scorched {Player}'s respiratory system."
+					}
+
+					Hardcore:
+						'''
+						{Player}'s body and soul alike were churned into some new chest fat for {Pred}.
+						Maybe now, she'll be able to use that strength to become the apex pred she's wanted to be.
+						'''
+				}
+
+				Mechanic: {
+					1: '''{Pred}'s system converted {Player} into "potential energy".'''
+					2: "{Player} helped to recharge {Pred}'s batteries."
+					3: "{Pred} took a snack break with {Player}."
+					4: "{Pred}'s system caused {Player} to short-circuit."
+					5: "{Player} suffered a blackout in {Pred}'s stomach."
+					6: "{Player} was fixed."
+					7: "{Player} was scrapped."
+					8: "{Player} was turned into a battery by {Pred}."
+					Hardcore: "{Player} has become the best battery {Pred}'s ever used, at the cost of their continued existence."
+				}
+
+				PartyGirl: {
+					1: "{Pred} had {Player} as a pre-party pick-me-up."
+					2: "{Player} will be the life of the party as {Pred}'s tum fat."
+					3: "{Pred} thought {Player} tasted...almost as good as candy."
+					4: "{Pred} melted {Player} into liquid confetti."
+					5: "{Player} partied too hard in {Pred}'s belly."
+					6: "{Player} was sloshed to the beat of the drums by {Pred}."
+					Hardcore:
+						'''
+						The last anyone ever saw of {Player} was a breathy, bubbly belch from {Pred}, bringing up a bundle of heated, half-liquid confetti.
+						At least the gut fat they left on her will keep her the life of the party for many weeks to come.
+						'''
+				}
+
+				Steampunker: {
+					1: "{Pred} needed fuel for her engine; fuel which {Player} was all too eager to provide."
+					2: "{Player} was flawlessly converted to steam inside {Pred}'s mechanisms."
+					3: "{Pred} fed {Player} into her countless internal devices and doohickeys."
+					4: "{Pred} hid {Player} away in her stomach, never to see the sun again."
+					5: "{Player} wanted to know how steam is made. {Pred} happily demonstrated."
+					6: The only thing left of {Player} is a gutful of steam inside {Pred}.
+					7: "{Pred}'s body has become a little bit denser, thanks to {Prey}."
+					Hardcore:
+						'''
+						No conclusive evidence will ever be found of where {Player}'s one life disappeared to.
+						The only clue left behind? {Pred} having higher density than usual and belching up a healthy amount of steam.
+						'''
+				}
+			}
+
+			Bosses: {
+				UnreasonablyThickFairy: {
+					1: "{Player} became a light snack for the Empress."
+					2: The Empress' gut blinded {Player} just a little too long.
+					3: "{Player} was too enamored by the Empress' shiny stomach walls to fight their way out."
+					Hardcore:
+						'''
+						{Player} was, sadly, far too enamored by the Empress' mesmerizingly twinkly tummy walls to fight their way out.
+						The only evidence left of their only chance at existence will be a fresh new layer of fat on her already-thick thighs.
+						'''
+				}
+			}
+		}
+	}
+
+	OverlyHungryPlayer: {
+		UnsafeLavaDrink: {
+			1: "{Player} had a drink that was a little too warm."
+			2: "{Player} learned why demons bathe in lava more often than drinking it."
+			3: "{Player} was smelted from the inside out."
+		}
+
+		UnsafeShimmerDrink: {
+			1: "{Player}'s stomach ended up where their stomach should be, while it was still already there. Quantum mechanics are fun!"
+			2: "{Player} thought the Empress' bathwater would look sparklier in their gut."
+			3: "{Player} decided to see if shimmer would make their belly glowy and glimmery. It did...for about 5 seconds before they died."
+		}
+	}
+
+	DigestedTownNPC: "{0} was eaten..."
+	DigestedEnemiesAnnouncement: "{Pred} has digested the {Number}th {Prey}!"
+
+	DigestedBoss: {
+		KS: King Slime has been digested by {Pred}!
+		EoC: The Eye of Cthulhu has been digested by {Pred}!
+		EoW: The Eater of Worlds has been digested by {Pred}!
+		BoC: The Brain of Cthulhu has been digested by {Pred}!
+		QB: A Queen Bee has been digested by {Pred}!
+		Skele: Skeletron has been digested by {Pred}!
+		Deerclops: A Deerclops has been digested by {Pred}!
+		WoF: The Wall of Flesh has been digested by {Pred}!
+		QS: Queen Slime has been digested by {Pred}!
+		Twins: The Twins have been digested by {Pred}!
+		Destro: The Destroyer has been digested by {Pred}!
+		SkelePrime: Skeletron Prime has been digested by {Pred}!
+		Plantera: Plantera has been digested by {Pred}!
+		Golem: Golem has been digested by {Pred}!
+		LightSnack: The Empress of Light has been rightfully digested by {Pred}!
+		Fishron: Duke Fishron has been digested by {Pred}!
+		Cultist: The Lunatic Cultist has been digested by {Pred}!
+		SolarPillar: The Solar Pillar has been digested by {Pred}!
+		VortexPillar: The Vortex Pillar has been digested by {Pred}!
+		NebulaPillar: The Nebula Pillar has been digested by {Pred}!
+		StardustPillar: The Stardust Pillar has been digested by {Pred}!
+		MoonLord: The Moon Lord has been digested by {Pred}!
+		Default: "{BossName} has been digested by {Pred}!"
+	}
+}
+
+Menu: {
+	MiscVanilla: {
+		HairWindowGutCut: Gut Cut ({Price})
+		HairWindowGutCutFree: Gut Cut (Free)
+	}
+}
+
+TownNPCMood: {
+	Angel: {
+		Content: I- I'm doing wonderfully, thank you! Of course, i- if you'd like me to, I wouldn't object to...s- studying your internals...
+		NoHome: As...e- exciting as it is to study and experience the various i- ins and outs of the creatures of this world, I wouldn't mind a home to s- stay at in the downtime.
+		FarFromHome: W- wow! I've certainly traveled farther than usual today...wh- what predatory thing could I have been attempting to s- study this far out...?
+
+		Biomes: {
+			Jungle: I absolutely LOVE this locale! Sure, it's awfully hot and humid here...but just LOOK at all those hungry predators!~ Oh, I'll be able to do TONS of science with them! Sweet, sizzling, SCALDING science...~
+			Sky: It's always nice to be up in the skies...reminds me a lot of home. O- of course, it also doesn't have any of the complaining whenever I get e- eaten and start my...r- research.
+			Forest: I'm not sure I like it here. S- sure, it's very calm here, and the locals are nice, but there simply aren't enough things for me to...s- study, as it were.
+			Corruption: As fascinating as the specimens here are, this place is hardly suited for sustained housing! S- still...one must study the fallen to- well, to avoid BECOMING the fallen...a- and the subjects here certainly get the mind m- moving...
+			Crimson: This place is very...g- gorey. That said, the local...wildlife, if you can c- call them that, are certainly eager to...g- get me on my way into them...wh- which I don't mind all that m- much!
+			Dungeon: I DESPISE this place. There's nothing worth studying. There's nothing to even EAT ME in the first place aside from the slimes. The slimes here are pointless to study, as ANY and all information about them could be gleaned from other, more visually-pleasing and scientifically-stimulating slimes. All of the humanoids I could be eaten by are specimens I could study literally ANYWHERE else. I'd very much like to leave.
+		}
+
+		Neighbors: {
+			CrowdLevel: {
+				Alone: It's very quiet here. I suppose the solitude isn't AWFUL, but...would you be so kind as to d- deliver the occasional pred to sweep me off of my feet a- and onto their figure?...f- for purely scientific p- purposes, of course!
+				GoodCompany: I enjoy the company you've given me. Very amicable, and very willing to further my studies!...a- and give me a comfortable s- sytem to sit in and...e- enjoy myself to.
+				BadCompany: I don't really enjoy the company you've given me. As for why...well, it varies from person to person.
+				ThreesTheSweetSpot: Three is a c- crowd, they say...I- I say three is a healthy s- selection of potential p- predators to work with and analyze!...a- and throw myself into.
+				ThreesNotTheSweetSpot: Three is a crowd, they say. I- I say three WOULD be a healthy selection of potential predators to work with...i- if none of the elements were problematic.
+				TooCrowded: I- is it a valid complaint in the field of g- gastronomy to be suffering from ch- choice paralysis!?
+			}
+
+			SpecificNPCs: {
+				LoveSuccubus: Th- the demon lady? Lucinda!? I- I do NOT have...I d- don't...oh, who am I kidding? I- I could NEVER be anything less than s- SMITTEN for that b- beautiful body...and that s- strong, searing s- stomach...PERFECT!~
+				LoveCadence: Qu- Queen Cadence? Oh...I- I would look HEAVENLY as p- padding on her rear...a- and I can just imagine her s- stomach...MMMF! O- oh, I want- ...n- no, I NEED her to annex me, YESTERDAY!~
+				LoveTavernkeep: "{NPCName}...the tavernk- keeper. Ooohhhhh...j- just LOOK at those arms. Those m- massive, manly muscles...unf, my t- temperature's rising just THINKING about him! I- I can only imagine how s- strong and s- sturdy his s- s- stomach must be...~"
+				LikeNurse: "{NPCName} is such a wonderful woman, m- making sure everyone is happy, healthy, AND healthily hungry!...p- primarily because they can't really help me with my s- studies if they're too sick to e- eat me."
+				LikeDryad: Dryads are a very fascinating creature from external AND i- internal perspectives, so it should be no surprise that I find {NPCName} particularly fruitful to study!...a- and particularly...a- attractive.
+				DislikeZoologist: B- by all accounts, I should like {NPCName} more than I do. Her s- system...changes dramatically in certain conditions, providing a rare opportunity to s- study two states at once...and yet, it just bothers me. M- maybe it's just because other people's i- internals are the same experience each time...her s- stomach is inconsistent by comparison.
+				DislikeArmsDealer: "{NPCName} bothers me slightly. I- it's not even that he doesn't want to eat me, o- or that I don't let him; he's m- MORE than enthusiastic enough, a- and I don't mind studying him! The problem is, he's...n- not my type, but he keeps insisting he is."
+				DislikeAria: Cadence's daughter? U- um...well, she's certainly fascinating...most children her age are only able to swallow so much as a large grape before their teenage years. Still...I don't feel I should be around her. Th- the inherent...nature of my experiments m- may ultimately upset Cadence if Aria is nearby when they're...p- performed.
+				CadenceAndAria: I- I feel...conflicted. O- on one hand, I'm s- sure I would...g- garner invaluable information...wh- while plumping up C- Cadence's backside. O- on the other hand, as...s- stimulating as Her R- Royal Highnass may b- be to me, I- I'd rather keep my c- composure in the p- presence of her d- daughter. P- please look into a solution.
+				HateAngler: "{NPCName}? Oh, that little fisherman's no fun. Too young to eat me, too young to get WHY I want to be eaten so much on any front...and he poses no scientifically significant qualities whatsoever except for how much of a little BRAT he is!"
+
+				Calamity: {
+					LikeAmidias: Th- that seahorse king is great! He always gives me all sorts of information about the- ...the marine life that once populated his old home! He, himself, is also quite...i- interesting...compared to most I meet!
+					LikeCirrus: It's q- quite fascinating to study Cirrus' internals! Sh- she always drinks so much to chase down her...m- meals, to the point one might think her liver is broken...b- but it's actually stronger than any normal person's! O- of course, she also has...q- quite the...a- appealing figure.
+					HateCalamitas: I once asked the witch to allow me to...s- study her internals for science...a- and she threatened to burn me on the spot for asking! Seriously, what did HER boss make her put up with to make her such a k- killjoy!?
+				}
+			}
+		}
+	}
+
+	Succubus: {
+		Content: Aside from you not fillin' out my gut right now, I think I'm fine.
+		NoHome: My stomach's a good spot for a mortal morsel like you, but I need a real place to live if I'm gonna feed this gut of mine on the regular.
+		FarFromHome: Well, I've headed off a little far from home today, eh? Then again, it's all worth gettin' the right meal.
+
+		Biomes: {
+			Ocean: It's great to be around the ocean, don'tcha think? Sittin' in the warm sand, lookin' over the sunset as your prey-stuffed gut churns and gurgles even the meatiest meals into more of ya...it's the BEST. My only regret's that I didn't come up here sooner.
+			Desert: The desert's nice and warm, I have to say. Reminds me of home, in all the good ways, and it's a lot more open to boot. Plenty of good prey to snatch up, too, if you know where to look. I like it.
+			Tundra: It's way too cold around here, if you ask me. Food's a bit too fluffy for me, too. I'd kill for a warm lava bath right now; find me one, or at least a warmer place to crash.
+			Corruption: Seriously!? This place is awful! I can't even eat the stuff here; I might get food poisoning from how rotten it all is!
+			Crimson: I think you've officially put my appetite in a coma. Congratulations. I've never looked at a place like this before, and I'd never like to again.
+			Underworld: Home again...honestly, I'm already sick enough of bein' here. Either help me cram at LEAST half of that city into my gut, buildings included, or help me move outta here...again.
+			Dungeon: Look at this place...dark, moody, and not a single guy or gal to snack on in sight. It reminds me of home, in all the worst ways possible.
+		}
+
+		Neighbors: {
+			CrowdLevel: {
+				Alone: This area is pretty quiet, huh? Nobody to eat around here...but I guess the solitude ain't all that bad. Just be sure to gimme a sexy snack or seven every once in a while, alright?
+				GoodCompany: This area's pretty quiet...but there's still a couple decent snacks around.
+				BadCompany: This area's pretty quiet. Don't really like that, and I don't like the people you've got me with, either.
+				GoodCrowd: I'm lovin' it here...plenty of healthy, mortal meals around to gulp down and get nice and fat off of. You're the best, y'know that?
+				NeutralCrowd: It's a bit crowded here. Some good eats, sure, but you could probably stand to...burn off the fat, if you catch my drift.
+				BadCrowd: Seriously!? You REALLY had to cram me in with all the WORST of this lot!?
+			}
+
+			SpecificNPCs: {
+				LoveAngel: Promethia? That cute little angel that loves every chance she can get to cram herself into me? Hah...more like ProMEALthia, if you ask me.
+				LoveZoologist: That busty bimbo of a fox'll look GREAT hangin' off my chest. Mind bringing her over here?~
+				LikeNurse: You know, I think my gut needs a check-up from {NPCName}; it's just DYING to...get to know her a bit better. Think you can get her to find the time to stay on my waist for a while?~
+				LikeGuide: I can't figure out why, but something about the idea of melting {NPCName} down into fat gets me all giddy for some reason.
+				DislikeStylist: That hair stylist, Amber...she's a pretty spicy gal, isn't she? 'Course, that's nothing bad...I like spicy food. What I DON'T like is if that spice means they're not food. She's definitely spicy enough to try and eat me first. Not dumb enough to challenge that.
+				DislikeAria: That little princess, Aria...she's too "pure" for me, if you catch my drift. That, and I'd rather not piss off her mom; could probably mulch me in half a second flat if I did. Might be good to consider separating us.
+				DislikeCadence: Queen Cadence? As great as that blimp-sized booty on her would look blimping up mine instead...she's got a kid, and she's gulped preds way bigger and tougher than me. Don't have a hope in hell of eatin' her, so I'd rather just keep my distance...if you'll let me.
+				HateAngler: If it weren't for the fact that children are way too small to be decent meals, that scrawny little fisherman brat would be padding out my waistline right now. Keep your TRASH off my lawn, got it?
+				CadenceAndAria: I'm really not a fan of where you've got me here. Aria's too young for me to feel comfortable around her, and I think I'm just going to aggravate her mom if I say anything about it. Given I'd rather NOT end up adding to Cadence's ass, could I bother you to lemme stay somewhere else?
+				HateDryad: I'm really close to just using my stomach to solve the problem of {NPCName}'s constant preaching about "purity" and "cleansing". Pompous bitch can't make an ass of herself about my eating habits if she's busy fattening up mine, now, can she?
+				HateTaxCollector: You've already done the impossible twice; once to get me outta that shithole I called home, and once to take down that massive fleshbag from the other edge. Do it a third time and get {NPCName} to either shut the hell up or move out; I'm already more than sick of him.
+
+				Calamity: {
+					LoveCirrus: That royal bombshell, Cirrus? "Lethal alcohol contents" my demonic derri�re! Just look at those thick-ass thighs and titanic tankers she hauls around! She'll make some grade-A+ gut fat, y'hear me?
+					DislikeCalamitas: There's bein' an apex predator, and then there's bein a stupid predator. Anyone tryin' to eat that grumpy old witch'll learn pretty fast that they're the latter...and I don't like that. Might scare off my food.
+					HateAmidias: That old seahorse is just no fun at all. Won't let me have any, either. I honestly don't even feel like eating him. He's just...he's THAT kinda guy, y'know? Anyway, move him.
+				}
+			}
+		}
+	}
+
+	Steampunker: {
+		Content: I'm jolly good enough, thanks.
+
+		Neighbors: {
+			SpecificNPCs: {
+				LoveCyborg: It's quite a good show, having {NPCName} around. The old bucket of bolts and I always have plenty of lovely things to chit and chat about.
+				LikePainter: The painter? Yeah, {NPCName}'s a good sort. Spruces up my works all the time! Plenty nice bloke, he is.
+				HateMechanic: "{NPCName}? She can put a sock right in it, for all I care! I'm NOT falling for her gaudy gizmos and gadgets!"
+			}
+		}
+	}
+}
+
+Bestiary: {
+	Meteorite: {
+		MeteorMarble: A small, curious construct which is never (at first) seen without its numerous small rocks orbiting its core. The core's inside is something of a compressive cage that burns anything (and, if made possible, anyONE) that enters.
+		MeteorMaiden: A fascinating, almost woman-like construct, though built without the waist or anything under. The top and bottom halves of her torso can separate seemingly-infinitely to reveal a magically-formed stomach which torches anything inside. The sand-like slurry her digestive process makes has a wide variety of uses.
+	}
+
+	TownNPCs.Succubus: Having lived on the outskirts of Desperai for many years before deciding to pack up and leave, Lucinda's a demon that just wants people to believe she's a strong, independent predator who doesn't NEED no stupid charms!...even though she can barely hold her prey the same way her superiors could.
+
+	Divine: {
+		Sinhunters: {
+			Promethia: If ever there was a word for a Sinhunter who never did their expected job, that word would be "Promethia". Being much more interested in studying the internals of other creatures than swallowing them herself, Promethia was exiled from the Divine Realm decades ago, and now searches the mortal plane for the perfect predator to become a part of.
+			StJerne: A fearsome Sinhunter with over a millenium of experience under her belt, St. Jerne is the bane of any being that thinks they can threaten Her Twinkling Majesty. Even the most stoic of Sinhunters can have lofty aspirations, though, and very occasionally, a select few have noticed her looking longingly, almost hungrily, at Aurora's titanic form...
+		}
+
+		Gods: {
+			Constitua: A truly unparalleled mechanic with a knack for working with otherworldly materials, Constitua is nothing if not amazingly gifted with their work. They are responsible for a vast quantity of the more modern-looking inventions across the Divine Realm, taking inspiration from mortals and immortals alike.
+			Judico: The great judge of the Divine Realm; equal parts masculine and feminine, Judico truly seeks nothing more than fair, equal, and uncompromising judgement --- even for the deities he is obligated to call his peers. His path to monotheism has been laced with trouble after trouble, but victory is within his grasp...
+			Aurora: The titanic woman known as the Mother of the Stars. Countless stars have both been birthed by her and ended up right back in her gargantuan gut to be churned into ever more fat for her figure; her truly immeasurably strong belches are said to be the source of the aurora borealis that paint vast swathes of space.
+			Chrona: The endless march of time shall forget countless things. It shall not forget Chrona, the being that granted the flow of time to the universe, and in turn, was granted a place to reside as the supreme ruler of the Divine Realm and all creatures within it. To devour their soul would be to upend the very treads of time itself for a midday meal.
+		}
+	}
+}
+
+NPCs: {
+	LucindaBound.DisplayName: Succubus
+
+	Lucinda: {
+		DisplayName: Succubus
+
+		TownNPCMood: {
+			Content: Aside from you not fillin' out my gut right now, I think I'm fine.
+			NoHome: My stomach's a good spot for a mortal morsel like you, but I need a real place to live if I'm gonna feed this gut of mine on the regular.
+			FarFromHome: Well, I've headed off a little far from home today, eh? Then again, it's all worth gettin' the right meal.
+			LoveSpace: I love having so much space.
+			DislikeCrowded: I dislike how crowded I am.
+			HateCrowded: I hate how crowded I am.
+			LoveBiome: It's great to be around the ocean, don'tcha think? Sittin' in the warm sand, lookin' over the sunset as your prey-stuffed gut churns and gurgles even the meatiest meals into more of ya...it's the BEST. My only regret's that I didn't come up here sooner.
+			LikeBiome: The desert's nice and warm, I have to say. Reminds me of home, in all the good ways, and it's a lot more open to boot. Plenty of good prey to snatch up, too, if you know where to look. I like it.
+			DislikeBiome: It's way too cold around here, if you ask me. Food's a bit too fluffy for me, too. I'd kill for a warm lava bath right now; find me one, or at least a warmer place to crash.
+			HateBiome: Seriously!? This place is awful! I can't even eat the stuff here; I might get food poisoning from how rotten it all is!
+			LoveNPC: I love {NPCName}.
+			LikeNPC: I like {NPCName}.
+			DislikeNPC: I dislike {NPCName}.
+			HateNPC: I hate {NPCName}.
+			LikeNPC_Princess: I like {NPCName}.
+			Princess_LovesNPC: I like {NPCName}.
+		}
+
+		HelpButton: {
+			DisplayName: Guidance
+
+			Tips: {
+				Intro:
+					'''
+					Lookin' to stay out of a pred's gut, huh? Well, I guess I can give ya a few tips.
+					Just be warned, I'll be givin' you everything I've got if you end up in MY gut; I'm just makin' sure nobody else gets ya first.
+					'''
+				PredStats:
+					'''
+					There are four main parts to any pred's digestive system: [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:throat strength, stomach strength, acid strength, and absorption strength].
+					Each one measures a different aspect of how well a gut and its friends can handle your food. Those terms are mainly used by the more...science-y types, though, so I'll keep it simple for ya.
+					'''
+				SwallowSize:
+					'''
+					A pred's throat can only handle so much before it starts to hurt. That's called their [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:swallow size] on paper.
+					The higher it is, the bigger the meals that can fit down their gullet, and the easier smaller meals go down. Simple enough, yeah?
+					So, don't wanna get eaten? Steer clear of preds that can get you down easy until you're sure you can gulp 'em down yourself.
+					'''
+				StomachCapacity:
+					'''
+					Just like your throat, [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:your gut can only hold so much] before it starts complainin'.
+					People have put together a ton of tools for that in this day and age, though....not that I ever need 'em.
+					If you can [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:bring some bulky stuff or a few friends] into a gut with you, I'm sure any pred'll feel the heartburn in no time.
+					'''
+				Struggles:
+					'''
+					Obviously, things don't like bein' in bellies most of the time; to get out, you'll have to [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.NegativeVoreEffect}:fight your way out] of there as long as you can.
+					Just be sure you don't run outta air or the acids don't get to you too quick. [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.NegativeVoreEffect}:Can't really fight back if you're already knocked out...]
+					'''
+				Stomachache:
+					'''
+					If you fight around too much, you'll [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.NegativeVoreEffect}:give your pred a bellyache], which usually brings 'em right back up.
+					Just be sure you don't end up food for a masochist if you have to kick around a lot to get out of their gut. 
+					'''
+				Absorption:
+					'''
+					[c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.NegativeVoreEffect}:Once a pred's acids get their meal knocked out, or they run outta air], their gut can start [c/{$Mods.V2.ItemTooltip.Generic.CommonColorCodes.PositiveVoreEffect}:properly processin' that meal] into a nice sludge.
+					All you gotta do is keep yourself from gettin' to that point, and you're golden. That's just about all I can tell ya; it really is as simple as that.
+					'''
+				AlreadyDinnerForADemon:
+					'''
+					Help? What kinda help? Help gettin' mulched?
+
+					...no, really. Don't you have some thick demon thighs to be fillin' out right about now?
+					Seriously, if you got gulped this easy, you're a pretty lousy pred...
+					'''
+				Invalid: ...what was I talkin' about again?
+			}
+		}
+
+		Census.SpawnCondition:
+			'''
+			Find and free her in the Underworld
+			Whether you're nice about it or not doesn't matter
+			'''
+	}
+
+	MeteorMarble.DisplayName: Meteor Marble
+}

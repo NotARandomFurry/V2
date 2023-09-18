@@ -10,6 +10,9 @@ namespace V2.Core
 	{
 		Male,
 		Female,
+		/// <summary>
+		/// Represents genderless, andryogynous, hermaphroditic, and other not-necessarily-one-or-the-other individuals.
+		/// </summary>
 		Other,
 	}
 }

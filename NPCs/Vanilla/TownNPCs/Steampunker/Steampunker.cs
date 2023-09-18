@@ -16,7 +16,6 @@ using V2.Core;
 using V2.NPCs.Voraria.TownNPCs.Succubus;
 using V2.PlayerHandling;
 using V2.Sounds.Vore;
-using static V2.Core.FoodTypeTags;
 
 namespace V2.NPCs.Vanilla.TownNPCs.Steampunker
 {
@@ -72,7 +71,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Steampunker
 	public class Steampunker : GlobalNPC
 	{
 		public override bool InstancePerEntity => true;
-		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.type == NPCID.Steampunker;
+		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.netID == NPCID.Steampunker;
 
 		public override void SetDefaults(NPC npc)
 		{
@@ -80,6 +79,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Steampunker
 
 			npc.AsV2NPC().GetChatMethod = GetSteampunkerChat;
 
+			npc.AsFood().Size = 1.06;
 			npc.AsPred().stomachContents = new List<Prey>();
 			npc.AsPred().stomachContentsQueue = new List<Prey>();
 			npc.AsPred().MaxStomachCapacity = 50.0;
@@ -98,26 +98,6 @@ namespace V2.NPCs.Vanilla.TownNPCs.Steampunker
 			npc.AsPred().GetPreyAbsorptionRateMethod = GetPreyAbsorptionRate;
 
 			npc.AsPred().GetVisualBellySizeMethod = GetVisualBellySize;
-
-			npc.AsFood().FoodTypeTags = new List<FoodTypeTag>
-			{
-				new MeatTag()
-				{
-					FoodSubtypeTags = new List<(string subtype, double weight)>
-					{
-						("Human", 0.93)
-					}
-				},
-				new MetalTag()
-				{
-					FoodSubtypeTags = new List<(string subtype, double weight)>
-					{
-						("Copper", 0.04),
-						("Iron", 0.04),
-						("Silver", 0.04)
-					}
-				},
-			};
 		}
 
 		public override ITownNPCProfile ModifyTownNPCProfile(NPC npc) => SteampunkerStuff.PredSteampunkerProfile;

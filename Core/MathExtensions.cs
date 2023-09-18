@@ -38,6 +38,5 @@ namespace V2.Core
 		/// The provided <see cref="float"/>, as a percentage-based value.
 		/// </returns>
 		public static string ToPercentage(this float floatToConvert, int maxDecimalPlaces = 0) => CastToDecimalPlaces(floatToConvert * 100f, maxDecimalPlaces) + "%";
-
 	}
 }

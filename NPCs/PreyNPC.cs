@@ -16,6 +16,7 @@ using Terraria.UI.Chat;
 using V2.Core;
 using V2.NPCs.Voraria.TownNPCs.Succubus;
 using V2.PlayerHandling;
+using V2.PlayerHandling.PredPlayerGoals.Starter;
 using V2.StatusEffects.Debuffs;
 
 namespace V2.NPCs
@@ -37,9 +38,6 @@ namespace V2.NPCs
 
 	public partial class PreyNPC : GlobalNPC
 	{
-		public List<FoodTypeTag> FoodTypeTags { get; set; }
-		public List<string> FoodFlavorTags { get; set; }
-
 		public bool IsCurrentlyEaten { get; set; }
 		public int EatenSafetyFrames { get; set; }
 		public bool Digested { get; set; }
@@ -48,8 +46,10 @@ namespace V2.NPCs
 		public delegate void DelegatePreyAI(NPC npc, Entity pred);
 		public DelegatePreyAI PreyAIMethod { get; set; }
 
-		public delegate double DelegatePreyBaseSizeOverride(NPC npc);
-		public DelegatePreyBaseSizeOverride PreyBaseSizeOverrideMethod { get; set; }
+		public double Size { get; set; }
+
+		public delegate void DelegateOnKilledByDigestion(NPC npc, Entity pred);
+		public DelegateOnKilledByDigestion OnKilledByDigestion { get; set; }
 
 		public StatModifier StruggleStrengthModifier { get; set; }
 
@@ -57,7 +57,7 @@ namespace V2.NPCs
 
 		public SoundStyle? DigestingHitSound;
 		public SoundStyle? DigestedDeathSound;
-		
+
 		public StatModifier TakenDigestionDamageModifier { get; set; }
 
 		public double SoftenedDigestionDamageTaken { get; set; }
@@ -71,11 +71,10 @@ namespace V2.NPCs
 
 		public PreyNPC()
 		{
-			FoodTypeTags = null;
-			FoodFlavorTags = null;
-
 			PreyAIMethod = null;
-			PreyBaseSizeOverrideMethod = null;
+			Size = 0;
+
+			OnKilledByDigestion = null;
 
 			CanChatAsPrey = false;
 			DigestingHitSound = null;
@@ -89,7 +88,6 @@ namespace V2.NPCs
 			npc.AsFood().CurrentCaptor = null;
 
 			StruggleStrengthModifier = StatModifier.Default;
-
 
 			npc.AsFood().TakenDigestionDamageModifier = StatModifier.Default;
 
@@ -401,6 +399,14 @@ namespace V2.NPCs
 				return false;
 
 			return true;
+		}
+
+		public static void OnKilledByDigestion_GrantLivePreyGoal(NPC npc, Entity pred)
+		{
+			if (pred is Player predPlayer)
+			{
+				ModContent.GetInstance<FirstLivePrey>().TrySetCompletion(predPlayer);
+			}
 		}
 	}
 }

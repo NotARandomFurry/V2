@@ -137,6 +137,7 @@ namespace V2
 			On_NPC.DoDeathEvents_CelebrateBossDeath += (orig, npc, typeName) => NPCDetours.DoDeathEvents_CelebrateBossDeath(npc, typeName);
 
 			On_Player.KillMe += (orig, player, damageSource, dmg, hitDirection, pvp) => PlayerDetours.KillMe(player, damageSource, dmg, hitDirection, pvp);
+			On_Player.ItemCheck_ReleaseCritter += (orig, player, item) => PlayerDetours.ItemCheck_ReleaseCritter(player, item);
 			On_Player.ToggleInv += (orig, player) =>
 			{
 				if (!player.AsPred().InPredStatsMenu || Main.gamePaused)

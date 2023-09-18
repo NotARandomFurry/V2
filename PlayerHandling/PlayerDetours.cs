@@ -15,11 +15,49 @@ using Terraria.Localization;
 using Terraria.Chat;
 using Terraria.Graphics.Shaders;
 using System.Reflection;
+using V2.Items;
 
 namespace V2.PlayerHandling
 {
 	public static class PlayerDetours
 	{
+		public static void ItemCheck_ReleaseCritter(Player player, Item sItem)
+		{
+			if (sItem.makeNPC == NPCID.ExplosiveBunny)
+			{
+				player.ApplyItemTime(sItem);
+				int releasedCritterIndex = NPC.ReleaseNPC((int)player.Center.X, (int)player.Bottom.Y, sItem.makeNPC, sItem.placeStyle, player.whoAmI);
+				NPC releasedCritter = Main.npc[releasedCritterIndex];
+				releasedCritter.life = sItem.AsFood().Health;
+				if (Main.myPlayer == player.whoAmI && V2.SwallowHotkey.Current && PredPlayer.CanSwallow(player, releasedCritter))
+					PredPlayer.Swallow(player, releasedCritter);
+			}
+			else if (player.position.X / 16f - (float)Player.tileRangeX - (float)sItem.tileBoost <= (float)Player.tileTargetX
+				 && (player.position.X + (float)player.width) / 16f + (float)Player.tileRangeX + (float)sItem.tileBoost - 1f >= (float)Player.tileTargetX
+				 && player.position.Y / 16f - (float)Player.tileRangeY - (float)sItem.tileBoost <= (float)Player.tileTargetY
+				 && (player.position.Y + (float)player.height) / 16f + (float)Player.tileRangeY + (float)sItem.tileBoost - 2f >= (float)Player.tileTargetY)
+			{
+				int num = Main.mouseX + (int)Main.screenPosition.X;
+				int num2 = Main.mouseY + (int)Main.screenPosition.Y;
+				int i = num / 16;
+				int j = num2 / 16;
+				if (!WorldGen.SolidTile(i, j))
+				{
+					player.ApplyItemTime(sItem);
+					int releasedCritterIndex = NPC.ReleaseNPC(num, num2, sItem.makeNPC, sItem.placeStyle, player.whoAmI);
+					NPC releasedCritter = Main.npc[releasedCritterIndex];
+					if (sItem.AsV2Item().ReleasedNPCNetID < 0)
+					{
+						releasedCritter.netID = sItem.AsV2Item().ReleasedNPCNetID;
+						releasedCritter.SetDefaults(sItem.AsV2Item().ReleasedNPCNetID);
+					}
+					releasedCritter.life = sItem.AsFood().Health;
+					if (Main.myPlayer == player.whoAmI && V2.SwallowHotkey.Current && PredPlayer.CanSwallow(player, releasedCritter))
+						PredPlayer.Swallow(player, releasedCritter);
+				}
+			}
+		}
+
 		public static void KillMe(Player player, PlayerDeathReason damageSource, double dmg, int hitDirection, bool pvp = false)
 		{
 			if (player.creativeGodMode || player.dead)
@@ -120,7 +158,7 @@ namespace V2.PlayerHandling
 				{
 					if (player.stoned)
 					{
-						Dust.NewDust(player.position, player.width, player.height, 1, 2 * hitDirection, -2f);
+						Dust.NewDust(player.position, player.width, player.height, DustID.Stone, 2 * hitDirection, -2f);
 					}
 					else if (player.frostArmor)
 					{
@@ -134,7 +172,7 @@ namespace V2.PlayerHandling
 					}
 					else
 					{
-						Dust.NewDust(player.position, player.width, player.height, 5, 2 * hitDirection, -2f);
+						Dust.NewDust(player.position, player.width, player.height, DustID.Blood, 2 * hitDirection, -2f);
 					}
 				}
 			}
@@ -143,7 +181,7 @@ namespace V2.PlayerHandling
 			player.dead = true;
 			player.respawnTimer = 600;
 			bool flag = false;
-			if (Main.netMode != 0 && !pvp)
+			if (Main.netMode != NetmodeID.SinglePlayer && !pvp)
 			{
 				for (int k = 0; k < 200; k++)
 				{

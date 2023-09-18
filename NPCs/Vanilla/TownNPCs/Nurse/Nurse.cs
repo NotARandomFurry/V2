@@ -18,7 +18,6 @@ using V2.Core;
 using V2.NPCs.Voraria.TownNPCs.Succubus;
 using V2.PlayerHandling;
 using V2.Sounds.Vore;
-using static V2.Core.FoodTypeTags;
 
 namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 {
@@ -84,7 +83,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 
 		public override bool InstancePerEntity => true;
 
-		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.type == NPCID.Nurse;
+		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.netID == NPCID.Nurse;
 
 		public override void SetDefaults(NPC npc)
 		{
@@ -92,6 +91,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 
 			npc.AsV2NPC().GetChatMethod = GetNurseChat;
 
+			npc.AsFood().Size = 1.1625;
 			npc.AsPred().MaxStomachCapacity = 1.8;
 
 			npc.AsPred().ResetPredSpecificVariablesMethod = ResetPredSpecificVariables;
@@ -117,17 +117,6 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 			npc.AsNurse().digestScamPatient = false;
 			npc.AsNurse().healPlayerIndex = -1;
 			npc.AsNurse().armsDealerHealTime = 0;
-
-			npc.AsFood().FoodTypeTags = new List<FoodTypeTag>
-			{
-				new MeatTag()
-				{
-					FoodSubtypeTags = new List<(string subtype, double weight)>
-					{
-						("Human", 1.08)
-					}
-				},
-			};
 		}
 
 		public static void ResetPredSpecificVariables(NPC npc)

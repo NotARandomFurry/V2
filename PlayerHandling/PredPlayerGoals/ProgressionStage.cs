@@ -9,8 +9,6 @@ namespace V2.PlayerHandling.PredPlayerGoals
 {
 	public abstract class ProgressionStage : ModType
 	{
-		public static StarterStage Starter { get; private set; } = new StarterStage();
-
 		protected sealed override void Register()
 		{
 			ModTypeLookup<ProgressionStage>.Register(this);
@@ -21,5 +19,6 @@ namespace V2.PlayerHandling.PredPlayerGoals
 		public abstract string DisplayName { get; }
 		public abstract string DisplaySubtitle { get; }
 		public abstract string Description { get; }
+		public abstract double Order { get; }
 	}
 }

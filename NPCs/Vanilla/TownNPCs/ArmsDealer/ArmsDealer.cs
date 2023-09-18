@@ -15,7 +15,6 @@ using V2.Core;
 using V2.NPCs.Voraria.TownNPCs.Succubus;
 using V2.PlayerHandling;
 using V2.Sounds.Vore;
-using static V2.Core.FoodTypeTags;
 
 namespace V2.NPCs.Vanilla.TownNPCs.ArmsDealer
 {
@@ -68,7 +67,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.ArmsDealer
 	public class ArmsDealer : GlobalNPC
 	{
 		public override bool InstancePerEntity => true;
-		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.type == NPCID.ArmsDealer;
+		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.netID == NPCID.ArmsDealer;
 
 		public override void SetDefaults(NPC npc)
 		{
@@ -76,8 +75,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.ArmsDealer
 
 			npc.AsV2NPC().GetChatMethod = GetArmsDealerChat;
 
-			npc.AsPred().stomachContents = new List<Prey>();
-			npc.AsPred().stomachContentsQueue = new List<Prey>();
+			npc.AsFood().Size = 1.04;
 			npc.AsPred().MaxStomachCapacity = 1.75;
 
 			npc.AsPred().CanBeForceFedMethod = CanArmsDealerBeForceFed;
@@ -94,30 +92,11 @@ namespace V2.NPCs.Vanilla.TownNPCs.ArmsDealer
 			npc.AsPred().GetPreyAbsorptionRateMethod = GetPreyAbsorptionRate;
 
 			npc.AsPred().GetVisualBellySizeMethod = GetVisualBellySize;
-
-			npc.AsFood().FoodTypeTags = new List<FoodTypeTag>
-			{
-				new MeatTag()
-				{
-					FoodSubtypeTags = new List<(string subtype, double weight)>
-					{
-						("Human", 0.98),
-					}
-				},
-				new MetalTag()
-				{
-					FoodSubtypeTags = new List<(string subtype, double weight)>
-					{
-						("Lead", 0.02),
-						("Silver", 0.02),
-					}
-				},
-			};
 		}
 
 		public override ITownNPCProfile ModifyTownNPCProfile(NPC npc) => ArmsDealerStuff.PredArmsDealerProfile;
 
-		public List<string> GetArmsDealerChat(NPC npc, Player player)
+		public static List<string> GetArmsDealerChat(NPC npc, Player player)
 		{
 			List<NPC> nearbyResidentNPCs = npc.GetNearbyResidentNPCs(out int npcsWithinHouse, out int npcsWithinVillage);
 			NPC helloNurse = nearbyResidentNPCs.FirstOrDefault(x => x.type == NPCID.Nurse);

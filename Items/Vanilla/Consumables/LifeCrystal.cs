@@ -13,6 +13,8 @@ using Terraria.ModLoader;
 using V2.Core;
 using V2.NPCs;
 using V2.PlayerHandling;
+using V2.PlayerHandling.PredPlayerGoals.Amateur;
+using V2.PlayerHandling.PredPlayerGoals.Beginner;
 using V2.Sounds.MuffledSounds;
 using V2.Sounds.Vore;
 
@@ -57,6 +59,9 @@ namespace V2.Items.Vanilla.Consumables
 					playerPred.ConsumedLifeCrystals += lifeCrystalsLeftToMax;
 				}
 				playerPred.Heal(DigestedHeal * item.stack);
+				ModContent.GetInstance<EatFirstLifeCrystal>().TrySetCompletion(playerPred);
+				if (playerPred.ConsumedLifeCrystals == Player.LifeCrystalMax && playerPred.ConsumedManaCrystals == Player.ManaCrystalMax)
+					ModContent.GetInstance<EatMaxLifeAndManaCrystals>().TrySetCompletion(playerPred);
 			}
 			else if (pred is NPC NPCPred)
 			{

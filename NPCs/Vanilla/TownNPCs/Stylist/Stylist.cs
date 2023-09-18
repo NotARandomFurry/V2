@@ -14,7 +14,6 @@ using V2.Core;
 using V2.NPCs.Voraria.TownNPCs.Succubus;
 using V2.PlayerHandling;
 using V2.Sounds.Vore;
-using static V2.Core.FoodTypeTags;
 
 namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 {
@@ -75,7 +74,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 	{
 		public override bool InstancePerEntity => true;
 
-		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.type == NPCID.Stylist;
+		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.netID == NPCID.Stylist;
 
 		public override void SetDefaults(NPC npc)
 		{
@@ -83,6 +82,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 
 			npc.AsV2NPC().GetChatMethod = GetStylistChat;
 
+			npc.AsFood().Size = 1.085;
 			npc.AsPred().MaxStomachCapacity = 4.0;
 
 			npc.AsPred().CanBeForceFedMethod = CanStylistBeForceFed;
@@ -99,17 +99,6 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 			npc.AsPred().GetPreyAbsorptionRateMethod = GetPreyAbsorptionRate;
 
 			npc.AsPred().GetVisualBellySizeMethod = GetVisualBellySize;
-
-			npc.AsFood().FoodTypeTags = new List<FoodTypeTag>
-			{
-				new MeatTag()
-				{
-					FoodSubtypeTags = new List<(string subtype, double weight)>
-					{
-						("Human", 1.035)
-					}
-				},
-			};
 		}
 
 		public override ITownNPCProfile ModifyTownNPCProfile(NPC npc) => StylistStuff.StylistPredProfile;
@@ -305,7 +294,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 								stylistChatPool.AddRange(new List<string>
 								{
 									"Mmm...always a bit weird to have a potbelly like this hangin' off me. Not like it matters much...I'll be back to my slim self in no time! Now, how can I get your cut done, hun?",
-									"Gonna need a few salads steppin' into my belly at this rate...look at all this belly! Of course...a cheat day every once in a while's not bad, right?",
+									"Gonna need a few salads steppin' into my stomach at this rate...look at all this gut! Of course...a cheat day every once in a while's not bad, right?",
 									"Oh my God, I look pregnant! Late into one, too...did I really eat that much? Then again, I think I know a hairstyle that'd look great with this gut...",
 									"Oh, this? That's not a baby! Well...not a real one. Just a really big food baby! Be careful not to poke it, though! Wouldn't want whatever's built up in there knockin' you out...",
 									"Does this belly make my hair look bad? Gimme an honest answer, and I promise I won't get...TOO mad. Gimme a lie, though...",
@@ -345,7 +334,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 								{
 									stylistChatPool.AddRange(new List<string>
 									{
-										"O- oh, you want a- [c/00FF00:*hic!*] -haircut? A- alright, just sit in the- [c/00FF00:*hic!*] -chair, I'll do yo-[c/00BB00:*ooOOUURP!*] -...y- yours, alongside the cut my- [c/00FF00:*hic!*] -belly's working on.",
+										"O- oh, you want a- [c/00FF00:*hic!*] -haircut? A- alright, just sit in the- [c/00FF00:*hic!*] -chair, I'll do yo-[c/00BB00:*ooOOUURP!*] -...y- yours, alongside the cut my- [c/00FF00:*hic!*] -belly's working on...",
 										"Alright, I- [c/00FF00:*hic!*] -I'll be with you in just a- [c/00FF00:*hic-][c/00BB00:OOORRP!*] -minute... what kinda cut do you want? The- [c/00FF00:*hic!*] -Gut Cut experience's booked right now- [c/00FF00:*hic!*] -so if you want one, you'll- [c/00FF00:*hic!*] -have to wait.",
 									});
 								}
@@ -381,6 +370,9 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 								{
 									"What? My- [c/00FF00:*hic!*] -gut? Sorry about that...lil' ol' " + partyGirl.GivenName + "- [c/00FF00:*hic!*] -INSISTED on spendin' some- [c/00FF00:*hic!*] -quality time in my gut as th- [c/00FF00:*hic!*] -thanks for doin' her hair so well.",
 									"Huh? Where's " + partyGirl.GivenName + "? She's right- [c/00FF00:*hic!*] -here! She REALLY wanted a Gut Cut ex- [c/00FF00:*hic!*] -...experience, and I couldn't just say- [c/00FF00:*hic!*] -no! I- I'll...call it a cheat day.",
+									"What? Me? Eatin' that cake-flavored- [c/00FF00:*hic!*] -cutie for a snack? No, nono- [c/00FF00:*hic!*] -no! I'd never! I can't eat any- [c/00FF00:*hic!*] -junk food like that! I'm on a SUPER strict diet!\n"
+								  + "\n"
+								  + "[c/7F7F7F:...th- that I- ][c/00FF00:*hic-][c/00BB00:OOOURP!*] [c/7F7F7F:-...sometimes cheat on...not my fault she was so delicious...]",
 								});
 							}
 							else if (GetVisualBellySize(npc) >= 3)
@@ -389,6 +381,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 								{
 									"Ooof...I know that gal wanted me to- [c/00FF00:*hic!*] -eat her, but I gotta say, hun...I'm kinda- [c/00FF00:*hic!*] -worried about how fat she's gonna make me. Don't wanna- [c/00FF00:*hic!*] -bulk up too much in the wrong places, y'know...?",
 									"H- hun, I've got an honest- [c/00FF00:*hic!*] -question for you...does the cake-flavored gal currently- [c/00FF00:*hic!*] -churnin' away inside me make me look- [c/00FF00:*hic!*] -too fat? I...really hope not...",
+									"Sheesh, she's already startin' to- [c/00FF00:*hic!*] -settle in...I can feel her goin' to the wrong- [c/00FF00:*hic!*] -spots already! Damnit, why does all the junk food have to- [c/00FF00:*hic!*] -taste the best!?",
 								});
 							}
 						}
@@ -432,9 +425,9 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 						{
 							stylistChatPool.AddRange(new List<string>
 							{
-								"...hun, you've got a REAL hungry look on your face. You sure you wanna try and keep this feisty feast down? Gonna need to cancel my next few clients if I end up gut fodder for a bit...",
-								"Aww, what's the matter. Gettin' all hot in the oven over lil' ol' me? Well, if you sit still for your cut, and you tip me good, I'll letcha have me for a little while, alright?",
-								"Look, all I'm sayin' is that you BETTER not mess up my hair if-...no, WHEN you eat me. If my hair gets ruined because of you, you'll be a new, thick set of hips for me by sunrise tomorrow.",
+								"...hun, you've got a REAL hungry look on your face. You sure you wanna try and keep this feisty feast down again? Gonna need to cancel my next few clients if I end up gut fodder for a bit...",
+								"Aww, what's the matter. Gettin' all hot in the oven over lil' ol' me again? Well, if you sit still for your cut, and you tip me good, I'll letcha have me for a little while, alright?",
+								"Look, all I'm sayin' is that you BETTER not mess up my hair if-...no, WHEN you eat me. If my hair gets ruined because of you, you'll be a new, thick set of hips and a flashy new muffin top for me by sunrise tomorrow.",
 							});
 						}
 						if (BirthdayParty.PartyIsUp)

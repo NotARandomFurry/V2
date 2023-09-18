@@ -14,7 +14,6 @@ using V2.Core;
 using V2.NPCs.Voraria.TownNPCs.Succubus;
 using V2.PlayerHandling;
 using V2.Sounds.Vore;
-using static V2.Core.FoodTypeTags;
 
 namespace V2.NPCs.Vanilla.TownNPCs.Mechanic
 {
@@ -71,14 +70,15 @@ namespace V2.NPCs.Vanilla.TownNPCs.Mechanic
 	{
 		public override bool InstancePerEntity => true;
 
-		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.type == NPCID.Mechanic;
+		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.netID == NPCID.Mechanic;
 
 		public override void SetDefaults(NPC npc)
 		{
 			npc.AsV2NPC().Gender = EntityGender.Female;
 
 			npc.AsV2NPC().GetChatMethod = GetMechanicChat;
-
+			
+			npc.AsFood().Size = 0.96;
 			npc.AsPred().MaxStomachCapacity = 1.75;
 
 			npc.AsPred().CanBeForceFedMethod = CanMechanicBeForceFed;
@@ -95,24 +95,6 @@ namespace V2.NPCs.Vanilla.TownNPCs.Mechanic
 			npc.AsPred().GetPreyAbsorptionRateMethod = GetPreyAbsorptionRate;
 
 			npc.AsPred().GetVisualBellySizeMethod = GetVisualBellySize;
-
-			npc.AsFood().FoodTypeTags = new List<FoodTypeTag>
-			{
-				new MeatTag()
-				{
-					FoodSubtypeTags = new List<(string subtype, double weight)>
-					{
-						("Human", 0.93)
-					}
-				},
-				new MetalTag()
-				{
-					FoodSubtypeTags = new List<(string subtype, double weight)>
-					{
-						("Copper", 0.02)
-					}
-				},
-			};
 		}
 
 		public override ITownNPCProfile ModifyTownNPCProfile(NPC npc) => MechanicStuff.PredMechanicProfile;

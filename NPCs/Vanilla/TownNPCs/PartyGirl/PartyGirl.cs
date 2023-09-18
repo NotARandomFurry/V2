@@ -18,7 +18,6 @@ using V2.Core;
 using V2.NPCs.Voraria.TownNPCs;
 using V2.PlayerHandling;
 using V2.Sounds.Vore;
-using static V2.Core.FoodTypeTags;
 
 namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 {
@@ -78,7 +77,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 		public int SpecialGutFrames;
 		public override bool InstancePerEntity => true;
 
-		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.type == NPCID.PartyGirl;
+		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.netID == NPCID.PartyGirl;
 
 		public override void SetDefaults(NPC npc)
 		{
@@ -86,6 +85,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 
 			npc.AsV2NPC().GetChatMethod = GetPartyGirlChat;
 
+			npc.AsFood().Size = 1.0;
 			npc.AsPred().stomachContents = new List<Prey>();
 			npc.AsPred().stomachContentsQueue = new List<Prey>();
 			npc.AsPred().MaxStomachCapacity = 999999.0;
@@ -107,17 +107,6 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 			npc.AsPred().GetVisualBellySizeMethod = GetVisualBellySize;
 
 			npc.AsPred().SpecialPredAIMethod = PartyGirlSpecialPredAI;
-
-			npc.AsFood().FoodTypeTags = new List<FoodTypeTag>
-			{
-				new MeatTag()
-				{
-					FoodSubtypeTags = new List<(string subtype, double weight)>
-					{
-						("Human", 1.00)
-					}
-				},
-			};
 		}
 
 		public override ITownNPCProfile ModifyTownNPCProfile(NPC npc) => PartyGirlStuff.PartyGirlPredProfile;

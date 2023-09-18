@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,15 +13,14 @@ namespace V2.PlayerHandling.PredPlayerGoals
 {
 	public abstract class PredPlayerGoal : ModType
 	{
-		public static FirstLivePrey FirstLivePrey { get; set; } = new FirstLivePrey();
-		public static FirstItemEaten FirstItemEaten { get; set; } = new FirstItemEaten();
-
 		protected sealed override void Register()
 		{
 			ModTypeLookup<PredPlayerGoal>.Register(this);
 
 			PredPlayerGoalLoader.PredPlayerGoals.Add(this);
 		}
+
+		public static Rectangle TextureBounds => new Rectangle(0, 0, 36, 36);
 
 		public virtual Texture2D IncompleteTexture => ModContent.Request<Texture2D>("V2/PlayerHandling/PredPlayerGoals/PlaceholderIncomplete").Value;
 		public virtual Texture2D CompleteTexture => ModContent.Request<Texture2D>("V2/PlayerHandling/PredPlayerGoals/PlaceholderComplete").Value;
@@ -38,6 +38,15 @@ namespace V2.PlayerHandling.PredPlayerGoals
 		/// Can be used to change this goal's name based on player conditions.<br/>
 		/// </param>
 		public abstract string DisplayName(Player pred);
+
+		/// <summary>
+		/// The name used for this goal in the player pred goals menu.<br/>
+		/// </summary>
+		/// <param name="pred">
+		/// The predatory player that has the player pred goals menu open.<br/>
+		/// Can be used to change this goal's name based on player conditions.<br/>
+		/// </param>
+		public virtual Color DisplayNameColor(Player pred) => Complete(pred) ? Color.LimeGreen : Color.Red;
 
 		/// <summary>
 		/// The description used for this goal in the player pred goals menu.<br/>
@@ -66,12 +75,33 @@ namespace V2.PlayerHandling.PredPlayerGoals
 		/// </param>
 		public virtual bool Available(Player pred) => true;
 
+		public void TrySetCompletion(Player pred, bool intendedCompletionState = true) {
+			if (pred.AsPred().GoalsCompleted[InternalName] == intendedCompletionState)
+				return;
+
+			pred.AsPred().GoalsCompleted[InternalName] = intendedCompletionState;
+			if (intendedCompletionState)
+			{
+				
+			}
+			else
+			{
+				
+			}
+		}
+
 		/// <summary>
 		/// Checks whether this goal has been completed by the given predatory player.<br/>
 		/// </summary>
 		/// <param name="pred">
 		/// The predatory player to check this goal's completion status for.<br/>
 		/// </param>
-		public bool Complete(Player pred) => pred.AsPred().Goals.Find(x => x.goalName == DisplayName(pred)).complete;
+		public bool Complete(Player pred)
+		{
+			if (!pred.AsPred().GoalsCompleted.ContainsKey(InternalName))
+				pred.AsPred().GoalsCompleted.Add(InternalName, false);
+
+			return pred.AsPred().GoalsCompleted[InternalName];
+		}
 	}
 }

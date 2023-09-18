@@ -23,6 +23,8 @@ using V2.Core;
 using V2.Items;
 using V2.NPCs;
 using V2.PlayerHandling.PredPlayerGoals;
+using V2.PlayerHandling.PredPlayerGoals.Beginner;
+using V2.PlayerHandling.PredPlayerGoals.Starter;
 using V2.Sounds.Vore;
 using V2.StatusEffects.Debuffs;
 
@@ -59,7 +61,7 @@ namespace V2.PlayerHandling
 		public int predLevel;
 
 		public bool InPredStatsMenu { get; set; }
-		public List<(string goalName, bool complete)> Goals { get; set; }
+		public Dictionary<string, bool> GoalsCompleted { get; set; }
 		public int TotalStatPoints { get; set; }
 		public int AllocatedStatPoints => GLP.Spent + TUM.Spent + ACI.Spent + ABS.Spent;
 		public int AvailableStatPoints => TotalStatPoints - AllocatedStatPoints;
@@ -116,17 +118,26 @@ namespace V2.PlayerHandling
 			get
 			{
 				double seconds = StruggleGraceTime.CastToDecimalPlaces(2);
+				int hours = 0;
 				int minutes = 0;
+				while (seconds > 3600.0)
+				{
+					hours += 1;
+					seconds -= 60.0;
+				}
 				while (seconds > 60.0)
 				{
 					minutes += 1;
 					seconds -= 60.0;
 				}
 
+				string readableTime = seconds + "sec";
 				if (minutes > 0)
-					return minutes + "min" + seconds + "sec";
-				else
-					return seconds + "sec";
+					readableTime = minutes + "min" + readableTime;
+				if (hours > 0)
+					readableTime = hours + "hr" + readableTime;
+
+				return readableTime;
 			}
 		}
 		public PredStat TUM { get; set; }
@@ -243,6 +254,10 @@ namespace V2.PlayerHandling
 		public string lastEntitySwallowed;
 		public string lastEntitySwallowedMod;
 		public Dictionary<string, int> mealCount;
+		public bool lastSwallowWasDrinking;
+		public string lastLiquidDrank;
+		public string lastLiquidDrankMod;
+		public Dictionary<string, int> drinkCount;
 		public int TotalMeals
 		{
 			get
@@ -302,6 +317,9 @@ namespace V2.PlayerHandling
 				}
 			}
 		}
+
+		public double StomachWeightAtSleepStart;
+		public int OverfullTime;
 
 		public double specialHealthRegenCount;
 		public double specialManaRegenCount;
@@ -470,12 +488,23 @@ namespace V2.PlayerHandling
 			lastEntitySwallowed = null;
 			lastEntitySwallowedMod = null;
 			mealCount = new Dictionary<string, int>();
+			lastSwallowWasDrinking = false;
+			lastLiquidDrank = null;
+			lastLiquidDrankMod = null;
+			drinkCount = new Dictionary<string, int>();
 
 			PrimedForShimmerStomachDeath = false;
 
-			Goals = new List<(string goalName, bool complete)>();
+			GoalsCompleted = new Dictionary<string, bool>();
+			foreach (PredPlayerGoal goal in PredPlayerGoalLoader.PredPlayerGoals)
+			{
+				GoalsCompleted.Add(goal.InternalName, false);
+			}
 
 			InPredStatsMenu = false;
+
+			StomachWeightAtSleepStart = 0.0;
+			OverfullTime = 0;
 		}
 
 		public override void ResetEffects()
@@ -517,6 +546,7 @@ namespace V2.PlayerHandling
 					{
 						Player.ForceDropItem(Player.Center, ref inventory[slot], out Item droppedItem);
 						Swallow(Player, droppedItem);
+						ModContent.GetInstance<FirstItemEaten>().TrySetCompletion(Player);
 					}
 				}
 			}
@@ -657,23 +687,61 @@ namespace V2.PlayerHandling
 					Tile tile = Main.tile[playerTileLocation];
 					if (tile.LiquidAmount > 0 && Player.AsPred().StomachCapacity - GetCurrentBellyWeight(Player) >= Player.AsPred().EffectiveLiquidSwallowSize(tile.LiquidType))
 					{
+						int liquidToDrink = (tile.LiquidAmount > Player.AsPred().LiquidSwallowSize) ? Player.AsPred().LiquidSwallowSize : tile.LiquidAmount;
 						Player.AsPred().stomachContents.Add(new Prey(
 							tile.LiquidType,
-							(tile.LiquidAmount > Player.AsPred().LiquidSwallowSize) ? Player.AsPred().LiquidSwallowSize : tile.LiquidAmount
+							liquidToDrink
 						));
+
+						Player.AsPred().lastLiquidDrank = tile.LiquidType switch
+						{
+							0 => "Water",
+							1 => "Lava",
+							2 => "Honey",
+							3 => "Shimmer",
+							_ => "Some other liquid",
+						};
+
+						void AddVanillaDrinkCount()
+						{
+							Player.AsPred().lastLiquidDrankMod = "Terraria";
+							if (!Player.AsPred().drinkCount.ContainsKey(Player.AsPred().lastLiquidDrankMod + ": " + Player.AsPred().lastLiquidDrank))
+								Player.AsPred().drinkCount.Add(Player.AsPred().lastLiquidDrankMod + ": " + Player.AsPred().lastLiquidDrank, 0);
+							Player.AsPred().drinkCount[Player.AsPred().lastLiquidDrankMod + ": " + Player.AsPred().lastLiquidDrank] += liquidToDrink;
+							Player.AsPred().lastSwallowWasDrinking = true;
+						}
+						bool VanillaDrinkCountHas(int req) => Player.AsPred().drinkCount[Player.AsPred().lastLiquidDrankMod + ": " + Player.AsPred().lastLiquidDrank] >= req;
 						switch (tile.LiquidType)
 						{
 							case LiquidID.Water:
+								AddVanillaDrinkCount();
+								if (VanillaDrinkCountHas(255))
+									ModContent.GetInstance<FirstDrink>().TrySetCompletion(Player);
 								break;
 							case LiquidID.Lava:
+								if (Player.AsPred().CanDrinkLavaSafe)
+								{
+									AddVanillaDrinkCount();
+								//	if (VanillaDrinkCountHas(255))
+								//		ModContent.GetInstance<FirstDrink>().TrySetCompletion(Player);
+								}
 								break;
 							case LiquidID.Honey:
+								AddVanillaDrinkCount();
+								if (VanillaDrinkCountHas(255))
+									ModContent.GetInstance<DrinkHoney>().TrySetCompletion(Player);
 								break;
 							case LiquidID.Shimmer:
 								if (!Player.AsPred().CanDrinkShimmerSafe && !Player.AsPred().PrimedForShimmerStomachDeath)
 								{
 									Player.AddBuff(ModContent.BuffType<ShimmeringStomach>(), 300);
 									Player.AsPred().PrimedForShimmerStomachDeath = true;
+								}
+								else if (Player.AsPred().CanDrinkShimmerSafe)
+								{
+									AddVanillaDrinkCount();
+								//	if (VanillaDrinkCountHas(255))
+								//		ModContent.GetInstance<FirstDrink>().TrySetCompletion(Player);
 								}
 								break;
 						}
@@ -739,6 +807,7 @@ namespace V2.PlayerHandling
 			}
 
 			UpdatePrey(Player);
+			UpdateGeneralPredGoalsLogic(Player);
 		}
 		
 		public static bool CanSwallow(Player pred, Entity prey)
@@ -825,6 +894,7 @@ namespace V2.PlayerHandling
 						pred.Center
 					);
 				}
+				pred.AsPred().lastSwallowWasDrinking = false;
 				switch (food.Type)
 				{
 					case PreyType.NPC:
@@ -918,6 +988,13 @@ namespace V2.PlayerHandling
 				{
 					double digestionDamage = player.AsPred().DigestionTickDamage;
 					double digestionRate = player.AsPred().DigestionTickRate;
+					if (player.sleeping.FullyFallenAsleep)
+					{
+						digestionRate *= 1.1;
+						bool everybodyIsSleepingOffAMeal = Main.CurrentFrameFlags.SleepingPlayersCount == Main.CurrentFrameFlags.ActivePlayersCount && Main.CurrentFrameFlags.SleepingPlayersCount > 0;
+						if (everybodyIsSleepingOffAMeal)
+							digestionRate *= Main.dayRate;
+					}
 					int digestionFrameRate = (int)Math.Round(60.0 / digestionRate);
 					if (prey.timeSpentInStomach % digestionFrameRate == 0)
 					{
@@ -989,7 +1066,15 @@ namespace V2.PlayerHandling
 				}
 				else
 				{
-					prey.WeightLeftToDigest -= player.AsPred().PreyAbsorptionRatePerTick / (double)player.AsPred().stomachContents.Count;
+					double absorptionRate = player.AsPred().PreyAbsorptionRatePerTick / (double)player.AsPred().stomachContents.Count;
+					if (player.sleeping.FullyFallenAsleep)
+					{
+						absorptionRate *= 1.1;
+						bool everybodyIsSleepingOffAMeal = Main.CurrentFrameFlags.SleepingPlayersCount == Main.CurrentFrameFlags.ActivePlayersCount && Main.CurrentFrameFlags.SleepingPlayersCount > 0;
+						if (everybodyIsSleepingOffAMeal)
+							absorptionRate *= Main.dayRate;
+					}
+					prey.WeightLeftToDigest -= absorptionRate;
 					if (prey.WeightLeftToDigest < 0)
 						prey.WeightLeftToDigest = 0;
 
@@ -1001,7 +1086,7 @@ namespace V2.PlayerHandling
 								preyItem.AsFood().FullyDigested = true;
 							break;
 						case PreyType.Liquid:
-							switch (prey.TypeTags[0].FoodSubtypeTags[0].subtype)
+							switch (prey.ExactType)
 							{
 								case "Water":
 									break;
@@ -1070,6 +1155,26 @@ namespace V2.PlayerHandling
 				stomachNoises.Volume = 0.25f;
 				stomachNoises.Volume += 0.15f * GetVisualBellySize(player);
 			}
+		}
+
+		public static void UpdateGeneralPredGoalsLogic(Player pred)
+		{
+			if (pred.sleeping.FullyFallenAsleep)
+			{
+				if (pred.AsPred().StomachWeight == 0.0 && pred.AsPred().StomachWeightAtSleepStart > 0.0 && pred.AsPred().StomachWeightAtSleepStart >= SleepSpeedsDigestion.FlatFullnessThreshold)
+					ModContent.GetInstance<SleepSpeedsDigestion>().TrySetCompletion(pred);
+			}
+			else
+				pred.AsPred().StomachWeightAtSleepStart = 0.0;
+
+			if (pred.AsPred().StomachFullness / pred.AsPred().StomachCapacity > TooFull.TimeThreshold)
+			{
+				pred.AsPred().OverfullTime += 1;
+				if (pred.AsPred().OverfullTime >= TooFull.TimeThreshold)
+					ModContent.GetInstance<TooFull>().TrySetCompletion(pred);
+			}
+			else
+				pred.AsPred().OverfullTime = 0;
 		}
 
 		/// <summary>
@@ -1298,28 +1403,41 @@ namespace V2.PlayerHandling
 			{
 				tag.Add("[DIGESTED] " + keyValuePair.Key, keyValuePair.Value);
 			}
-			foreach ((string goalName, bool complete) in Player.AsPred().Goals)
+			foreach (KeyValuePair<string, int> keyValuePair in Player.AsPred().drinkCount)
 			{
-				tag.Add("[GOAL] " + goalName, complete);
+				tag.Add("[DRANK] " + keyValuePair.Key, keyValuePair.Value);
+			}
+			foreach (KeyValuePair<string, bool> keyValuePair in Player.AsPred().GoalsCompleted)
+			{
+				tag.Add("[GOAL] " + keyValuePair.Key, keyValuePair.Value);
 			}
 		}
 
 		public override void LoadData(TagCompound tag)
 		{
 			mealCount = new Dictionary<string, int>();
-			Goals = new List<(string goalName, bool complete)>();
+			GoalsCompleted = new Dictionary<string, bool>();
 			foreach (KeyValuePair<string, object> keyValuePair in tag)
 			{
 				if (keyValuePair.Key.StartsWith("[DIGESTED] "))
 				{
 					string realKey = keyValuePair.Key.Remove(0, 11);
-					mealCount.Add(realKey, (int)keyValuePair.Value);
+					int specificMealCount = tag.GetInt(keyValuePair.Key);
+					mealCount.Add(realKey, specificMealCount);
+					continue;
+				}
+				if (keyValuePair.Key.StartsWith("[DRANK] "))
+				{
+					string realKey = keyValuePair.Key.Remove(0, 8);
+					int specificDrinkCount = tag.GetInt(keyValuePair.Key);
+					drinkCount.Add(realKey, specificDrinkCount);
 					continue;
 				}
 				if (keyValuePair.Key.StartsWith("[GOAL] "))
 				{
 					string realKey = keyValuePair.Key.Remove(0, 7);
-					Goals.Add((realKey, (bool)keyValuePair.Value));
+					bool completeState = tag.GetBool(keyValuePair.Key);
+					GoalsCompleted.Add(realKey, completeState);
 					continue;
 				}
 			}

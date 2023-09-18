@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Terraria;
 using Terraria.Localization;
+using Terraria.ModLoader;
 
 namespace V2.PlayerHandling.PredPlayerGoals.Starter
 {
@@ -16,6 +17,6 @@ namespace V2.PlayerHandling.PredPlayerGoals.Starter
 
 		public override int StatPointsFromCompletion => 1;
 
-		public override ProgressionStage Stage => ProgressionStage.Starter;
+		public override ProgressionStage Stage => ModContent.GetInstance<StarterStage>();
 	}
 }

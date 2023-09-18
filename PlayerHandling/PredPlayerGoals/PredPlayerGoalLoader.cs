@@ -11,19 +11,5 @@ namespace V2.PlayerHandling.PredPlayerGoals
 	{
 		internal static List<PredPlayerGoal> PredPlayerGoals = new List<PredPlayerGoal>();
 		internal static List<ProgressionStage> ProgressionStages = new List<ProgressionStage>();
-
-		internal static void Load()
-		{
-			PredPlayerGoals = new List<PredPlayerGoal>()
-			{
-				PredPlayerGoal.FirstLivePrey,
-				PredPlayerGoal.FirstItemEaten,
-			};
-
-			ProgressionStages = new List<ProgressionStage>()
-			{
-				ProgressionStage.Starter,
-			};
-		}
 	}
 }

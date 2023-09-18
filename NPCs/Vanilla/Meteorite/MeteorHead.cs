@@ -26,7 +26,7 @@ namespace V2.NPCs.Vanilla.Meteorite
 {
 	public class MeteorHead : GlobalNPC
 	{
-		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.type == NPCID.MeteorHead;
+		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.netID == NPCID.MeteorHead;
 		public override void SetStaticDefaults()
 		{
 			NPCID.Sets.NPCBestiaryDrawOffset[NPCID.MeteorHead] = new NPCID.Sets.NPCBestiaryDrawModifiers(0) { Hide = true };
