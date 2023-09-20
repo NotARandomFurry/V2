@@ -74,7 +74,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 	{
 		public override bool InstancePerEntity => true;
 
-		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.netID == NPCID.Stylist;
+		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.type == NPCID.Stylist;
 
 		public override void SetDefaults(NPC npc)
 		{
@@ -83,7 +83,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 			npc.AsV2NPC().GetChatMethod = GetStylistChat;
 
 			npc.AsFood().Size = 1.085;
-			npc.AsPred().MaxStomachCapacity = 4.0;
+			npc.AsPred().MaxStomachCapacity = 5.85;
 
 			npc.AsPred().CanBeForceFedMethod = CanStylistBeForceFed;
 			npc.AsPred().OnForceFedMethod = OnStylistForceFed;
@@ -95,10 +95,12 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 			npc.AsPred().OnDigestionKillMethod = OnDigestionKill;
 			npc.AsPred().SmallBurps = Burps.Humanoid.Small;
 			npc.AsPred().StandardBurps = Burps.Humanoid.Standard;
-			npc.AsPred().GetDigestedPlayerAdditionalDeathMessagesMethod = GetDigestedPlayerAdditionalDeathMessages;
+			npc.AsPred().GetAdditionalDigestedPlayerMessages = GetDigestedPlayerAdditionalDeathMessages;
 			npc.AsPred().GetPreyAbsorptionRateMethod = GetPreyAbsorptionRate;
 
 			npc.AsPred().GetVisualBellySizeMethod = GetVisualBellySize;
+
+			npc.AsFood().OnKilledByDigestion += PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
 		}
 
 		public override ITownNPCProfile ModifyTownNPCProfile(NPC npc) => StylistStuff.StylistPredProfile;

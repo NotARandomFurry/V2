@@ -71,14 +71,14 @@ namespace V2.NPCs.Voraria.Meteorite
 			NPC.AsPred().GetDigestionTickRateMethod = GetDigestionTickRate;
 			NPC.AsPred().GetDigestionTickDamageMethod = GetDigestionTickDamage;
 
-			NPC.AsPred().GetDigestedPlayerAdditionalDeathMessagesMethod = GetDigestedPlayerAdditionalDeathMessages;
+			NPC.AsPred().GetAdditionalDigestedPlayerMessages = GetDigestedPlayerAdditionalDeathMessages;
 
 			NPC.AsPred().GetPreyAbsorptionRateMethod = GetPreyAbsorptionRate;
 
 			NPC.AsPred().GetVisualBellySizeMethod = GetVisualBellySize;
-		}
 
-		public override void ModifyTypeName(ref string typeName) => typeName = "Meteor Marble";
+			NPC.AsFood().OnKilledByDigestion += PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
+		}
 
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
 		{

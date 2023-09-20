@@ -566,11 +566,16 @@ namespace V2.PlayerHandling
 
 		public override void PostUpdateMiscEffects()
 		{
-			bool isEveryoneAsleep = Main.CurrentFrameFlags.SleepingPlayersCount == Main.CurrentFrameFlags.ActivePlayersCount && Main.CurrentFrameFlags.SleepingPlayersCount > 0;
-			if (isEveryoneAsleep)
+			if (Player.sleeping.FullyFallenAsleep)
 			{
-				Player.AsPred().DigestionTickRateModifier *= 5.0f;
-				Player.AsPred().PreyAbsorptionRateModifier *= 5.0f;
+				Player.AsPred().DigestionTickRateModifier += 0.25f;
+				Player.AsPred().PreyAbsorptionRateModifier += 0.25f;
+				bool isEveryoneAsleep = Main.CurrentFrameFlags.SleepingPlayersCount == Main.CurrentFrameFlags.ActivePlayersCount && Main.CurrentFrameFlags.SleepingPlayersCount > 0;
+				if (isEveryoneAsleep)
+				{
+					Player.AsPred().DigestionTickRateModifier *= (float)Main.dayRate;
+					Player.AsPred().PreyAbsorptionRateModifier *= (float)Main.dayRate;
+				}
 			}
 			while (specialHealthRegenCount >= 60.0)
 			{
@@ -988,13 +993,6 @@ namespace V2.PlayerHandling
 				{
 					double digestionDamage = player.AsPred().DigestionTickDamage;
 					double digestionRate = player.AsPred().DigestionTickRate;
-					if (player.sleeping.FullyFallenAsleep)
-					{
-						digestionRate *= 1.1;
-						bool everybodyIsSleepingOffAMeal = Main.CurrentFrameFlags.SleepingPlayersCount == Main.CurrentFrameFlags.ActivePlayersCount && Main.CurrentFrameFlags.SleepingPlayersCount > 0;
-						if (everybodyIsSleepingOffAMeal)
-							digestionRate *= Main.dayRate;
-					}
 					int digestionFrameRate = (int)Math.Round(60.0 / digestionRate);
 					if (prey.timeSpentInStomach % digestionFrameRate == 0)
 					{

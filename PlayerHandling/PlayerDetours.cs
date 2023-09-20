@@ -48,8 +48,9 @@ namespace V2.PlayerHandling
 					NPC releasedCritter = Main.npc[releasedCritterIndex];
 					if (sItem.AsV2Item().ReleasedNPCNetID < 0)
 					{
-						releasedCritter.netID = sItem.AsV2Item().ReleasedNPCNetID;
 						releasedCritter.SetDefaults(sItem.AsV2Item().ReleasedNPCNetID);
+						if (sItem.AsFood().MaxHealth != 0 && sItem.AsFood().MaxHealth == releasedCritter.lifeMax)
+							releasedCritter.life = sItem.AsFood().Health;
 					}
 					releasedCritter.life = sItem.AsFood().Health;
 					if (Main.myPlayer == player.whoAmI && V2.SwallowHotkey.Current && PredPlayer.CanSwallow(player, releasedCritter))

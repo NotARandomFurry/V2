@@ -70,7 +70,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Mechanic
 	{
 		public override bool InstancePerEntity => true;
 
-		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.netID == NPCID.Mechanic;
+		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.type == NPCID.Mechanic;
 
 		public override void SetDefaults(NPC npc)
 		{
@@ -91,15 +91,17 @@ namespace V2.NPCs.Vanilla.TownNPCs.Mechanic
 			npc.AsPred().OnDigestionKillMethod = OnDigestionKill;
 			npc.AsPred().SmallBurps = Burps.Humanoid.Small;
 			npc.AsPred().StandardBurps = Burps.Humanoid.Standard;
-			npc.AsPred().GetDigestedPlayerAdditionalDeathMessagesMethod = GetDigestedPlayerAdditionalDeathMessages;
+			npc.AsPred().GetAdditionalDigestedPlayerMessages = GetDigestedPlayerAdditionalDeathMessages;
 			npc.AsPred().GetPreyAbsorptionRateMethod = GetPreyAbsorptionRate;
 
 			npc.AsPred().GetVisualBellySizeMethod = GetVisualBellySize;
+
+			npc.AsFood().OnKilledByDigestion += PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
 		}
 
 		public override ITownNPCProfile ModifyTownNPCProfile(NPC npc) => MechanicStuff.PredMechanicProfile;
 
-		public List<string> GetMechanicChat(NPC npc, Player player)
+		public static List<string> GetMechanicChat(NPC npc, Player player)
 		{
 			List<NPC> nearbyResidentNPCs = npc.GetNearbyResidentNPCs(out int npcsWithinHouse, out int npcsWithinVillage);
 			NPC hopelessRomantic = nearbyResidentNPCs.FirstOrDefault(x => x.type == NPCID.ArmsDealer);

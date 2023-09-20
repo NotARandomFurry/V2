@@ -83,7 +83,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 
 		public override bool InstancePerEntity => true;
 
-		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.netID == NPCID.Nurse;
+		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.type == NPCID.Nurse;
 
 		public override void SetDefaults(NPC npc)
 		{
@@ -106,7 +106,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 			npc.AsPred().OnDigestionKillMethod = OnDigestionKill;
 			npc.AsPred().SmallBurps = Burps.Humanoid.Small;
 			npc.AsPred().StandardBurps = Burps.Humanoid.Standard;
-			npc.AsPred().GetDigestedPlayerAdditionalDeathMessagesMethod = GetDigestedPlayerAdditionalDeathMessages;
+			npc.AsPred().GetAdditionalDigestedPlayerMessages = GetDigestedPlayerAdditionalDeathMessages;
 			npc.AsPred().GetPreyAbsorptionRateMethod = GetPreyAbsorptionRate;
 
 			npc.AsPred().GetVisualBellySizeMethod = GetVisualBellySize;
@@ -117,6 +117,9 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 			npc.AsNurse().digestScamPatient = false;
 			npc.AsNurse().healPlayerIndex = -1;
 			npc.AsNurse().armsDealerHealTime = 0;
+
+			npc.AsFood().OnKilledByDigestion += PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
+			npc.AsFood().OnKilledByDigestion += OnKilledByDigestion_GrantCheapskateGoal;
 		}
 
 		public static void ResetPredSpecificVariables(NPC npc)
@@ -772,6 +775,14 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 				(int)Math.Floor(5.0 * Math.Sqrt(PredNPC.GetCurrentBellyWeight(npc))),
 				5
 			);
+		}
+
+		public static void OnKilledByDigestion_GrantCheapskateGoal(NPC npc, Entity pred)
+		{
+			if (pred is not Player predPlayer)
+				return;
+
+			if (predPlayer.BuyItem)
 		}
 	}
 }

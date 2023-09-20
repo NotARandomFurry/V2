@@ -84,7 +84,7 @@ namespace V2.NPCs
 		public DelegateOnDigestionKill OnDigestionKillMethod { get; set; }
 
 		public delegate void DelegateGetDigestedPlayerAdditionalDeathMessages(NPC npc, Player player, List<string> deathMessageKeyList);
-		public DelegateGetDigestedPlayerAdditionalDeathMessages GetDigestedPlayerAdditionalDeathMessagesMethod { get; set; }
+		public DelegateGetDigestedPlayerAdditionalDeathMessages GetAdditionalDigestedPlayerMessages { get; set; }
 
 		public delegate double DelegateGetPreyAbsorptionRate(NPC npc);
 		public DelegateGetPreyAbsorptionRate GetPreyAbsorptionRateMethod { get; set; }
@@ -483,6 +483,8 @@ namespace V2.NPCs
 				"Mods.V2.Death.DigestedPlayer.Universal.18",
 				"Mods.V2.Death.DigestedPlayer.Universal.19",
 				"Mods.V2.Death.DigestedPlayer.Universal.20",
+				"Mods.V2.Death.DigestedPlayer.Universal.21",
+				"Mods.V2.Death.DigestedPlayer.Universal.22",
 			};
 			switch (npc.AsPred().DigestionType)
 			{
@@ -515,8 +517,8 @@ namespace V2.NPCs
 					break;
 			}
 
-			if (npc.AsPred().GetDigestedPlayerAdditionalDeathMessagesMethod is not null)
-				npc.AsPred().GetDigestedPlayerAdditionalDeathMessagesMethod.Invoke(npc, player, deathMessageKeyList);
+			if (npc.AsPred().GetAdditionalDigestedPlayerMessages is not null)
+				npc.AsPred().GetAdditionalDigestedPlayerMessages.Invoke(npc, player, deathMessageKeyList);
 			string finalDeathReasonKey = Main.rand.NextFromCollection(deathMessageKeyList);
 			
 			return Language.GetTextValueWith(

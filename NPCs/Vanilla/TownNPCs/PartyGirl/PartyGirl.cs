@@ -77,7 +77,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 		public int SpecialGutFrames;
 		public override bool InstancePerEntity => true;
 
-		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.netID == NPCID.PartyGirl;
+		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.type == NPCID.PartyGirl;
 
 		public override void SetDefaults(NPC npc)
 		{
@@ -100,13 +100,15 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 			npc.AsPred().OnDigestionKillMethod = OnDigestionKill;
 			npc.AsPred().SmallBurps = Burps.Humanoid.Small;
 			npc.AsPred().StandardBurps = Burps.Humanoid.Standard;
-			npc.AsPred().GetDigestedPlayerAdditionalDeathMessagesMethod = GetDigestedPlayerAdditionalDeathMessages;
+			npc.AsPred().GetAdditionalDigestedPlayerMessages = GetDigestedPlayerAdditionalDeathMessages;
 
 			npc.AsPred().GetPreyAbsorptionRateMethod = GetPreyAbsorptionRate;
 
 			npc.AsPred().GetVisualBellySizeMethod = GetVisualBellySize;
 
 			npc.AsPred().SpecialPredAIMethod = PartyGirlSpecialPredAI;
+
+			npc.AsFood().OnKilledByDigestion += PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
 		}
 
 		public override ITownNPCProfile ModifyTownNPCProfile(NPC npc) => PartyGirlStuff.PartyGirlPredProfile;

@@ -144,11 +144,13 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 			NPC.AsPred().OnDigestionKillMethod = OnDigestionKill;
 			NPC.AsPred().SmallBurps = Burps.Humanoid.Small;
 			NPC.AsPred().StandardBurps = Burps.Humanoid.Standard;
-			NPC.AsPred().GetDigestedPlayerAdditionalDeathMessagesMethod = GetDigestedPlayerAdditionalDeathMessages;
+			NPC.AsPred().GetAdditionalDigestedPlayerMessages = GetDigestedPlayerAdditionalDeathMessages;
 
 			NPC.AsPred().GetPreyAbsorptionRateMethod = GetPreyAbsorptionRate;
 
 			NPC.AsPred().GetVisualBellySizeMethod = GetVisualBellySize;
+
+			NPC.AsFood().OnKilledByDigestion += PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
 
 			NPC.buffImmune[BuffID.OnFire] = true;
 			NPC.buffImmune[BuffID.OnFire3] = true;

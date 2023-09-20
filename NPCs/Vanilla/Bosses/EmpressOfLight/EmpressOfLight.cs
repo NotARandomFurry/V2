@@ -50,7 +50,7 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 
 		public override bool InstancePerEntity => true;
 
-		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.netID == NPCID.HallowBoss;
+		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.type == NPCID.HallowBoss;
 
 		public override void SetDefaults(NPC npc)
 		{
@@ -69,7 +69,7 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 
 			npc.AsPred().SmallBurps = Burps.Humanoid.Small;
 			npc.AsPred().StandardBurps = Burps.Humanoid.Standard;
-			npc.AsPred().GetDigestedPlayerAdditionalDeathMessagesMethod = GetDigestedPlayerAdditionalDeathMessages;
+			npc.AsPred().GetAdditionalDigestedPlayerMessages = GetDigestedPlayerAdditionalDeathMessages;
 			npc.AsPred().GetPreyAbsorptionRateMethod = GetPreyAbsorptionRate;
 
 			npc.AsPred().GetVisualBellySizeMethod = GetVisualBellySize;
@@ -78,6 +78,7 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 			npc.AsPred().SpecialPredAIMethod = UnreasonablyThickFairyPredAI;
 			npc.AsFood().PreyAIMethod = UnreasonablyThickFairyPreyAI;
 
+			npc.AsFood().OnKilledByDigestion += PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
 			npc.AsFood().DigestedDeathSound = CandyFairyStuff.MuffledCandyFairyDeathScreech;
 
 			npc.AsCandyFairy().MuffledScreechDelay = 0;
@@ -131,9 +132,11 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 				"Mods.V2.Death.DigestedPlayer.HumanoidPred.2",
 				"Mods.V2.Death.DigestedPlayer.HumanoidPred.3",
 				"Mods.V2.Death.DigestedPlayer.HumanoidPred.4",
+				"Mods.V2.Death.DigestedPlayer.HumanoidPred.5",
 				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Bosses.UnreasonablyThickFairy.1",
 				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Bosses.UnreasonablyThickFairy.2",
 				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Bosses.UnreasonablyThickFairy.3",
+				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Bosses.UnreasonablyThickFairy.4",
 			});
 			if (player.difficulty == PlayerDifficultyID.Hardcore)
 			{

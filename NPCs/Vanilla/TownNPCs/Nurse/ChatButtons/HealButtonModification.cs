@@ -63,7 +63,6 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse.ChatButtons
 			}
 			else
 			{
-
 				int num4 = Main.player[Main.myPlayer].statLifeMax2 - Main.player[Main.myPlayer].statLife;
 				for (int j = 0; j < Player.MaxBuffs; j++)
 				{

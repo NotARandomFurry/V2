@@ -71,7 +71,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Steampunker
 	public class Steampunker : GlobalNPC
 	{
 		public override bool InstancePerEntity => true;
-		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.netID == NPCID.Steampunker;
+		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.type == NPCID.Steampunker;
 
 		public override void SetDefaults(NPC npc)
 		{
@@ -94,10 +94,12 @@ namespace V2.NPCs.Vanilla.TownNPCs.Steampunker
 			npc.AsPred().OnDigestionKillMethod = OnDigestionKill;
 			npc.AsPred().SmallBurps = Burps.Humanoid.Small;
 			npc.AsPred().StandardBurps = Burps.Humanoid.Standard;
-			npc.AsPred().GetDigestedPlayerAdditionalDeathMessagesMethod = GetDigestedPlayerAdditionalDeathMessages;
+			npc.AsPred().GetAdditionalDigestedPlayerMessages = GetDigestedPlayerAdditionalDeathMessages;
 			npc.AsPred().GetPreyAbsorptionRateMethod = GetPreyAbsorptionRate;
 
 			npc.AsPred().GetVisualBellySizeMethod = GetVisualBellySize;
+
+			npc.AsFood().OnKilledByDigestion += PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
 		}
 
 		public override ITownNPCProfile ModifyTownNPCProfile(NPC npc) => SteampunkerStuff.PredSteampunkerProfile;

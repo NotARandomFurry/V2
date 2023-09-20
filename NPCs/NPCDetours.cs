@@ -1,19 +1,15 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Reflection;
 using Terraria;
 using Terraria.Audio;
-using Terraria.GameContent.Events;
-using Terraria.Localization;
-using Terraria.ModLoader;
-using Terraria.ID;
-using System.Reflection;
 using Terraria.Chat;
 using Terraria.GameContent.Achievements;
-using ReLogic.Utilities;
+using Terraria.GameContent.Events;
+using Terraria.ID;
+using Terraria.Localization;
+using Terraria.ModLoader;
+using V2.NPCs.Vanilla.Forest;
 using V2.PlayerHandling;
 
 namespace V2.NPCs
