@@ -198,8 +198,6 @@ namespace V2.PlayerHandling
 			Player.AsFood().SoftenedWearoffRateModifier = StatModifier.Default;
 			if (Player.AsFood().SoftenedWearoffDelay > 0)
 				Player.AsFood().SoftenedWearoffDelay--;
-			else if (Player.AsFood().SoftenedDigestionDamageTaken > 0)
-				Player.AsFood().SoftenedDigestionDamageTaken -= Player.AsFood().SoftenedWearoffRateModifier.ApplyTo((float)(25.0 / 60.0));
 		}
 
 		public override void UpdateDead()
@@ -218,6 +216,12 @@ namespace V2.PlayerHandling
 				if (Player.AsFood().CurrentCaptor.HasValue)
 					Player.position = Player.AsFood().CurrentCaptor.Value.Predator.Center;
 			}
+
+			if (Player.wet)
+				Player.AsFood().SoftenedWearoffRateModifier *= 2.0f;
+
+			if (Player.AsFood().SoftenedWearoffDelay <= 0 && Player.AsFood().SoftenedDigestionDamageTaken > 0)
+				Player.AsFood().SoftenedDigestionDamageTaken -= Player.AsFood().SoftenedWearoffRateModifier.ApplyTo((float)(25.0 / 60.0));
 		}
 
 		public override void PostItemCheck()

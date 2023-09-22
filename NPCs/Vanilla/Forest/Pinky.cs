@@ -41,9 +41,7 @@ namespace V2.NPCs.Vanilla.Forest
 
 		public override bool InstancePerEntity => true;
 
-		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.type == NPCID.BlueSlime;
-
-		public override void SetDefaults(NPC npc)
+		public override void OnSpawn(NPC npc, IEntitySource source)
 		{
 			if (npc.netID != NPCID.Pinky)
 				return;
@@ -121,7 +119,7 @@ namespace V2.NPCs.Vanilla.Forest
 
 	public class PinkyDigestingPlayerBuffs : ModPlayer
 	{
-		public override void PostUpdateBuffs()
+		public override void PreUpdateBuffs()
 		{
 			if (Player.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.NPC && x.ExactType == "Pinky") is Prey pinkyPrey)
 			{

@@ -23,6 +23,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse.ChatButtons
 			if (npc.AsNurse().healOvertime > 0)
 			{
 				int originalPrice = (int)(npc.AsNurse().originalHealPrice * 0.80) + npc.AsNurse().healOvertime;
+				PlayerLoader.ModifyNursePrice(Main.LocalPlayer, npc, 0, false, ref originalPrice);
 				int platOvertimeFee = 0;
 				int goldOvertimeFee = 0;
 				int silverOvertimeFee = 0;

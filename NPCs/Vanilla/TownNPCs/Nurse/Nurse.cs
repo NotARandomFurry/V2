@@ -4,19 +4,15 @@ using ReLogic.Content;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
-using Terraria.GameContent.Achievements;
-using Terraria.GameContent.Events;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
 using V2.Core;
 using V2.NPCs.Voraria.TownNPCs.Succubus;
 using V2.PlayerHandling;
+using V2.PlayerHandling.PredPlayerGoals.Amateur;
 using V2.Sounds.Vore;
 
 namespace V2.NPCs.Vanilla.TownNPCs.Nurse
@@ -778,6 +774,47 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 		{
 			if (pred is not Player predPlayer)
 				return;
+
+			int num4 = predPlayer.statLifeMax2 - predPlayer.statLife;
+			for (int j = 0; j < Player.MaxBuffs; j++)
+			{
+				int num5 = predPlayer.buffType[j];
+				if (Main.debuff[num5] && predPlayer.buffTime[j] > 60 && (num5 < 0 || !BuffID.Sets.NurseCannotRemoveDebuff[num5]))
+					num4 += 100;
+			}
+
+			int health = predPlayer.statLifeMax2 - predPlayer.statLife;
+			bool removeDebuffs = true;
+			if (NPC.downedGolemBoss)
+				num4 *= 200;
+			else if (NPC.downedPlantBoss)
+				num4 *= 150;
+			else if (NPC.downedMechBossAny)
+				num4 *= 100;
+			else if (Main.hardMode)
+				num4 *= 60;
+			else if (NPC.downedBoss3 || NPC.downedQueenBee)
+				num4 *= 25;
+			else if (NPC.downedBoss2)
+				num4 *= 10;
+			else if (NPC.downedBoss1)
+				num4 *= 3;
+
+			if (Main.expertMode)
+				num4 *= 2;
+
+			int copperCoins = (int)((double)num4 * predPlayer.currentShoppingSettings.PriceAdjustment);
+			if (copperCoins > 0 && copperCoins < 1)
+				copperCoins = 1;
+			int originalHealPrice = copperCoins;
+
+			if (originalHealPrice < 0)
+				originalHealPrice = 0;
+
+			PlayerLoader.ModifyNursePrice(predPlayer, npc, health, removeDebuffs, ref originalHealPrice);
+
+			if (!predPlayer.CanAfford(originalHealPrice))
+				ModContent.GetInstance<Cheapskate>().TrySetCompletion(predPlayer);
 		}
 	}
 }

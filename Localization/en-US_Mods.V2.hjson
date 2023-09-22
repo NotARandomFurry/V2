@@ -466,7 +466,7 @@ PredPlayerGoals: {
 			Description:
 				'''
 				Stay at or near your maximum capacity for a full minute.
-				'Eyes bigger than your stomach, eh? Happens to every newbie pred, and for good reason. It’s hard to pace yourself sometimes, what with so much thick, juicy MEAT walking around everywhere...'
+				'Eyes bigger than your stomach, eh? Happens to every newbie pred, and for good reason. It's hard to pace yourself sometimes, what with so much thick, juicy MEAT walking around everywhere...'
 				'''
 		}
 
@@ -484,7 +484,7 @@ PredPlayerGoals: {
 			Description:
 				'''
 				Eat and digest Pinky.
-				'The little thing tastes like cotton candy, and it’s small enough for just about anyone to swallow! How could someone bear to NOT gobble this little delicacy up on the spot?'
+				'The little thing tastes like cotton candy, and it's small enough for just about anyone to swallow! How could someone bear to NOT gobble this little delicacy up on the spot?'
 				'''
 		}
 
@@ -543,6 +543,15 @@ PredPlayerGoals: {
 				'''
 		}
 
+		Cheapskate: {
+			Name: Lady-Sized Lollipop
+			Description:
+				'''
+				Gobble up the Nurse to cheat her service fees and heal up for free (and get a free meal in the process).
+				'Just what the patient ordered.'
+				'''
+		}
+
 		FastFood: {
 			Name: Fast Food
 			Description:
@@ -585,9 +594,9 @@ PredPlayerGoals: {
 			Description:
 				'''
 				Drink a notable amount of holy water, then eat Promethia to treat her to a nice bath.
-				'It’s not as good as the tummies and saunas alike she remembers from home, but she loves the experience nonetheless! Somehow, she's given you multiple stat points for this. How, you might ask? It's simple.
+				'It's not as good as the tummies and saunas alike she remembers from home, but she loves the experience nonetheless! Somehow, she's given you multiple stat points for this. How, you might ask? It's simple.
 
-				Don’t underestimate the enticing nature, and latent powers, of a dedicated gut slut.'
+				Don't underestimate the enticing nature, and latent powers, of a dedicated gut slut.'
 				'''
 		}
 
@@ -595,7 +604,7 @@ PredPlayerGoals: {
 			Name: Rock in Rolls
 			Description:
 				'''
-				Gulp down a Boulder to avoid a hit from it that otherwise would’ve killed you.
+				Gulp down a Boulder to avoid a hit from it that otherwise would've killed you.
 
 				[c/{Mods.V2.CommonColorCodes.ThomasCommentary}:...in my defense, this joke sounded a lot funnier in my head]
 				'''
