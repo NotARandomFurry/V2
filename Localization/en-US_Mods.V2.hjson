@@ -1048,7 +1048,7 @@ Death: {
 			2: "{Player} helped to widen up {Pred}'s thighs."
 			3: "{Player} gave {Pred} an extra waistband size."
 			4: "{Player} decided to bulk up {Pred}'s booty a little."
-			5: "{Pred} needed {Player} to help fill their frame out a bit."
+			5: "{Player} filled out {Pred}'s hips a good bit."
 		}
 
 		SlimePred: {
@@ -1059,7 +1059,7 @@ Death: {
 		SpecificNPC: {
 			Forest: {
 				Pinky: {
-					1: "A Pinky turned {Player} into some pretty pink gel."
+					1: A Pinky turned {Player} into some pretty pink gel.
 					2: "{Player} got a little too into a cute little Pinky."
 					Hardcore:
 						'''
@@ -1074,7 +1074,7 @@ Death: {
 			Cavern: {
 				Nymph: {
 					1: "{Player} was lured too close by the tempting frame of a nymph."
-					2: "All it took was one sultry glance from a nymph for {Player} to get churned."
+					2: All it took was one sultry glance from a nymph for {Player} to get churned.
 					Hardcore:
 						'''
 						Within the deeper caverns, {Player} happened across a lost girl in need of food.
@@ -1245,7 +1245,7 @@ Death: {
 					1: "{Player} became a light snack for the Empress of Light."
 					2: The Empress' gut blinded {Player} just a little too long.
 					3: "{Player} was too enamored by the Empress' shiny stomach walls to fight their way out."
-					4: "Maybe now, {Player} can tell you if the Empress' tummy is twinklier on the inside."
+					4: Maybe now, {Player} can tell you if the Empress' tummy is twinklier on the inside.
 					Hardcore:
 						'''
 						{Player} was, sadly, far too enamored by the Empress' mesmerizingly twinkly tummy walls to fight their way out.

@@ -266,7 +266,7 @@ namespace V2.PlayerHandling
 							break;
 					}
 
-					if (!potentialPred.AsPred().CanBeForceFedMethod.Invoke(potentialPred))
+					if (!potentialPred.AsPred().CanBeForceFed.Invoke(potentialPred))
 						continue;
 
 					if (potentialPred.Distance(playerLocation) >= maxDistanceFromPlayer)
@@ -330,7 +330,7 @@ namespace V2.PlayerHandling
 								return;
 
 							PredNPC.Swallow(predNPC, Player);
-							predNPC.AsPred().OnForceFedMethod.Invoke(predNPC, Player);
+							predNPC.AsPred().OnForceFed.Invoke(predNPC, Player);
 							foodFor = predNPC.FullName;
 							break;
 						case "player":

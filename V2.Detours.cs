@@ -78,13 +78,13 @@ namespace V2
 						if (npcAsPrey.CurrentCaptor.HasValue)
 						{
 							npc.position = npcAsPrey.CurrentCaptor.Value.Predator.position;
-							npcAsPrey.PreyAIMethod?.Invoke(npc, npcAsPrey.CurrentCaptor.Value.Predator);
+							npcAsPrey.SpecialPreyAI?.Invoke(npc, npcAsPrey.CurrentCaptor.Value.Predator);
 							NPCLoader.PostAI(npc);
 						}
 					}
-					else if (npcAsPred.SpecialPredAIMethod != null)
+					else if (npcAsPred.SpecialPredAI != null)
 					{
-						if (npcAsPred.SpecialPredAIMethod.Invoke(npc))
+						if (npcAsPred.SpecialPredAI.Invoke(npc))
 							orig(npc);
 						else
 							NPCLoader.PostAI(npc);

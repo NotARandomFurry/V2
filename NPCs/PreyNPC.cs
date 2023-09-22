@@ -44,7 +44,7 @@ namespace V2.NPCs
 		public PredEntityReference? CurrentCaptor { get; set; }
 
 		public delegate void DelegatePreyAI(NPC npc, Entity pred);
-		public DelegatePreyAI PreyAIMethod { get; set; }
+		public DelegatePreyAI SpecialPreyAI { get; set; }
 
 		public double Size { get; set; }
 
@@ -71,7 +71,7 @@ namespace V2.NPCs
 
 		public PreyNPC()
 		{
-			PreyAIMethod = null;
+			SpecialPreyAI = null;
 			Size = 0;
 
 			OnKilledByDigestion = null;

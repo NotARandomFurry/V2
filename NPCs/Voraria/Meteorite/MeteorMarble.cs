@@ -68,14 +68,14 @@ namespace V2.NPCs.Voraria.Meteorite
 			NPC.AsPred().MaxStomachCapacity = 0.4;
 
 			NPC.AsPred().DigestionType = EntityDigestionType.Thermal;
-			NPC.AsPred().GetDigestionTickRateMethod = GetDigestionTickRate;
-			NPC.AsPred().GetDigestionTickDamageMethod = GetDigestionTickDamage;
+			NPC.AsPred().GetDigestionTickRate = GetDigestionTickRate;
+			NPC.AsPred().GetDigestionTickDamage = GetDigestionTickDamage;
 
 			NPC.AsPred().GetAdditionalDigestedPlayerMessages = GetDigestedPlayerAdditionalDeathMessages;
 
-			NPC.AsPred().GetPreyAbsorptionRateMethod = GetPreyAbsorptionRate;
+			NPC.AsPred().GetPreyAbsorptionRate = GetPreyAbsorptionRate;
 
-			NPC.AsPred().GetVisualBellySizeMethod = GetVisualBellySize;
+			NPC.AsPred().GetVisualBellySize = GetVisualBellySize;
 
 			NPC.AsFood().OnKilledByDigestion += PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
 		}
@@ -92,11 +92,6 @@ namespace V2.NPCs.Voraria.Meteorite
 		{
 			deathReasonKeyList.AddRange(new List<string>
 			{
-				"Mods.V2.Death.DigestedPlayer.SpecificDigestionType.Thermal.1",
-				"Mods.V2.Death.DigestedPlayer.SpecificDigestionType.Thermal.2",
-				"Mods.V2.Death.DigestedPlayer.SpecificDigestionType.Thermal.3",
-				"Mods.V2.Death.DigestedPlayer.SpecificDigestionType.Thermal.4",
-				"Mods.V2.Death.DigestedPlayer.SpecificDigestionType.Thermal.5",
 				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Meteorite.MeteorMarble.1",
 				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Meteorite.MeteorMarble.2",
 			});

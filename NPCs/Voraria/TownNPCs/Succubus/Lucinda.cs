@@ -53,7 +53,7 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 			string exactTextureToUse = "V2/NPCs/Voraria/TownNPCs/Succubus/Lucinda";
 			string weightString = "_WeightBase";
 			exactTextureToUse += weightString;
-			int bellySize = npc.AsPred().GetVisualBellySizeMethod.Invoke(npc);
+			int bellySize = npc.AsPred().GetVisualBellySize.Invoke(npc);
 			string bellyString = "_Belly" + (bellySize == 0 ? "Base" : bellySize);
 			exactTextureToUse += bellyString;
 
@@ -134,21 +134,21 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 
 			NPC.AsPred().MaxStomachCapacity = 2.2;
 
-			NPC.AsPred().CanBeForceFedMethod = CanSuccubusBeForceFed;
-			NPC.AsPred().OnForceFedMethod = OnSuccubusForceFed;
+			NPC.AsPred().CanBeForceFed = CanSuccubusBeForceFed;
+			NPC.AsPred().OnForceFed = OnSuccubusForceFed;
 
 			NPC.AsPred().DigestionType = EntityDigestionType.Acidic;
-			NPC.AsPred().GetDigestionTickRateMethod = GetDigestionTickRate;
-			NPC.AsPred().GetDigestionTickDamageMethod = GetDigestionTickDamage;
+			NPC.AsPred().GetDigestionTickRate = GetDigestionTickRate;
+			NPC.AsPred().GetDigestionTickDamage = GetDigestionTickDamage;
 
-			NPC.AsPred().OnDigestionKillMethod = OnDigestionKill;
+			NPC.AsPred().OnDigestionKill = OnDigestionKill;
 			NPC.AsPred().SmallBurps = Burps.Humanoid.Small;
 			NPC.AsPred().StandardBurps = Burps.Humanoid.Standard;
 			NPC.AsPred().GetAdditionalDigestedPlayerMessages = GetDigestedPlayerAdditionalDeathMessages;
 
-			NPC.AsPred().GetPreyAbsorptionRateMethod = GetPreyAbsorptionRate;
+			NPC.AsPred().GetPreyAbsorptionRate = GetPreyAbsorptionRate;
 
-			NPC.AsPred().GetVisualBellySizeMethod = GetVisualBellySize;
+			NPC.AsPred().GetVisualBellySize = GetVisualBellySize;
 
 			NPC.AsFood().OnKilledByDigestion += PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
 
@@ -554,12 +554,9 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 
 		public static void GetDigestedPlayerAdditionalDeathMessages(NPC npc, Player player, List<string> deathReasonKeyList)
 		{
+			deathReasonKeyList.AddHumanoidPredMessages();
 			deathReasonKeyList.AddRange(new List<string>
 			{
-				"Mods.V2.Death.DigestedPlayer.HumanoidPred.1",
-				"Mods.V2.Death.DigestedPlayer.HumanoidPred.2",
-				"Mods.V2.Death.DigestedPlayer.HumanoidPred.3",
-				"Mods.V2.Death.DigestedPlayer.HumanoidPred.4",
 				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Succubus.1",
 				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Succubus.2",
 				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Succubus.3",

@@ -55,7 +55,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Steampunker
 			string exactTextureToUse = "V2/NPCs/Vanilla/TownNPCs/Steampunker/Steampunker";
 			string weightString = "_WeightBase";
 			exactTextureToUse += weightString;
-			int bellySize = npc.AsPred().GetVisualBellySizeMethod.Invoke(npc);
+			int bellySize = npc.AsPred().GetVisualBellySize.Invoke(npc);
 			string bellyString = "_Belly" + (bellySize == 0 ? "Base" : bellySize);
 			exactTextureToUse += bellyString;
 
@@ -84,20 +84,20 @@ namespace V2.NPCs.Vanilla.TownNPCs.Steampunker
 			npc.AsPred().stomachContentsQueue = new List<Prey>();
 			npc.AsPred().MaxStomachCapacity = 50.0;
 
-			npc.AsPred().CanBeForceFedMethod = CanSteampunkerBeForceFed;
-			npc.AsPred().OnForceFedMethod = OnSteampunkerForceFed;
+			npc.AsPred().CanBeForceFed = CanSteampunkerBeForceFed;
+			npc.AsPred().OnForceFed = OnSteampunkerForceFed;
 
 			npc.AsPred().DigestionType = EntityDigestionType.Acidic;
-			npc.AsPred().GetDigestionTickRateMethod = GetDigestionTickRate;
-			npc.AsPred().GetDigestionTickDamageMethod = GetDigestionTickDamage;
+			npc.AsPred().GetDigestionTickRate = GetDigestionTickRate;
+			npc.AsPred().GetDigestionTickDamage = GetDigestionTickDamage;
 
-			npc.AsPred().OnDigestionKillMethod = OnDigestionKill;
+			npc.AsPred().OnDigestionKill = OnDigestionKill;
 			npc.AsPred().SmallBurps = Burps.Humanoid.Small;
 			npc.AsPred().StandardBurps = Burps.Humanoid.Standard;
 			npc.AsPred().GetAdditionalDigestedPlayerMessages = GetDigestedPlayerAdditionalDeathMessages;
-			npc.AsPred().GetPreyAbsorptionRateMethod = GetPreyAbsorptionRate;
+			npc.AsPred().GetPreyAbsorptionRate = GetPreyAbsorptionRate;
 
-			npc.AsPred().GetVisualBellySizeMethod = GetVisualBellySize;
+			npc.AsPred().GetVisualBellySize = GetVisualBellySize;
 
 			npc.AsFood().OnKilledByDigestion += PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
 		}
@@ -318,12 +318,9 @@ namespace V2.NPCs.Vanilla.TownNPCs.Steampunker
 
 		public static void GetDigestedPlayerAdditionalDeathMessages(NPC npc, Player player, List<string> deathReasonKeyList)
 		{
+			deathReasonKeyList.AddHumanoidPredMessages();
 			deathReasonKeyList.AddRange(new List<string>
 			{
-				"Mods.V2.Death.DigestedPlayer.HumanoidPred.1",
-				"Mods.V2.Death.DigestedPlayer.HumanoidPred.2",
-				"Mods.V2.Death.DigestedPlayer.HumanoidPred.3",
-				"Mods.V2.Death.DigestedPlayer.HumanoidPred.4",
 				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Steampunker.1",
 				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Steampunker.2",
 				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Steampunker.3",

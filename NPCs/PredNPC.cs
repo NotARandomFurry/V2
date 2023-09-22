@@ -58,42 +58,42 @@ namespace V2.NPCs
 		public SoundStyle BigGulps { get; set; }
 
 		public delegate void DelegateResetPredSpecificVariables(NPC npc);
-		public DelegateResetPredSpecificVariables ResetPredSpecificVariablesMethod { get; set; }
+		public DelegateResetPredSpecificVariables ResetPredSpecificVariables { get; set; }
 
 		public delegate List<string> DelegateGetTownNPCChat(NPC npc, Player player);
-		public DelegateGetTownNPCChat GetChatMethod { get; set; }
+		public DelegateGetTownNPCChat GetChat { get; set; }
 
 		public bool NonPreferenceBypass { get; set; }
 		public delegate bool DelegateCanBeForceFed(NPC npc);
-		public DelegateCanBeForceFed CanBeForceFedMethod { get; set; }
+		public DelegateCanBeForceFed CanBeForceFed { get; set; }
 
 		public delegate void DelegateOnForceFed(NPC npc, Player player);
-		public DelegateOnForceFed OnForceFedMethod { get; set; }
+		public DelegateOnForceFed OnForceFed { get; set; }
 
 
 		public delegate bool DelegateSpecialPredAI(NPC npc);
-		public DelegateSpecialPredAI SpecialPredAIMethod { get; set; }
+		public DelegateSpecialPredAI SpecialPredAI { get; set; }
 
 		public delegate double DelegateGetDigestionTickRate(NPC npc, Prey prey);
-		public DelegateGetDigestionTickRate GetDigestionTickRateMethod { get; set; }
+		public DelegateGetDigestionTickRate GetDigestionTickRate { get; set; }
 
 		public delegate double DelegateGetDigestionTickDamage(NPC npc, Prey prey);
-		public DelegateGetDigestionTickDamage GetDigestionTickDamageMethod { get; set; }
+		public DelegateGetDigestionTickDamage GetDigestionTickDamage { get; set; }
 
 		public delegate void DelegateOnDigestionKill(NPC npc, Prey digestedPrey);
-		public DelegateOnDigestionKill OnDigestionKillMethod { get; set; }
+		public DelegateOnDigestionKill OnDigestionKill { get; set; }
 
 		public delegate void DelegateGetDigestedPlayerAdditionalDeathMessages(NPC npc, Player player, List<string> deathMessageKeyList);
 		public DelegateGetDigestedPlayerAdditionalDeathMessages GetAdditionalDigestedPlayerMessages { get; set; }
 
 		public delegate double DelegateGetPreyAbsorptionRate(NPC npc);
-		public DelegateGetPreyAbsorptionRate GetPreyAbsorptionRateMethod { get; set; }
+		public DelegateGetPreyAbsorptionRate GetPreyAbsorptionRate { get; set; }
 
 		public delegate int DelegateGetVisualBellySize(NPC npc);
-		public DelegateGetVisualBellySize GetVisualBellySizeMethod { get; set; }
+		public DelegateGetVisualBellySize GetVisualBellySize { get; set; }
 
 		public delegate int DelegateGetVisualWeightStage(NPC npc);
-		public DelegateGetVisualWeightStage GetVisualWeightStageMethod { get; set; }
+		public DelegateGetVisualWeightStage GetVisualWeightStage { get; set; }
 
 		public SlotId ActiveStomachNoises { get; set; }
 
@@ -110,21 +110,21 @@ namespace V2.NPCs
 			ExtraWeight = 0.0;
 			
 			// This is where all the defaults methods get set.
-			ResetPredSpecificVariablesMethod = null;
-			GetDigestionTickRateMethod = null;
-			GetDigestionTickDamageMethod = null;
-			GetPreyAbsorptionRateMethod = null;
-			GetChatMethod = null;
-			SpecialPredAIMethod = null;
+			ResetPredSpecificVariables = null;
+			GetDigestionTickRate = null;
+			GetDigestionTickDamage = null;
+			GetPreyAbsorptionRate = null;
+			GetChat = null;
+			SpecialPredAI = null;
 
 			NonPreferenceBypass = false;
-			CanBeForceFedMethod = (NPC npc) => false;
-			OnForceFedMethod = null;
+			CanBeForceFed = (NPC npc) => false;
+			OnForceFed = null;
 
-			OnDigestionKillMethod = null;
+			OnDigestionKill = null;
 
-			GetVisualBellySizeMethod = null;
-			GetVisualWeightStageMethod = null;
+			GetVisualBellySize = null;
+			GetVisualWeightStage = null;
 
 			SmallBurps = null;
 			StandardBurps = null;
@@ -143,8 +143,8 @@ namespace V2.NPCs
 				npc.AsPred().stomachContentsQueue.Remove(npc.AsPred().stomachContentsQueue.First());
 			}
 
-			if (npc.AsPred().ResetPredSpecificVariablesMethod is not null)
-				npc.AsPred().ResetPredSpecificVariablesMethod.Invoke(npc);
+			if (npc.AsPred().ResetPredSpecificVariables is not null)
+				npc.AsPred().ResetPredSpecificVariables.Invoke(npc);
 		}
 
 		public static bool CanSwallow(NPC pred, Entity prey)
@@ -331,14 +331,14 @@ namespace V2.NPCs
 							npc.AsNurse().healOvertime += 1;
 					}
 
-					if (npc.AsPred().GetDigestionTickRateMethod is null || npc.AsPred().GetDigestionTickDamageMethod is null)
+					if (npc.AsPred().GetDigestionTickRate is null || npc.AsPred().GetDigestionTickDamage is null)
 					{
 						if (ModContent.GetInstance<V2ServerConfig>().DebugChatMessages)
 							Main.NewText(npc.FullName + " has invalid digestion damage/tick rate methods!");
 						return;
 					}
-					double digestionDamage = npc.AsPred().GetDigestionTickDamageMethod.Invoke(npc, prey);
-					double digestionTickRate = npc.AsPred().GetDigestionTickRateMethod.Invoke(npc, prey);
+					double digestionDamage = npc.AsPred().GetDigestionTickDamage.Invoke(npc, prey);
+					double digestionTickRate = npc.AsPred().GetDigestionTickRate.Invoke(npc, prey);
 					int digestionTickFrameRate = (int)Math.Round(60.0 / digestionTickRate);
 					if (prey.timeSpentInStomach % (int)digestionTickFrameRate == 0)
 					{
@@ -377,8 +377,8 @@ namespace V2.NPCs
 									prey.NoHealth = preyPlayer.AsFood().TakeDigestionDamage(npc, digestionDamage);
 									if (ModContent.GetInstance<V2ServerConfig>().DebugChatMessages)
 										Main.NewText("Successfully dealt digestion damage to prey: " + preyPlayer.name);
-									if (prey.NoHealth && npc.AsPred().OnDigestionKillMethod is not null)
-										npc.AsPred().OnDigestionKillMethod.Invoke(npc, prey);
+									if (prey.NoHealth && npc.AsPred().OnDigestionKill is not null)
+										npc.AsPred().OnDigestionKill.Invoke(npc, prey);
 								}
 								else if (ModContent.GetInstance<V2ServerConfig>().DebugChatMessages)
 									Main.NewText("Failed to deal digestion damage to prey: " + preyPlayer.name);
@@ -395,8 +395,8 @@ namespace V2.NPCs
 										Main.NewText("Successfully dealt digestion damage to prey: " + preyNPC.GivenOrTypeName);
 									else if (ModContent.GetInstance<V2ServerConfig>().DebugChatMessages)
 										Main.NewText("Failed to deal digestion damage to prey: " + preyNPC.GivenOrTypeName);
-									if (prey.NoHealth && npc.AsPred().OnDigestionKillMethod is not null)
-										npc.AsPred().OnDigestionKillMethod.Invoke(npc, prey);
+									if (prey.NoHealth && npc.AsPred().OnDigestionKill is not null)
+										npc.AsPred().OnDigestionKill.Invoke(npc, prey);
 								}
 								break;
 						}
@@ -404,10 +404,10 @@ namespace V2.NPCs
 				}
 				else
 				{
-					if (npc.AsPred().GetPreyAbsorptionRateMethod is null)
+					if (npc.AsPred().GetPreyAbsorptionRate is null)
 						continue;
 
-					double digestedWeightPerTick = npc.AsPred().GetPreyAbsorptionRateMethod.Invoke(npc) / (double)npc.AsPred().stomachContents.Count;
+					double digestedWeightPerTick = npc.AsPred().GetPreyAbsorptionRate.Invoke(npc) / (double)npc.AsPred().stomachContents.Count;
 					if (prey.WeightLeftToDigest <= digestedWeightPerTick)
 					{
 						npc.AsPred().ExtraWeight += prey.WeightLeftToDigest * 0.4;
@@ -431,13 +431,13 @@ namespace V2.NPCs
 			if (npc.AsFood(risky: true) is null)
 				return;
 
-			if (!npc.AsFood().IsCurrentlyEaten && npc.AsPred().GetVisualBellySizeMethod is not null)
+			if (!npc.AsFood().IsCurrentlyEaten && npc.AsPred().GetVisualBellySize is not null)
 			{
 				bool stomachNoisesPlaying = SoundEngine.TryGetActiveSound(npc.AsPred().ActiveStomachNoises, out ActiveSound stomachNoises);
 				if (!stomachNoisesPlaying)
 				{
 					npc.AsPred().ActiveStomachNoises = SoundEngine.PlaySound(
-						StomachNoises.Muffled with { Volume = 0.2f + (0.1f * npc.AsPred().GetVisualBellySizeMethod.Invoke(npc)) },
+						StomachNoises.Muffled with { Volume = 0.2f + (0.1f * npc.AsPred().GetVisualBellySize.Invoke(npc)) },
 						npc.TrueCenter()
 					);
 					SoundEngine.TryGetActiveSound(npc.AsPred().ActiveStomachNoises, out stomachNoises);
@@ -448,7 +448,7 @@ namespace V2.NPCs
 
 				stomachNoises.Position = npc.TrueCenter();
 				stomachNoises.Volume = 0.2f;
-				stomachNoises.Volume += 0.1f * npc.AsPred().GetVisualBellySizeMethod.Invoke(npc);
+				stomachNoises.Volume += 0.1f * npc.AsPred().GetVisualBellySize.Invoke(npc);
 				if (stomachNoises.Volume > 0.75f)
 					stomachNoises.Volume = 0.75f;
 			}

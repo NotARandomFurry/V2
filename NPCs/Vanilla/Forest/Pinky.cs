@@ -57,18 +57,18 @@ namespace V2.NPCs.Vanilla.Forest
 			npc.AsPred().stomachContentsQueue = new List<Prey>();
 			npc.AsPred().MaxStomachCapacity = 0.4;
 
-			npc.AsPred().CanBeForceFedMethod = CanCottonCandySlimeBeForceFed;
+			npc.AsPred().CanBeForceFed = CanCottonCandySlimeBeForceFed;
 			npc.AsPred().MaxSwallowRange = V2Utils.TileCountAsPixelCount(1.3);
 			npc.AsPred().SmallGulpThreshold = 0.00;
 
 			npc.AsPred().DigestionType = EntityDigestionType.Acidic;
-			npc.AsPred().GetDigestionTickDamageMethod = GetDigestionTickDamage;
-			npc.AsPred().GetDigestionTickRateMethod = GetDigestionTickRate;
+			npc.AsPred().GetDigestionTickDamage = GetDigestionTickDamage;
+			npc.AsPred().GetDigestionTickRate = GetDigestionTickRate;
 
 			npc.AsPred().SmallBurps = Burps.Humanoid.Small;
 			npc.AsPred().StandardBurps = Burps.Humanoid.Standard;
 			npc.AsPred().GetAdditionalDigestedPlayerMessages = GetDigestedPlayerAdditionalDeathMessages;
-			npc.AsPred().GetPreyAbsorptionRateMethod = GetPreyAbsorptionRate;
+			npc.AsPred().GetPreyAbsorptionRate = GetPreyAbsorptionRate;
 
 			npc.AsFood().OnKilledByDigestion += PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
 			npc.AsFood().OnKilledByDigestion += OnKilledByDigestion_GrantPinkyGoal;

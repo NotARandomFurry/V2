@@ -36,13 +36,9 @@ namespace V2.NPCs.Vanilla.Cavern
 
 	public class Nymph : GlobalNPC
 	{
-		public static int DigestedHeal => 40;
-		public static int EatenHappyLength => V2Utils.SensibleTime(seconds: 35);
-		public static int DigestedRegenTime => V2Utils.SensibleTime(seconds: 15);
-
 		public override bool InstancePerEntity => true;
 
-		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.type == NPCID.Nymph;
+		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.type is NPCID.LostGirl or NPCID.Nymph;
 
 		public override void SetDefaults(NPC npc)
 		{
@@ -53,34 +49,30 @@ namespace V2.NPCs.Vanilla.Cavern
 			npc.AsPred().stomachContentsQueue = new List<Prey>();
 			npc.AsPred().MaxStomachCapacity = 5.5;
 
-			npc.AsPred().CanBeForceFedMethod = CanNymphBeForceFed;
+			npc.AsPred().CanBeForceFed += CanNymphBeForceFed;
 			npc.AsPred().MaxSwallowRange = V2Utils.TileCountAsPixelCount(4.7);
 			npc.AsPred().SmallGulpThreshold = 0.35;
 
 			npc.AsPred().DigestionType = EntityDigestionType.Acidic;
-			npc.AsPred().GetDigestionTickDamageMethod = GetDigestionTickDamage;
-			npc.AsPred().GetDigestionTickRateMethod = GetDigestionTickRate;
+			npc.AsPred().GetDigestionTickDamage = GetDigestionTickDamage;
+			npc.AsPred().GetDigestionTickRate = GetDigestionTickRate;
 
 			npc.AsPred().SmallBurps = Burps.Humanoid.Small;
 			npc.AsPred().StandardBurps = Burps.Humanoid.Standard;
 			npc.AsPred().GetAdditionalDigestedPlayerMessages = GetDigestedPlayerAdditionalDeathMessages;
-			npc.AsPred().GetPreyAbsorptionRateMethod = GetPreyAbsorptionRate;
+			npc.AsPred().GetPreyAbsorptionRate = GetPreyAbsorptionRate;
 
 			npc.AsFood().OnKilledByDigestion += PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
 			npc.AsFood().OnKilledByDigestion += OnKilledByDigestion_GrantNymphGoal;
 		}
 
-		public static bool CanNymphBeForceFed(NPC npc) => true;
+		public static bool CanNymphBeForceFed(NPC npc) => false;
 
 		public static void GetDigestedPlayerAdditionalDeathMessages(NPC npc, Player player, List<string> deathReasonKeyList)
 		{
+			deathReasonKeyList.AddHumanoidPredMessages();
 			deathReasonKeyList.AddRange(new List<string>
 			{
-				"Mods.V2.Death.DigestedPlayer.HumanoidPred.1",
-				"Mods.V2.Death.DigestedPlayer.HumanoidPred.2",
-				"Mods.V2.Death.DigestedPlayer.HumanoidPred.3",
-				"Mods.V2.Death.DigestedPlayer.HumanoidPred.4",
-				"Mods.V2.Death.DigestedPlayer.HumanoidPred.5",
 				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Cavern.Nymph.1",
 				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Cavern.Nymph.2",
 			});

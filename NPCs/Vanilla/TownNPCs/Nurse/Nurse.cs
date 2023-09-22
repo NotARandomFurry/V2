@@ -57,7 +57,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 			string exactTextureToUse = "V2/NPCs/Vanilla/TownNPCs/Nurse/Nurse";
 			string weightString = "_WeightBase";
 			exactTextureToUse += weightString;
-			int bellySize = npc.AsPred().GetVisualBellySizeMethod.Invoke(npc);
+			int bellySize = npc.AsPred().GetVisualBellySize.Invoke(npc);
 			string bellyString = "_Belly" + (bellySize == 0 ? "Base" : bellySize);
 			exactTextureToUse += bellyString;
 
@@ -94,22 +94,22 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 			npc.AsFood().Size = 1.1625;
 			npc.AsPred().MaxStomachCapacity = 1.8;
 
-			npc.AsPred().ResetPredSpecificVariablesMethod = ResetPredSpecificVariables;
+			npc.AsPred().ResetPredSpecificVariables = ResetPredSpecificVariables;
 
-			npc.AsPred().CanBeForceFedMethod = CanNurseBeForceFed;
-			npc.AsPred().OnForceFedMethod = OnNurseForceFed;
+			npc.AsPred().CanBeForceFed = CanNurseBeForceFed;
+			npc.AsPred().OnForceFed = OnNurseForceFed;
 
 			npc.AsPred().DigestionType = EntityDigestionType.Acidic;
-			npc.AsPred().GetDigestionTickRateMethod = GetDigestionTickRate;
-			npc.AsPred().GetDigestionTickDamageMethod = GetDigestionTickDamage;
+			npc.AsPred().GetDigestionTickRate = GetDigestionTickRate;
+			npc.AsPred().GetDigestionTickDamage = GetDigestionTickDamage;
 
-			npc.AsPred().OnDigestionKillMethod = OnDigestionKill;
+			npc.AsPred().OnDigestionKill = OnDigestionKill;
 			npc.AsPred().SmallBurps = Burps.Humanoid.Small;
 			npc.AsPred().StandardBurps = Burps.Humanoid.Standard;
 			npc.AsPred().GetAdditionalDigestedPlayerMessages = GetDigestedPlayerAdditionalDeathMessages;
-			npc.AsPred().GetPreyAbsorptionRateMethod = GetPreyAbsorptionRate;
+			npc.AsPred().GetPreyAbsorptionRate = GetPreyAbsorptionRate;
 
-			npc.AsPred().GetVisualBellySizeMethod = GetVisualBellySize;
+			npc.AsPred().GetVisualBellySize = GetVisualBellySize;
 
 			npc.AsNurse().randomGutHeal = false;
 			npc.AsNurse().healOvertime = 0;
@@ -568,12 +568,9 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 
 		public static void GetDigestedPlayerAdditionalDeathMessages(NPC npc, Player player, List<string> deathReasonKeyList)
 		{
+			deathReasonKeyList.AddHumanoidPredMessages();
 			deathReasonKeyList.AddRange(new List<string>
 			{
-				"Mods.V2.Death.DigestedPlayer.HumanoidPred.1",
-				"Mods.V2.Death.DigestedPlayer.HumanoidPred.2",
-				"Mods.V2.Death.DigestedPlayer.HumanoidPred.3",
-				"Mods.V2.Death.DigestedPlayer.HumanoidPred.4",
 				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Nurse.1",
 				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Nurse.2",
 				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Nurse.3",
@@ -781,8 +778,6 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 		{
 			if (pred is not Player predPlayer)
 				return;
-
-			if (predPlayer.BuyItem)
 		}
 	}
 }

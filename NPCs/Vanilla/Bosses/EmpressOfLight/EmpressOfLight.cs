@@ -59,24 +59,24 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 			npc.AsFood().Size = 41.4;
 			npc.AsPred().MaxStomachCapacity = 200.0;
 
-			npc.AsPred().CanBeForceFedMethod = CanUnreasonablyThickFairyBeForceFed;
+			npc.AsPred().CanBeForceFed = CanUnreasonablyThickFairyBeForceFed;
 			npc.AsPred().MaxSwallowRange = V2Utils.TileCountAsPixelCount(12.5);
 			npc.AsPred().SmallGulpThreshold = 3.75;
 
 			npc.AsPred().DigestionType = EntityDigestionType.Acidic;
-			npc.AsPred().GetDigestionTickDamageMethod = GetDigestionTickDamage;
-			npc.AsPred().GetDigestionTickRateMethod = GetDigestionTickRate;
+			npc.AsPred().GetDigestionTickDamage = GetDigestionTickDamage;
+			npc.AsPred().GetDigestionTickRate = GetDigestionTickRate;
 
 			npc.AsPred().SmallBurps = Burps.Humanoid.Small;
 			npc.AsPred().StandardBurps = Burps.Humanoid.Standard;
 			npc.AsPred().GetAdditionalDigestedPlayerMessages = GetDigestedPlayerAdditionalDeathMessages;
-			npc.AsPred().GetPreyAbsorptionRateMethod = GetPreyAbsorptionRate;
+			npc.AsPred().GetPreyAbsorptionRate = GetPreyAbsorptionRate;
 
-			npc.AsPred().GetVisualBellySizeMethod = GetVisualBellySize;
-			npc.AsPred().GetVisualWeightStageMethod = GetVisualWeightStage;
+			npc.AsPred().GetVisualBellySize = GetVisualBellySize;
+			npc.AsPred().GetVisualWeightStage = GetVisualWeightStage;
 
-			npc.AsPred().SpecialPredAIMethod = UnreasonablyThickFairyPredAI;
-			npc.AsFood().PreyAIMethod = UnreasonablyThickFairyPreyAI;
+			npc.AsPred().SpecialPredAI = UnreasonablyThickFairyPredAI;
+			npc.AsFood().SpecialPreyAI = UnreasonablyThickFairyPreyAI;
 
 			npc.AsFood().OnKilledByDigestion += PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
 			npc.AsFood().DigestedDeathSound = CandyFairyStuff.MuffledCandyFairyDeathScreech;
@@ -205,9 +205,9 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 
 		public override bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
 		{
-			int weightStage = npc.AsPred().GetVisualWeightStageMethod.Invoke(npc);
+			int weightStage = npc.AsPred().GetVisualWeightStage.Invoke(npc);
 			string weightString = "_Weight" + (weightStage == 0 ? "Base" : weightStage);
-			int bellySize = npc.AsPred().GetVisualBellySizeMethod.Invoke(npc);
+			int bellySize = npc.AsPred().GetVisualBellySize.Invoke(npc);
 			string bellyString = "_Belly" + (bellySize == 0 ? "Base" : bellySize);
 
 			string exactMainBodyTexture = "V2/NPCs/Vanilla/Bosses/EmpressOfLight/EmpressOfLight_MainBody" + weightString + bellyString;
