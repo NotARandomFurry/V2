@@ -18,6 +18,13 @@ namespace V2.Items
 
 		public override bool InstancePerEntity => true;
 
+		public V2Item()
+		{
+			heldItemUIDrawMethod = null;
+
+			ReleasedNPCNetID = 0;
+		}
+
 		public override void HorizontalWingSpeeds(Item item, Player player, ref float speed, ref float acceleration)
 		{
 			float weightMovementMult = (float)Math.Min(1.0, 1.0 / (player.AsPred().StomachWeight + 1.0));

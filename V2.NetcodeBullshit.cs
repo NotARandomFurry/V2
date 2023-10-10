@@ -14,7 +14,7 @@ namespace V2
 	{
 		internal enum MessageType : byte
 		{
-			PredPlayerSync,
+			SyncPlayerPredData,
 			PreyPlayerSync
 		}
 
@@ -23,7 +23,7 @@ namespace V2
 			MessageType msgType = (MessageType)reader.ReadByte();
 			switch (msgType)
 			{
-				case MessageType.PredPlayerSync:
+				case MessageType.SyncPlayerPredData:
 					byte predPlayerIndex = reader.ReadByte();
 					PredPlayer predPlayer = Main.player[predPlayerIndex].GetModPlayer<PredPlayer>();
 					predPlayer.ReceivePlayerSync(reader);
@@ -39,7 +39,11 @@ namespace V2
 					break;
 				default:
 					Logger.WarnFormat(
-						"Well, my word. You've gone and delivered us a message ({0}) that doesn't make sense. Be a dear and fix it up the next time you send one, alright? -Queen Cadenza Appetitia IV (Cadence, for short)",
+						"hi !!\n"
+					  + "thomas says your message doesnt make sense\n"
+					  + "i think it was fine tho!\n"
+					  + "tasted good and made my tummy make happy sounds c:\n"
+					  + "-rose",
 						msgType
 					);
 					break;

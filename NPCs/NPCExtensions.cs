@@ -18,13 +18,13 @@ namespace V2.NPCs
 		{
 			if (entity is NPC predNPC)
 			{
-				List<Prey> NPCAsPreyList = predNPC.AsPred().stomachContents.FindAll(x => x.Type == PreyType.NPC && x.Instance.whoAmI == npc.whoAmI);
+				List<VoreTracker> NPCAsPreyList = predNPC.AsPred().stomachContents.FindAll(x => x.Type == PreyType.NPC && x.Instance.whoAmI == npc.whoAmI);
 				if (NPCAsPreyList != null && NPCAsPreyList.Count > 0)
 					return true;
 			}
 			else if (entity is Player predPlayer)
 			{
-				List<Prey> NPCAsPreyList = predPlayer.AsPred().stomachContents.FindAll(x => x.Type == PreyType.NPC && x.Instance.whoAmI == npc.whoAmI);
+				List<VoreTracker> NPCAsPreyList = predPlayer.AsPred().stomachContents.FindAll(x => x.Type == PreyType.NPC && x.Instance.whoAmI == npc.whoAmI);
 				if (NPCAsPreyList != null && NPCAsPreyList.Count > 0)
 					return true;
 			}

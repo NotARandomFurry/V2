@@ -44,7 +44,7 @@ namespace V2.NPCs
 		public DelegateNewAI NewAIMethod { get; set; }
 
 		public delegate List<string> DelegateGetChat(NPC npc, Player player);
-		public DelegateGetChat GetChatMethod { get; set; }
+		public DelegateGetChat GetNewDialogue { get; set; }
 
 		public override bool InstancePerEntity => true;
 
@@ -54,7 +54,9 @@ namespace V2.NPCs
 		{
 			Gender = EntityGender.Other;
 
-			GetChatMethod = null;
+			NewAIMethod = null;
+
+			GetNewDialogue = null;
 		}
 
 		public override void ResetEffects(NPC npc)
@@ -80,9 +82,9 @@ namespace V2.NPCs
 
 		public override void GetChat(NPC npc, ref string chat)
 		{
-			if (npc.AsV2NPC().GetChatMethod is not null)
+			if (npc.AsV2NPC().GetNewDialogue is not null)
 			{
-				List<string> chatPool = npc.AsV2NPC().GetChatMethod.Invoke(npc, Main.CurrentPlayer);
+				List<string> chatPool = npc.AsV2NPC().GetNewDialogue.Invoke(npc, Main.CurrentPlayer);
 				if (chatPool is not null)
 					chat = Main.rand.NextFromCollection(chatPool);
 			}

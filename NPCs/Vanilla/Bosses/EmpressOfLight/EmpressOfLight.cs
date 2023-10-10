@@ -52,36 +52,36 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 
 		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.type == NPCID.HallowBoss;
 
-		public override void SetDefaults(NPC npc)
+		public override void SetDefaults(NPC entity)
 		{
-			npc.AsV2NPC().Gender = EntityGender.Female;
+			entity.AsV2NPC().Gender = EntityGender.Female;
 
-			npc.AsFood().Size = 41.4;
-			npc.AsPred().MaxStomachCapacity = 200.0;
+			entity.AsFood().Size = 41.4;
+			entity.AsPred().MaxStomachCapacity = 200.0;
 
-			npc.AsPred().CanBeForceFed = CanUnreasonablyThickFairyBeForceFed;
-			npc.AsPred().MaxSwallowRange = V2Utils.TileCountAsPixelCount(12.5);
-			npc.AsPred().SmallGulpThreshold = 3.75;
+			entity.AsPred().CanBeForceFed = CanUnreasonablyThickFairyBeForceFed;
+			entity.AsPred().MaxSwallowRange = V2Utils.TileCountAsPixelCount(12.5);
+			entity.AsPred().SmallGulpThreshold = 3.75;
 
-			npc.AsPred().DigestionType = EntityDigestionType.Acidic;
-			npc.AsPred().GetDigestionTickDamage = GetDigestionTickDamage;
-			npc.AsPred().GetDigestionTickRate = GetDigestionTickRate;
+			entity.AsPred().DigestionType = EntityDigestionType.Acidic;
+			entity.AsPred().GetDigestionTickDamage = GetDigestionTickDamage;
+			entity.AsPred().GetDigestionTickRate = GetDigestionTickRate;
 
-			npc.AsPred().SmallBurps = Burps.Humanoid.Small;
-			npc.AsPred().StandardBurps = Burps.Humanoid.Standard;
-			npc.AsPred().GetAdditionalDigestedPlayerMessages = GetDigestedPlayerAdditionalDeathMessages;
-			npc.AsPred().GetPreyAbsorptionRate = GetPreyAbsorptionRate;
+			entity.AsPred().SmallBurps = Burps.Humanoid.Small;
+			entity.AsPred().StandardBurps = Burps.Humanoid.Standard;
+			entity.AsPred().GetAdditionalDigestedPlayerMessages = GetDigestedPlayerAdditionalDeathMessages;
+			entity.AsPred().GetPreyAbsorptionRate = GetPreyAbsorptionRate;
 
-			npc.AsPred().GetVisualBellySize = GetVisualBellySize;
-			npc.AsPred().GetVisualWeightStage = GetVisualWeightStage;
+			entity.AsPred().GetVisualBellySize = GetVisualBellySize;
+			entity.AsPred().GetVisualWeightStage = GetVisualWeightStage;
 
-			npc.AsPred().SpecialPredAI = UnreasonablyThickFairyPredAI;
-			npc.AsFood().SpecialPreyAI = UnreasonablyThickFairyPreyAI;
+			entity.AsPred().SpecialPredAI = UnreasonablyThickFairyPredAI;
+			entity.AsFood().SpecialPreyAI = UnreasonablyThickFairyPreyAI;
 
-			npc.AsFood().OnKilledByDigestion += PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
-			npc.AsFood().DigestedDeathSound = CandyFairyStuff.MuffledCandyFairyDeathScreech;
+			entity.AsFood().OnKilledByDigestion += PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
+			entity.AsFood().DigestedDeathSound = CandyFairyStuff.MuffledCandyFairyDeathScreech;
 
-			npc.AsCandyFairy().MuffledScreechDelay = 0;
+			entity.AsCandyFairy().MuffledScreechDelay = 0;
 		}
 
 		public override bool CanHitNPC(NPC npc, NPC target)
@@ -145,7 +145,7 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 			}
 		}
 
-		public static double GetDigestionTickRate(NPC npc, Prey prey)
+		public static double GetDigestionTickRate(NPC npc, VoreTracker prey)
 		{
 			if (npc.AI_120_HallowBoss_IsGenuinelyEnraged())
 				return 12.0;
@@ -164,9 +164,9 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 					return 3.0;
 			}
 		}
-		public static double GetDigestionTickDamage(NPC npc, Prey prey) => Main.dayTime ? 1000.0 : 120.0;
+		public static double GetDigestionTickDamage(NPC npc, VoreTracker prey) => Main.dayTime ? 1000.0 : 120.0;
 
-		public static void OnDigestionKill(NPC npc, Prey digestedPrey)
+		public static void OnDigestionKill(NPC npc, VoreTracker digestedPrey)
 		{
 			SoundEngine.PlaySound(
 				digestedPrey.WeightLeftToDigest < npc.AsPred().SmallGulpThreshold ? npc.AsPred().SmallBurps : npc.AsPred().StandardBurps,

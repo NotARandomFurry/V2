@@ -102,9 +102,9 @@ namespace V2.NPCs.Voraria.Meteorite
 			}
 		}
 
-		public static double GetDigestionTickRate(NPC npc, Prey prey) => 10;
+		public static double GetDigestionTickRate(NPC npc, VoreTracker prey) => 10;
 
-		public static double GetDigestionTickDamage(NPC npc, Prey prey) => 15;
+		public static double GetDigestionTickDamage(NPC npc, VoreTracker prey) => 15;
 
 		public static double GetPreyAbsorptionRate(NPC npc)
 		{

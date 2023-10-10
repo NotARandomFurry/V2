@@ -77,11 +77,11 @@ namespace V2.NPCs.Vanilla.TownNPCs.Steampunker
 		{
 			npc.AsV2NPC().Gender = EntityGender.Female;
 
-			npc.AsV2NPC().GetChatMethod = GetSteampunkerChat;
+			npc.AsV2NPC().GetNewDialogue = GetSteampunkerChat;
 
 			npc.AsFood().Size = 1.06;
-			npc.AsPred().stomachContents = new List<Prey>();
-			npc.AsPred().stomachContentsQueue = new List<Prey>();
+			npc.AsPred().stomachContents = new List<VoreTracker>();
+			npc.AsPred().stomachContentsQueue = new List<VoreTracker>();
 			npc.AsPred().MaxStomachCapacity = 50.0;
 
 			npc.AsPred().CanBeForceFed = CanSteampunkerBeForceFed;
@@ -356,11 +356,11 @@ namespace V2.NPCs.Vanilla.TownNPCs.Steampunker
 				PredNPC.Swallow(npc, wireWoman);
 		}
 
-		public static double GetDigestionTickRate(NPC npc, Prey prey) => Main.bloodMoon ? 5.0 : 2.5;
+		public static double GetDigestionTickRate(NPC npc, VoreTracker prey) => Main.bloodMoon ? 5.0 : 2.5;
 
-		public static double GetDigestionTickDamage(NPC npc, Prey prey) => 20.0;
+		public static double GetDigestionTickDamage(NPC npc, VoreTracker prey) => 20.0;
 
-		public static void OnDigestionKill(NPC npc, Prey digestedPrey)
+		public static void OnDigestionKill(NPC npc, VoreTracker digestedPrey)
 		{
 			SoundEngine.PlaySound(
 				digestedPrey.WeightLeftToDigest < 1.5 ? npc.AsPred().SmallBurps : npc.AsPred().StandardBurps,

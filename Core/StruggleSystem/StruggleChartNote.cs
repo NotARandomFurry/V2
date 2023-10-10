@@ -24,6 +24,15 @@ namespace V2.Core.StruggleSystem
 			private set => _holdLength = Math.Max(value, 0);
 		}
 
+		private double _position;
+		/// <summary>
+		/// Where this note is placed in progression on the struggle chart it's on.
+		/// </summary>
+		public double Position {
+			get => _position;
+			private set => _position = Math.Max(value, 0);
+		}
+
 		/// <summary>
 		/// Whether or not this note is a "bad note", inverting the stomachache meter drain/fill based on context and counting as a misstroke if pressed.<br/>
 		/// Bad notes do not trigger any on-struggle effects that normal notes would.<br/>
@@ -35,6 +44,7 @@ namespace V2.Core.StruggleSystem
 			Lane = lane;
 			HoldLength = holdLength;
 			Bad = bad;
+			Position = 0.0;
 		}
 	}
 }

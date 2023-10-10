@@ -43,6 +43,9 @@ namespace V2.NPCs
 		public bool Digested { get; set; }
 		public PredEntityReference? CurrentCaptor { get; set; }
 
+		public delegate int DelegateGetStrength(NPC npc);
+		public DelegateGetStrength GetStrength { get; set; }
+
 		public delegate void DelegatePreyAI(NPC npc, Entity pred);
 		public DelegatePreyAI SpecialPreyAI { get; set; }
 
@@ -79,6 +82,12 @@ namespace V2.NPCs
 			CanChatAsPrey = false;
 			DigestingHitSound = null;
 			DigestedDeathSound = null;
+		}
+
+		public override void SetDefaults(NPC entity)
+		{
+			if (!NPCID.Sets.ProjectileNPC[entity.type])
+				entity.AsFood().OnKilledByDigestion = OnKilledByDigestion_GrantLivePreyGoal;
 		}
 
 		public override void ResetEffects(NPC npc)
@@ -119,7 +128,7 @@ namespace V2.NPCs
 				 && (pred.stomachContentsQueue is null || pred.stomachContentsQueue.Count <= 0))
 					continue;
 
-				if (pred.stomachContents.FirstOrDefault(x => !x.NoHealth && x.Type == PreyType.NPC && (x.Instance.whoAmI == npc.whoAmI || x.Instance.whoAmI == npc.realLife)) is Prey prey)
+				if (pred.stomachContents.FirstOrDefault(x => !x.NoHealth && x.Type == PreyType.NPC && (x.Instance.whoAmI == npc.whoAmI || x.Instance.whoAmI == npc.realLife)) is VoreTracker prey)
 				{
 					npc.AsFood().IsCurrentlyEaten = true;
 					npc.position = potentialPred.Center - (npc.Size / 2f);
@@ -130,7 +139,7 @@ namespace V2.NPCs
 					};
 					break;
 				}
-				if (pred.stomachContentsQueue.FirstOrDefault(x => !x.NoHealth && x.Type == PreyType.NPC && (x.Instance.whoAmI == npc.whoAmI || x.Instance.whoAmI == npc.realLife)) is Prey queuedPrey)
+				if (pred.stomachContentsQueue.FirstOrDefault(x => !x.NoHealth && x.Type == PreyType.NPC && (x.Instance.whoAmI == npc.whoAmI || x.Instance.whoAmI == npc.realLife)) is VoreTracker queuedPrey)
 				{
 					npc.AsFood().IsCurrentlyEaten = true;
 					npc.position = potentialPred.Center - (npc.Size / 2f);
@@ -152,7 +161,7 @@ namespace V2.NPCs
 				 && (potentialPred.AsPred().stomachContentsQueue is null || potentialPred.AsPred().stomachContentsQueue.Count <= 0))
 					continue;
 
-				if (potentialPred.AsPred().stomachContents.FirstOrDefault(x => !x.NoHealth && x.Type == PreyType.NPC && (x.Instance.whoAmI == npc.whoAmI || x.Instance.whoAmI == npc.realLife)) is Prey prey)
+				if (potentialPred.AsPred().stomachContents.FirstOrDefault(x => !x.NoHealth && x.Type == PreyType.NPC && (x.Instance.whoAmI == npc.whoAmI || x.Instance.whoAmI == npc.realLife)) is VoreTracker prey)
 				{
 					npc.AsFood().IsCurrentlyEaten = true;
 					npc.position = potentialPred.Center - (npc.Size / 2f);
@@ -163,7 +172,7 @@ namespace V2.NPCs
 					};
 					break;
 				}
-				if (potentialPred.AsPred().stomachContentsQueue.FirstOrDefault(x => !x.NoHealth && x.Type == PreyType.NPC && (x.Instance.whoAmI == npc.whoAmI || x.Instance.whoAmI == npc.realLife)) is Prey queuedPrey)
+				if (potentialPred.AsPred().stomachContentsQueue.FirstOrDefault(x => !x.NoHealth && x.Type == PreyType.NPC && (x.Instance.whoAmI == npc.whoAmI || x.Instance.whoAmI == npc.realLife)) is VoreTracker queuedPrey)
 				{
 					npc.AsFood().IsCurrentlyEaten = true;
 					npc.position = potentialPred.Center - (npc.Size / 2f);
@@ -265,6 +274,7 @@ namespace V2.NPCs
 			return null;
 		}
 
+		/*
 		public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
 		{
 			binaryWriter.Write(npc.AsFood().IsCurrentlyEaten);
@@ -315,6 +325,7 @@ namespace V2.NPCs
 				}
 			}
 		}
+		*/
 
 		/// <summary>
 		/// Deals the given amount of digestion damage to the NPC, respecting damage variation and, if their predator is a player, said player's luck.
@@ -327,6 +338,9 @@ namespace V2.NPCs
 			if (npc.life <= 0)
 				return true;
 
+			if (npc.realLife != -1)
+				return false;
+
 			int trueDigestionDamage = Main.DamageVar((float)digestionDamage, (pred is Player playerPred) ? -playerPred.luck : 0);
 			if (ModContent.GetInstance<V2ServerConfig>().DefenseInDigestionCalcs)
 			{
@@ -337,10 +351,7 @@ namespace V2.NPCs
 			trueDigestionDamage = (int)Math.Floor(npc.AsFood().TakenDigestionDamageModifier.ApplyTo(trueDigestionDamage));
 			npc.AsFood().SoftenedDigestionDamageTaken += npc.AsFood().SoftenedDigestionDamageModifier.ApplyTo(trueDigestionDamage);
 			npc.AsFood().SoftenedWearoffDelay = SoftenedWearoffMaxDelay;
-			if (npc.realLife != -1)
-				Main.npc[npc.realLife].life -= trueDigestionDamage;
-			else
-				npc.life -= trueDigestionDamage;
+			npc.life -= trueDigestionDamage;
 			CombatText digestionText = Main.combatText[CombatText.NewText(
 				npc.Hitbox,
 				npc.friendly ? Color.DarkGreen : Color.LimeGreen,
@@ -356,31 +367,24 @@ namespace V2.NPCs
 			digestionText.position.Y += npc.height / 5f;
 			digestionText.velocity.X = pred.direction * 2.5f;
 			digestionText.velocity.Y = -4f;
-			if (npc.AsFood().DigestingHitSound.HasValue)
-				SoundEngine.PlaySound(npc.AsFood().DigestingHitSound.Value with { Volume = 1f }, pred.position);
-			else
-				SoundEngine.PlaySound(npc.HitSound.Value with { Volume = 0.35f }, pred.position);
-			if (npc.realLife != -1)
-			{
-				if (Main.npc[npc.realLife].life <= 0)
-				{
-					Main.npc[npc.realLife].life = 0;
-					return true;
-				}
-			}
-			else if (npc.life <= 0)
+
+			if (npc.life <= 0)
 			{
 				npc.life = 0;
 				npc.checkDead();
+				NetMessage.TrySendData(MessageID.SyncNPC, -1, -1, null, npc.whoAmI);
 				return true;
 			}
-
-			return false;
+			else
+			{
+				npc.netUpdate = true;
+				return false;
+			}
 		}
 
 		public static double GetCurrentTotalWeight(NPC npc)
 		{
-			double baseWeight = Prey.GetInitialPreySize(npc);
+			double baseWeight = VoreTracker.GetInitialPreySize(npc);
 			double bellyWeight = PredNPC.GetCurrentBellyWeight(npc);
 			return baseWeight + bellyWeight;
 		}

@@ -130,7 +130,7 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 			NPC.HitSound = SoundID.NPCHit1;
 			AnimationType = BaseTownNPC;
 
-			NPC.AsV2NPC().GetChatMethod = GetSuccubusChat;
+			NPC.AsV2NPC().GetNewDialogue = GetSuccubusChat;
 
 			NPC.AsPred().MaxStomachCapacity = 2.2;
 
@@ -161,7 +161,7 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 
 		public override void ModifyTypeName(ref string typeName) => typeName = "Succubus";
 
-		public override bool CanTownNPCSpawn(int numTownNPCs)/* tModPorter Suggestion: Copy the implementation of NPC.SpawnAllowed_Merchant in vanilla if you to count money, and be sure to set a flag when unlocked, so you don't count every tick. */ => ModContent.GetInstance<MasterSystem>().freedSucc;
+		public override bool CanTownNPCSpawn(int numTownNPCs)/* tModPorter Suggestion: Copy the implementation of NPC.SpawnAllowed_Merchant in vanilla if you to count money, and be sure to set a flag when unlocked, so you don't count every tick. */ => ModContent.GetInstance<V2MasterSystem>().freedSucc;
 
 		public override ITownNPCProfile TownNPCProfile() => SuccubusStuff.SuccubusProfile;
 
@@ -601,11 +601,11 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 			itemHeight = 40;
 		}
 
-		public static double GetDigestionTickRate(NPC npc, Prey prey) => Main.bloodMoon ? 3.6 : 1.8;
+		public static double GetDigestionTickRate(NPC npc, VoreTracker prey) => Main.bloodMoon ? 3.6 : 1.8;
 
-		public static double GetDigestionTickDamage(NPC npc, Prey prey) => 20;
+		public static double GetDigestionTickDamage(NPC npc, VoreTracker prey) => 20;
 
-		public static void OnDigestionKill(NPC npc, Prey digestedPrey)
+		public static void OnDigestionKill(NPC npc, VoreTracker digestedPrey)
 		{
 			SoundEngine.PlaySound(
 				digestedPrey.WeightLeftToDigest < 0.75 ? npc.AsPred().SmallBurps : npc.AsPred().StandardBurps,

@@ -5,27 +5,52 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
+using V2.Core.StruggleSystem;
 
 namespace V2.Core
 {
-	public class MasterSystem : ModSystem
+	public class V2MasterSystem : ModSystem
 	{
 		public bool freedSucc;
 		public bool freedAngel;
 
+		public List<StruggleTracker> StruggleTrackers { get; set; }
 
 		public override void OnWorldLoad()
 		{
+			StruggleTrackers = new List<StruggleTracker>();
 			freedSucc = false;
 			freedAngel = false;
 		}
 
 		public override void OnWorldUnload()
 		{
+			StruggleTrackers = null;
 			freedSucc = false;
 			freedAngel = false;
+		}
+
+		public override void PreUpdateEntities()
+		{
+			foreach (StruggleTracker tracker in StruggleTrackers)
+			{
+				tracker.UpdateProgress();
+				switch (Main.netMode)
+				{
+					case NetmodeID.SinglePlayer:
+						tracker.CheckAllInputs();
+						break;
+					case NetmodeID.MultiplayerClient:
+						tracker.CheckClientSideInputs();
+						break;
+					case NetmodeID.Server:
+						tracker.CheckServerSideInputs();
+						break;
+				}
+			}
 		}
 
 		public override void SaveWorldData(TagCompound tag)

@@ -41,35 +41,35 @@ namespace V2.NPCs.Vanilla.Forest
 
 		public override bool InstancePerEntity => true;
 
-		public override void OnSpawn(NPC npc, IEntitySource source)
+		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.type == NPCID.BlueSlime;
+
+		public override void SetDefaults(NPC entity)
 		{
-			if (npc.netID != NPCID.Pinky)
+			if (entity.netID != NPCID.Pinky)
 				return;
 
-			npc.catchItem = ModContent.ItemType<CaughtPinky>();
+			entity.catchItem = ModContent.ItemType<CaughtPinky>();
 
-			npc.AsV2NPC().Gender = EntityGender.Other;
+			entity.AsV2NPC().Gender = EntityGender.Other;
 
-			npc.AsFood().Size = 0.065;
-			npc.AsPred().stomachContents = new List<Prey>();
-			npc.AsPred().stomachContentsQueue = new List<Prey>();
-			npc.AsPred().MaxStomachCapacity = 0.4;
+			entity.AsFood().Size = 0.065;
+			entity.AsPred().stomachContents = new List<VoreTracker>();
+			entity.AsPred().stomachContentsQueue = new List<VoreTracker>();
+			entity.AsPred().MaxStomachCapacity = 0.4;
 
-			npc.AsPred().CanBeForceFed = CanCottonCandySlimeBeForceFed;
-			npc.AsPred().MaxSwallowRange = V2Utils.TileCountAsPixelCount(1.3);
-			npc.AsPred().SmallGulpThreshold = 0.00;
+			entity.AsPred().CanBeForceFed = CanCottonCandySlimeBeForceFed;
+			entity.AsPred().MaxSwallowRange = V2Utils.TileCountAsPixelCount(1.3);
+			entity.AsPred().SmallGulpThreshold = 0.00;
 
-			npc.AsPred().DigestionType = EntityDigestionType.Acidic;
-			npc.AsPred().GetDigestionTickDamage = GetDigestionTickDamage;
-			npc.AsPred().GetDigestionTickRate = GetDigestionTickRate;
+			entity.AsPred().DigestionType = EntityDigestionType.Acidic;
+			entity.AsPred().GetDigestionTickDamage = GetDigestionTickDamage;
+			entity.AsPred().GetDigestionTickRate = GetDigestionTickRate;
 
-			npc.AsPred().SmallBurps = Burps.Humanoid.Small;
-			npc.AsPred().StandardBurps = Burps.Humanoid.Standard;
-			npc.AsPred().GetAdditionalDigestedPlayerMessages = GetDigestedPlayerAdditionalDeathMessages;
-			npc.AsPred().GetPreyAbsorptionRate = GetPreyAbsorptionRate;
+			entity.AsPred().GetAdditionalDigestedPlayerMessages = GetDigestedPlayerAdditionalDeathMessages;
+			entity.AsPred().GetPreyAbsorptionRate = GetPreyAbsorptionRate;
 
-			npc.AsFood().OnKilledByDigestion += PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
-			npc.AsFood().OnKilledByDigestion += OnKilledByDigestion_GrantPinkyGoal;
+			entity.AsFood().OnKilledByDigestion = PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
+			entity.AsFood().OnKilledByDigestion += OnKilledByDigestion_GrantPinkyGoal;
 		}
 
 		public override bool? CanBeCaughtBy(NPC npc, Item item, Player player) {
@@ -97,8 +97,8 @@ namespace V2.NPCs.Vanilla.Forest
 			}
 		}
 
-		public static double GetDigestionTickRate(NPC npc, Prey prey) => 0.10;
-		public static double GetDigestionTickDamage(NPC npc, Prey prey) => 1;
+		public static double GetDigestionTickRate(NPC npc, VoreTracker prey) => 0.10;
+		public static double GetDigestionTickDamage(NPC npc, VoreTracker prey) => 1;
 		public static double GetPreyAbsorptionRate(NPC npc)
 		{
 			double baseAbsorptionRate = 1.0 / (double)V2Utils.SensibleTime(
@@ -121,7 +121,7 @@ namespace V2.NPCs.Vanilla.Forest
 	{
 		public override void PreUpdateBuffs()
 		{
-			if (Player.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.NPC && x.ExactType == "Pinky") is Prey pinkyPrey)
+			if (Player.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.NPC && x.ExactType == "Pinky") is VoreTracker pinkyPrey)
 			{
 				Player.AddStatus(BuffID.Sunflower, Pinky.EatenHappyLength);
 				if (pinkyPrey.NoHealth)
@@ -136,7 +136,7 @@ namespace V2.NPCs.Vanilla.Forest
 
 		public override void ResetEffects(NPC npc)
 		{
-			if (npc.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.NPC && x.ExactType == "Pinky") is Prey pinkyPrey)
+			if (npc.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.NPC && x.ExactType == "Pinky") is VoreTracker pinkyPrey)
 			{
 				npc.AddStatus(BuffID.Sunflower, Pinky.EatenHappyLength);
 				if (pinkyPrey.NoHealth)

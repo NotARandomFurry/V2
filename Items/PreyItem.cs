@@ -157,7 +157,7 @@ namespace V2.Items
 				 && (pred.stomachContentsQueue is null || pred.stomachContentsQueue.Count <= 0))
 					continue;
 
-				if (pred.stomachContents.FirstOrDefault(x => x.Type == PreyType.Item && x.Instance == item) is Prey prey)
+				if (pred.stomachContents.FirstOrDefault(x => x.Type == PreyType.Item && x.Instance == item) is VoreTracker prey)
 				{
 					item.AsFood().IsCurrentlyEaten = true;
 					item.position = potentialPred.Center - (item.Size / 2f);
@@ -168,7 +168,7 @@ namespace V2.Items
 					};
 					break;
 				}
-				if (pred.stomachContentsQueue.FirstOrDefault(x => x.Type == PreyType.Item && x.Instance == item) is Prey queuedPrey)
+				if (pred.stomachContentsQueue.FirstOrDefault(x => x.Type == PreyType.Item && x.Instance == item) is VoreTracker queuedPrey)
 				{
 					item.AsFood().IsCurrentlyEaten = true;
 					item.position = potentialPred.Center - (item.Size / 2f);
@@ -190,7 +190,7 @@ namespace V2.Items
 				 && (potentialPred.AsPred().stomachContentsQueue is null || potentialPred.AsPred().stomachContentsQueue.Count <= 0))
 					continue;
 
-				if (potentialPred.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.Item && x.Instance == item) is Prey prey)
+				if (potentialPred.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.Item && x.Instance == item) is VoreTracker prey)
 				{
 					item.AsFood().IsCurrentlyEaten = true;
 					item.position = potentialPred.Center - (item.Size / 2f);
@@ -201,7 +201,7 @@ namespace V2.Items
 					};
 					break;
 				}
-				if (potentialPred.AsPred().stomachContentsQueue.FirstOrDefault(x => x.Type == PreyType.Item && x.Instance == item) is Prey queuedPrey)
+				if (potentialPred.AsPred().stomachContentsQueue.FirstOrDefault(x => x.Type == PreyType.Item && x.Instance == item) is VoreTracker queuedPrey)
 				{
 					item.AsFood().IsCurrentlyEaten = true;
 					item.position = potentialPred.Center - (item.Size / 2f);

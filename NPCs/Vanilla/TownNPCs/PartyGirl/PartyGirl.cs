@@ -83,11 +83,11 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 		{
 			npc.AsV2NPC().Gender = EntityGender.Female;
 
-			npc.AsV2NPC().GetChatMethod = GetPartyGirlChat;
+			npc.AsV2NPC().GetNewDialogue = GetPartyGirlChat;
 
 			npc.AsFood().Size = 1.0;
-			npc.AsPred().stomachContents = new List<Prey>();
-			npc.AsPred().stomachContentsQueue = new List<Prey>();
+			npc.AsPred().stomachContents = new List<VoreTracker>();
+			npc.AsPred().stomachContentsQueue = new List<VoreTracker>();
 			npc.AsPred().MaxStomachCapacity = 999999.0;
 
 			npc.AsPred().CanBeForceFed = CanPartyGirlBeForceFed;
@@ -115,7 +115,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 
 		public static bool PartyGirlSpecialPredAI(NPC npc)
 		{
-			if (npc.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.HallowBoss) is Prey sprinkles && sprinkles.WeightLeftToDigest > 5.0)
+			if (npc.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.HallowBoss) is VoreTracker sprinkles && sprinkles.WeightLeftToDigest > 5.0)
 			{
 				npc.width = 110;
 				npc.height = 64;
@@ -249,7 +249,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 			}
 		}
 
-		public static double GetDigestionTickRate(NPC npc, Prey prey)
+		public static double GetDigestionTickRate(NPC npc, VoreTracker prey)
 		{
 			double tickRate = 1.25;
 			if (prey.Type == PreyType.NPC && (prey.Instance as NPC).type == NPCID.HallowBoss)
@@ -266,7 +266,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 			return tickRate;
 		}
 
-		public static double GetDigestionTickDamage(NPC npc, Prey prey)
+		public static double GetDigestionTickDamage(NPC npc, VoreTracker prey)
 		{
 			double digestionDamage = 15.0;
 			if (prey.Type == PreyType.NPC && (prey.Instance as NPC).type == NPCID.TaxCollector)
@@ -277,7 +277,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 			return digestionDamage;
 		}
 
-		public static void OnDigestionKill(NPC npc, Prey digestedPrey)
+		public static void OnDigestionKill(NPC npc, VoreTracker digestedPrey)
 		{
 			SoundEngine.PlaySound(
 				npc.AsPred().StandardBurps,
@@ -296,7 +296,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 
 		public static int GetEmpressDigestionStage(NPC npc)
 		{
-			Prey sprinkles = npc.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.HallowBoss);
+			VoreTracker sprinkles = npc.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.HallowBoss);
 			if (sprinkles is null || sprinkles.WeightLeftToDigest < 5.0)
 				return 0;
 			else

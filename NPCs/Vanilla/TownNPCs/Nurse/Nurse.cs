@@ -85,7 +85,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 		{
 			npc.AsV2NPC().Gender = EntityGender.Female;
 
-			npc.AsV2NPC().GetChatMethod = GetNurseChat;
+			npc.AsV2NPC().GetNewDialogue = GetNurseChat;
 
 			npc.AsFood().Size = 1.1625;
 			npc.AsPred().MaxStomachCapacity = 1.8;
@@ -603,7 +603,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 			if (Main.GameUpdateCount % 60 != 0)
 				return;
 
-			if (npc.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.ArmsDealer) is Prey crushAsPrey)
+			if (npc.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.ArmsDealer) is VoreTracker crushAsPrey)
 			{
 				NPC crush = crushAsPrey.Instance as NPC;
 				npc.AsNurse().armsDealerHealTime += 1;
@@ -717,17 +717,17 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 			}
 		}
 
-		public static double GetDigestionTickRate(NPC npc, Prey prey)
+		public static double GetDigestionTickRate(NPC npc, VoreTracker prey)
 		{
-			if (npc.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.ArmsDealer) is Prey crushAsPrey && !Main.bloodMoon)
+			if (npc.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.ArmsDealer) is VoreTracker crushAsPrey && !Main.bloodMoon)
 				return 0.0;
 
 			return Main.bloodMoon ? 2.3 : 1.15;
 		}
 
-		public static double GetDigestionTickDamage(NPC npc, Prey prey) => 12.5;
+		public static double GetDigestionTickDamage(NPC npc, VoreTracker prey) => 12.5;
 
-		public static void OnDigestionKill(NPC npc, Prey digestedPrey)
+		public static void OnDigestionKill(NPC npc, VoreTracker digestedPrey)
 		{
 			if (npc.AsNurse().healPlayerIndex != -1 && digestedPrey.Type == PreyType.Player && digestedPrey.Instance.whoAmI == npc.AsNurse().healPlayerIndex)
 				npc.AsNurse().healPlayerIndex = -1;
@@ -803,7 +803,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 			if (Main.expertMode)
 				num4 *= 2;
 
-			int copperCoins = (int)((double)num4 * predPlayer.currentShoppingSettings.PriceAdjustment);
+			int copperCoins = (int)((double)num4 * 1.2);
 			if (copperCoins > 0 && copperCoins < 1)
 				copperCoins = 1;
 			int originalHealPrice = copperCoins;

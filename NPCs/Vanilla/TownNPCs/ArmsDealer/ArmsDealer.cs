@@ -73,7 +73,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.ArmsDealer
 		{
 			npc.AsV2NPC().Gender = EntityGender.Male;
 
-			npc.AsV2NPC().GetChatMethod = GetArmsDealerChat;
+			npc.AsV2NPC().GetNewDialogue = GetArmsDealerChat;
 
 			npc.AsFood().Size = 1.04;
 			npc.AsPred().MaxStomachCapacity = 1.75;
@@ -288,7 +288,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.ArmsDealer
 			if (npc.AsFood().IsCurrentlyEaten)
 				return;
 
-			if (npc.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.Nurse) is Prey crushAsPrey)
+			if (npc.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.Nurse) is VoreTracker crushAsPrey)
 				return;
 
 			static void RollForRandomGulp(ref bool gulp) => gulp |= Main.rand.NextBool(2, 100);
@@ -325,11 +325,11 @@ namespace V2.NPCs.Vanilla.TownNPCs.ArmsDealer
 			}
 		}
 
-		public static double GetDigestionTickRate(NPC npc, Prey prey) => Main.bloodMoon ? 2.0 : 1.0;
+		public static double GetDigestionTickRate(NPC npc, VoreTracker prey) => Main.bloodMoon ? 2.0 : 1.0;
 
-		public static double GetDigestionTickDamage(NPC npc, Prey prey) => 10.0;
+		public static double GetDigestionTickDamage(NPC npc, VoreTracker prey) => 10.0;
 
-		public static void OnDigestionKill(NPC npc, Prey digestedPrey)
+		public static void OnDigestionKill(NPC npc, VoreTracker digestedPrey)
 		{
 			SoundEngine.PlaySound(
 				digestedPrey.WeightLeftToDigest < 0.6 ? npc.AsPred().SmallBurps : npc.AsPred().StandardBurps,

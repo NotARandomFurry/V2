@@ -44,7 +44,7 @@ namespace V2.PlayerHandling
 		};
 	}
 
-	public class PreyPlayer : ModPlayer
+	public partial class PreyPlayer : ModPlayer
 	{
 		// uncomment once achievements are available so the Ascended Acolyte race is...relatively fair for everyone
 		// public int[] HasBeenDigestedByNPC { get; set; }
@@ -54,8 +54,6 @@ namespace V2.PlayerHandling
 		public Vector2 EatenCameraPlacement { get; set; }
 		public bool Digested { get; set; }
 		public PredEntityReference? CurrentCaptor { get; set; }
-
-		public StatModifier StruggleStrengthModifier { get; set; }
 
 
 		public (int _swallowCount, int _gurgleCount) _timesEaten;
@@ -120,7 +118,7 @@ namespace V2.PlayerHandling
 				 && (pred.stomachContentsQueue is null || pred.stomachContentsQueue.Count <= 0))
 					continue;
 
-				if (pred.stomachContents.FirstOrDefault(x => !x.NoHealth && x.Type == PreyType.Player && x.Instance.whoAmI == Player.whoAmI) is Prey prey)
+				if (pred.stomachContents.FirstOrDefault(x => !x.NoHealth && x.Type == PreyType.Player && x.Instance.whoAmI == Player.whoAmI) is VoreTracker prey)
 				{
 					Player.AsFood().IsCurrentlyEaten = true;
 					Player.AsFood().EatenCameraPlacement = potentialPred.Center - (Main.ScreenSize.ToVector2() / 2f);
@@ -133,7 +131,7 @@ namespace V2.PlayerHandling
 					};
 					break;
 				}
-				if (pred.stomachContentsQueue.FirstOrDefault(x => !x.NoHealth && x.Type == PreyType.Player && x.Instance.whoAmI == Player.whoAmI) is Prey queuedPrey)
+				if (pred.stomachContentsQueue.FirstOrDefault(x => !x.NoHealth && x.Type == PreyType.Player && x.Instance.whoAmI == Player.whoAmI) is VoreTracker queuedPrey)
 				{
 					Player.AsFood().IsCurrentlyEaten = true;
 					Player.AsFood().EatenCameraPlacement = potentialPred.Center - (Main.ScreenSize.ToVector2() / 2f);
@@ -160,7 +158,7 @@ namespace V2.PlayerHandling
 				 && (potentialPred.AsPred().stomachContentsQueue is null || potentialPred.AsPred().stomachContentsQueue.Count <= 0))
 					continue;
 
-				if (pred.stomachContents.FirstOrDefault(x => !x.NoHealth && x.Type == PreyType.Player && x.Instance.whoAmI == Player.whoAmI) is Prey prey)
+				if (pred.stomachContents.FirstOrDefault(x => !x.NoHealth && x.Type == PreyType.Player && x.Instance.whoAmI == Player.whoAmI) is VoreTracker prey)
 				{
 					Player.AsFood().IsCurrentlyEaten = true;
 					Player.AsFood().EatenCameraPlacement = potentialPred.Center - (Main.ScreenSize.ToVector2() / 2f);
@@ -173,7 +171,7 @@ namespace V2.PlayerHandling
 					};
 					break;
 				}
-				if (pred.stomachContentsQueue.FirstOrDefault(x => !x.NoHealth && x.Type == PreyType.Player && x.Instance.whoAmI == Player.whoAmI) is Prey queuedPrey)
+				if (pred.stomachContentsQueue.FirstOrDefault(x => !x.NoHealth && x.Type == PreyType.Player && x.Instance.whoAmI == Player.whoAmI) is VoreTracker queuedPrey)
 				{
 					Player.AsFood().IsCurrentlyEaten = true;
 					Player.AsFood().EatenCameraPlacement = potentialPred.Center - (Main.ScreenSize.ToVector2() / 2f);
@@ -519,7 +517,6 @@ namespace V2.PlayerHandling
 		public override void SendClientChanges(ModPlayer clientPlayer)
 		{
 			PreyPlayer preyClientClone = clientPlayer as PreyPlayer;
-
 			if (preyClientClone.IsCurrentlyEaten != Player.AsFood().IsCurrentlyEaten)
 				SyncPlayer(-1, Main.myPlayer, false);
 			if (preyClientClone.Digested != Player.AsFood().Digested)
@@ -555,30 +552,7 @@ namespace V2.PlayerHandling
 
 		public void ReceivePlayerSync(BinaryReader binaryReader)
 		{
-			Player.AsFood().IsCurrentlyEaten = binaryReader.ReadBoolean();
 			Player.AsFood().Digested = binaryReader.ReadBoolean();
-			if (Player.AsFood().IsCurrentlyEaten && binaryReader.ReadBoolean())
-			{
-				switch (binaryReader.ReadString())
-				{
-					case "NPC pred":
-						int npcPredIndex = binaryReader.ReadInt32();
-						Player.AsFood().CurrentCaptor = new PredEntityReference()
-						{
-							Predator = Main.npc[npcPredIndex],
-							PreyInstance = Main.npc[npcPredIndex].AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.Player && x.Instance.whoAmI == Player.whoAmI)
-						};
-						break;
-					case "Player pred":
-						int playerPredIndex = binaryReader.ReadInt32();
-						Player.AsFood().CurrentCaptor = new PredEntityReference()
-						{
-							Predator = Main.player[playerPredIndex],
-							PreyInstance = Main.player[playerPredIndex].AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.Player && x.Instance.whoAmI == Player.whoAmI)
-						};
-						break;
-				}
-			}
 		}
 
 		public override void SaveData(TagCompound tag)

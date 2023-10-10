@@ -28,7 +28,8 @@ namespace V2.PlayerHandling
 				player.ApplyItemTime(sItem);
 				int releasedCritterIndex = NPC.ReleaseNPC((int)player.Center.X, (int)player.Bottom.Y, sItem.makeNPC, sItem.placeStyle, player.whoAmI);
 				NPC releasedCritter = Main.npc[releasedCritterIndex];
-				releasedCritter.life = sItem.AsFood().Health;
+				if (sItem.AsFood().MaxHealth != 0 && sItem.AsFood().MaxHealth == releasedCritter.lifeMax)
+					releasedCritter.life = sItem.AsFood().Health;
 				if (Main.myPlayer == player.whoAmI && V2.SwallowHotkey.Current && PredPlayer.CanSwallow(player, releasedCritter))
 					PredPlayer.Swallow(player, releasedCritter);
 			}
@@ -46,13 +47,8 @@ namespace V2.PlayerHandling
 					player.ApplyItemTime(sItem);
 					int releasedCritterIndex = NPC.ReleaseNPC(num, num2, sItem.makeNPC, sItem.placeStyle, player.whoAmI);
 					NPC releasedCritter = Main.npc[releasedCritterIndex];
-					if (sItem.AsV2Item().ReleasedNPCNetID < 0)
-					{
-						releasedCritter.SetDefaults(sItem.AsV2Item().ReleasedNPCNetID);
-						if (sItem.AsFood().MaxHealth != 0 && sItem.AsFood().MaxHealth == releasedCritter.lifeMax)
-							releasedCritter.life = sItem.AsFood().Health;
-					}
-					releasedCritter.life = sItem.AsFood().Health;
+					if (sItem.AsFood().MaxHealth != 0 && sItem.AsFood().MaxHealth == releasedCritter.lifeMax)
+						releasedCritter.life = sItem.AsFood().Health;
 					if (Main.myPlayer == player.whoAmI && V2.SwallowHotkey.Current && PredPlayer.CanSwallow(player, releasedCritter))
 						PredPlayer.Swallow(player, releasedCritter);
 				}

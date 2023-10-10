@@ -76,7 +76,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Mechanic
 		{
 			npc.AsV2NPC().Gender = EntityGender.Female;
 
-			npc.AsV2NPC().GetChatMethod = GetMechanicChat;
+			npc.AsV2NPC().GetNewDialogue = GetMechanicChat;
 			
 			npc.AsFood().Size = 0.96;
 			npc.AsPred().MaxStomachCapacity = 1.75;
@@ -394,11 +394,11 @@ namespace V2.NPCs.Vanilla.TownNPCs.Mechanic
 			}
 		}
 
-		public static double GetDigestionTickRate(NPC npc, Prey prey) => Main.bloodMoon ? 6.5 : 3.25;
+		public static double GetDigestionTickRate(NPC npc, VoreTracker prey) => Main.bloodMoon ? 6.5 : 3.25;
 
-		public static double GetDigestionTickDamage(NPC npc, Prey prey) => 6.5;
+		public static double GetDigestionTickDamage(NPC npc, VoreTracker prey) => 6.5;
 
-		public static void OnDigestionKill(NPC npc, Prey digestedPrey)
+		public static void OnDigestionKill(NPC npc, VoreTracker digestedPrey)
 		{
 			SoundEngine.PlaySound(
 				npc.AsPred().StandardBurps,

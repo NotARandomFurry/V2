@@ -80,7 +80,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 		{
 			npc.AsV2NPC().Gender = EntityGender.Female;
 
-			npc.AsV2NPC().GetChatMethod = GetStylistChat;
+			npc.AsV2NPC().GetNewDialogue = GetStylistChat;
 
 			npc.AsFood().Size = 1.085;
 			npc.AsPred().MaxStomachCapacity = 5.85;
@@ -105,6 +105,12 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 
 		public override ITownNPCProfile ModifyTownNPCProfile(NPC npc) => StylistStuff.StylistPredProfile;
 
+		public static List<string> StylistFavoritismNames => new List<string>
+		{
+			"Thomas",
+			"ThomasThePencil",
+			"the pixelated Sign Painter",
+		};
 		public static List<string> GetStylistChat(NPC npc, Player player)
 		{
 			List<NPC> nearbyResidentNPCs = npc.GetNearbyResidentNPCs(out int npcsWithinHouse, out int npcsWithinVillage);
@@ -160,6 +166,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 						"Hope you're enjoyin' my signature Gut Cut service! Remember, no refunds!",
 						"Y'know, I think you'd be a REALLY good treat for Kyoko! I know she always loves to eat meals like you...\n"
 					  + "...wait, who's Kyoko? OH, right! She's a really good friend of mine! I'm sure you'll get to meet her someday!",
+						"Careful not to soak your hair with juice too much. Unless you WANT to ruin it. I dunno.",
 					});
 					if (player.Male)
 					{
@@ -168,6 +175,14 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 							"You were delicious, sir! Unfortunately, the Gut Cut experience DOESN'T offer the option for added aftershave, on account of it tastin' awful and makin' me feel super bloated if I have any.",
 							"You know, sir, I was originally gonna call this technique \"the Belly Barber experience\". Glad I went with \"the Gut Cut experience\" instead. Rolls off the tongue, and gets clients rollin' onto mine, way better.",
 						});
+
+						if (StylistFavoritismNames.Contains(player.name))
+						{
+							stylistChatPool.AddRange(new List<string>
+							{
+								"I bet I'm your favorite? Of course I am. I know I'm the best in the world. Now take a seat and let me make you look perfect, hun.",
+							});
+						}
 					}
 					else
 					{
@@ -218,6 +233,8 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 							"Sorry, hun, no refunds! Just sit in there and marinate for a while...I'll check in to make sure you're digestin' well in half an hour or so.",
 							"Well, while you wait to be digested, you've got an easy cut. Just stick your head in those acids for a bit, and your hair'll be nice and short!",
 							"[c/BFBFBF:(...oh, don't make me fat, don't make me fat...make one of the three B's too big if you want, but please, please, PLEEEEEASE don't make me fat. I take too many cheat days as it is...)]",
+							"[c/00BB00:*UUUURP!*]\n"
+						  + "Mmmm...that's some grade-A flavor you've got there, hun! What products did ya use? Or are you just naturally delicious?",
 						});
 						if (player.Male)
 						{
@@ -245,11 +262,30 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 							});
 						}
 						bool bald = Main.CurrentPlayer.hair == 16 || Main.CurrentPlayer.head == ArmorIDs.Head.MonkBrows;
+						bool stylish = Main.LocalPlayer.hairDye > 0;
 						if (bald)
 						{
 							stylistChatPool.AddRange(new List<string>
 							{
-								"\"Acid-worn and bald are the same\", you say? Well, lemme prove you WRONG, hun! My belly and I don't DO bald. Bald is never a good look. Acid-worn, on the other hand...",
+								"[c/00BB00:*urp.*]\n"
+							  + "\"Acid-worn and bald are the same\", you say? Well, lemme prove you WRONG! My belly and I don't DO bald. Bald is never a good look. Acid-worn, on the other hand...",
+							});
+						}
+						else if (stylish)
+						{
+
+							stylistChatPool.AddRange(new List<string>
+							{
+								"[c/00BB00:*BWOOOUURP!*]\n"
+							  + "Mmmm-mmmm...mm-mm-MMM! That's the GOOD stuff I'm still feelin' on my tongue! I knew gettin' you to try out one of my delicious hair dyes was a great idea!",
+							});
+						}
+						else
+						{
+							stylistChatPool.AddRange(new List<string>
+							{
+								"[c/00BB00:*OOURP!*]\n"
+							  + "Mmmm...that's some grade-A flavor you've got there, hun. What products did ya use? Or are you just naturally this good?",
 							});
 						}
 					}
@@ -261,14 +297,26 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 				{
 					stylistChatPool.AddRange(new List<string>
 					{
-						"Tipping's optional, but remember I have teeth sharper than any razor, plenty of room in my belly, and access to your head.",
-						"Hun, you better stay outta my hair tonight...unless you wanna spend the night digesting to make more of it. Could really go for some good eats...",
+						"Tipping's optional, but remember: I've got teeth sharper than any razor, plenty of room in my belly, and access to your head.",
+						"Hun, you better stay outta my hair tonight...unless you wanna spend the night digestin' to make more of it. Could really go for some good eats...",
 						"I just sharpened my scissors, and your thighs look like they'd enhance mine really nicely after a quick gut cut. Are you sure you don't wanna pay extra?",
-						"The longer you sit there, the more likely I am to just cut to the chase and cram you down my throat.",
-						"How are you gonna get styled tonight? Better pick something fast, before I pick it for you.",
+						"The longer you sit there and keep waitin', the more likely I am to just cut to the chase and cram you down my throat.",
+						"Alright, how's your lousy scalp gonna get styled tonight? Better pick something good, and pick it fast, before I pick it for you.",
 					});
 					if (salad != null)
-						stylistChatPool.Add("God, I could really go for a salad right about now...hun, go tell " + salad.GivenName + " to get over here and fill me up. Quickly, too, or you'll go right in with her.");
+					{
+						if (!salad.IsFoodFor(npc))
+						{
+							stylistChatPool.Add("God, I could really go for a salad right about now...hun, go tell " + salad.GivenName + " to get over here and fill me up. Quickly, too, or you'll go right in with her.");
+						}
+						else
+						{
+							stylistChatPool.AddRange(new List<string>
+							{
+								"Ahhhh, that's the stuff.",
+							});
+						}
+					}
 				}
 				else
 				{
@@ -297,7 +345,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 								{
 									"Mmm...always a bit weird to have a potbelly like this hangin' off me. Not like it matters much...I'll be back to my slim self in no time! Now, how can I get your cut done, hun?",
 									"Gonna need a few salads steppin' into my stomach at this rate...look at all this gut! Of course...a cheat day every once in a while's not bad, right?",
-									"Oh my God, I look pregnant! Late into one, too...did I really eat that much? Then again, I think I know a hairstyle that'd look great with this gut...",
+									"Oh my God, I look pregnant! Late into it, too...did I really eat that much? Then again, I think I know a hairstyle that'd look great with this gut...",
 									"Oh, this? That's not a baby! Well...not a real one. Just a really big food baby! Be careful not to poke it, though! Wouldn't want whatever's built up in there knockin' you out...",
 									"Does this belly make my hair look bad? Gimme an honest answer, and I promise I won't get...TOO mad. Gimme a lie, though...",
 									"My belly looks like a bald head...I'm not sure if I like that. Then again, you could say the apron counts as a nice hairstyle for it...it should be fine.",
@@ -342,7 +390,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 								}
 								break;
 						}
-						if (npc.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.Dryad) is Prey dryadAsPrey)
+						if (npc.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.Dryad) is VoreTracker dryadAsPrey)
 						{
 							if (!dryadAsPrey.NoHealth)
 							{
@@ -364,7 +412,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 								});
 							}
 						}
-						if (npc.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.PartyGirl) is Prey partyGirlAsPrey)
+						if (npc.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.PartyGirl) is VoreTracker partyGirlAsPrey)
 						{
 							if (!partyGirlAsPrey.NoHealth)
 							{
@@ -583,11 +631,11 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 			}
 		}
 
-		public static double GetDigestionTickRate(NPC npc, Prey prey) => Main.bloodMoon ? 2.5 : 1.25;
+		public static double GetDigestionTickRate(NPC npc, VoreTracker prey) => Main.bloodMoon ? 2.5 : 1.25;
 
-		public static double GetDigestionTickDamage(NPC npc, Prey prey) => 20;
+		public static double GetDigestionTickDamage(NPC npc, VoreTracker prey) => 20;
 
-		public static void OnDigestionKill(NPC npc, Prey digestedPrey)
+		public static void OnDigestionKill(NPC npc, VoreTracker digestedPrey)
 		{
 			SoundEngine.PlaySound(
 				digestedPrey.WeightLeftToDigest < 0.3 ? npc.AsPred().SmallBurps : npc.AsPred().StandardBurps,

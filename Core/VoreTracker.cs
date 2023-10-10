@@ -26,21 +26,16 @@ namespace V2.Core
 		Undefined
 	};
 
-	public static class FoodFlavorTags
-	{
-
-	}
-
 	/// <summary>
 	/// Used to store a reference to whatever's eaten a given prey entity.
 	/// </summary>
 	public struct PredEntityReference
 	{
 		public Entity Predator { get; set; }
-		public Prey PreyInstance { get; set; }
+		public VoreTracker PreyInstance { get; set; }
 	}
 
-	public class Prey
+	public class VoreTracker
 	{
 		public PreyType Type { get; set; }
 		public Entity Instance { get; set; }
@@ -55,7 +50,7 @@ namespace V2.Core
 
 		public int timeSpentInStomach;
 
-		public Prey(Entity preyEntity)
+		public VoreTracker(Entity preyEntity)
 		{
 			if (preyEntity is Player player)
 			{
@@ -83,7 +78,23 @@ namespace V2.Core
 			timeSpentInStomach = 0;
 		}
 
-		public Prey(int liquidType, int liquidAmount)
+		public VoreTracker(int type, string exactType, double weightRemaining)
+		{
+			Type = type switch
+			{
+				0 => PreyType.Player,
+				1 => PreyType.NPC,
+				2 => PreyType.Projectile,
+				3 => PreyType.Item,
+				4 => PreyType.Liquid,
+				5 => PreyType.Custom,
+				_ => PreyType.Undefined
+			};
+			ExactType = exactType;
+			WeightLeftToDigest = weightRemaining;
+		}
+
+		public VoreTracker(int liquidType, int liquidAmount)
 		{
 			double liquidAmountReal = liquidAmount / 256.0 * (liquidType switch
 			{
@@ -106,9 +117,25 @@ namespace V2.Core
 			InitialWeight = InitialSize = WeightLeftToDigest = liquidAmountReal;
 		}
 
-		public static double GetInitialPreySize(Entity entity) => GetInitialPreySize(new Prey(entity));
+		public VoreTracker(int liquidType, double liquidAmount)
+		{
+			Type = PreyType.Liquid;
+			Instance = null;
+			NoHealth = true;
+			ExactType = liquidType switch
+			{
+				LiquidID.Water => "Water",
+				LiquidID.Lava => "Lava",
+				LiquidID.Honey => "Honey",
+				LiquidID.Shimmer => "Shimmer",
+				_ => "Some Other Liquid",
+			};
+			InitialWeight = InitialSize = WeightLeftToDigest = liquidAmount;
+		}
 
-		public static double GetInitialPreySize(Prey prey)
+		public static double GetInitialPreySize(Entity entity) => GetInitialPreySize(new VoreTracker(entity));
+
+		public static double GetInitialPreySize(VoreTracker prey)
 		{
 			switch (prey.Type)
 			{

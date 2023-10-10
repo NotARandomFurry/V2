@@ -52,7 +52,7 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 
 		public override float SpawnChance(NPCSpawnInfo spawnInfo)
 		{
-			if (ModContent.GetInstance<MasterSystem>().freedSucc)
+			if (ModContent.GetInstance<V2MasterSystem>().freedSucc)
 				return 0f;
 
 			if (!spawnInfo.Player.ZoneUnderworldHeight)
@@ -87,13 +87,13 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 		{
 			if (firstButton)
 			{
-				ModContent.GetInstance<MasterSystem>().freedSucc = true;
+				ModContent.GetInstance<V2MasterSystem>().freedSucc = true;
 				NPC.AI_000_TransformBoundNPC(Main.CurrentPlayer.whoAmI, ModContent.NPCType<Lucinda>());
 				Main.npcChatText = "There ya go! Wasn't that hard. Now, c'mere so I can reward you with some time in my gut...or, y'know, just some old trinkets from ol' Lucy to help you be a great pred like me.";
 			}
 			else
 			{
-				ModContent.GetInstance<MasterSystem>().freedSucc = true;
+				ModContent.GetInstance<V2MasterSystem>().freedSucc = true;
 				NPC.AI_000_TransformBoundNPC(Main.CurrentPlayer.whoAmI, ModContent.NPCType<Lucinda>());
 				PredNPC.SwallowWithTextIfApplicable(
 					NPC,
