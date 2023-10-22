@@ -86,8 +86,6 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 			npc.AsV2NPC().GetNewDialogue = GetPartyGirlChat;
 
 			npc.AsFood().Size = 1.0;
-			npc.AsPred().stomachContents = new List<VoreTracker>();
-			npc.AsPred().stomachContentsQueue = new List<VoreTracker>();
 			npc.AsPred().MaxStomachCapacity = 999999.0;
 
 			npc.AsPred().CanBeForceFed = CanPartyGirlBeForceFed;
@@ -115,7 +113,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 
 		public static bool PartyGirlSpecialPredAI(NPC npc)
 		{
-			if (npc.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.HallowBoss) is VoreTracker sprinkles && sprinkles.WeightLeftToDigest > 5.0)
+			if (PredNPC.GetStomachTracker(npc)?.Prey.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.HallowBoss) is PreyData sprinkles && sprinkles.WeightLeftToDigest > 5.0)
 			{
 				npc.width = 110;
 				npc.height = 64;
@@ -155,7 +153,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 
 		public override void PostAI(NPC npc)
 		{
-			if (npc.AsFood().IsCurrentlyEaten)
+			if (npc.CurrentCaptor() is not null)
 				return;
 
 			if (GetEmpressDigestionStage(npc) > 0)
@@ -216,7 +214,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 			if (ModContent.GetInstance<V2ServerConfig>().NoRandomGulpsAgainstPlayers)
 				return;
 
-			if (!Main.CurrentPlayer.active || Main.CurrentPlayer.dead || Main.CurrentPlayer.Distance(npc.Center) > npc.AsPred().MaxSwallowRange || Main.CurrentPlayer.AsFood().IsCurrentlyEaten)
+			if (!Main.CurrentPlayer.active || Main.CurrentPlayer.dead || Main.CurrentPlayer.Distance(npc.Center) > npc.AsPred().MaxSwallowRange || Main.CurrentPlayer.CurrentCaptor() is not null)
 				return;
 
 			bool shouldHostGutParty = false;
@@ -249,7 +247,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 			}
 		}
 
-		public static double GetDigestionTickRate(NPC npc, VoreTracker prey)
+		public static double GetDigestionTickRate(NPC npc, PreyData prey)
 		{
 			double tickRate = 1.25;
 			if (prey.Type == PreyType.NPC && (prey.Instance as NPC).type == NPCID.HallowBoss)
@@ -266,7 +264,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 			return tickRate;
 		}
 
-		public static double GetDigestionTickDamage(NPC npc, VoreTracker prey)
+		public static double GetDigestionTickDamage(NPC npc, PreyData prey)
 		{
 			double digestionDamage = 15.0;
 			if (prey.Type == PreyType.NPC && (prey.Instance as NPC).type == NPCID.TaxCollector)
@@ -277,7 +275,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 			return digestionDamage;
 		}
 
-		public static void OnDigestionKill(NPC npc, VoreTracker digestedPrey)
+		public static void OnDigestionKill(NPC npc, PreyData digestedPrey)
 		{
 			SoundEngine.PlaySound(
 				npc.AsPred().StandardBurps,
@@ -296,7 +294,10 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 
 		public static int GetEmpressDigestionStage(NPC npc)
 		{
-			VoreTracker sprinkles = npc.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.HallowBoss);
+			if (PredNPC.GetStomachTracker(npc) is null)
+				return 0;
+
+			PreyData sprinkles = PredNPC.GetStomachTracker(npc).Prey.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.HallowBoss);
 			if (sprinkles is null || sprinkles.WeightLeftToDigest < 5.0)
 				return 0;
 			else
@@ -358,7 +359,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 
 		public override bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
 		{
-			if (npc.AsFood().IsCurrentlyEaten)
+			if (npc.CurrentCaptor() is not null)
 				return false;
 
 			if (GetEmpressDigestionStage(npc) > 0)

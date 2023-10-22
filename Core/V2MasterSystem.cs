@@ -17,40 +17,32 @@ namespace V2.Core
 		public bool freedSucc;
 		public bool freedAngel;
 
-		public List<StruggleTracker> StruggleTrackers { get; set; }
+		public List<VoreTracker> VoreTrackers { get; set; } = new List<VoreTracker>();
 
 		public override void OnWorldLoad()
 		{
-			StruggleTrackers = new List<StruggleTracker>();
+			VoreTrackers = new List<VoreTracker>();
 			freedSucc = false;
 			freedAngel = false;
 		}
 
 		public override void OnWorldUnload()
 		{
-			StruggleTrackers = null;
+			VoreTrackers = new List<VoreTracker>();
 			freedSucc = false;
 			freedAngel = false;
 		}
 
 		public override void PreUpdateEntities()
 		{
-			foreach (StruggleTracker tracker in StruggleTrackers)
+			foreach (VoreTracker tracker in VoreTrackers)
 			{
-				tracker.UpdateProgress();
-				switch (Main.netMode)
-				{
-					case NetmodeID.SinglePlayer:
-						tracker.CheckAllInputs();
-						break;
-					case NetmodeID.MultiplayerClient:
-						tracker.CheckClientSideInputs();
-						break;
-					case NetmodeID.Server:
-						tracker.CheckServerSideInputs();
-						break;
-				}
+				tracker.UpdatePrey();
+				if (Main.netMode == NetmodeID.SinglePlayer)
+					tracker.CheckStruggleInputs();
 			}
+
+			VoreTrackers.RemoveAll(x => x.CheckClearability());
 		}
 
 		public override void SaveWorldData(TagCompound tag)

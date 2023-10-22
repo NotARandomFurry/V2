@@ -88,7 +88,7 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 		{
 			if (target.type == NPCID.PartyGirl)
 			{
-				if (!npc.AsFood().IsCurrentlyEaten && npc.Hitbox.Intersects(target.Hitbox) && target.AsPartyGirl().HungerForEmpress == PartyGirl.MaxHungerForEmpress && target.AsPred().stomachContents.Count == 0)
+				if (npc.CurrentCaptor() is null && npc.Hitbox.Intersects(target.Hitbox) && target.AsPartyGirl().HungerForEmpress == PartyGirl.MaxHungerForEmpress && PredNPC.GetStomachTracker(target) is null)
 				{
 					PredNPC.Swallow(target, npc);
 					target.position.X += 14;
@@ -145,7 +145,7 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 			}
 		}
 
-		public static double GetDigestionTickRate(NPC npc, VoreTracker prey)
+		public static double GetDigestionTickRate(NPC npc, PreyData prey)
 		{
 			if (npc.AI_120_HallowBoss_IsGenuinelyEnraged())
 				return 12.0;
@@ -164,9 +164,9 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 					return 3.0;
 			}
 		}
-		public static double GetDigestionTickDamage(NPC npc, VoreTracker prey) => Main.dayTime ? 1000.0 : 120.0;
+		public static double GetDigestionTickDamage(NPC npc, PreyData prey) => Main.dayTime ? 1000.0 : 120.0;
 
-		public static void OnDigestionKill(NPC npc, VoreTracker digestedPrey)
+		public static void OnDigestionKill(NPC npc, PreyData digestedPrey)
 		{
 			SoundEngine.PlaySound(
 				digestedPrey.WeightLeftToDigest < npc.AsPred().SmallGulpThreshold ? npc.AsPred().SmallBurps : npc.AsPred().StandardBurps,

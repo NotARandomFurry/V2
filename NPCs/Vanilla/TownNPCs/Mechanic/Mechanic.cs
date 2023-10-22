@@ -330,7 +330,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Mechanic
 
 		public override void PostAI(NPC npc)
 		{
-			if (npc.AsFood().IsCurrentlyEaten)
+			if (npc.CurrentCaptor() is not null)
 				return;
 
 			static void RollForRandomGulp(ref bool gulp) => gulp |= Main.rand.NextBool(3, 100);
@@ -372,7 +372,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Mechanic
 			if (ModContent.GetInstance<V2ServerConfig>().NoRandomGulpsAgainstPlayers)
 				return;
 
-			if (!Main.CurrentPlayer.active || Main.CurrentPlayer.dead || Main.CurrentPlayer.Distance(npc.Center) > npc.AsPred().MaxSwallowRange || Main.CurrentPlayer.AsFood().IsCurrentlyEaten)
+			if (!Main.CurrentPlayer.active || Main.CurrentPlayer.dead || Main.CurrentPlayer.Distance(npc.Center) > npc.AsPred().MaxSwallowRange || Main.CurrentPlayer.CurrentCaptor() is not null)
 				return;
 
 			bool shouldHaveBrainFood = false;
@@ -394,11 +394,11 @@ namespace V2.NPCs.Vanilla.TownNPCs.Mechanic
 			}
 		}
 
-		public static double GetDigestionTickRate(NPC npc, VoreTracker prey) => Main.bloodMoon ? 6.5 : 3.25;
+		public static double GetDigestionTickRate(NPC npc, PreyData prey) => Main.bloodMoon ? 6.5 : 3.25;
 
-		public static double GetDigestionTickDamage(NPC npc, VoreTracker prey) => 6.5;
+		public static double GetDigestionTickDamage(NPC npc, PreyData prey) => 6.5;
 
-		public static void OnDigestionKill(NPC npc, VoreTracker digestedPrey)
+		public static void OnDigestionKill(NPC npc, PreyData digestedPrey)
 		{
 			SoundEngine.PlaySound(
 				npc.AsPred().StandardBurps,

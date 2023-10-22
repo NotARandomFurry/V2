@@ -9,6 +9,7 @@ using Terraria.GameContent.Events;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
+using V2.Core;
 using V2.NPCs.Vanilla.Forest;
 using V2.PlayerHandling;
 
@@ -16,10 +17,13 @@ namespace V2.NPCs
 {
 	public static class NPCDetours
 	{
-		public static void checkDead(NPC npc)
+		public static void CheckDead(NPC npc)
 		{
 			if (!npc.active || (npc.realLife >= 0 && npc.realLife != npc.whoAmI) || npc.life > 0)
 				return;
+
+			if (npc.CurrentCaptor() is not null)
+				npc.AsFood().Digested = true;
 
 			if (npc.type == NPCID.LadyBug || npc.type == NPCID.GoldLadyBug)
 				NPC.LadyBugKilled(npc.Center, npc.type == NPCID.GoldLadyBug);
@@ -32,7 +36,7 @@ namespace V2.NPCs
 					npc.life = npc.lifeMax;
 					npc.netUpdate = true;
 					npc.dontTakeDamage = true;
-					if (Main.netMode != 1)
+					if (Main.netMode != NetmodeID.MultiplayerClient)
 					{
 						NPC freedEye = NPC.NewNPCDirect(
 							npc.GetSource_FromAI(),
@@ -79,9 +83,6 @@ namespace V2.NPCs
 
 			if (!NPCLoader.CheckDead(npc))
 				return;
-
-			if (npc.AsFood().IsCurrentlyEaten)
-				npc.AsFood().Digested = true;
 
 			FieldInfo noSpawnCycleInfo = typeof(NPC).GetField("noSpawnCycle", BindingFlags.NonPublic | BindingFlags.Static);
 			noSpawnCycleInfo.SetValue(null, true);
@@ -168,9 +169,10 @@ namespace V2.NPCs
 				if (npc.AsFood().DigestedDeathSound != null)
 					SoundEngine.PlaySound(npc.AsFood().DigestedDeathSound, npc.position);
 
-				if (npc.AsFood().CurrentCaptor.Value.Predator is Player hungryPlayer)
+				if (npc.CurrentCaptor().Predator is Player hungryPlayer)
 					PredPlayer.CountDigestionKillForBannersAndDropThem(hungryPlayer, npc);
 
+				npc.AsFood().OnKilledByDigestion.Invoke(npc, npc.CurrentCaptor().Predator);
 				npc.NPCLoot();
 			}
 			else
@@ -578,7 +580,7 @@ namespace V2.NPCs
 				{
 					if (Main.netMode != NetmodeID.MultiplayerClient)
 						Main.ReportInvasionProgress((int)NPC.waveKills, neededScore, 2, NPC.waveNumber);
-
+						 
 					if (Main.netMode == NetmodeID.Server)
 						NetMessage.SendData(MessageID.InvasionProgressReport, -1, -1, null, Main.invasionProgress, Main.invasionProgressMax, 2f, NPC.waveNumber);
 				}
@@ -590,7 +592,7 @@ namespace V2.NPCs
 			if (npc.AsFood().Digested)
 			{
 				string localName = "";
-				Entity pred = npc.AsFood().CurrentCaptor.Value.Predator;
+				Entity pred = npc.CurrentCaptor().Predator;
 				if (pred is NPC predNPC)
 				{
 					localName = predNPC.FullName;
@@ -627,35 +629,31 @@ namespace V2.NPCs
 					_ => "Default"
 				};
 				if (Main.netMode == NetmodeID.SinglePlayer)
-				{
 					Main.NewText(Language.GetTextValueWith("Mods.V2.Death.DigestedBoss." + gurgledBossKey, new { Pred = localName, BossName = npc.TypeName }), 175, 75);
-				}
 				else if (Main.netMode == NetmodeID.Server)
-				{
 					ChatHelper.BroadcastChatMessage(NetworkText.FromKey("Mods.V2.Death.DigestedBoss." + gurgledBossKey, new { Pred = networkName, BossName = npc.TypeName }), new Color(175, 75, 255));
-				}
 			}
 			else
 			{
-				if (npc.type == 125 || npc.type == 126)
+				if (npc.type == NPCID.Retinazer || npc.type == NPCID.Spazmatism)
 				{
-					if (Main.netMode == 0)
+					if (Main.netMode == NetmodeID.SinglePlayer)
 						Main.NewText(Language.GetTextValue("Announcement.HasBeenDefeated_Plural", Language.GetTextValue("Enemies.TheTwins")), 175, 75);
-					else if (Main.netMode == 2)
+					else if (Main.netMode == NetmodeID.Server)
 						ChatHelper.BroadcastChatMessage(NetworkText.FromKey("Announcement.HasBeenDefeated_Plural", NetworkText.FromKey("Enemies.TheTwins")), new Color(175, 75, 255));
 				}
-				else if (npc.type == 398)
+				else if (npc.type == NPCID.MoonLordCore)
 				{
-					if (Main.netMode == 0)
+					if (Main.netMode == NetmodeID.SinglePlayer)
 						Main.NewText(Language.GetTextValue("Announcement.HasBeenDefeated_Single", Language.GetTextValue("Enemies.MoonLord")), 175, 75);
-					else if (Main.netMode == 2)
+					else if (Main.netMode == NetmodeID.Server)
 						ChatHelper.BroadcastChatMessage(NetworkText.FromKey("Announcement.HasBeenDefeated_Single", NetworkText.FromKey("Enemies.MoonLord")), new Color(175, 75, 255));
 				}
-				else if (Main.netMode == 0)
+				else if (Main.netMode == NetmodeID.SinglePlayer)
 				{
 					Main.NewText(Language.GetTextValue("Announcement.HasBeenDefeated_Single", typeName), 175, 75);
 				}
-				else if (Main.netMode == 2)
+				else if (Main.netMode == NetmodeID.Server)
 				{
 					ChatHelper.BroadcastChatMessage(NetworkText.FromKey("Announcement.HasBeenDefeated_Single", npc.GetTypeNetName()), new Color(175, 75, 255));
 				}

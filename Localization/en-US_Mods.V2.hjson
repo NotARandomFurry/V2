@@ -198,7 +198,7 @@ PredStatsMenu: {
 				Normal:
 					'''
 					Total GLP: [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:{GLPTotal}]
-					[c/7F7F7F:| {GLPSpent} from permanent bonuses]
+					[c/7F7F7F:| {GLPSpent} from invested stat points]
 					[c/7F7F7F:| {GLPBase} from permanent bonuses]
 					[c/7F7F7F:| {GLPExtra} from temporary bonuses (potions, charms, etc.)]
 

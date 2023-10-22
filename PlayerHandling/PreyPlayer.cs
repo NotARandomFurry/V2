@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
+using Terraria.Chat;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
@@ -50,11 +51,7 @@ namespace V2.PlayerHandling
 		// public int[] HasBeenDigestedByNPC { get; set; }
 		// public int[] HasBeenDigestedByNPCTotal { get; set; }
 
-		public bool IsCurrentlyEaten { get; set; }
-		public Vector2 EatenCameraPlacement { get; set; }
 		public bool Digested { get; set; }
-		public PredEntityReference? CurrentCaptor { get; set; }
-
 
 		public (int _swallowCount, int _gurgleCount) _timesEaten;
 		public int TotalTimesSwallowed
@@ -79,9 +76,7 @@ namespace V2.PlayerHandling
 
 		public override void Initialize()
 		{
-			Player.AsFood().IsCurrentlyEaten = false;
 			Player.AsFood().Digested = false;
-			Player.AsFood().CurrentCaptor = null;
 			// uncomment once achievements are available so the Ascended Acolyte race is...relatively fair for everyone
 			// Player.AsPrey().HasBeenDigestedByNPC = new int[NPCLoader.NPCCount];
 			// Player.AsPrey().HasBeenDigestedByNPCTotal = new int[NPCLoader.NPCCount];
@@ -92,9 +87,7 @@ namespace V2.PlayerHandling
 
 		public override void OnEnterWorld()
 		{
-			Player.AsFood().IsCurrentlyEaten = false;
 			Player.AsFood().Digested = false;
-			Player.AsFood().CurrentCaptor = null;
 
 			Player.AsFood().SoftenedDigestionDamageTaken = 0;
 			Player.AsFood().SoftenedWearoffDelay = 0;
@@ -102,89 +95,7 @@ namespace V2.PlayerHandling
 
 		public override void ResetEffects()
 		{
-			Player.AsFood().IsCurrentlyEaten = false;
 			Player.AsFood().Digested = false;
-			Player.AsFood().CurrentCaptor = null;
-			for (int i = 0; i < Main.maxNPCs; i++)
-			{
-				NPC potentialPred = Main.npc[i];
-				if (potentialPred is null || !potentialPred.active)
-					continue;
-
-				if (!potentialPred.TryGetGlobalNPC(out PredNPC pred))
-					continue;
-
-				if ((pred.stomachContents is null || pred.stomachContents.Count <= 0)
-				 && (pred.stomachContentsQueue is null || pred.stomachContentsQueue.Count <= 0))
-					continue;
-
-				if (pred.stomachContents.FirstOrDefault(x => !x.NoHealth && x.Type == PreyType.Player && x.Instance.whoAmI == Player.whoAmI) is VoreTracker prey)
-				{
-					Player.AsFood().IsCurrentlyEaten = true;
-					Player.AsFood().EatenCameraPlacement = potentialPred.Center - (Main.ScreenSize.ToVector2() / 2f);
-					Player.position = potentialPred.Center - (Player.Size / 2f);
-					Player.noItems = true;
-					Player.AsFood().CurrentCaptor = new PredEntityReference()
-					{
-						Predator = potentialPred,
-						PreyInstance = prey
-					};
-					break;
-				}
-				if (pred.stomachContentsQueue.FirstOrDefault(x => !x.NoHealth && x.Type == PreyType.Player && x.Instance.whoAmI == Player.whoAmI) is VoreTracker queuedPrey)
-				{
-					Player.AsFood().IsCurrentlyEaten = true;
-					Player.AsFood().EatenCameraPlacement = potentialPred.Center - (Main.ScreenSize.ToVector2() / 2f);
-					Player.position = potentialPred.Center - (Player.Size / 2f);
-					Player.noItems = true;
-					Player.AsFood().CurrentCaptor = new PredEntityReference()
-					{
-						Predator = potentialPred,
-						PreyInstance = queuedPrey
-					};
-					break;
-				}
-			}
-			for (int i = 0; i < Main.maxPlayers; i++)
-			{
-				Player potentialPred = Main.player[i];
-				if (potentialPred is null || !potentialPred.active || potentialPred.dead)
-					continue;
-
-				if (!potentialPred.TryGetModPlayer(out PredPlayer pred))
-					continue;
-
-				if ((potentialPred.AsPred().stomachContents is null || potentialPred.AsPred().stomachContents.Count <= 0)
-				 && (potentialPred.AsPred().stomachContentsQueue is null || potentialPred.AsPred().stomachContentsQueue.Count <= 0))
-					continue;
-
-				if (pred.stomachContents.FirstOrDefault(x => !x.NoHealth && x.Type == PreyType.Player && x.Instance.whoAmI == Player.whoAmI) is VoreTracker prey)
-				{
-					Player.AsFood().IsCurrentlyEaten = true;
-					Player.AsFood().EatenCameraPlacement = potentialPred.Center - (Main.ScreenSize.ToVector2() / 2f);
-					Player.position = potentialPred.Center - (Player.Size / 2f);
-					Player.noItems = true;
-					Player.AsFood().CurrentCaptor = new PredEntityReference()
-					{
-						Predator = potentialPred,
-						PreyInstance = prey
-					};
-					break;
-				}
-				if (pred.stomachContentsQueue.FirstOrDefault(x => !x.NoHealth && x.Type == PreyType.Player && x.Instance.whoAmI == Player.whoAmI) is VoreTracker queuedPrey)
-				{
-					Player.AsFood().IsCurrentlyEaten = true;
-					Player.AsFood().EatenCameraPlacement = potentialPred.Center - (Main.ScreenSize.ToVector2() / 2f);
-					Player.position = potentialPred.Center - (Player.Size / 2f);
-					Player.noItems = true;
-					Player.AsFood().CurrentCaptor = new PredEntityReference()
-					{
-						Predator = potentialPred,
-						PreyInstance = queuedPrey
-					};
-					break;
-				}
-			}
 
 			Player.AsFood().StruggleStrengthModifier = StatModifier.Default;
 
@@ -200,21 +111,12 @@ namespace V2.PlayerHandling
 
 		public override void UpdateDead()
 		{
-			Player.AsFood().IsCurrentlyEaten = false;
-
 			Player.AsFood().SoftenedDigestionDamageTaken = 0;
 			Player.AsFood().SoftenedWearoffDelay = 0;
 		}
 
 		public override void PreUpdateMovement()
 		{
-			if (Player.AsFood().IsCurrentlyEaten)
-			{
-				Player.velocity = Vector2.Zero;
-				if (Player.AsFood().CurrentCaptor.HasValue)
-					Player.position = Player.AsFood().CurrentCaptor.Value.Predator.Center;
-			}
-
 			if (Player.wet)
 				Player.AsFood().SoftenedWearoffRateModifier *= 2.0f;
 
@@ -228,7 +130,7 @@ namespace V2.PlayerHandling
 			{
 				if (ModContent.GetInstance<V2ServerConfig>().DebugChatMessages)
 					Main.NewText("Attempting to force-feed " + Player.name + " to nearby predators...");
-				if (Player.AsFood().IsCurrentlyEaten)
+				if (Player.CurrentCaptor() is not null)
 				{
 					if (ModContent.GetInstance<V2ServerConfig>().DebugChatMessages)
 						Main.NewText("Force-feed attempt failed; " + Player.name + " is already busy being food.");
@@ -246,7 +148,7 @@ namespace V2.PlayerHandling
 					if (!potentialPred.active)
 						continue;
 
-					if (potentialPred.AsFood().IsCurrentlyEaten)
+					if (potentialPred.CurrentCaptor() is not null)
 						continue;
 
 					switch (ModContent.GetInstance<V2ServerConfig>().GenderBlacklist)
@@ -287,7 +189,7 @@ namespace V2.PlayerHandling
 					if (!potentialPred.active || potentialPred.whoAmI == Player.whoAmI)
 						continue;
 
-					if (potentialPred.AsFood().IsCurrentlyEaten)
+					if (potentialPred.CurrentCaptor() is not null)
 						continue;
 
 					switch (ModContent.GetInstance<V2ServerConfig>().GenderBlacklist)
@@ -345,12 +247,24 @@ namespace V2.PlayerHandling
 							break;
 					}
 					if (ModContent.GetInstance<V2ServerConfig>().DebugChatMessages)
-						Main.NewText("Force-feed action successful; " + Player.name + " is now food for " + foodFor + ".");
+					{
+						string debugText = "Force-feed action successful; " + Player.name + " is now food for " + foodFor + ".";
+						if (Main.netMode == NetmodeID.SinglePlayer)
+							Main.NewText(debugText, Color.PaleVioletRed);
+						else if (Main.netMode == NetmodeID.Server)
+							ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral(debugText), Color.PaleVioletRed);
+					}
 				}
 				else
 				{
 					if (ModContent.GetInstance<V2ServerConfig>().DebugChatMessages)
-						Main.NewText("Force-feed action failed; there are no suitable preds nearby to turn " + Player.name + " into a snack for.");
+					{
+						string debugText = "Force-feed action failed; there are no suitable preds nearby to turn " + Player.name + " into a snack for.";
+						if (Main.netMode == NetmodeID.SinglePlayer)
+							Main.NewText(debugText, Color.PaleVioletRed);
+						else if (Main.netMode == NetmodeID.Server)
+							ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral(debugText), Color.PaleVioletRed);
+					}
 					return;
 				}
 			}
@@ -358,7 +272,7 @@ namespace V2.PlayerHandling
 
 		public override bool CanBeHitByNPC(NPC npc, ref int cooldownSlot)
 		{
-			if (npc.AsFood().IsCurrentlyEaten || Player.AsFood().IsCurrentlyEaten)
+			if (npc.CurrentCaptor() is not null || Player.CurrentCaptor() is not null)
 				return false;
 
 			return true;
@@ -366,7 +280,7 @@ namespace V2.PlayerHandling
 
 		public override bool CanBeHitByProjectile(Projectile proj)
 		{
-			if (Player.AsFood().IsCurrentlyEaten)
+			if (Player.CurrentCaptor() is not null)
 				return false;
 
 			return true;
@@ -374,19 +288,13 @@ namespace V2.PlayerHandling
 
 		public override void NaturalLifeRegen(ref float regen)
 		{
-			if (Player.AsFood().IsCurrentlyEaten)
+			if (Player.CurrentCaptor() is not null)
 			{
 				Player.lifeRegen = 0;
 				Player.lifeRegenTime = 0;
 				Player.lifeRegenCount = 0;
 				regen = 0;
 			}
-		}
-
-		public override void ModifyScreenPosition()
-		{
-			if (Player.AsFood().IsCurrentlyEaten)
-				Main.screenPosition = Player.AsFood().EatenCameraPlacement;
 		}
 
 		/// <summary>
@@ -501,58 +409,9 @@ namespace V2.PlayerHandling
 		{
 			foreach (PlayerDrawLayer drawLayer in PlayerDrawLayerLoader.Layers)
 			{
-				if (!Main.gameMenu && (Player.AsFood().IsCurrentlyEaten || Player.AsFood().Digested))
+				if (!Main.gameMenu && (Player.CurrentCaptor() is not null || Player.AsFood().Digested))
 					drawLayer.Hide();
 			}
-		}
-
-		public override void CopyClientState(ModPlayer clientClone)/* tModPorter Suggestion: Replace Item.Clone usages with Item.CopyNetStateTo */
-		{
-			PreyPlayer preyClientClone = clientClone as PreyPlayer;
-			preyClientClone.IsCurrentlyEaten = Player.AsFood().IsCurrentlyEaten;
-			preyClientClone.Digested = Player.AsFood().Digested;
-			preyClientClone.CurrentCaptor = Player.AsFood().CurrentCaptor;
-		}
-
-		public override void SendClientChanges(ModPlayer clientPlayer)
-		{
-			PreyPlayer preyClientClone = clientPlayer as PreyPlayer;
-			if (preyClientClone.IsCurrentlyEaten != Player.AsFood().IsCurrentlyEaten)
-				SyncPlayer(-1, Main.myPlayer, false);
-			if (preyClientClone.Digested != Player.AsFood().Digested)
-				SyncPlayer(-1, Main.myPlayer, false);
-			if (preyClientClone.CurrentCaptor.HasValue && Player.AsFood().CurrentCaptor.HasValue && preyClientClone.CurrentCaptor.Value.Predator != Player.AsFood().CurrentCaptor.Value.Predator)
-				SyncPlayer(-1, Main.myPlayer, false);
-		}
-
-		public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
-		{
-			ModPacket gutSlutPacket = Mod.GetPacket();
-			gutSlutPacket.Write((byte)V2.MessageType.PreyPlayerSync);
-			gutSlutPacket.Write((byte)Player.whoAmI);
-			gutSlutPacket.Write(Player.AsFood().IsCurrentlyEaten);
-			gutSlutPacket.Write(Player.AsFood().Digested);
-			if (Player.AsFood().IsCurrentlyEaten && Player.AsFood().CurrentCaptor.HasValue)
-			{
-				gutSlutPacket.Write(true);
-				Entity pred = Player.AsFood().CurrentCaptor.Value.Predator;
-				if (pred is NPC predNPC)
-				{
-					gutSlutPacket.Write("NPC pred");
-					gutSlutPacket.Write(predNPC.whoAmI);
-				}
-				else if (pred is Player predPlayer)
-				{
-					gutSlutPacket.Write("Player pred");
-					gutSlutPacket.Write(predPlayer.whoAmI);
-				}
-			}
-			gutSlutPacket.Send(toWho, fromWho);
-		}
-
-		public void ReceivePlayerSync(BinaryReader binaryReader)
-		{
-			Player.AsFood().Digested = binaryReader.ReadBoolean();
 		}
 
 		public override void SaveData(TagCompound tag)

@@ -281,6 +281,7 @@ namespace V2.UI.PredStatsMenu
 						else
 						{
 							stat.Spent++;
+							Main.LocalPlayer.AsPred().SyncRequired_PredPoints = true;
 							SoundEngine.PlaySound(AllocateSuccess);
 						}
 					}
@@ -293,7 +294,7 @@ namespace V2.UI.PredStatsMenu
 						else
 						{
 							stat.Spent--;
-							SoundEngine.PlaySound(AllocateSuccess);
+							SoundEngine.PlaySound(AllocateSuccess with { Pitch = -0.15f });
 						}
 					}
 				}

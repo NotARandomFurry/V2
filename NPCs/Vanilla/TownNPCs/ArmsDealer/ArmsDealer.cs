@@ -285,10 +285,10 @@ namespace V2.NPCs.Vanilla.TownNPCs.ArmsDealer
 
 		public override void PostAI(NPC npc)
 		{
-			if (npc.AsFood().IsCurrentlyEaten)
+			if (npc.CurrentCaptor() is not null)
 				return;
 
-			if (npc.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.Nurse) is VoreTracker crushAsPrey)
+			if (PredNPC.GetStomachTracker(npc)?.Prey.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.Nurse) is PreyData crushAsPrey)
 				return;
 
 			static void RollForRandomGulp(ref bool gulp) => gulp |= Main.rand.NextBool(2, 100);
@@ -303,7 +303,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.ArmsDealer
 			if (ModContent.GetInstance<V2ServerConfig>().NoRandomGulpsAgainstPlayers)
 				return;
 
-			if (!Main.CurrentPlayer.active || Main.CurrentPlayer.dead || Main.CurrentPlayer.Distance(npc.Center) > npc.AsPred().MaxSwallowRange || Main.CurrentPlayer.AsFood().IsCurrentlyEaten)
+			if (!Main.CurrentPlayer.active || Main.CurrentPlayer.dead || Main.CurrentPlayer.Distance(npc.Center) > npc.AsPred().MaxSwallowRange || Main.CurrentPlayer.CurrentCaptor() is not null)
 				return;
 
 			bool decideToHuntPlayer = false;
@@ -325,11 +325,11 @@ namespace V2.NPCs.Vanilla.TownNPCs.ArmsDealer
 			}
 		}
 
-		public static double GetDigestionTickRate(NPC npc, VoreTracker prey) => Main.bloodMoon ? 2.0 : 1.0;
+		public static double GetDigestionTickRate(NPC npc, PreyData prey) => Main.bloodMoon ? 2.0 : 1.0;
 
-		public static double GetDigestionTickDamage(NPC npc, VoreTracker prey) => 10.0;
+		public static double GetDigestionTickDamage(NPC npc, PreyData prey) => 10.0;
 
-		public static void OnDigestionKill(NPC npc, VoreTracker digestedPrey)
+		public static void OnDigestionKill(NPC npc, PreyData digestedPrey)
 		{
 			SoundEngine.PlaySound(
 				digestedPrey.WeightLeftToDigest < 0.6 ? npc.AsPred().SmallBurps : npc.AsPred().StandardBurps,

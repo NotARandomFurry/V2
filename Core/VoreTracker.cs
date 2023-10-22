@@ -1,17 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using V2.Core.StruggleSystem;
 using V2.Items;
 using V2.NPCs;
 using V2.PlayerHandling;
 
 namespace V2.Core
 {
+	/// <summary>
+	/// Used to define what type of pred this vore tracker is for.
+	/// </summary>
+	public enum PredType
+	{
+		Player,
+		NPC,
+		Projectile,
+		Item,
+		Liquid,
+		Custom,
+		Undefined
+	};
+
 	/// <summary>
 	/// Used to define what type of prey this is.
 	/// </summary>
@@ -32,10 +48,308 @@ namespace V2.Core
 	public struct PredEntityReference
 	{
 		public Entity Predator { get; set; }
-		public VoreTracker PreyInstance { get; set; }
+		public PreyData PreyInstance { get; set; }
 	}
 
 	public class VoreTracker
+	{
+		public static double MaximumNoteProximityRatio => 8.0;
+		public double ProgressRate { get; set; }
+		public double Progress { get; set; }
+
+		public Entity Predator { get; internal set; }
+		public PredType PredatorType {
+			get
+			{
+				if (Predator is Player)
+					return PredType.Player;
+				if (Predator is NPC)
+					return PredType.NPC;
+				if (Predator is Projectile)
+					return PredType.Projectile;
+
+				return PredType.Undefined;
+			}
+		}
+		public List<PreyData> Prey { get; internal set; }
+		public List<PreyData> PreyQueue { get; internal set; }
+		public StruggleChart PredatorChart { get; internal set; }
+		public List<StruggleChart> PreyCharts { get; internal set; }
+
+		public static void NewTracker(Entity pred, List<PreyData> prey, StruggleChart predChart, List<StruggleChart> preyCharts)
+		{
+			VoreTracker tracker = new VoreTracker();
+			tracker.Progress = -2.0;
+			tracker.ProgressRate = 1.0;
+			tracker.Predator = pred;
+			tracker.Prey = prey;
+			tracker.PreyQueue = new List<PreyData>();
+			if (Main.netMode == NetmodeID.SinglePlayer)
+			{
+				tracker.PredatorChart = predChart;
+				tracker.PreyCharts = preyCharts;
+			}
+			ModContent.GetInstance<V2MasterSystem>().VoreTrackers.Add(tracker);
+		}
+
+		public void QueueNewPrey(PreyData prey)
+		{
+			PreyQueue.Add(prey);
+		}
+
+		public void UpdateProgress()
+		{
+			Progress += ProgressRate;
+		}
+
+		public void UpdatePrey()
+		{
+			Prey = Prey.Concat(PreyQueue).ToList();
+			if (Predator is Player predPlayer)
+				PredPlayer.UpdatePrey(predPlayer);
+			else if (Predator is NPC predNPC)
+				PredNPC.UpdatePrey(predNPC);
+			else if (Predator is Projectile predProjectile)
+				return;
+		}
+
+		public int TotalPreySTR
+		{
+			get
+			{
+				int STR = 0;
+				foreach (PreyData prey in Prey)
+				{
+					if (prey.NoHealth || prey.Instance is null)
+						continue;
+
+					switch (prey.Type)
+					{
+						case PreyType.Player:
+							STR += (prey.Instance as Player).AsFood().STR.Total;
+							break;
+						case PreyType.NPC:
+							STR += (prey.Instance as NPC).AsFood().STR;
+							break;
+					}
+				}
+				return STR;
+			}
+		}
+
+		/// <summary>
+		/// Checks ALL inputs tracked by the given vore tracker.<br/>
+		/// <b>This is ONLY to be called in singleplayer; if called outside of singleplayer, it will not run, as there is (currently) no struggle system support in multiplayer.</b><br/>
+		/// </summary>
+		public void CheckStruggleInputs()
+		{
+			if (Main.netMode != NetmodeID.SinglePlayer)
+				return;
+
+			#region Pred notes
+			List<(StruggleChartNote note, double proximity)> closeNotes = CheckCloseNotes(-1);
+			if (Predator is Player playerPredator)
+			{
+				if (V2.StruggleUpHotkey.JustPressed)
+				{
+					if (closeNotes.FirstOrDefault(x => x.note.Lane == NoteLane.Down) is (StruggleChartNote note, double proximity) noteProximityInfo)
+					{
+						double proximityEffectivenessMultiplier = (MaximumNoteProximityRatio - noteProximityInfo.proximity) / MaximumNoteProximityRatio;
+						ModifyPredStomachacheMeter(-4.0 * proximityEffectivenessMultiplier);
+					}
+					else
+					{
+						ModifyPredStomachacheMeter(0.4);
+					}
+				}
+				if (V2.StruggleDownHotkey.JustPressed)
+				{
+					if (closeNotes.FirstOrDefault(x => x.note.Lane == NoteLane.Up) is (StruggleChartNote note, double proximity) noteProximityInfo)
+					{
+						double proximityEffectivenessMultiplier = (MaximumNoteProximityRatio - noteProximityInfo.proximity) / MaximumNoteProximityRatio;
+						ModifyPredStomachacheMeter(-4.0 * proximityEffectivenessMultiplier);
+					}
+					else
+					{
+						ModifyPredStomachacheMeter(0.4);
+					}
+				}
+				if (V2.StruggleLeftHotkey.JustPressed)
+				{
+					if (closeNotes.FirstOrDefault(x => x.note.Lane == NoteLane.Right) is (StruggleChartNote note, double proximity) noteProximityInfo)
+					{
+						double proximityEffectivenessMultiplier = (MaximumNoteProximityRatio - noteProximityInfo.proximity) / MaximumNoteProximityRatio;
+						ModifyPredStomachacheMeter(-4.0 * proximityEffectivenessMultiplier);
+					}
+					else
+					{
+						ModifyPredStomachacheMeter(0.4);
+					}
+				}
+				if (V2.StruggleRightHotkey.JustPressed)
+				{
+					if (closeNotes.FirstOrDefault(x => x.note.Lane == NoteLane.Left) is (StruggleChartNote note, double proximity) noteProximityInfo)
+					{
+						double proximityEffectivenessMultiplier = (MaximumNoteProximityRatio - noteProximityInfo.proximity) / MaximumNoteProximityRatio;
+						ModifyPredStomachacheMeter(-4.0 * proximityEffectivenessMultiplier);
+					}
+					else
+					{
+						ModifyPredStomachacheMeter(0.4);
+					}
+				}
+				if (V2.StruggleSpecialHotkey.JustPressed)
+				{
+					if (closeNotes.FirstOrDefault(x => x.note.Lane == NoteLane.Special) is (StruggleChartNote note, double proximity) noteProximityInfo)
+					{
+						double proximityEffectivenessMultiplier = (MaximumNoteProximityRatio - noteProximityInfo.proximity) / MaximumNoteProximityRatio;
+						ModifyPredStomachacheMeter(-4.0 * proximityEffectivenessMultiplier);
+					}
+					else
+					{
+						ModifyPredStomachacheMeter(0.4);
+					}
+				}
+			}
+			else if (Predator is NPC npcPredator)
+			{
+
+			}
+			#endregion
+
+			#region Prey notes
+			for (int i = 0; i < Prey.Count; i++)
+			{
+				PreyData prey = Prey[i];
+				closeNotes = CheckCloseNotes(i);
+				Entity preyEntity = prey.Instance;
+				if (preyEntity is Player playerPrey)
+				{
+					if (V2.StruggleUpHotkey.JustPressed)
+					{
+						if (closeNotes.FirstOrDefault(x => x.note.Lane == NoteLane.Up) is (StruggleChartNote note, double proximity) noteProximityInfo)
+						{
+							double proximityEffectivenessMultiplier = (MaximumNoteProximityRatio - noteProximityInfo.proximity) / MaximumNoteProximityRatio;
+							ModifyPredStomachacheMeter(4.05 * proximityEffectivenessMultiplier);
+						}
+						else
+						{
+							ModifyPredStomachacheMeter(-0.55);
+						}
+					}
+					if (V2.StruggleDownHotkey.JustPressed)
+					{
+						if (closeNotes.FirstOrDefault(x => x.note.Lane == NoteLane.Down) is (StruggleChartNote note, double proximity) noteProximityInfo)
+						{
+							double proximityEffectivenessMultiplier = (MaximumNoteProximityRatio - noteProximityInfo.proximity) / MaximumNoteProximityRatio;
+							ModifyPredStomachacheMeter(4.05 * proximityEffectivenessMultiplier);
+						}
+						else
+						{
+							ModifyPredStomachacheMeter(-0.55);
+						}
+					}
+					if (V2.StruggleLeftHotkey.JustPressed)
+					{
+						if (closeNotes.FirstOrDefault(x => x.note.Lane == NoteLane.Left) is (StruggleChartNote note, double proximity) noteProximityInfo)
+						{
+							double proximityEffectivenessMultiplier = (MaximumNoteProximityRatio - noteProximityInfo.proximity) / MaximumNoteProximityRatio;
+							ModifyPredStomachacheMeter(4.05 * proximityEffectivenessMultiplier);
+						}
+						else
+						{
+							ModifyPredStomachacheMeter(-0.55);
+						}
+					}
+					if (V2.StruggleRightHotkey.JustPressed)
+					{
+						if (closeNotes.FirstOrDefault(x => x.note.Lane == NoteLane.Right) is (StruggleChartNote note, double proximity) noteProximityInfo)
+						{
+							double proximityEffectivenessMultiplier = (MaximumNoteProximityRatio - noteProximityInfo.proximity) / MaximumNoteProximityRatio;
+							ModifyPredStomachacheMeter(4.05 * proximityEffectivenessMultiplier);
+						}
+						else
+						{
+							ModifyPredStomachacheMeter(-0.55);
+						}
+					}
+					if (V2.StruggleSpecialHotkey.JustPressed)
+					{
+						if (closeNotes.FirstOrDefault(x => x.note.Lane == NoteLane.Special) is (StruggleChartNote note, double proximity) noteProximityInfo)
+						{
+							double proximityEffectivenessMultiplier = (MaximumNoteProximityRatio - noteProximityInfo.proximity) / MaximumNoteProximityRatio;
+							ModifyPredStomachacheMeter(4.05 * proximityEffectivenessMultiplier);
+						}
+						else
+						{
+							ModifyPredStomachacheMeter(-0.55);
+						}
+					}
+				}
+				else if (preyEntity is NPC npcPrey)
+				{
+
+				}
+			}
+			#endregion
+		}
+
+		public void ModifyPredStomachacheMeter(double amount)
+		{
+			switch (PredatorType)
+			{
+				case PredType.Player:
+					Player player = Predator as Player;
+					break;
+			}
+		}
+
+		public List<(StruggleChartNote note, double proximity)> CheckCloseNotes(int preyIndex)
+		{
+			List<(StruggleChartNote note, double proximity)> closeNotes = new List<(StruggleChartNote note, double proximity)>();
+			StruggleChart targetChart = PredatorChart;
+			if (preyIndex != -1)
+				targetChart = PreyCharts[preyIndex];
+
+			for (int noteSetIndex = (int)Math.Round(Progress) - 4; noteSetIndex <= Math.Min(Math.Round(Progress) + 4, targetChart.Notes.Count - 1); noteSetIndex++)
+			{
+				StruggleChartNote[] noteSet = targetChart.Notes[noteSetIndex];
+				for (int noteIndex = 0; noteIndex < noteSet.Length; noteIndex++)
+				{
+					StruggleChartNote note = noteSet[noteIndex];
+					closeNotes.Add((note, Math.Abs(noteSetIndex - Progress)));
+				}
+			}
+			closeNotes.RemoveAll(x => x.proximity >= ProgressRate * 8.0);
+			return closeNotes;
+		}
+
+		public bool CheckClearability()
+		{
+			if (Prey is null)
+				return true;
+			if (Prey.Count <= 0)
+				return true;
+
+			if (!Predator.active)
+				return true;
+
+			if (Predator is Player playerPred)
+			{
+				if (playerPred.dead)
+					return true;
+			}
+			else if (Predator is NPC NPCPred)
+			{
+				if (NPCPred.life <= 0)
+					return true;
+			}
+
+			return false;
+		}
+	}
+
+	public class PreyData
 	{
 		public PreyType Type { get; set; }
 		public Entity Instance { get; set; }
@@ -50,51 +364,194 @@ namespace V2.Core
 
 		public int timeSpentInStomach;
 
-		public VoreTracker(Entity preyEntity)
+		public PreyData()
 		{
-			if (preyEntity is Player player)
-			{
-				Type = PreyType.Player;
-				Instance = player;
-				ExactType = "Player";
-				Name = player.name;
-			}
-			else if (preyEntity is NPC npc)
-			{
-				Type = PreyType.NPC;
-				Instance = npc;
-				ExactType = npc.TypeName;
-				Name = npc.GivenName;
-			}
-			else if (preyEntity is Item item)
-			{
-				Type = PreyType.Item;
-				Instance = item;
-				ExactType = item.AffixName();
-			}
-
-			NoHealth = false;
-			InitialWeight = InitialSize = WeightLeftToDigest = GetInitialPreySize(this);
-			timeSpentInStomach = 0;
+			Type = PreyType.Undefined;
 		}
 
-		public VoreTracker(int type, string exactType, double weightRemaining)
+		/// <summary>
+		/// Creates a new set of prey data based on the provided information.
+		/// </summary>
+		/// <param name="type"></param>
+		/// <param name="exactType"></param>
+		/// <param name="weightRemainingIfDead"></param>
+		/// <returns></returns>
+		public static PreyData NewData(PreyType type, string exactType, double weightRemainingIfDead = -1)
 		{
-			Type = type switch
+			PreyData data = new PreyData();
+			data.Type = type;
+			data.ExactType = exactType;
+			if (weightRemainingIfDead != -1)
+				data.WeightLeftToDigest = weightRemainingIfDead;
+
+			return data;
+		}
+
+		public static PreyData NewLiquidData(int liquidType, double liquidAmount)
+		{
+			PreyData data = new PreyData();
+			data.Type = PreyType.Liquid;
+			data.Instance = null;
+			data.NoHealth = true;
+			data.ExactType = liquidType switch
 			{
-				0 => PreyType.Player,
-				1 => PreyType.NPC,
-				2 => PreyType.Projectile,
-				3 => PreyType.Item,
-				4 => PreyType.Liquid,
-				5 => PreyType.Custom,
-				_ => PreyType.Undefined
+				LiquidID.Water => "Water",
+				LiquidID.Lava => "Lava",
+				LiquidID.Honey => "Honey",
+				LiquidID.Shimmer => "Shimmer",
+				_ => "Some Other Liquid",
 			};
-			ExactType = exactType;
-			WeightLeftToDigest = weightRemaining;
+			data.WeightLeftToDigest = liquidAmount;
+			return data;
+		}
+		
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="preyEntity"></param>
+		/// <returns></returns>
+		/// <exception cref="Exception"></exception>
+		public static PreyData NewData(Entity preyEntity)
+		{
+			if (preyEntity is Player preyPlayer)
+			{
+				PreyData data = NewData(
+					type: PreyType.Player,
+					exactType: "Player " + preyPlayer.name
+				);
+				data.Instance = preyPlayer;
+				data.Recalculate();
+				return data;
+			}
+			else if (preyEntity is NPC preyNPC)
+			{
+				PreyData data = NewData(
+					type: PreyType.NPC,
+					exactType: preyNPC.GivenOrTypeName
+				);
+				data.Instance = preyNPC;
+				data.Recalculate();
+				return data;
+			}
+			else if (preyEntity is Projectile preyProjectile)
+			{
+				PreyData data = NewData(
+					type: PreyType.Projectile,
+					exactType: preyProjectile.Name
+				);
+				data.Instance = preyProjectile;
+				data.Recalculate();
+				return data;
+			}
+			else if (preyEntity is Item preyItem)
+			{
+				PreyData data = NewData(
+					type: PreyType.Item,
+					exactType: preyItem.AffixName()
+				);
+				data.Instance = preyItem;
+				data.Recalculate();
+				return data;
+			}
+			else
+			{
+				throw new Exception(
+					"hi !!\n"
+				  + "thomas says that the thing you asked to make is wrong\n"
+				  + "something about a pa-ram being an     inn-valid enter tee?\n"
+				  + "I asked if I could take what was left from him though and he said yeah\n"
+				  + "give me and my tummy another course whenever :D"
+				  + "-rose"
+				);
+			}
 		}
 
-		public VoreTracker(int liquidType, int liquidAmount)
+		/// <summary>
+		/// Properly sets a vast number of fields for this prey data set based on the intended prey type and the provided instance (or lack thereof, if applicable).<br/>
+		/// Generally intended to only be called on or shortly after creation of the data set, since calling it later on can cause the type to change unintentionally or render the set invalid.<br/>
+		/// <br/>
+		/// The data set is rendered invalid (and subsequently fed to Rose) if:<br/>
+		/// - <see cref="Type"/> is still set to <see cref="PreyType.Undefined"/>.<br/>
+		/// - <see cref="Type"/> is set to something that requires an instance (<see cref="PreyType.Player"/>, <see cref="PreyType.NPC"/>, <see cref="PreyType.Projectile"/>, <see cref="PreyType.Item"/>), and <see cref="Instance"/> is null.<br/>
+		/// - <see cref="Type"/> is set to something that does not require an instance (<see cref="PreyType.Liquid"/>, <see cref="PreyType.Custom"/>), and <see cref="Instance"/> is NOT <see langword="null"/>.<br/>
+		/// </summary>
+		public void Recalculate()
+		{
+			double refPlayerWidth = 20.0;
+			double refPlayerHeight = 42.0;
+			switch (Type)
+			{
+				case PreyType.Player:
+					if (Instance is null)
+						break;
+
+					if (Instance is not Player preyPlayer)
+						break;
+
+					ExactType = preyPlayer.name;
+					InitialWeight = InitialSize = WeightLeftToDigest = 1.0;
+					return;
+				case PreyType.NPC:
+					if (Instance is null)
+						break;
+
+					if (Instance is not NPC preyNPC)
+						break;
+
+					ExactType = preyNPC.FullName;
+					if (preyNPC.AsFood().Size != 0)
+						InitialWeight = InitialSize = WeightLeftToDigest = preyNPC.AsFood().Size;
+					else
+					{
+						double playerToNPCWidthRatio = (double)preyNPC.width / refPlayerWidth;
+						double playerToNPCHeightRatio = (double)preyNPC.height / refPlayerHeight;
+						InitialWeight = InitialSize = WeightLeftToDigest = playerToNPCWidthRatio * playerToNPCHeightRatio;
+					}
+					return;
+				case PreyType.Projectile:
+					if (Instance is null)
+						break;
+
+					if (Instance is not Projectile preyProjectile)
+						break;
+
+					ExactType = preyProjectile.Name;
+					double playerToProjWidthRatio = (double)preyProjectile.width / refPlayerWidth;
+					double playerToProjHeightRatio = (double)preyProjectile.height / refPlayerHeight;
+					InitialWeight = InitialSize = WeightLeftToDigest = playerToProjWidthRatio * playerToProjHeightRatio;
+					return;
+				case PreyType.Item:
+					if (Instance is null)
+						break;
+
+					if (Instance is not Item preyItem)
+						break;
+
+					ExactType = preyItem.Name;
+					InitialWeight = InitialSize = WeightLeftToDigest = preyItem.CalculateSnackSize();
+					return;
+				case PreyType.Liquid:
+					if (Instance is not null)
+						break;
+					return;
+				case PreyType.Custom:
+					if (Instance is not null)
+						break;
+					return;
+			}
+
+			throw new Exception(
+				"hi !!\n"
+			  + "thomas says that the thing you asked to re\n"
+			  + "uh    recal              reclam\n"
+			  + "umm           re   calendar ?\n"
+			  + "anyway i thought it was yummy but thomas didnt like it\n"
+			  + "send me more cool snacks please :D"
+			  + "-rose"
+			);
+		}
+
+		public PreyData(int liquidType, int liquidAmount)
 		{
 			double liquidAmountReal = liquidAmount / 256.0 * (liquidType switch
 			{
@@ -117,7 +574,7 @@ namespace V2.Core
 			InitialWeight = InitialSize = WeightLeftToDigest = liquidAmountReal;
 		}
 
-		public VoreTracker(int liquidType, double liquidAmount)
+		public PreyData(int liquidType, double liquidAmount)
 		{
 			Type = PreyType.Liquid;
 			Instance = null;
@@ -133,39 +590,11 @@ namespace V2.Core
 			InitialWeight = InitialSize = WeightLeftToDigest = liquidAmount;
 		}
 
-		public static double GetInitialPreySize(Entity entity) => GetInitialPreySize(new VoreTracker(entity));
-
-		public static double GetInitialPreySize(VoreTracker prey)
-		{
-			switch (prey.Type)
-			{
-				case PreyType.Player:
-					return 1.0;
-				case PreyType.NPC:
-					NPC actualPreyNPC = prey.Instance as NPC;
-					double actualPreyWeight = 0;
-					if (actualPreyNPC.AsFood().Size != 0)
-						actualPreyWeight = actualPreyNPC.AsFood().Size;
-					else
-					{
-						double refPlayerWidth = 20.0;
-						double refPlayerHeight = 42.0;
-						double playerToNPCWidthRatio = (double)actualPreyNPC.width / refPlayerWidth;
-						double playerToNPCHeightRatio = (double)actualPreyNPC.height / refPlayerHeight;
-						actualPreyWeight = playerToNPCWidthRatio * playerToNPCHeightRatio;
-					}
-					return actualPreyWeight;
-				case PreyType.Projectile:
-					return 1.0;
-				case PreyType.Item:
-					Item actualPreyItem = prey.Instance as Item;
-					return actualPreyItem.CalculateSnackSize();
-				case PreyType.Custom:
-					return 1.0;
-				default:
-					V2.Instance.Logger.Error("the type of the currently-weighed prey isn't recognized. I'll return its weight as 1.0 for now, but please be more careful");
-					return 1.0;
-			}
-		}
+		/// <summary>
+		/// Allows you to check what the initial size of something as a snack would be by creating a new dummy <see cref="PreyData"/> for a few moments.
+		/// </summary>
+		/// <param name="preyEntity">The snack-size entity to check the size of.</param>
+		/// <returns>The size of the given soon-to-be stomach fodder.</returns>
+		public static double GetInitialPreySize(Entity preyEntity) => NewData(preyEntity).InitialSize;
 	}
 }

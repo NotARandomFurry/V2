@@ -45,7 +45,7 @@ namespace V2.NPCs.Voraria.Meteorite
 		public override void SetStaticDefaults()
 		{
 			// Influences how the NPC looks in the Bestiary
-			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers(0)
+			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers()
 			{
 				Velocity = 1f, // Draws the NPC in the bestiary as if its walking +1 tiles in the x direction
 				Direction = -1
@@ -102,9 +102,9 @@ namespace V2.NPCs.Voraria.Meteorite
 			}
 		}
 
-		public static double GetDigestionTickRate(NPC npc, VoreTracker prey) => 10;
+		public static double GetDigestionTickRate(NPC npc, PreyData prey) => 10;
 
-		public static double GetDigestionTickDamage(NPC npc, VoreTracker prey) => 15;
+		public static double GetDigestionTickDamage(NPC npc, PreyData prey) => 15;
 
 		public static double GetPreyAbsorptionRate(NPC npc)
 		{

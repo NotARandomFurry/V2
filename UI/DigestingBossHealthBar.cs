@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ModLoader;
+using V2.Core;
 using V2.NPCs;
 
 namespace V2.UI
@@ -16,7 +17,7 @@ namespace V2.UI
 	{
 		public override bool PreDraw(SpriteBatch spriteBatch, NPC npc, ref BossBarDrawParams drawParams)
 		{
-			if (npc.AsFood().IsCurrentlyEaten)
+			if (npc.CurrentCaptor() is not null)
 				drawParams.BarTexture = ModContent.Request<Texture2D>("V2/UI/DigestingBossHealthBar", AssetRequestMode.ImmediateLoad).Value;
 
 			return true;

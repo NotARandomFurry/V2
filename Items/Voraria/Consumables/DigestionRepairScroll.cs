@@ -23,11 +23,11 @@ namespace V2.Items.Voraria.Consumables
 		public override LocalizedText Tooltip => Language.GetText("Mods.V2.ItemTooltip.Voraria.Consumables.DigestionRepairScroll.Short");
 		public override void SetDefaults()
 		{
-			Item.consumable = true;
-			Item.maxStack = Item.CommonMaxStack;
+			Item.consumable = false;
+			Item.maxStack = 1;
 
 			Item.AsFood().MaxHealth = 100;
-			Item.AsFood().AcidResistTier = 99;
+			Item.AsFood().AcidResistTier = 3;
 
 			Item.width = 30;
 			Item.height = 30;

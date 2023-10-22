@@ -80,8 +80,6 @@ namespace V2.NPCs.Vanilla.TownNPCs.Steampunker
 			npc.AsV2NPC().GetNewDialogue = GetSteampunkerChat;
 
 			npc.AsFood().Size = 1.06;
-			npc.AsPred().stomachContents = new List<VoreTracker>();
-			npc.AsPred().stomachContentsQueue = new List<VoreTracker>();
 			npc.AsPred().MaxStomachCapacity = 50.0;
 
 			npc.AsPred().CanBeForceFed = CanSteampunkerBeForceFed;
@@ -339,7 +337,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Steampunker
 
 		public override void PostAI(NPC npc)
 		{
-			if (npc.AsFood().IsCurrentlyEaten)
+			if (npc.CurrentCaptor() is not null)
 				return;
 
 			static void RollForRandomGulp(ref bool gulp) => gulp |= Main.rand.NextBool(3, 100);
@@ -356,11 +354,11 @@ namespace V2.NPCs.Vanilla.TownNPCs.Steampunker
 				PredNPC.Swallow(npc, wireWoman);
 		}
 
-		public static double GetDigestionTickRate(NPC npc, VoreTracker prey) => Main.bloodMoon ? 5.0 : 2.5;
+		public static double GetDigestionTickRate(NPC npc, PreyData prey) => Main.bloodMoon ? 5.0 : 2.5;
 
-		public static double GetDigestionTickDamage(NPC npc, VoreTracker prey) => 20.0;
+		public static double GetDigestionTickDamage(NPC npc, PreyData prey) => 20.0;
 
-		public static void OnDigestionKill(NPC npc, VoreTracker digestedPrey)
+		public static void OnDigestionKill(NPC npc, PreyData digestedPrey)
 		{
 			SoundEngine.PlaySound(
 				digestedPrey.WeightLeftToDigest < 1.5 ? npc.AsPred().SmallBurps : npc.AsPred().StandardBurps,

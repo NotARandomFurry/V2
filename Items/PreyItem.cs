@@ -85,7 +85,6 @@ namespace V2.Items
 
 	public class PreyItem : GlobalItem
 	{
-		public bool IsCurrentlyEaten { get; set; }
 		public bool Digested { get; set; }
 		public bool FullyDigested { get; set; }
 		public PredEntityReference? CurrentCaptor { get; set; }
@@ -118,10 +117,8 @@ namespace V2.Items
 
 		public PreyItem()
 		{
-			IsCurrentlyEaten = false;
 			Digested = false;
 			FullyDigested = false;
-			CurrentCaptor = null;
 
 			MaxHealth = -1;
 			Health = -1;
@@ -139,81 +136,6 @@ namespace V2.Items
 
 			LeftClickEdible = false;
 		}
-		
-		public static void UpdateItemEatenStatus(Item item)
-		{
-			item.AsFood().IsCurrentlyEaten = false;
-			item.AsFood().CurrentCaptor = null;
-			for (int i = 0; i < Main.maxNPCs; i++)
-			{
-				NPC potentialPred = Main.npc[i];
-				if (potentialPred is null || !potentialPred.active)
-					continue;
-
-				if (!potentialPred.TryGetGlobalNPC(out PredNPC pred))
-					continue;
-
-				if ((pred.stomachContents is null || pred.stomachContents.Count <= 0)
-				 && (pred.stomachContentsQueue is null || pred.stomachContentsQueue.Count <= 0))
-					continue;
-
-				if (pred.stomachContents.FirstOrDefault(x => x.Type == PreyType.Item && x.Instance == item) is VoreTracker prey)
-				{
-					item.AsFood().IsCurrentlyEaten = true;
-					item.position = potentialPred.Center - (item.Size / 2f);
-					item.AsFood().CurrentCaptor = new PredEntityReference()
-					{
-						Predator = potentialPred,
-						PreyInstance = prey
-					};
-					break;
-				}
-				if (pred.stomachContentsQueue.FirstOrDefault(x => x.Type == PreyType.Item && x.Instance == item) is VoreTracker queuedPrey)
-				{
-					item.AsFood().IsCurrentlyEaten = true;
-					item.position = potentialPred.Center - (item.Size / 2f);
-					item.AsFood().CurrentCaptor = new PredEntityReference()
-					{
-						Predator = potentialPred,
-						PreyInstance = queuedPrey
-					};
-					break;
-				}
-			}
-			for (int i = 0; i < Main.maxPlayers; i++)
-			{
-				Player potentialPred = Main.player[i];
-				if (potentialPred is null || !potentialPred.active || potentialPred.dead)
-					continue;
-
-				if ((potentialPred.AsPred().stomachContents is null || potentialPred.AsPred().stomachContents.Count <= 0)
-				 && (potentialPred.AsPred().stomachContentsQueue is null || potentialPred.AsPred().stomachContentsQueue.Count <= 0))
-					continue;
-
-				if (potentialPred.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.Item && x.Instance == item) is VoreTracker prey)
-				{
-					item.AsFood().IsCurrentlyEaten = true;
-					item.position = potentialPred.Center - (item.Size / 2f);
-					item.AsFood().CurrentCaptor = new PredEntityReference()
-					{
-						Predator = potentialPred,
-						PreyInstance = prey
-					};
-					break;
-				}
-				if (potentialPred.AsPred().stomachContentsQueue.FirstOrDefault(x => x.Type == PreyType.Item && x.Instance == item) is VoreTracker queuedPrey)
-				{
-					item.AsFood().IsCurrentlyEaten = true;
-					item.position = potentialPred.Center - (item.Size / 2f);
-					item.AsFood().CurrentCaptor = new PredEntityReference()
-					{
-						Predator = potentialPred,
-						PreyInstance = queuedPrey
-					};
-					break;
-				}
-			}
-		}
 
 		public override void Update(Item item, ref float gravity, ref float maxFallSpeed)
 		{
@@ -222,10 +144,8 @@ namespace V2.Items
 				item.TurnToAir();
 				return;
 			}
-			else
-				UpdateItemEatenStatus(item);
 
-			if (item.AsFood().IsCurrentlyEaten)
+			if (item.CurrentCaptor() is not null)
 			{
 				item.position = new Vector2(-1, -1);
 				item.width = 0;
@@ -271,8 +191,8 @@ namespace V2.Items
 
 		public override bool CanStackInWorld(Item destination, Item source)
 		{
-			if (destination.AsFood().IsCurrentlyEaten || destination.AsFood().FullyDigested
-			 || source.AsFood().IsCurrentlyEaten || source.AsFood().FullyDigested)
+			if (destination.CurrentCaptor() is not null || destination.AsFood().Digested || destination.AsFood().FullyDigested
+			 || source.CurrentCaptor() is not null || source.AsFood().Digested || source.AsFood().FullyDigested)
 				return false;
 
 			return true;
@@ -280,19 +200,19 @@ namespace V2.Items
 
 		public override void GrabRange(Item item, Player player, ref int grabRange)
 		{
-			if (item.AsFood().IsCurrentlyEaten || item.AsFood().FullyDigested)
+			if (item.CurrentCaptor() is not null || item.AsFood().Digested || item.AsFood().FullyDigested)
 				grabRange = 0;
 		}
 
 		public override bool PreDrawInWorld(Item item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
 		{
-			if (item.AsFood().IsCurrentlyEaten || item.AsFood().FullyDigested)
+			if (item.CurrentCaptor() is not null || item.AsFood().Digested || item.AsFood().FullyDigested)
 				return false;
 
 			return true;
 		}
 
-		public override bool CanPickup(Item item, Player player) => !(item.AsFood().IsCurrentlyEaten || item.AsFood().FullyDigested);
+		public override bool CanPickup(Item item, Player player) => !(item.CurrentCaptor() is not null || item.AsFood().Digested || item.AsFood().FullyDigested);
 
 		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
 		{

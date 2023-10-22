@@ -67,8 +67,7 @@ namespace V2.Core.MainDetours
 					if (!npc.active)
 						continue;
 
-					PreyNPC.UpdateNPCEatenStatus(npc);
-					if (npc.AsFood().IsCurrentlyEaten)
+					if (npc.CurrentCaptor() is not null)
 						continue;
 
 					num2 = 5000;

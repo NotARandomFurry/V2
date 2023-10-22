@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Terraria;
 using Terraria.ModLoader;
+using V2.Core;
 using V2.NPCs;
 using V2.UI;
 
@@ -24,7 +25,7 @@ namespace V2.PlayerHandling
 			if (Player.talkNPC != -1)
 			{
 				NPC npc = Player.TalkNPC;
-				if (npc.AsFood().IsCurrentlyEaten)
+				if (npc.CurrentCaptor() is not null)
 					Main.CloseNPCChatOrSign();
 			}
 		}

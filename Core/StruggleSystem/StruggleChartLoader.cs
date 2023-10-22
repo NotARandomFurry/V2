@@ -9,5 +9,16 @@ namespace V2.Core.StruggleSystem
 {
 	public static class StruggleChartLoader
 	{
+		internal static List<StruggleChart> StruggleCharts { get; set; }
+
+		public static void Load()
+		{
+			StruggleCharts = new List<StruggleChart>();
+		}
+
+		public static void Unload()
+		{
+			StruggleCharts = null;
+		}
 	}
 }

@@ -187,13 +187,14 @@ namespace V2
 			if (Main.keyState.IsKeyDown(Keys.LeftShift) && Main.keyState.IsKeyDown(Keys.LeftControl))
 			{
 				string tooltipFlavorText = "";
-				string[] tooltipFlavorTextLines = Utils.WordwrapString(dynamicTooltip.Text, FontAssets.MouseText.Value, 900, 25, out _);
-				foreach (string piece in tooltipFlavorTextLines)
+				string[] tooltipFlavorTextLines = Utils.WordwrapString(dynamicTooltip.Text, FontAssets.MouseText.Value, 900, 25, out int lineAmount);
+				for (int i = 0; i < tooltipFlavorTextLines.Length; i++)
 				{
-					if (piece is not null && piece != "")
+					string line = tooltipFlavorTextLines[i];
+					if (line is not null && line != "")
 					{
-						tooltipFlavorText += piece;
-						if (!piece.Contains("\n"))
+						tooltipFlavorText += line;
+						if (!line.Contains("\n") && i < lineAmount)
 							tooltipFlavorText += "\n";
 					}
 				}

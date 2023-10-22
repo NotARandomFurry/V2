@@ -10,6 +10,7 @@ using Terraria.ModLoader;
 using Terraria.UI;
 using V2.Core;
 using V2.Items;
+using V2.NPCs;
 using V2.PlayerHandling;
 
 namespace V2.UI.StomachacheMeter
@@ -57,7 +58,7 @@ namespace V2.UI.StomachacheMeter
 		{
 			Visible = false;
 			Player player = Main.LocalPlayer;
-			if (PredPlayer.GetCurrentBellyWeight(player) > 0 && !player.AsFood().IsCurrentlyEaten)
+			if (PredPlayer.GetCurrentBellyWeight(player) > 0 && player.CurrentCaptor() is null)
 				Visible = true;
 		}
 

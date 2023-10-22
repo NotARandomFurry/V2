@@ -21,7 +21,7 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 	{
 		public override void SetStaticDefaults()
 		{
-			NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, new NPCID.Sets.NPCBestiaryDrawModifiers(0) { Hide = true });
+			NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, new NPCID.Sets.NPCBestiaryDrawModifiers() { Hide = true });
 		}
 
 		public override void SetDefaults()

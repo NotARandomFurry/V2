@@ -28,16 +28,53 @@ namespace V2.UI.StruggleSystem
 				Visible = true;
 		}
 
+		private Asset<Texture2D> _struggleSystemBackdrop = ModContent.Request<Texture2D>("V2/UI/StruggleSystem/StruggleSystem_Main_NoteBackdrop", AssetRequestMode.ImmediateLoad);
+
 		public override void Draw(SpriteBatch spriteBatch)
 		{
 			if (!Visible)
 				return;
 
-			StruggleTracker tracker = ModContent.GetInstance<V2MasterSystem>().StruggleTrackers.FirstOrDefault(x => x.Predator is Player predPlayer && predPlayer.whoAmI == Main.myPlayer);
-			if (tracker is null)
+			VoreTracker tracker = Main.LocalPlayer.AsPred().StomachTracker;
+			if (tracker.PredatorChart is null)
 				return;
 
-			
+			Vector2 bottomCenter = new Vector2(
+				Main.screenWidth / 2,
+				Main.screenHeight / 2
+			);
+			bottomCenter.Y += 52;
+			bottomCenter += Main.LocalPlayer.Center - (Main.screenPosition + new Vector2(Main.screenWidth / 2, Main.screenHeight / 2));
+
+			spriteBatch.Draw(
+				_struggleSystemBackdrop.Value,
+				bottomCenter,
+				_struggleSystemBackdrop.Value.Bounds,
+				Color.White,
+				0f,
+				new Vector2(
+					_struggleSystemBackdrop.Value.Bounds.Bottom,
+					_struggleSystemBackdrop.Value.Width / 2
+				),
+				1f,
+				SpriteEffects.None,
+				0f
+			);
+
+			foreach (StruggleChartNote[] noteSpan in tracker.PredatorChart.Notes)
+			{
+				spriteBatch.Draw(
+					_struggleSystemBackdrop.Value,
+					bottomCenter,
+					_struggleSystemBackdrop.Value.Bounds,
+					Color.White,
+					0f,
+					_struggleSystemBackdrop.Value.Size() / 2f,
+					1f,
+					SpriteEffects.None,
+					0f
+				);
+			}
 		}
 	}
 }

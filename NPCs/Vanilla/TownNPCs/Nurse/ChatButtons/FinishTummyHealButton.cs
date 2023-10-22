@@ -123,7 +123,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse.ChatButtons
 			{
 				if (Main.LocalPlayer.BuyItem((int)(npc.AsNurse().originalHealPrice * 0.80) + npc.AsNurse().healOvertime))
 				{
-					npc.AsPred().stomachContents.RemoveAll(x => x.Type == PreyType.Player && (x.Instance as Player).whoAmI == Main.CurrentPlayer.whoAmI);
+					PredNPC.GetStomachTracker(npc).Prey.RemoveAll(x => x.Type == PreyType.Player && (x.Instance as Player).whoAmI == Main.CurrentPlayer.whoAmI);
 					npc.AsNurse().healPlayerIndex = -1;
 					npc.AsNurse().originalHealPrice = 0;
 					npc.AsNurse().healOvertime = 0;

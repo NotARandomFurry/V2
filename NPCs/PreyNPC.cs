@@ -38,23 +38,26 @@ namespace V2.NPCs
 
 	public partial class PreyNPC : GlobalNPC
 	{
-		public bool IsCurrentlyEaten { get; set; }
 		public int EatenSafetyFrames { get; set; }
 		public bool Digested { get; set; }
-		public PredEntityReference? CurrentCaptor { get; set; }
-
-		public delegate int DelegateGetStrength(NPC npc);
-		public DelegateGetStrength GetStrength { get; set; }
 
 		public delegate void DelegatePreyAI(NPC npc, Entity pred);
 		public DelegatePreyAI SpecialPreyAI { get; set; }
 
 		public double Size { get; set; }
 
+		public int STR { get; set; }
+		public StatModifier StruggleStrengthModifier { get; set; }
+		public double StruggleStrength {
+			get {
+				double baseStruggleStrength = 1.5;
+				baseStruggleStrength += 0.3 * STR;
+				return StruggleStrengthModifier.ApplyTo((float)baseStruggleStrength);
+			}
+		}
+
 		public delegate void DelegateOnKilledByDigestion(NPC npc, Entity pred);
 		public DelegateOnKilledByDigestion OnKilledByDigestion { get; set; }
-
-		public StatModifier StruggleStrengthModifier { get; set; }
 
 		public bool CanChatAsPrey { get; set; }
 
@@ -77,6 +80,8 @@ namespace V2.NPCs
 			SpecialPreyAI = null;
 			Size = 0;
 
+			STR = 0;
+
 			OnKilledByDigestion = null;
 
 			CanChatAsPrey = false;
@@ -92,11 +97,9 @@ namespace V2.NPCs
 
 		public override void ResetEffects(NPC npc)
 		{
-			npc.AsFood().IsCurrentlyEaten = false;
 			npc.AsFood().Digested = false;
-			npc.AsFood().CurrentCaptor = null;
 
-			StruggleStrengthModifier = StatModifier.Default;
+			npc.AsFood().StruggleStrengthModifier = StatModifier.Default;
 
 			npc.AsFood().TakenDigestionDamageModifier = StatModifier.Default;
 
@@ -109,81 +112,7 @@ namespace V2.NPCs
 			else if (npc.AsFood().SoftenedDigestionDamageTaken > 0)
 				npc.AsFood().SoftenedDigestionDamageTaken -= npc.AsFood().SoftenedWearoffRateModifier.ApplyTo((float)(25.0 / 60.0));
 
-			UpdateNPCEatenStatus(npc);
 			DetermineDigestingSounds(npc);
-		}
-
-		public static void UpdateNPCEatenStatus(NPC npc)
-		{
-			for (int i = 0; i < Main.maxNPCs; i++)
-			{
-				NPC potentialPred = Main.npc[i];
-				if (potentialPred is null || !potentialPred.active)
-					continue;
-
-				if (!potentialPred.TryGetGlobalNPC(out PredNPC pred))
-					continue;
-
-				if ((pred.stomachContents is null || pred.stomachContents.Count <= 0)
-				 && (pred.stomachContentsQueue is null || pred.stomachContentsQueue.Count <= 0))
-					continue;
-
-				if (pred.stomachContents.FirstOrDefault(x => !x.NoHealth && x.Type == PreyType.NPC && (x.Instance.whoAmI == npc.whoAmI || x.Instance.whoAmI == npc.realLife)) is VoreTracker prey)
-				{
-					npc.AsFood().IsCurrentlyEaten = true;
-					npc.position = potentialPred.Center - (npc.Size / 2f);
-					npc.AsFood().CurrentCaptor = new PredEntityReference()
-					{
-						Predator = potentialPred,
-						PreyInstance = prey
-					};
-					break;
-				}
-				if (pred.stomachContentsQueue.FirstOrDefault(x => !x.NoHealth && x.Type == PreyType.NPC && (x.Instance.whoAmI == npc.whoAmI || x.Instance.whoAmI == npc.realLife)) is VoreTracker queuedPrey)
-				{
-					npc.AsFood().IsCurrentlyEaten = true;
-					npc.position = potentialPred.Center - (npc.Size / 2f);
-					npc.AsFood().CurrentCaptor = new PredEntityReference()
-					{
-						Predator = potentialPred,
-						PreyInstance = queuedPrey
-					};
-					break;
-				}
-			}
-			for (int i = 0; i < Main.maxPlayers; i++)
-			{
-				Player potentialPred = Main.player[i];
-				if (potentialPred is null || !potentialPred.active || potentialPred.dead)
-					continue;
-
-				if ((potentialPred.AsPred().stomachContents is null || potentialPred.AsPred().stomachContents.Count <= 0)
-				 && (potentialPred.AsPred().stomachContentsQueue is null || potentialPred.AsPred().stomachContentsQueue.Count <= 0))
-					continue;
-
-				if (potentialPred.AsPred().stomachContents.FirstOrDefault(x => !x.NoHealth && x.Type == PreyType.NPC && (x.Instance.whoAmI == npc.whoAmI || x.Instance.whoAmI == npc.realLife)) is VoreTracker prey)
-				{
-					npc.AsFood().IsCurrentlyEaten = true;
-					npc.position = potentialPred.Center - (npc.Size / 2f);
-					npc.AsFood().CurrentCaptor = new PredEntityReference()
-					{
-						Predator = potentialPred,
-						PreyInstance = prey
-					};
-					break;
-				}
-				if (potentialPred.AsPred().stomachContentsQueue.FirstOrDefault(x => !x.NoHealth && x.Type == PreyType.NPC && (x.Instance.whoAmI == npc.whoAmI || x.Instance.whoAmI == npc.realLife)) is VoreTracker queuedPrey)
-				{
-					npc.AsFood().IsCurrentlyEaten = true;
-					npc.position = potentialPred.Center - (npc.Size / 2f);
-					npc.AsFood().CurrentCaptor = new PredEntityReference()
-					{
-						Predator = potentialPred,
-						PreyInstance = queuedPrey
-					};
-					break;
-				}
-			}
 		}
 
 		public static void DetermineDigestingSounds(NPC npc)
@@ -196,7 +125,7 @@ namespace V2.NPCs
 
 		public override bool CanHitNPC(NPC npc, NPC target)
 		{
-			if (npc.AsFood().IsCurrentlyEaten || target.AsFood().IsCurrentlyEaten || npc.AsFood().EatenSafetyFrames > 0)
+			if (npc.CurrentCaptor() is not null || target.CurrentCaptor() is not null || npc.AsFood().EatenSafetyFrames > 0)
 				return false;
 
 			return true;
@@ -204,7 +133,7 @@ namespace V2.NPCs
 
 		public override bool CanHitPlayer(NPC npc, Player target, ref int cooldownSlot)
 		{
-			if (npc.AsFood().IsCurrentlyEaten || npc.AsFood().EatenSafetyFrames > 0)
+			if (npc.CurrentCaptor() is not null || npc.AsFood().EatenSafetyFrames > 0)
 				return false;
 
 			return true;
@@ -212,7 +141,7 @@ namespace V2.NPCs
 
 		public override bool? CanBeHitByItem(NPC npc, Player player, Item item)
 		{
-			if (npc.AsFood().IsCurrentlyEaten)
+			if (npc.CurrentCaptor() is not null)
 				return false;
 
 			return null;
@@ -220,7 +149,7 @@ namespace V2.NPCs
 
 		public override bool? CanBeHitByProjectile(NPC npc, Projectile projectile)
 		{
-			if (npc.AsFood().IsCurrentlyEaten)
+			if (npc.CurrentCaptor() is not null)
 				return false;
 
 			return null;
@@ -228,7 +157,7 @@ namespace V2.NPCs
 
 		public override bool? CanBeCaughtBy(NPC npc, Item item, Player player)
 		{
-			if (npc.AsFood().IsCurrentlyEaten)
+			if (npc.CurrentCaptor() is not null)
 				return false;
 
 			return null;
@@ -236,7 +165,7 @@ namespace V2.NPCs
 
 		public override void ModifyHoverBoundingBox(NPC npc, ref Rectangle boundingBox)
 		{
-			if (npc.AsFood().IsCurrentlyEaten)
+			if (npc.CurrentCaptor() is not null)
 				boundingBox = Rectangle.Empty;
 		}
 
@@ -260,7 +189,7 @@ namespace V2.NPCs
 
 		public override bool? CanChat(NPC npc)
 		{
-			if (npc.AsFood().IsCurrentlyEaten)
+			if (npc.CurrentCaptor() is not null)
 				return npc.AsFood().CanChatAsPrey;
 
 			return null;
@@ -268,7 +197,7 @@ namespace V2.NPCs
 
 		public override bool? DrawHealthBar(NPC npc, byte hbPosition, ref float scale, ref Vector2 position)
 		{
-			if (npc.AsFood().IsCurrentlyEaten)
+			if (npc.CurrentCaptor() is not null)
 				return false;
 
 			return null;
@@ -384,14 +313,14 @@ namespace V2.NPCs
 
 		public static double GetCurrentTotalWeight(NPC npc)
 		{
-			double baseWeight = VoreTracker.GetInitialPreySize(npc);
+			double baseWeight = PreyData.GetInitialPreySize(npc);
 			double bellyWeight = PredNPC.GetCurrentBellyWeight(npc);
 			return baseWeight + bellyWeight;
 		}
 
 		public override bool CheckActive(NPC npc)
 		{
-			if (npc.AsFood().IsCurrentlyEaten)
+			if (npc.CurrentCaptor() is not null)
 				return false;
 
 			return true;
@@ -399,7 +328,7 @@ namespace V2.NPCs
 
 		public override bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
 		{
-			if (npc.AsFood().IsCurrentlyEaten)
+			if (npc.CurrentCaptor() is not null)
 				return false;
 
 			return true;

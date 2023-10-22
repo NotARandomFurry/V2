@@ -23,7 +23,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse.ChatButtons
 
 		public override void OnClick(NPC npc, Player player)
 		{
-			if (npc.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.ArmsDealer) is not null)
+			if (PredNPC.GetStomachTracker(npc)?.Prey.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.ArmsDealer) is not null)
 				Main.npcChatText = "My stomach's currently helping a very specific patient; one that needs to be properly quarantined for a little while. Wait until he's feeling better, and I'm sure I'll be able to squeeze you in there.";
 			else if (npc.AsNurse().healPlayerIndex != -1 && !npc.AsNurse().digestScamPatient)
 				Main.npcChatText = "I've currently got someone else in there getting healed. You'll have to wait your turn. Maybe make sure you've actually got the money while you're waiting...";

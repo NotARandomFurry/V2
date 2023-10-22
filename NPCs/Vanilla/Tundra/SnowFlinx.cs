@@ -37,9 +37,7 @@ namespace V2.NPCs.Vanilla.Tundra
 		public static void OnKilledByDigestion_GrantSnowFlinxGoal(NPC npc, Entity pred)
 		{
 			if (pred is Player predPlayer)
-			{
 				ModContent.GetInstance<EatSnowFlinx>().TrySetCompletion(predPlayer);
-			}
 		}
 	}
 }

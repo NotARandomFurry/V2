@@ -83,7 +83,7 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 			NPCID.Sets.HatOffsetY[NPC.type] = NPCID.Sets.HatOffsetY[BaseTownNPC];
 
 			// Influences how the NPC looks in the Bestiary
-			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers(0)
+			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers()
 			{
 				Velocity = 1f, // Draws the NPC in the bestiary as if its walking +1 tiles in the x direction
 				Direction = -1
@@ -217,7 +217,7 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 						"Whaddaya want, gut-meat-to-be? Can't you see I'm pissed!?",
 						"I'm in the worst mood possible tonight, meat. Stay outta my way, or you won't stay outta my stomach!",
 					});
-					if (npc.AsPred().stomachContents.Count > 0)
+					if (PredNPC.GetStomachTracker(npc) is not null)
 					{
 						succubusChatPool.AddRange(new List<string>
 						{
@@ -235,7 +235,7 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 				}
 				else
 				{
-					if (npc.AsPred().stomachContents.Count > 0)
+					if (PredNPC.GetStomachTracker(npc) is not null)
 					{
 						switch (GetVisualBellySize(npc))
 						{
@@ -466,10 +466,10 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 
 		public override void PostAI()
 		{
-			if (NPC.AsFood().IsCurrentlyEaten)
+			if (NPC.CurrentCaptor() is not null)
 				return;
 
-			if (NPC.AsPred().stomachContents.Count > 1)
+			if (PredNPC.GetStomachTracker(NPC)?.Prey.Count > 1)
 				return;
 
 			if (Main.GameUpdateCount % 60 != 0)
@@ -518,7 +518,7 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 			if (ModContent.GetInstance<V2ServerConfig>().NoRandomGulpsAgainstPlayers)
 				return;
 
-			if (!Main.CurrentPlayer.active || Main.CurrentPlayer.dead || Main.CurrentPlayer.Distance(NPC.Center) > NPC.AsPred().MaxSwallowRange || Main.CurrentPlayer.AsFood().IsCurrentlyEaten)
+			if (!Main.CurrentPlayer.active || Main.CurrentPlayer.dead || Main.CurrentPlayer.Distance(NPC.Center) > NPC.AsPred().MaxSwallowRange || Main.CurrentPlayer.CurrentCaptor() is not null)
 				return;
 
 			bool shouldSnackOnPlayer = false;
@@ -601,11 +601,11 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 			itemHeight = 40;
 		}
 
-		public static double GetDigestionTickRate(NPC npc, VoreTracker prey) => Main.bloodMoon ? 3.6 : 1.8;
+		public static double GetDigestionTickRate(NPC npc, PreyData prey) => Main.bloodMoon ? 3.6 : 1.8;
 
-		public static double GetDigestionTickDamage(NPC npc, VoreTracker prey) => 20;
+		public static double GetDigestionTickDamage(NPC npc, PreyData prey) => 20;
 
-		public static void OnDigestionKill(NPC npc, VoreTracker digestedPrey)
+		public static void OnDigestionKill(NPC npc, PreyData digestedPrey)
 		{
 			SoundEngine.PlaySound(
 				digestedPrey.WeightLeftToDigest < 0.75 ? npc.AsPred().SmallBurps : npc.AsPred().StandardBurps,

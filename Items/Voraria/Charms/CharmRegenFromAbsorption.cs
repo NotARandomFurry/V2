@@ -38,9 +38,9 @@ namespace V2.Items.Voraria.Charms
 
 		public static void CharmEffects(Player player)
 		{
-			if (player.AsPred().stomachContents.Count > 0)
+			if (player.AsPred().StomachTracker?.Prey.Count > 0)
 			{
-				double effectiveness = (double)player.AsPred().stomachContents.FindAll(x => x.NoHealth).Count / (double)player.AsPred().stomachContents.Count;
+				double effectiveness = (double)player.AsPred().StomachTracker?.Prey.FindAll(x => x.NoHealth).Count / (double)player.AsPred().StomachTracker?.Prey.Count;
 				player.AsPred().specialHealthRegenCount += HealthRegenerationRatio * player.AsPred().PreyAbsorptionRatePerTick * effectiveness;
 				player.AsPred().specialManaRegenCount += ManaRegenerationRatio * player.AsPred().PreyAbsorptionRatePerTick * effectiveness;
 			}
@@ -50,8 +50,8 @@ namespace V2.Items.Voraria.Charms
 		{
 			Player player = Main.LocalPlayer;
 			double regenEffectiveness = 0.0;
-			if (player.AsPred().stomachContents.Count > 0)
-				regenEffectiveness = (double)player.AsPred().stomachContents.FindAll(x => x.NoHealth).Count / (double)player.AsPred().stomachContents.Count;
+			if (player.AsPred().StomachTracker?.Prey.Count > 0)
+				regenEffectiveness = (double)player.AsPred().StomachTracker?.Prey.FindAll(x => x.NoHealth).Count / (double)player.AsPred().StomachTracker?.Prey.Count;
 			tooltips.AddVorariaDynamicTooltip(
 				"Voraria.Charms.RegenFromAbsorption",
 				new
@@ -59,8 +59,8 @@ namespace V2.Items.Voraria.Charms
 					HealthRegenerationRatio = HealthRegenerationRatio.ToPercentage(0),
 					ManaRegenerationRatio = ManaRegenerationRatio.ToPercentage(0),
 					RegenEffectiveness = regenEffectiveness.ToPercentage(2),
-					LivePreyRemaining = player.AsPred().stomachContents.FindAll(x => !x.NoHealth).Count,
-					PreyRemaining = player.AsPred().stomachContents.Count,
+					LivePreyRemaining = player.AsPred().StomachTracker?.Prey.FindAll(x => !x.NoHealth).Count,
+					PreyRemaining = player.AsPred().StomachTracker?.Prey.Count,
 					CurrentHealthRegen = ((regenEffectiveness > 0.0 ? HealthRegenerationRatio * player.AsPred().PreyAbsorptionRatePerTick * regenEffectiveness : 0.0) * 60.0).CastToDecimalPlaces(2),
 					CurrentManaRegen = ((regenEffectiveness > 0.0 ? ManaRegenerationRatio * player.AsPred().PreyAbsorptionRatePerTick * regenEffectiveness : 0.0) * 60.0).CastToDecimalPlaces(2),
 				}

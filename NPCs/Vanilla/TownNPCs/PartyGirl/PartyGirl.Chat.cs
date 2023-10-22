@@ -61,9 +61,9 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 			}
 			else
 			{
-				if (npc.AsPred().stomachContents.Count > 0)
+				if (PredNPC.GetStomachTracker(npc) is not null)
 				{
-					if (npc.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.HallowBoss) is VoreTracker sprinkles && GetEmpressDigestionStage(npc) > 0)
+					if (PredNPC.GetStomachTracker(npc).Prey.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.HallowBoss) is PreyData sprinkles && GetEmpressDigestionStage(npc) > 0)
 					{
 						partyGirlChatPool.AddRange(new List<string>
 						{
@@ -167,7 +167,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 								});
 								break;
 						}
-						if (npc.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.TaxCollector && !x.NoHealth) is VoreTracker scroogeAsPrey)
+						if (PredNPC.GetStomachTracker(npc).Prey.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.TaxCollector && !x.NoHealth) is PreyData scroogeAsPrey)
 						{
 							NPC scrooge = scroogeAsPrey.Instance as NPC;
 							partyGirlChatPool.AddRange(new List<string>
@@ -176,7 +176,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 								"Huh? What ABOUT grumpy old " + scrooge.GivenName + "!? He hates parties, hates fun, hates colors, and hates me! He's WAY better off as my " + (BirthdayParty.PartyIsUp ? "mid-party" : "pre-party") + " lunch than he is skulking in the corner all the time!",
 							});
 						}
-						if (npc.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.Wizard && !x.NoHealth) is VoreTracker harryWizardAsPrey)
+						if (PredNPC.GetStomachTracker(npc).Prey.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.Wizard && !x.NoHealth) is PreyData harryWizardAsPrey)
 						{
 							NPC harryWizard = harryWizardAsPrey.Instance as NPC;
 							partyGirlChatPool.AddRange(new List<string>
@@ -185,7 +185,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 								"Don't worry about the magic guy! He's havin' a grand old time in my belly, and I'll make sure he keeps havin' a good time!",
 							});
 						}
-						if (npc.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.BestiaryGirl && !x.NoHealth) is VoreTracker furryAsPrey)
+						if (PredNPC.GetStomachTracker(npc).Prey.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.BestiaryGirl && !x.NoHealth) is PreyData furryAsPrey)
 						{
 							NPC furry = furryAsPrey.Instance as NPC;
 							partyGirlChatPool.AddRange(new List<string>
@@ -282,7 +282,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 								});
 							}
 						}
-						if (player.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.TaxCollector && !x.NoHealth) is VoreTracker scroogeAsPrey)
+						if (player.AsPred().StomachTracker?.Prey.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.TaxCollector && !x.NoHealth) is PreyData scroogeAsPrey)
 						{
 							partyGirlChatPool.AddRange(new List<string>
 							{

@@ -51,11 +51,17 @@ namespace V2.PlayerHandling
 			Extra = 0;
 		}
 	}
-	public class PredPlayer : ModPlayer
+	public partial class PredPlayer : ModPlayer
 	{
-		public bool ForceV2DataSync { get; set; }
-		public List<VoreTracker> stomachContents;
-		public List<VoreTracker> stomachContentsQueue;
+		public bool SyncRequired_PredPoints { get; set; }
+		public VoreTracker StomachTracker {
+			get {
+				if (Main.gameMenu)
+					return null;
+
+				return ModContent.GetInstance<V2MasterSystem>().VoreTrackers.FirstOrDefault(x => x.Predator is Player predPlayer && predPlayer.whoAmI == Player.whoAmI);
+			}
+		}
 
 		public double Stomachache;
 
@@ -63,7 +69,17 @@ namespace V2.PlayerHandling
 
 		public bool InPredStatsMenu { get; set; }
 		public Dictionary<string, bool> GoalsCompleted { get; set; }
-		public int TotalStatPoints { get; set; }
+		public int TotalStatPoints {
+			get {
+				int points = 0;
+				foreach (PredPlayerGoal goal in PredPlayerGoalLoader.PredPlayerGoals)
+				{
+					if (GoalsCompleted[goal.InternalName])
+						points += goal.StatPointsFromCompletion;
+				}
+				return points;
+			}
+		}
 		public int AllocatedStatPoints => GLP.Spent + TUM.Spent + ACI.Spent + ABS.Spent;
 		public int AvailableStatPoints => TotalStatPoints - AllocatedStatPoints;
 		public PredStat GLP { get; set; }
@@ -327,7 +343,7 @@ namespace V2.PlayerHandling
 
 		public bool BlockSwallowAttempts {
 			get {
-				if (Player.AsFood().IsCurrentlyEaten)
+				if (Player.CurrentCaptor() is not null)
 					return true;
 
 				if (Player.HasBuff(ModContent.BuffType<SoreThroat>()))
@@ -344,9 +360,9 @@ namespace V2.PlayerHandling
 			get
 			{
 				double totalBellyWeight = 0.0;
-				if (stomachContents is not null && stomachContents.Count > 0)
+				if (StomachTracker is not null)
 				{
-					foreach (VoreTracker prey in stomachContents)
+					foreach (PreyData prey in StomachTracker.Prey)
 					{
 						totalBellyWeight += prey.WeightLeftToDigest;
 						if (prey.NoHealth)
@@ -375,9 +391,9 @@ namespace V2.PlayerHandling
 			get
 			{
 				double totalBellyWeight = 0.0;
-				if (stomachContents is not null && stomachContents.Count > 0)
+				if (StomachTracker is not null)
 				{
-					foreach (VoreTracker prey in stomachContents)
+					foreach (PreyData prey in StomachTracker.Prey)
 					{
 						if (prey.NoHealth)
 							continue;
@@ -409,9 +425,9 @@ namespace V2.PlayerHandling
 			get
 			{
 				double totalBellyWeight = 0.0;
-				if (stomachContents is not null && stomachContents.Count > 0)
+				if (StomachTracker is not null)
 				{
-					foreach (VoreTracker prey in stomachContents)
+					foreach (PreyData prey in StomachTracker.Prey)
 					{
 						totalBellyWeight += prey.WeightLeftToDigest;
 						if (prey.NoHealth)
@@ -439,9 +455,9 @@ namespace V2.PlayerHandling
 			get
 			{
 				double totalBellyWeight = 0.0;
-				if (stomachContents is not null && stomachContents.Count > 0)
+				if (StomachTracker is not null)
 				{
-					foreach (VoreTracker prey in stomachContents)
+					foreach (PreyData prey in StomachTracker.Prey)
 					{
 						if (prey.NoHealth)
 							continue;
@@ -469,9 +485,6 @@ namespace V2.PlayerHandling
 
 		public override void Initialize()
 		{
-			stomachContents = new List<VoreTracker>();
-			stomachContentsQueue = new List<VoreTracker>();
-
 			SmallBurps = Burps.Humanoid.Small;
 			StandardBurps = Burps.Humanoid.Standard;
 
@@ -510,13 +523,7 @@ namespace V2.PlayerHandling
 
 		public override void ResetEffects()
 		{
-			while (Player.AsPred().stomachContentsQueue is not null && Player.AsPred().stomachContentsQueue.Count > 0)
-			{
-				Player.AsPred().stomachContents.Add(Player.AsPred().stomachContentsQueue.First());
-				Player.AsPred().stomachContentsQueue.Remove(Player.AsPred().stomachContentsQueue.First());
-			}
-
-			ForceV2DataSync = false;
+			SyncRequired_PredPoints = false;
 
 			GLP.Base = 0;
 			GLP.Extra = 0;
@@ -535,6 +542,7 @@ namespace V2.PlayerHandling
 			ABS.Extra = 0;
 			PreyAbsorptionRateModifier = StatModifier.Default;
 			BuffExtensionTimeModifier = StatModifier.Default;
+			DebuffDisextensionTimeModifier = StatModifier.Default;
 
 			StomachWeightModifier = StatModifier.Default;
 		}
@@ -633,7 +641,7 @@ namespace V2.PlayerHandling
 						if (potentialMeal.realLife != -1 && potentialMeal.realLife != potentialMeal.whoAmI)
 							continue;
 
-						if (potentialMeal.AsFood().IsCurrentlyEaten)
+						if (potentialMeal.CurrentCaptor() is not null)
 							continue;
 
 						if (!Collision.CanHit(Player.TrueCenter(), 1, 1, potentialMeal.TrueCenter(), 1, 1))
@@ -655,7 +663,7 @@ namespace V2.PlayerHandling
 						if (!potentialMeal.active || potentialMeal.whoAmI == Player.whoAmI)
 							continue;
 
-						if (potentialMeal.AsFood().IsCurrentlyEaten)
+						if (potentialMeal.CurrentCaptor() is not null)
 							continue;
 
 						if (!Collision.CanHit(Player.TrueCenter(), 1, 1, potentialMeal.TrueCenter(), 1, 1))
@@ -696,10 +704,6 @@ namespace V2.PlayerHandling
 					if (tile.LiquidAmount > 0 && Player.AsPred().StomachCapacity - GetCurrentBellyWeight(Player) >= Player.AsPred().EffectiveLiquidSwallowSize(tile.LiquidType))
 					{
 						int liquidToDrink = (tile.LiquidAmount > Player.AsPred().LiquidSwallowSize) ? Player.AsPred().LiquidSwallowSize : tile.LiquidAmount;
-						Player.AsPred().stomachContents.Add(new VoreTracker(
-							tile.LiquidType,
-							liquidToDrink
-						));
 
 						Player.AsPred().lastLiquidDrank = tile.LiquidType switch
 						{
@@ -709,6 +713,12 @@ namespace V2.PlayerHandling
 							3 => "Shimmer",
 							_ => "Some other liquid",
 						};
+
+						PreyData newDrink = new PreyData(tile.LiquidType, liquidToDrink);
+						if (Player.AsPred().StomachTracker is not null && Player.AsPred().StomachTracker.Prey.FirstOrDefault(x => x.Type == PreyType.Liquid && x.ExactType == Player.AsPred().lastLiquidDrank) is PreyData existingDrink)
+							existingDrink.WeightLeftToDigest += newDrink.WeightLeftToDigest;
+						else
+							AddNewPrey(Player, newDrink);
 
 						void AddVanillaDrinkCount()
 						{
@@ -763,18 +773,20 @@ namespace V2.PlayerHandling
 
 						WorldGen.SquareTileFrame(playerTileLocation.X, playerTileLocation.Y);
 
-						SoundEngine.PlaySound(
-							Player.AsPred().SmallGulps with { Volume = 0.45f, Pitch = 0.25f },
-							Player.position + new Vector2(0f, -10f)
-						);
-						Player.AsPred().ForceV2DataSync = true;
+						if (Main.GameUpdateCount % 60 == 0)
+						{
+							SoundEngine.PlaySound(
+								Player.AsPred().SmallGulps with { Volume = 0.45f, Pitch = 0.25f },
+								Player.position + new Vector2(0f, -10f)
+							);
+						}
 					}
 				}
 				#endregion
 				#region Regurgitating swallowed prey
-				if (V2.RegurgitateHotkey.JustPressed && Player.AsPred().stomachContents.Count > 0)
+				if (V2.RegurgitateHotkey.JustPressed && Player.AsPred().StomachTracker?.Prey.Count > 0)
 				{
-					VoreTracker prey = Player.AsPred().stomachContents.FindLast(x => !x.NoHealth && x.Type != PreyType.Liquid);
+					PreyData prey = Player.AsPred().StomachTracker?.Prey.FindLast(x => !x.NoHealth && x.Type != PreyType.Liquid);
 					if (prey is not null)
 					{
 						Entity realPrey = prey.Type switch
@@ -790,23 +802,17 @@ namespace V2.PlayerHandling
 						realPrey.velocity = new Vector2(Player.direction * 12.5f, -2.5f);
 						if (realPrey is NPC realPreyNPC)
 						{
-							realPreyNPC.AsFood().IsCurrentlyEaten = false;
-							realPreyNPC.AsFood().CurrentCaptor = null;
 							realPreyNPC.AsFood().EatenSafetyFrames = 20;
 						}
 						else if (realPrey is Player realPreyPlayer)
 						{
-							realPreyPlayer.AsFood().IsCurrentlyEaten = false;
-							realPreyPlayer.AsFood().CurrentCaptor = null;
+							
 						}
 						else if (realPrey is Item realPreyItem)
 						{
-							realPreyItem.AsFood().IsCurrentlyEaten = false;
-							realPreyItem.AsFood().CurrentCaptor = null;
 							realPreyItem.noGrabDelay = 60;
 						}
-						Player.AsPred().stomachContents.Remove(prey);
-						Player.AsPred().ForceV2DataSync = true;
+						Player.AsPred().StomachTracker?.Prey.Remove(prey);
 						SoundEngine.PlaySound(
 							prey.WeightLeftToDigest <= 0.3 ? Player.AsPred().SmallBurps : Player.AsPred().StandardBurps,
 							Player.TrueCenter() + new Vector2(Player.direction * 8f, -14f)
@@ -816,7 +822,6 @@ namespace V2.PlayerHandling
 				#endregion
 			}
 
-			UpdatePrey(Player);
 			UpdateGeneralPredGoalsLogic(Player);
 		}
 		
@@ -844,7 +849,7 @@ namespace V2.PlayerHandling
 
 			if (prey is Player preyPlayer)
 			{
-				if (preyPlayer.AsFood().IsCurrentlyEaten)
+				if (preyPlayer.CurrentCaptor() is not null)
 					return false;
 			}
 			else if (prey is NPC preyNPC)
@@ -860,7 +865,7 @@ namespace V2.PlayerHandling
 				if (isThisAFuckingBoss)
 					return false;
 
-				if (preyNPC.AsFood().IsCurrentlyEaten)
+				if (preyNPC.CurrentCaptor() is not null)
 					return false;
 			}
 			else if (prey is Item preyItem)
@@ -871,11 +876,11 @@ namespace V2.PlayerHandling
 				if (preyItem.favorited)
 					return false;
 
-				if (preyItem.AsFood().IsCurrentlyEaten)
+				if (preyItem.CurrentCaptor() is not null)
 					return false;
 			}
 
-			if (VoreTracker.GetInitialPreySize(prey) > pred.AsPred().StomachCapacity - GetCurrentBellyWeight(pred))
+			if (PreyData.GetInitialPreySize(prey) > pred.AsPred().StomachCapacity - GetCurrentBellyWeight(pred))
 				return false;
 
 			return true;
@@ -886,122 +891,151 @@ namespace V2.PlayerHandling
 		/// </summary>
 		/// <param name="pred">The predator which will attempt to swallow the given prey.</param>
 		/// <param name="prey">The prey which will be attempt to be swallowed by the given predator.</param>
-		public static void Swallow(Player pred, Entity prey)
+		/// <param name="MPstate">
+		/// </param>
+		/// <param name="MPwhoAmI">
+		/// The <see cref="Player.whoAmI"/> of the client that sent a request for this swallow.<br/>
+		/// Unused in singleplayer, but used in multiplayer to subsequently send and correctly receive a second message.<br/>
+		/// </param>
+		public static void Swallow(Player pred, Entity prey, int MPstate = 0, int MPwhoAmI = -1)
 		{
-			if (CanSwallow(pred, prey))
-			{
-				if (pred.AsPred().stomachContents is null || pred.AsPred().stomachContents.Count <= 0)
-					pred.AsPred().stomachContents = new List<VoreTracker>();
+			if (!CanSwallow(pred, prey))
+				return;
 
-				VoreTracker food = new VoreTracker(prey);
-				pred.AsPred().stomachContents.Add(food);
-				if (prey is not NPC preyNPC || preyNPC.realLife == -1)
-				{
-					SoundEngine.PlaySound(
-						food.WeightLeftToDigest <= 0.3
-						? pred.AsPred().SmallGulps
-						: pred.AsPred().BigGulps,
-						pred.Center
-					);
-				}
-				pred.AsPred().lastSwallowWasDrinking = false;
-				switch (food.Type)
-				{
-					case PreyType.NPC:
-						NPC npc = prey as NPC;
-						npc.AsFood().IsCurrentlyEaten = true;
-						npc.AsFood().CurrentCaptor = new PredEntityReference()
+			if (MPstate == 0 && Main.netMode == NetmodeID.MultiplayerClient)
+			{
+				MPstate = 1;
+				MPwhoAmI = Main.myPlayer;
+			}
+
+			PreyData food = PreyData.NewData(prey);
+			AddNewPrey(pred, food);
+			if (prey is not NPC preyNPC || preyNPC.realLife == -1)
+			{
+				SoundEngine.PlaySound(
+					food.WeightLeftToDigest <= 0.3
+					? pred.AsPred().SmallGulps
+					: pred.AsPred().BigGulps,
+					pred.Center
+				);
+			}
+			pred.AsPred().lastSwallowWasDrinking = false;
+			switch (food.Type)
+			{
+				case PreyType.Player:
+					Player player = prey as Player;
+					player.AsFood().TotalTimesSwallowed += 1;
+					pred.AsPred().lastEntitySwallowed = "Player";
+					pred.AsPred().lastEntitySwallowedMod = "Terraria";
+					break;
+				case PreyType.NPC:
+					NPC npc = prey as NPC;
+					if (npc.realLife != 1 && npc.realLife == npc.whoAmI)
+					{
+						for (int i = 0; i < Main.maxNPCs; i++)
 						{
-							Predator = pred,
-							PreyInstance = food
-						};
-						if (npc.realLife != 1 && npc.realLife == npc.whoAmI)
-						{
-							for (int i = 0; i < Main.maxNPCs; i++)
+							if (Main.npc[i].whoAmI != npc.whoAmI && Main.npc[i].realLife == npc.whoAmI)
 							{
-								if (Main.npc[i].whoAmI != npc.whoAmI && Main.npc[i].realLife == npc.whoAmI)
-								{
-									Swallow(pred, Main.npc[i]);
-								}
+								Swallow(pred, Main.npc[i]);
 							}
 						}
+					}
 
-						pred.AsPred().lastEntitySwallowed = npc.TypeName;
-						pred.AsPred().lastEntitySwallowedMod = npc.ModNPC != null ? npc.ModNPC.Mod.DisplayName : "Terraria";
-						break;
-					case PreyType.Player:
-						Player player = prey as Player;
-						player.AsFood().IsCurrentlyEaten = true;
-						player.AsFood().CurrentCaptor = new PredEntityReference()
-						{
-							Predator = pred,
-							PreyInstance = food
-						};
-						player.AsFood().TotalTimesSwallowed += 1;
-						pred.AsPred().lastEntitySwallowed = "Player";
-						pred.AsPred().lastEntitySwallowedMod = "Terraria";
-						break;
-					case PreyType.Item:
-						Item item = prey as Item;
-						item.AsFood().IsCurrentlyEaten = true;
-						item.AsFood().CurrentCaptor = new PredEntityReference()
-						{
-							Predator = pred,
-							PreyInstance = food
-						};
-						pred.AsPred().lastEntitySwallowed = item.Name;
-						pred.AsPred().lastEntitySwallowedMod = item.ModItem != null ? item.ModItem.Mod.DisplayName : "Terraria";
+					pred.AsPred().lastEntitySwallowed = npc.TypeName;
+					pred.AsPred().lastEntitySwallowedMod = npc.ModNPC != null ? npc.ModNPC.Mod.DisplayName : "Terraria";
+					break;
+				case PreyType.Item:
+					Item item = prey as Item;
+					pred.AsPred().lastEntitySwallowed = item.Name;
+					pred.AsPred().lastEntitySwallowedMod = item.ModItem != null ? item.ModItem.Mod.DisplayName : "Terraria";
 
-						item.AsFood().OnSwallow?.Invoke(item, pred);
-						if (item.AsFood().OnSwallowDamage > 0 && item.AsFood().OnSwallowDeathReason is not null)
-						{
-							pred.Hurt(
-								damageSource: PlayerDeathReason.ByCustomReason(item.AsFood().OnSwallowDeathReason),
-								Damage: item.AsFood().OnSwallowDamage,
-								hitDirection: 0,
-								dodgeable: false,
-								scalingArmorPenetration: 1f
-							);
-						}
-						if (item.AsFood().OnSwallowSoreThroatTime > 0)
-							pred.AddBuff(ModContent.BuffType<SoreThroat>(), item.AsFood().OnSwallowSoreThroatTime);
-						break;
-				}
+					item.AsFood().OnSwallow?.Invoke(item, pred);
+					if (item.AsFood().OnSwallowDamage > 0 && item.AsFood().OnSwallowDeathReason is not null)
+					{
+						pred.Hurt(
+							damageSource: PlayerDeathReason.ByCustomReason(item.AsFood().OnSwallowDeathReason),
+							Damage: item.AsFood().OnSwallowDamage,
+							hitDirection: 0,
+							dodgeable: false,
+							scalingArmorPenetration: 1f
+						);
+					}
+					if (item.AsFood().OnSwallowSoreThroatTime > 0)
+						pred.AddBuff(ModContent.BuffType<SoreThroat>(), item.AsFood().OnSwallowSoreThroatTime);
+					break;
 			}
+
+			if (MPstate == 1)
+			{
+				ModPacket packet = V2.Instance.GetPacket();
+				packet.Write((byte)V2.MessageType.RequestSwallowPrey);
+				packet.Write((byte)0);
+				packet.Write(pred.whoAmI);
+				packet.Write((byte)food.Type);
+				packet.Write(prey.whoAmI);
+				packet.Write(MPwhoAmI);
+				packet.Send();
+			}
+			else if (MPstate == 2)
+			{
+				ModPacket packet = V2.Instance.GetPacket();
+				packet.Write((byte)V2.MessageType.SyncSwallowPrey);
+				packet.Write((byte)0);
+				packet.Write(pred.whoAmI);
+				packet.Write((byte)food.Type);
+				packet.Write(prey.whoAmI);
+				packet.Write(MPwhoAmI);
+				packet.Send(-1, ignoreClient: MPwhoAmI);
+			}
+		}
+
+		public static void AddNewPrey(Player pred, PreyData prey)
+		{
+			if (pred.AsPred().StomachTracker is null)
+				VoreTracker.NewTracker(pred, new List<PreyData>() { prey }, null, null);
+			else
+				pred.AsPred().StomachTracker.Prey.Add(prey);
 		}
 
 		/// <summary>
 		/// Runs update ticks on all food in this predatory player's stomach.
 		/// </summary>
-		public static void UpdatePrey(Player player)
+		public static void UpdatePrey(Player pred)
 		{
-			if (player.AsPred().stomachContents is null)
+			if (pred.AsPred().StomachTracker is null)
 				return;
 
-			int contentsCountPrePruning = player.AsPred().stomachContents.Count;
-			player.AsPred().stomachContents.RemoveAll(x => x.NoHealth && x.WeightLeftToDigest <= 0);
-			if (contentsCountPrePruning != player.AsPred().stomachContents.Count)
-				player.AsPred().ForceV2DataSync = true;
-			if (player.AsPred().stomachContents.Count <= 0)
-				return;
-
-			foreach (VoreTracker prey in player.AsPred().stomachContents)
+			foreach (PreyData prey in pred.AsPred().StomachTracker.Prey)
 			{
 				prey.timeSpentInStomach++;
 
-				switch (prey.Type)
-				{
-					case PreyType.Item:
-						Item preyItem = prey.Instance as Item;
-						if (!preyItem.IsAir)
-							preyItem.AsFood().UpdateInStomach?.Invoke(preyItem, player, prey.NoHealth);
-						break;
-				}
-
 				if (!prey.NoHealth)
 				{
-					double digestionDamage = player.AsPred().DigestionTickDamage;
-					double digestionRate = player.AsPred().DigestionTickRate;
+					switch (prey.Type)
+					{
+						case PreyType.Player:
+							Player preyPlayer = prey.Instance as Player;
+							preyPlayer.velocity = Vector2.Zero;
+							preyPlayer.position = pred.position;
+							break;
+						case PreyType.NPC:
+							NPC preyNPC = prey.Instance as NPC;
+							preyNPC.velocity = Vector2.Zero;
+							preyNPC.position = pred.position;
+							break;
+						case PreyType.Projectile:
+							Projectile preyProjectile = prey.Instance as Projectile;
+							if (preyProjectile.active)
+							preyProjectile.velocity = Vector2.Zero;
+							preyProjectile.position = pred.position;
+							break;
+						case PreyType.Item:
+							Item preyItem = prey.Instance as Item;
+							preyItem.AsFood().UpdateInStomach?.Invoke(preyItem, pred, prey.NoHealth);
+							break;
+					}
+					double digestionDamage = pred.AsPred().DigestionTickDamage;
+					double digestionRate = pred.AsPred().DigestionTickRate;
 					int digestionFrameRate = (int)Math.Round(60.0 / digestionRate);
 					if (prey.timeSpentInStomach % digestionFrameRate == 0)
 					{
@@ -1009,43 +1043,41 @@ namespace V2.PlayerHandling
 						{
 							case PreyType.Player:
 								Player preyPlayer = prey.Instance as Player;
-								bool shouldDigestPlayer = !player.AsPred().SafeStomach;
+								bool shouldDigestPlayer = !pred.AsPred().SafeStomach;
 								if (shouldDigestPlayer)
 								{
-									prey.NoHealth = preyPlayer.AsFood().TakeDigestionDamage(player, digestionDamage);
+									prey.NoHealth = preyPlayer.AsFood().TakeDigestionDamage(pred, digestionDamage);
 									if (prey.NoHealth)
 									{
-										if (!player.AsPred().mealCount.ContainsKey("Terraria: Player"))
-											player.AsPred().mealCount.Add("Terraria: Player", 0);
-										player.AsPred().mealCount["Terraria: Player"] += 1;
+										if (!pred.AsPred().mealCount.ContainsKey("Terraria: Player"))
+											pred.AsPred().mealCount.Add("Terraria: Player", 0);
+										pred.AsPred().mealCount["Terraria: Player"] += 1;
 										SoundEngine.PlaySound(
-											player.AsPred().StandardBurps,
-											player.TrueCenter() + new Vector2(player.direction * 8f, -14f)
+											pred.AsPred().StandardBurps,
+											pred.TrueCenter() + new Vector2(pred.direction * 8f, -14f)
 										);
-										player.AsPred().ForceV2DataSync = true;
 									}
 								}
 								break;
 							case PreyType.NPC:
 								NPC preyNPC = prey.Instance as NPC;
-								bool shouldDigestNPC = !player.AsPred().SafeStomach;
+								bool shouldDigestNPC = !pred.AsPred().SafeStomach;
 								if (shouldDigestNPC)
 								{
 									if (preyNPC.type == NPCID.HallowBoss && ModContent.GetInstance<V2ServerConfig>().EasilyEdibleEmpress)
 										digestionDamage *= 40.0;
-									prey.NoHealth = PreyNPC.TakeDigestionDamage(preyNPC, player, digestionDamage);
+									prey.NoHealth = PreyNPC.TakeDigestionDamage(preyNPC, pred, digestionDamage);
 									if (prey.NoHealth)
 									{
 										prey.Instance = null;
 										string preyNPCMod = preyNPC.ModNPC != null ? preyNPC.ModNPC.Mod.DisplayName : "Terraria";
-										if (!player.AsPred().mealCount.ContainsKey(preyNPCMod + ": " + preyNPC.TypeName))
-											player.AsPred().mealCount.Add(preyNPCMod + ": " + preyNPC.TypeName, 0);
-										player.AsPred().mealCount[preyNPCMod + ": " + preyNPC.TypeName] += 1;
+										if (!pred.AsPred().mealCount.ContainsKey(preyNPCMod + ": " + preyNPC.TypeName))
+											pred.AsPred().mealCount.Add(preyNPCMod + ": " + preyNPC.TypeName, 0);
+										pred.AsPred().mealCount[preyNPCMod + ": " + preyNPC.TypeName] += 1;
 										SoundEngine.PlaySound(
-											prey.WeightLeftToDigest < 0.3 ? player.AsPred().SmallBurps : player.AsPred().StandardBurps,
-											player.TrueCenter() + new Vector2(player.direction * 8f, -14f)
+											prey.WeightLeftToDigest < 0.3 ? pred.AsPred().SmallBurps : pred.AsPred().StandardBurps,
+											pred.TrueCenter() + new Vector2(pred.direction * 8f, -14f)
 										);
-										player.AsPred().ForceV2DataSync = true;
 									}
 								}
 								break;
@@ -1054,21 +1086,20 @@ namespace V2.PlayerHandling
 								if (preyItem.IsAir)
 									break;
 
-								bool shouldDigestItem = !player.AsPred().SafeStomach;
+								bool shouldDigestItem = !pred.AsPred().SafeStomach;
 								if (shouldDigestItem)
 								{
-									prey.NoHealth = preyItem.TakeDigestionDamage(player, digestionDamage);
+									prey.NoHealth = preyItem.TakeDigestionDamage(pred, digestionDamage);
 									if (prey.NoHealth)
 									{
 										string preyItemMod = preyItem.ModItem != null ? preyItem.ModItem.Mod.DisplayName : "Terraria";
-										if (!player.AsPred().mealCount.ContainsKey(preyItemMod + ": " + preyItem.Name))
-											player.AsPred().mealCount.Add(preyItemMod + ": " + preyItem.Name, 0);
-										player.AsPred().mealCount[preyItemMod + ": " + preyItem.Name] += preyItem.stack;
+										if (!pred.AsPred().mealCount.ContainsKey(preyItemMod + ": " + preyItem.Name))
+											pred.AsPred().mealCount.Add(preyItemMod + ": " + preyItem.Name, 0);
+										pred.AsPred().mealCount[preyItemMod + ": " + preyItem.Name] += preyItem.stack;
 										SoundEngine.PlaySound(
-											prey.WeightLeftToDigest < 0.3 ? player.AsPred().SmallBurps : player.AsPred().StandardBurps,
-											player.TrueCenter() + new Vector2(player.direction * 8f, -14f)
+											prey.WeightLeftToDigest < 0.3 ? pred.AsPred().SmallBurps : pred.AsPred().StandardBurps,
+											pred.TrueCenter() + new Vector2(pred.direction * 8f, -14f)
 										);
-										player.AsPred().ForceV2DataSync = true;
 									}
 								}
 								break;
@@ -1077,8 +1108,8 @@ namespace V2.PlayerHandling
 				}
 				else
 				{
-					double absorptionRate = player.AsPred().PreyAbsorptionRatePerTick / (double)player.AsPred().stomachContents.Count;
-					if (player.sleeping.FullyFallenAsleep)
+					double absorptionRate = pred.AsPred().PreyAbsorptionRatePerTick / (double)pred.AsPred().StomachTracker?.Prey.Count;
+					if (pred.sleeping.FullyFallenAsleep)
 					{
 						absorptionRate *= 1.1;
 						bool everybodyIsSleepingOffAMeal = Main.CurrentFrameFlags.SleepingPlayersCount == Main.CurrentFrameFlags.ActivePlayersCount && Main.CurrentFrameFlags.SleepingPlayersCount > 0;
@@ -1102,25 +1133,25 @@ namespace V2.PlayerHandling
 								case "Water":
 									break;
 								case "Lava":
-									if (!player.AsPred().CanDrinkLavaSafe)
+									if (!pred.AsPred().CanDrinkLavaSafe)
 									{
-										player.AddBuff(ModContent.BuffType<MoltenStomach>(), 3);
+										pred.AddBuff(ModContent.BuffType<MoltenStomach>(), 3);
 									}
 									break;
 								case "Honey":
 									break;
 								case "Shimmer":
-									if (!player.AsPred().CanDrinkShimmerSafe)
+									if (!pred.AsPred().CanDrinkShimmerSafe)
 									{
-										if (!player.AsPred().PrimedForShimmerStomachDeath)
+										if (!pred.AsPred().PrimedForShimmerStomachDeath)
 										{
-											player.AsPred().PrimedForShimmerStomachDeath = true;
-											player.AddBuff(ModContent.BuffType<ShimmeringStomach>(), 300);
+											pred.AsPred().PrimedForShimmerStomachDeath = true;
+											pred.AddBuff(ModContent.BuffType<ShimmeringStomach>(), 300);
 										}
-										else if (!player.AsPred().ShimmeringTummy)
+										else if (!pred.AsPred().ShimmeringTummy)
 										{
-											player.AsPred().PrimedForShimmerStomachDeath = false;
-											player.KillMe(
+											pred.AsPred().PrimedForShimmerStomachDeath = false;
+											pred.KillMe(
 												PlayerDeathReason.ByCustomReason(
 													Language.GetTextValueWith(
 														Main.rand.NextFromCollection(new List<string>
@@ -1131,7 +1162,7 @@ namespace V2.PlayerHandling
 														}),
 														new
 														{
-															Player = player.name
+															Player = pred.name
 														}
 													)
 												),
@@ -1147,24 +1178,24 @@ namespace V2.PlayerHandling
 				}
 			}
 
-			if (!player.AsFood().IsCurrentlyEaten)
+			if (pred.CurrentCaptor() is null)
 			{
-				bool stomachNoisesPlaying = SoundEngine.TryGetActiveSound(player.AsPred().ActiveStomachNoises, out ActiveSound stomachNoises);
+				bool stomachNoisesPlaying = SoundEngine.TryGetActiveSound(pred.AsPred().ActiveStomachNoises, out ActiveSound stomachNoises);
 				if (!stomachNoisesPlaying)
 				{
-					player.AsPred().ActiveStomachNoises = SoundEngine.PlaySound(
-						StomachNoises.Muffled with { Volume = 0.25f + (0.15f * GetVisualBellySize(player)) },
-						player.TrueCenter()
+					pred.AsPred().ActiveStomachNoises = SoundEngine.PlaySound(
+						StomachNoises.Muffled with { Volume = 0.25f + (0.15f * GetVisualBellySize(pred)) },
+						pred.TrueCenter()
 					);
-					SoundEngine.TryGetActiveSound(player.AsPred().ActiveStomachNoises, out stomachNoises);
+					SoundEngine.TryGetActiveSound(pred.AsPred().ActiveStomachNoises, out stomachNoises);
 				}
 
 				if (stomachNoises is null)
 					return;
 
-				stomachNoises.Position = player.TrueCenter();
+				stomachNoises.Position = pred.TrueCenter();
 				stomachNoises.Volume = 0.25f;
-				stomachNoises.Volume += 0.15f * GetVisualBellySize(player);
+				stomachNoises.Volume += 0.15f * GetVisualBellySize(pred);
 			}
 		}
 
@@ -1172,13 +1203,16 @@ namespace V2.PlayerHandling
 		{
 			if (pred.sleeping.FullyFallenAsleep)
 			{
+				if (pred.AsPred().StomachWeightAtSleepStart == -1.0)
+					pred.AsPred().StomachWeightAtSleepStart = pred.AsPred().StomachWeight;
+
 				if (pred.AsPred().StomachWeight == 0.0 && pred.AsPred().StomachWeightAtSleepStart > 0.0 && pred.AsPred().StomachWeightAtSleepStart >= SleepSpeedsDigestion.FlatFullnessThreshold)
 					ModContent.GetInstance<SleepSpeedsDigestion>().TrySetCompletion(pred);
 			}
 			else
-				pred.AsPred().StomachWeightAtSleepStart = 0.0;
+				pred.AsPred().StomachWeightAtSleepStart = -1.0;
 
-			if (pred.AsPred().StomachFullness / pred.AsPred().StomachCapacity > TooFull.TimeThreshold)
+			if (pred.AsPred().StomachFullness / pred.AsPred().StomachCapacity > TooFull.FullnessThreshold)
 			{
 				pred.AsPred().OverfullTime += 1;
 				if (pred.AsPred().OverfullTime >= TooFull.TimeThreshold)
@@ -1205,9 +1239,9 @@ namespace V2.PlayerHandling
 		public static double GetCurrentBellyWeight(Player pred, bool onlyKicky = false)
 		{
 			double totalBellyWeight = 0.0;
-			if (pred.AsPred().stomachContents is not null && pred.AsPred().stomachContents.Count > 0)
+			if (pred.AsPred().StomachTracker is not null)
 			{
-				foreach (VoreTracker prey in pred.AsPred().stomachContents)
+				foreach (PreyData prey in pred.AsPred().StomachTracker.Prey)
 				{
 					if (prey.NoHealth && onlyKicky)
 						continue;
@@ -1234,9 +1268,9 @@ namespace V2.PlayerHandling
 
 		public static bool AnyPreyStillAlive(Player pred)
 		{
-			if (pred.AsPred().stomachContents is not null && pred.AsPred().stomachContents.Count > 0)
+			if (pred.AsPred().StomachTracker is not null)
 			{
-				foreach (VoreTracker prey in pred.AsPred().stomachContents)
+				foreach (PreyData prey in pred.AsPred().StomachTracker.Prey)
 				{
 					if (!prey.NoHealth)
 						return true;
@@ -1308,7 +1342,7 @@ namespace V2.PlayerHandling
 
 		public override bool PreKill(double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource)
 		{
-			if (Player.AsFood().IsCurrentlyEaten)
+			if (Player.CurrentCaptor() is not null)
 			{
 
 			}
@@ -1337,28 +1371,17 @@ namespace V2.PlayerHandling
 
 		public override void Kill(double damage, int hitDirection, bool pvp, PlayerDeathReason damageSource)
 		{
-			if (Player.AsFood().IsCurrentlyEaten)
+			if (Player.CurrentCaptor() is not null && Player.AsPred().StomachTracker is not null)
 			{
-				foreach (VoreTracker prey in Player.AsPred().stomachContents)
+				foreach (PreyData prey in Player.AsPred().StomachTracker.Prey)
 				{
-					Entity betterPred = Player.AsFood().CurrentCaptor.Value.Predator;
-					if (betterPred is NPC npcPred)
-					{
-						npcPred.AsPred().stomachContentsQueue.Add(prey);
-					}
-					else if (betterPred is Player playerPred)
-					{
-						playerPred.AsPred().stomachContentsQueue.Add(prey);
-					}
+					Player.CurrentCaptor().QueueNewPrey(prey);
 				}
 			}
-			Player.AsPred().stomachContents.Clear();
-			Player.AsPred().ForceV2DataSync = true;
 		}
 
 		public override void UpdateDead()
 		{
-			Player.AsPred().stomachContents.Clear();
 			Player.AsPred().PrimedForShimmerStomachDeath = false;
 		}
 
@@ -1428,6 +1451,7 @@ namespace V2.PlayerHandling
 		public override void LoadData(TagCompound tag)
 		{
 			mealCount = new Dictionary<string, int>();
+			drinkCount = new Dictionary<string, int>();
 			GoalsCompleted = new Dictionary<string, bool>();
 			foreach (KeyValuePair<string, object> keyValuePair in tag)
 			{
@@ -1455,108 +1479,6 @@ namespace V2.PlayerHandling
 			}
 		}
 
-
-		public override void CopyClientState(ModPlayer clientClone)
-		{
-			PredPlayer predClientClone = clientClone as PredPlayer;
-			predClientClone.ForceV2DataSync = ForceV2DataSync;
-		}
-
-		public override void SendClientChanges(ModPlayer clientPlayer)
-		{
-			PredPlayer predClientClone = clientPlayer as PredPlayer;
-			if (predClientClone.ForceV2DataSync)
-				SyncPlayer(-1, Main.myPlayer, false);
-		}
-
-		public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
-		{
-			ModPacket tumPacket = Mod.GetPacket();
-			tumPacket.Write((byte)V2.MessageType.SyncPlayerPredData);
-			tumPacket.Write((byte)Player.whoAmI);
-			tumPacket.Write(Player.AsPred().stomachContents.Count);
-			foreach (VoreTracker prey in Player.AsPred().stomachContents)
-			{
-				tumPacket.Write(prey.Type switch
-				{
-					PreyType.Player => 0,
-					PreyType.NPC => 1,
-					PreyType.Projectile => 2,
-					PreyType.Item => 3,
-					_ => throw new NotImplementedException(),
-				});
-				tumPacket.Write(prey.NoHealth);
-				if (prey.Instance != null)
-				{
-					tumPacket.Write(prey.Instance.whoAmI);
-				}
-				else
-				{
-					tumPacket.Write(prey.ExactType);
-					tumPacket.Write(prey.WeightLeftToDigest);
-				}
-			}
-			tumPacket.Write(Player.AsPred().GLP.Spent);
-			tumPacket.Write(Player.AsPred().GLP.Base);
-			tumPacket.Write(Player.AsPred().GLP.Extra);
-			tumPacket.Write(Player.AsPred().ACI.Spent);
-			tumPacket.Write(Player.AsPred().ACI.Base);
-			tumPacket.Write(Player.AsPred().ACI.Extra);
-			tumPacket.Write(Player.AsPred().TUM.Spent);
-			tumPacket.Write(Player.AsPred().TUM.Base);
-			tumPacket.Write(Player.AsPred().TUM.Extra);
-			tumPacket.Write(Player.AsPred().ABS.Spent);
-			tumPacket.Write(Player.AsPred().ABS.Base);
-			tumPacket.Write(Player.AsPred().ABS.Extra);
-			tumPacket.Send(toWho, fromWho);
-		}
-
-		public void ReceivePlayerSync(BinaryReader binaryReader)
-		{
-			Player.AsPred().stomachContents = new List<VoreTracker>();
-
-			int gutCount = binaryReader.ReadInt32();
-			if (gutCount <= 0)
-				return;
-
-			for (int i = 0; i < gutCount; i++)
-			{
-				int preyType = binaryReader.ReadInt32();
-				// see previous note on EntityID
-				// int preyID = binaryReader.ReadInt32();
-				bool preyDead = binaryReader.ReadBoolean();
-				if (preyDead)
-				{
-					string preyExactType = binaryReader.ReadString();
-					double preyWeightLeft = binaryReader.ReadDouble();
-					VoreTracker deadPrey = new VoreTracker(preyType, preyExactType, preyWeightLeft);
-					deadPrey.NoHealth = true;
-					Player.AsPred().stomachContents.Add(deadPrey);
-				}
-				else
-				{
-					int preyIndex = binaryReader.ReadInt32();
-					VoreTracker prey = new VoreTracker(preyType switch
-					{
-						0 => Main.player[preyIndex],
-						1 => Main.npc[preyIndex],
-						2 => Main.projectile[preyIndex],
-						3 => Main.item[preyIndex],
-						_ => throw new NotImplementedException(),
-					});
-					Player.AsPred().stomachContents.Add(prey);
-				}
-			}
-			Player.AsPred().GLP.Base = binaryReader.ReadInt32();
-			Player.AsPred().GLP.Extra = binaryReader.ReadInt32();
-			Player.AsPred().ACI.Base = binaryReader.ReadInt32();
-			Player.AsPred().ACI.Extra = binaryReader.ReadInt32();
-			Player.AsPred().TUM.Base = binaryReader.ReadInt32();
-			Player.AsPred().TUM.Extra = binaryReader.ReadInt32();
-			Player.AsPred().ABS.Base = binaryReader.ReadInt32();
-			Player.AsPred().ABS.Extra = binaryReader.ReadInt32();
-		}
-
 		public static int GetVisualBellySize(Player player)
 		{
 			return Math.Min(
@@ -1578,7 +1500,7 @@ namespace V2.PlayerHandling
 			void DrawHungryPlayerTummy(ref PlayerDrawSet drawInfo, int size, int offsetX = 0, int offsetY = 0)
 			{
 				Texture2D tum = ModContent.Request<Texture2D>("V2/PlayerHandling/TumSprites/Bare_" + size, AssetRequestMode.ImmediateLoad).Value;
-				if (player.IsAirborne())
+				if (player.IsAirborne() || player.sleeping.isSleeping)
 					tum = ModContent.Request<Texture2D>("V2/PlayerHandling/TumSprites/Bare_" + size + "_Airborne", AssetRequestMode.ImmediateLoad).Value;
 				Vector2 tumLocation =
 					new Vector2(

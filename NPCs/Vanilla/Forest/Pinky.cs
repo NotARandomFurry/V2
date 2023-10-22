@@ -53,8 +53,6 @@ namespace V2.NPCs.Vanilla.Forest
 			entity.AsV2NPC().Gender = EntityGender.Other;
 
 			entity.AsFood().Size = 0.065;
-			entity.AsPred().stomachContents = new List<VoreTracker>();
-			entity.AsPred().stomachContentsQueue = new List<VoreTracker>();
 			entity.AsPred().MaxStomachCapacity = 0.4;
 
 			entity.AsPred().CanBeForceFed = CanCottonCandySlimeBeForceFed;
@@ -97,8 +95,8 @@ namespace V2.NPCs.Vanilla.Forest
 			}
 		}
 
-		public static double GetDigestionTickRate(NPC npc, VoreTracker prey) => 0.10;
-		public static double GetDigestionTickDamage(NPC npc, VoreTracker prey) => 1;
+		public static double GetDigestionTickRate(NPC npc, PreyData prey) => 0.10;
+		public static double GetDigestionTickDamage(NPC npc, PreyData prey) => 1;
 		public static double GetPreyAbsorptionRate(NPC npc)
 		{
 			double baseAbsorptionRate = 1.0 / (double)V2Utils.SensibleTime(
@@ -121,7 +119,7 @@ namespace V2.NPCs.Vanilla.Forest
 	{
 		public override void PreUpdateBuffs()
 		{
-			if (Player.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.NPC && x.ExactType == "Pinky") is VoreTracker pinkyPrey)
+			if (Player.AsPred().StomachTracker?.Prey.FirstOrDefault(x => x.Type == PreyType.NPC && x.ExactType == "Pinky") is PreyData pinkyPrey)
 			{
 				Player.AddStatus(BuffID.Sunflower, Pinky.EatenHappyLength);
 				if (pinkyPrey.NoHealth)
@@ -136,7 +134,7 @@ namespace V2.NPCs.Vanilla.Forest
 
 		public override void ResetEffects(NPC npc)
 		{
-			if (npc.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.NPC && x.ExactType == "Pinky") is VoreTracker pinkyPrey)
+			if (PredNPC.GetStomachTracker(npc)?.Prey.FirstOrDefault(x => x.Type == PreyType.NPC && x.ExactType == "Pinky") is PreyData pinkyPrey)
 			{
 				npc.AddStatus(BuffID.Sunflower, Pinky.EatenHappyLength);
 				if (pinkyPrey.NoHealth)

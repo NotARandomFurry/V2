@@ -42,8 +42,14 @@ namespace V2.NPCs
 	public class PredNPC : GlobalNPC
 	{
 		public EntityGender Gender { get; set; }
-		public List<VoreTracker> stomachContents;
-		public List<VoreTracker> stomachContentsQueue;
+
+		public static VoreTracker GetStomachTracker(NPC npc)
+		{
+			if (Main.gameMenu)
+				return null;
+
+			return ModContent.GetInstance<V2MasterSystem>().VoreTrackers.FirstOrDefault(x => x.Predator is NPC predNPC && predNPC.whoAmI == npc.whoAmI);
+		}
 		public EntityDigestionType DigestionType { get; set; }
 		public double MaxStomachCapacity { get; set; }
 		public float MaxSwallowRange { get; set; }
@@ -72,10 +78,10 @@ namespace V2.NPCs
 		public delegate bool DelegateSpecialPredAI(NPC npc);
 		public DelegateSpecialPredAI SpecialPredAI { get; set; }
 
-		public delegate double DelegateGetDigestionTickRate(NPC npc, VoreTracker prey);
+		public delegate double DelegateGetDigestionTickRate(NPC npc, PreyData prey);
 		public DelegateGetDigestionTickRate GetDigestionTickRate { get; set; }
 
-		public delegate double DelegateGetDigestionTickDamage(NPC npc, VoreTracker prey);
+		public delegate double DelegateGetDigestionTickDamage(NPC npc, PreyData prey);
 		public DelegateGetDigestionTickDamage GetDigestionTickDamage { get; set; }
 		public double Stomachache;
 		public double BaseStomachacheMeterCapacity;
@@ -89,7 +95,7 @@ namespace V2.NPCs
 			}
 		}
 
-		public delegate void DelegateOnDigestionKill(NPC npc, VoreTracker digestedPrey);
+		public delegate void DelegateOnDigestionKill(NPC npc, PreyData digestedPrey);
 		public DelegateOnDigestionKill OnDigestionKill { get; set; }
 
 		public delegate void DelegateGetDigestedPlayerAdditionalDeathMessages(NPC npc, Player player, List<string> deathMessageKeyList);
@@ -112,8 +118,6 @@ namespace V2.NPCs
 
 		public PredNPC()
 		{
-			stomachContents = new List<VoreTracker>();
-			stomachContentsQueue = new List<VoreTracker>();
 			MaxStomachCapacity = 1.0;
 			MaxSwallowRange = 36f;
 			ExtraWeight = 0.0;
@@ -148,12 +152,6 @@ namespace V2.NPCs
 
 		public override void ResetEffects(NPC npc)
 		{
-			while (npc.AsPred().stomachContentsQueue.Count > 0)
-			{
-				npc.AsPred().stomachContents.Add(npc.AsPred().stomachContentsQueue.First());
-				npc.AsPred().stomachContentsQueue.Remove(npc.AsPred().stomachContentsQueue.First());
-			}
-
 			if (npc.AsPred().ResetPredSpecificVariables is not null)
 				npc.AsPred().ResetPredSpecificVariables.Invoke(npc);
 		}
@@ -187,10 +185,10 @@ namespace V2.NPCs
 
 			if (prey is Player preyPlayer)
 			{
-				if (VoreTracker.GetInitialPreySize(preyPlayer) >= pred.AsPred().MaxStomachCapacity - GetCurrentBellyWeight(pred))
+				if (PreyData.GetInitialPreySize(preyPlayer) >= pred.AsPred().MaxStomachCapacity - GetCurrentBellyWeight(pred))
 					return false;
 
-				if (preyPlayer.AsFood().IsCurrentlyEaten)
+				if (preyPlayer.CurrentCaptor() is not null)
 					return false;
 			}
 			else if (prey is NPC preyNPC)
@@ -200,16 +198,16 @@ namespace V2.NPCs
 
 				bool tastesLikeSkittles = preyNPC.type == NPCID.HallowBoss && ModContent.GetInstance<V2ServerConfig>().EasilyEdibleEmpress;
 				if (tastesLikeSkittles)
-					return !preyNPC.AsFood().IsCurrentlyEaten;
+					return preyNPC.CurrentCaptor() is null;
 
 				bool isThisAFuckingBoss = preyNPC.boss || (preyNPC.type >= NPCID.EaterofWorldsHead && preyNPC.type <= NPCID.EaterofWorldsTail); // I hate EoW
 				if (isThisAFuckingBoss && !pred.boss)
 					return false;
 
-				if (VoreTracker.GetInitialPreySize(preyNPC) >= pred.AsPred().MaxStomachCapacity - GetCurrentBellyWeight(pred))
+				if (PreyData.GetInitialPreySize(preyNPC) >= pred.AsPred().MaxStomachCapacity - GetCurrentBellyWeight(pred))
 					return false;
 
-				if (preyNPC.AsFood().IsCurrentlyEaten)
+				if (preyNPC.CurrentCaptor() is not null)
 					return false;
 			}
 			else if (prey is Item preyItem)
@@ -220,7 +218,7 @@ namespace V2.NPCs
 				if (preyItem.favorited)
 					return false;
 
-				if (preyItem.AsFood().IsCurrentlyEaten)
+				if (preyItem.CurrentCaptor() is not null)
 					return false;
 			}
 
@@ -232,52 +230,79 @@ namespace V2.NPCs
 		/// </summary>
 		/// <param name="pred">The predator which will attempt to swallow the given prey.</param>
 		/// <param name="prey">The prey which will be attempt to be swallowed by the given predator.</param>
-		public static void Swallow(NPC pred, Entity prey)
+		public static void Swallow(NPC pred, Entity prey, int MPstate = 0, int MPwhoAmI = -1)
 		{
-			if (CanSwallow(pred, prey))
-			{
-				if (pred.AsPred().stomachContents is null || pred.AsPred().stomachContents.Count <= 0)
-					pred.AsPred().stomachContents = new List<VoreTracker>();
+			if (!CanSwallow(pred, prey))
+				return;
 
-				VoreTracker food = new VoreTracker(prey);
-				pred.AsPred().stomachContents.Add(food);
-				SoundEngine.PlaySound(
-					food.WeightLeftToDigest <= pred.AsPred().SmallGulpThreshold
-						? pred.AsPred().SmallGulps
-						: pred.AsPred().BigGulps,
-					pred.Center
-				);
-				switch (food.Type)
-				{
-					case PreyType.Player:
-						Player player = prey as Player;
-						player.AsFood().TotalTimesSwallowed += 1;
-						player.AsFood().IsCurrentlyEaten = true;
-						break;
-					case PreyType.NPC:
-						NPC npc = prey as NPC;
-						PreyNPC.UpdateNPCEatenStatus(npc);
-						break;
-					case PreyType.Item:
-						Item item = prey as Item;
-						item.AsFood().OnSwallow?.Invoke(item, pred);
-						if (item.AsFood().OnSwallowDamage > 0)
-						{
-							pred.StrikeNPC(
-								new NPC.HitInfo
-								{
-									SourceDamage = item.AsFood().OnSwallowDamage,
-									DamageType = DamageClass.Default,
-									Crit = false,
-									HideCombatText = true
-								}
-							);
-						}
-						if (item.AsFood().OnSwallowSoreThroatTime > 0)
-							pred.AddBuff(ModContent.BuffType<SoreThroat>(), item.AsFood().OnSwallowSoreThroatTime);
-						break;
-				}
-				pred.netUpdate = true;
+			if (MPstate == 0 && Main.netMode == NetmodeID.MultiplayerClient)
+			{
+				MPstate = 1;
+				MPwhoAmI = Main.myPlayer;
+			}
+
+			PreyData food = PreyData.NewData(prey);
+			AddNewPrey(pred, food);
+			SoundEngine.PlaySound(
+				food.WeightLeftToDigest <= pred.AsPred().SmallGulpThreshold
+					? pred.AsPred().SmallGulps
+					: pred.AsPred().BigGulps,
+				pred.Center
+			);
+			switch (food.Type)
+			{
+				case PreyType.Player:
+					Player player = prey as Player;
+					player.AsFood().TotalTimesSwallowed += 1;
+					break;
+				case PreyType.NPC:
+					NPC npc = prey as NPC;
+					break;
+				case PreyType.Projectile:
+					Projectile projectile = prey as Projectile;
+					break;
+				case PreyType.Item:
+					Item item = prey as Item;
+					item.AsFood().OnSwallow?.Invoke(item, pred);
+					if (item.AsFood().OnSwallowDamage > 0)
+					{
+						pred.StrikeNPC(
+							new NPC.HitInfo
+							{
+								SourceDamage = item.AsFood().OnSwallowDamage,
+								DamageType = DamageClass.Default,
+								Crit = false,
+								HideCombatText = true
+							}
+						);
+					}
+					if (item.AsFood().OnSwallowSoreThroatTime > 0)
+						pred.AddBuff(ModContent.BuffType<SoreThroat>(), item.AsFood().OnSwallowSoreThroatTime);
+					break;
+			}
+			pred.netUpdate = true;
+
+			if (MPstate == 1)
+			{
+				ModPacket packet = V2.Instance.GetPacket();
+				packet.Write((byte)V2.MessageType.RequestSwallowPrey);
+				packet.Write((byte)1);
+				packet.Write(pred.whoAmI);
+				packet.Write((byte)food.Type);
+				packet.Write(prey.whoAmI);
+				packet.Write(MPwhoAmI);
+				packet.Send();
+			}
+			else if (MPstate == 2)
+			{
+				ModPacket packet = V2.Instance.GetPacket();
+				packet.Write((byte)V2.MessageType.SyncSwallowPrey);
+				packet.Write((byte)1);
+				packet.Write(pred.whoAmI);
+				packet.Write((byte)food.Type);
+				packet.Write(prey.whoAmI);
+				packet.Write(MPwhoAmI);
+				packet.Send(-1, ignoreClient: MPwhoAmI);
 			}
 		}
 
@@ -309,48 +334,67 @@ namespace V2.NPCs
 		/// <summary>
 		/// Runs update ticks on all food in the given predator's stomach.
 		/// </summary>
-		/// <param name="npc">The NPC to update all food in the stomach of.</param>
-		public static void UpdatePrey(NPC npc)
+		/// <param name="pred">The NPC to update all food in the stomach of.</param>
+		public static void UpdatePrey(NPC pred)
 		{
-			if (npc.AsPred().stomachContents is null)
-				return;
-			npc.AsPred().stomachContents.RemoveAll(x => x.NoHealth && x.WeightLeftToDigest == 0);
-			if (npc.AsPred().stomachContents.Count <= 0)
-				return;
-
-			foreach (VoreTracker prey in npc.AsPred().stomachContents)
+			foreach (PreyData prey in GetStomachTracker(pred).Prey)
 			{
 				prey.timeSpentInStomach++;
 
-				switch (prey.Type)
-				{
-					case PreyType.Item:
-						Item preyItem = prey.Instance as Item;
-						preyItem.AsFood().UpdateInStomach?.Invoke(preyItem, npc, prey.NoHealth);
-						break;
-				}
-
 				if (!prey.NoHealth)
 				{
+					switch (prey.Type)
+					{
+						case PreyType.Player:
+							Player preyPlayer = prey.Instance as Player;
+							if (preyPlayer.active && !preyPlayer.dead)
+							{
+								preyPlayer.velocity = Vector2.Zero;
+								preyPlayer.position = pred.position;
+							}
+							break;
+						case PreyType.NPC:
+							NPC preyNPC = prey.Instance as NPC;
+							if (preyNPC.active)
+							{
+								preyNPC.velocity = Vector2.Zero;
+								preyNPC.position = pred.position;
+							}
+							break;
+						case PreyType.Projectile:
+							Projectile preyProjectile = prey.Instance as Projectile;
+							if (preyProjectile.active)
+							{
+								preyProjectile.velocity = Vector2.Zero;
+								preyProjectile.position = pred.position;
+							}
+							break;
+						case PreyType.Item:
+							Item preyItem = prey.Instance as Item;
+							if (!preyItem.IsAir)
+								preyItem.AsFood().UpdateInStomach?.Invoke(preyItem, pred, prey.NoHealth);
+							break;
+					}
+
 					if (prey.Type == PreyType.Player
-					 && npc.type == NPCID.Nurse
-					 && npc.AsNurse().healPlayerIndex != -1
-					 && npc.AsNurse().healPlayerIndex == (prey.Instance as Player).whoAmI
-					 && !npc.AsNurse().digestScamPatient)
+					 && pred.type == NPCID.Nurse
+					 && pred.AsNurse().healPlayerIndex != -1
+					 && pred.AsNurse().healPlayerIndex == (prey.Instance as Player).whoAmI
+					 && !pred.AsNurse().digestScamPatient)
 					{
 						Player healingPreyPlayer = prey.Instance as Player;
 						if (healingPreyPlayer.statLife >= healingPreyPlayer.statLifeMax2)
-							npc.AsNurse().healOvertime += 1;
+							pred.AsNurse().healOvertime += 1;
 					}
 
-					if (npc.AsPred().GetDigestionTickRate is null || npc.AsPred().GetDigestionTickDamage is null)
+					if (pred.AsPred().GetDigestionTickRate is null || pred.AsPred().GetDigestionTickDamage is null)
 					{
 						if (ModContent.GetInstance<V2ServerConfig>().DebugChatMessages)
-							Main.NewText(npc.FullName + " has invalid digestion damage/tick rate methods!");
+							Main.NewText(pred.FullName + " has invalid digestion damage/tick rate methods!");
 						return;
 					}
-					double digestionDamage = npc.AsPred().GetDigestionTickDamage.Invoke(npc, prey);
-					double digestionTickRate = npc.AsPred().GetDigestionTickRate.Invoke(npc, prey);
+					double digestionDamage = pred.AsPred().GetDigestionTickDamage.Invoke(pred, prey);
+					double digestionTickRate = pred.AsPred().GetDigestionTickRate.Invoke(pred, prey);
 					int digestionTickFrameRate = (int)Math.Round(60.0 / digestionTickRate);
 					if (prey.timeSpentInStomach % (int)digestionTickFrameRate == 0)
 					{
@@ -359,7 +403,7 @@ namespace V2.NPCs
 							case PreyType.Player:
 								Player preyPlayer = prey.Instance as Player;
 								bool shouldDigestPlayer = true;
-								bool shouldHealPlayer = npc.type == NPCID.Nurse && npc.AsNurse().healPlayerIndex != -1 && npc.AsNurse().healPlayerIndex == preyPlayer.whoAmI && !npc.AsNurse().digestScamPatient;
+								bool shouldHealPlayer = pred.type == NPCID.Nurse && pred.AsNurse().healPlayerIndex != -1 && pred.AsNurse().healPlayerIndex == preyPlayer.whoAmI && !pred.AsNurse().digestScamPatient;
 								if (shouldHealPlayer)
 								{
 									bool shouldFurtherHealPlayer = preyPlayer.statLife < preyPlayer.statLifeMax2;
@@ -376,21 +420,21 @@ namespace V2.NPCs
 											false,
 											true
 										)];
-										digestionText.position.X = npc.Center.X;
-										digestionText.position.X += npc.direction * 14;
+										digestionText.position.X = pred.Center.X;
+										digestionText.position.X += pred.direction * 14;
 										digestionText.position.Y = preyPlayer.Center.Y;
 										digestionText.position.Y += preyPlayer.height / 5f;
-										digestionText.velocity.X = npc.direction * 2.5f;
+										digestionText.velocity.X = pred.direction * 2.5f;
 										digestionText.velocity.Y = -4f;
 									}
 								}
 								else if (shouldDigestPlayer)
 								{
-									prey.NoHealth = preyPlayer.AsFood().TakeDigestionDamage(npc, digestionDamage);
+									prey.NoHealth = preyPlayer.AsFood().TakeDigestionDamage(pred, digestionDamage);
 									if (ModContent.GetInstance<V2ServerConfig>().DebugChatMessages)
 										Main.NewText("Successfully dealt digestion damage to prey: " + preyPlayer.name);
-									if (prey.NoHealth && npc.AsPred().OnDigestionKill is not null)
-										npc.AsPred().OnDigestionKill.Invoke(npc, prey);
+									if (prey.NoHealth && pred.AsPred().OnDigestionKill is not null)
+										pred.AsPred().OnDigestionKill.Invoke(pred, prey);
 								}
 								else if (ModContent.GetInstance<V2ServerConfig>().DebugChatMessages)
 									Main.NewText("Failed to deal digestion damage to prey: " + preyPlayer.name);
@@ -402,14 +446,14 @@ namespace V2.NPCs
 								{
 									if (preyNPC.type == NPCID.HallowBoss && ModContent.GetInstance<V2ServerConfig>().EasilyEdibleEmpress)
 										digestionDamage *= 50.0;
-									prey.NoHealth = PreyNPC.TakeDigestionDamage(preyNPC, npc, digestionDamage);
+									prey.NoHealth = PreyNPC.TakeDigestionDamage(preyNPC, pred, digestionDamage);
 									preyNPC.netUpdate = true;
 									if (ModContent.GetInstance<V2ServerConfig>().DebugChatMessages)
 										Main.NewText("Successfully dealt digestion damage to prey: " + preyNPC.GivenOrTypeName);
 									else if (ModContent.GetInstance<V2ServerConfig>().DebugChatMessages)
 										Main.NewText("Failed to deal digestion damage to prey: " + preyNPC.GivenOrTypeName);
-									if (prey.NoHealth && npc.AsPred().OnDigestionKill is not null)
-										npc.AsPred().OnDigestionKill.Invoke(npc, prey);
+									if (prey.NoHealth && pred.AsPred().OnDigestionKill is not null)
+										pred.AsPred().OnDigestionKill.Invoke(pred, prey);
 								}
 								break;
 						}
@@ -417,18 +461,18 @@ namespace V2.NPCs
 				}
 				else
 				{
-					if (npc.AsPred().GetPreyAbsorptionRate is null)
+					if (pred.AsPred().GetPreyAbsorptionRate is null)
 						continue;
 
-					double digestedWeightPerTick = npc.AsPred().GetPreyAbsorptionRate.Invoke(npc) / (double)npc.AsPred().stomachContents.Count;
+					double digestedWeightPerTick = pred.AsPred().GetPreyAbsorptionRate.Invoke(pred) / (double)GetStomachTracker(pred).Prey.Count;
 					if (prey.WeightLeftToDigest <= digestedWeightPerTick)
 					{
-						npc.AsPred().ExtraWeight += prey.WeightLeftToDigest * 0.4;
+						pred.AsPred().ExtraWeight += prey.WeightLeftToDigest * 0.4;
 						prey.WeightLeftToDigest = 0;
 					}
 					else
 					{
-						npc.AsPred().ExtraWeight += digestedWeightPerTick * 0.4;
+						pred.AsPred().ExtraWeight += digestedWeightPerTick * 0.4;
 						prey.WeightLeftToDigest -= digestedWeightPerTick;
 					}
 					switch (prey.Type)
@@ -441,35 +485,38 @@ namespace V2.NPCs
 				}
 			}
 
-			if (npc.AsFood(risky: true) is null)
+			if (pred.AsFood(risky: true) is null)
 				return;
 
-			if (!npc.AsFood().IsCurrentlyEaten && npc.AsPred().GetVisualBellySize is not null)
+			if (pred.CurrentCaptor() is null && pred.AsPred().GetVisualBellySize is not null)
 			{
-				bool stomachNoisesPlaying = SoundEngine.TryGetActiveSound(npc.AsPred().ActiveStomachNoises, out ActiveSound stomachNoises);
+				bool stomachNoisesPlaying = SoundEngine.TryGetActiveSound(pred.AsPred().ActiveStomachNoises, out ActiveSound stomachNoises);
 				if (!stomachNoisesPlaying)
 				{
-					npc.AsPred().ActiveStomachNoises = SoundEngine.PlaySound(
-						StomachNoises.Muffled with { Volume = 0.2f + (0.1f * npc.AsPred().GetVisualBellySize.Invoke(npc)) },
-						npc.TrueCenter()
+					pred.AsPred().ActiveStomachNoises = SoundEngine.PlaySound(
+						StomachNoises.Muffled with { Volume = 0.2f + (0.1f * pred.AsPred().GetVisualBellySize.Invoke(pred)) },
+						pred.TrueCenter()
 					);
-					SoundEngine.TryGetActiveSound(npc.AsPred().ActiveStomachNoises, out stomachNoises);
+					SoundEngine.TryGetActiveSound(pred.AsPred().ActiveStomachNoises, out stomachNoises);
 				}
 
 				if (stomachNoises is null)
 					return;
 
-				stomachNoises.Position = npc.TrueCenter();
+				stomachNoises.Position = pred.TrueCenter();
 				stomachNoises.Volume = 0.2f;
-				stomachNoises.Volume += 0.1f * npc.AsPred().GetVisualBellySize.Invoke(npc);
+				stomachNoises.Volume += 0.1f * pred.AsPred().GetVisualBellySize.Invoke(pred);
 				if (stomachNoises.Volume > 0.75f)
 					stomachNoises.Volume = 0.75f;
 			}
 		}
 
-		public override void PostAI(NPC npc)
+		public static void AddNewPrey(NPC pred, PreyData prey)
 		{
-			UpdatePrey(npc);
+			if (GetStomachTracker(pred) is null)
+				VoreTracker.NewTracker(pred, new List<PreyData>() { prey }, null, null);
+			else
+				GetStomachTracker(pred).Prey.Add(prey);
 		}
 
 		public static string GetDigestedPlayerDeathReason(NPC npc, Player player)
@@ -544,101 +591,15 @@ namespace V2.NPCs
 			);
 		}
 
-		public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
-		{
-			binaryWriter.Write(npc.AsPred().stomachContents.Count);
-			if (npc.AsPred().stomachContents.Count > 0)
-			{
-				foreach (VoreTracker prey in npc.AsPred().stomachContents)
-				{
-					if (prey.Type == PreyType.Liquid)
-					{
-						binaryWriter.Write(4);
-						binaryWriter.Write(prey.ExactType);
-						binaryWriter.Write(prey.WeightLeftToDigest);
-						continue;
-					}
-					binaryWriter.Write(prey.Type switch
-					{
-						PreyType.Player => 0,
-						PreyType.NPC => 1,
-						PreyType.Projectile => 2,
-						PreyType.Item => 3,
-						_ => throw new NotImplementedException(),
-					});
-					binaryWriter.Write(prey.NoHealth);
-					if (prey.Instance != null)
-						binaryWriter.Write(prey.Instance.whoAmI);
-					else
-						binaryWriter.Write(prey.WeightLeftToDigest);
-				}
-			}
-		}
-
-		public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
-		{
-			npc.AsPred().stomachContents = new List<VoreTracker>();
-
-			// read how many snacks are supposed to be in this NPC's gut, and prepare accordingly
-			int gutCount = binaryReader.ReadInt32();
-			if (gutCount > 0)
-			{
-				for (int i = 0; i < gutCount; i++)
-				{
-					int preyType = binaryReader.ReadInt32();
-					if (preyType == 4)
-					{
-						string liquidType = binaryReader.ReadString();
-						double liquidLeft = binaryReader.ReadDouble();
-						int liquidTypeID = liquidType switch
-						{
-							"Water" => LiquidID.Water,
-							"Lava" => LiquidID.Lava,
-							"Honey" => LiquidID.Honey,
-							"Shimmer" => LiquidID.Shimmer,
-						};
-						npc.AsPred().stomachContents.Add(new VoreTracker(liquidTypeID, liquidLeft));
-						continue;
-					}
-					int preyIndex = binaryReader.ReadInt32();
-					bool preyDead = binaryReader.ReadBoolean();
-					double preyWeightLeft = binaryReader.ReadDouble();
-					VoreTracker prey = new VoreTracker(preyType switch
-					{
-						0 => Main.player[preyIndex],
-						1 => Main.npc[preyIndex],
-						2 => Main.projectile[preyIndex],
-						3 => Main.item[preyIndex],
-					});
-					if (preyDead)
-					{
-						prey.NoHealth = true;
-						prey.WeightLeftToDigest = preyWeightLeft;
-					}
-					npc.AsPred().stomachContents.Add(prey);
-				}
-			}
-		}
-
 		public override void OnKill(NPC npc)
 		{
-			if (npc.AsFood().IsCurrentlyEaten)
+			if (npc.CurrentCaptor() is not null && GetStomachTracker(npc) is not null)
 			{
-				foreach (VoreTracker prey in npc.AsPred().stomachContents)
+				foreach (PreyData prey in GetStomachTracker(npc).Prey)
 				{
-					Entity betterPred = npc.AsFood().CurrentCaptor.Value.Predator;
-					if (betterPred is NPC npcPred)
-					{
-						npcPred.AsPred().stomachContentsQueue.Add(prey);
-					}
-					else if (betterPred is Player playerPred)
-					{
-						playerPred.AsPred().stomachContentsQueue.Add(prey);
-					}
+					npc.CurrentCaptor().QueueNewPrey(prey);
 				}
 			}
-
-			npc.AsPred().stomachContents.Clear();
 		}
 
 		/// <summary>
@@ -649,26 +610,26 @@ namespace V2.NPCs
 		/// <returns>The current total weight of the given predator's stomach.</returns>
 		public static double GetCurrentBellyWeight(NPC pred)
 		{
-			double totalBellyWeight = 0.0;
-			if (pred.AsPred().stomachContents is not null && pred.AsPred().stomachContents.Count > 0)
-			{
-				foreach (VoreTracker prey in pred.AsPred().stomachContents)
-				{
-					totalBellyWeight += prey.WeightLeftToDigest;
-					if (prey.NoHealth)
-						continue;
+			if (GetStomachTracker(pred) is null)
+				return 0.0;
 
-					switch (prey.Type)
-					{
-						case PreyType.Player:
-							Player preyPredPlayer = prey.Instance as Player;
-							totalBellyWeight += preyPredPlayer.AsPred().StomachWeight;
-							break;
-						case PreyType.NPC:
-							NPC preyPredNPC = prey.Instance as NPC;
-							totalBellyWeight += GetCurrentBellyWeight(preyPredNPC);
-							break;
-					}
+			double totalBellyWeight = 0.0;
+			foreach (PreyData prey in GetStomachTracker(pred).Prey)
+			{
+				totalBellyWeight += prey.WeightLeftToDigest;
+				if (prey.NoHealth)
+					continue;
+
+				switch (prey.Type)
+				{
+					case PreyType.Player:
+						Player preyPredPlayer = prey.Instance as Player;
+						totalBellyWeight += preyPredPlayer.AsPred().StomachWeight;
+						break;
+					case PreyType.NPC:
+						NPC preyPredNPC = prey.Instance as NPC;
+						totalBellyWeight += GetCurrentBellyWeight(preyPredNPC);
+						break;
 				}
 			}
 			return totalBellyWeight;
@@ -676,9 +637,9 @@ namespace V2.NPCs
 
 		public static bool AnyPreyStillAlive(NPC pred)
 		{
-			if (pred.AsPred().stomachContents is not null && pred.AsPred().stomachContents.Count > 0)
+			if (GetStomachTracker(pred) is not null)
 			{
-				foreach (VoreTracker prey in pred.AsPred().stomachContents)
+				foreach (PreyData prey in GetStomachTracker(pred).Prey)
 				{
 					if (!prey.NoHealth)
 						return true;

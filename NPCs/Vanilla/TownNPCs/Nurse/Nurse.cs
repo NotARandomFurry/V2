@@ -120,7 +120,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 
 		public static void ResetPredSpecificVariables(NPC npc)
 		{
-			if (npc.AsPred().stomachContents is null || npc.AsPred().stomachContents.Count <= 0 || npc.AsPred().stomachContents.FindAll(x => x.Type == PreyType.Player).Count <= 0)
+			if (PredNPC.GetStomachTracker(npc) is null || PredNPC.GetStomachTracker(npc).Prey.FindAll(x => x.Type == PreyType.Player).Count <= 0)
 			{
 				npc.AsNurse().healOvertime = 0;
 				npc.AsNurse().digestScamPatient = false;
@@ -297,7 +297,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 							});
 							break;
 					}
-					if (player.AsPred().stomachContents.Count > 0)
+					if (player.AsPred().StomachTracker?.Prey.Count > 0)
 					{
 						if (player.AsPred().SafeStomach)
 						{
@@ -513,8 +513,8 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 					{
 						nurseChatPool.AddRange(new List<string>
 						{
-							"Shouldn't you be the one asking me to say \"ahh\"? You've definitely gotten gurgled enough by now to seem like you'd want that.",
-							"Sheesh, you've been churned up " + player.AsFood().TotalTimesDigested + " times!? Ever consider a change of profession? Maybe try moving in with someone who needs a dependable snack?",
+							"Feels like you should be the one asking me to say \"ahh\". You've definitely gotten gurgled enough by now to make a gal believe you'd want that.",
+							"Sheesh, you've been churned up " + player.AsFood().TotalTimesDigested + " times!? Ever consider a change of profession? Try some farming, perhaps? Maybe try moving in with someone who needs a dependable snack?",
 						});
 					}
 					if (Main.IsItAHappyWindyDay)
@@ -546,7 +546,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 			return nurseChatPool;
 		}
 
-		public static bool CanNurseBeForceFed(NPC npc) => npc.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.ArmsDealer) is null;
+		public static bool CanNurseBeForceFed(NPC npc) => PredNPC.GetStomachTracker(npc)?.Prey.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.ArmsDealer) is null;
 
 		public static void OnNurseForceFed(NPC npc, Player player)
 		{
@@ -597,13 +597,13 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 
 		public override void PostAI(NPC npc)
 		{
-			if (npc.AsFood().IsCurrentlyEaten)
+			if (npc.CurrentCaptor() is not null)
 				return;
 
 			if (Main.GameUpdateCount % 60 != 0)
 				return;
 
-			if (npc.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.ArmsDealer) is VoreTracker crushAsPrey)
+			if (PredNPC.GetStomachTracker(npc)?.Prey.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.ArmsDealer) is PreyData crushAsPrey)
 			{
 				NPC crush = crushAsPrey.Instance as NPC;
 				npc.AsNurse().armsDealerHealTime += 1;
@@ -612,10 +612,8 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 					npc.AsNurse().armsDealerHealTime = 0;
 					crush.position = npc.TrueCenter() + new Vector2(npc.direction * 8f, -14f);
 					crush.velocity = new Vector2(npc.direction * 12.5f, -2.5f);
-					crush.AsFood().IsCurrentlyEaten = false;
-					crush.AsFood().CurrentCaptor = null;
 					crush.AsFood().EatenSafetyFrames = 20;
-					npc.AsPred().stomachContents.Remove(crushAsPrey);
+					PredNPC.GetStomachTracker(npc).Prey.Remove(crushAsPrey);
 					SoundEngine.PlaySound(
 						npc.AsPred().StandardBurps,
 						npc.TrueCenter() + new Vector2(npc.direction * 8f, -14f)
@@ -636,7 +634,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 			NPC hopelessRomantic = nearbyResidentNPCs.FirstOrDefault(x => x.type == NPCID.ArmsDealer);
 			bool gulpDownCrush = false;
 			RollForRandomGulp(ref gulpDownCrush);
-			if (hopelessRomantic != null && hopelessRomantic.Distance(npc.Center) <= npc.AsPred().MaxSwallowRange && npc.AsPred().stomachContents.Count == 0 && gulpDownCrush)
+			if (hopelessRomantic != null && hopelessRomantic.Distance(npc.Center) <= npc.AsPred().MaxSwallowRange && PredNPC.GetStomachTracker(npc)?.Prey.Count == 0 && gulpDownCrush)
 				PredNPC.Swallow(npc, hopelessRomantic);
 
 			NPC guide = nearbyResidentNPCs.FirstOrDefault(x => x.type == NPCID.Guide);
@@ -669,7 +667,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 			if (ModContent.GetInstance<V2ServerConfig>().NoRandomGulpsAgainstPlayers)
 				return;
 
-			if (!Main.CurrentPlayer.active || Main.CurrentPlayer.dead || Main.CurrentPlayer.Distance(npc.Center) > npc.AsPred().MaxSwallowRange || Main.CurrentPlayer.AsFood().IsCurrentlyEaten)
+			if (!Main.CurrentPlayer.active || Main.CurrentPlayer.dead || Main.CurrentPlayer.Distance(npc.Center) > npc.AsPred().MaxSwallowRange || Main.CurrentPlayer.CurrentCaptor() is not null)
 				return;
 
 			bool shouldTryToAddPlayerToAss = false;
@@ -717,17 +715,17 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 			}
 		}
 
-		public static double GetDigestionTickRate(NPC npc, VoreTracker prey)
+		public static double GetDigestionTickRate(NPC npc, PreyData prey)
 		{
-			if (npc.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.ArmsDealer) is VoreTracker crushAsPrey && !Main.bloodMoon)
+			if (PredNPC.GetStomachTracker(npc)?.Prey.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.ArmsDealer) is PreyData crushAsPrey && !Main.bloodMoon)
 				return 0.0;
 
 			return Main.bloodMoon ? 2.3 : 1.15;
 		}
 
-		public static double GetDigestionTickDamage(NPC npc, VoreTracker prey) => 12.5;
+		public static double GetDigestionTickDamage(NPC npc, PreyData prey) => 12.5;
 
-		public static void OnDigestionKill(NPC npc, VoreTracker digestedPrey)
+		public static void OnDigestionKill(NPC npc, PreyData digestedPrey)
 		{
 			if (npc.AsNurse().healPlayerIndex != -1 && digestedPrey.Type == PreyType.Player && digestedPrey.Instance.whoAmI == npc.AsNurse().healPlayerIndex)
 				npc.AsNurse().healPlayerIndex = -1;
@@ -813,7 +811,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 
 			PlayerLoader.ModifyNursePrice(predPlayer, npc, health, removeDebuffs, ref originalHealPrice);
 
-			if (!predPlayer.CanAfford(originalHealPrice))
+			if (originalHealPrice >= 10000 && !predPlayer.CanAfford(originalHealPrice))
 				ModContent.GetInstance<Cheapskate>().TrySetCompletion(predPlayer);
 		}
 	}

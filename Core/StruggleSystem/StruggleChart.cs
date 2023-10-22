@@ -7,18 +7,17 @@ using Terraria.ModLoader;
 
 namespace V2.Core.StruggleSystem
 {
-	public class StruggleChart : ModType
+	public abstract class StruggleChart : ModType
 	{
-		public List<StruggleChartNote[]> Notes { get; private set; }
-
-		/// <summary>
-		/// The beats per minute that this struggle chart follows.
-		/// </summary>
-		public double BPM { get; private set; }
+		public VoreTracker ConnectedTracker => ModContent.GetInstance<V2MasterSystem>().VoreTrackers.FirstOrDefault(x => x.PredatorChart == this || x.PreyCharts.Contains(this));
+		public abstract List<StruggleChartNote[]> Notes { get; }
 
 		protected override void Register()
 		{
-			
+			ModTypeLookup<StruggleChart>.Register(this);
+			StruggleChartLoader.StruggleCharts.Add(this);
 		}
+
+		public virtual void OnStartup() { }
 	}
 }

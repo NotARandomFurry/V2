@@ -11,6 +11,7 @@ namespace V2.PlayerHandling.PredPlayerGoals.Beginner
 {
 	public class TooFull : PredPlayerGoal
 	{
+		public static double FullnessThreshold => 0.95;
 		public static int TimeThreshold => V2Utils.SensibleTime(minutes: 1);
 		public override string InternalName => "TooFull";
 		public override string DisplayName(Player pred) => Language.GetTextValue("Mods.V2.PredPlayerGoals.Beginner.TooFull.Name");

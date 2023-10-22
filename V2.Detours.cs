@@ -16,6 +16,7 @@ using Terraria.ModLoader.Core;
 using Terraria.ModLoader.UI;
 using Terraria.UI.Chat;
 using Terraria.UI.Gamepad;
+using V2.Core;
 using V2.Core.MainDetours;
 using V2.NPCs;
 using V2.PlayerHandling;
@@ -72,15 +73,12 @@ namespace V2
 					orig(npc);
 				else
 				{
-					if (npcAsPrey.IsCurrentlyEaten)
+					if (npc.CurrentCaptor() is not null)
 					{
 						npc.velocity = Vector2.Zero;
-						if (npcAsPrey.CurrentCaptor.HasValue)
-						{
-							npc.position = npcAsPrey.CurrentCaptor.Value.Predator.position;
-							npcAsPrey.SpecialPreyAI?.Invoke(npc, npcAsPrey.CurrentCaptor.Value.Predator);
-							NPCLoader.PostAI(npc);
-						}
+						npc.position = npc.CurrentCaptor().Predator.position;
+						npcAsPrey.SpecialPreyAI?.Invoke(npc, npc.CurrentCaptor().Predator);
+						NPCLoader.PostAI(npc);
 					}
 					else if (npcAsPred.SpecialPredAI != null)
 					{
@@ -106,18 +104,13 @@ namespace V2
 			{
 				if (npc.active)
 				{
-					PreyNPC npcAsPrey = npc.AsFood(risky: true);
-					if (npcAsPrey is not null)
-					{
-						PreyNPC.UpdateNPCEatenStatus(npc);
-						if (npcAsPrey.IsCurrentlyEaten)
-							return false;
-					}
+					if (npc.CurrentCaptor() is not null)
+						return false;
 				}
 
 				return orig(npc, attacker, ignoreDontTakeDamage);
 			};
-			On_NPC.checkDead += (orig, npc) => NPCDetours.checkDead(npc);
+			On_NPC.checkDead += (orig, npc) => NPCDetours.CheckDead(npc);
 			On_NPC.NPCLoot_DropHeals += (orig, npc, closestPlayer) =>
 			{
 				if (!npc.AsFood().Digested)

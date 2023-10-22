@@ -18,13 +18,13 @@ namespace V2.NPCs
 		{
 			if (entity is NPC predNPC)
 			{
-				List<VoreTracker> NPCAsPreyList = predNPC.AsPred().stomachContents.FindAll(x => x.Type == PreyType.NPC && x.Instance.whoAmI == npc.whoAmI);
+				List<PreyData> NPCAsPreyList = PredNPC.GetStomachTracker(npc)?.Prey;
 				if (NPCAsPreyList != null && NPCAsPreyList.Count > 0)
 					return true;
 			}
 			else if (entity is Player predPlayer)
 			{
-				List<VoreTracker> NPCAsPreyList = predPlayer.AsPred().stomachContents.FindAll(x => x.Type == PreyType.NPC && x.Instance.whoAmI == npc.whoAmI);
+				List<PreyData> NPCAsPreyList = predPlayer.AsPred().StomachTracker?.Prey.FindAll(x => x.Type == PreyType.NPC && x.Instance.whoAmI == npc.whoAmI);
 				if (NPCAsPreyList != null && NPCAsPreyList.Count > 0)
 					return true;
 			}
@@ -79,7 +79,7 @@ namespace V2.NPCs
 
 		public static void DoContactGulpage(this NPC npc)
 		{
-			if (npc.AsFood().IsCurrentlyEaten)
+			if (npc.CurrentCaptor() is not null)
 				return;
 
 			for (int i = 0; i < Main.maxNPCs; i++)

@@ -24,7 +24,10 @@ namespace V2.PlayerHandling
 			pastTense = false;
 			if (entity is NPC predNPC)
 			{
-				List<VoreTracker> playerAsPreyList = predNPC.AsPred().stomachContents.FindAll(x => x.Type == PreyType.Player && x.Instance.whoAmI == player.whoAmI);
+				if (PredNPC.GetStomachTracker(predNPC) is null)
+					return false;
+
+				List<PreyData> playerAsPreyList = PredNPC.GetStomachTracker(predNPC).Prey.FindAll(x => x.Type == PreyType.Player && x.Instance.whoAmI == player.whoAmI);
 				if (playerAsPreyList != null && playerAsPreyList.Count > 0)
 				{
 					if (playerAsPreyList.FirstOrDefault(x => !x.NoHealth) == null)
@@ -34,7 +37,7 @@ namespace V2.PlayerHandling
 			}
 			else if (entity is Player predPlayer)
 			{
-				List<VoreTracker> playerAsPreyList = predPlayer.AsPred().stomachContents.FindAll(x => x.Type == PreyType.Player && x.Instance.whoAmI == player.whoAmI);
+				List<PreyData> playerAsPreyList = predPlayer.AsPred().StomachTracker?.Prey.FindAll(x => x.Type == PreyType.Player && x.Instance.whoAmI == player.whoAmI);
 				if (playerAsPreyList != null && playerAsPreyList.Count > 0)
 				{
 					if (playerAsPreyList.FirstOrDefault(x => !x.NoHealth) == null)
@@ -71,7 +74,7 @@ namespace V2.PlayerHandling
 			if (player.velocity.Y == 0f)
 				return false;
 
-			if (player.AsFood().IsCurrentlyEaten)
+			if (player.CurrentCaptor() is not null)
 				return false;
 
 			return true;

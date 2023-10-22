@@ -45,8 +45,6 @@ namespace V2.NPCs.Vanilla.Cavern
 			entity.AsV2NPC().Gender = EntityGender.Female;
 
 			entity.AsFood().Size = 1.04;
-			entity.AsPred().stomachContents = new List<VoreTracker>();
-			entity.AsPred().stomachContentsQueue = new List<VoreTracker>();
 			entity.AsPred().MaxStomachCapacity = 5.5;
 
 			entity.AsPred().CanBeForceFed += CanNymphBeForceFed;
@@ -83,10 +81,10 @@ namespace V2.NPCs.Vanilla.Cavern
 			}
 		}
 
-		public static double GetDigestionTickRate(NPC npc, VoreTracker prey) => 1.4;
-		public static double GetDigestionTickDamage(NPC npc, VoreTracker prey) => 22;
+		public static double GetDigestionTickRate(NPC npc, PreyData prey) => 1.4;
+		public static double GetDigestionTickDamage(NPC npc, PreyData prey) => 22;
 
-		public static void OnDigestionKill(NPC npc, VoreTracker digestedPrey)
+		public static void OnDigestionKill(NPC npc, PreyData digestedPrey)
 		{
 			SoundEngine.PlaySound(
 				digestedPrey.WeightLeftToDigest < 0.6 ? npc.AsPred().SmallBurps : npc.AsPred().StandardBurps,

@@ -119,6 +119,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 			NPC dyeTrader = nearbyResidentNPCs.FirstOrDefault(x => x.type == NPCID.DyeTrader);
 			NPC succubus = nearbyResidentNPCs.FirstOrDefault(x => x.type == ModContent.NPCType<Lucinda>());
 			NPC partyGirl = nearbyResidentNPCs.FirstOrDefault(x => x.type == NPCID.PartyGirl);
+			NPC tavernkeep = nearbyResidentNPCs.FirstOrDefault(x => x.type == NPCID.DD2Bartender);
 
 			List<string> stylistChatPool = new List<string>();
 			V2Utils.FigureOutWhatTimeItIs(
@@ -142,7 +143,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 						"You were JUST what I needed, hun: a quick Gut Cut to get the hunger pangs to shut up. No refunds, and no escape. Sorry not sorry, gut fodder.",
 						"[c/BFBFBF:(...I swear, if you make me fat, I'll just \"shave\" off your arms and thighs once you come back. Bet you'll be swearin' on your soul to be a good client THEN, asshole...)]",
 					});
-					if (npc.AsPred().stomachContents.Count > 1)
+					if (PredNPC.GetStomachTracker(npc).Prey.Count > 1)
 					{
 
 					}
@@ -299,28 +300,36 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 					{
 						"Tipping's optional, but remember: I've got teeth sharper than any razor, plenty of room in my belly, and access to your head.",
 						"Hun, you better stay outta my hair tonight...unless you wanna spend the night digestin' to make more of it. Could really go for some good eats...",
-						"I just sharpened my scissors, and your thighs look like they'd enhance mine really nicely after a quick gut cut. Are you sure you don't wanna pay extra?",
+						"I just sharpened my scissors, and your thighs look like they'd fatten up mine really nicely after a quick cut in my gut. Are you SURE you don't wanna pay extra?",
 						"The longer you sit there and keep waitin', the more likely I am to just cut to the chase and cram you down my throat.",
 						"Alright, how's your lousy scalp gonna get styled tonight? Better pick something good, and pick it fast, before I pick it for you.",
 					});
-					if (salad != null)
+					if (PredNPC.GetStomachTracker(npc).Prey.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.Dryad) is PreyData dryadAsPrey)
 					{
-						if (!salad.IsFoodFor(npc))
-						{
-							stylistChatPool.Add("God, I could really go for a salad right about now...hun, go tell " + salad.GivenName + " to get over here and fill me up. Quickly, too, or you'll go right in with her.");
-						}
-						else
+						if (!dryadAsPrey.NoHealth)
 						{
 							stylistChatPool.AddRange(new List<string>
 							{
-								"Ahhhh, that's the stuff.",
+								"Finally, got a good- [c/00FF00:*hic!*] -FUCKIN' meal in this gut...a good salad like that does the bod- [c/00FF00:*hic!*] -wonders. I could go for some more MEAT, though...you wanna- [c/00FF00:*hic!*] -get a \"Gut Cut\" while I'm still willin' to give you the- [c/00FF00:*hic!*] -choice?",
+								"Ahhh, that's the good stuff...- [c/00FF00:*hic!*] -...that's it, " + salad.GivenName + ", keep lettin' your body marinate in there. I'm sure you won't- [c/00FF00:*hic!*] -mind me digestin' your hair a little? The rest of you...well, a- [c/00FF00:*hic!*] -lot. You're not gettin' outta there, you big, meaty SALAD.",
 							});
 						}
+						else if (GetVisualBellySize(npc) >= 3)
+						{
+							stylistChatPool.AddRange(new List<string>
+							{
+								"Took that planty- [c/00FF00:*hic!*] -bitch long enough to shut up. Maybe now she'll- [c/00FF00:*hic!*] -add to the three B's so I can get another meal for the night. What about- [c/00FF00:*hic!*] -you, hun? I'm STARVIN', hun, and you look like just the tip I- [c/00FF00:*hic!*] -need...",
+							});
+						}
+					}
+					else
+					{
+						stylistChatPool.Add("God, I could really go for a salad right about now...hun, go tell " + salad.GivenName + " to get over here and fill me up. Quickly, too, or you'll go right in with her.");
 					}
 				}
 				else
 				{
-					if (npc.AsPred().stomachContents.Count > 0)
+					if (PredNPC.GetStomachTracker(npc) is not null)
 					{
 						switch (GetVisualBellySize(npc))
 						{
@@ -385,12 +394,12 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 									stylistChatPool.AddRange(new List<string>
 									{
 										"O- oh, you want a- [c/00FF00:*hic!*] -haircut? A- alright, just sit in the- [c/00FF00:*hic!*] -chair, I'll do yo-[c/00BB00:*ooOOUURP!*] -...y- yours, alongside the cut my- [c/00FF00:*hic!*] -belly's working on...",
-										"Alright, I- [c/00FF00:*hic!*] -I'll be with you in just a- [c/00FF00:*hic-][c/00BB00:OOORRP!*] -minute... what kinda cut do you want? The- [c/00FF00:*hic!*] -Gut Cut experience's booked right now- [c/00FF00:*hic!*] -so if you want one, you'll- [c/00FF00:*hic!*] -have to wait.",
+										"Alright, I- [c/00FF00:*hic!*] -I'll be with you in just a- [c/00FF00:*hic-][c/00BB00:OOORRP!*] -minute... what kinda cut do you want? The- [c/00FF00:*hic!*] -Gut Cut experience's booked right now- [c/00FF00:*hic!*] -so if you want one, you'll- [c/00FF00:*hic!*] -probably have to wait.",
 									});
 								}
 								break;
 						}
-						if (npc.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.Dryad) is VoreTracker dryadAsPrey)
+						if (PredNPC.GetStomachTracker(npc).Prey.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.Dryad) is PreyData dryadAsPrey)
 						{
 							if (!dryadAsPrey.NoHealth)
 							{
@@ -412,7 +421,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 								});
 							}
 						}
-						if (npc.AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.PartyGirl) is VoreTracker partyGirlAsPrey)
+						if (PredNPC.GetStomachTracker(npc).Prey.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.PartyGirl) is PreyData partyGirlAsPrey)
 						{
 							if (!partyGirlAsPrey.NoHealth)
 							{
@@ -432,6 +441,26 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 									"Ooof...I know that gal wanted me to- [c/00FF00:*hic!*] -eat her, but I gotta say, hun...I'm kinda- [c/00FF00:*hic!*] -worried about how fat she's gonna make me. Don't wanna- [c/00FF00:*hic!*] -bulk up too much in the wrong places, y'know...?",
 									"H- hun, I've got an honest- [c/00FF00:*hic!*] -question for you...does the cake-flavored gal currently- [c/00FF00:*hic!*] -churnin' away inside me make me look- [c/00FF00:*hic!*] -too fat? I...really hope not...",
 									"Sheesh, she's already startin' to- [c/00FF00:*hic!*] -settle in...I can feel her goin' to the wrong- [c/00FF00:*hic!*] -spots already! Damnit, why does all the junk food have to- [c/00FF00:*hic!*] -taste the best!?",
+								});
+							}
+						}
+						if (PredNPC.GetStomachTracker(npc).Prey.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.DD2Bartender) is PreyData tavernkeepAsPrey)
+						{
+							if (!tavernkeepAsPrey.NoHealth)
+							{
+								stylistChatPool.AddRange(new List<string>
+								{
+									"WHAT!? Ohh, you wanna- [c/00FF00:*hic!*] -see " + tavernkeep.GivenName + "? Well, maybe if you talk loud enough over me and my- [c/00FF00:*hic!*] -GUT, you can yell at him! Better make it quick, though...he's gonna SHUT THE FUCK- [c/00FF00:*hic!*] -UP in a few minutes...",
+									"Hun, lemme give ya a piece of- [c/00FF00:*hic!*] -advice. Never, ever, EVER take any sass from a baldie...or advice. Or anything other than their privilege to exist outside your gut, actually. They're all the- [c/00FF00:*hic!*] -same: no hair, no flair, so they're just a meal.",
+								});
+							}
+							else if (GetVisualBellySize(npc) >= 3)
+							{
+								stylistChatPool.AddRange(new List<string>
+								{
+									"Don't even get me STARTED on that dumb- [c/00FF00:*hic!*] -barkeep! He was practically BEGGING to- [c/00FF00:*hic!*] -get mulched, walkin' into MY bubble with that hairless DOME he- [c/00FF00:*hic!*] -called his head!",
+									"[c/00BB00:OOOURP!*]\n"
+								  + "Ugggh, why'd that stupid- [c/00FF00:*hic!*] -barkeep hafta be such a fuckin'- [c/00FF00:*hic!*] -BEEFCAKE!? He's gonna take me for- [c/00FF00:*hic!*] -EVER to melt down, never mind how hard I'll hafta work to- [c/00FF00:*hic!*] -burn him off...",
 								});
 							}
 						}
@@ -485,7 +514,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 							stylistChatPool.AddRange(new List<string>
 							{
 								"Sure, I did my hair up just for today, but...honestly? I just wanna pop balloons with my scissors and have some cupcakes.",
-								"If that birthday cake gets in ANYBODY'S hair, I think I'll just have 'em for lunch and call it a day. Every gal's gotta have a cheat day once in a while!",
+								"If that birthday cake gets in ANYBODY'S hair, I think I'll just have 'em for lunch and call it a day. Every gal's gotta have a cheat day once in a while, and a party like this is the perfect excuse!",
 							});
 						}
 						if (dyeTrader != null)
@@ -529,10 +558,10 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 
 		public override void PostAI(NPC npc)
 		{
-			if (npc.AsFood().IsCurrentlyEaten)
+			if (npc.CurrentCaptor() is not null)
 				return;
 
-			if (npc.AsPred().stomachContents.Count > 0)
+			if (PredNPC.GetStomachTracker(npc)?.Prey.Count > 0)
 				return;
 
 			if (Main.GameUpdateCount % 60 != 0)
@@ -551,7 +580,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 			if (ModContent.GetInstance<V2ServerConfig>().NoRandomGulpsAgainstPlayers)
 				return;
 
-			if (!Main.CurrentPlayer.active || Main.CurrentPlayer.dead || Main.CurrentPlayer.Distance(npc.Center) > npc.AsPred().MaxSwallowRange || Main.CurrentPlayer.AsFood().IsCurrentlyEaten)
+			if (!Main.CurrentPlayer.active || Main.CurrentPlayer.dead || Main.CurrentPlayer.Distance(npc.Center) > npc.AsPred().MaxSwallowRange || Main.CurrentPlayer.CurrentCaptor() is not null)
 				return;
 
 			bool bald = Main.CurrentPlayer.hair == 16 || Main.CurrentPlayer.head == ArmorIDs.Head.MonkBrows;
@@ -631,11 +660,11 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 			}
 		}
 
-		public static double GetDigestionTickRate(NPC npc, VoreTracker prey) => Main.bloodMoon ? 2.5 : 1.25;
+		public static double GetDigestionTickRate(NPC npc, PreyData prey) => Main.bloodMoon ? 2.5 : 1.25;
 
-		public static double GetDigestionTickDamage(NPC npc, VoreTracker prey) => 20;
+		public static double GetDigestionTickDamage(NPC npc, PreyData prey) => 20;
 
-		public static void OnDigestionKill(NPC npc, VoreTracker digestedPrey)
+		public static void OnDigestionKill(NPC npc, PreyData digestedPrey)
 		{
 			SoundEngine.PlaySound(
 				digestedPrey.WeightLeftToDigest < 0.3 ? npc.AsPred().SmallBurps : npc.AsPred().StandardBurps,
