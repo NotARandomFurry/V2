@@ -109,6 +109,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 		{
 			"Thomas",
 			"ThomasThePencil",
+			"the Sign Painter",
 			"the pixelated Sign Painter",
 		};
 		public static List<string> GetStylistChat(NPC npc, Player player)
@@ -220,9 +221,9 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 						{
 							stylistChatPool.AddRange(new List<string>
 							{
-								"Just relax and let my gut straighten out those knots, honey...we GOTTA get you up to speed on the local gossip.",
-								"Giiiirl, you are my favorite belly filler! Now, what were we chattin' about?",
-								"You know, I think you're the tastiest gal pal I've ever had. Just about the most filling, too...\n"
+								"Just- [c/00FF00:*hic!*] -relax and let my gut straighten out those knots, honey...we GOTTA- [c/00FF00:*hic!*] -get you up to speed on the local gossip.",
+								"Giiiirl, you are my- [c/00FF00:*hic!*] -favorite belly filler! Now, what were we chattin' about?",
+								"You know, I think you're the- [c/00FF00:*hic!*] -tastiest gal pal I've ever had. Just about the most filling, too...\n"
 							  + "[c/00BB00:*urp!*]",
 							});
 						}
@@ -231,11 +232,12 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 					{
 						stylistChatPool.AddRange(new List<string>
 						{
-							"Sorry, hun, no refunds! Just sit in there and marinate for a while...I'll check in to make sure you're digestin' well in half an hour or so.",
-							"Well, while you wait to be digested, you've got an easy cut. Just stick your head in those acids for a bit, and your hair'll be nice and short!",
-							"[c/BFBFBF:(...oh, don't make me fat, don't make me fat...make one of the three B's too big if you want, but please, please, PLEEEEEASE don't make me fat. I take too many cheat days as it is...)]",
+							"Sorry, hun, no- [c/00FF00:*hic!*] -refunds! Just sit in there and marinate for a while...I'll- [c/00FF00:*hic!*] -check in to make sure you're digestin' well in- [c/00FF00:*hic!*] -half an hour or so.",
+							"Well, while you- [c/00FF00:*hic!*] -wait to be digested, you've got an easy cut. Just stick your- [c/00FF00:*hic!*] -head in those acids for a bit, and your hair'll be nice and- [c/00FF00:*hic!*] -short!",
+							"[c/BFBFBF:(...oh, don't make me fat, don't make me fat- ][c/00FF00:*hic!*][c/BFBFBF: -make one of the three B's too big if you want, but please, please, PLEEEEEASE don't make me fat- ][c/00FF00:*hic!*][c/BFBFBF: -I take too many cheat days as it is...)]",
 							"[c/00BB00:*UUUURP!*]\n"
-						  + "Mmmm...that's some grade-A flavor you've got there, hun! What products did ya use? Or are you just naturally delicious?",
+						  + "Mmmm...that's some grade-A- [c/00FF00:*hic!*] -flavor you've got there, hun! What products did ya use? Or are you just naturally this- [c/00FF00:*hic!*] -tasty?",
+							"I guess I've just got the spider's mindset. I blame Kyoko for that...",
 						});
 						if (player.Male)
 						{
@@ -250,16 +252,16 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 							stylistChatPool.AddRange(new List<string>
 							{
 								"Just relax and let your split ends melt away, honey...we GOTTA get you up to speed on the local gossip before the acids get to you.",
-								"Giiiirl, you were the best meal ever! Now, you take a nice, long acid soak in there, and I'll enjoy the bust you'll give me.",
-								player.name + ", I gotta say, you made a great snack. Really hope your assets'll add onto mine...been feelin' a little small lately.",
+								"Giiiirl, you were the best meal- [c/00FF00:*hic!*] -EVER! Now, you take a nice, long acid soak in there, and I'll- [c/00FF00:*hic!*] -enjoy the bust you'll give me.",
+								player.name + ", I gotta- [c/00FF00:*hic!*] -say, you made a great snack. Really hope your assets'll add onto- [c/00FF00:*hic!*] -mine...been feelin' a little small lately.",
 							});
 						}
 						if (dyeTrader != null)
 						{
 							stylistChatPool.AddRange(new List<string>
 							{
-								"Try to plump up JUST the 3 B's a little for me, alright, hun? I really wanna look my best for the next time " + dyeTrader.GivenName + " comes over...",
-								"Now, all I need you to do is bulk my body up a bit! Got a hunch that " + dyeTrader.GivenName + "'s got a thing for gals with good assets...and I'M gonna win his heart, just you wait!",
+								"Try to- [c/00FF00:*hic!*] -plump up JUST the 3 B's a little for me, alright- [c/00FF00:*hic!*] -hun? I really wanna look my best for the next time " + dyeTrader.GivenName + "- [c/00FF00:*hic!*] -comes over...",
+								"Now, all I need you to- [c/00FF00:*hic!*] -do is bulk my body up a bit! Got a- [c/00FF00:*hic!*] -hunch that " + dyeTrader.GivenName + "'s got a thing for gals with good- [c/00FF00:*hic!*] -assets...and I'M gonna win his heart, just you wait!",
 							});
 						}
 						bool bald = Main.CurrentPlayer.hair == 16 || Main.CurrentPlayer.head == ArmorIDs.Head.MonkBrows;
@@ -312,6 +314,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 							{
 								"Finally, got a good- [c/00FF00:*hic!*] -FUCKIN' meal in this gut...a good salad like that does the bod- [c/00FF00:*hic!*] -wonders. I could go for some more MEAT, though...you wanna- [c/00FF00:*hic!*] -get a \"Gut Cut\" while I'm still willin' to give you the- [c/00FF00:*hic!*] -choice?",
 								"Ahhh, that's the good stuff...- [c/00FF00:*hic!*] -...that's it, " + salad.GivenName + ", keep lettin' your body marinate in there. I'm sure you won't- [c/00FF00:*hic!*] -mind me digestin' your hair a little? The rest of you...well, a- [c/00FF00:*hic!*] -lot. You're not gettin' outta there, you big, meaty SALAD.",
+								"Oohhh...that was a good- [c/00FF00:*hic-][c/00BB00:BWOOAARP!*] -salad, hun. Now sit still and keep quiet; I'm in the mood to- [c/00FF00:*hic!*] -cut something, and you look really slicable right- [c/00FF00:*hic!*] -now.",
 							});
 						}
 						else if (GetVisualBellySize(npc) >= 3)
@@ -352,21 +355,21 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 							case 2:
 								stylistChatPool.AddRange(new List<string>
 								{
-									"Mmm...always a bit weird to have a potbelly like this hangin' off me. Not like it matters much...I'll be back to my slim self in no time! Now, how can I get your cut done, hun?",
+									"Mmm...always a bit weird to have a potbelly like this- [c/00FF00:*hic!*] -hangin' off me. Not like it matters much...I'll be back to my slim self in no time! Now, how can I get your cut done, hun?",
 									"Gonna need a few salads steppin' into my stomach at this rate...look at all this gut! Of course...a cheat day every once in a while's not bad, right?",
 									"Oh my God, I look pregnant! Late into it, too...did I really eat that much? Then again, I think I know a hairstyle that'd look great with this gut...",
-									"Oh, this? That's not a baby! Well...not a real one. Just a really big food baby! Be careful not to poke it, though! Wouldn't want whatever's built up in there knockin' you out...",
+									"Oh, this? That's not a baby! Well...not a real one. Just a really big food baby! Be careful not to- [c/00FF00:*hic!*] -poke it, though! Wouldn't want whatever's built up in there knockin' you out...",
 									"Does this belly make my hair look bad? Gimme an honest answer, and I promise I won't get...TOO mad. Gimme a lie, though...",
-									"My belly looks like a bald head...I'm not sure if I like that. Then again, you could say the apron counts as a nice hairstyle for it...it should be fine.",
-									"Oh, hey! Sorry about the gut; I'm just working on a nice meal I had earlier. It should be gone soon enough...in the meantime, what cut do you want?",
+									"My belly looks like a bald head...I'm not sure if I- [c/00FF00:*hic!*] -like that. Then again, you could say the apron counts as a nice hairstyle for it...it should be fine.",
+									"Oh, hey! Sorry about the gut; I'm just working on a nice meal right now. It should be gone soon enough...in the meantime, what kinda cut do you want?",
 								});
 								break;
 							case 3:
 								stylistChatPool.AddRange(new List<string>
 								{
 									"O- ooh...I look- [c/00FF00:*hic!*] -pregnant...overdue with twins, probably. I sure FEEL pregnant with twins, what with how heavy my belly is...",
-									"I'm debating if this big belly looks good on me or not...what do you think, " + player.name + "? Could I make it work?...ah, who am I- [c/00FF00:*hic!*] -kidding? Of course I could.",
-									"Please don't rest your head on my gut when I'm cutting your- [c/00FF00:*hic!*] -hair. It'll make the final product uneven.",
+									"I'm debating if this big belly looks good on me or not...what do you think, " + player.name + "? Could I make it work?...ah, who am I- [c/00FF00:*hic!*] -kiddin'? Of course I could.",
+									"Please don't rest your head on my gut while I'm cuttin' your- [c/00FF00:*hic!*] -hair. It'll make the final product uneven.",
 									"Hey, before I- [c/00FF00:*hic!*] -give you your cut...are my hands covered in saliva? Wouldn't want it messin' up your hair...",
 								});
 								if (PredNPC.AnyPreyStillAlive(npc))

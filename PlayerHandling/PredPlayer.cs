@@ -20,6 +20,7 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using V2.Core;
+using V2.Core.StruggleSystem;
 using V2.Items;
 using V2.NPCs;
 using V2.PlayerHandling.PredPlayerGoals;
@@ -994,7 +995,7 @@ namespace V2.PlayerHandling
 			if (pred.AsPred().StomachTracker is null)
 				VoreTracker.NewTracker(pred, new List<PreyData>() { prey }, null, null);
 			else
-				pred.AsPred().StomachTracker.Prey.Add(prey);
+				pred.AsPred().StomachTracker.QueueNewPrey(prey);
 		}
 
 		/// <summary>
@@ -1002,9 +1003,48 @@ namespace V2.PlayerHandling
 		/// </summary>
 		public static void UpdatePrey(Player pred)
 		{
-			if (pred.AsPred().StomachTracker is null)
-				return;
+			if (pred.AsPred().StomachTracker is null || pred.AsPred().KickyStomachWeight == 0)
+			{
+				pred.AsPred().Stomachache -= 0.15;
+				if (pred.AsPred().StomachTracker is null)
+					return;
+			}
+			if (pred.AsPred().Stomachache >= pred.AsPred().StomachacheMeterCapacity)
+			{
+				foreach (PreyData prey in pred.AsPred().StomachTracker.Prey)
+				{
+					Entity realPrey = prey.Type switch
+					{
+						PreyType.Player => prey.Instance as Player,
+						PreyType.NPC => prey.Instance as NPC,
+						PreyType.Projectile => prey.Instance as Projectile,
+						PreyType.Item => prey.Instance as Item,
+						PreyType.Custom => null,
+						_ => throw new NotImplementedException(),
+					};
+					realPrey.position = pred.TrueCenter() + new Vector2(pred.direction * 8f, -14f);
+					realPrey.velocity = new Vector2(pred.direction * 12.5f, -2.5f);
+					if (realPrey is NPC realPreyNPC)
+					{
+						realPreyNPC.AsFood().EatenSafetyFrames = 20;
+					}
+					else if (realPrey is Player realPreyPlayer)
+					{
 
+					}
+					else if (realPrey is Item realPreyItem)
+					{
+						realPreyItem.noGrabDelay = 60;
+					}
+				}
+				SoundEngine.PlaySound(
+					pred.AsPred().StandardBurps,
+					pred.TrueCenter() + new Vector2(pred.direction * 8f, -14f)
+				);
+				pred.AsPred().StomachTracker.Prey.Clear();
+				pred.AsPred().StomachTracker.RefreshStruggleChartList();
+				return;
+			}
 			foreach (PreyData prey in pred.AsPred().StomachTracker.Prey)
 			{
 				prey.timeSpentInStomach++;

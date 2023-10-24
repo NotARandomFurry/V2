@@ -13,7 +13,9 @@ namespace V2.Core.StruggleSystem
 
 		public static void Load()
 		{
-			StruggleCharts = new List<StruggleChart>();
+			StruggleCharts = new List<StruggleChart>() {
+				StruggleChart.Default,
+			};
 		}
 
 		public static void Unload()

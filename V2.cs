@@ -4,6 +4,7 @@ using ReLogic.Content;
 using System.Collections.Generic;
 using Terraria.ID;
 using Terraria.ModLoader;
+using V2.Core.StruggleSystem;
 using V2.NPCs.Voraria.TownNPCs.Succubus;
 
 namespace V2
@@ -44,6 +45,8 @@ namespace V2
 			BetterDialogue.BetterDialogue.SupportedNPCs.Add(ModContent.NPCType<Lucinda>());
 
 			BetterDialogue.BetterDialogue.RegisterShoppableNPC(ModContent.NPCType<Lucinda>());
+
+			StruggleChartLoader.Load();
 
 			EngageVoraciousGameFuckery();
 		}

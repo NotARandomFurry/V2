@@ -7,17 +7,44 @@ using Terraria.ModLoader;
 
 namespace V2.Core.StruggleSystem
 {
-	public abstract class StruggleChart : ModType
+	public abstract class StruggleChart
 	{
-		public VoreTracker ConnectedTracker => ModContent.GetInstance<V2MasterSystem>().VoreTrackers.FirstOrDefault(x => x.PredatorChart == this || x.PreyCharts.Contains(this));
+		public static WeightableStruggleChart Default { get; set; } = new WeightableStruggleChart();
+
+		public VoreTracker ConnectedTracker => ModContent.GetInstance<V2MasterSystem>().VoreTrackers.FirstOrDefault(x => x.PredatorStruggleChart == this || x.PreyStruggleCharts.Contains(this));
 		public abstract List<StruggleChartNote[]> Notes { get; }
 
-		protected override void Register()
-		{
-			ModTypeLookup<StruggleChart>.Register(this);
-			StruggleChartLoader.StruggleCharts.Add(this);
-		}
-
 		public virtual void OnStartup() { }
+
+		public void RefreshPressedNotes()
+		{
+			if (Notes is null)
+				return;
+
+			foreach (StruggleChartNote[] noteSet in Notes)
+			{
+				if (noteSet is null)
+					continue;
+
+				if (noteSet.FirstOrDefault(x => x is not null) is null)
+					continue;
+
+				foreach (StruggleChartNote note in noteSet)
+				{
+					if (note is null)
+						continue;
+
+					if (!note.CorrectlyPressed)
+						continue;
+
+					if (note.PressAnimTimer > 25)
+					{
+						note.CorrectlyPressed = false;
+						note.PressedPosition = 0.0;
+						note.PressAnimTimer = 0;
+					}
+				}
+			}
+		}
 	}
 }

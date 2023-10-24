@@ -39,12 +39,20 @@ namespace V2.Core.StruggleSystem
 		/// </summary>
 		public bool Bad { get; private set; }
 
+		public bool CorrectlyPressed { get; set; }
+		public double PressedPosition { get; set; }
+		public int PressAnimTimer { get; set; }
+
 		public StruggleChartNote(NoteLane lane, int holdLength = 0, bool bad = false)
 		{
 			Lane = lane;
 			HoldLength = holdLength;
 			Bad = bad;
 			Position = 0.0;
+
+			CorrectlyPressed = false;
+			PressedPosition = 0.0;
+			PressAnimTimer = 0;
 		}
 	}
 }

@@ -10,7 +10,7 @@ namespace V2.Core.StruggleSystem
 {
 	public class WeightableStruggleChart : StruggleChart
 	{
-		public override List<StruggleChartNote[]> Notes { get; }
+		public override List<StruggleChartNote[]> Notes => RandomNoteSpan;
 		private List<StruggleChartNote[]> RandomNoteSpan { get; set; }
 		private static int MaxRandomNoteSpanLength => 128;
 
@@ -20,7 +20,7 @@ namespace V2.Core.StruggleSystem
 			if (ConnectedTracker is null)
 				return;
 
-			bool isForPrey = ConnectedTracker.PredatorChart == this;
+			bool isForPrey = ConnectedTracker.PredatorStruggleChart != this;
 			double predTUM = ConnectedTracker.Predator.GetPredStat("TUM");
 			double preyCombinedSTR = ConnectedTracker.TotalPreySTR;
 			for (int i = 0; i < MaxRandomNoteSpanLength; i++)
@@ -31,7 +31,7 @@ namespace V2.Core.StruggleSystem
 				else
 					randomDifficultyFactor /= predTUM / preyCombinedSTR;
 
-				RandomNoteSpan[i] = new StruggleChartNote[5] { null, null, null, null, null };
+				StruggleChartNote[] noteSet = new StruggleChartNote[5] { null, null, null, null, null };
 				double noteAmount = Main.rand.NextDouble() * randomDifficultyFactor;
 				if (noteAmount >= 1.0f)
 				{
@@ -46,6 +46,8 @@ namespace V2.Core.StruggleSystem
 						lanes.Remove(noteLaneToFill);
 					}
 				}
+
+				RandomNoteSpan.Add(noteSet);
 			}
 		}
 	}

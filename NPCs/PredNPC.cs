@@ -16,6 +16,7 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using V2.Core;
+using V2.Core.StruggleSystem;
 using V2.Items;
 using V2.NPCs.Vanilla.TownNPCs.Nurse;
 using V2.PlayerHandling;
@@ -337,6 +338,48 @@ namespace V2.NPCs
 		/// <param name="pred">The NPC to update all food in the stomach of.</param>
 		public static void UpdatePrey(NPC pred)
 		{
+			if (GetStomachTracker(pred) is null || !AnyPreyStillAlive(pred))
+			{
+				pred.AsPred().Stomachache -= 0.15;
+				if (GetStomachTracker(pred) is null)
+					return;
+			}
+			if (pred.AsPred().Stomachache >= pred.AsPred().StomachacheMeterCapacity)
+			{
+				foreach (PreyData prey in GetStomachTracker(pred).Prey)
+				{
+					Entity realPrey = prey.Type switch
+					{
+						PreyType.Player => prey.Instance as Player,
+						PreyType.NPC => prey.Instance as NPC,
+						PreyType.Projectile => prey.Instance as Projectile,
+						PreyType.Item => prey.Instance as Item,
+						PreyType.Custom => null,
+						_ => throw new NotImplementedException(),
+					};
+					realPrey.position = pred.TrueCenter() + new Vector2(pred.direction * 8f, -14f);
+					realPrey.velocity = new Vector2(pred.direction * 12.5f, -2.5f);
+					if (realPrey is NPC realPreyNPC)
+					{
+						realPreyNPC.AsFood().EatenSafetyFrames = 20;
+					}
+					else if (realPrey is Player realPreyPlayer)
+					{
+
+					}
+					else if (realPrey is Item realPreyItem)
+					{
+						realPreyItem.noGrabDelay = 60;
+					}
+				}
+				SoundEngine.PlaySound(
+					pred.AsPred().StandardBurps,
+					pred.TrueCenter() + new Vector2(pred.direction * 8f, -14f)
+				);
+				GetStomachTracker(pred).Prey.Clear();
+				GetStomachTracker(pred).RefreshStruggleChartList();
+				return;
+			}
 			foreach (PreyData prey in GetStomachTracker(pred).Prey)
 			{
 				prey.timeSpentInStomach++;
@@ -514,9 +557,9 @@ namespace V2.NPCs
 		public static void AddNewPrey(NPC pred, PreyData prey)
 		{
 			if (GetStomachTracker(pred) is null)
-				VoreTracker.NewTracker(pred, new List<PreyData>() { prey }, null, null);
+				VoreTracker.NewTracker(pred, new List<PreyData>() { prey });
 			else
-				GetStomachTracker(pred).Prey.Add(prey);
+				GetStomachTracker(pred).QueueNewPrey(prey);
 		}
 
 		public static string GetDigestedPlayerDeathReason(NPC npc, Player player)

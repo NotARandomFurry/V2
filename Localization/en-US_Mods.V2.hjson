@@ -294,7 +294,7 @@ PredStatsMenu: {
 					[c/7F7F7F:| ∞ from digesting at least one Timekeeper]
 
 					Digestion Damage: ∞
-					Digestion Damage Tick Rate: ∞
+					Digestion Damage Tick Rate: ∞/sec
 					Stomach Acid Tier: [c/FFFF00:Chronological (∞)]
 					Your will to gobble up the entire world, the whole of the Divine Realm included, has gone through in full, granting you a now-former Timekeeper's control over the very flow of time.
 					What was once a living, breathing universe with countless creatures residing in it has been reduced to naught but pudge for your tummy, yet you're still absolutely starving.
@@ -351,7 +351,7 @@ PredStatsMenu: {
 					Nothing shall escape your stomach --- you can even hold and digest non-divine souls innately, and not even the delicacies of the Divine Realm can outlast your supreme digestive system.
 					Thus, all your battles with breakfast (and other meals) are now a war of attrition --- one which, should you will it, you are destined to win.
 
-					An even greater boost would be necessary to begin digesting the souls of the Divine Realm's inhabitants on your quest to truly become the apex...but where would one even BEGIN to gain such raw, unadulterated gastric strength?
+					An even greater boost would be necessary to begin digesting the souls of the Divine Realm's inhabitants on your quest to truly become the apex, and someday, hopefully soon, devour the WHOLE of the world in which you live...but where would one even BEGIN to gain such raw, unadulterated gastric strength?
 					'''
 			}
 		}
