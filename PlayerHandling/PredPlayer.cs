@@ -55,8 +55,10 @@ namespace V2.PlayerHandling
 	public partial class PredPlayer : ModPlayer
 	{
 		public bool SyncRequired_PredPoints { get; set; }
-		public VoreTracker StomachTracker {
-			get {
+		public VoreTracker StomachTracker
+		{
+			get
+			{
 				if (Main.gameMenu)
 					return null;
 
@@ -64,14 +66,21 @@ namespace V2.PlayerHandling
 			}
 		}
 
-		public double Stomachache;
+		private double _stomachache;
+		public double Stomachache
+		{
+			get => _stomachache;
+			set => _stomachache = Math.Max(0, value);
+		}
 
 		public int predLevel;
 
 		public bool InPredStatsMenu { get; set; }
 		public Dictionary<string, bool> GoalsCompleted { get; set; }
-		public int TotalStatPoints {
-			get {
+		public int TotalStatPoints
+		{
+			get
+			{
 				int points = 0;
 				foreach (PredPlayerGoal goal in PredPlayerGoalLoader.PredPlayerGoals)
 				{
@@ -342,8 +351,10 @@ namespace V2.PlayerHandling
 		public double specialHealthRegenCount;
 		public double specialManaRegenCount;
 
-		public bool BlockSwallowAttempts {
-			get {
+		public bool BlockSwallowAttempts
+		{
+			get
+			{
 				if (Player.CurrentCaptor() is not null)
 					return true;
 
@@ -354,8 +365,6 @@ namespace V2.PlayerHandling
 			}
 		}
 		public SlotId ActiveStomachNoises { get; set; }
-
-		public StatModifier StomachSizeModifier;
 		public double StomachFullness
 		{
 			get
@@ -373,7 +382,7 @@ namespace V2.PlayerHandling
 						{
 							case PreyType.Player:
 								Player preyPredPlayer = prey.Instance as Player;
-								totalBellyWeight += preyPredPlayer.AsPred().StomachWeight;
+								totalBellyWeight += preyPredPlayer.AsPred().StomachFullness;
 								break;
 							case PreyType.NPC:
 								NPC preyPredNPC = prey.Instance as NPC;
@@ -400,17 +409,15 @@ namespace V2.PlayerHandling
 							continue;
 
 						totalBellyWeight += prey.WeightLeftToDigest;
-						if (prey.NoHealth)
-							continue;
-
 						switch (prey.Type)
 						{
 							case PreyType.Player:
 								Player preyPredPlayer = prey.Instance as Player;
-								totalBellyWeight += preyPredPlayer.AsPred().StomachWeight;
+								totalBellyWeight += preyPredPlayer.AsPred().StomachFullness;
 								break;
 							case PreyType.NPC:
 								NPC preyPredNPC = prey.Instance as NPC;
+								totalBellyWeight += preyPredNPC.AsPred().ExtraWeight;
 								totalBellyWeight += PredNPC.GetCurrentBellyWeight(preyPredNPC);
 								break;
 						}
@@ -421,6 +428,7 @@ namespace V2.PlayerHandling
 		}
 
 		public StatModifier StomachWeightModifier;
+
 		public double StomachWeight
 		{
 			get
@@ -442,6 +450,7 @@ namespace V2.PlayerHandling
 								break;
 							case PreyType.NPC:
 								NPC preyPredNPC = prey.Instance as NPC;
+								totalBellyWeight += preyPredNPC.AsPred().ExtraWeight;
 								totalBellyWeight += PredNPC.GetCurrentBellyWeight(preyPredNPC);
 								break;
 						}
@@ -464,9 +473,6 @@ namespace V2.PlayerHandling
 							continue;
 
 						totalBellyWeight += prey.WeightLeftToDigest;
-						if (prey.NoHealth)
-							continue;
-
 						switch (prey.Type)
 						{
 							case PreyType.Player:
@@ -475,6 +481,7 @@ namespace V2.PlayerHandling
 								break;
 							case PreyType.NPC:
 								NPC preyPredNPC = prey.Instance as NPC;
+								totalBellyWeight += preyPredNPC.AsPred().ExtraWeight;
 								totalBellyWeight += PredNPC.GetCurrentBellyWeight(preyPredNPC);
 								break;
 						}
@@ -702,7 +709,7 @@ namespace V2.PlayerHandling
 				{
 					Point playerTileLocation = (Player.Center + new Vector2(0, -10)).ToTileCoordinates();
 					Tile tile = Main.tile[playerTileLocation];
-					if (tile.LiquidAmount > 0 && Player.AsPred().StomachCapacity - GetCurrentBellyWeight(Player) >= Player.AsPred().EffectiveLiquidSwallowSize(tile.LiquidType))
+					if (tile.LiquidAmount > 0 && Player.AsPred().StomachCapacity - Player.AsPred().StomachFullness >= Player.AsPred().EffectiveLiquidSwallowSize(tile.LiquidType))
 					{
 						int liquidToDrink = (tile.LiquidAmount > Player.AsPred().LiquidSwallowSize) ? Player.AsPred().LiquidSwallowSize : tile.LiquidAmount;
 
@@ -741,8 +748,8 @@ namespace V2.PlayerHandling
 								if (Player.AsPred().CanDrinkLavaSafe)
 								{
 									AddVanillaDrinkCount();
-								//	if (VanillaDrinkCountHas(255))
-								//		ModContent.GetInstance<FirstDrink>().TrySetCompletion(Player);
+									//	if (VanillaDrinkCountHas(255))
+									//		ModContent.GetInstance<FirstDrink>().TrySetCompletion(Player);
 								}
 								break;
 							case LiquidID.Honey:
@@ -759,8 +766,8 @@ namespace V2.PlayerHandling
 								else if (Player.AsPred().CanDrinkShimmerSafe)
 								{
 									AddVanillaDrinkCount();
-								//	if (VanillaDrinkCountHas(255))
-								//		ModContent.GetInstance<FirstDrink>().TrySetCompletion(Player);
+									//	if (VanillaDrinkCountHas(255))
+									//		ModContent.GetInstance<FirstDrink>().TrySetCompletion(Player);
 								}
 								break;
 						}
@@ -807,7 +814,7 @@ namespace V2.PlayerHandling
 						}
 						else if (realPrey is Player realPreyPlayer)
 						{
-							
+
 						}
 						else if (realPrey is Item realPreyItem)
 						{
@@ -825,7 +832,7 @@ namespace V2.PlayerHandling
 
 			UpdateGeneralPredGoalsLogic(Player);
 		}
-		
+
 		public static bool CanSwallow(Player pred, Entity prey)
 		{
 			if (pred.AsPred().BlockSwallowAttempts)
@@ -881,7 +888,7 @@ namespace V2.PlayerHandling
 					return false;
 			}
 
-			if (PreyData.GetInitialPreySize(prey) > pred.AsPred().StomachCapacity - GetCurrentBellyWeight(pred))
+			if (PreyData.GetInitialPreySize(prey) > pred.AsPred().StomachCapacity - pred.AsPred().StomachFullness)
 				return false;
 
 			return true;
@@ -993,7 +1000,7 @@ namespace V2.PlayerHandling
 		public static void AddNewPrey(Player pred, PreyData prey)
 		{
 			if (pred.AsPred().StomachTracker is null)
-				VoreTracker.NewTracker(pred, new List<PreyData>() { prey }, null, null);
+				VoreTracker.NewTracker(pred, new List<PreyData>() { prey });
 			else
 				pred.AsPred().StomachTracker.QueueNewPrey(prey);
 		}
@@ -1005,7 +1012,7 @@ namespace V2.PlayerHandling
 		{
 			if (pred.AsPred().StomachTracker is null || pred.AsPred().KickyStomachWeight == 0)
 			{
-				pred.AsPred().Stomachache -= 0.15;
+				pred.AsPred().Stomachache -= 0.08;
 				if (pred.AsPred().StomachTracker is null)
 					return;
 			}
@@ -1066,7 +1073,7 @@ namespace V2.PlayerHandling
 						case PreyType.Projectile:
 							Projectile preyProjectile = prey.Instance as Projectile;
 							if (preyProjectile.active)
-							preyProjectile.velocity = Vector2.Zero;
+								preyProjectile.velocity = Vector2.Zero;
 							preyProjectile.position = pred.position;
 							break;
 						case PreyType.Item:
@@ -1260,63 +1267,6 @@ namespace V2.PlayerHandling
 			}
 			else
 				pred.AsPred().OverfullTime = 0;
-		}
-
-		/// <summary>
-		/// Calculates the current weight of the given predator's stomach, based on all the prey inside of it.<br/>
-		/// Used primarily in conjunction with <see cref="StomachCapacity"/> to safeguard against overeating.<br/>
-		/// </summary>
-		/// <param name="pred">
-		/// The predatory player whose stomach is to be weighed.<br/>
-		/// </param>
-		/// <param name="onlyKicky">
-		/// If set to <see langword="true"/>, only counts out the weight of prey that is still alive (not in second digestion phase).<br/>
-		/// Defaults to false.<br/>
-		/// </param>
-		/// <returns>
-		/// The current total weight of the given predator player's stomach.<br/>
-		/// </returns>
-		public static double GetCurrentBellyWeight(Player pred, bool onlyKicky = false)
-		{
-			double totalBellyWeight = 0.0;
-			if (pred.AsPred().StomachTracker is not null)
-			{
-				foreach (PreyData prey in pred.AsPred().StomachTracker.Prey)
-				{
-					if (prey.NoHealth && onlyKicky)
-						continue;
-
-					totalBellyWeight += prey.WeightLeftToDigest;
-					if (prey.NoHealth)
-						continue;
-
-					switch (prey.Type)
-					{
-						case PreyType.Player:
-							Player preyPredPlayer = prey.Instance as Player;
-							totalBellyWeight += GetCurrentBellyWeight(preyPredPlayer);
-							break;
-						case PreyType.NPC:
-							NPC preyPredNPC = prey.Instance as NPC;
-							totalBellyWeight += PredNPC.GetCurrentBellyWeight(preyPredNPC);
-							break;
-					}
-				}
-			}
-			return totalBellyWeight;
-		}
-
-		public static bool AnyPreyStillAlive(Player pred)
-		{
-			if (pred.AsPred().StomachTracker is not null)
-			{
-				foreach (PreyData prey in pred.AsPred().StomachTracker.Prey)
-				{
-					if (!prey.NoHealth)
-						return true;
-				}
-			}
-			return false;
 		}
 
 		public static string GetDigestedPlayerDeathReason(Player player, Player prey)
@@ -1522,7 +1472,7 @@ namespace V2.PlayerHandling
 		public static int GetVisualBellySize(Player player)
 		{
 			return Math.Min(
-				(int)Math.Floor(5.0 * Math.Sqrt(GetCurrentBellyWeight(player))),
+				(int)Math.Floor(5.0 * Math.Sqrt(player.AsPred().StomachFullness)),
 				7
 			);
 		}

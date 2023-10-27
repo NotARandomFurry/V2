@@ -58,7 +58,7 @@ namespace V2.UI.StomachacheMeter
 		{
 			Visible = false;
 			Player player = Main.LocalPlayer;
-			if (PredPlayer.GetCurrentBellyWeight(player) > 0 && player.CurrentCaptor() is null)
+			if (player.AsPred().StomachFullness > 0.0 && player.CurrentCaptor() is null)
 				Visible = true;
 		}
 
@@ -111,7 +111,7 @@ namespace V2.UI.StomachacheMeter
 				}
 				spriteBatch.Draw(
 					fillTexture,
-					topLeftCorner + new Vector2(14 + (i * _stomachachePanelMiddle.Value.Width), 6),
+					topLeftCorner + new Vector2(14 + (i * _stomachachePanelMiddle.Value.Width), 8),
 					fullDrawRect,
 					Color.White
 				);
@@ -142,7 +142,7 @@ namespace V2.UI.StomachacheMeter
 				Player localPlayer = Main.LocalPlayer;
 				localPlayer.cursorItemIconEnabled = false;
 				string text =
-					"Stomach Weight: "
+					"Stomach Unease: "
 				  + localPlayer.AsPred().Stomachache.CastToDecimalPlaces(2)
 				  + "/"
 				  + localPlayer.AsPred().StomachacheMeterCapacity.CastToDecimalPlaces(2)

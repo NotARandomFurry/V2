@@ -99,6 +99,7 @@ namespace V2.NPCs
 		{
 			npc.AsFood().Digested = false;
 
+			npc.AsFood().STR = (int)((double)npc.lifeMax / 40.0);
 			npc.AsFood().StruggleStrengthModifier = StatModifier.Default;
 
 			npc.AsFood().TakenDigestionDamageModifier = StatModifier.Default;

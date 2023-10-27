@@ -102,9 +102,10 @@ namespace V2.Core
 		public static double StruggleStrength(this Entity entity)
 		{
 			if (entity is Player player)
-			{
 				return player.AsFood().StruggleStrength;
-			}
+			else if (entity is NPC npc)
+				return npc.AsFood().StruggleStrength;
+
 			return 0;
 		}
 	}

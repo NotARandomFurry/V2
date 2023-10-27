@@ -39,7 +39,10 @@ namespace V2.Core
 			{
 				tracker.UpdatePrey();
 				if (Main.netMode == NetmodeID.SinglePlayer)
+				{
+					tracker.UpdateProgress();
 					tracker.HandleStruggleSystem();
+				}
 			}
 
 			VoreTrackers.RemoveAll(x => x.CheckClearability());

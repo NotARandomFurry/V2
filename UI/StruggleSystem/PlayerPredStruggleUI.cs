@@ -24,7 +24,7 @@ namespace V2.UI.StruggleSystem
 		{
 			Visible = false;
 			Player player = Main.LocalPlayer;
-			if (PredPlayer.GetCurrentBellyWeight(player, onlyKicky: true) > 0)
+			if (player.AsPred().KickyStomachFullness > 0.0 && player.AsPred().StomachTracker.PredatorStruggleChart is not null)
 				Visible = true;
 		}
 
@@ -40,15 +40,11 @@ namespace V2.UI.StruggleSystem
 			if (!Visible)
 				return;
 
-			VoreTracker tracker = Main.LocalPlayer.AsPred().StomachTracker;
-			if (tracker.PredatorStruggleChart is null)
-				return;
-
 			Vector2 bottomCenter = new Vector2(
 				Main.screenWidth / 2,
 				Main.screenHeight / 2
 			);
-			bottomCenter.Y += 52;
+			bottomCenter.Y -= 52;
 			bottomCenter += Main.LocalPlayer.Center - (Main.screenPosition + new Vector2(Main.screenWidth / 2, Main.screenHeight / 2));
 
 			spriteBatch.Draw(
@@ -66,14 +62,24 @@ namespace V2.UI.StruggleSystem
 				0f
 			);
 
+			VoreTracker tracker = Main.LocalPlayer.AsPred().StomachTracker;
 			foreach ((StruggleChartNote note, double proximity) noteData in tracker.CheckCloseNotes(-1, true))
 			{
 				float alpha = 1f;
 				if (noteData.proximity >= 0)
-					alpha = (float)Math.Max(noteData.proximity - 1.5f, 0f);
+				{
+					double realProximity = 2.5 - noteData.proximity;
+					if (realProximity < 0.0)
+						realProximity = 0.0;
+					alpha = (float)Math.Min(Math.Max(realProximity / 2.5, 0.0), 1.0);
+				}
 				else if (noteData.proximity < 0)
-					alpha = (float)Math.Max((float)1.0 - Math.Abs((noteData.proximity - 0.2) * 10.0), 0f);
-
+				{
+					double realProximity = -(-0.5 + noteData.proximity);
+					if (realProximity < 0.0)
+						realProximity = 0.0;
+					alpha = (float)Math.Min(Math.Max(realProximity / 0.5, 0.0), 1.0);
+				}
 				Vector2 notePosition = bottomCenter;
 				notePosition.X += noteData.note.Lane switch
 				{
@@ -81,10 +87,10 @@ namespace V2.UI.StruggleSystem
 					NoteLane.Left => -16,
 					NoteLane.Special => 0,
 					NoteLane.Right => 16,
-					NoteLane.Down => 32
+					NoteLane.Down => 32,
 				};
 				notePosition.Y -= (float)((noteData.note.CorrectlyPressed ? noteData.note.PressedPosition : noteData.proximity) * 18.0);
-				notePosition.Y -= _struggleNoteSpecial.Height();
+				notePosition.Y -= _struggleNoteSpecial.Height() / 2f;
 
 				int frame = 0;
 				if (noteData.note.PressAnimTimer > 7)

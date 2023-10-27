@@ -47,7 +47,7 @@ namespace V2.UI.StomachCapacityMeter
 		{
 			Fullness = player.AsPred().StomachFullness;
 			CapacityMax = player.AsPred().StomachCapacity;
-			KickyPreyPercentage = PredPlayer.GetCurrentBellyWeight(player, onlyKicky: true) / CapacityMax;
+			KickyPreyPercentage = player.AsPred().KickyStomachFullness / CapacityMax;
 
 			numCapacitySegments = (int)(CapacityMax / 0.2);
 		}
@@ -61,7 +61,7 @@ namespace V2.UI.StomachCapacityMeter
 		{
 			Visible = false;
 			Player player = Main.LocalPlayer;
-			if (PredPlayer.GetCurrentBellyWeight(player) > 0 && player.CurrentCaptor() is null)
+			if (player.AsPred().StomachFullness > 0.0 && player.CurrentCaptor() is null)
 				Visible = true;
 		}
 

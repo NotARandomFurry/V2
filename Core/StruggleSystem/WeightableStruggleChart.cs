@@ -37,12 +37,12 @@ namespace V2.Core.StruggleSystem
 				{
 					List<NoteLane> lanes = new List<NoteLane> { NoteLane.Up, NoteLane.Left, NoteLane.Right, NoteLane.Down };
 					NoteLane noteLaneToFill = Main.rand.NextFromCollection(lanes);
-					RandomNoteSpan[i][(int)noteLaneToFill] = new StruggleChartNote(noteLaneToFill);
+					noteSet[(int)noteLaneToFill] = new StruggleChartNote(noteLaneToFill);
 					lanes.Remove(noteLaneToFill);
 					if (noteAmount >= 1.0f)
 					{
 						noteLaneToFill = Main.rand.NextFromCollection(lanes);
-						RandomNoteSpan[i][(int)noteLaneToFill] = new StruggleChartNote(noteLaneToFill);
+						noteSet[(int)noteLaneToFill] = new StruggleChartNote(noteLaneToFill);
 						lanes.Remove(noteLaneToFill);
 					}
 				}

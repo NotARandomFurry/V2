@@ -11,7 +11,11 @@ namespace V2.Core.StruggleSystem
 	{
 		public static WeightableStruggleChart Default { get; set; } = new WeightableStruggleChart();
 
-		public VoreTracker ConnectedTracker => ModContent.GetInstance<V2MasterSystem>().VoreTrackers.FirstOrDefault(x => x.PredatorStruggleChart == this || x.PreyStruggleCharts.Contains(this));
+		public VoreTracker ConnectedTracker => ModContent.GetInstance<V2MasterSystem>().VoreTrackers.FirstOrDefault(
+			x => x.PredatorStruggleChart == this
+		 || x.Prey.FirstOrDefault(y => !y.NoHealth && y.AssignedStruggleChart == this) is not null
+		);
+
 		public abstract List<StruggleChartNote[]> Notes { get; }
 
 		public virtual void OnStartup() { }
