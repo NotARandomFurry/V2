@@ -70,7 +70,7 @@ namespace V2.PlayerHandling
 		public double Stomachache
 		{
 			get => _stomachache;
-			set => _stomachache = Math.Max(0, value);
+			set => _stomachache = Math.Min(Math.Max(0, value), StomachacheMeterCapacity);
 		}
 
 		public int predLevel;
@@ -540,6 +540,8 @@ namespace V2.PlayerHandling
 			StruggleGraceTimeModifier = StatModifier.Default;
 			TUM.Base = 0;
 			TUM.Extra = 0;
+			if (StomachTracker is null || KickyStomachFullness == 0.0)
+				Stomachache -= 0.08;
 			StomachCapacityModifier = StatModifier.Default;
 			StomachacheMeterCapacityModifier = StatModifier.Default;
 			ACI.Base = 0;
@@ -1010,13 +1012,7 @@ namespace V2.PlayerHandling
 		/// </summary>
 		public static void UpdatePrey(Player pred)
 		{
-			if (pred.AsPred().StomachTracker is null || pred.AsPred().KickyStomachWeight == 0)
-			{
-				pred.AsPred().Stomachache -= 0.08;
-				if (pred.AsPred().StomachTracker is null)
-					return;
-			}
-			if (pred.AsPred().Stomachache >= pred.AsPred().StomachacheMeterCapacity)
+			if (pred.AsPred().Stomachache == pred.AsPred().StomachacheMeterCapacity)
 			{
 				foreach (PreyData prey in pred.AsPred().StomachTracker.Prey)
 				{
@@ -1424,6 +1420,10 @@ namespace V2.PlayerHandling
 
 		public override void SaveData(TagCompound tag)
 		{
+			tag.Add("GLPSpent", GLP.Spent);
+			tag.Add("TUMSpent", TUM.Spent);
+			tag.Add("ACISpent", ACI.Spent);
+			tag.Add("ABSSpent", ABS.Spent);
 			foreach (KeyValuePair<string, int> keyValuePair in Player.AsPred().mealCount)
 			{
 				tag.Add("[DIGESTED] " + keyValuePair.Key, keyValuePair.Value);
@@ -1440,6 +1440,10 @@ namespace V2.PlayerHandling
 
 		public override void LoadData(TagCompound tag)
 		{
+			GLP.Spent = tag.GetInt("GLPSpent");
+			TUM.Spent = tag.GetInt("TUMSpent");
+			ACI.Spent = tag.GetInt("ACISpent");
+			ABS.Spent = tag.GetInt("ABSSpent");
 			mealCount = new Dictionary<string, int>();
 			drinkCount = new Dictionary<string, int>();
 			GoalsCompleted = new Dictionary<string, bool>();

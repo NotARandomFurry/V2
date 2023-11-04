@@ -15,45 +15,43 @@ using V2.NPCs.Voraria.TownNPCs.Succubus;
 using V2.PlayerHandling;
 using V2.Sounds.Vore;
 
-namespace V2.NPCs.Vanilla.TownNPCs.Stylist
+namespace V2.NPCs.Vanilla.TownNPCs.Dryad
 {
-	public static class StylistStuff
+	public static class DryadStuff
 	{
-		public static Stylist AsStylist(this NPC npc)
+		public static Dryad AsDryad(this NPC npc)
 		{
-			if (!npc.TryGetGlobalNPC(out Stylist predStylist))
-				throw new Exception("this instance of the Stylist can't be pred or prey. best girl's best gut will have to wait, unfortunately");
+			if (!npc.TryGetGlobalNPC(out Dryad predStylist))
+				throw new Exception("this instance of the Dryad can't be pred or prey. find another salad to snack on or get snacked on by");
 
 			return predStylist;
 		}
-		public static StylistPredProfile StylistPredProfile => new StylistPredProfile();
+		public static DryadPredProfile DryadPredProfile => new DryadPredProfile();
 	}
 
-	public class StylistPredProfile : ITownNPCProfile
+	public class DryadPredProfile : ITownNPCProfile
 	{
 		private Asset<Texture2D> _defaultNoAlt;
 
-		public StylistPredProfile()
+		public DryadPredProfile()
 		{
 			if (Main.dedServ) // #if SERVER
 				return;
 
-			string npcFileTitleFilePath = "V2/NPCs/Vanilla/TownNPCs/Stylist/Stylist_Default_WeightBase_BellyBase";
+			string npcFileTitleFilePath = "V2/NPCs/Vanilla/TownNPCs/Dryad/Dryad_Default_WeightBase_BellyBase";
 			_defaultNoAlt = ModContent.Request<Texture2D>(npcFileTitleFilePath, AssetRequestMode.ImmediateLoad);
 		}
 
 		public int RollVariation() => 0;
-		public string GetNameForVariant(NPC npc) => "Amber";
+		public string GetNameForVariant(NPC npc) => npc.getNewNPCName();
 
 		public Asset<Texture2D> GetTextureNPCShouldUse(NPC npc)
 		{
 			if (npc.IsABestiaryIconDummy && !npc.ForcePartyHatOn)
 				return _defaultNoAlt;
 
-			string exactTextureToUse = "V2/NPCs/Vanilla/TownNPCs/Stylist/Stylist";
+			string exactTextureToUse = "V2/NPCs/Vanilla/TownNPCs/Dryad/Dryad";
 			string outfitString = "_Default";
-			if (npc.IsShimmerVariant)
-				outfitString = "_Shimmer";
 			exactTextureToUse += outfitString;
 			string weightString = "_WeightBase";
 			exactTextureToUse += weightString;
@@ -61,32 +59,29 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 			string bellyString = "_Belly" + (bellySize == 0 ? "Base" : bellySize);
 			exactTextureToUse += bellyString;
 
-			if (npc.altTexture == 1)
-				exactTextureToUse += "_Party";
-
 			return ModContent.Request<Texture2D>(exactTextureToUse, AssetRequestMode.ImmediateLoad);
 		}
 
-		public int GetHeadTextureIndex(NPC npc) => NPCHeadID.Stylist;
+		public int GetHeadTextureIndex(NPC npc) => NPCHeadID.Dryad;
 	}
 
-	public class Stylist : GlobalNPC
+	public class Dryad : GlobalNPC
 	{
 		public override bool InstancePerEntity => true;
 
-		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.type == NPCID.Stylist;
+		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.type == NPCID.Dryad;
 
 		public override void SetDefaults(NPC npc)
 		{
 			npc.AsV2NPC().Gender = EntityGender.Female;
 
-			npc.AsV2NPC().GetNewDialogue = GetStylistChat;
+			npc.AsV2NPC().GetNewDialogue = GetDryadChat;
 
-			npc.AsFood().Size = 1.085;
-			npc.AsPred().MaxStomachCapacity = 5.85;
+			npc.AsFood().Size = 1.118;
+			npc.AsPred().MaxStomachCapacity = 12.50;
 
-			npc.AsPred().CanBeForceFed = CanStylistBeForceFed;
-			npc.AsPred().OnForceFed = OnStylistForceFed;
+			npc.AsPred().CanBeForceFed = CanDryadBeForceFed;
+			npc.AsPred().OnForceFed = OnDryadForceFed;
 
 			npc.AsPred().DigestionType = EntityDigestionType.Acidic;
 			npc.AsPred().GetDigestionTickRate = GetDigestionTickRate;
@@ -103,7 +98,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 			npc.AsFood().OnKilledByDigestion += PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
 		}
 
-		public override ITownNPCProfile ModifyTownNPCProfile(NPC npc) => StylistStuff.StylistPredProfile;
+		public override ITownNPCProfile ModifyTownNPCProfile(NPC npc) => DryadStuff.DryadPredProfile;
 
 		public static List<string> StylistFavoritismNames => new List<string>
 		{
@@ -112,7 +107,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 			"the Sign Painter",
 			"the pixelated Sign Painter",
 		};
-		public static List<string> GetStylistChat(NPC npc, Player player)
+		public static List<string> GetDryadChat(NPC npc, Player player)
 		{
 			List<NPC> nearbyResidentNPCs = npc.GetNearbyResidentNPCs(out int npcsWithinHouse, out int npcsWithinVillage);
 			NPC armsDealer = nearbyResidentNPCs.FirstOrDefault(x => x.type == NPCID.ArmsDealer);
@@ -548,9 +543,9 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 			return stylistChatPool;
 		}
 
-		public static bool CanStylistBeForceFed(NPC npc) => true;
+		public static bool CanDryadBeForceFed(NPC npc) => true;
 
-		public static void OnStylistForceFed(NPC npc, Player player)
+		public static void OnDryadForceFed(NPC npc, Player player)
 		{
 			PredNPC.SetChatboxText(
 				npc,
@@ -577,15 +572,18 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 			if (Main.GameUpdateCount % 60 != 0)
 				return;
 
-			static void RollForRandomGulp(ref bool gutCut) => gutCut |= Main.rand.NextBool(5, 100);
+			static void RollForRandomGulp(ref bool gutCut) => gutCut |= Main.rand.NextBool(4, 100);
 
 			List<NPC> nearbyResidentNPCs = npc.GetNearbyResidentNPCs(out int npcsWithinHouse, out int npcsWithinVillage);
-			NPC salad = nearbyResidentNPCs.FirstOrDefault(x => x.type == NPCID.Dryad);
-			bool shouldSnackOnSalad = false;
-			RollForRandomGulp(ref shouldSnackOnSalad);
-			RollForRandomGulp(ref shouldSnackOnSalad);
-			if (salad != null && salad.Distance(npc.Center) <= npc.AsPred().MaxSwallowRange && shouldSnackOnSalad)
-				PredNPC.Swallow(npc, salad);
+			NPC funnyShroom = nearbyResidentNPCs.FirstOrDefault(x => x.type == NPCID.Truffle);
+			bool shouldSnackOnShroom = false;
+			RollForRandomGulp(ref shouldSnackOnShroom);
+			RollForRandomGulp(ref shouldSnackOnShroom);
+			RollForRandomGulp(ref shouldSnackOnShroom);
+			RollForRandomGulp(ref shouldSnackOnShroom);
+			RollForRandomGulp(ref shouldSnackOnShroom);
+			if (funnyShroom != null && funnyShroom.Distance(npc.Center) <= npc.AsPred().MaxSwallowRange && shouldSnackOnShroom)
+				PredNPC.Swallow(npc, funnyShroom);
 
 			if (ModContent.GetInstance<V2ServerConfig>().NoRandomGulpsAgainstPlayers)
 				return;
@@ -593,53 +591,29 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 			if (!Main.CurrentPlayer.active || Main.CurrentPlayer.dead || Main.CurrentPlayer.Distance(npc.Center) > npc.AsPred().MaxSwallowRange || Main.CurrentPlayer.CurrentCaptor() is not null)
 				return;
 
-			bool bald = Main.CurrentPlayer.hair == 16 || Main.CurrentPlayer.head == ArmorIDs.Head.MonkBrows;
-			bool hairDye = Main.CurrentPlayer.hairDye != 0;
-
-			bool shouldGiveGutCut = false;
-			RollForRandomGulp(ref shouldGiveGutCut);
-			if (bald)
+			bool shouldPurifyPlayer = false;
+			RollForRandomGulp(ref shouldPurifyPlayer);
+			int worldTaint = WorldGen.tEvil + WorldGen.tBlood + WorldGen.tGood;
+			while (worldTaint > 10)
 			{
-				RollForRandomGulp(ref shouldGiveGutCut);
-				RollForRandomGulp(ref shouldGiveGutCut);
-			}
-			else if (hairDye)
-			{
-				RollForRandomGulp(ref shouldGiveGutCut);
-				RollForRandomGulp(ref shouldGiveGutCut);
-				RollForRandomGulp(ref shouldGiveGutCut);
-				RollForRandomGulp(ref shouldGiveGutCut);
+				RollForRandomGulp(ref shouldPurifyPlayer);
+				worldTaint -= 10;
 			}
 
-			if (shouldGiveGutCut)
+			worldTaint = WorldGen.tEvil + WorldGen.tBlood + WorldGen.tGood;
+			if (shouldPurifyPlayer)
 			{
-				if (bald)
+				switch (worldTaint)
 				{
-					PredNPC.SwallowWithTextIfApplicable(
-						npc,
-						Main.CurrentPlayer,
-						"[c/7F7F7F:<With little warning, " + npc.GivenName + " stuffs you down her throat, headfirst. She gives a disgruntled groan as you settle into her stomach.>]\n"
-					  + "Eugh, your head tasted HORRIBLE. So bland, no REAL taste to it...at least you have a decent base flavor. Serves you right for lettin' that bald BULB you call your head STRUT AROUND outside my gut! Maybe a quick \"marination\" and some time as a new set of hips for me'll make you think twice about not havin' any hair..."
-					);
+					case int i where i > 30 && i <= 40:
+						break;
 				}
-				else if (hairDye)
-				{
-					PredNPC.SwallowWithTextIfApplicable(
-						npc,
-						Main.CurrentPlayer,
-						"[c/7F7F7F:<With little warning, " + npc.GivenName + " stuffs you down her throat, headfirst. She gives a particularly gleeful hum as you settle into her stomach.>]\n"
-					  + "Oooh...now THAT'S a great meal! Hate to drag you away, hun...I know I'm on a diet, and you're probably busy, but I just couldn't help myself! Your scalp looked WAY too tasty with that DELICIOUS hair dye I gave you...I just HAD to have a bite! Surely, you don't mind bein' a meal worth a cheat day for me, right?"
-					);
-				}
-				else
-				{
-					PredNPC.SwallowWithTextIfApplicable(
-						npc,
-						Main.CurrentPlayer,
-						"[c/7F7F7F:<With little warning, " + npc.GivenName + " stuffs you down her throat, headfirst. She gives a pleasant hum as you settle into her stomach.>]\n"
-					  + "Oooh...now THAT'S a good meal! Sorry, hun...I know I'm supposed to be on a diet, but your scalp looked really tasty...! I bet a quick shave with the help of my belly would make you look even better, too! That, and I'm honestly pretty hungry...I'm sure ONE more cheat day can't hurt, yeah?"
-					);
-				}
+				PredNPC.SwallowWithTextIfApplicable(
+					npc,
+					Main.CurrentPlayer,
+					"[c/7F7F7F:<As a frustrated scowl crosses her face, " + npc.GivenName + " picks you up and effortlessly guides you down her throat headfirst, letting out a rather plain belch once your feet pass her lips.>]\n"
+				  + "Our stretch of this world has become so tainted..."
+				);
 			}
 		}
 
@@ -648,36 +622,30 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 			deathReasonKeyList.AddHumanoidPredMessages();
 			deathReasonKeyList.AddRange(new List<string>
 			{
-				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Stylist.1",
-				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Stylist.2",
-				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Stylist.3",
-				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Stylist.4",
-				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Stylist.5",
-				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Stylist.6",
-				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Stylist.7",
+				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Dryad.1",
+				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Dryad.2",
+				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Dryad.3",
+				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Dryad.4",
+				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Dryad.5",
+				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Dryad.6",
+				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Dryad.7",
 			});
-
-			if (Main.bloodMoon)
-			{
-				deathReasonKeyList.Clear();
-				deathReasonKeyList.Add("Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Stylist.BloodMoonHaircut");
-			}
 
 			if (player.difficulty == PlayerDifficultyID.Hardcore)
 			{
 				deathReasonKeyList.Clear();
-				deathReasonKeyList.Add("Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Stylist.Hardcore");
+				deathReasonKeyList.Add("Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Dryad.Hardcore");
 			}
 		}
 
-		public static double GetDigestionTickRate(NPC npc, PreyData prey) => Main.bloodMoon ? 2.5 : 1.25;
+		public static double GetDigestionTickRate(NPC npc, PreyData prey) => Main.bloodMoon ? 2.8 : 1.4;
 
-		public static double GetDigestionTickDamage(NPC npc, PreyData prey) => 20;
+		public static double GetDigestionTickDamage(NPC npc, PreyData prey) => 21;
 
 		public static void OnDigestionKill(NPC npc, PreyData digestedPrey)
 		{
 			SoundEngine.PlaySound(
-				digestedPrey.WeightLeftToDigest < 0.3 ? npc.AsPred().SmallBurps : npc.AsPred().StandardBurps,
+				digestedPrey.WeightLeftToDigest < 0.35 ? npc.AsPred().SmallBurps : npc.AsPred().StandardBurps,
 				npc.TrueCenter() + new Vector2(npc.direction * 8f, -14f)
 			);
 		}
@@ -686,7 +654,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 		{
 			double baseAbsorptionRate = 1.0 / (double)V2Utils.SensibleTime(
 				minutes: 1,
-				seconds: 45
+				seconds: 20
 			);
 			return baseAbsorptionRate;
 		}
@@ -694,7 +662,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 		public static int GetVisualBellySize(NPC npc)
 		{
 			return Math.Min(
-				(int)Math.Floor(5.0 * Math.Sqrt(PredNPC.GetCurrentBellyWeight(npc))),
+				(int)Math.Floor(4.75 * Math.Sqrt(PredNPC.GetCurrentBellyWeight(npc))),
 				4
 			);
 		}

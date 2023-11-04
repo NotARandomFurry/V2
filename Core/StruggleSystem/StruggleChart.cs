@@ -9,12 +9,10 @@ namespace V2.Core.StruggleSystem
 {
 	public abstract class StruggleChart
 	{
-		public static WeightableStruggleChart Default { get; set; } = new WeightableStruggleChart();
+		public static ProceduralStruggleChart Default => new ProceduralStruggleChart();
 
-		public VoreTracker ConnectedTracker => ModContent.GetInstance<V2MasterSystem>().VoreTrackers.FirstOrDefault(
-			x => x.PredatorStruggleChart == this
-		 || x.Prey.FirstOrDefault(y => !y.NoHealth && y.AssignedStruggleChart == this) is not null
-		);
+		public VoreTracker ConnectedTracker { get; set; }
+		public bool ForPredator { get; set; }
 
 		public abstract List<StruggleChartNote[]> Notes { get; }
 
@@ -41,7 +39,8 @@ namespace V2.Core.StruggleSystem
 					if (!note.CorrectlyPressed)
 						continue;
 
-					if (note.PressAnimTimer > 25)
+					note.PressAnimTimer++;
+					if (note.PressAnimTimer > 180)
 					{
 						note.CorrectlyPressed = false;
 						note.PressedPosition = 0.0;

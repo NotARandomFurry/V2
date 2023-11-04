@@ -47,6 +47,11 @@ namespace V2.NPCs
 		public double Size { get; set; }
 
 		public int STR { get; set; }
+		/// <summary>
+		/// Expresses, from 0 to 12, how well this NPC struggles.<br/>
+		/// Defaults to 5.<br/>
+		/// </summary>
+		public int StruggleEffectiveness { get; set; }
 		public StatModifier StruggleStrengthModifier { get; set; }
 		public double StruggleStrength {
 			get {
@@ -81,6 +86,7 @@ namespace V2.NPCs
 			Size = 0;
 
 			STR = 0;
+			StruggleEffectiveness = 5;
 
 			OnKilledByDigestion = null;
 
@@ -104,6 +110,9 @@ namespace V2.NPCs
 
 			npc.AsFood().TakenDigestionDamageModifier = StatModifier.Default;
 
+			if (npc.AsFood().EatenSafetyFrames > 0)
+				npc.AsFood().EatenSafetyFrames--;
+
 			if (!npc.HasBuff(ModContent.BuffType<Softened>()))
 				npc.AddBuff(ModContent.BuffType<Softened>(), 3);
 			npc.AsFood().SoftenedDigestionDamageModifier = StatModifier.Default;
@@ -126,7 +135,7 @@ namespace V2.NPCs
 
 		public override bool CanHitNPC(NPC npc, NPC target)
 		{
-			if (npc.CurrentCaptor() is not null || target.CurrentCaptor() is not null || npc.AsFood().EatenSafetyFrames > 0)
+			if (npc.CurrentCaptor() is not null || target.CurrentCaptor() is not null || npc.AsFood().EatenSafetyFrames > 0 || target.AsFood().EatenSafetyFrames > 0)
 				return false;
 
 			return true;

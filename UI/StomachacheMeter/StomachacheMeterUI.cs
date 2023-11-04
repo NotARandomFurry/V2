@@ -58,7 +58,7 @@ namespace V2.UI.StomachacheMeter
 		{
 			Visible = false;
 			Player player = Main.LocalPlayer;
-			if (player.AsPred().StomachFullness > 0.0 && player.CurrentCaptor() is null)
+			if ((player.AsPred().Stomachache > 0.0 || player.AsPred().StomachFullness > 0.0) && player.CurrentCaptor() is null)
 				Visible = true;
 		}
 

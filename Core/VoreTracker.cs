@@ -54,7 +54,7 @@ namespace V2.Core
 
 	public class VoreTracker
 	{
-		public static double MaximumNoteProximityRatio => 8.0;
+		public static double MaximumNoteProximityRatio => 5.0;
 		public double StruggleChartProgressRate { get; set; }
 		public double StruggleChartProgress { get; set; }
 
@@ -96,26 +96,62 @@ namespace V2.Core
 
 		public void RefreshStruggleChartList()
 		{
-			if (Prey.FirstOrDefault(x => !x.NoHealth) is null)
+			if (Prey.FirstOrDefault(x => !x.NoHealth && x.Type != PreyType.Item) is null)
 				return;
 
 			StruggleChartProgress = -2.0;
 			if (Predator is Player predPlayer)
 				StruggleChartProgress = -predPlayer.AsPred().StruggleGraceTime;
-			StruggleChartProgressRate = 1.0 / (double)V2Utils.SensibleTime(seconds: 1);
-			PredatorStruggleChart = StruggleChart.Default;
+			StruggleChartProgressRate = 1.75 / (double)V2Utils.SensibleTime(seconds: 1);
+			PredatorStruggleChart = new ProceduralStruggleChart();
+			PredatorStruggleChart.ConnectedTracker = this;
+			PredatorStruggleChart.ForPredator = true;
 			PredatorStruggleChart.OnStartup();
 			foreach (PreyData prey in Prey)
 			{
-				if (!prey.NoHealth)
+				if (prey.NoHealth)
 				{
+					prey.AssignedStruggleChart = null;
+					continue;
+				}
+				else
+				{
+					switch (prey.Type)
+					{
+						case PreyType.Player:
+							prey.AssignedStruggleChart = new ProceduralStruggleChart();
+							prey.AssignedStruggleChart.ConnectedTracker = this;
+							prey.AssignedStruggleChart.ForPredator = false;
+							prey.AssignedStruggleChart.OnStartup();
+							break;
+						case PreyType.NPC:
+							prey.AssignedStruggleChart = new ProceduralStruggleChart();
+							prey.AssignedStruggleChart.ConnectedTracker = this;
+							prey.AssignedStruggleChart.ForPredator = false;
+							prey.AssignedStruggleChart.OnStartup();
+							break;
+						case PreyType.Projectile:
+							prey.AssignedStruggleChart = new ProceduralStruggleChart();
+							prey.AssignedStruggleChart.ConnectedTracker = this;
+							prey.AssignedStruggleChart.ForPredator = false;
+							prey.AssignedStruggleChart.OnStartup();
+							break;
+					}
+					continue;
 				}
 			}
 		}
 
 		public void UpdateProgress()
 		{
-			StruggleChartProgress += StruggleChartProgressRate;
+			if (PredatorStruggleChart is null)
+				StruggleChartProgress = -1.0;
+			else
+			{
+				StruggleChartProgress += StruggleChartProgressRate;
+				if (StruggleChartProgress > (double)PredatorStruggleChart.Notes.Count + 2.0)
+					StruggleChartProgress -= (double)PredatorStruggleChart.Notes.Count + 4.0;
+			}
 		}
 
 		public void UpdatePrey()
@@ -189,7 +225,6 @@ namespace V2.Core
 				noteData.note.PressedPosition = noteData.proximity;
 			}
 
-			#region Pred notes
 			List<(StruggleChartNote note, double proximity)> closeNotes = CheckCloseNotes(-1);
 			if (Predator is Player playerPredator)
 			{
@@ -197,79 +232,168 @@ namespace V2.Core
 				{
 					if (closeNotes.FirstOrDefault(x => x.note.Lane == NoteLane.Up) is (StruggleChartNote note, double proximity) noteData)
 					{
-						double proximityEffectivenessMultiplier = (MaximumNoteProximityRatio - noteData.proximity) / MaximumNoteProximityRatio;
+						double absoluteProximity = Math.Abs(noteData.proximity);
+						double proximityEffectivenessMultiplier = (MaximumNoteProximityRatio - absoluteProximity) / MaximumNoteProximityRatio;
 						ModifyPredStomachacheMeter(-(TotalPreySTR * 0.96) * proximityEffectivenessMultiplier);
 						SignifyNotePressed(noteData);
 					}
 					else
 					{
-						ModifyPredStomachacheMeter(0.4);
+						ModifyPredStomachacheMeter(1.0);
 					}
 				}
 				if (V2.StruggleDownHotkey.JustPressed)
 				{
 					if (closeNotes.FirstOrDefault(x => x.note.Lane == NoteLane.Down) is (StruggleChartNote note, double proximity) noteData)
 					{
-						double proximityEffectivenessMultiplier = (MaximumNoteProximityRatio - noteData.proximity) / MaximumNoteProximityRatio;
+						double absoluteProximity = Math.Abs(noteData.proximity);
+						double proximityEffectivenessMultiplier = (MaximumNoteProximityRatio - absoluteProximity) / MaximumNoteProximityRatio;
 						ModifyPredStomachacheMeter(-(TotalPreySTR * 0.96) * proximityEffectivenessMultiplier);
 						SignifyNotePressed(noteData);
 					}
 					else
 					{
-						ModifyPredStomachacheMeter(0.4);
+						ModifyPredStomachacheMeter(1.0);
 					}
 				}
 				if (V2.StruggleLeftHotkey.JustPressed)
 				{
 					if (closeNotes.FirstOrDefault(x => x.note.Lane == NoteLane.Left) is (StruggleChartNote note, double proximity) noteData)
 					{
-						double proximityEffectivenessMultiplier = (MaximumNoteProximityRatio - noteData.proximity) / MaximumNoteProximityRatio;
+						double absoluteProximity = Math.Abs(noteData.proximity);
+						double proximityEffectivenessMultiplier = (MaximumNoteProximityRatio - absoluteProximity) / MaximumNoteProximityRatio;
 						ModifyPredStomachacheMeter(-(TotalPreySTR * 0.96) * proximityEffectivenessMultiplier);
 						SignifyNotePressed(noteData);
 					}
 					else
 					{
-						ModifyPredStomachacheMeter(0.4);
+						ModifyPredStomachacheMeter(1.0);
 					}
 				}
 				if (V2.StruggleRightHotkey.JustPressed)
 				{
 					if (closeNotes.FirstOrDefault(x => x.note.Lane == NoteLane.Right) is (StruggleChartNote note, double proximity) noteData)
 					{
-						double proximityEffectivenessMultiplier = (MaximumNoteProximityRatio - noteData.proximity) / MaximumNoteProximityRatio;
+						double absoluteProximity = Math.Abs(noteData.proximity);
+						double proximityEffectivenessMultiplier = (MaximumNoteProximityRatio - absoluteProximity) / MaximumNoteProximityRatio;
 						ModifyPredStomachacheMeter(-(TotalPreySTR * 0.96) * proximityEffectivenessMultiplier);
 						SignifyNotePressed(noteData);
 					}
 					else
 					{
-						ModifyPredStomachacheMeter(0.4);
+						ModifyPredStomachacheMeter(1.0);
 					}
 				}
 				if (V2.StruggleSpecialHotkey.JustPressed)
 				{
 					if (closeNotes.FirstOrDefault(x => x.note.Lane == NoteLane.Special) is (StruggleChartNote note, double proximity) noteData)
 					{
-						double proximityEffectivenessMultiplier = (MaximumNoteProximityRatio - noteData.proximity) / MaximumNoteProximityRatio;
+						double absoluteProximity = Math.Abs(noteData.proximity);
+						double proximityEffectivenessMultiplier = (MaximumNoteProximityRatio - absoluteProximity) / MaximumNoteProximityRatio;
 						ModifyPredStomachacheMeter(-(TotalPreySTR * 0.96) * proximityEffectivenessMultiplier);
 						SignifyNotePressed(noteData);
 					}
 					else
 					{
-						ModifyPredStomachacheMeter(0.4);
+						ModifyPredStomachacheMeter(1.0);
 					}
 				}
 			}
 			else if (Predator is NPC npcPredator)
 			{
+				int counterSkill = npcPredator.AsPred().CounterStruggleEffectiveness;
+				if (closeNotes is null)
+					goto HandlePreyNotes;
+				foreach ((StruggleChartNote note, double proximity) noteData in closeNotes)
+				{
+					double absoluteProximity = Math.Abs(noteData.proximity);
+					double proximityEffectivenessMultiplier = (MaximumNoteProximityRatio - absoluteProximity) / MaximumNoteProximityRatio;
+					switch (counterSkill)
+					{
+						case 0:
+							break;
+						case 1:
+							if (absoluteProximity > MaximumNoteProximityRatio)
+								break;
 
+							if (Main.rand.NextBool(35) && Math.Abs(noteData.proximity) < MaximumNoteProximityRatio && !noteData.note.Failed)
+							{
+								ModifyPredStomachacheMeter(-(TotalPreySTR * 0.96) * proximityEffectivenessMultiplier);
+								SignifyNotePressed(noteData);
+							}
+							else
+							{
+								ModifyPredStomachacheMeter(0.4);
+								noteData.note.Failed = true;
+							}
+							break;
+						case 2:
+						case 3:
+						case 4:
+							break;
+						case 5:
+						default:
+							if (absoluteProximity >= MaximumNoteProximityRatio)
+								break;
+
+							if (absoluteProximity > 4.0)
+							{
+								if (Main.rand.NextBool(20))
+								{
+									ModifyPredStomachacheMeter(-(TotalPreySTR * 0.96) * proximityEffectivenessMultiplier);
+									SignifyNotePressed(noteData);
+								}
+							}
+							if (4.0 >= absoluteProximity && absoluteProximity > 3.0)
+							{
+								if (Main.rand.NextBool(15))
+								{
+									ModifyPredStomachacheMeter(-(TotalPreySTR * 0.96) * proximityEffectivenessMultiplier);
+									SignifyNotePressed(noteData);
+								}
+							}
+							if (3.0 >= absoluteProximity && absoluteProximity > 2.0)
+							{
+								if (Main.rand.NextBool(12))
+								{
+									ModifyPredStomachacheMeter(-(TotalPreySTR * 0.96) * proximityEffectivenessMultiplier);
+									SignifyNotePressed(noteData);
+								}
+							}
+							if (2.0 >= absoluteProximity && absoluteProximity > 1.0)
+							{
+								if (Main.rand.NextBool(10))
+								{
+									ModifyPredStomachacheMeter(-(TotalPreySTR * 0.96) * proximityEffectivenessMultiplier);
+									SignifyNotePressed(noteData);
+								}
+							}
+							if (1.0 >= absoluteProximity)
+							{
+								if (Main.rand.NextBool(8))
+								{
+									ModifyPredStomachacheMeter(-(TotalPreySTR * 0.96) * proximityEffectivenessMultiplier);
+									SignifyNotePressed(noteData);
+								}
+							}
+							break;
+						case 6:
+						case 7:
+						case 8:
+						case 9:
+						case 10:
+						case 11:
+						case 12:
+							break;
+					}
+				}
 			}
-			#endregion
 
-			#region Prey notes
+			HandlePreyNotes:
 			for (int i = 0; i < Prey.Count; i++)
 			{
 				PreyData prey = Prey[i];
-				if (prey.NoHealth)
+				if (prey.NoHealth || prey.AssignedStruggleChart is null)
 					continue;
 
 				closeNotes = CheckCloseNotes(i);
@@ -280,74 +404,163 @@ namespace V2.Core
 					{
 						if (closeNotes.FirstOrDefault(x => x.note.Lane == NoteLane.Up) is (StruggleChartNote note, double proximity) noteData)
 						{
-							double proximityEffectivenessMultiplier = (MaximumNoteProximityRatio - noteData.proximity) / MaximumNoteProximityRatio;
+							double absoluteProximity = Math.Abs(noteData.proximity);
+							double proximityEffectivenessMultiplier = (MaximumNoteProximityRatio - absoluteProximity) / MaximumNoteProximityRatio;
 							ModifyPredStomachacheMeter(preyEntity.StruggleStrength() * proximityEffectivenessMultiplier);
 							SignifyNotePressed(noteData);
 						}
 						else
 						{
-							ModifyPredStomachacheMeter(-0.55);
+							ModifyPredStomachacheMeter(-0.9);
 						}
 					}
 					if (V2.StruggleDownHotkey.JustPressed)
 					{
 						if (closeNotes.FirstOrDefault(x => x.note.Lane == NoteLane.Down) is (StruggleChartNote note, double proximity) noteData)
 						{
-							double proximityEffectivenessMultiplier = (MaximumNoteProximityRatio - noteData.proximity) / MaximumNoteProximityRatio;
+							double absoluteProximity = Math.Abs(noteData.proximity);
+							double proximityEffectivenessMultiplier = (MaximumNoteProximityRatio - absoluteProximity) / MaximumNoteProximityRatio;
 							ModifyPredStomachacheMeter(preyEntity.StruggleStrength() * proximityEffectivenessMultiplier);
 							SignifyNotePressed(noteData);
 						}
 						else
 						{
-							ModifyPredStomachacheMeter(-0.55);
+							ModifyPredStomachacheMeter(-0.9);
 						}
 					}
 					if (V2.StruggleLeftHotkey.JustPressed)
 					{
 						if (closeNotes.FirstOrDefault(x => x.note.Lane == NoteLane.Left) is (StruggleChartNote note, double proximity) noteData)
 						{
-							double proximityEffectivenessMultiplier = (MaximumNoteProximityRatio - noteData.proximity) / MaximumNoteProximityRatio;
+							double absoluteProximity = Math.Abs(noteData.proximity);
+							double proximityEffectivenessMultiplier = (MaximumNoteProximityRatio - absoluteProximity) / MaximumNoteProximityRatio;
 							ModifyPredStomachacheMeter(preyEntity.StruggleStrength() * proximityEffectivenessMultiplier);
 							SignifyNotePressed(noteData);
 						}
 						else
 						{
-							ModifyPredStomachacheMeter(-0.55);
+							ModifyPredStomachacheMeter(-0.9);
 						}
 					}
 					if (V2.StruggleRightHotkey.JustPressed)
 					{
 						if (closeNotes.FirstOrDefault(x => x.note.Lane == NoteLane.Right) is (StruggleChartNote note, double proximity) noteData)
 						{
-							double proximityEffectivenessMultiplier = (MaximumNoteProximityRatio - noteData.proximity) / MaximumNoteProximityRatio;
+							double absoluteProximity = Math.Abs(noteData.proximity);
+							double proximityEffectivenessMultiplier = (MaximumNoteProximityRatio - absoluteProximity) / MaximumNoteProximityRatio;
 							ModifyPredStomachacheMeter(preyEntity.StruggleStrength() * proximityEffectivenessMultiplier);
 							SignifyNotePressed(noteData);
 						}
 						else
 						{
-							ModifyPredStomachacheMeter(-0.55);
+							ModifyPredStomachacheMeter(-0.9);
 						}
 					}
 					if (V2.StruggleSpecialHotkey.JustPressed)
 					{
 						if (closeNotes.FirstOrDefault(x => x.note.Lane == NoteLane.Special) is (StruggleChartNote note, double proximity) noteData)
 						{
-							double proximityEffectivenessMultiplier = (MaximumNoteProximityRatio - noteData.proximity) / MaximumNoteProximityRatio;
+							double absoluteProximity = Math.Abs(noteData.proximity);
+							double proximityEffectivenessMultiplier = (MaximumNoteProximityRatio - absoluteProximity) / MaximumNoteProximityRatio;
 							ModifyPredStomachacheMeter(preyEntity.StruggleStrength() * proximityEffectivenessMultiplier);
 							SignifyNotePressed(noteData);
 						}
 						else
 						{
-							ModifyPredStomachacheMeter(-0.55);
+							ModifyPredStomachacheMeter(-0.9);
 						}
 					}
 				}
 				else if (preyEntity is NPC npcPrey)
 				{
+					int struggleSkill = npcPrey.AsFood().StruggleEffectiveness;
+					if (closeNotes is null)
+						continue;
 
+					foreach ((StruggleChartNote note, double proximity) noteData in closeNotes)
+					{
+						double absoluteProximity = Math.Abs(noteData.proximity);
+						double proximityEffectivenessMultiplier = (MaximumNoteProximityRatio - absoluteProximity) / MaximumNoteProximityRatio;
+						switch (struggleSkill)
+						{
+							case 0:
+								break;
+							case 1:
+								if (absoluteProximity > MaximumNoteProximityRatio)
+									break;
+
+								if (Main.rand.NextBool(35) && Math.Abs(noteData.proximity) < MaximumNoteProximityRatio && !noteData.note.Failed)
+								{
+									ModifyPredStomachacheMeter(preyEntity.StruggleStrength() * proximityEffectivenessMultiplier);
+									SignifyNotePressed(noteData);
+								}
+								else
+								{
+									ModifyPredStomachacheMeter(0.4);
+									noteData.note.Failed = true;
+								}
+								break;
+							case 2:
+							case 3:
+							case 4:
+							case 5:
+							default:
+								if (absoluteProximity > MaximumNoteProximityRatio)
+									break;
+
+								if (absoluteProximity > 4.0)
+								{
+									if (Main.rand.NextBool(20))
+									{
+										ModifyPredStomachacheMeter(preyEntity.StruggleStrength() * proximityEffectivenessMultiplier);
+										SignifyNotePressed(noteData);
+									}
+								}
+								if (4.0 >= absoluteProximity && absoluteProximity > 3.0)
+								{
+									if (Main.rand.NextBool(15))
+									{
+										ModifyPredStomachacheMeter(preyEntity.StruggleStrength() * proximityEffectivenessMultiplier);
+										SignifyNotePressed(noteData);
+									}
+								}
+								if (3.0 >= absoluteProximity && absoluteProximity > 2.0)
+								{
+									if (Main.rand.NextBool(12))
+									{
+										ModifyPredStomachacheMeter(preyEntity.StruggleStrength() * proximityEffectivenessMultiplier);
+										SignifyNotePressed(noteData);
+									}
+								}
+								if (2.0 >= absoluteProximity && absoluteProximity > 1.0)
+								{
+									if (Main.rand.NextBool(10))
+									{
+										ModifyPredStomachacheMeter(preyEntity.StruggleStrength() * proximityEffectivenessMultiplier);
+										SignifyNotePressed(noteData);
+									}
+								}
+								if (1.0 >= absoluteProximity)
+								{
+									if (Main.rand.NextBool(8))
+									{
+										ModifyPredStomachacheMeter(preyEntity.StruggleStrength() * proximityEffectivenessMultiplier);
+										SignifyNotePressed(noteData);
+									}
+								}
+								break;
+							case 6:
+							case 7:
+							case 8:
+							case 9:
+							case 10:
+							case 11:
+							case 12:
+								break;
+						}
+					}
 				}
 			}
-			#endregion
 		}
 
 		public void ModifyPredStomachacheMeter(double amount)
@@ -361,6 +574,8 @@ namespace V2.Core
 				case PredType.NPC:
 					NPC npc = Predator as NPC;
 					npc.AsPred().Stomachache += amount;
+					if (npc.AsPred().Stomachache > npc.AsPred().StomachacheMeterCapacity)
+						npc.AsPred().Stomachache = npc.AsPred().StomachacheMeterCapacity;
 					break;
 			}
 		}
@@ -376,13 +591,14 @@ namespace V2.Core
 
 				targetChart = Prey[preyIndex].AssignedStruggleChart;
 			}
+
 			if (targetChart is null)
 				return null;
 
 			if (targetChart.Notes is null)
 				return null;
 
-			for (int noteSetIndex = (int)Math.Max(0, Math.Round(StruggleChartProgress) - 10); noteSetIndex <= Math.Min(Math.Round(StruggleChartProgress) + 10, targetChart.Notes.Count - 1); noteSetIndex++)
+			for (int noteSetIndex = (int)Math.Max(0, Math.Round(StruggleChartProgress) - 3); noteSetIndex <= Math.Min(Math.Round(StruggleChartProgress) + 6, targetChart.Notes.Count - 1); noteSetIndex++)
 			{
 				StruggleChartNote[] noteSet = targetChart.Notes[noteSetIndex];
 
@@ -395,13 +611,21 @@ namespace V2.Core
 				for (int noteIndex = 0; noteIndex < noteSet.Length; noteIndex++)
 				{
 					StruggleChartNote note = noteSet[noteIndex];
+					if (note is null)
+						continue;
+
+					if (note.CorrectlyPressed && !forUI)
+						continue;
+
 					closeNotes.Add((note, (double)noteSetIndex - StruggleChartProgress));
 				}
 			}
 
 			if (!forUI)
+			{
 				closeNotes.RemoveAll(x => x.proximity >= StruggleChartProgressRate * 8.0);
-
+				closeNotes.RemoveAll(x => x.proximity <= -StruggleChartProgressRate * 8.0);
+			}
 			return closeNotes;
 		}
 
@@ -445,6 +669,8 @@ namespace V2.Core
 		public StruggleChart AssignedStruggleChart { get; set; }
 
 		public int timeSpentInStomach;
+
+		public VoreTracker ConnectedTracker { get; set; }
 
 		public PreyData()
 		{
@@ -493,7 +719,7 @@ namespace V2.Core
 		/// <param name="preyEntity"></param>
 		/// <returns></returns>
 		/// <exception cref="Exception"></exception>
-		public static PreyData NewData(Entity preyEntity)
+		public static PreyData NewData(Entity preyEntity, VoreTracker tracker = null)
 		{
 			if (preyEntity is Player preyPlayer)
 			{
@@ -502,6 +728,8 @@ namespace V2.Core
 					exactType: "Player " + preyPlayer.name
 				);
 				data.Instance = preyPlayer;
+				if (tracker is not null)
+					data.ConnectedTracker = tracker;
 				data.Recalculate();
 				return data;
 			}
@@ -512,6 +740,8 @@ namespace V2.Core
 					exactType: preyNPC.GivenOrTypeName
 				);
 				data.Instance = preyNPC;
+				if (tracker is not null)
+					data.ConnectedTracker = tracker;
 				data.Recalculate();
 				return data;
 			}
@@ -522,6 +752,8 @@ namespace V2.Core
 					exactType: preyProjectile.Name
 				);
 				data.Instance = preyProjectile;
+				if (tracker is not null)
+					data.ConnectedTracker = tracker;
 				data.Recalculate();
 				return data;
 			}
@@ -532,6 +764,8 @@ namespace V2.Core
 					exactType: preyItem.AffixName()
 				);
 				data.Instance = preyItem;
+				if (tracker is not null)
+					data.ConnectedTracker = tracker;
 				data.Recalculate();
 				return data;
 			}
@@ -540,9 +774,9 @@ namespace V2.Core
 				throw new Exception(
 					"hi !!\n"
 				  + "thomas says that the thing you asked to make is wrong\n"
-				  + "something about a pa-ram being an     inn-valid enter tee?\n"
+				  + "something about a pa ram being an     in valid enter tee?\n"
 				  + "I asked if I could take what was left from him though and he said yeah\n"
-				  + "give me and my tummy another course whenever :D"
+				  + "give me and my tummy another snack whenever :D"
 				  + "-rose"
 				);
 			}
@@ -572,8 +806,13 @@ namespace V2.Core
 
 					ExactType = preyPlayer.name;
 					InitialWeight = InitialSize = WeightLeftToDigest = 1.0;
-					AssignedStruggleChart = StruggleChart.Default;
-					AssignedStruggleChart.OnStartup();
+					if (ConnectedTracker is not null)
+					{
+						AssignedStruggleChart = new ProceduralStruggleChart();
+						AssignedStruggleChart.ConnectedTracker = ConnectedTracker;
+						AssignedStruggleChart.ForPredator = false;
+						AssignedStruggleChart.OnStartup();
+					}
 					return;
 				case PreyType.NPC:
 					if (Instance is null)
@@ -591,8 +830,13 @@ namespace V2.Core
 						double playerToNPCHeightRatio = (double)preyNPC.height / refPlayerHeight;
 						InitialWeight = InitialSize = WeightLeftToDigest = playerToNPCWidthRatio * playerToNPCHeightRatio;
 					}
-					AssignedStruggleChart = StruggleChart.Default;
-					AssignedStruggleChart.OnStartup();
+					if (ConnectedTracker is not null)
+					{
+						AssignedStruggleChart = new ProceduralStruggleChart();
+						AssignedStruggleChart.ConnectedTracker = ConnectedTracker;
+						AssignedStruggleChart.ForPredator = false;
+						AssignedStruggleChart.OnStartup();
+					}
 					return;
 				case PreyType.Projectile:
 					if (Instance is null)
@@ -605,8 +849,13 @@ namespace V2.Core
 					double playerToProjWidthRatio = (double)preyProjectile.width / refPlayerWidth;
 					double playerToProjHeightRatio = (double)preyProjectile.height / refPlayerHeight;
 					InitialWeight = InitialSize = WeightLeftToDigest = playerToProjWidthRatio * playerToProjHeightRatio;
-					AssignedStruggleChart = StruggleChart.Default;
-					AssignedStruggleChart.OnStartup();
+					if (ConnectedTracker is not null)
+					{
+						AssignedStruggleChart = new ProceduralStruggleChart();
+						AssignedStruggleChart.ConnectedTracker = ConnectedTracker;
+						AssignedStruggleChart.ForPredator = false;
+						AssignedStruggleChart.OnStartup();
+					}
 					return;
 				case PreyType.Item:
 					if (Instance is null)

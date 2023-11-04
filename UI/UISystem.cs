@@ -28,6 +28,8 @@ namespace V2.UI
 
 		public UserInterface PlayerPredStruggleInterfaceLayer;
 		public PlayerPredStruggleUI PlayerPredStruggleInterface;
+		public UserInterface PlayerPreyStruggleInterfaceLayer;
+		public PlayerPreyStruggleUI PlayerPreyStruggleInterface;
 
 		public UserInterface PredStatsMenuMouthInterfaceLayer;
 		public PredStatsMenuMouthUI PredStatsMenuMouthInterface;
@@ -60,6 +62,10 @@ namespace V2.UI
 			PlayerPredStruggleInterface = new PlayerPredStruggleUI();
 			PlayerPredStruggleInterface.Activate();
 			PlayerPredStruggleInterfaceLayer.SetState(PlayerPredStruggleInterface);
+			PlayerPreyStruggleInterfaceLayer = new UserInterface();
+			PlayerPreyStruggleInterface = new PlayerPreyStruggleUI();
+			PlayerPreyStruggleInterface.Activate();
+			PlayerPreyStruggleInterfaceLayer.SetState(PlayerPreyStruggleInterface);
 
 			PredStatsMenuMouthInterfaceLayer = new UserInterface();
 			PredStatsMenuMouthInterface = new PredStatsMenuMouthUI();

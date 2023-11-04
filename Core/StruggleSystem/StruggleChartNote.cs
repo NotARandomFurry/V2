@@ -39,6 +39,7 @@ namespace V2.Core.StruggleSystem
 		/// </summary>
 		public bool Bad { get; private set; }
 
+		public bool Failed { get; set; }
 		public bool CorrectlyPressed { get; set; }
 		public double PressedPosition { get; set; }
 		public int PressAnimTimer { get; set; }

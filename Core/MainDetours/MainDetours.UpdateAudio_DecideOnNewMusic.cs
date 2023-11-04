@@ -36,7 +36,7 @@ namespace V2.Core.MainDetours
 			bool flag12 = false;
 			bool flag13 = false;
 			bool flag14 = false;
-			bool flag15 = false;
+			bool playFoodTheme = false;
 			bool flag16 = false;
 			bool flag17 = Main.LocalPlayer.townNPCs > 2f;
 			bool flag18 = Main.slimeRain;
@@ -74,9 +74,9 @@ namespace V2.Core.MainDetours
 					int num3 = 0;
 					switch (npc.type)
 					{
-						case 13:
-						case 14:
-						case 15:
+						case NPCID.EaterofWorldsHead:
+						case NPCID.EaterofWorldsBody:
+						case NPCID.EaterofWorldsTail:
 							num3 = 1;
 							break;
 						case 26:
@@ -154,13 +154,13 @@ namespace V2.Core.MainDetours
 						case 657:
 							num3 = 13;
 							break;
-						case 636:
+						case NPCID.HallowBoss:
 							num3 = 14;
 							break;
 						case 370:
 							num3 = 15;
 							break;
-						case 668:
+						case NPCID.Deerclops:
 							num3 = 16;
 							break;
 					}
@@ -230,7 +230,7 @@ namespace V2.Core.MainDetours
 								flag14 = true;
 								break;
 							case 14:
-								flag15 = true;
+								playFoodTheme = true;
 								break;
 							case 15:
 								flag16 = true;
@@ -301,7 +301,7 @@ namespace V2.Core.MainDetours
 			}
 			else if (Main.player[Main.myPlayer].happyFunTorchTime)
 			{
-				Main.newMusic = 13;
+				Main.newMusic = MusicID.Boss3;
 			}
 			else if (flag8)
 			{
@@ -327,9 +327,9 @@ namespace V2.Core.MainDetours
 			{
 				Main.newMusic = modMusic;
 			}
-			else if (flag15)
+			else if (playFoodTheme)
 			{
-				Main.newMusic = 57;
+				Main.newMusic = MusicID.EmpressOfLight;
 			}
 			else if (flag16)
 			{
@@ -341,7 +341,7 @@ namespace V2.Core.MainDetours
 			}
 			else if (flag)
 			{
-				Main.newMusic = 5;
+				Main.newMusic = MusicID.Boss1;
 			}
 			else if (flag4)
 			{
@@ -492,14 +492,14 @@ namespace V2.Core.MainDetours
 			{
 				if (Main.player[Main.myPlayer].ZoneHallow)
 				{
-					Main.newMusic = 11;
+					Main.newMusic = MusicID.UndergroundHallow;
 				}
 				else if (Main.player[Main.myPlayer].ZoneUndergroundDesert)
 				{
 					if ((double)Main.player[Main.myPlayer].position.Y >= Main.worldSurface * 16.0 + (double)(Main.screenHeight / 2))
-						Main.newMusic = 61;
+						Main.newMusic = MusicID.UndergroundDesert;
 					else
-						Main.newMusic = 21;
+						Main.newMusic = MusicID.Desert;
 				}
 				else
 				{

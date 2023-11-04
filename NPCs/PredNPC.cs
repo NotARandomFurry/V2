@@ -84,6 +84,7 @@ namespace V2.NPCs
 
 		public delegate double DelegateGetDigestionTickDamage(NPC npc, PreyData prey);
 		public DelegateGetDigestionTickDamage GetDigestionTickDamage { get; set; }
+
 		public double Stomachache;
 		public double BaseStomachacheMeterCapacity;
 		public StatModifier StomachacheMeterCapacityModifier;
@@ -95,6 +96,11 @@ namespace V2.NPCs
 				return StomachacheMeterCapacityModifier.ApplyTo((float)baseStomachacheMeterCapacity);
 			}
 		}
+		/// <summary>
+		/// Expresses, from 0 to 12, how well this NPC keeps up with struggles as a pred.<br/>
+		/// Defaults to 5.<br/>
+		/// </summary>
+		public int CounterStruggleEffectiveness { get; set; }
 
 		public delegate void DelegateOnDigestionKill(NPC npc, PreyData digestedPrey);
 		public DelegateOnDigestionKill OnDigestionKill { get; set; }
@@ -136,6 +142,7 @@ namespace V2.NPCs
 
 			Stomachache = 0;
 			BaseStomachacheMeterCapacity = 0;
+			CounterStruggleEffectiveness = 5;
 
 			OnDigestionKill = null;
 

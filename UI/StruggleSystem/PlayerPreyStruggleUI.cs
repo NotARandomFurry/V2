@@ -16,7 +16,7 @@ using V2.PlayerHandling;
 
 namespace V2.UI.StruggleSystem
 {
-	public class PlayerPredStruggleUI : UIState
+	public class PlayerPreyStruggleUI : UIState
 	{
 		public static bool Visible { get; set; }
 
@@ -24,7 +24,7 @@ namespace V2.UI.StruggleSystem
 		{
 			Visible = false;
 			Player player = Main.LocalPlayer;
-			if (player.AsPred().KickyStomachFullness > 0.0 && player.AsPred().StomachTracker.PredatorStruggleChart is not null)
+			if (player.CurrentCaptor() is not null && !player.dead)
 				Visible = true;
 		}
 
@@ -45,7 +45,7 @@ namespace V2.UI.StruggleSystem
 				Main.screenHeight / 2
 			);
 			bottomCenter.X += 16;
-			bottomCenter.X += 60;
+			bottomCenter.X -= 60;
 			bottomCenter.Y -= 52;
 			bottomCenter += Main.LocalPlayer.Center - (Main.screenPosition + new Vector2(Main.screenWidth / 2, Main.screenHeight / 2));
 
@@ -64,8 +64,9 @@ namespace V2.UI.StruggleSystem
 				0f
 			);
 
-			VoreTracker tracker = Main.LocalPlayer.AsPred().StomachTracker;
-			foreach ((StruggleChartNote note, double proximity) noteData in tracker.CheckCloseNotes(-1, true))
+			VoreTracker tracker = Main.LocalPlayer.CurrentCaptor();
+			int preyIndex = tracker.Prey.FindIndex(x => x.Instance == Main.LocalPlayer);
+			foreach ((StruggleChartNote note, double proximity) noteData in tracker.CheckCloseNotes(preyIndex, true))
 			{
 				float alpha = 1f;
 				if (noteData.proximity >= 0)

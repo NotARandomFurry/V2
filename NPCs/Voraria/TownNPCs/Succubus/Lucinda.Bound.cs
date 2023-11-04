@@ -30,9 +30,9 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 			NPC.width = 22;
 			NPC.height = 36;
 			NPC.aiStyle = 0;
-			NPC.lifeMax = 250;
-			NPC.damage = 10;
-			NPC.defense = 15;
+			NPC.lifeMax = 700;
+			NPC.damage = 35;
+			NPC.defense = 22;
 			NPC.rarity = 4;
 			NPC.knockBackResist = 0f;
 			NPC.HitSound = SoundID.NPCHit1;
