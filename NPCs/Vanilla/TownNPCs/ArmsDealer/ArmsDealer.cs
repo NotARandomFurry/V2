@@ -77,6 +77,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.ArmsDealer
 
 			npc.AsFood().Size = 1.04;
 			npc.AsPred().MaxStomachCapacity = 1.75;
+			npc.AsPred().BaseStomachacheMeterCapacity = 115.0;
 
 			npc.AsPred().CanBeForceFed = CanArmsDealerBeForceFed;
 			npc.AsPred().OnForceFed = OnArmsDealerForceFed;
@@ -344,6 +345,11 @@ namespace V2.NPCs.Vanilla.TownNPCs.ArmsDealer
 				seconds: 0
 			);
 			return baseAbsorptionRate;
+		}
+
+		public override void FindFrame(NPC npc, int frameHeight)
+		{
+			npc.frame.Width = 160;
 		}
 
 		public static int GetVisualBellySize(NPC npc)

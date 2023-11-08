@@ -81,6 +81,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Steampunker
 
 			npc.AsFood().Size = 1.06;
 			npc.AsPred().MaxStomachCapacity = 50.0;
+			npc.AsPred().BaseStomachacheMeterCapacity = 1250.0;
 
 			npc.AsPred().CanBeForceFed = CanSteampunkerBeForceFed;
 			npc.AsPred().OnForceFed = OnSteampunkerForceFed;

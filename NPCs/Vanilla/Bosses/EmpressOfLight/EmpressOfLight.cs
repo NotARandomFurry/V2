@@ -58,6 +58,7 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 
 			entity.AsFood().Size = 41.4;
 			entity.AsPred().MaxStomachCapacity = 200.0;
+			entity.AsPred().BaseStomachacheMeterCapacity = 5000.0;
 
 			entity.AsPred().CanBeForceFed = CanUnreasonablyThickFairyBeForceFed;
 			entity.AsPred().MaxSwallowRange = V2Utils.TileCountAsPixelCount(12.5);

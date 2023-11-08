@@ -132,7 +132,9 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 
 			NPC.AsV2NPC().GetNewDialogue = GetSuccubusChat;
 
+			NPC.AsFood().Size = 1.15;
 			NPC.AsPred().MaxStomachCapacity = 2.2;
+			NPC.AsPred().BaseStomachacheMeterCapacity = 155.0;
 
 			NPC.AsPred().CanBeForceFed = CanSuccubusBeForceFed;
 			NPC.AsPred().OnForceFed = OnSuccubusForceFed;

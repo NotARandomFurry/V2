@@ -1162,14 +1162,14 @@ Death: {
 				}
 
 				Angel: {
-					1: "{Player} was given a one-way ticket to the second Heaven that is {Pred}'s belly."
+					1: "{Player} was given a one-way ticket to the divine realm that is {Pred}'s belly."
 					2: "{Player} atoned for their sins (or, perhaps, committed more of them) within {Pred}'s confines."
 					3: "{Player} will be thoroughly studying {Pred}'s internals."
 					4: "{Player} was somehow a submissive enough snack to get {Pred} to melt them into gut fat. An impressive, if strange, performance."
 					Hardcore:
 						'''
-						{Pred}'s stomach sent {Player} to heaven...which, in her case, happens to also be her stomach.
-						Ah, well. At least the rest of their days will be well-enjoyed as soft, doughy fat rounding out her tummy.
+						{Pred}'s stomach sent {Player} to the most divine of realms...which, in her case, happens to also be her stomach.
+						Ah, well. At least the rest of their days in existence will be well-enjoyed as soft, doughy fat rounding out her tummy.
 						'''
 				}
 
@@ -1185,6 +1185,25 @@ Death: {
 						'''
 						{Player} snackrificed their only life to its rightful holder: {Pred} the hair stylist.
 						May they find endless enjoyment as stylish stomach fat.
+						'''
+				}
+
+				Dryad: {
+					1: "{Player} has been reunited with nature, thanks to {Pred}."
+					2: "{Player} made for great fertilizer to help {Pred} grow stronger."
+					3: "{Pred} decided purifying {Player} was the best course of action."
+					4: "{Pred} knows she can't quite photosynthesize; thankfully, snacking on {Player} was close enough."
+
+					TaintedWorld: {
+						1: "{Pred} got too frustrated at {Player}'s continued failure to push back the evils of the world."
+						2: "{Player} got mulched with ease because they wouldn't do {Pred}'s job for her."
+						3: According to {Pred}, {Player} is fantastically bad at cleansing. Not surprising, since they're busy filling out her backside now.
+					}
+
+					Hardcore:
+						'''
+						{Player} was, perhaps rather forcibly, made one with nature through {Pred}'s purifying stomach.
+						Their sacrifice will live on as she prepares further to add a great evil from far beyond Terraria to her waistline...
 						'''
 				}
 

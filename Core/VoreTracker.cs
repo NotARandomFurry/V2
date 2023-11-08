@@ -89,10 +89,7 @@ namespace V2.Core
 				tracker.RefreshStruggleChartList();
 		}
 
-		public void QueueNewPrey(PreyData prey)
-		{
-			PreyQueue.Add(prey);
-		}
+		public void QueueNewPrey(PreyData prey) => PreyQueue.Add(prey);
 
 		public void RefreshStruggleChartList()
 		{
@@ -181,19 +178,46 @@ namespace V2.Core
 			get
 			{
 				int STR = 0;
-				foreach (PreyData prey in Prey)
+				if (Prey is not null && Prey.Count > 0)
 				{
-					if (prey.NoHealth || prey.Instance is null)
-						continue;
-
-					switch (prey.Type)
+					foreach (PreyData prey in Prey)
 					{
-						case PreyType.Player:
-							STR += (prey.Instance as Player).AsFood().STR.Total;
-							break;
-						case PreyType.NPC:
-							STR += (prey.Instance as NPC).AsFood().STR;
-							break;
+						if (prey is null)
+							continue;
+
+						if (prey.NoHealth || prey.Instance is null)
+							continue;
+
+						switch (prey.Type)
+						{
+							case PreyType.Player:
+								STR += (prey.Instance as Player).AsFood().STR.Total;
+								break;
+							case PreyType.NPC:
+								STR += (prey.Instance as NPC).AsFood().STR;
+								break;
+						}
+					}
+				}
+				if (PreyQueue is not null && PreyQueue.Count > 0)
+				{
+					foreach (PreyData prey in PreyQueue)
+					{
+						if (prey is null)
+							continue;
+
+						if (prey.NoHealth || prey.Instance is null)
+							continue;
+
+						switch (prey.Type)
+						{
+							case PreyType.Player:
+								STR += (prey.Instance as Player).AsFood().STR.Total;
+								break;
+							case PreyType.NPC:
+								STR += (prey.Instance as NPC).AsFood().STR;
+								break;
+						}
 					}
 				}
 				return STR;
@@ -574,8 +598,6 @@ namespace V2.Core
 				case PredType.NPC:
 					NPC npc = Predator as NPC;
 					npc.AsPred().Stomachache += amount;
-					if (npc.AsPred().Stomachache > npc.AsPred().StomachacheMeterCapacity)
-						npc.AsPred().Stomachache = npc.AsPred().StomachacheMeterCapacity;
 					break;
 			}
 		}

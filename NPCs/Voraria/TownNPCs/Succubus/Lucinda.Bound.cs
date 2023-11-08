@@ -37,7 +37,9 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 			NPC.knockBackResist = 0f;
 			NPC.HitSound = SoundID.NPCHit1;
 
+			NPC.AsFood().Size = 1.15;
 			NPC.AsPred().MaxStomachCapacity = 2.2;
+			NPC.AsPred().BaseStomachacheMeterCapacity = 155.0;
 
 			NPC.AsPred().DigestionType = EntityDigestionType.Acidic;
 
@@ -72,7 +74,7 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 			{
 				"Hey! You! Morsel! Mind lendin' me a hand? Been stuck here since last Tuesday, havin' to munch on imps and the chips off those serpents just to keep my gut quiet.",
 				"Hey there, soon-to-be snack. I know you're not all that busy, so care to help a pred out? My gut and I will be MORE than happy to make it worth your while.",
-				"So WHAT!? The Convocation says I'm out for a bit because the bimbo that one of 'em wanted made good gut fodder!? Dumbasses...anywho, you can tear these tacky tightropes for me, yeah?",
+				"So WHAT!? The Convocation says I'm out for a bit because the bimbo that one of 'em wanted made good gut fodder!? Dumbasses...hey, lunch! You can tear these tacky tightropes for me, yeah?",
 			};
 			return Main.rand.NextFromCollection(possibleLines);
 		}
@@ -89,7 +91,7 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 			{
 				ModContent.GetInstance<V2MasterSystem>().freedSucc = true;
 				NPC.AI_000_TransformBoundNPC(Main.CurrentPlayer.whoAmI, ModContent.NPCType<Lucinda>());
-				Main.npcChatText = "There ya go! Wasn't that hard. Now, c'mere so I can reward you with some time in my gut...or, y'know, just some old trinkets from ol' Lucy to help you be a great pred like me.";
+				Main.npcChatText = "There ya go! Wasn't that hard. Now, c'mere so I can reward you with some time in my gut...or, y'know, just some old trinkets from your ol' pal Lucinda to help you be a great pred just like me.";
 			}
 			else
 			{

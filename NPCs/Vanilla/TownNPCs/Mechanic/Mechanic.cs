@@ -80,6 +80,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Mechanic
 			
 			npc.AsFood().Size = 0.96;
 			npc.AsPred().MaxStomachCapacity = 1.75;
+			npc.AsPred().BaseStomachacheMeterCapacity = 300.0;
 
 			npc.AsPred().CanBeForceFed = CanMechanicBeForceFed;
 			npc.AsPred().OnForceFed = OnMechanicForceFed;

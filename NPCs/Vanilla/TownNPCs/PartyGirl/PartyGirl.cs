@@ -87,6 +87,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 
 			npc.AsFood().Size = 1.0;
 			npc.AsPred().MaxStomachCapacity = 999999.0;
+			npc.AsPred().BaseStomachacheMeterCapacity = 999999.0;
 
 			npc.AsPred().CanBeForceFed = CanPartyGirlBeForceFed;
 			npc.AsPred().OnForceFed = OnPartyGirlForceFed;

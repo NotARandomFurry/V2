@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using System;
 using System.Linq;
 using Terraria;
 using Terraria.ModLoader;
@@ -43,6 +44,9 @@ namespace V2.Core
 						x => x.Prey.FirstOrDefault(
 							y => y.Instance is Player preyPlayer && preyPlayer.whoAmI == player.whoAmI && !y.NoHealth
 						) is not null
+						  || x.PreyQueue.FirstOrDefault(
+							y => y.Instance is Player preyPlayer && preyPlayer.whoAmI == player.whoAmI && !y.NoHealth
+						) is not null
 					) is VoreTracker tracker)
 					return tracker;
 
@@ -52,6 +56,9 @@ namespace V2.Core
 			{
 				if (ModContent.GetInstance<V2MasterSystem>().VoreTrackers.FirstOrDefault(
 						x => x.Prey.FirstOrDefault(
+							y => y.Instance is NPC preyNPC && preyNPC.whoAmI == npc.whoAmI && !y.NoHealth
+						) is not null
+						  || x.PreyQueue.FirstOrDefault(
 							y => y.Instance is NPC preyNPC && preyNPC.whoAmI == npc.whoAmI && !y.NoHealth
 						) is not null
 					) is VoreTracker tracker)
@@ -65,6 +72,9 @@ namespace V2.Core
 						x => x.Prey.FirstOrDefault(
 							y => y.Instance is Projectile preyProjectile && preyProjectile.whoAmI == projectile.whoAmI && !y.NoHealth
 						) is not null
+						  || x.PreyQueue.FirstOrDefault(
+							y => y.Instance is Projectile preyProjectile && preyProjectile.whoAmI == projectile.whoAmI && !y.NoHealth
+						) is not null
 					) is VoreTracker tracker)
 					return tracker;
 
@@ -74,6 +84,9 @@ namespace V2.Core
 			{
 				if (ModContent.GetInstance<V2MasterSystem>().VoreTrackers.FirstOrDefault(
 						x => x.Prey.FirstOrDefault(
+							y => y.Instance is Item preyItem && preyItem.type == item.type && preyItem.stack == item.stack && !y.NoHealth
+						) is not null
+						  || x.PreyQueue.FirstOrDefault(
 							y => y.Instance is Item preyItem && preyItem.type == item.type && preyItem.stack == item.stack && !y.NoHealth
 						) is not null
 					) is VoreTracker tracker)
@@ -95,6 +108,10 @@ namespace V2.Core
 					"ACI" => player.AsPred().ACI.Total,
 					"ABS" => player.AsPred().ABS.Total,
 				};
+			}
+			else if (entity is NPC npc)
+			{
+				return (int)Math.Max(0, Math.Floor(Math.Max(npc.AsPred().MaxStomachCapacity - 0.80, 0) / 0.04));
 			}
 			return 0;
 		}

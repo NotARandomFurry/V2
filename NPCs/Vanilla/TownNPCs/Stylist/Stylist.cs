@@ -76,31 +76,32 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 
 		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.type == NPCID.Stylist;
 
-		public override void SetDefaults(NPC npc)
+		public override void SetDefaults(NPC NPC)
 		{
-			npc.AsV2NPC().Gender = EntityGender.Female;
+			NPC.AsV2NPC().Gender = EntityGender.Female;
 
-			npc.AsV2NPC().GetNewDialogue = GetStylistChat;
+			NPC.AsV2NPC().GetNewDialogue = GetStylistChat;
 
-			npc.AsFood().Size = 1.085;
-			npc.AsPred().MaxStomachCapacity = 5.85;
+			NPC.AsFood().Size = 1.085;
+			NPC.AsPred().MaxStomachCapacity = 5.85;
+			NPC.AsPred().BaseStomachacheMeterCapacity = 175.0;
 
-			npc.AsPred().CanBeForceFed = CanStylistBeForceFed;
-			npc.AsPred().OnForceFed = OnStylistForceFed;
+			NPC.AsPred().CanBeForceFed = CanStylistBeForceFed;
+			NPC.AsPred().OnForceFed = OnStylistForceFed;
 
-			npc.AsPred().DigestionType = EntityDigestionType.Acidic;
-			npc.AsPred().GetDigestionTickRate = GetDigestionTickRate;
-			npc.AsPred().GetDigestionTickDamage = GetDigestionTickDamage;
+			NPC.AsPred().DigestionType = EntityDigestionType.Acidic;
+			NPC.AsPred().GetDigestionTickRate = GetDigestionTickRate;
+			NPC.AsPred().GetDigestionTickDamage = GetDigestionTickDamage;
 
-			npc.AsPred().OnDigestionKill = OnDigestionKill;
-			npc.AsPred().SmallBurps = Burps.Humanoid.Small;
-			npc.AsPred().StandardBurps = Burps.Humanoid.Standard;
-			npc.AsPred().GetAdditionalDigestedPlayerMessages = GetDigestedPlayerAdditionalDeathMessages;
-			npc.AsPred().GetPreyAbsorptionRate = GetPreyAbsorptionRate;
+			NPC.AsPred().OnDigestionKill = OnDigestionKill;
+			NPC.AsPred().SmallBurps = Burps.Humanoid.Small;
+			NPC.AsPred().StandardBurps = Burps.Humanoid.Standard;
+			NPC.AsPred().GetAdditionalDigestedPlayerMessages = GetDigestedPlayerAdditionalDeathMessages;
+			NPC.AsPred().GetPreyAbsorptionRate = GetPreyAbsorptionRate;
 
-			npc.AsPred().GetVisualBellySize = GetVisualBellySize;
+			NPC.AsPred().GetVisualBellySize = GetVisualBellySize;
 
-			npc.AsFood().OnKilledByDigestion += PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
+			NPC.AsFood().OnKilledByDigestion += PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
 		}
 
 		public override ITownNPCProfile ModifyTownNPCProfile(NPC npc) => StylistStuff.StylistPredProfile;

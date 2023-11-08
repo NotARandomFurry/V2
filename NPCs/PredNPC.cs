@@ -34,7 +34,7 @@ namespace V2.NPCs
 				if (risky)
 					return null;
 
-				throw new Exception("this NPC can't be a pred at all, and thus, doesn't have a PredNPC global attached to them. look for your favorite gut to sleep in elsewhere");
+				throw new Exception("this NPC can't be a pred at all, as they don't have a PredNPC global attached to them. look for your favorite gut to sleep in elsewhere");
 			}
 			return predNPC;
 		}
@@ -85,8 +85,13 @@ namespace V2.NPCs
 		public delegate double DelegateGetDigestionTickDamage(NPC npc, PreyData prey);
 		public DelegateGetDigestionTickDamage GetDigestionTickDamage { get; set; }
 
-		public double Stomachache;
-		public double BaseStomachacheMeterCapacity;
+		private double _stomachache;
+		public double Stomachache
+		{
+			get => _stomachache;
+			set => _stomachache = Math.Min(Math.Max(0, value), StomachacheMeterCapacity);
+		}
+		public double BaseStomachacheMeterCapacity { get; set; }
 		public StatModifier StomachacheMeterCapacityModifier;
 		public double StomachacheMeterCapacity
 		{
@@ -141,7 +146,7 @@ namespace V2.NPCs
 			OnForceFed = null;
 
 			Stomachache = 0;
-			BaseStomachacheMeterCapacity = 0;
+			BaseStomachacheMeterCapacity = 100.0;
 			CounterStruggleEffectiveness = 5;
 
 			OnDigestionKill = null;
@@ -160,6 +165,9 @@ namespace V2.NPCs
 
 		public override void ResetEffects(NPC npc)
 		{
+			if (GetStomachTracker(npc) is null || !AnyPreyStillAlive(npc))
+				npc.AsPred().Stomachache -= 0.08;
+
 			if (npc.AsPred().ResetPredSpecificVariables is not null)
 				npc.AsPred().ResetPredSpecificVariables.Invoke(npc);
 		}
@@ -345,12 +353,6 @@ namespace V2.NPCs
 		/// <param name="pred">The NPC to update all food in the stomach of.</param>
 		public static void UpdatePrey(NPC pred)
 		{
-			if (GetStomachTracker(pred) is null || !AnyPreyStillAlive(pred))
-			{
-				pred.AsPred().Stomachache -= 0.15;
-				if (GetStomachTracker(pred) is null)
-					return;
-			}
 			if (pred.AsPred().Stomachache >= pred.AsPred().StomachacheMeterCapacity)
 			{
 				foreach (PreyData prey in GetStomachTracker(pred).Prey)
@@ -397,32 +399,23 @@ namespace V2.NPCs
 					{
 						case PreyType.Player:
 							Player preyPlayer = prey.Instance as Player;
-							if (preyPlayer.active && !preyPlayer.dead)
-							{
-								preyPlayer.velocity = Vector2.Zero;
-								preyPlayer.position = pred.position;
-							}
+							preyPlayer.velocity = Vector2.Zero;
+							preyPlayer.position = pred.position;
 							break;
 						case PreyType.NPC:
 							NPC preyNPC = prey.Instance as NPC;
-							if (preyNPC.active)
-							{
-								preyNPC.velocity = Vector2.Zero;
-								preyNPC.position = pred.position;
-							}
+							preyNPC.velocity = Vector2.Zero;
+							preyNPC.position = pred.position;
 							break;
 						case PreyType.Projectile:
 							Projectile preyProjectile = prey.Instance as Projectile;
 							if (preyProjectile.active)
-							{
 								preyProjectile.velocity = Vector2.Zero;
-								preyProjectile.position = pred.position;
-							}
+							preyProjectile.position = pred.position;
 							break;
 						case PreyType.Item:
 							Item preyItem = prey.Instance as Item;
-							if (!preyItem.IsAir)
-								preyItem.AsFood().UpdateInStomach?.Invoke(preyItem, pred, prey.NoHealth);
+							preyItem.AsFood().UpdateInStomach?.Invoke(preyItem, pred, prey.NoHealth);
 							break;
 					}
 
