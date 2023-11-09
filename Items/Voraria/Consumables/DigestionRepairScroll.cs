@@ -27,7 +27,7 @@ namespace V2.Items.Voraria.Consumables
 			Item.maxStack = 1;
 
 			Item.AsFood().MaxHealth = 100;
-			Item.AsFood().AcidResistTier = 3;
+			Item.AsFood().AcidResistTier = 99;
 
 			Item.width = 30;
 			Item.height = 30;
@@ -55,6 +55,7 @@ namespace V2.Items.Voraria.Consumables
 
 		public override void UseAnimation(Player player)
 		{
+			Cooldown = CooldownMax;
 			for (int i = 0; i < 58; i++)
 			{
 				Item repairableItem = player.inventory[i];

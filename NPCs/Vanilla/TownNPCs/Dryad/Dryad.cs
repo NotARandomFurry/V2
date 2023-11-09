@@ -77,7 +77,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Dryad
 
 			npc.AsFood().Size = 1.118;
 			npc.AsPred().MaxStomachCapacity = 12.50;
-			npc.AsPred().BaseStomachacheMeterCapacity = 160.0;
+			npc.AsPred().BaseStomachacheMeterCapacity = 450.0;
 
 			npc.AsPred().CanBeForceFed = CanDryadBeForceFed;
 			npc.AsPred().OnForceFed = OnDryadForceFed;

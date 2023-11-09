@@ -6,6 +6,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using V2.Core.StruggleSystem;
 using V2.NPCs.Voraria.TownNPCs.Succubus;
+using V2.PlayerHandling.PredPlayerGoals;
 
 namespace V2
 {
@@ -53,6 +54,8 @@ namespace V2
 
 		public override void Unload()
 		{
+			StruggleChartLoader.Unload();
+
 			DisengageVoraciousGameFuckery();
 		}
 

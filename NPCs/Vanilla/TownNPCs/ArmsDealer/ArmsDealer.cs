@@ -352,6 +352,16 @@ namespace V2.NPCs.Vanilla.TownNPCs.ArmsDealer
 			npc.frame.Width = 160;
 		}
 
+		public override void ModifyHoverBoundingBox(NPC npc, ref Rectangle boundingBox)
+		{
+			boundingBox = new Rectangle(
+				(int)npc.Center.X - 18,
+				(int)npc.Center.Y - 27,
+				36,
+				54
+			);
+		}
+
 		public static int GetVisualBellySize(NPC npc)
 		{
 			return Math.Min(

@@ -224,6 +224,7 @@ namespace V2
 		public static bool FindLastTooltipLineBeforeFlavorText(List<TooltipLine> tooltips, out TooltipLine line)
 		{
 			line = tooltips.FirstOrDefault(x => x.Name == "V2EdibleByNormalUse")
+				?? tooltips.FirstOrDefault(x => x.Name == "V2AcidResist")
 				?? tooltips.FirstOrDefault(x => x.Name == "V2SizeAsFood")
 				?? tooltips.FirstOrDefault(x => x.Name == "V2Durability")
 				?? tooltips.FirstOrDefault(x => x.Name == "Material")

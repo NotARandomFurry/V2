@@ -258,7 +258,7 @@ namespace V2.Core
 					{
 						double absoluteProximity = Math.Abs(noteData.proximity);
 						double proximityEffectivenessMultiplier = (MaximumNoteProximityRatio - absoluteProximity) / MaximumNoteProximityRatio;
-						ModifyPredStomachacheMeter(-(TotalPreySTR * 0.96) * proximityEffectivenessMultiplier);
+						ModifyPredStomachacheMeter(-(TotalPreySTR * 0.96) * proximityEffectivenessMultiplier / PredatorStruggleChart.DifficultyCoeff);
 						SignifyNotePressed(noteData);
 					}
 					else
@@ -272,7 +272,7 @@ namespace V2.Core
 					{
 						double absoluteProximity = Math.Abs(noteData.proximity);
 						double proximityEffectivenessMultiplier = (MaximumNoteProximityRatio - absoluteProximity) / MaximumNoteProximityRatio;
-						ModifyPredStomachacheMeter(-(TotalPreySTR * 0.96) * proximityEffectivenessMultiplier);
+						ModifyPredStomachacheMeter(-(TotalPreySTR * 0.96) * proximityEffectivenessMultiplier / PredatorStruggleChart.DifficultyCoeff);
 						SignifyNotePressed(noteData);
 					}
 					else
@@ -286,7 +286,7 @@ namespace V2.Core
 					{
 						double absoluteProximity = Math.Abs(noteData.proximity);
 						double proximityEffectivenessMultiplier = (MaximumNoteProximityRatio - absoluteProximity) / MaximumNoteProximityRatio;
-						ModifyPredStomachacheMeter(-(TotalPreySTR * 0.96) * proximityEffectivenessMultiplier);
+						ModifyPredStomachacheMeter(-(TotalPreySTR * 0.96) * proximityEffectivenessMultiplier / PredatorStruggleChart.DifficultyCoeff);
 						SignifyNotePressed(noteData);
 					}
 					else
@@ -300,7 +300,7 @@ namespace V2.Core
 					{
 						double absoluteProximity = Math.Abs(noteData.proximity);
 						double proximityEffectivenessMultiplier = (MaximumNoteProximityRatio - absoluteProximity) / MaximumNoteProximityRatio;
-						ModifyPredStomachacheMeter(-(TotalPreySTR * 0.96) * proximityEffectivenessMultiplier);
+						ModifyPredStomachacheMeter(-(TotalPreySTR * 0.96) * proximityEffectivenessMultiplier / PredatorStruggleChart.DifficultyCoeff);
 						SignifyNotePressed(noteData);
 					}
 					else
@@ -314,7 +314,7 @@ namespace V2.Core
 					{
 						double absoluteProximity = Math.Abs(noteData.proximity);
 						double proximityEffectivenessMultiplier = (MaximumNoteProximityRatio - absoluteProximity) / MaximumNoteProximityRatio;
-						ModifyPredStomachacheMeter(-(TotalPreySTR * 0.96) * proximityEffectivenessMultiplier);
+						ModifyPredStomachacheMeter(-(TotalPreySTR * 0.96) * proximityEffectivenessMultiplier / PredatorStruggleChart.DifficultyCoeff);
 						SignifyNotePressed(noteData);
 					}
 					else
@@ -342,7 +342,7 @@ namespace V2.Core
 
 							if (Main.rand.NextBool(35) && Math.Abs(noteData.proximity) < MaximumNoteProximityRatio && !noteData.note.Failed)
 							{
-								ModifyPredStomachacheMeter(-(TotalPreySTR * 0.96) * proximityEffectivenessMultiplier);
+								ModifyPredStomachacheMeter(-(TotalPreySTR * 0.96) * proximityEffectivenessMultiplier / PredatorStruggleChart.DifficultyCoeff);
 								SignifyNotePressed(noteData);
 							}
 							else
@@ -364,7 +364,7 @@ namespace V2.Core
 							{
 								if (Main.rand.NextBool(20))
 								{
-									ModifyPredStomachacheMeter(-(TotalPreySTR * 0.96) * proximityEffectivenessMultiplier);
+									ModifyPredStomachacheMeter(-(TotalPreySTR * 0.96) * proximityEffectivenessMultiplier / PredatorStruggleChart.DifficultyCoeff);
 									SignifyNotePressed(noteData);
 								}
 							}
@@ -372,7 +372,7 @@ namespace V2.Core
 							{
 								if (Main.rand.NextBool(15))
 								{
-									ModifyPredStomachacheMeter(-(TotalPreySTR * 0.96) * proximityEffectivenessMultiplier);
+									ModifyPredStomachacheMeter(-(TotalPreySTR * 0.96) * proximityEffectivenessMultiplier / PredatorStruggleChart.DifficultyCoeff);
 									SignifyNotePressed(noteData);
 								}
 							}
@@ -380,7 +380,7 @@ namespace V2.Core
 							{
 								if (Main.rand.NextBool(12))
 								{
-									ModifyPredStomachacheMeter(-(TotalPreySTR * 0.96) * proximityEffectivenessMultiplier);
+									ModifyPredStomachacheMeter(-(TotalPreySTR * 0.96) * proximityEffectivenessMultiplier / PredatorStruggleChart.DifficultyCoeff);
 									SignifyNotePressed(noteData);
 								}
 							}
@@ -388,7 +388,7 @@ namespace V2.Core
 							{
 								if (Main.rand.NextBool(10))
 								{
-									ModifyPredStomachacheMeter(-(TotalPreySTR * 0.96) * proximityEffectivenessMultiplier);
+									ModifyPredStomachacheMeter(-(TotalPreySTR * 0.96) * proximityEffectivenessMultiplier / PredatorStruggleChart.DifficultyCoeff);
 									SignifyNotePressed(noteData);
 								}
 							}
@@ -396,7 +396,7 @@ namespace V2.Core
 							{
 								if (Main.rand.NextBool(8))
 								{
-									ModifyPredStomachacheMeter(-(TotalPreySTR * 0.96) * proximityEffectivenessMultiplier);
+									ModifyPredStomachacheMeter(-(TotalPreySTR * 0.96) * proximityEffectivenessMultiplier / PredatorStruggleChart.DifficultyCoeff);
 									SignifyNotePressed(noteData);
 								}
 							}
@@ -430,7 +430,7 @@ namespace V2.Core
 						{
 							double absoluteProximity = Math.Abs(noteData.proximity);
 							double proximityEffectivenessMultiplier = (MaximumNoteProximityRatio - absoluteProximity) / MaximumNoteProximityRatio;
-							ModifyPredStomachacheMeter(preyEntity.StruggleStrength() * proximityEffectivenessMultiplier);
+							ModifyPredStomachacheMeter(preyEntity.StruggleStrength() * proximityEffectivenessMultiplier / prey.AssignedStruggleChart.DifficultyCoeff);
 							SignifyNotePressed(noteData);
 						}
 						else
@@ -444,7 +444,7 @@ namespace V2.Core
 						{
 							double absoluteProximity = Math.Abs(noteData.proximity);
 							double proximityEffectivenessMultiplier = (MaximumNoteProximityRatio - absoluteProximity) / MaximumNoteProximityRatio;
-							ModifyPredStomachacheMeter(preyEntity.StruggleStrength() * proximityEffectivenessMultiplier);
+							ModifyPredStomachacheMeter(preyEntity.StruggleStrength() * proximityEffectivenessMultiplier / prey.AssignedStruggleChart.DifficultyCoeff);
 							SignifyNotePressed(noteData);
 						}
 						else
@@ -458,7 +458,7 @@ namespace V2.Core
 						{
 							double absoluteProximity = Math.Abs(noteData.proximity);
 							double proximityEffectivenessMultiplier = (MaximumNoteProximityRatio - absoluteProximity) / MaximumNoteProximityRatio;
-							ModifyPredStomachacheMeter(preyEntity.StruggleStrength() * proximityEffectivenessMultiplier);
+							ModifyPredStomachacheMeter(preyEntity.StruggleStrength() * proximityEffectivenessMultiplier / prey.AssignedStruggleChart.DifficultyCoeff);
 							SignifyNotePressed(noteData);
 						}
 						else
@@ -472,7 +472,7 @@ namespace V2.Core
 						{
 							double absoluteProximity = Math.Abs(noteData.proximity);
 							double proximityEffectivenessMultiplier = (MaximumNoteProximityRatio - absoluteProximity) / MaximumNoteProximityRatio;
-							ModifyPredStomachacheMeter(preyEntity.StruggleStrength() * proximityEffectivenessMultiplier);
+							ModifyPredStomachacheMeter(preyEntity.StruggleStrength() * proximityEffectivenessMultiplier / prey.AssignedStruggleChart.DifficultyCoeff);
 							SignifyNotePressed(noteData);
 						}
 						else
@@ -486,7 +486,7 @@ namespace V2.Core
 						{
 							double absoluteProximity = Math.Abs(noteData.proximity);
 							double proximityEffectivenessMultiplier = (MaximumNoteProximityRatio - absoluteProximity) / MaximumNoteProximityRatio;
-							ModifyPredStomachacheMeter(preyEntity.StruggleStrength() * proximityEffectivenessMultiplier);
+							ModifyPredStomachacheMeter(preyEntity.StruggleStrength() * proximityEffectivenessMultiplier / prey.AssignedStruggleChart.DifficultyCoeff);
 							SignifyNotePressed(noteData);
 						}
 						else
@@ -515,7 +515,7 @@ namespace V2.Core
 
 								if (Main.rand.NextBool(35) && Math.Abs(noteData.proximity) < MaximumNoteProximityRatio && !noteData.note.Failed)
 								{
-									ModifyPredStomachacheMeter(preyEntity.StruggleStrength() * proximityEffectivenessMultiplier);
+									ModifyPredStomachacheMeter(preyEntity.StruggleStrength() * proximityEffectivenessMultiplier / prey.AssignedStruggleChart.DifficultyCoeff);
 									SignifyNotePressed(noteData);
 								}
 								else
@@ -536,7 +536,7 @@ namespace V2.Core
 								{
 									if (Main.rand.NextBool(20))
 									{
-										ModifyPredStomachacheMeter(preyEntity.StruggleStrength() * proximityEffectivenessMultiplier);
+										ModifyPredStomachacheMeter(preyEntity.StruggleStrength() * proximityEffectivenessMultiplier / prey.AssignedStruggleChart.DifficultyCoeff);
 										SignifyNotePressed(noteData);
 									}
 								}
@@ -544,7 +544,7 @@ namespace V2.Core
 								{
 									if (Main.rand.NextBool(15))
 									{
-										ModifyPredStomachacheMeter(preyEntity.StruggleStrength() * proximityEffectivenessMultiplier);
+										ModifyPredStomachacheMeter(preyEntity.StruggleStrength() * proximityEffectivenessMultiplier / prey.AssignedStruggleChart.DifficultyCoeff);
 										SignifyNotePressed(noteData);
 									}
 								}
@@ -552,7 +552,7 @@ namespace V2.Core
 								{
 									if (Main.rand.NextBool(12))
 									{
-										ModifyPredStomachacheMeter(preyEntity.StruggleStrength() * proximityEffectivenessMultiplier);
+										ModifyPredStomachacheMeter(preyEntity.StruggleStrength() * proximityEffectivenessMultiplier / prey.AssignedStruggleChart.DifficultyCoeff);
 										SignifyNotePressed(noteData);
 									}
 								}
@@ -560,7 +560,7 @@ namespace V2.Core
 								{
 									if (Main.rand.NextBool(10))
 									{
-										ModifyPredStomachacheMeter(preyEntity.StruggleStrength() * proximityEffectivenessMultiplier);
+										ModifyPredStomachacheMeter(preyEntity.StruggleStrength() * proximityEffectivenessMultiplier / prey.AssignedStruggleChart.DifficultyCoeff);
 										SignifyNotePressed(noteData);
 									}
 								}
@@ -568,7 +568,7 @@ namespace V2.Core
 								{
 									if (Main.rand.NextBool(8))
 									{
-										ModifyPredStomachacheMeter(preyEntity.StruggleStrength() * proximityEffectivenessMultiplier);
+										ModifyPredStomachacheMeter(preyEntity.StruggleStrength() * proximityEffectivenessMultiplier / prey.AssignedStruggleChart.DifficultyCoeff);
 										SignifyNotePressed(noteData);
 									}
 								}

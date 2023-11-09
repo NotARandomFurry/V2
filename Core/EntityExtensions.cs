@@ -22,11 +22,18 @@ namespace V2.Core
 			return 0.0;
 		}
 
-		public static void AddStatus(this Entity entity, int statusID, int intendedTime)
+		public static void AddStatus(this Entity entity, int statusID, int intendedTime, bool fromDigestingSomething = false)
 		{
 			intendedTime += 1;
 			if (entity is Player playerPred)
+			{
+				if (fromDigestingSomething)
+				{
+					if (Main.debuff[statusID])
+						intendedTime = (int)Math.Round((double)intendedTime / playerPred.AsPred().DebuffDisextensionFactor);
+				}
 				playerPred.AddBuff(statusID, intendedTime);
+			}
 			else if (entity is NPC NPCPred)
 				NPCPred.AddBuff(statusID, intendedTime);
 		}

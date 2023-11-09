@@ -168,6 +168,8 @@ namespace V2.NPCs
 			if (GetStomachTracker(npc) is null || !AnyPreyStillAlive(npc))
 				npc.AsPred().Stomachache -= 0.08;
 
+			StomachacheMeterCapacityModifier = StatModifier.Default;
+
 			if (npc.AsPred().ResetPredSpecificVariables is not null)
 				npc.AsPred().ResetPredSpecificVariables.Invoke(npc);
 		}
@@ -216,8 +218,9 @@ namespace V2.NPCs
 				if (tastesLikeSkittles)
 					return preyNPC.CurrentCaptor() is null;
 
-				bool isThisAFuckingBoss = preyNPC.boss || (preyNPC.type >= NPCID.EaterofWorldsHead && preyNPC.type <= NPCID.EaterofWorldsTail); // I hate EoW
-				if (isThisAFuckingBoss && !pred.boss)
+				bool isThePreyAFuckingBoss = preyNPC.boss || (preyNPC.type >= NPCID.EaterofWorldsHead && preyNPC.type <= NPCID.EaterofWorldsTail);	// I hate EoW
+				bool isThePredAFuckingBoss = pred.boss || (pred.type >= NPCID.EaterofWorldsHead && pred.type <= NPCID.EaterofWorldsTail);			// I hate EoW
+				if (isThePreyAFuckingBoss && !isThePredAFuckingBoss)
 					return false;
 
 				if (PreyData.GetInitialPreySize(preyNPC) >= pred.AsPred().MaxStomachCapacity - GetCurrentBellyWeight(pred))

@@ -379,8 +379,8 @@ PredStatsMenu: {
 
 					{$Mods.V2.PredStatsMenu.StatDescription.HoldSHIFTToSeeDescription}
 					Absorption: {AbsorptionRate} weight/minute
-					Buffs from eaten prey have their duration increased by {BuffExtensionTime}
-					Debuffs from eaten prey have their duration decreased by {DebuffDisextensionTime}
+					Buffs from eaten prey last {BuffExtensionTime}x longer
+					Debuffs from eaten prey take {DebuffDisextensionTime}x less time to wear off
 					'''
 				Chronological:
 					'''
@@ -525,6 +525,15 @@ PredPlayerGoals: {
 			Feel free to start hunting down the meals in this section to help train up your system even more; eating just one person at once simply won't do for much longer!
 			'''
 
+		EatHarpy: {
+			Name: Finger-Lickin' Good
+			Description:
+				'''
+				Eat and digest a harpy.
+				'Tastes like chicken. More specifically, the breasts and thighs.'
+				'''
+		}
+
 		EatNymph: {
 			Name: Damsel In Digest
 			Description:
@@ -637,9 +646,11 @@ ItemTooltip: {
 		EdibleFromNormalUse: Using this item causes you to eat it, but it can't be used as a mouse item
 
 		AcidResistTier: {
+			0: Does not resist any stomach acids
 			1: Immune to normal stomach acids
 			2: Immune to normal and enchanted stomach acids
 			3: Immune to normal and enchanted stomach acids, as well as aqua regia
+			99: Immune to any system, save for those blessed by the gods themselves
 		}
 	}
 

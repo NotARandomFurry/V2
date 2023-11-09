@@ -46,7 +46,7 @@ namespace V2.NPCs.Vanilla.Cavern
 
 			entity.AsFood().Size = 1.04;
 			entity.AsPred().MaxStomachCapacity = 5.5;
-			entity.AsPred().BaseStomachacheMeterCapacity = 180.0;
+			entity.AsPred().BaseStomachacheMeterCapacity = 275.0;
 
 			entity.AsPred().CanBeForceFed += CanNymphBeForceFed;
 			entity.AsPred().MaxSwallowRange = V2Utils.TileCountAsPixelCount(4.7);

@@ -127,13 +127,9 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 
 		public static void GetDigestedPlayerAdditionalDeathMessages(NPC npc, Player player, List<string> deathReasonKeyList)
 		{
+			deathReasonKeyList.AddHumanoidPredMessages();
 			deathReasonKeyList.AddRange(new List<string>
 			{
-				"Mods.V2.Death.DigestedPlayer.HumanoidPred.1",
-				"Mods.V2.Death.DigestedPlayer.HumanoidPred.2",
-				"Mods.V2.Death.DigestedPlayer.HumanoidPred.3",
-				"Mods.V2.Death.DigestedPlayer.HumanoidPred.4",
-				"Mods.V2.Death.DigestedPlayer.HumanoidPred.5",
 				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Bosses.UnreasonablyThickFairy.1",
 				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Bosses.UnreasonablyThickFairy.2",
 				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Bosses.UnreasonablyThickFairy.3",

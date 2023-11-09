@@ -35,7 +35,7 @@ namespace V2.Items.Voraria.Charms
 
 		public static void CharmEffects(Player player)
 		{
-			player.AsPred().ACI.Extra += 12;
+			player.AsPred().ACI.Extra += AcidStrengthBonus;
 		}
 
 		public override void ModifyTooltips(List<TooltipLine> tooltips)

@@ -284,10 +284,20 @@ namespace V2.Items
 				)
 			);
 
+			string canBeDigestedBy = Language.GetTextValue("Mods.V2.ItemTooltip.Generic.AcidResistTier." + item.AsFood().AcidResistTier);
+			tooltips.Insert(
+				tooltips.IndexOf(finalLine) + 3,
+				new TooltipLine(
+					V2.Instance,
+					"V2AcidResist",
+					canBeDigestedBy
+				)
+			);
+
 			if (item.AsFood().LeftClickEdible)
 			{
 				tooltips.Insert(
-					tooltips.IndexOf(finalLine) + 3,
+					tooltips.IndexOf(finalLine) + 4,
 					new TooltipLine(
 						V2.Instance,
 						"V2EdibleByNormalUse",

@@ -84,6 +84,9 @@ namespace V2.PlayerHandling
 				int points = 0;
 				foreach (PredPlayerGoal goal in PredPlayerGoalLoader.PredPlayerGoals)
 				{
+					if (!GoalsCompleted.ContainsKey(goal.InternalName))
+						GoalsCompleted.Add(goal.InternalName, false);
+
 					if (GoalsCompleted[goal.InternalName])
 						points += goal.StatPointsFromCompletion;
 				}
@@ -181,7 +184,7 @@ namespace V2.PlayerHandling
 			}
 		}
 		public StatModifier StomachacheMeterCapacityModifier;
-		public static double BaseStomachacheMeterCapacity => 0.80;
+		public static double BaseStomachacheMeterCapacity => 100.0;
 		public static double StomachacheMeterCapacityPer5Levels => 10.0;
 		public double StomachacheMeterCapacity
 		{
@@ -193,6 +196,17 @@ namespace V2.PlayerHandling
 			}
 		}
 		public PredStat ACI { get; set; }
+		/// <summary>
+		/// Denotes the tier of stomach acids this player currently has.<br/>
+		/// Defaults to 0.<br/>
+		/// <br/>
+		/// 0 - Normal<br/>
+		/// 1 - Enchanted<br/>
+		/// 2 - Royal<br/>
+		/// 99 - Divine<br/>
+		/// 100 - Chronological<br/>
+		/// </summary>
+		public int AcidTier { get; set; }
 		public StatModifier DigestionTickDamageModifier;
 		public static double BaseDigestionTickDamage => 6.0;
 		public static double DigestionTickDamagePerLevel => 0.75;
@@ -233,22 +247,22 @@ namespace V2.PlayerHandling
 		public double PreyAbsorptionRatePerTick => PreyAbsorptionRate / (double)V2Utils.SensibleTime(minutes: 1);
 		public StatModifier BuffExtensionTimeModifier;
 		public static double BuffExtensionTimePer5Levels => 0.04;
-		public double BuffExtensionTime
+		public double BuffExtensionFactor
 		{
 			get
 			{
 				double baseBuffExtensionTime = BuffExtensionTimePer5Levels * Math.Floor(ABS.Total / 5.0);
-				return BuffExtensionTimeModifier.ApplyTo((float)baseBuffExtensionTime);
+				return 1.0 + BuffExtensionTimeModifier.ApplyTo((float)baseBuffExtensionTime);
 			}
 		}
 		public StatModifier DebuffDisextensionTimeModifier;
-		public static double DebuffDisextensionTimePer5Levels => 0.02;
-		public double DebuffDisextensionTime
+		public static double DebuffDisextensionTimePer5Levels => 0.04;
+		public double DebuffDisextensionFactor
 		{
 			get
 			{
 				double baseDebuffDisextensionTime = DebuffDisextensionTimePer5Levels * Math.Floor(ABS.Total / 5.0);
-				return DebuffDisextensionTimeModifier.ApplyTo((float)baseDebuffDisextensionTime);
+				return 1.0 + DebuffDisextensionTimeModifier.ApplyTo((float)baseDebuffDisextensionTime);
 			}
 		}
 
@@ -503,6 +517,8 @@ namespace V2.PlayerHandling
 			ACI = new PredStat();
 			TUM = new PredStat();
 			ABS = new PredStat();
+
+			AcidTier = 0;
 
 			endoToggleUnlocked = false;
 			endoToggle = false;
@@ -869,7 +885,7 @@ namespace V2.PlayerHandling
 
 				bool tastesLikeSkittles = preyNPC.type == NPCID.HallowBoss && ModContent.GetInstance<V2ServerConfig>().EasilyEdibleEmpress;
 				if (tastesLikeSkittles)
-					return true;
+					return preyNPC.CurrentCaptor() is null;
 
 				bool isThisAFuckingBoss = preyNPC.boss || (preyNPC.type >= NPCID.EaterofWorldsHead && preyNPC.type <= NPCID.EaterofWorldsTail); // I hate EoW
 				if (isThisAFuckingBoss)
@@ -889,6 +905,9 @@ namespace V2.PlayerHandling
 				if (preyItem.CurrentCaptor() is not null)
 					return false;
 			}
+
+			if (PreyData.GetInitialPreySize(prey) > pred.AsPred().SwallowSize)
+				return false;
 
 			if (PreyData.GetInitialPreySize(prey) > pred.AsPred().StomachCapacity - pred.AsPred().StomachFullness)
 				return false;
@@ -1130,6 +1149,7 @@ namespace V2.PlayerHandling
 									break;
 
 								bool shouldDigestItem = !pred.AsPred().SafeStomach;
+								shouldDigestItem &= pred.AsPred().AcidTier >= preyItem.AsFood().AcidResistTier;
 								if (shouldDigestItem)
 								{
 									prey.NoHealth = preyItem.TakeDigestionDamage(pred, digestionDamage);
@@ -1152,13 +1172,6 @@ namespace V2.PlayerHandling
 				else
 				{
 					double absorptionRate = pred.AsPred().PreyAbsorptionRatePerTick / (double)pred.AsPred().StomachTracker?.Prey.Count;
-					if (pred.sleeping.FullyFallenAsleep)
-					{
-						absorptionRate *= 1.1;
-						bool everybodyIsSleepingOffAMeal = Main.CurrentFrameFlags.SleepingPlayersCount == Main.CurrentFrameFlags.ActivePlayersCount && Main.CurrentFrameFlags.SleepingPlayersCount > 0;
-						if (everybodyIsSleepingOffAMeal)
-							absorptionRate *= Main.dayRate;
-					}
 					prey.WeightLeftToDigest -= absorptionRate;
 					if (prey.WeightLeftToDigest < 0)
 						prey.WeightLeftToDigest = 0;
@@ -1424,6 +1437,7 @@ namespace V2.PlayerHandling
 			tag.Add("TUMSpent", TUM.Spent);
 			tag.Add("ACISpent", ACI.Spent);
 			tag.Add("ABSSpent", ABS.Spent);
+			tag.Add("AcidTier", AcidTier);
 			foreach (KeyValuePair<string, int> keyValuePair in Player.AsPred().mealCount)
 			{
 				tag.Add("[DIGESTED] " + keyValuePair.Key, keyValuePair.Value);
@@ -1444,6 +1458,7 @@ namespace V2.PlayerHandling
 			TUM.Spent = tag.GetInt("TUMSpent");
 			ACI.Spent = tag.GetInt("ACISpent");
 			ABS.Spent = tag.GetInt("ABSSpent");
+			AcidTier = tag.GetInt("AcidTier");
 			mealCount = new Dictionary<string, int>();
 			drinkCount = new Dictionary<string, int>();
 			GoalsCompleted = new Dictionary<string, bool>();

@@ -25,38 +25,29 @@ namespace V2.Core.StruggleSystem
 				return;
 
 			int notesAdded = 0;
-			double predTUM = ConnectedTracker.Predator.GetPredStat("TUM");
-			double preyCombinedSTR = ConnectedTracker.TotalPreySTR;
-
-			double difficultyFactor = ForPredator ? (preyCombinedSTR / Math.Max(1.0, (double)predTUM)) : (predTUM / Math.Max(1.0, (double)preyCombinedSTR));
-			if (difficultyFactor < 0.25)
-				difficultyFactor = 0.25;
-			if (difficultyFactor > 4.00)
-				difficultyFactor = 4.00;
-
 			for (int i = 0; i < MaxRandomNoteSpanLength; i++)
 			{
 				StruggleChartNote[] noteSet = new StruggleChartNote[5] { null, null, null, null, null };
-				if (Main.rand.NextFloat(4f) <= difficultyFactor)
+				if (Main.rand.NextFloat(3f) <= DifficultyCoeff)
 				{
 					List<NoteLane> lanes = new List<NoteLane> { NoteLane.Up, NoteLane.Left, NoteLane.Right, NoteLane.Down };
 					NoteLane noteLaneToFill = Main.rand.NextFromCollection(lanes);
 					noteSet[(int)noteLaneToFill] = new StruggleChartNote(noteLaneToFill);
 					notesAdded++;
 					lanes.Remove(noteLaneToFill);
-					if (Main.rand.NextFloat(4f) <= difficultyFactor - 1f)
+					if (Main.rand.NextFloat(3f) <= DifficultyCoeff - 0.4f)
 					{
 						noteLaneToFill = Main.rand.NextFromCollection(lanes);
 						noteSet[(int)noteLaneToFill] = new StruggleChartNote(noteLaneToFill);
 						notesAdded++;
 						lanes.Remove(noteLaneToFill);
-						if (Main.rand.NextFloat(4f) <= difficultyFactor - 2f)
+						if (Main.rand.NextFloat(3f) <= DifficultyCoeff - 0.8f)
 						{
 							noteLaneToFill = Main.rand.NextFromCollection(lanes);
 							noteSet[(int)noteLaneToFill] = new StruggleChartNote(noteLaneToFill);
 							notesAdded++;
 							lanes.Remove(noteLaneToFill);
-							if (Main.rand.NextFloat(4f) <= difficultyFactor - 3f)
+							if (Main.rand.NextFloat(3f) <= DifficultyCoeff - 1.2f)
 							{
 								noteLaneToFill = Main.rand.NextFromCollection(lanes);
 								noteSet[(int)noteLaneToFill] = new StruggleChartNote(noteLaneToFill);
@@ -71,7 +62,7 @@ namespace V2.Core.StruggleSystem
 			}
 			if (ModContent.GetInstance<V2ServerConfig>().DebugChatMessages)
 			{
-				string debugText = "New procedural chart of difficulty " + difficultyFactor + " constructed for " + (ForPredator ? "a hungry pred" : "a soon-to-be meal") + " with " + notesAdded + " notes in total.";
+				string debugText = "New procedural chart of difficulty " + DifficultyCoeff + " constructed for " + (ForPredator ? "a hungry pred" : "a soon-to-be meal") + " with " + notesAdded + " notes in total.";
 				if (Main.netMode == NetmodeID.SinglePlayer)
 					Main.NewText(debugText, Color.PaleVioletRed);
 				else if (Main.netMode == NetmodeID.Server)
