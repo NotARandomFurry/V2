@@ -203,7 +203,7 @@ PredStatsMenu: {
 					[c/7F7F7F:| {GLPExtra} from temporary bonuses (potions, charms, etc.)]
 
 					{$Mods.V2.PredStatsMenu.StatDescription.HoldSHIFTToSeeDescription}
-					Swallow Size: {PreySwallowSize}
+					Swallow Capacity: {PreySwallowSize}
 					Drinking Rate: {LiquidSwallowRate} tiles/second
 					Struggle Grace Period: {StruggleGracePeriod}
 					'''
@@ -212,7 +212,7 @@ PredStatsMenu: {
 					Total GLP: [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:∞]
 					[c/7F7F7F:| ∞ from digesting at least one Timekeeper]
 
-					Swallow Size: [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:∞]
+					Swallow Capacity: [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:∞]
 					Drinking Rate: [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Countless universes/second, should you will it]
 					Struggle Grace Period: [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Unnecessary]
 					'''
