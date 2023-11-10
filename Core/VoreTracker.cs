@@ -414,6 +414,8 @@ namespace V2.Core
 			}
 
 			HandlePreyNotes:
+
+			bool predEmpress = PredatorType == PredType.NPC && (Predator as NPC).type == NPCID.HallowBoss;
 			for (int i = 0; i < Prey.Count; i++)
 			{
 				PreyData prey = Prey[i];
@@ -430,6 +432,8 @@ namespace V2.Core
 						{
 							double absoluteProximity = Math.Abs(noteData.proximity);
 							double proximityEffectivenessMultiplier = (MaximumNoteProximityRatio - absoluteProximity) / MaximumNoteProximityRatio;
+							if (predEmpress)
+								proximityEffectivenessMultiplier *= 500.0;
 							ModifyPredStomachacheMeter(preyEntity.StruggleStrength() * proximityEffectivenessMultiplier / prey.AssignedStruggleChart.DifficultyCoeff);
 							SignifyNotePressed(noteData);
 						}
@@ -444,6 +448,8 @@ namespace V2.Core
 						{
 							double absoluteProximity = Math.Abs(noteData.proximity);
 							double proximityEffectivenessMultiplier = (MaximumNoteProximityRatio - absoluteProximity) / MaximumNoteProximityRatio;
+							if (predEmpress)
+								proximityEffectivenessMultiplier *= 500.0;
 							ModifyPredStomachacheMeter(preyEntity.StruggleStrength() * proximityEffectivenessMultiplier / prey.AssignedStruggleChart.DifficultyCoeff);
 							SignifyNotePressed(noteData);
 						}
@@ -458,6 +464,8 @@ namespace V2.Core
 						{
 							double absoluteProximity = Math.Abs(noteData.proximity);
 							double proximityEffectivenessMultiplier = (MaximumNoteProximityRatio - absoluteProximity) / MaximumNoteProximityRatio;
+							if (predEmpress)
+								proximityEffectivenessMultiplier *= 500.0;
 							ModifyPredStomachacheMeter(preyEntity.StruggleStrength() * proximityEffectivenessMultiplier / prey.AssignedStruggleChart.DifficultyCoeff);
 							SignifyNotePressed(noteData);
 						}
@@ -472,6 +480,8 @@ namespace V2.Core
 						{
 							double absoluteProximity = Math.Abs(noteData.proximity);
 							double proximityEffectivenessMultiplier = (MaximumNoteProximityRatio - absoluteProximity) / MaximumNoteProximityRatio;
+							if (predEmpress)
+								proximityEffectivenessMultiplier *= 500.0;
 							ModifyPredStomachacheMeter(preyEntity.StruggleStrength() * proximityEffectivenessMultiplier / prey.AssignedStruggleChart.DifficultyCoeff);
 							SignifyNotePressed(noteData);
 						}
@@ -486,6 +496,8 @@ namespace V2.Core
 						{
 							double absoluteProximity = Math.Abs(noteData.proximity);
 							double proximityEffectivenessMultiplier = (MaximumNoteProximityRatio - absoluteProximity) / MaximumNoteProximityRatio;
+							if (predEmpress)
+								proximityEffectivenessMultiplier *= 500.0;
 							ModifyPredStomachacheMeter(preyEntity.StruggleStrength() * proximityEffectivenessMultiplier / prey.AssignedStruggleChart.DifficultyCoeff);
 							SignifyNotePressed(noteData);
 						}
@@ -501,10 +513,16 @@ namespace V2.Core
 					if (closeNotes is null)
 						continue;
 
+					bool preyEmpress = npcPrey.type == NPCID.HallowBoss;
+
 					foreach ((StruggleChartNote note, double proximity) noteData in closeNotes)
 					{
 						double absoluteProximity = Math.Abs(noteData.proximity);
 						double proximityEffectivenessMultiplier = (MaximumNoteProximityRatio - absoluteProximity) / MaximumNoteProximityRatio;
+						if (preyEmpress)
+							proximityEffectivenessMultiplier /= 500.0;
+						if (predEmpress)
+							proximityEffectivenessMultiplier *= 500.0;
 						switch (struggleSkill)
 						{
 							case 0:

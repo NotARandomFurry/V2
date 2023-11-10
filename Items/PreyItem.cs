@@ -171,10 +171,28 @@ namespace V2.Items
 		{
 			if (item.AsFood().LeftClickEdible)
 			{
-				if (item != player.inventory[58] && PredPlayer.CanSwallow(player, item))
+				if (item != player.inventory[58] && player.whoAmI == Main.myPlayer && V2.ItemGulpHotkey.Current)
 				{
-					player.ForceDropItem(player.Center, ref item, out Item itemDrop);
-					PredPlayer.Swallow(player, itemDrop);
+					int origStack = item.stack;
+					item.stack = 1;
+					if (PredPlayer.CanSwallow(player, item))
+					{
+						if (origStack > 1)
+						{
+							Item eatenItem = new Item();
+							eatenItem.SetDefaults(item.type);
+							eatenItem.stack = 1;
+							player.ForceDropItem(player.Center, ref eatenItem, out Item itemDrop);
+							PredPlayer.Swallow(player, itemDrop);
+							item.stack = origStack - 1;
+						}
+						else
+						{
+							player.ForceDropItem(player.Center, ref item, out Item itemDrop);
+							PredPlayer.Swallow(player, itemDrop);
+						}
+						ModContent.GetInstance<FirstItemEaten>().TrySetCompletion(player);
+					}
 				}
 				return false;
 			}

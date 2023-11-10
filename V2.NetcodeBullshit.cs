@@ -117,7 +117,7 @@ namespace V2
 		/// - for liquids, this is instead two parameters:<br/>
 		/// -- The type of the liquid being drank as an <see cref="int"/>.<br/>
 		/// -- The amount of the liquid being drank as a <see cref="double"/>.<br/>
-		/// 5) The original <see cref="Player.whoAmI"/> of the client that requested the swallow.<br/>
+		/// 5) The original <see cref="Player.whoAmI"/> of the client that requested the swallow as an <see cref="int"/>.<br/>
 		/// ----------------------------------------------------------<br/>
 		/// hi !<br/>
 		/// my tummy likes these packets a lot<br/>
@@ -165,7 +165,7 @@ namespace V2
 			if (pred is Player predPlayer)
 				PredPlayer.Swallow(predPlayer, newData.Instance, 2, originalClientWhoAmI);
 			else if (pred is NPC predNPC)
-				PredNPC.Swallow(predNPC, newData.Instance);
+				PredNPC.Swallow(predNPC, newData.Instance, 2, originalClientWhoAmI);
 			// PredProjectile.Swallow(predProjectile, newData.Instance); // save for later since projectiles can't pred yet
 
 			return;
@@ -198,7 +198,7 @@ namespace V2
 		/// - for liquids, this is instead two parameters:<br/>
 		/// -- The type of the liquid being drank as an <see cref="int"/>.<br/>
 		/// -- The amount of the liquid being drank as a <see cref="double"/>.<br/>
-		/// 5) The original <see cref="Player.whoAmI"/> of the client that requested the swallow.<br/>
+		/// 5) The original <see cref="Player.whoAmI"/> of the client that requested the swallow as an <see cref="int"/>.<br/>
 		/// ----------------------------------------------------------<br/>
 		/// hi !<br/>
 		/// my tummy likes these packets a whole lot<br/>
@@ -246,7 +246,7 @@ namespace V2
 			if (pred is Player predPlayer)
 				PredPlayer.Swallow(predPlayer, newData.Instance, 3, originalClientWhoAmI);
 			else if (pred is NPC predNPC)
-				PredNPC.Swallow(predNPC, newData.Instance);
+				PredNPC.Swallow(predNPC, newData.Instance, 3, originalClientWhoAmI);
 			// PredProjectile.Swallow(predProjectile, newData.Instance); // save for later since projectiles can't pred yet
 
 			return;

@@ -137,7 +137,7 @@ namespace V2.UI.StomachacheMeter
 				_stomachachePanelMiddle.Value.Height
 			);
 			_stomachacheHovered = hoverRect.Contains(Main.MouseScreen.ToPoint());
-			if (_stomachacheHovered && !Main.mouseText)
+			if (_stomachacheHovered && !Main.mouseText && !Main.LocalPlayer.AsPred().InPredStatsMenu)
 			{
 				Player localPlayer = Main.LocalPlayer;
 				localPlayer.cursorItemIconEnabled = false;

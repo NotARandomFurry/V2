@@ -643,7 +643,11 @@ ItemTooltip: {
 			[c/7F7F7F:Hold LEFT SHIFT for more information on this item's exact function]
 			[c/7F7F7F:Hold LEFT SHIFT and LEFT CONTROL for some neat flavor text about this item]
 			'''
-		EdibleFromNormalUse: Using this item causes you to eat it, but it can't be used as a mouse item
+		EdibleFromNormalUse:
+			'''
+			Using this item from the hotbar while holding the Eat Items keybind causes you to swallow it
+			If this is a stack of multiple items, this only swallows items one at a time
+			'''
 
 		AcidResistTier: {
 			0: Does not resist any stomach acids
@@ -677,7 +681,8 @@ ItemTooltip: {
 			LifeCrystal: {
 				Short:
 					'''
-					Provides a few revitalizing effects when eaten
+					On use, the crystal is broken apart, providing a few revitalizing effects
+					These effects also apply when it is eaten, and eating it provides additional bonuses
 					{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
 					'''
 				Long:
@@ -685,15 +690,15 @@ ItemTooltip: {
 					When eaten by anything:
 					- [c/{$Mods.V2.CommonColorCodes.Heal}:Heals for {LifeCrystalEatHeal} health] instantly upon running out of durability.
 					- [c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Grants the Regeneration buff] while digesting; this lingers for [c/FFFF00:{LifeCrystalEatRegenLength} seconds] once fully digested.
-					When eaten by a player, upon running out of durability:
+					When used normally by a player OR upon running out of durability when eaten by a player:
 					- Permanently [c/{$Mods.V2.CommonColorCodes.Heal}:increases maximum health by 20].
 					- For every 3 crystals eaten total, permanently [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:increase the TUM stat by 1].
-					  - The above two bonuses can stack for up to {LifeCrystalsMax} crystals eaten.
-					Life Crystals eaten by this character (max. {LifeCrystalsMax}): [c/{LifeCrystalsUsedColor}:{LifeCrystalsUsed}].
+					  - The above two bonuses can stack for up to {LifeCrystalsMax} crystals used/eaten.
+					Life Crystals used/eaten by this character (max. {LifeCrystalsMax}): [c/{LifeCrystalsUsedColor}:{LifeCrystalsUsed}].
 					'''
 				Flavor:
 					'''
-					A mysterious crystal which forms in the deeper caverns of Terraria, drawing all manner of curious and craving adventurers in to examine it. Upon exposing the crystal to a sufficient onslaught of gastric acid, the crystal lends its power to the consumer, greatly increasing their vitality...though part of the effect only occurs up to a certain number of times. The means by which this strange phenomenon occurs are poorly understood, but have led many to believe a powerful being created these crystals with the intention of leeting them be eaten by worldly creatures in need of strength to hunt. While this was initially thought to be an unfounded claim, the fact that powerful predators have caught truly unnaturally perfect prey in the past suggests otherwise...
+					A mysterious crystal which forms in the deeper caverns of Terraria, drawing in all manner of adventurers, curious and craving alike, to examine it. Upon breaking one apart, either via pure force or prolonged exposure to a gastric gauntlet of digestion, the crystal fires off a spell which lends its power to the user/consumer, greatly increasing their vitality...though part of the effect only occurs up to a certain number of times. The exact science behind this spell is poorly understood, but has led many to believe a powerful being created these crystals with the intention of leeting them be eaten by worldly creatures in need of strength to hunt. While this was initially thought to be an unfounded claim, the fact that powerful predators have caught truly unnaturally perfect prey in the past suggests otherwise...
 					Those who have eaten Life Crystals before note that doing so feels a lot like eating rock candy, with a notable cherry-like flavor. The first person to do it ended up famous worldwide for quite some time because of a number of hilariously inept, yet somehow successful achievements. A pity he ended up getting gulped down and gurgled by a gleeful, gluttonous ghost.
 					'''
 			}
@@ -726,7 +731,8 @@ ItemTooltip: {
 			ManaCrystal: {
 				Short:
 					'''
-					Provides a handful of magically beneficial effects when eaten
+					On use, the crystal is broken apart, providing a few magically beneficial effects
+					These effects also apply when it is eaten, and eating it provides additional bonuses
 					{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
 					'''
 				Long:
@@ -734,13 +740,19 @@ ItemTooltip: {
 					When eaten by anything:
 					- [c/{$Mods.V2.CommonColorCodes.ManaHeal}:Restores 100 mana] instantly upon running out of durability.
 					- [c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Grants the Mana Regeneration buff] while digesting; this lingers for [c/FFFF00:{ManaCrystalEatManaRegenLength} seconds] once fully digested.
-					When eaten by a player, upon running out of durability:
+					When used normally by a player OR upon running out of durability when eaten by a player:
 					- Permanently [c/{$Mods.V2.CommonColorCodes.ManaHeal}:increases maximum mana by 20].
 					- For every 3 crystals total eaten, permanently [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:increases the ABS stat by 1].
-					  - The above two bonuses can stack for up to {ManaCrystalsMax} crystals eaten.
-					Mana Crystals eaten by this character (max. {ManaCrystalsMax}): [c/{ManaCrystalsUsedColor}:{ManaCrystalsUsed}].
+					  - The above two bonuses can stack for up to {ManaCrystalsMax} crystals used/eaten.
+					Mana Crystals used/eaten by this character (max. {ManaCrystalsMax}): [c/{ManaCrystalsUsedColor}:{ManaCrystalsUsed}].
 					'''
-				Flavor: Very commonly made and just as commonly munched on, these oversized star-shaped batches of blue-raspberry-flavored rock candy are infused with residual mana from pieces of the stars above, making them readily provide those who eat them with additional space in their mana reserves. Many have speculated that there could be less eating-oriented approaches to using these, but why would you care about that when you can munch on such a big batch of blue-raspberry-flavored rock candy?
+				Flavor:
+					'''
+					Very commonly made and just as commonly munched on, these oversized star-shaped batches of blue-raspberry-flavored rock candy are infused with residual mana from pieces of the stars above, making them readily provide those who eat them with additional space in their mana reserves and an easier time processing meals that have fallen still into more mana for said reserves.
+					Many have speculated that there could be less eating-oriented approaches to using these, but why would you care about that when you can munch on such a big batch of blue-raspberry-flavored rock candy?
+
+					...and then someone proved why it could be a bad idea to overspecialize, so now the spell also fires off if the rock candy is broken apart.
+					'''
 			}
 		}
 

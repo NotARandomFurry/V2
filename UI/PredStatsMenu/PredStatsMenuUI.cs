@@ -56,8 +56,14 @@ namespace V2.UI.PredStatsMenu
 		{
 			Visible = false;
 			Player player = Main.LocalPlayer;
+
+			if (!Main.playerInventory)
+				player.AsPred().InPredStatsMenu = false;
+
 			if (player.AsPred().InPredStatsMenu)
 				Visible = true;
+			else
+				GoalsMenuOpen = false;
 		}
 
 		public override void Draw(SpriteBatch spriteBatch)
@@ -138,7 +144,7 @@ namespace V2.UI.PredStatsMenu
 						PredPlayerGoal.TextureBounds.Width,
 						PredPlayerGoal.TextureBounds.Height
 					);
-					if (goalHoverRect.Contains(Main.MouseScreen.ToPoint()))
+					if (PredStatsMenuMouthUI.MouthState == PredStatsMenuMouthState.YourCursorGotFuckingGulpedIdiot && goalHoverRect.Contains(Main.MouseScreen.ToPoint()))
 					{
 						string goalFullHoverText =
 							"[c/"
@@ -240,7 +246,7 @@ namespace V2.UI.PredStatsMenu
 					SpriteEffects.None,
 					0f
 				);
-				if (goalsMenuBookRect.Contains(Main.MouseScreen.ToPoint()))
+				if (PredStatsMenuMouthUI.MouthState == PredStatsMenuMouthState.YourCursorGotFuckingGulpedIdiot && goalsMenuBookRect.Contains(Main.MouseScreen.ToPoint()))
 				{
 					Main.instance.MouseText(
 						"Return to the main pred stats menu"
@@ -258,7 +264,7 @@ namespace V2.UI.PredStatsMenu
 				string hoveredStatSlice = "none";
 				void SliceHoverLogic(Rectangle sliceRect, PredStat stat, string statFullName, string statShorthand)
 				{
-					if (!sliceRect.Contains(Main.MouseScreen.ToPoint()))
+					if (PredStatsMenuMouthUI.MouthState != PredStatsMenuMouthState.YourCursorGotFuckingGulpedIdiot || !sliceRect.Contains(Main.MouseScreen.ToPoint()))
 						return;
 
 					hoveredStatSlice = statShorthand;
@@ -281,8 +287,18 @@ namespace V2.UI.PredStatsMenu
 						else
 						{
 							stat.Spent++;
-							Main.LocalPlayer.AsPred().SyncRequired_PredPoints = true;
 							SoundEngine.PlaySound(AllocateSuccess);
+							if (Main.netMode == NetmodeID.MultiplayerClient)
+							{
+								ModPacket deliveryPacket = V2.Instance.GetPacket();
+								deliveryPacket.Write((byte)V2.MessageType.RequestPlayerPredStatSync);
+								deliveryPacket.Write((byte)Main.myPlayer);
+								deliveryPacket.Write(Main.LocalPlayer.AsPred().GLP.Spent);
+								deliveryPacket.Write(Main.LocalPlayer.AsPred().TUM.Spent);
+								deliveryPacket.Write(Main.LocalPlayer.AsPred().ACI.Spent);
+								deliveryPacket.Write(Main.LocalPlayer.AsPred().ABS.Spent);
+								deliveryPacket.Send(-1, Main.myPlayer);
+							}
 						}
 					}
 					else if (Main.mouseRight && Main.mouseRightRelease)
@@ -295,6 +311,17 @@ namespace V2.UI.PredStatsMenu
 						{
 							stat.Spent--;
 							SoundEngine.PlaySound(AllocateSuccess with { Pitch = -0.15f });
+							if (Main.netMode == NetmodeID.MultiplayerClient)
+							{
+								ModPacket deliveryPacket = V2.Instance.GetPacket();
+								deliveryPacket.Write((byte)V2.MessageType.RequestPlayerPredStatSync);
+								deliveryPacket.Write((byte)Main.myPlayer);
+								deliveryPacket.Write(Main.LocalPlayer.AsPred().GLP.Spent);
+								deliveryPacket.Write(Main.LocalPlayer.AsPred().TUM.Spent);
+								deliveryPacket.Write(Main.LocalPlayer.AsPred().ACI.Spent);
+								deliveryPacket.Write(Main.LocalPlayer.AsPred().ABS.Spent);
+								deliveryPacket.Send(-1, Main.myPlayer);
+							}
 						}
 					}
 				}
@@ -510,7 +537,7 @@ namespace V2.UI.PredStatsMenu
 					SpriteEffects.None,
 					0f
 				);
-				if (goalsMenuBookRect.Contains(Main.MouseScreen.ToPoint()))
+				if (PredStatsMenuMouthUI.MouthState == PredStatsMenuMouthState.YourCursorGotFuckingGulpedIdiot && goalsMenuBookRect.Contains(Main.MouseScreen.ToPoint()))
 				{
 					Main.instance.MouseText(
 						"Open the pred goals menu"
@@ -541,7 +568,7 @@ namespace V2.UI.PredStatsMenu
 					14,
 					14
 				);
-				if (exitGulletRect.Contains(Main.MouseScreen.ToPoint()))
+				if (PredStatsMenuMouthUI.MouthState == PredStatsMenuMouthState.YourCursorGotFuckingGulpedIdiot && exitGulletRect.Contains(Main.MouseScreen.ToPoint()))
 				{
 					Main.instance.MouseText(
 						"Close the pred stats menu\n"

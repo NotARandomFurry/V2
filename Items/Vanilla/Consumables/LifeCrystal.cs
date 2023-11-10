@@ -93,7 +93,7 @@ namespace V2.Items.Vanilla.Consumables
 	{
 		public override void PreUpdateBuffs()
 		{
-			Player.AsPred().TUM.Base += (int)Math.Floor(Player.ConsumedLifeCrystals / 3.0);
+			Player.AsPred().TUM.Base += Player.ConsumedLifeCrystals;
 		}
 	}
 }

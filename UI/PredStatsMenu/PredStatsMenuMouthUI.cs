@@ -109,38 +109,46 @@ namespace V2.UI.PredStatsMenu
 				{
 					switch (_mawSwallowTime)
 					{
-						case int i when i < 80:
+						case int i when i < 40:
 							x = 1;
 							break;
-						case int i when i >= 80 && i < 110:
+						case int i when i >= 40 && i < 50:
 							x = 2;
 							break;
-						case int i when i >= 110 && i < 140:
+						case int i when i >= 50 && i < 60:
 							x = 3;
 							break;
-						case int i when i >= 140 && i < 170:
+						case int i when i >= 60 && i < 70:
 							x = 4;
 							break;
-						case int i when i >= 170 && i < 200:
+						case int i when i >= 70 && i < 77:
 							x = 5;
 							break;
-						case int i when i >= 200 && i < 230:
+						case int i when i >= 77 && i < 84:
 							x = 6;
 							break;
-						case int i when i >= 230 && i < 260:
+						case int i when i >= 84 && i < 91:
 							x = 7;
 							break;
-						case int i when i >= 260 && i < 280:
+						case int i when i >= 91 && i < 98:
 							x = 8;
 							break;
-						case int i when i >= 280 && i < 300:
+						case int i when i >= 98 && i < 105:
 							x = 9;
+							break;
+						default:
+							x = 10;
 							break;
 					}
 				}
 				else
 					x = 10;
 			}
+
+			Vector2 backdropPos = new Vector2(
+				(Main.screenWidth - _predStatsMenuBackground.Value.Width) / 2,
+				(Main.screenHeight - _predStatsMenuBackground.Value.Height) / 2
+			);
 			switch (MouthState)
 			{
 				case PredStatsMenuMouthState.NotHovered:
@@ -182,13 +190,10 @@ namespace V2.UI.PredStatsMenu
 					break;
 				case PredStatsMenuMouthState.EatingCursor:
 					Main.LocalPlayer.mouseInterface = true;
-					if (_mawSwallowTime >= 300)
+					if (_mawSwallowTime >= 105)
 					{
-						Vector2 backdropPos = new Vector2(
-							(Main.screenWidth - _predStatsMenuBackground.Value.Width) / 2,
-							(Main.screenHeight - _predStatsMenuBackground.Value.Height) / 2
-						);
-						Mouse.SetPosition((int)backdropPos.X + 350, (int)backdropPos.Y + 40);
+						if (Main.hasFocus)
+							Mouse.SetPosition((int)backdropPos.X + 350, (int)backdropPos.Y + 40);
 						MouthState = PredStatsMenuMouthState.YourCursorGotFuckingGulpedIdiot;
 						goto case PredStatsMenuMouthState.YourCursorGotFuckingGulpedIdiot;
 					}
@@ -202,13 +207,7 @@ namespace V2.UI.PredStatsMenu
 									Main.screenPosition + MouthPosition
 								);
 								break;
-							case 80:
-								SoundEngine.PlaySound(
-									Gulps.Standard with { Volume = 1f },
-									Main.screenPosition + MouthPosition
-								);
-								break;
-							case 200:
+							case 40:
 								SoundEngine.PlaySound(
 									Gulps.Standard with { Volume = 1f, Pitch = -0.35f },
 									Main.screenPosition + MouthPosition
@@ -216,7 +215,8 @@ namespace V2.UI.PredStatsMenu
 								break;
 						}
 						_mawSwallowTime += 1;
-						Mouse.SetPosition((int)MouthPosition.X - 50, (int)MouthPosition.Y - 50);
+						if (Main.hasFocus)
+							Mouse.SetPosition((int)backdropPos.X + 350, (int)backdropPos.Y + 40);
 					}
 					DecideCursorGettingGulpedFrame(true);
 					break;
@@ -239,8 +239,9 @@ namespace V2.UI.PredStatsMenu
 					}
 					else
 					{
+						if (Main.hasFocus)
+							Mouse.SetPosition((int)backdropPos.X + 350, (int)backdropPos.Y + 40);
 						_mawSwallowTime -= 1;
-						Mouse.SetPosition((int)MouthPosition.X - 50, (int)MouthPosition.Y - 50);
 					}
 					DecideCursorGettingGulpedFrame(true);
 					break;

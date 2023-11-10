@@ -97,8 +97,8 @@ namespace V2.PlayerHandling
 		public int AvailableStatPoints => TotalStatPoints - AllocatedStatPoints;
 		public PredStat GLP { get; set; }
 		public StatModifier SwallowSizeModifier;
-		public static double BaseSwallowSize => 0.4;
-		public static double SwallowSizePerLevel => 0.08;
+		public static double BaseSwallowSize => 0.80;
+		public static double SwallowSizePerLevel => 0.05;
 		public double SwallowSize
 		{
 			get
@@ -173,7 +173,7 @@ namespace V2.PlayerHandling
 		public PredStat TUM { get; set; }
 		public StatModifier StomachCapacityModifier;
 		public static double BaseStomachCapacity => 0.80;
-		public static double StomachCapacityPerLevel => 0.04;
+		public static double StomachCapacityPerLevel => 0.05;
 		public double StomachCapacity
 		{
 			get
@@ -577,12 +577,26 @@ namespace V2.PlayerHandling
 		{
 			if (inventory.Length == 59)
 			{
-				if (V2.ItemGulpHotkey.Current && V2.SwallowHotkey.JustPressed)
+				if (V2.ItemGulpHotkey.Current && V2.SwallowHotkey.JustPressed && Player.whoAmI == Main.myPlayer)
 				{
+					int origStack = inventory[slot].stack;
+					inventory[slot].stack = 1;
 					if (CanSwallow(Player, inventory[slot]))
 					{
-						Player.ForceDropItem(Player.Center, ref inventory[slot], out Item droppedItem);
-						Swallow(Player, droppedItem);
+						if (origStack > 1)
+						{
+							Item eatenItem = new Item();
+							eatenItem.SetDefaults(inventory[slot].type);
+							eatenItem.stack = 1;
+							Player.ForceDropItem(Player.Center, ref eatenItem, out Item itemDrop);
+							Swallow(Player, itemDrop);
+							inventory[slot].stack = origStack - 1;
+						}
+						else
+						{
+							Player.ForceDropItem(Player.Center, ref inventory[slot], out Item itemDrop);
+							Swallow(Player, itemDrop);
+						}
 						ModContent.GetInstance<FirstItemEaten>().TrySetCompletion(Player);
 					}
 				}
@@ -686,7 +700,7 @@ namespace V2.PlayerHandling
 					for (int playerIndex = 0; playerIndex < Main.maxPlayers; playerIndex++)
 					{
 						Player potentialMeal = Main.player[playerIndex];
-						if (!potentialMeal.active || potentialMeal.whoAmI == Player.whoAmI)
+						if (!potentialMeal.active || potentialMeal.dead || potentialMeal.whoAmI == Player.whoAmI)
 							continue;
 
 						if (potentialMeal.CurrentCaptor() is not null)
@@ -1031,7 +1045,7 @@ namespace V2.PlayerHandling
 		/// </summary>
 		public static void UpdatePrey(Player pred)
 		{
-			if (pred.AsPred().Stomachache == pred.AsPred().StomachacheMeterCapacity)
+			if (pred.AsPred().Stomachache == pred.AsPred().StomachacheMeterCapacity && pred.AsPred().StomachTracker is not null && pred.AsPred().StomachTracker.Prey.Count > 0)
 			{
 				foreach (PreyData prey in pred.AsPred().StomachTracker.Prey)
 				{
@@ -1041,9 +1055,13 @@ namespace V2.PlayerHandling
 						PreyType.NPC => prey.Instance as NPC,
 						PreyType.Projectile => prey.Instance as Projectile,
 						PreyType.Item => prey.Instance as Item,
+						PreyType.Liquid => null,
 						PreyType.Custom => null,
 						_ => throw new NotImplementedException(),
 					};
+					if (realPrey is null)
+						continue;
+
 					realPrey.position = pred.TrueCenter() + new Vector2(pred.direction * 8f, -14f);
 					realPrey.velocity = new Vector2(pred.direction * 12.5f, -2.5f);
 					if (realPrey is NPC realPreyNPC)
@@ -1311,11 +1329,6 @@ namespace V2.PlayerHandling
 				"Mods.V2.Death.DigestedPlayer.Universal.20",
 				"Mods.V2.Death.DigestedPlayer.Universal.21",
 				"Mods.V2.Death.DigestedPlayer.Universal.22",
-				"Mods.V2.Death.DigestedPlayer.Universal.23",
-				"Mods.V2.Death.DigestedPlayer.Universal.24",
-				"Mods.V2.Death.DigestedPlayer.Universal.25",
-				"Mods.V2.Death.DigestedPlayer.Universal.26",
-				"Mods.V2.Death.DigestedPlayer.Universal.27",
 			};
 			if (player.difficulty == PlayerDifficultyID.Hardcore)
 			{
@@ -1377,6 +1390,8 @@ namespace V2.PlayerHandling
 					Player.CurrentCaptor().QueueNewPrey(prey);
 				}
 			}
+
+			Player.AsPred().InPredStatsMenu = false;
 		}
 
 		public override void UpdateDead()

@@ -127,8 +127,9 @@ namespace V2.UI
 				AddInterfaceLayer(layers, StomachCapacityBarInterfaceLayer, StomachCapacityBarInterface, OverriddenHairWindowIndex, true, "Stomach Capacity Meter");
 				AddInterfaceLayer(layers, StomachacheMeterInterfaceLayer, StomachacheMeterInterface, OverriddenHairWindowIndex + 1, true, "Stomachache Meter");
 				AddInterfaceLayer(layers, PlayerPredStruggleInterfaceLayer, PlayerPredStruggleInterface, OverriddenHairWindowIndex + 2, true, "Player Pred Struggles");
-				AddInterfaceLayer(layers, PredStatsMenuInterfaceLayer, PredStatsMenuInterface, OverriddenHairWindowIndex + 3, true, "Pred Stats Menu");
-				AddInterfaceLayer(layers, PredStatsMenuMouthInterfaceLayer, PredStatsMenuMouthInterface, OverriddenHairWindowIndex + 4, true, "Pred Stats Menu's Hungry Mouth");
+				AddInterfaceLayer(layers, PlayerPreyStruggleInterfaceLayer, PlayerPreyStruggleInterface, OverriddenHairWindowIndex + 3, true, "Player Prey Struggles");
+				AddInterfaceLayer(layers, PredStatsMenuInterfaceLayer, PredStatsMenuInterface, OverriddenHairWindowIndex + 4, true, "Pred Stats Menu");
+				AddInterfaceLayer(layers, PredStatsMenuMouthInterfaceLayer, PredStatsMenuMouthInterface, OverriddenHairWindowIndex + 5, true, "Pred Stats Menu's Hungry Mouth");
 			}
 			int MouseTextIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Mouse Text"));
 			if (MouseTextIndex != -1)

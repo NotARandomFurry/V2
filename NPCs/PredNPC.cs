@@ -437,7 +437,7 @@ namespace V2.NPCs
 					{
 						if (ModContent.GetInstance<V2ServerConfig>().DebugChatMessages)
 							Main.NewText(pred.FullName + " has invalid digestion damage/tick rate methods!");
-						return;
+						break;
 					}
 					double digestionDamage = pred.AsPred().GetDigestionTickDamage.Invoke(pred, prey);
 					double digestionTickRate = pred.AsPred().GetDigestionTickRate.Invoke(pred, prey);
@@ -508,7 +508,7 @@ namespace V2.NPCs
 				else
 				{
 					if (pred.AsPred().GetPreyAbsorptionRate is null)
-						continue;
+						break;
 
 					double digestedWeightPerTick = pred.AsPred().GetPreyAbsorptionRate.Invoke(pred) / (double)GetStomachTracker(pred).Prey.Count;
 					if (prey.WeightLeftToDigest <= digestedWeightPerTick)
@@ -530,9 +530,6 @@ namespace V2.NPCs
 					}
 				}
 			}
-
-			if (pred.AsFood(risky: true) is null)
-				return;
 
 			if (pred.CurrentCaptor() is null && pred.AsPred().GetVisualBellySize is not null)
 			{

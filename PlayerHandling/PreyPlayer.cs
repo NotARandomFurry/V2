@@ -128,7 +128,7 @@ namespace V2.PlayerHandling
 
 		public override void PostItemCheck()
 		{
-			if (V2.FeedHotkey.JustPressed)
+			if (V2.FeedHotkey.JustPressed && Player.whoAmI == Main.myPlayer)
 			{
 				if (ModContent.GetInstance<V2ServerConfig>().DebugChatMessages)
 					Main.NewText("Attempting to force-feed " + Player.name + " to nearby predators...");
@@ -188,7 +188,7 @@ namespace V2.PlayerHandling
 				for (int playerIndex = 0; playerIndex < Main.maxPlayers; playerIndex++)
 				{
 					Player potentialPred = Main.player[playerIndex];
-					if (!potentialPred.active || potentialPred.whoAmI == Player.whoAmI)
+					if (!potentialPred.active || potentialPred.dead || potentialPred.whoAmI == Player.whoAmI)
 						continue;
 
 					if (potentialPred.CurrentCaptor() is not null)

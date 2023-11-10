@@ -65,7 +65,7 @@ namespace V2.UI.StruggleSystem
 			);
 
 			VoreTracker tracker = Main.LocalPlayer.CurrentCaptor();
-			int preyIndex = tracker.Prey.FindIndex(x => x.Instance == Main.LocalPlayer);
+			int preyIndex = tracker.Prey.FindIndex(x => x.Type == PreyType.Player && x.Instance.whoAmI == Main.LocalPlayer.whoAmI);
 			foreach ((StruggleChartNote note, double proximity) noteData in tracker.CheckCloseNotes(preyIndex, true))
 			{
 				float alpha = 1f;

@@ -92,7 +92,7 @@ namespace V2.Items.Vanilla.Consumables
 	{
 		public override void PreUpdateBuffs()
 		{
-			Player.AsPred().ABS.Base += (int)Math.Floor(Player.ConsumedManaCrystals / 3.0);
+			Player.AsPred().ABS.Base += Player.ConsumedManaCrystals;
 		}
 	}
 }

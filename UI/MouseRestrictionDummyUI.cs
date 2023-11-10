@@ -23,7 +23,7 @@ namespace V2.UI
 		public override void Draw(SpriteBatch spriteBatch)
 		{
 			Player player = Main.LocalPlayer;
-			if (player.AsPred().InPredStatsMenu && PredStatsMenuMouthUI.MouthState == PredStatsMenuMouthState.YourCursorGotFuckingGulpedIdiot)
+			if (player.AsPred().InPredStatsMenu)
 			{
 				Vector2 backdropPos = new Vector2(
 					(Main.screenWidth - _predStatsMenuBackground.Value.Width) / 2,

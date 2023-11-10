@@ -161,7 +161,7 @@ namespace V2.UI.StomachCapacityMeter
 				_stomachCapacityPanelMiddle.Value.Height
 			);
 			_stomachCapacityHovered = hoverRect.Contains(Main.MouseScreen.ToPoint());
-			if (_stomachCapacityHovered && !Main.mouseText)
+			if (_stomachCapacityHovered && !Main.mouseText && !Main.LocalPlayer.AsPred().InPredStatsMenu)
 			{
 				Player localPlayer = Main.LocalPlayer;
 				localPlayer.cursorItemIconEnabled = false;
