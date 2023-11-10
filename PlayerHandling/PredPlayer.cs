@@ -28,6 +28,7 @@ using V2.PlayerHandling.PredPlayerGoals.Beginner;
 using V2.PlayerHandling.PredPlayerGoals.Starter;
 using V2.Sounds.Vore;
 using V2.StatusEffects.Debuffs;
+using V2.UI.PredStatsMenu;
 
 namespace V2.PlayerHandling
 {
@@ -1059,6 +1060,7 @@ namespace V2.PlayerHandling
 						PreyType.Custom => null,
 						_ => throw new NotImplementedException(),
 					};
+
 					if (realPrey is null)
 						continue;
 
