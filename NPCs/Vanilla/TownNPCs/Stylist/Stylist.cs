@@ -307,7 +307,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 						"The longer you sit there and keep waitin', the more likely I am to just cut to the chase and cram you down my throat.",
 						"Alright, how's your lousy scalp gonna get styled tonight? Better pick something good, and pick it fast, before I pick it for you.",
 					});
-					if (PredNPC.GetStomachTracker(npc) is not null && PredNPC.GetStomachTracker(npc).Prey.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.Dryad) is PreyData dryadAsPrey)
+					if (PredNPC.GetStomachTracker(npc) is not null && PredNPC.GetStomachTracker(npc).Prey.FirstOrDefault(x => x.Type == PreyType.NPC && x.ExactType == NPCID.Dryad) is PreyData dryadAsPrey)
 					{
 						if (!dryadAsPrey.NoHealth)
 						{
@@ -327,15 +327,12 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 							});
 						}
 					}
-					else
+					else if (salad is not null)
 					{
-						if (salad is not null)
+						stylistChatPool.AddRange(new List<string>
 						{
-							stylistChatPool.AddRange(new List<string>
-							{
-								"God, I could really go for a salad right about now...hun, go tell " + salad.GivenName + " to get over here and fill me up. Quickly, too, or you'll go right in with her.",
-							});
-						}
+							"God, I could really go for a salad right about now...hun, go tell " + salad.GivenName + " to get over here and fill me up. Quickly, too, or you'll go right in with her.",
+						});
 					}
 				}
 				else
@@ -410,7 +407,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 								}
 								break;
 						}
-						if (PredNPC.GetStomachTracker(npc).Prey.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.Dryad) is PreyData dryadAsPrey)
+						if (PredNPC.GetStomachTracker(npc).Prey.FirstOrDefault(x => x.Type == PreyType.NPC && x.ExactType == NPCID.Dryad) is PreyData dryadAsPrey)
 						{
 							if (!dryadAsPrey.NoHealth)
 							{
@@ -432,7 +429,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 								});
 							}
 						}
-						if (PredNPC.GetStomachTracker(npc).Prey.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.PartyGirl) is PreyData partyGirlAsPrey)
+						if (PredNPC.GetStomachTracker(npc).Prey.FirstOrDefault(x => x.Type == PreyType.NPC && x.ExactType == NPCID.PartyGirl) is PreyData partyGirlAsPrey)
 						{
 							if (!partyGirlAsPrey.NoHealth)
 							{
@@ -455,7 +452,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 								});
 							}
 						}
-						if (PredNPC.GetStomachTracker(npc).Prey.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.DD2Bartender) is PreyData tavernkeepAsPrey)
+						if (PredNPC.GetStomachTracker(npc).Prey.FirstOrDefault(x => x.Type == PreyType.NPC && x.ExactType == NPCID.DD2Bartender) is PreyData tavernkeepAsPrey)
 						{
 							if (!tavernkeepAsPrey.NoHealth)
 							{

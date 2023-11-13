@@ -34,7 +34,7 @@ namespace V2
 		/// the packets help keep my tummy happy too so im super happy to do this !<br/>
 		/// thomas wrote descriptions for all the different packets<br/>
 		/// ill tell you more about what makes them taste the best as we go<br/>
-		/// thankies !<br/>
+		/// thank !<br/>
 		/// -rose<br/>
 		/// </summary>
 		/// <param name="reader">
@@ -202,7 +202,7 @@ namespace V2
 		/// ----------------------------------------------------------<br/>
 		/// hi !<br/>
 		/// my tummy likes these packets a whole lot<br/>
-		/// they taste like warm pretsels with extra salt<br/>
+		/// they taste like warm pretzals with extra salt<br/>
 		/// -rose<br/>
 		/// </summary>
 		/// <param name="reader">
@@ -266,7 +266,7 @@ namespace V2
 		/// ----------------------------------------------------------<br/>
 		/// hi !<br/>
 		/// my tummy likes these packets<br/>
-		/// they taste like lamia scales with a hint of salty meat<br/>
+		/// they taste like lamia scales with a side of salty meat<br/>
 		/// -rose<br/>
 		/// </summary>
 		/// <param name="reader">
@@ -318,7 +318,7 @@ namespace V2
 		/// ----------------------------------------------------------<br/>
 		/// hi !<br/>
 		/// my tummy likes these packets<br/>
-		/// they taste like lamia scales with a hint of sour candy<br/>
+		/// they taste like lamia scales with a side of sour candy<br/>
 		/// -rose<br/>
 		/// </summary>
 		/// <param name="reader">

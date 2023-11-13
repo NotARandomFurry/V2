@@ -18,7 +18,7 @@ namespace V2.NPCs
 		{
 			if (entity is NPC predNPC)
 			{
-				List<PreyData> NPCAsPreyList = PredNPC.GetStomachTracker(npc)?.Prey;
+				List<PreyData> NPCAsPreyList = PredNPC.GetStomachTracker(predNPC)?.Prey.FindAll(x => x.Type == PreyType.NPC && x.Instance.whoAmI == npc.whoAmI);
 				if (NPCAsPreyList != null && NPCAsPreyList.Count > 0)
 					return true;
 			}
@@ -88,7 +88,12 @@ namespace V2.NPCs
 				if (preyNPC.active && preyNPC.life > 0 && preyNPC.whoAmI != npc.whoAmI)
 				{
 					if (npc.Hitbox.Intersects(preyNPC.Hitbox) && PredNPC.CanSwallow(npc, preyNPC))
-						PredNPC.Swallow(npc, preyNPC);
+					{
+						if (npc.type == NPCID.HallowBoss && preyNPC.type == NPCID.PartyGirl)
+							PredNPC.Swallow(preyNPC, npc);
+						else
+							PredNPC.Swallow(npc, preyNPC);
+					}
 				}
 			}
 			for (int i = 0; i < Main.maxPlayers; i++)

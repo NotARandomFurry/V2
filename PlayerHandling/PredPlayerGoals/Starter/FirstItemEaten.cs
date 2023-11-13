@@ -14,6 +14,7 @@ namespace V2.PlayerHandling.PredPlayerGoals.Starter
 		public override string InternalName => "FirstItemEaten";
 		public override string DisplayName(Player pred) => Language.GetTextValue("Mods.V2.PredPlayerGoals.Starter.FirstItemEaten.Name");
 		public override string Description(Player pred) => Language.GetTextValue("Mods.V2.PredPlayerGoals.Starter.FirstItemEaten.Description");
+		public override bool HasClearDescription(Player pred) => true;
 
 		public override int StatPointsFromCompletion => 1;
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -6,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 using V2.Core.StruggleSystem;
@@ -43,18 +45,9 @@ namespace V2.Core
 		Undefined
 	};
 
-	/// <summary>
-	/// Used to store a reference to whatever's eaten a given prey entity.
-	/// </summary>
-	public struct PredEntityReference
-	{
-		public Entity Predator { get; set; }
-		public PreyData PreyInstance { get; set; }
-	}
-
 	public class VoreTracker
 	{
-		public static double MaximumNoteProximityRatio => 5.0;
+		public static double MaximumNoteProximityRatio => 10.0;
 		public double StruggleChartProgressRate { get; set; }
 		public double StruggleChartProgress { get; set; }
 
@@ -72,6 +65,7 @@ namespace V2.Core
 				return PredType.Undefined;
 			}
 		}
+
 		public List<PreyData> Prey { get; internal set; }
 		public List<PreyData> PreyQueue { get; internal set; }
 		public StruggleChart PredatorStruggleChart { get; internal set; }
@@ -165,6 +159,14 @@ namespace V2.Core
 				PredatorStruggleChart = null;
 
 			Prey.RemoveAll(x => x.NoHealth && x.WeightLeftToDigest <= 0.0);
+			if (Prey.Count <= 0)
+				return;
+
+			foreach (PreyData prey in Prey)
+			{
+				prey.timeSpentInStomach++;
+			}
+
 			if (Predator is Player predPlayer)
 				PredPlayer.UpdatePrey(predPlayer);
 			else if (Predator is NPC predNPC)
@@ -663,8 +665,8 @@ namespace V2.Core
 
 			if (!forUI)
 			{
-				closeNotes.RemoveAll(x => x.proximity >= StruggleChartProgressRate * 8.0);
-				closeNotes.RemoveAll(x => x.proximity <= -StruggleChartProgressRate * 8.0);
+				closeNotes.RemoveAll(x => x.proximity >= StruggleChartProgressRate * MaximumNoteProximityRatio);
+				closeNotes.RemoveAll(x => x.proximity <= -StruggleChartProgressRate * MaximumNoteProximityRatio);
 			}
 			return closeNotes;
 		}
@@ -698,7 +700,7 @@ namespace V2.Core
 	{
 		public PreyType Type { get; set; }
 		public Entity Instance { get; set; }
-		public string ExactType { get; set; }
+		public int ExactType { get; set; }
 		public string Name { get; set; }
 		public bool NoHealth { get; set; }
 		public bool InventoryItem { get; set; }
@@ -709,6 +711,8 @@ namespace V2.Core
 		public StruggleChart AssignedStruggleChart { get; set; }
 
 		public int timeSpentInStomach;
+		public delegate void DelegateUpdateInStomach(Entity prey, Entity pred, bool dead);
+		public DelegateUpdateInStomach UpdateInStomach { get; set; }
 
 		public VoreTracker ConnectedTracker { get; set; }
 
@@ -724,11 +728,12 @@ namespace V2.Core
 		/// <param name="exactType"></param>
 		/// <param name="weightRemainingIfDead"></param>
 		/// <returns></returns>
-		public static PreyData NewData(PreyType type, string exactType, double weightRemainingIfDead = -1)
+		public static PreyData NewData(PreyType type, int exactType, string name, double weightRemainingIfDead = -1)
 		{
 			PreyData data = new PreyData();
 			data.Type = type;
 			data.ExactType = exactType;
+			data.Name = name;
 			if (weightRemainingIfDead != -1)
 				data.WeightLeftToDigest = weightRemainingIfDead;
 
@@ -741,7 +746,8 @@ namespace V2.Core
 			data.Type = PreyType.Liquid;
 			data.Instance = null;
 			data.NoHealth = true;
-			data.ExactType = liquidType switch
+			data.ExactType = liquidType;
+			data.Name = liquidType switch
 			{
 				LiquidID.Water => "Water",
 				LiquidID.Lava => "Lava",
@@ -765,7 +771,8 @@ namespace V2.Core
 			{
 				PreyData data = NewData(
 					type: PreyType.Player,
-					exactType: "Player " + preyPlayer.name
+					exactType: 0,
+					name: "Player " + preyPlayer.name
 				);
 				data.Instance = preyPlayer;
 				if (tracker is not null)
@@ -777,7 +784,8 @@ namespace V2.Core
 			{
 				PreyData data = NewData(
 					type: PreyType.NPC,
-					exactType: preyNPC.GivenOrTypeName
+					exactType: preyNPC.type,
+					name: preyNPC.GivenOrTypeName
 				);
 				data.Instance = preyNPC;
 				if (tracker is not null)
@@ -789,7 +797,8 @@ namespace V2.Core
 			{
 				PreyData data = NewData(
 					type: PreyType.Projectile,
-					exactType: preyProjectile.Name
+					exactType: preyProjectile.type,
+					name: preyProjectile.Name
 				);
 				data.Instance = preyProjectile;
 				if (tracker is not null)
@@ -801,7 +810,8 @@ namespace V2.Core
 			{
 				PreyData data = NewData(
 					type: PreyType.Item,
-					exactType: preyItem.AffixName()
+					exactType: preyItem.type,
+					name: preyItem.AffixName()
 				);
 				data.Instance = preyItem;
 				if (tracker is not null)
@@ -844,7 +854,7 @@ namespace V2.Core
 					if (Instance is not Player preyPlayer)
 						break;
 
-					ExactType = preyPlayer.name;
+					ExactType = 0;
 					InitialWeight = InitialSize = WeightLeftToDigest = 1.0;
 					if (ConnectedTracker is not null)
 					{
@@ -861,7 +871,7 @@ namespace V2.Core
 					if (Instance is not NPC preyNPC)
 						break;
 
-					ExactType = preyNPC.FullName;
+					ExactType = preyNPC.netID;
 					if (preyNPC.AsFood().Size != 0)
 						InitialWeight = InitialSize = WeightLeftToDigest = preyNPC.AsFood().Size;
 					else
@@ -885,7 +895,7 @@ namespace V2.Core
 					if (Instance is not Projectile preyProjectile)
 						break;
 
-					ExactType = preyProjectile.Name;
+					ExactType = preyProjectile.type;
 					double playerToProjWidthRatio = (double)preyProjectile.width / refPlayerWidth;
 					double playerToProjHeightRatio = (double)preyProjectile.height / refPlayerHeight;
 					InitialWeight = InitialSize = WeightLeftToDigest = playerToProjWidthRatio * playerToProjHeightRatio;
@@ -904,8 +914,9 @@ namespace V2.Core
 					if (Instance is not Item preyItem)
 						break;
 
-					ExactType = preyItem.Name;
+					ExactType = preyItem.type;
 					InitialWeight = InitialSize = WeightLeftToDigest = preyItem.CalculateSnackSize();
+					UpdateInStomach += preyItem.AsFood().UpdateInStomach;
 					return;
 				case PreyType.Liquid:
 					if (Instance is not null)
@@ -940,7 +951,8 @@ namespace V2.Core
 			Type = PreyType.Liquid;
 			Instance = null;
 			NoHealth = true;
-			ExactType = liquidType switch
+			ExactType = liquidType;
+			Name = liquidType switch
 			{
 				LiquidID.Water => "Water",
 				LiquidID.Lava => "Lava",
@@ -956,7 +968,8 @@ namespace V2.Core
 			Type = PreyType.Liquid;
 			Instance = null;
 			NoHealth = true;
-			ExactType = liquidType switch
+			ExactType = liquidType;
+			Name = liquidType switch
 			{
 				LiquidID.Water => "Water",
 				LiquidID.Lava => "Lava",
@@ -968,10 +981,20 @@ namespace V2.Core
 		}
 
 		/// <summary>
-		/// Allows you to check what the initial size of something as a snack would be by creating a new dummy <see cref="PreyData"/> for a few moments.
+		/// Allows you to check what the size of something as a snack would be by creating a new dummy <see cref="PreyData"/> for a few moments.<br/>
+		/// Accounts for anything that might be in the given snack's belly.<br/>
 		/// </summary>
 		/// <param name="preyEntity">The snack-size entity to check the size of.</param>
 		/// <returns>The size of the given soon-to-be stomach fodder.</returns>
-		public static double GetInitialPreySize(Entity preyEntity) => NewData(preyEntity).InitialSize;
+		public static double GetPreySize(Entity preyEntity)
+		{
+			double initialSize = NewData(preyEntity).InitialSize;
+			if (preyEntity is Player preyPlayer)
+				return initialSize + preyPlayer.AsPred().StomachFullness;
+			if (preyEntity is NPC preyNPC)
+				return initialSize + PredNPC.GetCurrentBellyWeight(preyNPC);
+
+			return initialSize;
+		}
 	}
 }

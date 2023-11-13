@@ -289,7 +289,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.ArmsDealer
 			if (npc.CurrentCaptor() is not null)
 				return;
 
-			if (PredNPC.GetStomachTracker(npc)?.Prey.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.Nurse) is PreyData crushAsPrey)
+			if (PredNPC.GetStomachTracker(npc)?.Prey.FirstOrDefault(x => x.Type == PreyType.NPC && x.ExactType == NPCID.Nurse) is PreyData crushAsPrey)
 				return;
 
 			static void RollForRandomGulp(ref bool gulp) => gulp |= Main.rand.NextBool(2, 100);

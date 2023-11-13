@@ -94,6 +94,19 @@ Configs: {
 					'''
 			}
 
+			Glutton: {
+				Label: Play The Apex
+				Tooltip:
+					'''
+					BALANCE BREAKAGE: High
+					Raises the following pred stats by absurd amounts:
+					- Swallow (non-liquid) and stomach capacities (x120)
+					- Stomachache meter capacity (x80)
+					- Absorption rate (x60)
+					Defaults to false.
+					'''
+			}
+
 			EasilyEdibleEmpress: {
 				Label: Invoke The Second Law
 				Tooltip:
@@ -408,29 +421,58 @@ PredPlayerGoals: {
 
 		FirstLivePrey: {
 			Name: First Chyme
-			Description:
-				'''
-				Eat and digest your first live prey.
-				'We all start somewhere.'
-				'''
+
+			Description: {
+				Default:
+					'''
+					Eat and digest your first live prey.
+					'We all start somewhere.'
+					'''
+				Clarification:
+					'''
+					Eat and digest any NPC (mob or townsperson).
+					To swallow an NPC this way, press the Swallow keybind while near them.
+					If you cannot swallow the NPC, make sure they’re not larger than your swallow or stomach capacities can currently handle.
+					'''
+			}
 		}
 
 		FirstItemEaten: {
 			Name: Taking Inventory
-			Description:
-				'''
-				Pluck something out of your normal inventory and into your internal "inventory".
-				'Just couldn't wait until you found a squirmier snack to swallow, eh?'
-				'''
+
+			Description: {
+				Default:
+					'''
+					Pluck something out of your normal inventory and into your internal "inventory".
+					'Just couldn't wait until you found a squirmier snack to swallow, eh?'
+					'''
+				Clarification:
+					'''
+					Eat an item. Digestion is optional.
+					To swallow an item, hover over it in your inventory and press the Swallow Item keybind.
+					If you cannot swallow the item, make sure it’s not too large for your swallow or stomach capacities to handle.
+					Some items (e.g. Life and Mana Crystal) can be swallowed on left-click by holding the Swallow Item keybind while using them.
+					Some items (e.g. food and drink) force you to swallow them on use.
+					'''
+			}
 		}
 
 		FirstDrink: {
 			Name: A Refreshing Drink
-			Description:
-				'''
-				Drink a bit of water.
-				'Even the best preds need a nice, cold drink every now and again! You might even get some seafood every so often as you drink, too!'
-				'''
+
+			Description: {
+				Default:
+					'''
+					Drink a bit of water.
+					'Even the best preds need a nice, cold drink every now and again! You might even get some seafood every so often as you drink, too!'
+					'''
+				Clarification:
+					'''
+					Drink a tile’s worth of water.
+					To drink liquids straight from the world, submerge yourself in them and hold the Swallow keybind.
+					Some liquids may pose a danger to you if you drink them without proper preparation.
+					'''
+			}
 		}
 	}
 
@@ -554,11 +596,15 @@ PredPlayerGoals: {
 
 		Cheapskate: {
 			Name: Lady-Sized Lollipop
-			Description:
-				'''
-				Gobble up the Nurse to cheat her service fees and heal up for free (and get a free meal in the process).
-				'Just what the patient ordered.'
-				'''
+
+			Description: {
+				Default:
+					'''
+					Gobble up the Nurse to cheat her service fees and heal up for free (and get a free meal in the process).
+					'Just what the patient ordered.'
+					'''
+				Clarification: While injured/debuffed enough for a traditional heal to cost you at least 1 gold and 50 silver from the Nurse, eat and digest the Nurse.
+			}
 		}
 
 		FastFood: {
@@ -646,7 +692,12 @@ ItemTooltip: {
 		EdibleFromNormalUse:
 			'''
 			Using this item from the hotbar while holding the Eat Items keybind causes you to swallow it
-			If this is a stack of multiple items, this only swallows items one at a time
+			If this is a stack of multiple items, this only swallows items one at a time unless otherwise stated
+			'''
+		EatenByNormalUse:
+			'''
+			Using this item from the hotbar at all causes you to swallow it
+			If this is a stack of multiple items, this only swallows items one at a time unless otherwise stated
 			'''
 
 		AcidResistTier: {

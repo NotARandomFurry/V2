@@ -85,38 +85,6 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 			entity.AsCandyFairy().MuffledScreechDelay = 0;
 		}
 
-		public override bool CanHitNPC(NPC npc, NPC target)
-		{
-			if (target.type == NPCID.PartyGirl)
-			{
-				if (npc.CurrentCaptor() is null && npc.Hitbox.Intersects(target.Hitbox) && target.AsPartyGirl().HungerForEmpress == PartyGirl.MaxHungerForEmpress && PredNPC.GetStomachTracker(target) is null)
-				{
-					PredNPC.Swallow(target, npc);
-					target.position.X += 14;
-					target.position.Y += 40;
-					PartyGirl.PartyGirlSpecialPredAI(target);
-					target.position.X -= 110;
-					target.position.Y -= 68;
-					for (int i = 0; i < Main.maxProjectiles; i++)
-					{
-						Projectile projectile = Main.projectile[i];
-						if (!projectile.active)
-							continue;
-
-						if (projectile.type is ProjectileID.HallowBossSplitShotCore
-											or ProjectileID.HallowBossRainbowStreak
-											or ProjectileID.HallowBossLastingRainbow
-											or ProjectileID.FairyQueenHymn
-											or ProjectileID.FairyQueenLance
-											or ProjectileID.FairyQueenSunDance)
-							projectile.Kill();
-					}
-					return false;
-				}
-			}
-			return true;
-		}
-
 		public override void PostAI(NPC npc)
 		{
 			if (npc.ai[0] is 8f or 9f)

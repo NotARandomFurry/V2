@@ -32,7 +32,7 @@ namespace V2.Items.Vanilla.Weapons.Melee
 			entity.AsFood().UpdateInStomach += UpdateInStomach;
 		}
 
-		public static void UpdateInStomach(Item item, Entity pred, bool dead)
+		public static void UpdateInStomach(Entity prey, Entity pred, bool dead)
 		{
 			if (dead)
 				pred.AddStatus(BuffID.Thorns, ThornsBuffTime);

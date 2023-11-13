@@ -159,7 +159,23 @@ namespace V2.UI.PredStatsMenu
 						  + goalToDraw.StatPointsFromCompletion
 						  + " stat point"
 						  + (goalToDraw.StatPointsFromCompletion == 1 ? "" : "s") + "]\n";
-						string[] goalFullHoverTextLines = Utils.WordwrapString(goalToDraw.Description(Main.LocalPlayer), FontAssets.MouseText.Value, 720, 15, out _);
+						string descriptionKey = goalToDraw.Description(Main.LocalPlayer);
+						/*
+						if (goalToDraw.HasClearDescription(Main.LocalPlayer))
+						{
+							if (Main.keyState.IsKeyDown(Keys.LeftShift))
+								descriptionKey += ".Clarification";
+							else
+								descriptionKey += ".Default";
+						}
+						*/
+						string[] goalFullHoverTextLines = Utils.WordwrapString(
+							Language.GetTextValue(descriptionKey),
+							FontAssets.MouseText.Value,
+							720,
+							15,
+							out _
+						);
 						foreach (string piece in goalFullHoverTextLines)
 						{
 							if (piece is not null && piece != "")

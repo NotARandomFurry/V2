@@ -314,7 +314,8 @@ namespace V2.PlayerHandling
 				if (trueDigestionDamage < 0)
 					trueDigestionDamage = 0;
 			}
-			trueDigestionDamage = (int)Math.Floor(Player.AsFood().TakenDigestionDamageModifier.ApplyTo(trueDigestionDamage));
+			trueDigestionDamage = (int)Math.Round((float)trueDigestionDamage * (1f - Player.endurance));
+			trueDigestionDamage = (int)Math.Round(Player.AsFood().TakenDigestionDamageModifier.ApplyTo(trueDigestionDamage));
 			Player.AsFood().SoftenedDigestionDamageTaken += Player.AsFood().SoftenedDigestionDamageModifier.ApplyTo(trueDigestionDamage);
 			Player.AsFood().SoftenedWearoffDelay = SoftenedWearoffMaxDelay;
 			Player.statLife -= trueDigestionDamage;

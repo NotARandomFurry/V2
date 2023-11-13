@@ -547,7 +547,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 			return nurseChatPool;
 		}
 
-		public static bool CanNurseBeForceFed(NPC npc) => PredNPC.GetStomachTracker(npc)?.Prey.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.ArmsDealer) is null;
+		public static bool CanNurseBeForceFed(NPC npc) => PredNPC.GetStomachTracker(npc)?.Prey.FirstOrDefault(x => x.Type == PreyType.NPC && x.ExactType == NPCID.ArmsDealer) is null;
 
 		public static void OnNurseForceFed(NPC npc, Player player)
 		{
@@ -604,7 +604,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 			if (Main.GameUpdateCount % 60 != 0)
 				return;
 
-			if (PredNPC.GetStomachTracker(npc)?.Prey.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.ArmsDealer) is PreyData crushAsPrey)
+			if (PredNPC.GetStomachTracker(npc)?.Prey.FirstOrDefault(x => x.Type == PreyType.NPC && x.ExactType == NPCID.ArmsDealer) is PreyData crushAsPrey)
 			{
 				NPC crush = crushAsPrey.Instance as NPC;
 				npc.AsNurse().armsDealerHealTime += 1;
@@ -718,7 +718,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 
 		public static double GetDigestionTickRate(NPC npc, PreyData prey)
 		{
-			if (PredNPC.GetStomachTracker(npc)?.Prey.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.ArmsDealer) is PreyData crushAsPrey && !Main.bloodMoon)
+			if (PredNPC.GetStomachTracker(npc)?.Prey.FirstOrDefault(x => x.Type == PreyType.NPC && x.ExactType == NPCID.ArmsDealer) is PreyData crushAsPrey && !Main.bloodMoon)
 				return 0.0;
 
 			return Main.bloodMoon ? 2.3 : 1.15;

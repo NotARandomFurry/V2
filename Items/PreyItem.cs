@@ -87,7 +87,6 @@ namespace V2.Items
 	{
 		public bool Digested { get; set; }
 		public bool FullyDigested { get; set; }
-		public PredEntityReference? CurrentCaptor { get; set; }
 
 		public int MaxHealth { get; set; }
 		private int _health;
@@ -106,19 +105,18 @@ namespace V2.Items
 		public string OnSwallowDeathReason { get; set; }
 		public int OnSwallowSoreThroatTime { get; set; }
 
-		public delegate void DelegateUpdateInStomach(Item item, Entity pred, bool dead);
-		public DelegateUpdateInStomach UpdateInStomach { get; set; }
+		public PreyData.DelegateUpdateInStomach UpdateInStomach { get; set; }
 		public delegate void DelegateOnBreak(Item item, Entity pred);
 		public DelegateOnBreak OnBreak { get; set; }
 
-		public bool LeftClickEdible { get; set; }
+		public bool e { get; set; }
+		public bool EdibleOnUse { get; set; }
 
 		public override bool InstancePerEntity => true;
 
 		public PreyItem()
 		{
 			Digested = false;
-			FullyDigested = false;
 
 			MaxHealth = -1;
 			Health = -1;
@@ -134,12 +132,15 @@ namespace V2.Items
 			UpdateInStomach = null;
 			OnBreak = null;
 
-			LeftClickEdible = false;
+			EdibleOnUse = false;
 		}
 
 		public override void Update(Item item, ref float gravity, ref float maxFallSpeed)
 		{
-			if (item.AsFood().FullyDigested)
+			if (item.IsAir)
+				return;
+
+			if (item.AsFood().Digested)
 			{
 				item.TurnToAir();
 				return;
@@ -160,6 +161,9 @@ namespace V2.Items
 
 		public override void UpdateInventory(Item item, Player player)
 		{
+			if (item.IsAir)
+				return;
+
 			if (item.AsFood().MaxHealth != -1)
 			{
 				if (item.AsFood().Health == -1 || item.AsFood().Health > item.AsFood().MaxHealth)
@@ -169,31 +173,34 @@ namespace V2.Items
 
 		public override bool CanUseItem(Item item, Player player)
 		{
-			if (item.AsFood().LeftClickEdible)
+			if (item.IsAir)
+				return false;
+
+			if (item.AsFood().EdibleOnUse && item != player.inventory[58] && player.whoAmI == Main.myPlayer && V2.ItemGulpHotkey.Current)
 			{
-				if (item != player.inventory[58] && player.whoAmI == Main.myPlayer && V2.ItemGulpHotkey.Current)
+				int origStack = item.stack;
+				item.stack = 1;
+				if (PredPlayer.CanSwallow(player, item))
 				{
-					int origStack = item.stack;
-					item.stack = 1;
-					if (PredPlayer.CanSwallow(player, item))
+					if (origStack > 1)
 					{
-						if (origStack > 1)
-						{
-							Item eatenItem = new Item();
-							eatenItem.SetDefaults(item.type);
-							eatenItem.stack = 1;
-							player.ForceDropItem(player.Center, ref eatenItem, out Item itemDrop);
-							PredPlayer.Swallow(player, itemDrop);
-							item.stack = origStack - 1;
-						}
-						else
-						{
-							player.ForceDropItem(player.Center, ref item, out Item itemDrop);
-							PredPlayer.Swallow(player, itemDrop);
-						}
-						ModContent.GetInstance<FirstItemEaten>().TrySetCompletion(player);
+						Item eatenItem = new Item();
+						eatenItem.SetDefaults(item.type);
+						eatenItem.stack = 1;
+						player.ForceDropItem(player.Center, ref eatenItem, out Item itemDrop);
+						PredPlayer.Swallow(player, itemDrop);
+						item.stack = origStack - 1;
 					}
+					else
+					{
+						player.ForceDropItem(player.Center, ref item, out Item itemDrop);
+						PredPlayer.Swallow(player, itemDrop);
+					}
+					ModContent.GetInstance<FirstItemEaten>().TrySetCompletion(player);
 				}
+				else
+					item.stack = origStack;
+
 				return false;
 			}
 			return true;
@@ -201,6 +208,9 @@ namespace V2.Items
 
 		public override bool CanStack(Item destination, Item source)
 		{
+			if (destination.IsAir || source.IsAir)
+				return false;
+
 			if (destination.AsFood().Health != source.AsFood().Health)
 				return false;
 
@@ -209,8 +219,11 @@ namespace V2.Items
 
 		public override bool CanStackInWorld(Item destination, Item source)
 		{
-			if (destination.CurrentCaptor() is not null || destination.AsFood().Digested || destination.AsFood().FullyDigested
-			 || source.CurrentCaptor() is not null || source.AsFood().Digested || source.AsFood().FullyDigested)
+			if (destination.IsAir || source.IsAir)
+				return false;
+
+			if (destination.CurrentCaptor() is not null || destination.AsFood().Digested
+			 || source.CurrentCaptor() is not null || source.AsFood().Digested)
 				return false;
 
 			return true;
@@ -218,23 +231,32 @@ namespace V2.Items
 
 		public override void GrabRange(Item item, Player player, ref int grabRange)
 		{
-			if (item.CurrentCaptor() is not null || item.AsFood().Digested || item.AsFood().FullyDigested)
+			if (item.IsAir)
+				return;
+
+			if (item.CurrentCaptor() is not null || item.AsFood().Digested)
 				grabRange = 0;
 		}
 
 		public override bool PreDrawInWorld(Item item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
 		{
-			if (item.CurrentCaptor() is not null || item.AsFood().Digested || item.AsFood().FullyDigested)
+			if (item.IsAir)
+				return true;
+
+			if (item.CurrentCaptor() is not null || item.AsFood().Digested)
 				return false;
 
 			return true;
 		}
 
-		public override bool CanPickup(Item item, Player player) => !(item.CurrentCaptor() is not null || item.AsFood().Digested || item.AsFood().FullyDigested);
+		public override bool CanPickup(Item item, Player player) => !item.IsAir && !(item.CurrentCaptor() is not null || item.AsFood().Digested);
 
 		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
 		{
-			if (MaxHealth == -1 || Health == -1)
+			if (item.IsAir)
+				return;
+
+			if (item.AsFood().MaxHealth == -1 || item.AsFood().Health == -1)
 				return;
 
 			if (item.favorited)
@@ -249,7 +271,7 @@ namespace V2.Items
 				);
 			}
 
-			double healthRemainingRatio = (double)Health / (double)MaxHealth;
+			double healthRemainingRatio = (double)item.AsFood().Health / (double)item.AsFood().MaxHealth;
 			Color duraPercentColor = Color.Lerp(Color.White, Color.DarkOliveGreen, (float)(1.0 - healthRemainingRatio));
 			V2Utils.FindLastTooltipLineBeforeFlavorText(tooltips, out TooltipLine finalLine);
 			tooltips.Insert(
@@ -257,7 +279,7 @@ namespace V2.Items
 				new TooltipLine(
 					V2.Instance,
 					"V2Durability",
-					"Durability left: " + Health + " / " + MaxHealth + " ([c/" + (duraPercentColor * ((int)Main.mouseTextColor / 255f)).Hex3() + ":" + healthRemainingRatio.ToPercentage(2) + "])"
+					"Durability left: " + item.AsFood().Health + " / " + item.AsFood().MaxHealth + " ([c/" + (duraPercentColor * ((int)Main.mouseTextColor / 255f)).Hex3() + ":" + healthRemainingRatio.ToPercentage(2) + "])"
 				)
 			);
 
@@ -312,7 +334,7 @@ namespace V2.Items
 				)
 			);
 
-			if (item.AsFood().LeftClickEdible)
+			if (item.AsFood().EdibleOnUse)
 			{
 				tooltips.Insert(
 					tooltips.IndexOf(finalLine) + 4,

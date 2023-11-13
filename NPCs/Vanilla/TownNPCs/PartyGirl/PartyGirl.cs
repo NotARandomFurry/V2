@@ -70,7 +70,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 	public partial class PartyGirl : GlobalNPC
 	{
 		public int HungerForEmpress { get; set; }
-		public static int MaxHungerForEmpress => V2Utils.SensibleTime(seconds: 40);
+		public static int MaxHungerForEmpress => V2Utils.SensibleTime(seconds: 25);
 
 		public int SpecialGutFrameCounter;
 		public int SpecialGutFrame;
@@ -82,6 +82,8 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 		public override void SetDefaults(NPC npc)
 		{
 			npc.AsV2NPC().Gender = EntityGender.Female;
+
+			npc.lifeMax = 400;
 
 			npc.AsV2NPC().GetNewDialogue = GetPartyGirlChat;
 
@@ -114,7 +116,18 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 
 		public static bool PartyGirlSpecialPredAI(NPC npc)
 		{
-			if (PredNPC.GetStomachTracker(npc)?.Prey.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.HallowBoss) is PreyData sprinkles && sprinkles.WeightLeftToDigest > 5.0)
+			VoreTracker tracker = PredNPC.GetStomachTracker(npc);
+			if (tracker is null)
+				goto ResetFrame;
+
+			PreyData candyFairy = null;
+			if (tracker.Prey.FirstOrDefault(x => x.Type == PreyType.NPC && x.ExactType == NPCID.HallowBoss) is PreyData sprinkles && sprinkles.WeightLeftToDigest > 5.0)
+				candyFairy = sprinkles;
+			if (tracker.PreyQueue.FirstOrDefault(x => x.Type == PreyType.NPC && x.ExactType == NPCID.HallowBoss) is PreyData sprinklesQueue && sprinklesQueue.WeightLeftToDigest > 5.0)
+				candyFairy = sprinklesQueue;
+			bool ateCandyFairy = tracker is not null;
+			ateCandyFairy &= candyFairy is not null;
+			if (ateCandyFairy)
 			{
 				npc.width = 110;
 				npc.height = 64;
@@ -128,7 +141,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 					npc.AsPartyGirl().SpecialGutFrame %= npc.AsPartyGirl().SpecialGutFrames;
 				}
 
-				if (!sprinkles.NoHealth)
+				if (!candyFairy.NoHealth)
 				{
 					for (int y = (int)Math.Round(npc.TrueCenter().Y) - 5; y < (int)Math.Round(npc.TrueCenter().Y); y++)
 					{
@@ -140,14 +153,13 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 				}
 				return false;
 			}
-			else
-			{
-				npc.width = 14;
-				npc.height = 40;
-				npc.AsPartyGirl().SpecialGutFrames = 0;
-				npc.AsPartyGirl().SpecialGutFrame = 0;
-				npc.AsPartyGirl().SpecialGutFrameCounter = 0;
-			}
+
+			ResetFrame:
+			npc.width = 14;
+			npc.height = 40;
+			npc.AsPartyGirl().SpecialGutFrames = 0;
+			npc.AsPartyGirl().SpecialGutFrame = 0;
+			npc.AsPartyGirl().SpecialGutFrameCounter = 0;
 
 			return true;
 		}
@@ -298,7 +310,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 			if (PredNPC.GetStomachTracker(npc) is null)
 				return 0;
 
-			PreyData sprinkles = PredNPC.GetStomachTracker(npc).Prey.FirstOrDefault(x => x.Type == PreyType.NPC && (x.Instance as NPC).type == NPCID.HallowBoss);
+			PreyData sprinkles = PredNPC.GetStomachTracker(npc).Prey.FirstOrDefault(x => x.Type == PreyType.NPC && x.ExactType == NPCID.HallowBoss);
 			if (sprinkles is null || sprinkles.WeightLeftToDigest < 5.0)
 				return 0;
 			else

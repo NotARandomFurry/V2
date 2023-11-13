@@ -323,7 +323,7 @@ namespace V2.NPCs
 
 		public static double GetCurrentTotalWeight(NPC npc)
 		{
-			double baseWeight = PreyData.GetInitialPreySize(npc);
+			double baseWeight = PreyData.GetPreySize(npc);
 			double bellyWeight = PredNPC.GetCurrentBellyWeight(npc);
 			return baseWeight + bellyWeight;
 		}

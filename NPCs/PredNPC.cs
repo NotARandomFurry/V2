@@ -203,7 +203,7 @@ namespace V2.NPCs
 
 			if (prey is Player preyPlayer)
 			{
-				if (PreyData.GetInitialPreySize(preyPlayer) >= pred.AsPred().MaxStomachCapacity - GetCurrentBellyWeight(pred))
+				if (PreyData.GetPreySize(preyPlayer) >= pred.AsPred().MaxStomachCapacity - GetCurrentBellyWeight(pred))
 					return false;
 
 				if (preyPlayer.CurrentCaptor() is not null)
@@ -223,7 +223,7 @@ namespace V2.NPCs
 				if (isThePreyAFuckingBoss && !isThePredAFuckingBoss)
 					return false;
 
-				if (PreyData.GetInitialPreySize(preyNPC) >= pred.AsPred().MaxStomachCapacity - GetCurrentBellyWeight(pred))
+				if (PreyData.GetPreySize(preyNPC) >= pred.AsPred().MaxStomachCapacity - GetCurrentBellyWeight(pred))
 					return false;
 
 				if (preyNPC.CurrentCaptor() is not null)
@@ -394,31 +394,41 @@ namespace V2.NPCs
 			}
 			foreach (PreyData prey in GetStomachTracker(pred).Prey)
 			{
-				prey.timeSpentInStomach++;
-
 				if (!prey.NoHealth)
 				{
 					switch (prey.Type)
 					{
 						case PreyType.Player:
 							Player preyPlayer = prey.Instance as Player;
+							if (preyPlayer is null || !preyPlayer.active || preyPlayer.dead)
+								continue;
+
 							preyPlayer.velocity = Vector2.Zero;
 							preyPlayer.position = pred.position;
 							break;
 						case PreyType.NPC:
 							NPC preyNPC = prey.Instance as NPC;
+							if (preyNPC is null || !preyNPC.active)
+								continue;
+
 							preyNPC.velocity = Vector2.Zero;
 							preyNPC.position = pred.position;
 							break;
 						case PreyType.Projectile:
 							Projectile preyProjectile = prey.Instance as Projectile;
-							if (preyProjectile.active)
-								preyProjectile.velocity = Vector2.Zero;
+							if (preyProjectile is null || !preyProjectile.active)
+								continue;
+
+							preyProjectile.velocity = Vector2.Zero;
 							preyProjectile.position = pred.position;
 							break;
 						case PreyType.Item:
 							Item preyItem = prey.Instance as Item;
-							preyItem.AsFood().UpdateInStomach?.Invoke(preyItem, pred, prey.NoHealth);
+							if (preyItem is null || !preyItem.active)
+								continue;
+
+							preyItem.velocity = Vector2.Zero;
+							preyItem.position = pred.position;
 							break;
 					}
 
@@ -442,7 +452,7 @@ namespace V2.NPCs
 					double digestionDamage = pred.AsPred().GetDigestionTickDamage.Invoke(pred, prey);
 					double digestionTickRate = pred.AsPred().GetDigestionTickRate.Invoke(pred, prey);
 					int digestionTickFrameRate = (int)Math.Round(60.0 / digestionTickRate);
-					if (prey.timeSpentInStomach % (int)digestionTickFrameRate == 0)
+					if (prey.timeSpentInStomach % digestionTickFrameRate == 0)
 					{
 						switch (prey.Type)
 						{
@@ -520,13 +530,6 @@ namespace V2.NPCs
 					{
 						pred.AsPred().ExtraWeight += digestedWeightPerTick * 0.4;
 						prey.WeightLeftToDigest -= digestedWeightPerTick;
-					}
-					switch (prey.Type)
-					{
-						case PreyType.Item:
-							Item item = prey.Instance as Item;
-							item.AsFood().FullyDigested = true;
-							break;
 					}
 				}
 			}

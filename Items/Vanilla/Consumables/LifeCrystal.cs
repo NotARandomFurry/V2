@@ -35,10 +35,10 @@ namespace V2.Items.Vanilla.Consumables
 			entity.AsFood().UpdateInStomach += UpdateInStomach;
 			entity.AsFood().OnBreak += OnBreak;
 
-			entity.AsFood().LeftClickEdible = true;
+			entity.AsFood().EdibleOnUse = true;
 		}
 
-		public static void UpdateInStomach(Item item, Entity pred, bool dead)
+		public static void UpdateInStomach(Entity prey, Entity pred, bool dead)
 		{
 			if (dead)
 				pred.AddStatus(BuffID.Regeneration, DigestedRegenTime);

@@ -118,25 +118,25 @@ namespace V2.UI
 			}
 			if (layers.FirstOrDefault(x => x.Name == "Vanilla: Cursor") is LegacyGameInterfaceLayer cursorLegacyLayer)
 			{
-				AddInterfaceLayer(layers, MouseRestrictionDummyLayer, MouseRestrictionDummy, layers.IndexOf(cursorLegacyLayer), true, "Voraria II: Mouse Restriction Dummy State");
+				AddInterfaceLayer(layers, MouseRestrictionDummyLayer, MouseRestrictionDummy, layers.IndexOf(cursorLegacyLayer), "Voraria II: Mouse Restriction Dummy State");
 			}
 
 			int OverriddenHairWindowIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Hair Window (Voraria II Override)"));
 			if (OverriddenHairWindowIndex != -1)
 			{
-				AddInterfaceLayer(layers, StomachCapacityBarInterfaceLayer, StomachCapacityBarInterface, OverriddenHairWindowIndex, true, "Stomach Capacity Meter");
-				AddInterfaceLayer(layers, StomachacheMeterInterfaceLayer, StomachacheMeterInterface, OverriddenHairWindowIndex + 1, true, "Stomachache Meter");
-				AddInterfaceLayer(layers, PlayerPredStruggleInterfaceLayer, PlayerPredStruggleInterface, OverriddenHairWindowIndex + 2, true, "Player Pred Struggles");
-				AddInterfaceLayer(layers, PlayerPreyStruggleInterfaceLayer, PlayerPreyStruggleInterface, OverriddenHairWindowIndex + 3, true, "Player Prey Struggles");
-				AddInterfaceLayer(layers, PredStatsMenuInterfaceLayer, PredStatsMenuInterface, OverriddenHairWindowIndex + 4, true, "Pred Stats Menu");
-				AddInterfaceLayer(layers, PredStatsMenuMouthInterfaceLayer, PredStatsMenuMouthInterface, OverriddenHairWindowIndex + 5, true, "Pred Stats Menu's Hungry Mouth");
+				AddInterfaceLayer(layers, StomachCapacityBarInterfaceLayer, StomachCapacityBarInterface, OverriddenHairWindowIndex, "Stomach Capacity Meter");
+				AddInterfaceLayer(layers, StomachacheMeterInterfaceLayer, StomachacheMeterInterface, OverriddenHairWindowIndex + 1, "Stomachache Meter");
+				AddInterfaceLayer(layers, PlayerPredStruggleInterfaceLayer, PlayerPredStruggleInterface, OverriddenHairWindowIndex + 2, "Player Pred Struggles");
+				AddInterfaceLayer(layers, PlayerPreyStruggleInterfaceLayer, PlayerPreyStruggleInterface, OverriddenHairWindowIndex + 3, "Player Prey Struggles");
+				AddInterfaceLayer(layers, PredStatsMenuInterfaceLayer, PredStatsMenuInterface, OverriddenHairWindowIndex + 4, "Pred Stats Menu");
+				AddInterfaceLayer(layers, PredStatsMenuMouthInterfaceLayer, PredStatsMenuMouthInterface, OverriddenHairWindowIndex + 5, "Pred Stats Menu's Hungry Mouth");
 			}
 			int MouseTextIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Mouse Text"));
 			if (MouseTextIndex != -1)
-				AddInterfaceLayer(layers, HeldItemInterfaceLayer, HeldItemInterface, MouseTextIndex, true, "Held Item");
+				AddInterfaceLayer(layers, HeldItemInterfaceLayer, HeldItemInterface, MouseTextIndex, "Held Item");
 		}
 
-		public static void AddInterfaceLayer(List<GameInterfaceLayer> layers, UserInterface userInterface, UIState state, int index, bool visible, string customName = null)
+		public static void AddInterfaceLayer(List<GameInterfaceLayer> layers, UserInterface userInterface, UIState state, int index, string customName = null)
 		{
 			string name;
 			if (customName == null)
@@ -147,11 +147,8 @@ namespace V2.UI
 			layers.Insert(index, new LegacyGameInterfaceLayer("Voraria II: " + name,
 				delegate
 				{
-					if (visible)
-					{
-						userInterface.Update(Main._drawInterfaceGameTime);
-						state.Draw(Main.spriteBatch);
-					}
+					userInterface.Update(Main._drawInterfaceGameTime);
+					state.Draw(Main.spriteBatch);
 					return true;
 				}, InterfaceScaleType.UI
 			));

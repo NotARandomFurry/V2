@@ -106,6 +106,8 @@ namespace V2.PlayerHandling
 			{
 				double baseSwallowSize = BaseSwallowSize;
 				baseSwallowSize += SwallowSizePerLevel * GLP.Total;
+				if (ModContent.GetInstance<V2ServerConfig>().Glutton)
+					baseSwallowSize *= 120.0;
 				return SwallowSizeModifier.ApplyTo((float)baseSwallowSize);
 			}
 		}
@@ -181,6 +183,8 @@ namespace V2.PlayerHandling
 			{
 				double baseStomachCapacity = BaseStomachCapacity;
 				baseStomachCapacity += StomachCapacityPerLevel * TUM.Total;
+				if (ModContent.GetInstance<V2ServerConfig>().Glutton)
+					baseStomachCapacity *= 120.0;
 				return StomachCapacityModifier.ApplyTo((float)baseStomachCapacity);
 			}
 		}
@@ -193,6 +197,8 @@ namespace V2.PlayerHandling
 			{
 				double baseStomachacheMeterCapacity = BaseStomachacheMeterCapacity;
 				baseStomachacheMeterCapacity += StomachacheMeterCapacityPer5Levels * Math.Floor(TUM.Total / 5.0);
+				if (ModContent.GetInstance<V2ServerConfig>().Glutton)
+					baseStomachacheMeterCapacity *= 80.0;
 				return StomachacheMeterCapacityModifier.ApplyTo((float)baseStomachacheMeterCapacity);
 			}
 		}
@@ -209,8 +215,8 @@ namespace V2.PlayerHandling
 		/// </summary>
 		public int AcidTier { get; set; }
 		public StatModifier DigestionTickDamageModifier;
-		public static double BaseDigestionTickDamage => 6.0;
-		public static double DigestionTickDamagePerLevel => 0.75;
+		public static double BaseDigestionTickDamage => 12.0;
+		public static double DigestionTickDamagePerLevel => 1.5;
 		public double DigestionTickDamage
 		{
 			get
@@ -242,6 +248,8 @@ namespace V2.PlayerHandling
 			{
 				double basePreyAbsorptionRate = BasePreyAbsorptionRate;
 				basePreyAbsorptionRate += PreyAbsorptionRatePerLevel * ABS.Total;
+				if (ModContent.GetInstance<V2ServerConfig>().Glutton)
+					basePreyAbsorptionRate *= 60.0;
 				return PreyAbsorptionRateModifier.ApplyTo((float)basePreyAbsorptionRate);
 			}
 		}
@@ -578,7 +586,7 @@ namespace V2.PlayerHandling
 		{
 			if (inventory.Length == 59)
 			{
-				if (V2.ItemGulpHotkey.Current && V2.SwallowHotkey.JustPressed && Player.whoAmI == Main.myPlayer)
+				if (V2.ItemGulpHotkey.JustPressed && Player.whoAmI == Main.myPlayer)
 				{
 					int origStack = inventory[slot].stack;
 					inventory[slot].stack = 1;
@@ -600,6 +608,8 @@ namespace V2.PlayerHandling
 						}
 						ModContent.GetInstance<FirstItemEaten>().TrySetCompletion(Player);
 					}
+					else
+						inventory[slot] .stack = origStack;
 				}
 			}
 			return false;
@@ -665,7 +675,7 @@ namespace V2.PlayerHandling
 			if (Main.netMode != NetmodeID.Server && Player.whoAmI == Main.myPlayer && !Player.AsPred().BlockSwallowAttempts)
 			{
 				#region Swallowing nearby prey
-				if (V2.SwallowHotkey.JustPressed && !(Main.playerInventory && V2.ItemGulpHotkey.Current))
+				if (V2.SwallowHotkey.JustPressed)
 				{
 					string mealType = "none";
 					int mealIndex = -1;
@@ -756,7 +766,7 @@ namespace V2.PlayerHandling
 						};
 
 						PreyData newDrink = new PreyData(tile.LiquidType, liquidToDrink);
-						if (Player.AsPred().StomachTracker is not null && Player.AsPred().StomachTracker.Prey.FirstOrDefault(x => x.Type == PreyType.Liquid && x.ExactType == Player.AsPred().lastLiquidDrank) is PreyData existingDrink)
+						if (Player.AsPred().StomachTracker is not null && Player.AsPred().StomachTracker.Prey.FirstOrDefault(x => x.Type == PreyType.Liquid && x.ExactType == tile.LiquidType) is PreyData existingDrink)
 							existingDrink.WeightLeftToDigest += newDrink.WeightLeftToDigest;
 						else
 							AddNewPrey(Player, newDrink);
@@ -921,10 +931,10 @@ namespace V2.PlayerHandling
 					return false;
 			}
 
-			if (PreyData.GetInitialPreySize(prey) > pred.AsPred().SwallowSize)
+			if (PreyData.GetPreySize(prey) > pred.AsPred().SwallowSize)
 				return false;
 
-			if (PreyData.GetInitialPreySize(prey) > pred.AsPred().StomachCapacity - pred.AsPred().StomachFullness)
+			if (PreyData.GetPreySize(prey) > pred.AsPred().StomachCapacity - pred.AsPred().StomachFullness)
 				return false;
 
 			return true;
@@ -1087,10 +1097,9 @@ namespace V2.PlayerHandling
 				pred.AsPred().StomachTracker.RefreshStruggleChartList();
 				return;
 			}
+
 			foreach (PreyData prey in pred.AsPred().StomachTracker.Prey)
 			{
-				prey.timeSpentInStomach++;
-
 				if (!prey.NoHealth)
 				{
 					switch (prey.Type)
@@ -1118,6 +1127,9 @@ namespace V2.PlayerHandling
 					}
 					double digestionDamage = pred.AsPred().DigestionTickDamage;
 					double digestionRate = pred.AsPred().DigestionTickRate;
+					if (digestionRate <= 0.0)
+						digestionRate = 1.0;
+
 					int digestionFrameRate = (int)Math.Round(60.0 / digestionRate);
 					if (prey.timeSpentInStomach % digestionFrameRate == 0)
 					{
@@ -1198,25 +1210,20 @@ namespace V2.PlayerHandling
 
 					switch (prey.Type)
 					{
-						case PreyType.Item:
-							Item preyItem = prey.Instance as Item;
-							if (!preyItem.IsAir && prey.WeightLeftToDigest == 0)
-								preyItem.AsFood().FullyDigested = true;
-							break;
 						case PreyType.Liquid:
 							switch (prey.ExactType)
 							{
-								case "Water":
+								case LiquidID.Water:
 									break;
-								case "Lava":
+								case LiquidID.Lava:
 									if (!pred.AsPred().CanDrinkLavaSafe)
 									{
 										pred.AddBuff(ModContent.BuffType<MoltenStomach>(), 3);
 									}
 									break;
-								case "Honey":
+								case LiquidID.Honey:
 									break;
-								case "Shimmer":
+								case LiquidID.Shimmer:
 									if (!pred.AsPred().CanDrinkShimmerSafe)
 									{
 										if (!pred.AsPred().PrimedForShimmerStomachDeath)

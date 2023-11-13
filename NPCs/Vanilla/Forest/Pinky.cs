@@ -119,7 +119,7 @@ namespace V2.NPCs.Vanilla.Forest
 	{
 		public override void PreUpdateBuffs()
 		{
-			if (Player.AsPred().StomachTracker?.Prey.FirstOrDefault(x => x.Type == PreyType.NPC && x.ExactType == "Pinky") is PreyData pinkyPrey)
+			if (Player.AsPred().StomachTracker?.Prey.FirstOrDefault(x => x.Type == PreyType.NPC && x.ExactType == NPCID.Pinky) is PreyData pinkyPrey)
 			{
 				Player.AddStatus(BuffID.Sunflower, Pinky.EatenHappyLength);
 				if (pinkyPrey.NoHealth)
@@ -134,7 +134,7 @@ namespace V2.NPCs.Vanilla.Forest
 
 		public override void ResetEffects(NPC npc)
 		{
-			if (PredNPC.GetStomachTracker(npc)?.Prey.FirstOrDefault(x => x.Type == PreyType.NPC && x.ExactType == "Pinky") is PreyData pinkyPrey)
+			if (PredNPC.GetStomachTracker(npc)?.Prey.FirstOrDefault(x => x.Type == PreyType.NPC && x.ExactType == NPCID.Pinky) is PreyData pinkyPrey)
 			{
 				npc.AddStatus(BuffID.Sunflower, Pinky.EatenHappyLength);
 				if (pinkyPrey.NoHealth)

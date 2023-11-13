@@ -111,7 +111,7 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
 		{
 			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
-				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.TheUnderworld,
+				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Ocean,
 				new FlavorTextBestiaryInfoElement("Mods.V2.Bestiary.TownNPCs.Succubus"),
 			});
 		}

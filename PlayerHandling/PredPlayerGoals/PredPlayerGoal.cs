@@ -58,6 +58,15 @@ namespace V2.PlayerHandling.PredPlayerGoals
 		public abstract string Description(Player pred);
 
 		/// <summary>
+		/// Whether or not this goal has a "clear description" which can be seen by holding LEFT SHIFT.<br/>
+		/// Useful for goals with really specific requirements (Lady.<br/>
+		/// </summary>
+		/// <param name="pred">
+		/// The predatory player that has the player pred goals menu open.<br/>
+		/// </param>
+		public virtual bool HasClearDescription(Player pred) => false;
+
+		/// <summary>
 		/// The number of stat points granted by the completion of this pred goal.<br/>
 		/// </summary>
 		public abstract int StatPointsFromCompletion { get; }
@@ -69,6 +78,7 @@ namespace V2.PlayerHandling.PredPlayerGoals
 
 		/// <summary>
 		/// Whether or not this goal should be visible in the player pred goals menu to the given player at all.<br/>
+		/// Does not prevent completion. Can be used to create "hidden" goals that show once complete.<br/>
 		/// </summary>
 		/// <param name="pred">
 		/// The predatory player to check this goal's availability for.<br/>
