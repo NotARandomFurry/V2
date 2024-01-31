@@ -52,37 +52,43 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 
 		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.type == NPCID.HallowBoss;
 
-		public override void SetDefaults(NPC entity)
+		public override void SetDefaults(NPC npc)
 		{
-			entity.AsV2NPC().Gender = EntityGender.Female;
+			npc.AsV2NPC().Gender = EntityGender.Female;
 
-			entity.AsFood().Size = 41.4;
-			entity.AsPred().MaxStomachCapacity = 200.0;
-			entity.AsPred().BaseStomachacheMeterCapacity = 5000.0;
+			npc.AsFood().Size = 41.4;
+			npc.AsPred().MaxStomachCapacity = 200.0;
+			npc.AsPred().BaseStomachacheMeterCapacity = 5000.0;
 
-			entity.AsPred().CanBeForceFed = CanUnreasonablyThickFairyBeForceFed;
-			entity.AsPred().MaxSwallowRange = V2Utils.TileCountAsPixelCount(12.5);
-			entity.AsPred().SmallGulpThreshold = 3.75;
+			npc.AsV2NPC().NewAIMethod = V2UnreasonablyThickFairyAI;
+			npc.AsFood().SpecialPreyAI = UnreasonablyThickFairyPreyAI;
 
-			entity.AsPred().DigestionType = EntityDigestionType.Acidic;
-			entity.AsPred().GetDigestionTickDamage = GetDigestionTickDamage;
-			entity.AsPred().GetDigestionTickRate = GetDigestionTickRate;
+			npc.AsPred().SmallGulps = Gulps.Short;
+			npc.AsPred().SmallGulpThreshold = 3.75;
+			npc.AsPred().BigGulps = Gulps.Standard;
+			npc.AsPred().CanBeForceFed = CanUnreasonablyThickFairyBeForceFed;
+			npc.AsPred().MaxSwallowRange = V2Utils.TileCountAsPixelCount(12.5);
 
-			entity.AsPred().SmallBurps = Burps.Humanoid.Small;
-			entity.AsPred().StandardBurps = Burps.Humanoid.Standard;
-			entity.AsPred().GetAdditionalDigestedPlayerMessages = GetDigestedPlayerAdditionalDeathMessages;
-			entity.AsPred().GetPreyAbsorptionRate = GetPreyAbsorptionRate;
+			npc.AsPred().DigestionType = EntityDigestionType.Acidic;
+			npc.AsPred().GetDigestionTickDamage = GetDigestionTickDamage;
+			npc.AsPred().GetDigestionTickRate = GetDigestionTickRate;
 
-			entity.AsPred().GetVisualBellySize = GetVisualBellySize;
-			entity.AsPred().GetVisualWeightStage = GetVisualWeightStage;
+			npc.AsPred().OnDigestionKill = OnDigestionKill;
+			npc.AsPred().SmallBurps = Burps.Humanoid.Small;
+			npc.AsPred().SmallBurpThreshold = 3.75;
+			npc.AsPred().StandardBurps = Burps.Humanoid.Standard;
+			npc.AsPred().GetAdditionalDigestedPlayerMessages = GetDigestedPlayerAdditionalDeathMessages;
 
-			entity.AsPred().SpecialPredAI = UnreasonablyThickFairyPredAI;
-			entity.AsFood().SpecialPreyAI = UnreasonablyThickFairyPreyAI;
+			npc.AsPred().GetPreyAbsorptionRate = GetPreyAbsorptionRate;
 
-			entity.AsFood().OnKilledByDigestion += PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
-			entity.AsFood().DigestedDeathSound = CandyFairyStuff.MuffledCandyFairyDeathScreech;
+			npc.AsPred().GetVisualBellySize = GetVisualBellySize;
+			npc.AsPred().GetVisualWeightStage = GetVisualWeightStage;
 
-			entity.AsCandyFairy().MuffledScreechDelay = 0;
+			npc.AsFood().OnKilledByDigestion = PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
+			npc.AsFood().OnKilledByDigestion += PreyNPC.HandlePreyItemTheft;
+			npc.AsFood().DigestedDeathSound = CandyFairyStuff.MuffledCandyFairyDeathScreech;
+
+			npc.AsCandyFairy().MuffledScreechDelay = 0;
 		}
 
 		public override void PostAI(NPC npc)
@@ -92,6 +98,11 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 		}
 
 		public static bool CanUnreasonablyThickFairyBeForceFed(NPC npc) => true;
+
+		public static void OnUnreasonablyThickFairyForceFed(NPC npc, Player player)
+		{
+
+		}
 
 		public static void GetDigestedPlayerAdditionalDeathMessages(NPC npc, Player player, List<string> deathReasonKeyList)
 		{
@@ -110,6 +121,7 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 			}
 		}
 
+		public static double GetDigestionTickDamage(NPC npc, PreyData prey) => Main.dayTime ? 1000.0 : 120.0;
 		public static double GetDigestionTickRate(NPC npc, PreyData prey)
 		{
 			if (npc.AI_120_HallowBoss_IsGenuinelyEnraged())
@@ -129,14 +141,10 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 					return 3.0;
 			}
 		}
-		public static double GetDigestionTickDamage(NPC npc, PreyData prey) => Main.dayTime ? 1000.0 : 120.0;
 
 		public static void OnDigestionKill(NPC npc, PreyData digestedPrey)
 		{
-			SoundEngine.PlaySound(
-				digestedPrey.WeightLeftToDigest < npc.AsPred().SmallGulpThreshold ? npc.AsPred().SmallBurps : npc.AsPred().StandardBurps,
-				npc.TrueCenter() + new Vector2(0f, -50f)
-			);
+			
 		}
 
 		public static double GetPreyAbsorptionRate(NPC npc)
@@ -186,7 +194,7 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 			TextureAssets.Npc[NPCID.HallowBoss] = ModContent.Request<Texture2D>("Terraria/Images/NPC_" + NPCID.HallowBoss, AssetRequestMode.ImmediateLoad);
 		}
 
-		public static bool UnreasonablyThickFairyPredAI(NPC npc)
+		public static bool V2UnreasonablyThickFairyAI(NPC npc)
 		{
 			if (npc.target == -1 || !Main.player[npc.target].IsFoodFor(npc, out bool pastTense) || pastTense)
 				return true;

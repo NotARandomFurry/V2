@@ -19,7 +19,8 @@ namespace V2.NPCs.Vanilla.TownNPCs.Zoologist
 		{
 			npc.AsV2NPC().Gender = EntityGender.Female;
 
-			npc.AsFood().OnKilledByDigestion += PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
+			npc.AsFood().OnKilledByDigestion = PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
+			npc.AsFood().OnKilledByDigestion += PreyNPC.HandlePreyItemTheft;
 		}
 	}
 }

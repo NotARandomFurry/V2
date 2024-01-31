@@ -12,8 +12,8 @@ namespace V2.PlayerHandling.PredPlayerGoals.Amateur
 	public class EatHarpy : PredPlayerGoal
 	{
 		public override string InternalName => "EatHarpy";
-		public override string DisplayName(Player pred) => Language.GetTextValue("Mods.V2.PredPlayerGoals.Amateur.EatHarpy.Name");
-		public override string Description(Player pred) => Language.GetTextValue("Mods.V2.PredPlayerGoals.Amateur.EatHarpy.Description");
+		public override string DisplayName(Player pred) => "Mods.V2.PredPlayerGoals.Amateur.EatHarpy.Name";
+		public override string Description(Player pred) => "Mods.V2.PredPlayerGoals.Amateur.EatHarpy.Description";
 
 		public override int StatPointsFromCompletion => 3;
 

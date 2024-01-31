@@ -1,10 +1,13 @@
-﻿using Microsoft.Xna.Framework.Input;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -15,8 +18,8 @@ namespace V2.Items.Voraria.Charms
 {
 	public class CharmLessStomachWeight : ModItem
 	{
-		public static double MaxWeightReduction => 0.20;
-		public static double FullnessEffectivenessLossThreshold => 0.75;
+		public static double MaxWeightReduction => 0.40;
+		public static double FullnessEffectivenessLossThreshold => 0.70;
 		public static double WeightReductionEffectiveness(Player player)
 		{
 			double stomachCapacityPercent = player.AsPred().StomachFullness / player.AsPred().StomachCapacity;
@@ -25,6 +28,13 @@ namespace V2.Items.Voraria.Charms
 
 		public override LocalizedText DisplayName => Language.GetText("Mods.V2.ItemName.Voraria.Charms.LessStomachWeight");
 		public override LocalizedText Tooltip => Language.GetText("Mods.V2.ItemTooltip.Voraria.Charms.LessStomachWeight.Short");
+
+		public override void SetStaticDefaults()
+		{
+			DrawAnimationVertical anim = new DrawAnimationVertical(9, 10);
+			Main.RegisterItemAnimation(Type, anim);
+			ItemID.Sets.AnimatesAsSoul[Type] = true;
+		}
 
 		public override void SetDefaults()
 		{
@@ -37,7 +47,8 @@ namespace V2.Items.Voraria.Charms
 			Item.height = 30;
 			Item.rare = ItemRarityID.Blue;
 			Item.value = Item.buyPrice(
-				gold: 5
+				gold: 16,
+				silver: 20
 			);
 		}
 

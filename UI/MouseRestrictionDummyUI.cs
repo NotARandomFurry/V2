@@ -43,13 +43,13 @@ namespace V2.UI
 					int mouseX = state.X;
 					int mouseY = state.Y;
 					if (Main.MouseScreen.X <= backdropRect.Left)
-						mouseX = backdropRect.Left;
+						mouseX = (int)((float)backdropRect.Left * Main.UIScale);
 					if (Main.MouseScreen.X >= backdropRect.Right)
-						mouseX = backdropRect.Right;
+						mouseX = (int)((float)backdropRect.Right * Main.UIScale);
 					if (Main.MouseScreen.Y <= backdropRect.Top)
-						mouseY = backdropRect.Top;
+						mouseY = (int)((float)backdropRect.Top * Main.UIScale);
 					if (Main.MouseScreen.Y >= backdropRect.Bottom)
-						mouseY = backdropRect.Bottom;
+						mouseY = (int)((float)backdropRect.Bottom * Main.UIScale);
 					Mouse.SetPosition(mouseX, mouseY);
 				}
 			}

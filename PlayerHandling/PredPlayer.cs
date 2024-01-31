@@ -213,7 +213,18 @@ namespace V2.PlayerHandling
 		/// 99 - Divine<br/>
 		/// 100 - Chronological<br/>
 		/// </summary>
-		public int AcidTier { get; set; }
+		public int AcidTier
+		{
+			get {
+				if (PermanentUpgradesUsed.ContainsKey("AcidTier2") && PermanentUpgradesUsed["AcidTier2"])
+					return 2;
+
+				if (PermanentUpgradesUsed.ContainsKey("AcidTier1") && PermanentUpgradesUsed["AcidTier1"])
+					return 1;
+
+				return 0;
+			}
+		}
 		public StatModifier DigestionTickDamageModifier;
 		public static double BaseDigestionTickDamage => 12.0;
 		public static double DigestionTickDamagePerLevel => 1.5;
@@ -294,9 +305,16 @@ namespace V2.PlayerHandling
 			}
 		}
 
+		// Charms.
+		/// <summary>
+		/// Denotes whether or not this player has the Indigestion Charm equipped.<br/>
+		/// Defaults to <see langword="false"/> at the start of each tick. Set to <see langword="true"/> if the player has the Indigestion Charm equipped.<br/>
+		/// </summary>
 		public bool charmNoDigest;
 		public bool charmNoAirDrain;
+		public bool charmStealPreyLoot;
 
+		public Dictionary<string, bool> PermanentUpgradesUsed { get; set; }
 		public bool endoToggleUnlocked;
 		public bool endoToggle;
 		public bool SafeStomach => (charmNoDigest && charmNoAirDrain) || endoToggle;
@@ -514,6 +532,19 @@ namespace V2.PlayerHandling
 			}
 		}
 
+		public double PercentBellySizeModifier { get; set; }
+		public int FlatBellySizeModifier { get; set; }
+		public int StomachSize
+		{
+			get
+			{
+				int tummySize = (int)Math.Floor(5.0 * Math.Sqrt(StomachFullness));
+				tummySize = (int)Math.Round((double)tummySize * PercentBellySizeModifier);
+				tummySize += FlatBellySizeModifier;
+				return Math.Min(tummySize, 7);
+			}
+		}
+
 		public override void Initialize()
 		{
 			SmallBurps = Burps.Humanoid.Small;
@@ -527,7 +558,11 @@ namespace V2.PlayerHandling
 			TUM = new PredStat();
 			ABS = new PredStat();
 
-			AcidTier = 0;
+			Stomachache = 0;
+
+			charmNoDigest = false;
+			charmNoAirDrain = false;
+			charmStealPreyLoot = false;
 
 			endoToggleUnlocked = false;
 			endoToggle = false;
@@ -541,6 +576,14 @@ namespace V2.PlayerHandling
 			drinkCount = new Dictionary<string, int>();
 
 			PrimedForShimmerStomachDeath = false;
+
+			PercentBellySizeModifier = 1.0;
+			FlatBellySizeModifier = 0;
+
+			PermanentUpgradesUsed = new Dictionary<string, bool>();
+			PermanentUpgradesUsed.Add("PureSwallow1", false);
+			PermanentUpgradesUsed.Add("AcidTier1", false);
+			PermanentUpgradesUsed.Add("AcidTier2", false);
 
 			GoalsCompleted = new Dictionary<string, bool>();
 			foreach (PredPlayerGoal goal in PredPlayerGoalLoader.PredPlayerGoals)
@@ -557,6 +600,10 @@ namespace V2.PlayerHandling
 		public override void ResetEffects()
 		{
 			SyncRequired_PredPoints = false;
+
+			charmNoDigest = false;
+			charmNoAirDrain = false;
+			charmStealPreyLoot = false;
 
 			GLP.Base = 0;
 			GLP.Extra = 0;
@@ -580,6 +627,9 @@ namespace V2.PlayerHandling
 			DebuffDisextensionTimeModifier = StatModifier.Default;
 
 			StomachWeightModifier = StatModifier.Default;
+
+			PercentBellySizeModifier = 1.0;
+			FlatBellySizeModifier = 0;
 		}
 
 		public override bool HoverSlot(Item[] inventory, int context, int slot)
@@ -850,7 +900,7 @@ namespace V2.PlayerHandling
 							_ => throw new NotImplementedException(),
 						};
 						realPrey.position = Player.TrueCenter() + new Vector2(Player.direction * 8f, -14f);
-						realPrey.velocity = new Vector2(Player.direction * 12.5f, -2.5f);
+						realPrey.velocity = new Vector2(Player.direction * 10f, -2.5f);
 						if (realPrey is NPC realPreyNPC)
 						{
 							realPreyNPC.AsFood().EatenSafetyFrames = 20;
@@ -1267,7 +1317,7 @@ namespace V2.PlayerHandling
 				if (!stomachNoisesPlaying)
 				{
 					pred.AsPred().ActiveStomachNoises = SoundEngine.PlaySound(
-						StomachNoises.Muffled with { Volume = 0.25f + (0.15f * GetVisualBellySize(pred)) },
+						StomachNoises.Muffled with { Volume = 0.25f + (0.15f * pred.AsPred().StomachSize) },
 						pred.TrueCenter()
 					);
 					SoundEngine.TryGetActiveSound(pred.AsPred().ActiveStomachNoises, out stomachNoises);
@@ -1278,7 +1328,7 @@ namespace V2.PlayerHandling
 
 				stomachNoises.Position = pred.TrueCenter();
 				stomachNoises.Volume = 0.25f;
-				stomachNoises.Volume += 0.15f * GetVisualBellySize(pred);
+				stomachNoises.Volume += 0.15f * pred.AsPred().StomachSize;
 			}
 		}
 
@@ -1406,6 +1456,7 @@ namespace V2.PlayerHandling
 		public override void UpdateDead()
 		{
 			Player.AsPred().PrimedForShimmerStomachDeath = false;
+			Player.AsPred().Stomachache = 0;
 		}
 
 		public override void OnRespawn()
@@ -1461,7 +1512,10 @@ namespace V2.PlayerHandling
 			tag.Add("TUMSpent", TUM.Spent);
 			tag.Add("ACISpent", ACI.Spent);
 			tag.Add("ABSSpent", ABS.Spent);
-			tag.Add("AcidTier", AcidTier);
+			foreach (KeyValuePair<string, bool> keyValuePair in Player.AsPred().PermanentUpgradesUsed)
+			{
+				tag.Add("[PERM UPGRADES] " + keyValuePair.Key, keyValuePair.Value);
+			}
 			foreach (KeyValuePair<string, int> keyValuePair in Player.AsPred().mealCount)
 			{
 				tag.Add("[DIGESTED] " + keyValuePair.Key, keyValuePair.Value);
@@ -1482,12 +1536,19 @@ namespace V2.PlayerHandling
 			TUM.Spent = tag.GetInt("TUMSpent");
 			ACI.Spent = tag.GetInt("ACISpent");
 			ABS.Spent = tag.GetInt("ABSSpent");
-			AcidTier = tag.GetInt("AcidTier");
+			PermanentUpgradesUsed = new Dictionary<string, bool>();
 			mealCount = new Dictionary<string, int>();
 			drinkCount = new Dictionary<string, int>();
 			GoalsCompleted = new Dictionary<string, bool>();
 			foreach (KeyValuePair<string, object> keyValuePair in tag)
 			{
+				if (keyValuePair.Key.StartsWith("[PERM UPGRADES] "))
+				{
+					string realKey = keyValuePair.Key.Remove(0, 16);
+					bool permUpgradeUsed = tag.GetBool(keyValuePair.Key);
+					PermanentUpgradesUsed.Add(realKey, permUpgradeUsed);
+					continue;
+				}
 				if (keyValuePair.Key.StartsWith("[DIGESTED] "))
 				{
 					string realKey = keyValuePair.Key.Remove(0, 11);
@@ -1511,14 +1572,6 @@ namespace V2.PlayerHandling
 				}
 			}
 		}
-
-		public static int GetVisualBellySize(Player player)
-		{
-			return Math.Min(
-				(int)Math.Floor(5.0 * Math.Sqrt(player.AsPred().StomachFullness)),
-				7
-			);
-		}
 	}
 
 	public class VoreTum : PlayerDrawLayer
@@ -1528,7 +1581,7 @@ namespace V2.PlayerHandling
 		protected override void Draw(ref PlayerDrawSet drawInfo)
 		{
 			Player player = drawInfo.drawPlayer;
-			int tumSize = PredPlayer.GetVisualBellySize(player);
+			int tumSize = player.AsPred().StomachSize;
 
 			void DrawHungryPlayerTummy(ref PlayerDrawSet drawInfo, int size, int offsetX = 0, int offsetY = 0)
 			{
@@ -1577,31 +1630,62 @@ namespace V2.PlayerHandling
 
 			switch (tumSize)
 			{
-				case 0:
 				default:
-					//default:
 					// do absolutely nothing lol
 					break;
 				case 1:
-					DrawHungryPlayerTummy(ref drawInfo, 1, 0, 6);
+					DrawHungryPlayerTummy(
+						ref drawInfo,
+						1,
+						player.IsAirborne() ? 0 : 0,
+						player.IsAirborne() ? 6 : 6
+					);
 					break;
 				case 2:
-					DrawHungryPlayerTummy(ref drawInfo, 2, -2, 6);
+					DrawHungryPlayerTummy(
+						ref drawInfo,
+						2,
+						player.IsAirborne() ? -2 : -2,
+						player.IsAirborne() ? 6 : 6
+					);
 					break;
 				case 3:
-					DrawHungryPlayerTummy(ref drawInfo, 3, player.IsAirborne() ? -4 : -2, 6);
+					DrawHungryPlayerTummy(
+						ref drawInfo,
+						3,
+						player.IsAirborne() ? -4 : -2,
+						player.IsAirborne() ? 2 : 2
+					);
 					break;
 				case 4:
-					DrawHungryPlayerTummy(ref drawInfo, 4, -4, 2);
+					DrawHungryPlayerTummy(
+						ref drawInfo,
+						4,
+						player.IsAirborne() ? -4 : -2,
+						player.IsAirborne() ? 4 : 4
+					);
 					break;
 				case 5:
-					DrawHungryPlayerTummy(ref drawInfo, 5, -4, 0);
+					DrawHungryPlayerTummy(
+						ref drawInfo,
+						5,
+						player.IsAirborne() ? -4 : -4,
+						player.IsAirborne() ? 2 : 2
+					);
 					break;
 				case 6:
-					DrawHungryPlayerTummy(ref drawInfo, 6, -4, -2);
+					DrawHungryPlayerTummy(
+						ref drawInfo,
+						6,
+						player.IsAirborne() ? -2 : -2,
+						player.IsAirborne() ? 4 : -2);
 					break;
 				case 7:
-					DrawHungryPlayerTummy(ref drawInfo, 7, -6, -4);
+					DrawHungryPlayerTummy(
+						ref drawInfo,
+						7,
+						player.IsAirborne() ? -4 : -2,
+						player.IsAirborne() ? 0 : -4);
 					break;
 			}
 		}

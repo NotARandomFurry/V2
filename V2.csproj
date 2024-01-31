@@ -12,7 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="BetterDialogue">
-      <HintPath>..\..\..\tModLoader-preview\ModReader\BetterDialogue\BetterDialogue.dll</HintPath>
+      <HintPath>..\BetterDialogue\bin\Debug\net6.0\BetterDialogue.dll</HintPath>
     </Reference>
   </ItemGroup>
 </Project>

@@ -16,6 +16,8 @@ namespace BetterDialogue.UI.DefaultDialogueStyles
 
 		public override string Description => "A special sort of style, reserved for only the treasured inhabitants of the Divine Realm.";
 
+		public override bool CanBeSelected() => false;
+
 		public override Texture2D DialogueBoxTileSheet => ModContent.Request<Texture2D>("V2/UI/DialogueStyles/Divine_MainBox", AssetRequestMode.ImmediateLoad).Value;
 	}
 }

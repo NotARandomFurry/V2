@@ -82,7 +82,7 @@ namespace V2.UI.StomachacheMeter
 				Main.screenHeight / 2
 			);
 			topLeftCorner.X -= 14 + (_stomachacheSegments * (_stomachachePanelMiddle.Value.Width / 2));
-			topLeftCorner.Y -= 40;
+			topLeftCorner.Y -= 40 * Main.GameZoomTarget;
 			topLeftCorner += Main.LocalPlayer.Center - (Main.screenPosition + new Vector2(Main.screenWidth / 2, Main.screenHeight / 2));
 
 			for (int i = 0; i < _stomachacheSegments; i++)

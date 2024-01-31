@@ -14,7 +14,7 @@ namespace V2.Core
 		
 		public static double GetBellySize(this Entity entity) {
 			if (entity is Player player)
-				return PredPlayer.GetVisualBellySize(player);
+				return player.AsPred().StomachSize;
 
 			if (entity is NPC npc)
 				return npc.AsPred().GetVisualBellySize.Invoke(npc);
@@ -114,6 +114,7 @@ namespace V2.Core
 					"TUM" => player.AsPred().TUM.Total,
 					"ACI" => player.AsPred().ACI.Total,
 					"ABS" => player.AsPred().ABS.Total,
+					_ => 0,
 				};
 			}
 			else if (entity is NPC npc)

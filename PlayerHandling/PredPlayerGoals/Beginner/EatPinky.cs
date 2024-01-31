@@ -12,8 +12,8 @@ namespace V2.PlayerHandling.PredPlayerGoals.Beginner
 	public class EatPinky : PredPlayerGoal
 	{
 		public override string InternalName => "EatPinky";
-		public override string DisplayName(Player pred) => Language.GetTextValue("Mods.V2.PredPlayerGoals.Beginner.EatPinky.Name");
-		public override string Description(Player pred) => Language.GetTextValue("Mods.V2.PredPlayerGoals.Beginner.EatPinky.Description");
+		public override string DisplayName(Player pred) => "Mods.V2.PredPlayerGoals.Beginner.EatPinky.Name";
+		public override string Description(Player pred) => "Mods.V2.PredPlayerGoals.Beginner.EatPinky.Description";
 
 		public override int StatPointsFromCompletion => 2;
 

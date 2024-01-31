@@ -12,8 +12,8 @@ namespace V2.PlayerHandling.PredPlayerGoals.Beginner
 	public class EatSnowFlinx : PredPlayerGoal
 	{
 		public override string InternalName => "EatSnowFlinx";
-		public override string DisplayName(Player pred) => Language.GetTextValue("Mods.V2.PredPlayerGoals.Beginner.EatSnowFlinx.Name");
-		public override string Description(Player pred) => Language.GetTextValue("Mods.V2.PredPlayerGoals.Beginner.EatSnowFlinx.Description");
+		public override string DisplayName(Player pred) => "Mods.V2.PredPlayerGoals.Beginner.EatSnowFlinx.Name";
+		public override string Description(Player pred) => "Mods.V2.PredPlayerGoals.Beginner.EatSnowFlinx.Description";
 
 		public override int StatPointsFromCompletion => 2;
 

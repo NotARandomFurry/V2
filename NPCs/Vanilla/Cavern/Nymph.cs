@@ -40,32 +40,42 @@ namespace V2.NPCs.Vanilla.Cavern
 
 		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.type is NPCID.LostGirl or NPCID.Nymph;
 
-		public override void SetDefaults(NPC entity)
+		public override void SetDefaults(NPC npc)
 		{
-			entity.AsV2NPC().Gender = EntityGender.Female;
+			npc.AsV2NPC().Gender = EntityGender.Female;
 
-			entity.AsFood().Size = 1.04;
-			entity.AsPred().MaxStomachCapacity = 5.5;
-			entity.AsPred().BaseStomachacheMeterCapacity = 275.0;
+			npc.AsFood().Size = 1.04;
+			npc.AsPred().MaxStomachCapacity = 5.5;
+			npc.AsPred().BaseStomachacheMeterCapacity = 275.0;
 
-			entity.AsPred().CanBeForceFed += CanNymphBeForceFed;
-			entity.AsPred().MaxSwallowRange = V2Utils.TileCountAsPixelCount(4.7);
-			entity.AsPred().SmallGulpThreshold = 0.35;
+			npc.AsPred().SmallGulps = Gulps.Short;
+			npc.AsPred().SmallGulpThreshold = 0.5;
+			npc.AsPred().BigGulps = Gulps.Standard;
+			npc.AsPred().MaxSwallowRange = V2Utils.TileCountAsPixelCount(4.7);
+			npc.AsPred().CanBeForceFed = CanNymphBeForceFed;
+			npc.AsPred().OnForceFed = OnNymphForceFed;
 
-			entity.AsPred().DigestionType = EntityDigestionType.Acidic;
-			entity.AsPred().GetDigestionTickDamage = GetDigestionTickDamage;
-			entity.AsPred().GetDigestionTickRate = GetDigestionTickRate;
+			npc.AsPred().DigestionType = EntityDigestionType.Acidic;
+			npc.AsPred().GetDigestionTickDamage = GetDigestionTickDamage;
+			npc.AsPred().GetDigestionTickRate = GetDigestionTickRate;
 
-			entity.AsPred().SmallBurps = Burps.Humanoid.Small;
-			entity.AsPred().StandardBurps = Burps.Humanoid.Standard;
-			entity.AsPred().GetAdditionalDigestedPlayerMessages = GetDigestedPlayerAdditionalDeathMessages;
-			entity.AsPred().GetPreyAbsorptionRate = GetPreyAbsorptionRate;
+			npc.AsPred().SmallBurps = Burps.Humanoid.Small;
+			npc.AsPred().SmallBurpThreshold = 0.65;
+			npc.AsPred().StandardBurps = Burps.Humanoid.Standard;
+			npc.AsPred().GetAdditionalDigestedPlayerMessages = GetDigestedPlayerAdditionalDeathMessages;
+			npc.AsPred().GetPreyAbsorptionRate = GetPreyAbsorptionRate;
 
-			entity.AsFood().OnKilledByDigestion += PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
-			entity.AsFood().OnKilledByDigestion += OnKilledByDigestion_GrantNymphGoal;
+			npc.AsFood().OnKilledByDigestion = PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
+			npc.AsFood().OnKilledByDigestion += PreyNPC.HandlePreyItemTheft;
+			npc.AsFood().OnKilledByDigestion += OnKilledByDigestion_GrantNymphGoal;
 		}
 
 		public static bool CanNymphBeForceFed(NPC npc) => false;
+
+		public static void OnNymphForceFed(NPC npc, Player player)
+		{
+
+		}
 
 		public static void GetDigestedPlayerAdditionalDeathMessages(NPC npc, Player player, List<string> deathReasonKeyList)
 		{
@@ -87,10 +97,7 @@ namespace V2.NPCs.Vanilla.Cavern
 
 		public static void OnDigestionKill(NPC npc, PreyData digestedPrey)
 		{
-			SoundEngine.PlaySound(
-				digestedPrey.WeightLeftToDigest < 0.6 ? npc.AsPred().SmallBurps : npc.AsPred().StandardBurps,
-				npc.TrueCenter() + new Vector2(npc.direction * 8f, -14f)
-			);
+
 		}
 
 		public static double GetPreyAbsorptionRate(NPC npc)

@@ -40,7 +40,7 @@ namespace V2.NPCs
 		}
 	}
 
-	public class PredNPC : GlobalNPC
+	public partial class PredNPC : GlobalNPC
 	{
 		public EntityGender Gender { get; set; }
 
@@ -55,19 +55,35 @@ namespace V2.NPCs
 		public double MaxStomachCapacity { get; set; }
 		public float MaxSwallowRange { get; set; }
 		public double ExtraWeight { get; set; }
+		/// <summary>
+		/// Allows this NPC to eat bosses regardless of whether or not they're a boss themselves.<br/>
+		/// Defaults to false.<br/>
+		/// </summary>
+		public bool CanSwallowBosses { get; set; }
+
+		public Vector2 MouthSoundRawOffset { internal get; set; }
+		public static Vector2 MouthSoundOffset(NPC npc)
+		{
+			Vector2 happyBurpyOffsetDirectionized = npc.AsPred().MouthSoundRawOffset;
+			if (npc.direction != 0)
+				happyBurpyOffsetDirectionized.X *= npc.direction;
+			return happyBurpyOffsetDirectionized;
+		}
+
+		public SoundStyle? SmallGulps { get; set; }
+		public double SmallGulpThreshold { get; set; }
+		public SoundStyle? BigGulps { get; set; }
 
 		public SoundStyle? SmallBurps { get; set; }
+		public double SmallBurpThreshold { get; set; }
 		public SoundStyle? StandardBurps { get; set; }
+		public double BigBurpThreshold { get; set; }
 		public SoundStyle? BigBurps { get; set; }
 
-		public SoundStyle SmallGulps { get; set; }
-		public double SmallGulpThreshold { get; set; }
-		public SoundStyle BigGulps { get; set; }
-
-		public delegate void DelegateResetPredSpecificVariables(NPC npc);
-		public DelegateResetPredSpecificVariables ResetPredSpecificVariables { get; set; }
-
-
+		/// <summary>
+		/// If set to true, this NPC can bypass the "Pred Non-Preference" config option, being able to gulp down the player and anything else in-game regardless of what it is set to.<br/>
+		/// Defaults to false.<br/>
+		/// </summary>
 		public bool NonPreferenceBypass { get; set; }
 		public delegate bool DelegateCanBeForceFed(NPC npc);
 		public DelegateCanBeForceFed CanBeForceFed { get; set; }
@@ -75,9 +91,6 @@ namespace V2.NPCs
 		public delegate void DelegateOnForceFed(NPC npc, Player player);
 		public DelegateOnForceFed OnForceFed { get; set; }
 
-
-		public delegate bool DelegateSpecialPredAI(NPC npc);
-		public DelegateSpecialPredAI SpecialPredAI { get; set; }
 
 		public delegate double DelegateGetDigestionTickRate(NPC npc, PreyData prey);
 		public DelegateGetDigestionTickRate GetDigestionTickRate { get; set; }
@@ -133,13 +146,11 @@ namespace V2.NPCs
 			MaxStomachCapacity = 1.0;
 			MaxSwallowRange = 36f;
 			ExtraWeight = 0.0;
+			CanSwallowBosses = false;
 			
-			// This is where all the defaults methods get set.
-			ResetPredSpecificVariables = null;
 			GetDigestionTickRate = null;
 			GetDigestionTickDamage = null;
 			GetPreyAbsorptionRate = null;
-			SpecialPredAI = null;
 
 			NonPreferenceBypass = false;
 			CanBeForceFed = (NPC npc) => false;
@@ -149,18 +160,20 @@ namespace V2.NPCs
 			BaseStomachacheMeterCapacity = 100.0;
 			CounterStruggleEffectiveness = 5;
 
+			MouthSoundRawOffset = Vector2.Zero;
+			SmallGulps = Gulps.Short;
+			SmallGulpThreshold = 0.2;
+			BigGulps = Gulps.Standard;
+			SmallBurps = null;
+			SmallBurpThreshold = 0.2;
+			StandardBurps = null;
+			BigBurpThreshold = 2.0;
+			BigBurps = null;
+
 			OnDigestionKill = null;
 
 			GetVisualBellySize = null;
 			GetVisualWeightStage = null;
-
-			SmallBurps = null;
-			StandardBurps = null;
-			BigBurps = null;
-
-			SmallGulps = Gulps.Short;
-			SmallGulpThreshold = 0.2;
-			BigGulps = Gulps.Standard;
 		}
 
 		public override void ResetEffects(NPC npc)
@@ -169,9 +182,6 @@ namespace V2.NPCs
 				npc.AsPred().Stomachache -= 0.08;
 
 			StomachacheMeterCapacityModifier = StatModifier.Default;
-
-			if (npc.AsPred().ResetPredSpecificVariables is not null)
-				npc.AsPred().ResetPredSpecificVariables.Invoke(npc);
 		}
 
 		public static bool CanSwallow(NPC pred, Entity prey)
@@ -182,23 +192,26 @@ namespace V2.NPCs
 			if (GetCurrentBellyWeight(pred) >= pred.AsPred().MaxStomachCapacity)
 				return false;
 
-			switch (ModContent.GetInstance<V2ServerConfig>().GenderBlacklist)
+			if (!pred.AsPred().NonPreferenceBypass)
 			{
-				default:
-					// do absolutely fucking nothing lmao
-					break;
-				case "No Male":
-					if (pred.AsV2NPC().Gender == EntityGender.Male)
-						return false;
-					break;
-				case "No Female":
-					if (pred.AsV2NPC().Gender == EntityGender.Female)
-						return false;
-					break;
-				case "No M or F...but why?":
-					if (pred.AsV2NPC().Gender != EntityGender.Other)
-						return false;
-					break;
+				switch (ModContent.GetInstance<V2ServerConfig>().GenderBlacklist)
+				{
+					default:
+						// do absolutely fucking nothing lmao
+						break;
+					case "No Male":
+						if (pred.AsV2NPC().Gender == EntityGender.Male)
+							return false;
+						break;
+					case "No Female":
+						if (pred.AsV2NPC().Gender == EntityGender.Female)
+							return false;
+						break;
+					case "No M or F...but why?":
+						if (pred.AsV2NPC().Gender != EntityGender.Other)
+							return false;
+						break;
+				}
 			}
 
 			if (prey is Player preyPlayer)
@@ -262,12 +275,7 @@ namespace V2.NPCs
 
 			PreyData food = PreyData.NewData(prey);
 			AddNewPrey(pred, food);
-			SoundEngine.PlaySound(
-				food.WeightLeftToDigest <= pred.AsPred().SmallGulpThreshold
-					? pred.AsPred().SmallGulps
-					: pred.AsPred().BigGulps,
-				pred.Center
-			);
+			PlaySwallowGulp(pred, food);
 			switch (food.Type)
 			{
 				case PreyType.Player:
@@ -489,8 +497,12 @@ namespace V2.NPCs
 									prey.NoHealth = preyPlayer.AsFood().TakeDigestionDamage(pred, digestionDamage);
 									if (ModContent.GetInstance<V2ServerConfig>().DebugChatMessages)
 										Main.NewText("Successfully dealt digestion damage to prey: " + preyPlayer.name);
-									if (prey.NoHealth && pred.AsPred().OnDigestionKill is not null)
-										pred.AsPred().OnDigestionKill.Invoke(pred, prey);
+									if (prey.NoHealth)
+									{
+										if (pred.AsPred().OnDigestionKill is not null)
+											pred.AsPred().OnDigestionKill.Invoke(pred, prey);
+										PlayDigestionBelch(pred, prey);
+									}
 								}
 								else if (ModContent.GetInstance<V2ServerConfig>().DebugChatMessages)
 									Main.NewText("Failed to deal digestion damage to prey: " + preyPlayer.name);
@@ -508,8 +520,12 @@ namespace V2.NPCs
 										Main.NewText("Successfully dealt digestion damage to prey: " + preyNPC.GivenOrTypeName);
 									else if (ModContent.GetInstance<V2ServerConfig>().DebugChatMessages)
 										Main.NewText("Failed to deal digestion damage to prey: " + preyNPC.GivenOrTypeName);
-									if (prey.NoHealth && pred.AsPred().OnDigestionKill is not null)
-										pred.AsPred().OnDigestionKill.Invoke(pred, prey);
+									if (prey.NoHealth)
+									{
+										if (pred.AsPred().OnDigestionKill is not null)
+											pred.AsPred().OnDigestionKill.Invoke(pred, prey);
+										PlayDigestionBelch(pred, prey);
+									}
 								}
 								break;
 						}

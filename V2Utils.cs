@@ -170,7 +170,7 @@ namespace V2
 			}
 		}
 
-		public static void AddVorariaDynamicTooltip(this List<TooltipLine> tooltips, string itemTooltipKey, object longTooltipVariables)
+		public static void AddVorariaDynamicTooltip(this List<TooltipLine> tooltips, string itemTooltipKey, object tooltipVariables)
 		{
 			TooltipLine dynamicTooltip = new TooltipLine(
 				V2.Instance,
@@ -181,8 +181,11 @@ namespace V2
 				) : (Main.keyState.IsKeyDown(Keys.LeftShift)
 				? Language.GetTextValueWith(
 					"Mods.V2.ItemTooltip." + itemTooltipKey + ".Long",
-					longTooltipVariables
-				) : Language.GetTextValue("Mods.V2.ItemTooltip." + itemTooltipKey + ".Short"))
+					tooltipVariables
+				) : Language.GetTextValueWith(
+					"Mods.V2.ItemTooltip." + itemTooltipKey + ".Short",
+					tooltipVariables
+				))
 			);
 			if (Main.keyState.IsKeyDown(Keys.LeftShift) && Main.keyState.IsKeyDown(Keys.LeftControl))
 			{

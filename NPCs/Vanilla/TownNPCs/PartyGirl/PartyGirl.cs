@@ -15,6 +15,7 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using V2.Core;
+using V2.Items.Voraria.Accessories;
 using V2.NPCs.Voraria.TownNPCs;
 using V2.PlayerHandling;
 using V2.Sounds.Vore;
@@ -85,12 +86,16 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 
 			npc.lifeMax = 400;
 
+			npc.AsV2NPC().NewAIMethod = V2PartyGirlAI;
+
 			npc.AsV2NPC().GetNewDialogue = GetPartyGirlChat;
 
 			npc.AsFood().Size = 1.0;
 			npc.AsPred().MaxStomachCapacity = 999999.0;
 			npc.AsPred().BaseStomachacheMeterCapacity = 999999.0;
 
+			npc.AsPred().BigGulps = Gulps.Standard;
+			npc.AsPred().CanSwallowBosses = true;
 			npc.AsPred().CanBeForceFed = CanPartyGirlBeForceFed;
 			npc.AsPred().OnForceFed = OnPartyGirlForceFed;
 
@@ -99,7 +104,6 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 			npc.AsPred().GetDigestionTickDamage = GetDigestionTickDamage;
 
 			npc.AsPred().OnDigestionKill = OnDigestionKill;
-			npc.AsPred().SmallBurps = Burps.Humanoid.Small;
 			npc.AsPred().StandardBurps = Burps.Humanoid.Standard;
 			npc.AsPred().GetAdditionalDigestedPlayerMessages = GetDigestedPlayerAdditionalDeathMessages;
 
@@ -107,14 +111,13 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 
 			npc.AsPred().GetVisualBellySize = GetVisualBellySize;
 
-			npc.AsPred().SpecialPredAI = PartyGirlSpecialPredAI;
-
-			npc.AsFood().OnKilledByDigestion += PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
+			npc.AsFood().OnKilledByDigestion = PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
+			npc.AsFood().OnKilledByDigestion += PreyNPC.HandlePreyItemTheft;
 		}
 
 		public override ITownNPCProfile ModifyTownNPCProfile(NPC npc) => PartyGirlStuff.PartyGirlPredProfile;
 
-		public static bool PartyGirlSpecialPredAI(NPC npc)
+		public static bool V2PartyGirlAI(NPC npc)
 		{
 			VoreTracker tracker = PredNPC.GetStomachTracker(npc);
 			if (tracker is null)
@@ -164,6 +167,22 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 			return true;
 		}
 
+		public override void ModifyShop(NPCShop shop)
+		{
+			if (shop.NpcType != NPCID.PartyGirl)
+				return;
+
+			shop.Add(
+				ModContent.ItemType<BalloonBelly>(),
+				new Condition("Mods.V2.ItemObtainmentDetails.Voraria.Accessories.BalloonBelly", () => {
+					if (Main.LocalPlayer.AsPred().TotalStatPoints >= 10)
+						return true;
+
+					return false;
+				})
+			);
+		}
+
 		public override void PostAI(NPC npc)
 		{
 			if (npc.CurrentCaptor() is not null)
@@ -198,14 +217,14 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 				PredNPC.Swallow(npc, nurse);
 			bool haveRoutineCheckUpWithNurse = false;
 			RollForRandomGulp(ref haveRoutineCheckUpWithNurse);
-			if (nurse != null && npc.Distance(npc.Center) <= nurse.AsPred().MaxSwallowRange && haveRoutineCheckUpWithNurse)
+			if (nurse != null && nurse.Distance(npc.Center) <= nurse.AsPred().MaxSwallowRange && haveRoutineCheckUpWithNurse)
 				PredNPC.Swallow(nurse, npc);
 
 			NPC bestGirl = nearbyResidentNPCs.FirstOrDefault(x => x.type == NPCID.Stylist);
 			bool spendQualityTimeInAmber = false;
 			RollForRandomGulp(ref spendQualityTimeInAmber);
 			RollForRandomGulp(ref spendQualityTimeInAmber);
-			if (bestGirl != null && npc.Distance(npc.Center) <= bestGirl.AsPred().MaxSwallowRange && spendQualityTimeInAmber)
+			if (bestGirl != null && bestGirl.Distance(npc.Center) <= bestGirl.AsPred().MaxSwallowRange && spendQualityTimeInAmber)
 				PredNPC.Swallow(bestGirl, npc);
 
 			NPC wizard = nearbyResidentNPCs.FirstOrDefault(x => x.type == NPCID.Wizard);
@@ -239,7 +258,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 					npc,
 					Main.CurrentPlayer,
 					"[c/7F7F7F:<Out of nowhere, " + npc.GivenName + " stuffs your entire body into her mouth, gulping you down in a single, smooth swallow. She giggles as your form rockets into her all-too-eager stomach.>]\n"
-				  + "There we go! I needed a little pre-party snack, and that cake did just the trick! Thanks for the treat! :D"
+				  + "There we go! Sorry if I scared ya a bit...I needed a little pre-party snack, and that cake did just the trick! Thanks for the treat! :D"
 				);
 			}
 		}
@@ -290,10 +309,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 
 		public static void OnDigestionKill(NPC npc, PreyData digestedPrey)
 		{
-			SoundEngine.PlaySound(
-				npc.AsPred().StandardBurps,
-				npc.TrueCenter() + new Vector2(npc.direction * 8f, -14f)
-			);
+			// add confetti belch!
 		}
 
 		public static double GetPreyAbsorptionRate(NPC npc)

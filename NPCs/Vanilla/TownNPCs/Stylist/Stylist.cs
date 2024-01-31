@@ -11,6 +11,7 @@ using Terraria.GameContent.Events;
 using Terraria.ID;
 using Terraria.ModLoader;
 using V2.Core;
+using V2.Items.Voraria.Consumables;
 using V2.NPCs.Voraria.TownNPCs.Succubus;
 using V2.PlayerHandling;
 using V2.Sounds.Vore;
@@ -76,32 +77,37 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 
 		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.type == NPCID.Stylist;
 
-		public override void SetDefaults(NPC NPC)
+		public override void SetDefaults(NPC npc)
 		{
-			NPC.AsV2NPC().Gender = EntityGender.Female;
+			npc.AsV2NPC().Gender = EntityGender.Female;
 
-			NPC.AsV2NPC().GetNewDialogue = GetStylistChat;
+			npc.AsV2NPC().GetNewDialogue = GetStylistChat;
 
-			NPC.AsFood().Size = 1.085;
-			NPC.AsPred().MaxStomachCapacity = 5.85;
-			NPC.AsPred().BaseStomachacheMeterCapacity = 175.0;
+			npc.AsFood().Size = 1.085;
+			npc.AsPred().MaxStomachCapacity = 5.85;
+			npc.AsPred().BaseStomachacheMeterCapacity = 175.0;
 
-			NPC.AsPred().CanBeForceFed = CanStylistBeForceFed;
-			NPC.AsPred().OnForceFed = OnStylistForceFed;
+			npc.AsPred().SmallGulps = Gulps.Short;
+			npc.AsPred().SmallGulpThreshold = 0.3;
+			npc.AsPred().BigGulps = Gulps.Standard;
+			npc.AsPred().CanBeForceFed = CanStylistBeForceFed;
+			npc.AsPred().OnForceFed = OnStylistForceFed;
 
-			NPC.AsPred().DigestionType = EntityDigestionType.Acidic;
-			NPC.AsPred().GetDigestionTickRate = GetDigestionTickRate;
-			NPC.AsPred().GetDigestionTickDamage = GetDigestionTickDamage;
+			npc.AsPred().DigestionType = EntityDigestionType.Acidic;
+			npc.AsPred().GetDigestionTickRate = GetDigestionTickRate;
+			npc.AsPred().GetDigestionTickDamage = GetDigestionTickDamage;
 
-			NPC.AsPred().OnDigestionKill = OnDigestionKill;
-			NPC.AsPred().SmallBurps = Burps.Humanoid.Small;
-			NPC.AsPred().StandardBurps = Burps.Humanoid.Standard;
-			NPC.AsPred().GetAdditionalDigestedPlayerMessages = GetDigestedPlayerAdditionalDeathMessages;
-			NPC.AsPred().GetPreyAbsorptionRate = GetPreyAbsorptionRate;
+			npc.AsPred().OnDigestionKill = OnDigestionKill;
+			npc.AsPred().SmallBurps = Burps.Humanoid.Small;
+			npc.AsPred().SmallBurpThreshold = 0.3;
+			npc.AsPred().StandardBurps = Burps.Humanoid.Standard;
+			npc.AsPred().GetAdditionalDigestedPlayerMessages = GetDigestedPlayerAdditionalDeathMessages;
+			npc.AsPred().GetPreyAbsorptionRate = GetPreyAbsorptionRate;
 
-			NPC.AsPred().GetVisualBellySize = GetVisualBellySize;
+			npc.AsPred().GetVisualBellySize = GetVisualBellySize;
 
-			NPC.AsFood().OnKilledByDigestion += PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
+			npc.AsFood().OnKilledByDigestion = PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
+			npc.AsFood().OnKilledByDigestion += PreyNPC.HandlePreyItemTheft;
 		}
 
 		public override ITownNPCProfile ModifyTownNPCProfile(NPC npc) => StylistStuff.StylistPredProfile;
@@ -113,6 +119,15 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 			"the Sign Painter",
 			"the pixelated Sign Painter",
 		};
+
+		public override void ModifyShop(NPCShop shop)
+		{
+			if (shop.NpcType != NPCID.Stylist)
+				return;
+
+			shop.InsertBefore(ItemID.WilsonBeardShort, ModContent.ItemType<HairDyeCapacity>(), V2ShopConditions.BeginnerStatPoints);
+		}
+
 		public static List<string> GetStylistChat(NPC npc, Player player)
 		{
 			List<NPC> nearbyResidentNPCs = npc.GetNearbyResidentNPCs(out int npcsWithinHouse, out int npcsWithinVillage);
@@ -141,7 +156,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 					stylistChatPool.AddRange(new List<string>
 					{
 						"I told you to stay out of my hair tonight, hun. Now keep it down and digest!",
-						"Hush up in there! You keep kickin' around in there, and I'll just dump a few bottles of hair dye down my throat to DROWN you!",
+						"Ugh, just give up already! You keep kickin' around in there, and I'll just dump a few bottles of hair dye down my throat to DROWN you!",
 						"You were JUST what I needed, hun: a quick Gut Cut to get the hunger pangs to shut up. No refunds, and no escape. Sorry not sorry, gut fodder.",
 						"[c/BFBFBF:(...I swear, if you make me fat, I'll just \"shave\" off your arms and thighs once you come back. Bet you'll be swearin' on your soul to be a good client THEN, asshole...)]",
 					});
@@ -674,10 +689,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 
 		public static void OnDigestionKill(NPC npc, PreyData digestedPrey)
 		{
-			SoundEngine.PlaySound(
-				digestedPrey.WeightLeftToDigest < 0.3 ? npc.AsPred().SmallBurps : npc.AsPred().StandardBurps,
-				npc.TrueCenter() + new Vector2(npc.direction * 8f, -14f)
-			);
+			
 		}
 
 		public static double GetPreyAbsorptionRate(NPC npc)

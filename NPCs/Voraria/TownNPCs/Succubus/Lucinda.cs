@@ -145,6 +145,7 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 
 			NPC.AsPred().OnDigestionKill = OnDigestionKill;
 			NPC.AsPred().SmallBurps = Burps.Humanoid.Small;
+			NPC.AsPred().SmallBurpThreshold = 0.75;
 			NPC.AsPred().StandardBurps = Burps.Humanoid.Standard;
 			NPC.AsPred().GetAdditionalDigestedPlayerMessages = GetDigestedPlayerAdditionalDeathMessages;
 
@@ -152,7 +153,7 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 
 			NPC.AsPred().GetVisualBellySize = GetVisualBellySize;
 
-			NPC.AsFood().OnKilledByDigestion += PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
+			NPC.AsFood().OnKilledByDigestion = PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
 
 			NPC.buffImmune[BuffID.OnFire] = true;
 			NPC.buffImmune[BuffID.OnFire3] = true;
@@ -461,7 +462,6 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 			NPCShop succubusShop = new NPCShop(NPC.type, "Shop");
 			succubusShop.Add<CharmBetterDigestion>();
 			succubusShop.Add<CharmRegenFromAbsorption>();
-			succubusShop.Add<CharmLessStomachWeight>();
 			succubusShop.Register();
 		}
 
@@ -609,10 +609,7 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 
 		public static void OnDigestionKill(NPC npc, PreyData digestedPrey)
 		{
-			SoundEngine.PlaySound(
-				digestedPrey.WeightLeftToDigest < 0.75 ? npc.AsPred().SmallBurps : npc.AsPred().StandardBurps,
-				npc.TrueCenter() + new Vector2(npc.direction * 8f, -14f)
-			);
+			
 		}
 
 		public static double GetPreyAbsorptionRate(NPC npc)

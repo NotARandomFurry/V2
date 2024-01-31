@@ -66,7 +66,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 		public int GetHeadTextureIndex(NPC npc) => NPCHeadID.Nurse;
 	}
 
-	public class Nurse : GlobalNPC
+	public partial class Nurse : GlobalNPC
 	{
 		public bool randomGutHeal;
 		public bool healTypeChoice;
@@ -87,12 +87,15 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 
 			npc.AsV2NPC().GetNewDialogue = GetNurseChat;
 
+			npc.AsV2NPC().NewAIMethod = V2NurseAI;
+
 			npc.AsFood().Size = 1.1625;
 			npc.AsPred().MaxStomachCapacity = 1.8;
 			npc.AsPred().BaseStomachacheMeterCapacity = 180.0;
 
-			npc.AsPred().ResetPredSpecificVariables = ResetPredSpecificVariables;
-
+			npc.AsPred().SmallGulps = Gulps.Short;
+			npc.AsPred().SmallGulpThreshold = 0.65;
+			npc.AsPred().BigGulps = Gulps.Standard;
 			npc.AsPred().CanBeForceFed = CanNurseBeForceFed;
 			npc.AsPred().OnForceFed = OnNurseForceFed;
 
@@ -102,6 +105,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 
 			npc.AsPred().OnDigestionKill = OnDigestionKill;
 			npc.AsPred().SmallBurps = Burps.Humanoid.Small;
+			npc.AsPred().SmallBurpThreshold = 0.65;
 			npc.AsPred().StandardBurps = Burps.Humanoid.Standard;
 			npc.AsPred().GetAdditionalDigestedPlayerMessages = GetDigestedPlayerAdditionalDeathMessages;
 			npc.AsPred().GetPreyAbsorptionRate = GetPreyAbsorptionRate;
@@ -115,11 +119,12 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 			npc.AsNurse().healPlayerIndex = -1;
 			npc.AsNurse().armsDealerHealTime = 0;
 
-			npc.AsFood().OnKilledByDigestion += PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
+			npc.AsFood().OnKilledByDigestion = PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
+			npc.AsFood().OnKilledByDigestion += PreyNPC.HandlePreyItemTheft;
 			npc.AsFood().OnKilledByDigestion += OnKilledByDigestion_GrantCheapskateGoal;
 		}
 
-		public static void ResetPredSpecificVariables(NPC npc)
+		public override void ResetEffects(NPC npc)
 		{
 			if (PredNPC.GetStomachTracker(npc) is null || PredNPC.GetStomachTracker(npc).Prey.FindAll(x => x.Type == PreyType.Player).Count <= 0)
 			{
@@ -730,11 +735,6 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 		{
 			if (npc.AsNurse().healPlayerIndex != -1 && digestedPrey.Type == PreyType.Player && digestedPrey.Instance.whoAmI == npc.AsNurse().healPlayerIndex)
 				npc.AsNurse().healPlayerIndex = -1;
-
-			SoundEngine.PlaySound(
-				digestedPrey.WeightLeftToDigest < 0.65 ? npc.AsPred().SmallBurps : npc.AsPred().StandardBurps,
-				npc.TrueCenter() + new Vector2(npc.direction * 8f, -14f)
-			);
 		}
 
 		public static double GetPreyAbsorptionRate(NPC npc)
@@ -812,7 +812,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 
 			PlayerLoader.ModifyNursePrice(predPlayer, npc, health, removeDebuffs, ref originalHealPrice);
 
-			if (originalHealPrice >= 10000 && !predPlayer.CanAfford(originalHealPrice))
+			if (originalHealPrice >= 12000 && !predPlayer.CanAfford(originalHealPrice))
 				ModContent.GetInstance<Cheapskate>().TrySetCompletion(predPlayer);
 		}
 	}

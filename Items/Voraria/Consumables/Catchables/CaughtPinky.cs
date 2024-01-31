@@ -34,7 +34,7 @@ namespace V2.Items.Voraria.Consumables.Catchables
 			Item.height = 30;
 			Item.alpha = 100;
 			Item.rare = ItemRarityID.Orange;
-			Item.value = Item.sellPrice(
+			Item.value = Item.buyPrice(
 				gold: 1,
 				silver: 25
 			);

@@ -43,31 +43,32 @@ namespace V2.NPCs.Vanilla.Forest
 
 		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.type == NPCID.BlueSlime;
 
-		public override void SetDefaults(NPC entity)
+		public override void SetDefaults(NPC npc)
 		{
-			if (entity.netID != NPCID.Pinky)
+			if (npc.netID != NPCID.Pinky)
 				return;
 
-			entity.catchItem = ModContent.ItemType<CaughtPinky>();
+			npc.catchItem = ModContent.ItemType<CaughtPinky>();
 
-			entity.AsV2NPC().Gender = EntityGender.Other;
+			npc.AsV2NPC().Gender = EntityGender.Other;
 
-			entity.AsFood().Size = 0.065;
-			entity.AsPred().MaxStomachCapacity = 0.4;
+			npc.AsFood().Size = 0.065;
+			npc.AsPred().MaxStomachCapacity = 0.4;
 
-			entity.AsPred().CanBeForceFed = CanCottonCandySlimeBeForceFed;
-			entity.AsPred().MaxSwallowRange = V2Utils.TileCountAsPixelCount(1.3);
-			entity.AsPred().SmallGulpThreshold = 0.00;
+			npc.AsPred().CanBeForceFed = CanCottonCandySlimeBeForceFed;
+			npc.AsPred().MaxSwallowRange = V2Utils.TileCountAsPixelCount(1.3);
+			npc.AsPred().SmallGulpThreshold = 0.00;
 
-			entity.AsPred().DigestionType = EntityDigestionType.Acidic;
-			entity.AsPred().GetDigestionTickDamage = GetDigestionTickDamage;
-			entity.AsPred().GetDigestionTickRate = GetDigestionTickRate;
+			npc.AsPred().DigestionType = EntityDigestionType.Acidic;
+			npc.AsPred().GetDigestionTickDamage = GetDigestionTickDamage;
+			npc.AsPred().GetDigestionTickRate = GetDigestionTickRate;
 
-			entity.AsPred().GetAdditionalDigestedPlayerMessages = GetDigestedPlayerAdditionalDeathMessages;
-			entity.AsPred().GetPreyAbsorptionRate = GetPreyAbsorptionRate;
+			npc.AsPred().GetAdditionalDigestedPlayerMessages = GetDigestedPlayerAdditionalDeathMessages;
+			npc.AsPred().GetPreyAbsorptionRate = GetPreyAbsorptionRate;
 
-			entity.AsFood().OnKilledByDigestion = PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
-			entity.AsFood().OnKilledByDigestion += OnKilledByDigestion_GrantPinkyGoal;
+			npc.AsFood().OnKilledByDigestion = PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
+			npc.AsFood().OnKilledByDigestion += PreyNPC.HandlePreyItemTheft;
+			npc.AsFood().OnKilledByDigestion += OnKilledByDigestion_GrantPinkyGoal;
 		}
 
 		public override bool? CanBeCaughtBy(NPC npc, Item item, Player player) {

@@ -14,19 +14,24 @@ namespace V2.NPCs
 {
 	public static class NPCExtensions
 	{
-		public static bool IsFoodFor(this NPC npc, Entity entity)
+		public static bool IsFoodFor(this NPC npc, Entity pred)
 		{
-			if (entity is NPC predNPC)
+			if (npc.CurrentCaptor() is null)
+				return false;
+
+			if (pred is NPC predNPC)
 			{
-				List<PreyData> NPCAsPreyList = PredNPC.GetStomachTracker(predNPC)?.Prey.FindAll(x => x.Type == PreyType.NPC && x.Instance.whoAmI == npc.whoAmI);
-				if (NPCAsPreyList != null && NPCAsPreyList.Count > 0)
-					return true;
+				if (PredNPC.GetStomachTracker(predNPC) is null)
+					return false;
+
+				return npc.CurrentCaptor() == PredNPC.GetStomachTracker(predNPC);
 			}
-			else if (entity is Player predPlayer)
+			else if (pred is Player predPlayer)
 			{
-				List<PreyData> NPCAsPreyList = predPlayer.AsPred().StomachTracker?.Prey.FindAll(x => x.Type == PreyType.NPC && x.Instance.whoAmI == npc.whoAmI);
-				if (NPCAsPreyList != null && NPCAsPreyList.Count > 0)
-					return true;
+				if (predPlayer.AsPred().StomachTracker is null)
+					return false;
+
+				return npc.CurrentCaptor() == predPlayer.AsPred().StomachTracker;
 			}
 			return false;
 		}
@@ -117,6 +122,16 @@ namespace V2.NPCs
 		}
 
 		public static int SoftenedStacks(this NPC npc) => Math.Min(Softened.MaxStacks, (int)Math.Floor((double)npc.AsFood().SoftenedDigestionDamageTaken / (npc.lifeMax * Softened.MaxHealthDigestedForOneStack)));
+
+		public static bool CanItemsBeThievedBy(this NPC npc, Entity pred)
+		{
+			if (pred is Player playerPred)
+			{
+				if (playerPred.AsPred().charmStealPreyLoot)
+					return true;
+			}
+			return false;
+		}
 	}
 
 	public static class NPCChatHelper

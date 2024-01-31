@@ -30,6 +30,8 @@ namespace V2.Items.Vanilla.Weapons.Melee
 			entity.AsFood().OnSwallowSoreThroatTime = V2Utils.SensibleTime(seconds: 3, frames: 30);
 
 			entity.AsFood().UpdateInStomach += UpdateInStomach;
+
+			entity.AsTaggable().Broadsword = true;
 		}
 
 		public static void UpdateInStomach(Entity prey, Entity pred, bool dead)

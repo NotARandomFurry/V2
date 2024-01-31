@@ -24,28 +24,26 @@ namespace V2.NPCs.Vanilla.Forest
 
 		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.type == NPCID.BlueSlime;
 
-		public override void SetDefaults(NPC entity)
+		public override void SetDefaults(NPC npc)
 		{
-			if (entity.netID < 0) // if this isn't specifically a Blue Slime, don't run
-				return;
+			npc.AsV2NPC().Gender = EntityGender.Other;
 
-			entity.AsV2NPC().Gender = EntityGender.Other;
+			npc.AsFood().Size = 0.15;
+			npc.AsPred().MaxStomachCapacity = 0.85;
 
-			entity.AsFood().Size = 0.15;
-			entity.AsPred().MaxStomachCapacity = 0.85;
+			npc.AsPred().CanBeForceFed = CanBlueSlimeBeForceFed;
+			npc.AsPred().MaxSwallowRange = V2Utils.TileCountAsPixelCount(1.5);
+			npc.AsPred().SmallGulpThreshold = 0.00;
 
-			entity.AsPred().CanBeForceFed = CanBlueSlimeBeForceFed;
-			entity.AsPred().MaxSwallowRange = V2Utils.TileCountAsPixelCount(1.5);
-			entity.AsPred().SmallGulpThreshold = 0.00;
+			npc.AsPred().DigestionType = EntityDigestionType.Acidic;
+			npc.AsPred().GetDigestionTickDamage = GetDigestionTickDamage;
+			npc.AsPred().GetDigestionTickRate = GetDigestionTickRate;
 
-			entity.AsPred().DigestionType = EntityDigestionType.Acidic;
-			entity.AsPred().GetDigestionTickDamage = GetDigestionTickDamage;
-			entity.AsPred().GetDigestionTickRate = GetDigestionTickRate;
+			npc.AsPred().GetAdditionalDigestedPlayerMessages = GetDigestedPlayerAdditionalDeathMessages;
+			npc.AsPred().GetPreyAbsorptionRate = GetPreyAbsorptionRate;
 
-			entity.AsPred().GetAdditionalDigestedPlayerMessages = GetDigestedPlayerAdditionalDeathMessages;
-			entity.AsPred().GetPreyAbsorptionRate = GetPreyAbsorptionRate;
-
-			entity.AsFood().OnKilledByDigestion = PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
+			npc.AsFood().OnKilledByDigestion = PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
+			npc.AsFood().OnKilledByDigestion += PreyNPC.HandlePreyItemTheft;
 		}
 
 		public static bool CanBlueSlimeBeForceFed(NPC npc) => true;
@@ -64,8 +62,8 @@ namespace V2.NPCs.Vanilla.Forest
 		public static double GetPreyAbsorptionRate(NPC npc)
 		{
 			double baseAbsorptionRate = 1.0 / (double)V2Utils.SensibleTime(
-				minutes: 6,
-				seconds: 40
+				minutes: 15,
+				seconds: 0
 			);
 			return baseAbsorptionRate;
 		}

@@ -91,6 +91,7 @@ namespace V2.UI.StruggleSystem
 					NoteLane.Special => 0,
 					NoteLane.Left => 16,
 					NoteLane.Down => 32,
+					_ => 0,
 				};
 				notePosition.Y -= (float)((noteData.note.CorrectlyPressed ? noteData.note.PressedPosition : noteData.proximity) * 18.0) * 1.5f;
 				notePosition.Y += _struggleNoteSpecial.Height() / 2f;
@@ -115,7 +116,8 @@ namespace V2.UI.StruggleSystem
 					NoteLane.Left => _struggleNoteLeft.Value,
 					NoteLane.Special => _struggleNoteSpecial.Value,
 					NoteLane.Right => _struggleNoteRight.Value,
-					NoteLane.Down => _struggleNoteDown.Value
+					NoteLane.Down => _struggleNoteDown.Value,
+					_ => null,
 				};
 				spriteBatch.Draw(
 					noteTexture,

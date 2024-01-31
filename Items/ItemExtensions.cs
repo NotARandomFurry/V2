@@ -25,5 +25,22 @@ namespace V2.Items
 			else
 				return null;
 		}
+
+		/// <summary>
+		/// Fetches the current item's attached TaggableItem instance, allowing for access to Voraria's item tag system.
+		/// </summary>
+		/// <param name="item">The item to fetch the attached TaggableItem instance for.</param>
+		/// <returns>The TaggableItem instance on the current item, if it has one; otherwise, null.</returns>
+		public static TaggableItem AsTaggable(this Item item)
+		{
+			if (item.IsAir)
+				return null;
+
+			bool appliedAsTaggableItem = item.TryGetGlobalItem(out TaggableItem result);
+			if (appliedAsTaggableItem)
+				return result;
+			else
+				return null;
+		}
 	}
 }

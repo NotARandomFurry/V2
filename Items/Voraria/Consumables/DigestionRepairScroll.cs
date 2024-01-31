@@ -26,6 +26,7 @@ namespace V2.Items.Voraria.Consumables
 			Item.consumable = false;
 			Item.maxStack = 1;
 
+			Item.AsFood().Size = 0.225;
 			Item.AsFood().MaxHealth = 100;
 			Item.AsFood().AcidResistTier = 99;
 

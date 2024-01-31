@@ -32,6 +32,7 @@ namespace V2.NPCs.Vanilla.Sky
 			npc.AsFood().Size = 1.45;
 
 			npc.AsFood().OnKilledByDigestion = PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
+			npc.AsFood().OnKilledByDigestion += PreyNPC.HandlePreyItemTheft;
 			npc.AsFood().OnKilledByDigestion += OnKilledByDigestion_GrantHarpyGoal;
 		}
 

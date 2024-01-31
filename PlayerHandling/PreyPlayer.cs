@@ -310,7 +310,7 @@ namespace V2.PlayerHandling
 			int trueDigestionDamage = Main.DamageVar((float)digestionDamage, Player.luck);
 			if (ModContent.GetInstance<V2ServerConfig>().DefenseInDigestionCalcs)
 			{
-				trueDigestionDamage -= Player.statDefense / 2;
+				trueDigestionDamage -= Player.statDefense;
 				if (trueDigestionDamage < 0)
 					trueDigestionDamage = 0;
 			}

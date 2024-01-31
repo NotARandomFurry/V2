@@ -12,8 +12,8 @@ namespace V2.PlayerHandling.PredPlayerGoals.Amateur
 	public class EatNymph : PredPlayerGoal
 	{
 		public override string InternalName => "EatNymph";
-		public override string DisplayName(Player pred) => Language.GetTextValue("Mods.V2.PredPlayerGoals.Amateur.EatNymph.Name");
-		public override string Description(Player pred) => Language.GetTextValue("Mods.V2.PredPlayerGoals.Amateur.EatNymph.Description");
+		public override string DisplayName(Player pred) => "Mods.V2.PredPlayerGoals.Amateur.EatNymph.Name";
+		public override string Description(Player pred) => "Mods.V2.PredPlayerGoals.Amateur.EatNymph.Description";
 
 		public override int StatPointsFromCompletion => 3;
 

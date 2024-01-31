@@ -24,12 +24,20 @@ using V2.PlayerHandling.PredPlayerGoals;
 
 namespace V2.UI.PredStatsMenu
 {
+	public enum PredGoalsSortingOption
+	{
+		Default,
+		Alphabetical,
+		PointValue,
+		Completion,
+	}
 	public class PredStatsMenuUI : UIState
 	{
 		public static bool Visible { get; set; }
 
 		public static bool GoalsMenuOpen { get; set; }
 		public static ProgressionStage SelectedProgressionStage { get; set; }
+		public static PredGoalsSortingOption SortStyle { get; set; }
 		public static int GoalsPage { get; set; }
 
 		private static Asset<Texture2D> _predStatsMenuBackground = ModContent.Request<Texture2D>("V2/UI/PredStatsMenu/PredStatsMenu_Background", AssetRequestMode.ImmediateLoad);
@@ -50,6 +58,7 @@ namespace V2.UI.PredStatsMenu
 		public override void OnInitialize()
 		{
 			SelectedProgressionStage = ModContent.GetInstance<StarterStage>();
+			SortStyle = PredGoalsSortingOption.Default;
 		}
 
 		public override void Update(GameTime gameTime)
@@ -108,6 +117,21 @@ namespace V2.UI.PredStatsMenu
 
 				selectedStageGoals.RemoveAll(x => x.Stage != SelectedProgressionStage);
 
+				switch (SortStyle)
+				{
+					default:
+						break;
+					case PredGoalsSortingOption.Alphabetical:
+						selectedStageGoals.Sort();
+						break;
+					case PredGoalsSortingOption.PointValue:
+						selectedStageGoals = selectedStageGoals.OrderBy(x => x.StatPointsFromCompletion).ToList();
+						break;
+					case PredGoalsSortingOption.Completion:
+						selectedStageGoals = selectedStageGoals.OrderBy(x => x.Complete(Main.LocalPlayer)).ToList();
+						break;
+				}
+
 				int columnCountPerPage = 7;
 				int rowCountPerPage = 4;
 				int totalGoalsPerPage = columnCountPerPage * rowCountPerPage;
@@ -150,7 +174,7 @@ namespace V2.UI.PredStatsMenu
 							"[c/"
 						  + (goalToDraw.DisplayNameColor(Main.LocalPlayer) * mouseTextColorFactor).Hex3()
 						  + ":"
-						  + goalToDraw.DisplayName(Main.LocalPlayer)
+						  + Language.GetTextValue(goalToDraw.DisplayName(Main.LocalPlayer))
 						  + "]\n[c/"
 						  + (new Color(127, 127, 127) * mouseTextColorFactor).Hex3()
 						  + ":"
@@ -160,7 +184,6 @@ namespace V2.UI.PredStatsMenu
 						  + " stat point"
 						  + (goalToDraw.StatPointsFromCompletion == 1 ? "" : "s") + "]\n";
 						string descriptionKey = goalToDraw.Description(Main.LocalPlayer);
-						/*
 						if (goalToDraw.HasClearDescription(Main.LocalPlayer))
 						{
 							if (Main.keyState.IsKeyDown(Keys.LeftShift))
@@ -168,7 +191,6 @@ namespace V2.UI.PredStatsMenu
 							else
 								descriptionKey += ".Default";
 						}
-						*/
 						string[] goalFullHoverTextLines = Utils.WordwrapString(
 							Language.GetTextValue(descriptionKey),
 							FontAssets.MouseText.Value,
@@ -185,6 +207,10 @@ namespace V2.UI.PredStatsMenu
 									goalFullHoverText += "\n";
 							}
 						}
+
+						if (goalToDraw.HasClearDescription(Main.LocalPlayer) && !Main.keyState.IsKeyDown(Keys.LeftShift))
+							goalFullHoverText += "[c/7F7F7F: " + Language.GetTextValue("Mods.V2.PredPlayerGoals.GenericText.HoldToLearnMore." + (goalToDraw.Complete(Main.LocalPlayer) ? "Complete" : "Incomplete")) + "]";
+
 						UICommon.TooltipMouseText(goalFullHoverText);
 						Main.mouseText = true;
 					}
@@ -194,6 +220,20 @@ namespace V2.UI.PredStatsMenu
 				for (int i = 0; i < stagesOrdered.Count; i++)
 				{
 					ProgressionStage stageToDraw = stagesOrdered[i];
+					List<PredPlayerGoal> stageGoals = ModContent.GetContent<PredPlayerGoal>().ToList();
+					stageGoals.RemoveAll(x => x.Stage != stageToDraw);
+					List<PredPlayerGoal> stageGoalsCompleted = stageGoals.FindAll(x => x.Complete(Main.LocalPlayer));
+					float goalCompletionRatio = (float)stageGoalsCompleted.Count / (float)stageGoals.Count;
+					int pointsPossibleFromStage = 0;
+					int pointsGainedFromStage = 0;
+					foreach (PredPlayerGoal goal in stageGoals)
+					{
+						pointsPossibleFromStage += goal.StatPointsFromCompletion;
+						if (goal.Complete(Main.LocalPlayer))
+							pointsGainedFromStage += goal.StatPointsFromCompletion;
+					}
+					float pointsCompletionRatio = (float)pointsGainedFromStage / (float)pointsPossibleFromStage;
+
 					Vector2 stageTabDrawPos = backdropPos + new Vector2(10f, 100f);
 					if (i <= selectedStageIndex)
 						stageTabDrawPos.Y += i * 20;
@@ -239,6 +279,11 @@ namespace V2.UI.PredStatsMenu
 									stageFullHoverText += "\n";
 							}
 						}
+						Color completionRatiosBaseColor = new Color(145, 155, 215);
+						Color goalsCompleteColor = Color.Lerp(new Color(100, 20, 20), new Color(60, 220, 60), goalCompletionRatio.CastToDecimalPlaces(1));
+						Color pointsGainedColor = Color.Lerp(new Color(100, 20, 20), new Color(60, 220, 60), pointsCompletionRatio.CastToDecimalPlaces(1));
+						stageFullHoverText += "[c/" + (completionRatiosBaseColor * mouseTextColorFactor).Hex3() + ":Stage Goals Completed:] [c/" + (goalsCompleteColor * mouseTextColorFactor).Hex3() + ":" + stageGoalsCompleted.Count + " / " + stageGoals.Count + " (" + goalCompletionRatio.ToPercentage(1) + ")] [c/" + (subtitleColor * mouseTextColorFactor).Hex3() + ":(" + stageGoals.FindAll(x => !x.Available(Main.LocalPlayer)).Count + " goals are currently hidden)]\n";
+						stageFullHoverText += "[c/" + (completionRatiosBaseColor * mouseTextColorFactor).Hex3() + ":Points Gained From Stage:] [c/" + (pointsGainedColor * mouseTextColorFactor).Hex3() + ":" + pointsGainedFromStage + " / " + pointsPossibleFromStage + " (" + pointsCompletionRatio.ToPercentage(1) + ")]";
 						UICommon.TooltipMouseText(stageFullHoverText);
 						Main.mouseText = true;
 						if (Main.mouseLeft && Main.mouseLeftRelease)
@@ -591,10 +636,11 @@ namespace V2.UI.PredStatsMenu
 					  + "(Are you sure your cursor can't stay a little longer?)"
 					);
 					if (Main.mouseLeft && Main.mouseLeftRelease)
-					{
 						PredStatsMenuMouthUI.MouthState = PredStatsMenuMouthState.RegurgitatingCursor;
-					}
 				}
+
+				if (PredStatsMenuMouthUI.MouthState == PredStatsMenuMouthState.YourCursorGotFuckingGulpedIdiot && Main.keyState.IsKeyDown(Keys.Escape))
+					PredStatsMenuMouthUI.MouthState = PredStatsMenuMouthState.RegurgitatingCursor;
 			}
 		}
 	}

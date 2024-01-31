@@ -79,6 +79,9 @@ namespace V2.NPCs.Vanilla.TownNPCs.ArmsDealer
 			npc.AsPred().MaxStomachCapacity = 1.75;
 			npc.AsPred().BaseStomachacheMeterCapacity = 115.0;
 
+			npc.AsPred().SmallGulps = Gulps.Short;
+			npc.AsPred().SmallGulpThreshold = 0.6;
+			npc.AsPred().BigGulps = Gulps.Standard;
 			npc.AsPred().CanBeForceFed = CanArmsDealerBeForceFed;
 			npc.AsPred().OnForceFed = OnArmsDealerForceFed;
 
@@ -88,13 +91,15 @@ namespace V2.NPCs.Vanilla.TownNPCs.ArmsDealer
 
 			npc.AsPred().OnDigestionKill = OnDigestionKill;
 			npc.AsPred().SmallBurps = Burps.Humanoid.Small;
+			npc.AsPred().SmallBurpThreshold = 0.6;
 			npc.AsPred().StandardBurps = Burps.Humanoid.Standard;
 			npc.AsPred().GetAdditionalDigestedPlayerMessages = GetDigestedPlayerAdditionalDeathMessages;
 			npc.AsPred().GetPreyAbsorptionRate = GetPreyAbsorptionRate;
 
 			npc.AsPred().GetVisualBellySize = GetVisualBellySize;
 
-			npc.AsFood().OnKilledByDigestion += PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
+			npc.AsFood().OnKilledByDigestion = PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
+			npc.AsFood().OnKilledByDigestion += PreyNPC.HandlePreyItemTheft;
 		}
 
 		public override ITownNPCProfile ModifyTownNPCProfile(NPC npc) => ArmsDealerStuff.PredArmsDealerProfile;
@@ -234,7 +239,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.ArmsDealer
 					{
 						armsDealerChatPool.AddRange(new List<string>
 						{
-							"Y'know, if you time your shots right, thunder acts as a natural muffler for almost gun.",
+							"Y'know, if you time your shots right, thunder acts as a natural muffler for almost any gun.",
 							"A lightning gun?...nah, I ain't got time for that! Don't need anything but me and my bullets!",
 						});
 					}
@@ -326,16 +331,13 @@ namespace V2.NPCs.Vanilla.TownNPCs.ArmsDealer
 			}
 		}
 
-		public static double GetDigestionTickRate(NPC npc, PreyData prey) => Main.bloodMoon ? 2.0 : 1.0;
+		public static double GetDigestionTickRate(NPC npc, PreyData prey) => Main.bloodMoon ? 2.4 : 1.6;
 
-		public static double GetDigestionTickDamage(NPC npc, PreyData prey) => 10.0;
+		public static double GetDigestionTickDamage(NPC npc, PreyData prey) => 32.5;
 
 		public static void OnDigestionKill(NPC npc, PreyData digestedPrey)
 		{
-			SoundEngine.PlaySound(
-				digestedPrey.WeightLeftToDigest < 0.6 ? npc.AsPred().SmallBurps : npc.AsPred().StandardBurps,
-				npc.TrueCenter() + new Vector2(npc.direction * 8f, -14f)
-			);
+			
 		}
 
 		public static double GetPreyAbsorptionRate(NPC npc)

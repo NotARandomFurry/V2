@@ -1,6 +1,8 @@
 CommonColorCodes: {
 	Heal: FF3F4F
 	ManaHeal: 31D1E2
+	DoSomething: 00FFFF
+	DealDamage: FFFF00
 	PositiveEffect: 5FFF5F
 	NegativeEffect: FFBF5F
 	PositiveVoreEffect: 00BF00
@@ -12,12 +14,17 @@ Keybinds: {
 	Swallow.DisplayName: Swallow
 	Regurgitate.DisplayName: Regurgitate
 	Feed.DisplayName: Feed
-	EatItems.DisplayName: Eat Items
-	StruggleUp.DisplayName: Struggle Upwards
-	StruggleLeft.DisplayName: Struggle Leftwards
-	StruggleRight.DisplayName: Struggle Rightwards
-	StruggleDown.DisplayName: Struggle Downwards
+	EatItems.DisplayName: Swallow Item
+	StruggleUp.DisplayName: Struggle Up
+	StruggleLeft.DisplayName: Struggle Left
+	StruggleRight.DisplayName: Struggle Right
+	StruggleDown.DisplayName: Struggle Down
 	StruggleSpecial.DisplayName: Special Struggle
+}
+
+Conditions: {
+	FullNPC: If the shop NPC's stomach fullness is 0.75 or higher
+	BeginnerStatPoints: If you have earned 10 or more stat points from pred goals
 }
 
 Configs: {
@@ -112,7 +119,7 @@ Configs: {
 				Tooltip:
 					'''
 					BALANCE BREAKAGE: Who cares?
-					Makes it possible for the Empress of Light to fit in stomachs of any capacity, with preds of any swallow strength, and greatly increases digestion damage against her.
+					Makes it possible for the Empress of Light to fit down throats of any strength, into stomachs of any capacity, and massively increases digestion damage against her.
 					Defaults to false.
 					'Fairies are food. They can also be friends or foes, even full with or fattened up from other food, but they are ALWAYS food. No exceptions.'
 					'''
@@ -410,6 +417,13 @@ PredStatsMenu: {
 }
 
 PredPlayerGoals: {
+	GenericText: {
+		HoldToLearnMore: {
+			Incomplete: Hold LEFT SHIFT for more specific information on how to complete this goal
+			Complete: Hold LEFT SHIFT for more specific information on how you completed this goal
+		}
+	}
+
 	Starter: {
 		Name: Starter
 		Subtitle: New Game
@@ -432,7 +446,7 @@ PredPlayerGoals: {
 					'''
 					Eat and digest any NPC (mob or townsperson).
 					To swallow an NPC this way, press the Swallow keybind while near them.
-					If you cannot swallow the NPC, make sure they’re not larger than your swallow or stomach capacities can currently handle.
+					If you cannot swallow the NPC, make sure they're not larger than your swallow or stomach capacities can currently handle.
 					'''
 			}
 		}
@@ -450,8 +464,8 @@ PredPlayerGoals: {
 					'''
 					Eat an item. Digestion is optional.
 					To swallow an item, hover over it in your inventory and press the Swallow Item keybind.
-					If you cannot swallow the item, make sure it’s not too large for your swallow or stomach capacities to handle.
-					Some items (e.g. Life and Mana Crystal) can be swallowed on left-click by holding the Swallow Item keybind while using them.
+					If you cannot swallow the item, make sure it's not too large for your swallow or stomach capacities to handle.
+					Some items (e.g. Life and Mana Crystals) can be swallowed on left-click by holding the Swallow Item keybind while using them.
 					Some items (e.g. food and drink) force you to swallow them on use.
 					'''
 			}
@@ -468,7 +482,7 @@ PredPlayerGoals: {
 					'''
 				Clarification:
 					'''
-					Drink a tile’s worth of water.
+					Drink a tile's worth of water.
 					To drink liquids straight from the world, submerge yourself in them and hold the Swallow keybind.
 					Some liquids may pose a danger to you if you drink them without proper preparation.
 					'''
@@ -481,9 +495,18 @@ PredPlayerGoals: {
 		Subtitle: Early to Mid Pre-Hardmode
 		Description:
 			'''
-			Okay, so you know the basics now, but there's still a nigh-endless supply of succulent, mouth-watering MEAT out there for you to sink those pearly whites into as they sink into your gut.
+			Okay, so you know the basics now, but there's still a nigh-endless supply of succulent, mouth-watering mounds of MEAT out there for you to sink those pearly whites into as they sink into your gut.
 			Try to snag a good few courses of breakfast to help yourself get used to swallowing and digesting bigger and/or squirmier meals.
 			'''
+
+		EatAngyFlower: {
+			Name: Vegan Option
+			Description:
+				'''
+				Eat and digest an angry dandelion.
+				'Some preds insist on never eating innocent animals. Or other people. Thankfully, there is an abundance of planty meals available for these preds to eat.'
+				'''
+		}
 
 		EatSnowFlinx: {
 			Name: It Was So Fluffy!
@@ -496,20 +519,28 @@ PredPlayerGoals: {
 
 		SleepSpeedsDigestion: {
 			Name: Digestive Nap
-			Description:
-				'''
-				Sleep in a bed for a little while to help digest a big meal better.
-				'Everyone knows a good, long nap is the #1 way to turn friends and foes alike into a doughier tum after putting in all that hard work to eat them!'
-				'''
+
+			Description: {
+				Default:
+					'''
+					Sleep in a bed for a little while to help digest a big meal better.
+					'Everyone knows a good, long nap is the #1 way to turn friends and foes alike into a doughier tum after putting in all that hard work to eat them!'
+					'''
+				Clarification: Get into bed with a stomach weight of 0.75 or more, and sleep in it until your belly is empty.
+			}
 		}
 
 		TooFull: {
 			Name: Overstuffed
-			Description:
-				'''
-				Stay at or near your maximum capacity for a full minute.
-				'Eyes bigger than your stomach, eh? Happens to every newbie pred, and for good reason. It's hard to pace yourself sometimes, what with so much thick, juicy MEAT walking around everywhere...'
-				'''
+
+			Description: {
+				Default:
+					'''
+					Stay at or near your maximum capacity for a full minute.
+					'Eyes bigger than your stomach, eh? Happens to every newbie pred, and for good reason. It's hard to pace yourself sometimes, what with so much thick, juicy MEAT walking around everywhere...'
+					'''
+				Clarification: Remain at 97.5% fullness or higher for at least 60 seconds.
+			}
 		}
 
 		ColorfulSoup: {
@@ -550,11 +581,20 @@ PredPlayerGoals: {
 
 		DrinkHoney: {
 			Name: A Revitalizing Drink
-			Description:
-				'''
-				Drink a bit of honey.
-				'All good things must come to an end...inside a tum like yours. Honey just so happens to be entirely too many of those good things to NOT end up churned into belly fat. It's delicious, it fills you up perfectly, it's deliciously fattening...it even gives you a bit more health as you melt it down! What's there not to love about it?'
-				'''
+
+			Description: {
+				Default:
+					'''
+					Drink a bit of water.
+					'Even the best preds need a nice, cold drink every now and again! You might even get some seafood every so often as you drink, too!'
+					'''
+				Clarification:
+					'''
+					Drink a tile's worth of water.
+					To drink liquids straight from the world, submerge yourself in them and hold the Swallow keybind.
+					Some liquids may pose a danger to you if you drink them without proper preparation.
+					'''
+			}
 		}
 	}
 
@@ -587,11 +627,19 @@ PredPlayerGoals: {
 
 		EatMaxLifeAndManaCrystals: {
 			Name: Topped Off (For Now)
-			Description:
-				'''
-				Eat and digest a total of 15 Life Crystals and 9 Mana Crystals.
-				'Feeling strong enough to snack on some properly lively prey yet, or do you need a bit more?'
-				'''
+
+			Description: {
+				Default:
+					'''
+					Eat and digest a total of 15 Life Crystals and 9 Mana Crystals.
+					'Feeling strong enough to snack on some properly lively prey yet, or do you need a bit more?'
+					'''
+				Clarification:
+					'''
+					Eat and digest a Life or Mana Crystal and reach the maximum for both because of it.
+					Eating and digesting a Life or Mana Crystal while your max health and mana are already maxed will also complete this goal.
+					'''
+			}
 		}
 
 		Cheapskate: {
@@ -603,7 +651,7 @@ PredPlayerGoals: {
 					Gobble up the Nurse to cheat her service fees and heal up for free (and get a free meal in the process).
 					'Just what the patient ordered.'
 					'''
-				Clarification: While injured/debuffed enough for a traditional heal to cost you at least 1 gold and 50 silver from the Nurse, eat and digest the Nurse.
+				Clarification: While injured/debuffed enough for a traditional heal from the Nurse to cost you at least 1 gold and 20 silver, eat and digest the Nurse.
 			}
 		}
 
@@ -616,13 +664,68 @@ PredPlayerGoals: {
 				'''
 		}
 
+		EatTownspersonWithVoodoo: {
+			Name: Long-Distance Dinner
+
+			Description: {
+				Default:
+					'''
+					Gleefully mulch a tasty townsperson...without ever actually swallowing them.
+					'Whodoo the voodoo?'
+					'''
+				Clarification: Eat and digest a voodoo doll corresponding to a townsperson that is currently alive.
+			}
+		}
+
+		EatFallingStar: {
+			Name: Wish Upon A Star
+
+			Description: {
+				Default:
+					'''
+					Let a star, falling from the outer skies, land inside your belly.
+					'They say digesting a piece of the heavens above can give you the great power of magically-propelled flight! Then again, they also say that it can give you radiation poisoning...and we aren't seeing any of that as you digest it, now, are we?'
+					'''
+				Clarification: Swallow a Falling Star while it is still falling from the sky.
+			}
+		}
+
+		Eat5Swords: {
+			Name: Sword Swallower
+
+			Description: {
+				Default:
+					'''
+					Swallow a few different swords, and add each of them to the padding on your belly.
+					'I don’t think that's what it's supposed to mean...'
+					'''
+				Clarification:
+					'''
+					Eat and digest at least 5 different swords that are either in the vanilla game or added by Voraria: Second Course.
+					Swords which use other swords to be made somehow or another will also give credit for all of their constituent parts.
+					Swords which count towards this goal will have a sword icon on the side of their tooltip.
+					'''
+			}
+		}
+
 		DrinkLava: {
 			Name: A Recalescent Drink
-			Description:
-				'''
-				SAFELY drink a bit of lava. You'll need something to protect your belly from the sheer heat of a molten beverage like lava.
-				'Just be careful not to drink too much; lava is VERY high in caloric contents for being thinner than honey, and you're not exactly one of the demons that drinks it on the regular...'
-				'''
+
+			Description: {
+				Default:
+					'''
+					SAFELY drink a bit of lava. You'll need something to protect your belly from the sheer heat of a molten beverage like lava.
+					'Just be careful not to drink too much; lava is VERY high in caloric contents for being thinner than honey, and you're not exactly one of the demons that drink gallons of it on the regular...'
+					'''
+				Clarification:
+					'''
+					Have an effect active which prevents damage from lava. Valid sources include:
+					- Lava Charm and tinkers
+					- Obsidian Skin Potion
+					- Burn-Proof Belly pred ability
+					Swallow a tile's worth of lava.
+					'''
+			}
 		}
 	}
 
@@ -632,7 +735,7 @@ PredPlayerGoals: {
 		Description:
 			'''
 			Alright. You've got a good grip on gulping down things bigger than yourself; time for lunch!
-			Be sure to keep an eye on your acid tier starting about here; many of the snacks you...well, snack on...will start being highly resistant or even immune to normal acids, so you'll need to find a way to help your tummy keep up with demand!
+			Be sure to keep an eye on your acid tier starting about here; many of the snacks you...well, snack on...will start being highly resistant or even immune to normal acids, so you'll need to find a way to help your system keep up with demand!
 			'''
 
 		EatMimic: {
@@ -649,36 +752,49 @@ PredPlayerGoals: {
 			Description:
 				'''
 				Drink a notable amount of holy water, then eat Promethia to treat her to a nice bath.
-				'It's not as good as the tummies and saunas alike she remembers from home, but she loves the experience nonetheless! Somehow, she's given you multiple stat points for this. How, you might ask? It's simple.
+				'It's not as good as the stomachs and saunas alike she remembers from home, but she loves the experience nonetheless! Somehow, she's given you multiple stat points for this. How, you might ask? It's simple.
 
-				Don't underestimate the enticing nature, and latent powers, of a dedicated gut slut.'
+				Don't underestimate the enticing nature, and latent magical abilities, of a dedicated gut slut.'
 				'''
 		}
 
 		BoulderBelly: {
 			Name: Rock in Rolls
-			Description:
-				'''
-				Gulp down a Boulder to avoid a hit from it that otherwise would've killed you.
 
-				[c/{Mods.V2.CommonColorCodes.ThomasCommentary}:...in my defense, this joke sounded a lot funnier in my head]
-				'''
+			Description: {
+				Default:
+					'''
+					Gulp down a Boulder to avoid a hit from it that otherwise would've killed you.
+					[c/{Mods.V2.CommonColorCodes.ThomasCommentary}:this joke sounded a lot funnier in my head]
+					'''
+				Clarification: Eat and digest a rolling Boulder which was originally rolling towards you and, if it were to hit you, would've killed you via contact damage (before defensive calculations and luck).
+			}
 		}
 	}
 }
 
 ItemName: {
 	Voraria: {
+		Accessories: {
+			BalloonBelly: Belly-Shaped Balloon
+			NymphHairScarf: Sly Hunter's Scarf
+		}
+
 		Consumables: {
 			Catchables.Pinky: Pinky
+			PermanentUpgrades.PureSwallowBoost1: Swallowing Stimulant
 			DigestionRepairScroll: Scroll of Divine Indigestion
+			HairDyeCapacity: Hunger Hair Dye
 		}
 
 		Charms: {
 			BetterDigestion: Lesser Acidic Charm
-			LessStomachWeight: Lesser Disencumberance Charm
+			PreyItemTheft: Charm of the Thief
+			LessStomachWeight: Disencumberance Charm
 			RegenFromAbsorption: Revitalization Charm
 		}
+
+		Weapons.Summon.PaperMaidSummon: Enchanted Origami Bell
 	}
 }
 
@@ -705,7 +821,12 @@ ItemTooltip: {
 			1: Immune to normal stomach acids
 			2: Immune to normal and enchanted stomach acids
 			3: Immune to normal and enchanted stomach acids, as well as aqua regia
-			99: Immune to any system, save for those blessed by the gods themselves
+			99: Digesting this item requires acids blessed by the gods themselves
+
+			100: {
+				Normal: Indigestible...?
+				Chronological: Indigestible...but not for you
+			}
 		}
 	}
 
@@ -743,7 +864,7 @@ ItemTooltip: {
 					- [c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Grants the Regeneration buff] while digesting; this lingers for [c/FFFF00:{LifeCrystalEatRegenLength} seconds] once fully digested.
 					When used normally by a player OR upon running out of durability when eaten by a player:
 					- Permanently [c/{$Mods.V2.CommonColorCodes.Heal}:increases maximum health by 20].
-					- For every 3 crystals eaten total, permanently [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:increase the TUM stat by 1].
+					- Permanently [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:increase the TUM stat by 1].
 					  - The above two bonuses can stack for up to {LifeCrystalsMax} crystals used/eaten.
 					Life Crystals used/eaten by this character (max. {LifeCrystalsMax}): [c/{LifeCrystalsUsedColor}:{LifeCrystalsUsed}].
 					'''
@@ -793,7 +914,7 @@ ItemTooltip: {
 					- [c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Grants the Mana Regeneration buff] while digesting; this lingers for [c/FFFF00:{ManaCrystalEatManaRegenLength} seconds] once fully digested.
 					When used normally by a player OR upon running out of durability when eaten by a player:
 					- Permanently [c/{$Mods.V2.CommonColorCodes.ManaHeal}:increases maximum mana by 20].
-					- For every 3 crystals total eaten, permanently [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:increases the ABS stat by 1].
+					- Permanently [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:increases the ABS stat by 1].
 					  - The above two bonuses can stack for up to {ManaCrystalsMax} crystals used/eaten.
 					Mana Crystals used/eaten by this character (max. {ManaCrystalsMax}): [c/{ManaCrystalsUsedColor}:{ManaCrystalsUsed}].
 					'''
@@ -804,6 +925,124 @@ ItemTooltip: {
 
 					...and then someone proved why it could be a bad idea to overspecialize, so now the spell also fires off if the rock candy is broken apart.
 					'''
+			}
+		}
+
+		Currency: {
+			Coins: {
+				Generic: {
+					Short: Can be used in shops
+					Long:
+						'''
+						Coins in your inventory will [c/{$Mods.V2.CommonColorCodes.DoSomething}:auto-convert to highest denominations] whenever possible.
+						Can be used as currency in most shops.
+						'''
+					Flavor:
+						'''
+						of a currency long since abandoned by most countries.
+						However, those who travel the space between those countries still find it useful to use it for trades with people who live in the wilder regions of Terraria.
+						'''
+				}
+
+				CopperCoin: {
+					Short:
+						'''
+						{$Mods.V2.ItemTooltip.Currency.Coins.Generic.Short}
+						'Not made of chocolate, sadly'
+						{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+						'''
+					Long:
+						'''
+						Used as the lowest denomination of "universal" currency.
+						100 of these have equal value to a [i:SilverCoin] Silver Coin.
+						{$Mods.V2.ItemTooltip.Currency.Coins.Generic.Long}
+						'''
+					Flavor:
+						'''
+						The lowest denomination {$Mods.V2.ItemTooltip.Currency.Coins.Generic.Flavor}
+						Roughly equal in value to:
+						- Avarsici: Favor.
+						- Sveetia: [c/FFAFAF:Too low value.]
+						- Turea: N/A.
+						- Desperais: N/A.
+						'''
+				}
+
+				SilverCoin: {
+					Short:
+						'''
+						{$Mods.V2.ItemTooltip.Currency.Coins.Generic.Short}
+						'Also not made of chocolate, also sadly'
+						{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+						'''
+					Long:
+						'''
+						Used as the second-lowest denomination of "universal" currency.
+						1 of these has equal value to 100 [i:CopperCoin] Copper Coins.
+						100 of these have equal value to 1 [i:GoldCoin] Gold Coin.
+						{$Mods.V2.ItemTooltip.Currency.Coins.Generic.Long}
+						'''
+					Flavor:
+						'''
+						The second-lowest denomination {$Mods.V2.ItemTooltip.Currency.Coins.Generic.Flavor}
+						Roughly equal in value to:
+						- Avarsici: 1 Mark.
+						- Sveetia: [c/FFAFAF:Too low value for conversion.]
+						- Turea: N/A.
+						- Desperais: N/A.
+						'''
+				}
+
+				GoldCoin: {
+					Short:
+						'''
+						{$Mods.V2.ItemTooltip.Currency.Coins.Generic.Short}
+						'Voted 'Most Likely To Be Made Of Chocolate'!...but it isn't'
+						{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+						'''
+					Long:
+						'''
+						Used as the second-highest denomination of "universal" currency.
+						1 of these has equal value to 100 [i:SilverCoin] Silver Coins.
+						100 of these have equal value to 1 [i:PlatinumCoin] Platinum Coin.
+						{$Mods.V2.ItemTooltip.Currency.Coins.Generic.Long}
+						'''
+					Flavor:
+						'''
+						The second-highest denomination {$Mods.V2.ItemTooltip.Currency.Coins.Generic.Flavor}
+						Roughly equal in value to:
+						- Avarsici: 1 Great Mark.
+						- Sveetia: 4 Sugar Sterlings.
+						- Turea: N/A.
+						- Desperais: N/A.
+						'''
+				}
+
+				PlatinumCoin: {
+					Short:
+						'''
+						{$Mods.V2.ItemTooltip.Currency.Coins.Generic.Short}
+						'Still need to know if it's made of chocolate? Are you just that eager to gurgle all your wealth into a wealth of belly fat?'
+
+						'...because it's not made of chocolate'
+						{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+						'''
+					Long:
+						'''
+						Used as the second-highest denomination of "universal" currency.
+						1 of these has equal value to 100 [i:GoldCoin] Gold Coins.
+						{$Mods.V2.ItemTooltip.Currency.Coins.Generic.Long}
+						'''
+					Flavor:
+						'''
+						The highest denomination {$Mods.V2.ItemTooltip.Currency.Coins.Generic.Flavor}
+						Roughly equal in value to:
+						- Avarsici: 1 Grand Mark.
+						- Sveetia: 400 Sugar Sterlings.
+						- Turea: N/A. Turean folk trade in clear material wealth, not petty currency.
+						- Desperais: N/A. People pay, and charge, in good, meaty, fighty food around those parts.
+						'''
+				}
 			}
 		}
 
@@ -859,6 +1098,25 @@ ItemTooltip: {
 	}
 
 	Voraria: {
+		Accessories: {
+			BalloonBelly: {
+				Short:
+					'''
+					Can be blown up or deflated, and wrapped around your tummy to make it look bigger!
+					{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+					'''
+				Long:
+					'''
+					Can be worn in any vanity accessory slot to make your stomach always appear larger proportional to the size of the balloon.
+					Current size is {InflatedSize}; maximum size is {MaximumInflatedSize}.
+					[c/{$Mods.V2.CommonColorCodes.DoSomething}:Left-click] to inflate the balloon if it is not at its max size, increasing its size by 1.
+					[c/{$Mods.V2.CommonColorCodes.DoSomething}:Right-click] to deflate the balloon if it has air in it, decreasing its size by 1.
+					Does nothing when equipped in a non-vanity accessory slot.
+					'''
+				Flavor: This funny-looking balloon is pre-fitted with a waistband for easy attachment to...well, specifically the stomach. Blow it up enough, and it'll replicate all the great looks of a massive, meat-filled gut without any of the downsides, complete with color-changing latex exterior so you get just the matching color you and your tummy want! Just note that it won't make all the happy gurgling and groaning a REAL bellyful of squirmy snacks makes.
+			}
+		}
+
 		Charms: {
 			BetterDigestion: {
 				Short:
@@ -881,7 +1139,30 @@ ItemTooltip: {
 					[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Decreases stomach weight by {WeightReduction}.]
 					If your stomach is at {FullnessEffectivenessLossThreshold} fullness or more, [c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:this effect becomes less effective the less capacity you have to spare.]
 					'''
-				Flavor: A beginner-level charm designed to make one's stomach less of a burden to lug around while it's full of sweet, sloshy calories. While it works in most cases, it does this by passively generating a layer of helium inside of the bearer's stomach; thus, if there isn't sufficient room to provide said helium deposits, the charm becomes substantially less effective.
+				Flavor:
+					'''
+					A rather strange charm, almost mechanical in nature, purpose-built to make one's stomach significantly less of a burden to lug around while it's filled to capacity with sufficiently satisfying caloric fuel.
+					While it works in most cases, it does this by passively generating a layer of helium inside of the bearer's stomach; thus, if there isn't sufficient room to provide said helium deposits, the charm becomes significantly less effective, to the point of eventually doing nothing if there is no space to add helium.
+					'''
+			}
+
+			PreyItemTheft: {
+				Short:
+					'''
+					May cause you to belch up certain items from your meals
+					{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+					'''
+				Long:
+					'''
+					Upon dying to digestion, prey eaten by you [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:have a chance to drop certain items].
+					Some items dropped this way will be unique to these tables, while others will be existing important drops from the prey (with lower/limited drop rates).
+					'''
+				Flavor:
+					'''
+					Greed produces greed.
+					Eating others endlessly.
+					So what makes it wait?
+					'''
 			}
 
 			RegenFromAbsorption: {
@@ -933,11 +1214,83 @@ ItemTooltip: {
 				}
 			}
 
+			PermanentUpgrades: {
+				PureSwallowBoost1: {
+					Short:
+						'''
+						Permanently increases the strength of your throat when used or eaten
+						Can only be used once; further uses and/or consumptions do nothing
+						{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+						'''
+					Long:
+						'''
+						[c/{$Mods.V2.CommonColorCodes.DoSomething}:Using or eating this item] will permanently grant you the following bonus:
+						> [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:+8 GLP]
+						This bonus only applies once. Using or eating this item after you have already done so [c/{$Mods.V2.CommonColorCodes.NegativeEffect}:will have no further effect.]
+						'''
+					Flavor:
+						'''
+						One of the first physical stimulants for predators ever created was a drug to enhance the potential of the throat, allowing for easier swallowing of anything, and anyone, the recipient wanted in their gut.
+						This stimulant has been replicated countless times, and is now standard-fare as an entry-level predatory aid across the world of Terraria.
+						'''
+				}
+			}
+
+			SpecialItemUpgrades: {
+				PaperMaidSummon: {
+					RawStats: {
+						Short:
+							'''
+							{PaperMaidName} might like this item
+							{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+							'''
+						Long:
+							'''
+							This item can be fed to {PaperMaidName}, the paper maid summoned by the [c/{$Mods.V2.CommonColorCodes.DoSomething}:{$Mods.V2.ItemName.Voraria.Weapons.Summon.PaperMaidSummon}], by right-clicking on her with it.
+							Once she fully digests this item, {PaperMaidName} will permanently gain self-lamination, conferring the following buffs:
+							> +{LaminatedHealth} health.
+							> +{LaminatedStomachCapacity} stomach capacity.
+							> +{LaminatedStomachacheMeterCapacity} stomachache meter capacity.
+							> +{LaminatedDigestionRatio} digestion damage ratio.
+							'''
+						Flavor:
+							'''
+							This small device, a marvel of magical conduction cross-bred with machine lamination, is designed to be able to laminate anything and everything simply by placing the desired item inside it and waiting.
+							Early prototypes erroneously proved capable of accepting people as input and laminating. These prototypes have since been stored in their creator's personal stash for later testing and revision.
+							That said, while lamination is often used as a tool to hunt origami creations in the wild, fallen off trading caravans and originally left over from Sveetia's annual Sugar Crane Festival, it is also used by the Sveetian people to reinforce their greatest works.
+							'''
+					}
+
+					Flight: {
+						Short:
+							'''
+							{PaperMaidName} might like this item
+							{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+							'''
+						Long:
+							'''
+							This item can be fed to {PaperMaidName}, the paper maid summoned by the [c/{$Mods.V2.CommonColorCodes.DoSomething}:{$Mods.V2.ItemName.Voraria.Weapons.Summon.PaperMaidSummon}], by right-clicking on her with it.
+							Once she fully digests this item, {PaperMaidName} will permanently gain paper crane wings, conferring the following buffs:
+							> Gains flight capabilities, and will fly as her master or target does.
+							> Increased accuracy and range for dash attack ([c/{$Mods.V2.CommonColorCodes.DoSomething}:RIGHT-RIGHT-RIGHT] instruction).
+							'''
+						Flavor:
+							'''
+							A poor, damaged origami crane, worn down by evading the ever-growing hunger of the average office worker for a nice, well-laminated snack from Sveetia while on lunch break.
+							While its wings are battered and its flight rendered all but gone, it still has strength to give...but not to those who would hunt it for a light meal.
+							No, this weak, dying crane searches for another of its kin, another Sveetian origami piece, to give itself wholly to...
+
+							...lending, to that creation, the great power of flight.
+							'''
+					}
+				}
+			}
+
 			DigestionRepairScroll: {
 				Short:
 					'''
 					Using this item will instantly relieve you of most of the downsides of predator or preything lifestyles
-					When this is used, a full day must pass before another one can be used
+					After it is used, a full day must pass before it can be used again
 					{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
 					'''
 				Long:
@@ -990,6 +1343,76 @@ ItemTooltip: {
 					Despite how often these things were flaunted around as the future of predatory prowess and a marvel of modern magical bioengineering back in the day, the real marvel is that these somehow pose no significant health risks despite mixing an entire secondary acid into an already-powerful stomach. The label on the side suggests eating the entire pack...including the pack itself. The pack supposedly has much better nutritional value than the pills, so...bottoms up.
 					Obtaining more than one pack of these tablets is prohibited by Avarsician law and punishable by...well, predominantly fucking about and learning what for. It's not exactly hard to guess why a spell that assumes you haven't taken the pills at all is bad if you've already melted down a full pack of them before.
 					'''
+			}
+
+			HairDyeCapacity: {
+				Short:
+					'''
+					Changes the color of your hair based on how full you are
+					{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+					'''
+				Long:
+					'''
+					[c/{$Mods.V2.CommonColorCodes.DoSomething}:Changes the color of your hair] based on [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:how full your stomach currently is].
+					[c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:When your stomach is empty], makes your hair a dark red.
+					[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:When your stomach is completely full], makes your hair a pleasantly full green.
+					'''
+				Flavor:
+					'''
+					A special hair dye, purpose-mixed for the fashionable predator in your life (be it yourself or someone else).
+					On a full stomach, this dye gives off a stunningly pleasant green, while the dark red one's hair will turn while running on empty is just as attractive. A number of other colors end up in the spotlight if the wearer's stomach isn't 100% full, but still has some meat in it, and all of them are specially designed to make one's hair as appealing as possible.
+					After all, how can your prey resist ending up a part of those luscious locks if you've got just the right color to make them weak in the knees?
+
+					DISCLAIMER: Excess calories from digested meals may not actually increase hair length.
+					'''
+			}
+		}
+
+		Weapons: {
+			Summon: {
+				PaperMaidSummon: {
+					Short:
+						'''
+						Summons a capable maid(...?) to fight for you
+						She requires {NeededMinionSlots} minion slots available to be summoned, and has no sisters
+						Can throw paper plates and simple silverware at enemies, as well as eat them or you
+						Prey she eats get papercuts as they digest
+						If eaten, she gives internal papercuts to her predator (intentionally or not) until sufficiently digested
+						'Maidche to serve'
+						{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+						'''
+					Long:
+						'''
+						[c/{$Mods.V2.CommonColorCodes.DoSomething}:Left-click] to summon a maid to your cursor position. Her name is {Name}!
+						{Name} requires {NeededMinionSlots} minion slots available to be summoned. There can only be one of her at once.
+						[c/{$Mods.V2.CommonColorCodes.DoSomething}:Left-click] again while summoned and no instructions are being performed to teleport {Name} to your position.
+						[c/{$Mods.V2.CommonColorCodes.DoSomething}:Right-click] to select the closest entity to the cursor for targeting. From here, you can command {Name} by inputting specific click combinations:
+						[c/{$Mods.V2.CommonColorCodes.DoSomething}:RIGHT-LEFT-LEFT] to have {Name} throw a paper plate at the target, [c/{$Mods.V2.CommonColorCodes.DealDamage}:dealing {PaperPlateDamage} damage].
+						[c/{$Mods.V2.CommonColorCodes.DoSomething}:RIGHT-LEFT-RIGHT] to have {Name} throw a set of paper mache silverware at the target, [c/{$Mods.V2.CommonColorCodes.DealDamage}:dealing 3x{SilverwarePerDamage} damage].
+						> The fork [c/{$Mods.V2.CommonColorCodes.DealDamage}:ignores up to {ForkArmorPen} defense].
+						> The spoon [c/{$Mods.V2.CommonColorCodes.DealDamage}:deals {SpoonInorganicDamageBonusPercent} higher damage to inorganics].
+						> The knife [c/{$Mods.V2.CommonColorCodes.DealDamage}:inflicts Bleeding on applicable enemies for {KnifeBleedTime} seconds].
+						[c/{$Mods.V2.CommonColorCodes.DoSomething}:RIGHT-RIGHT-LEFT] to have {Name} swing a broom at the target if close enough, [c/{$Mods.V2.CommonColorCodes.DealDamage}:dealing {BroomDamage} damage].
+						[c/{$Mods.V2.CommonColorCodes.DoSomething}:RIGHT-RIGHT-RIGHT] to have {Name} dash towards the target. If she contacts the target in this state, she immediately snatches them into her mouth, swallowing them in short order.
+						{Name}'s stomach has a [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:capacity of {StomachCapacity}] and a [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:stomachache meter capacity of {StomachacheMeterCapacity}].
+						{Name}'s stomach [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:deals {DigestionDamage} digestion damage {DigestionRate} times per second].
+						[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:{DigestionBleedRatio} of digestion damage] is instead [c/{$Mods.V2.CommonColorCodes.DealDamage}:converted to a Bleeding proc which persists even if prey escape] her stomach.
+						If eaten by anything, {Name} has {Health} health, and [c/{$Mods.V2.CommonColorCodes.DealDamage}:passively inflicts Bleeding on her predator] until she dies from digestion.
+						If eaten by you, {Name} [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:will not struggle in your stomach].
+						If you feed yourself to {Name}, her stomach will not digest you unless you ask to be digested.
+						While in {Name}'s stomach:
+						> She will not eat any other prey, even if they try to weasel their way into her mouth, unless you are already being digested.
+						> The [c/{$Mods.V2.CommonColorCodes.DoSomething}:RIGHT-RIGHT-RIGHT] input can be performed inside {Name}'s stomach to [c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:instruct her to digest you].
+						> All damage dealt to her is redirected to her stomachache meter.
+						> If her stomachache meter fills, you and any other contained still-alive prey will be forcefully ejected.
+						'''
+					Flavor:
+						'''
+						A well-crafted origami piece; one of countless made by the master papersmiths that populate the country of Sveetia, known for its acres upon acres of highly-prized sugar cane.
+						This bell, when rung, cuts off and unfolds an infinitesmally small piece of itself, soon refashioning and refolding that mere speck into a sizable maid, ready to serve any master that needs her.
+						Able to subdue foes in a wide variety of fashions, her preferred method is, of course, swallowing her targets whole so as to minimize and efficiently remove external clutter, living or otherwise.
+						'''
+				}
 			}
 		}
 	}
@@ -1623,4 +2046,28 @@ NPCs: {
 	}
 
 	MeteorMarble.DisplayName: Meteor Marble
+}
+
+ItemObtainmentDetails.Voraria.Accessories.BalloonBelly: Mods.V2.ItemObtainmentDetails.Voraria.Accessories.BalloonBelly
+
+Items: {
+	PureSwallowBoost1: {
+		DisplayName: Pure Swallow Boost1
+		Tooltip: ""
+	}
+
+	FastDigestionPotion: {
+		DisplayName: Fast Digestion Potion
+		Tooltip: ""
+	}
+
+	StomachacheMeterCapacityPotion: {
+		DisplayName: Stomachache Meter Capacity Potion
+		Tooltip: ""
+	}
+
+	StomachCapacityPotion: {
+		DisplayName: Stomach Capacity Potion
+		Tooltip: ""
+	}
 }

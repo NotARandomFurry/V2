@@ -96,6 +96,10 @@ namespace V2.Items
 			set => _health = Math.Min(value, MaxHealth);
 		}
 		public double Size { get; set; }
+		/// <summary>
+		/// The minimum acid tier required to digest (deal durability damage to) this item.<br/>
+		/// Defaults to 0, allowing all acids to churn and gurgle this item down into fat.<br/>
+		/// </summary>
 		public int AcidResistTier { get; set; }
 		public string MealSizeTextOverride { get; set; }
 
@@ -109,8 +113,8 @@ namespace V2.Items
 		public delegate void DelegateOnBreak(Item item, Entity pred);
 		public DelegateOnBreak OnBreak { get; set; }
 
-		public bool e { get; set; }
 		public bool EdibleOnUse { get; set; }
+		public bool AlwaysEatenByUse { get; set; }
 
 		public override bool InstancePerEntity => true;
 
@@ -133,6 +137,7 @@ namespace V2.Items
 			OnBreak = null;
 
 			EdibleOnUse = false;
+			AlwaysEatenByUse = false;
 		}
 
 		public override void Update(Item item, ref float gravity, ref float maxFallSpeed)
@@ -176,7 +181,7 @@ namespace V2.Items
 			if (item.IsAir)
 				return false;
 
-			if (item.AsFood().EdibleOnUse && item != player.inventory[58] && player.whoAmI == Main.myPlayer && V2.ItemGulpHotkey.Current)
+			if (item.AsFood().EdibleOnUse && item != player.inventory[58] && player.whoAmI == Main.myPlayer && (V2.ItemGulpHotkey.Current || item.AsFood().AlwaysEatenByUse))
 			{
 				int origStack = item.stack;
 				item.stack = 1;
@@ -334,7 +339,18 @@ namespace V2.Items
 				)
 			);
 
-			if (item.AsFood().EdibleOnUse)
+			if (item.AsFood().AlwaysEatenByUse)
+			{
+				tooltips.Insert(
+					tooltips.IndexOf(finalLine) + 4,
+					new TooltipLine(
+						V2.Instance,
+						"V2EatenByNormalUse",
+						Language.GetTextValue("Mods.V2.ItemTooltip.Generic.EatenByNormalUse")
+					)
+				);
+			}
+			else if (item.AsFood().EdibleOnUse)
 			{
 				tooltips.Insert(
 					tooltips.IndexOf(finalLine) + 4,

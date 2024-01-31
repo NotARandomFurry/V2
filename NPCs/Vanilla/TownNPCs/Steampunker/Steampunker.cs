@@ -83,6 +83,9 @@ namespace V2.NPCs.Vanilla.TownNPCs.Steampunker
 			npc.AsPred().MaxStomachCapacity = 50.0;
 			npc.AsPred().BaseStomachacheMeterCapacity = 1250.0;
 
+			npc.AsPred().SmallGulps = Gulps.Short;
+			npc.AsPred().SmallGulpThreshold = 0.45;
+			npc.AsPred().BigGulps = Gulps.Standard;
 			npc.AsPred().CanBeForceFed = CanSteampunkerBeForceFed;
 			npc.AsPred().OnForceFed = OnSteampunkerForceFed;
 
@@ -92,13 +95,15 @@ namespace V2.NPCs.Vanilla.TownNPCs.Steampunker
 
 			npc.AsPred().OnDigestionKill = OnDigestionKill;
 			npc.AsPred().SmallBurps = Burps.Humanoid.Small;
+			npc.AsPred().SmallBurpThreshold = 1.5;
 			npc.AsPred().StandardBurps = Burps.Humanoid.Standard;
 			npc.AsPred().GetAdditionalDigestedPlayerMessages = GetDigestedPlayerAdditionalDeathMessages;
 			npc.AsPred().GetPreyAbsorptionRate = GetPreyAbsorptionRate;
 
 			npc.AsPred().GetVisualBellySize = GetVisualBellySize;
 
-			npc.AsFood().OnKilledByDigestion += PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
+			npc.AsFood().OnKilledByDigestion = PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
+			npc.AsFood().OnKilledByDigestion += PreyNPC.HandlePreyItemTheft;
 		}
 
 		public override ITownNPCProfile ModifyTownNPCProfile(NPC npc) => SteampunkerStuff.PredSteampunkerProfile;
@@ -361,10 +366,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Steampunker
 
 		public static void OnDigestionKill(NPC npc, PreyData digestedPrey)
 		{
-			SoundEngine.PlaySound(
-				digestedPrey.WeightLeftToDigest < 1.5 ? npc.AsPred().SmallBurps : npc.AsPred().StandardBurps,
-				npc.TrueCenter() + new Vector2(npc.direction * 8f, -14f)
-			);
+			
 		}
 
 		public static double GetPreyAbsorptionRate(NPC npc)

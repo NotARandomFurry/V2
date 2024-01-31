@@ -24,14 +24,15 @@ namespace V2.NPCs.Vanilla.Tundra
 
 		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.type == NPCID.SnowFlinx;
 
-		public override void SetDefaults(NPC npc)
+		public override void SetDefaults(NPC NPC)
 		{
-			npc.AsV2NPC().Gender = EntityGender.Other;
+			NPC.AsV2NPC().Gender = EntityGender.Other;
 
-			npc.AsFood().Size = 0.72;
+			NPC.AsFood().Size = 0.72;
 
-			npc.AsFood().OnKilledByDigestion += PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
-			npc.AsFood().OnKilledByDigestion += OnKilledByDigestion_GrantSnowFlinxGoal;
+			NPC.AsFood().OnKilledByDigestion = PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
+			NPC.AsFood().OnKilledByDigestion += PreyNPC.HandlePreyItemTheft;
+			NPC.AsFood().OnKilledByDigestion += OnKilledByDigestion_GrantSnowFlinxGoal;
 		}
 
 		public static void OnKilledByDigestion_GrantSnowFlinxGoal(NPC npc, Entity pred)

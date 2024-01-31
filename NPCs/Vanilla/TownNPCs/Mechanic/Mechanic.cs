@@ -11,6 +11,7 @@ using Terraria.GameContent.Events;
 using Terraria.ID;
 using Terraria.ModLoader;
 using V2.Core;
+using V2.Items.Voraria.Charms;
 using V2.NPCs.Voraria.TownNPCs.Succubus;
 using V2.PlayerHandling;
 using V2.Sounds.Vore;
@@ -82,6 +83,9 @@ namespace V2.NPCs.Vanilla.TownNPCs.Mechanic
 			npc.AsPred().MaxStomachCapacity = 1.75;
 			npc.AsPred().BaseStomachacheMeterCapacity = 300.0;
 
+			npc.AsPred().SmallGulps = Gulps.Short;
+			npc.AsPred().SmallGulpThreshold = 0.5;
+			npc.AsPred().BigGulps = Gulps.Standard;
 			npc.AsPred().CanBeForceFed = CanMechanicBeForceFed;
 			npc.AsPred().OnForceFed = OnMechanicForceFed;
 
@@ -91,17 +95,29 @@ namespace V2.NPCs.Vanilla.TownNPCs.Mechanic
 
 			npc.AsPred().OnDigestionKill = OnDigestionKill;
 			npc.AsPred().SmallBurps = Burps.Humanoid.Small;
+			npc.AsPred().SmallBurpThreshold = 0.5;
 			npc.AsPred().StandardBurps = Burps.Humanoid.Standard;
 			npc.AsPred().GetAdditionalDigestedPlayerMessages = GetDigestedPlayerAdditionalDeathMessages;
 			npc.AsPred().GetPreyAbsorptionRate = GetPreyAbsorptionRate;
 
 			npc.AsPred().GetVisualBellySize = GetVisualBellySize;
 
-			npc.AsFood().OnKilledByDigestion += PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
+			npc.AsFood().OnKilledByDigestion = PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
+			npc.AsFood().OnKilledByDigestion += PreyNPC.HandlePreyItemTheft;
 		}
 
 		public override ITownNPCProfile ModifyTownNPCProfile(NPC npc) => MechanicStuff.PredMechanicProfile;
 
+		public override void ModifyShop(NPCShop shop)
+		{
+			if (shop.NpcType != NPCID.Mechanic)
+				return;
+
+			shop.Add(
+				ModContent.ItemType<CharmLessStomachWeight>(),
+				V2ShopConditions.ShopOwnerHasEatenWellRecently
+			);
+		}
 		public static List<string> GetMechanicChat(NPC npc, Player player)
 		{
 			List<NPC> nearbyResidentNPCs = npc.GetNearbyResidentNPCs(out int npcsWithinHouse, out int npcsWithinVillage);
@@ -128,7 +144,8 @@ namespace V2.NPCs.Vanilla.TownNPCs.Mechanic
 				{
 					mechanicChatPool.AddRange(new List<string>
 					{
-						"Oh, quit whining. My stomach's food processing protocol will melt you starting any second now.",
+						"I instruct that you cease and desist your senseless complaining. My stomach's food processing protocol will melt you starting any second now.",
+						"My sustenance detainment policy is holding up with utmost efficiency. You, on the other hand, are melting exactly as my calculations predicted. Continue.",
 					});
 				}
 				else
@@ -152,8 +169,8 @@ namespace V2.NPCs.Vanilla.TownNPCs.Mechanic
 						mechanicChatPool.AddRange(new List<string>
 						{
 							"[c/00BB00:*BUOARP!*]\n"
-						  + "There we go. I had to expel some heat for a second...my system is working very hard to convert you to energy, after all.",
-							"Are you impressed by the strength of my internal food processor? I certainly am, although I always think I could optimize it just a bit further...",
+						  + "Focus levels...improved. I simply required expulsion of excess heat...my system, after all, is working extremely diligently to convert you to energy, kinetic and potential alike.",
+							"Are you impressed by the strength of my internal food processor? I certainly am, although I always think that, with the right tools, I could optimize it just a bit further...",
 							"There's nothing quite like some high-quality brain food to keep my attention on my work...and, thankfully, I have you available to fulfill that role in my system.",
 							"I cannot say I am entirely looking forward to seeing how much potential energy you're converted into...working becomes overly difficult if my weight exceeds a critical threshold.",
 						});
@@ -194,10 +211,18 @@ namespace V2.NPCs.Vanilla.TownNPCs.Mechanic
 					{
 						"Always purchase more wire than you need. Its flavor is defined as pleasant, and it fills chambers of all kinds, including internal ones, with uncomparable cost efficiency.",
 						"You know what this house needs? More blinking lights. Probably some lights inside me, too, as an energy source.",
-						"My primary food processing chamber, or \"stomach\", if you will, is a well-optimized mechanism...if you would like, and are not currently busy with other tasks, I can provide you a more hands-on demonstration if requested.",
+						"My primary food processing chamber, or \"stomach\", if you will, is a very well-optimized mechanism...if you would like, and are not currently busy with other tasks, I can provide you a more hands-on demonstration if requested.",
 						"When I'm not busy with other tasks, would you like to take a tour through my internal food processing pipes? They're VERY efficient at transporting food and converting it into potential energy.",
 						"Did you make sure your device was plugged in? Preferably NOT to any consumption cavities you may use, your navel, or your digestive system, but to an actual power outlet?",
 					});
+					if (GetVisualBellySize(npc) >= 3)
+					{
+						mechanicChatPool.AddRange(new List<string>
+						{
+							"Mmm...with a fuel source as substantial as this, I am able to work extremely efficiently. I believe I am able to repay you with a...present, if you can refer to it as such. I will require a small sum of...\"dessert\", I believe, but that should not be of any significant issue.",
+							"My primary food processing chamber is making innumerable variants of soundly-structured audial emanations as it works diligently to convert the sizable mass within us into additional fuel. I believe I like this feeling.",
+						});
+					}
 					if (bootlegChippy != null)
 					{
 						if (bootlegChippy.IsFoodFor(player))
@@ -397,14 +422,11 @@ namespace V2.NPCs.Vanilla.TownNPCs.Mechanic
 
 		public static double GetDigestionTickRate(NPC npc, PreyData prey) => Main.bloodMoon ? 6.5 : 3.25;
 
-		public static double GetDigestionTickDamage(NPC npc, PreyData prey) => 6.5;
+		public static double GetDigestionTickDamage(NPC npc, PreyData prey) => 38.85;
 
 		public static void OnDigestionKill(NPC npc, PreyData digestedPrey)
 		{
-			SoundEngine.PlaySound(
-				npc.AsPred().StandardBurps,
-				npc.TrueCenter() + new Vector2(npc.direction * 8f, -14f)
-			);
+			
 		}
 
 		public static double GetPreyAbsorptionRate(NPC npc)

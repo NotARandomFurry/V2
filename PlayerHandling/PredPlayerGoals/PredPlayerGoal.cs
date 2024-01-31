@@ -59,7 +59,7 @@ namespace V2.PlayerHandling.PredPlayerGoals
 
 		/// <summary>
 		/// Whether or not this goal has a "clear description" which can be seen by holding LEFT SHIFT.<br/>
-		/// Useful for goals with really specific requirements (Lady.<br/>
+		/// Useful for goals with really specific requirements (Lady-Sized Lollipop, Long-Distance Dinner).<br/>
 		/// </summary>
 		/// <param name="pred">
 		/// The predatory player that has the player pred goals menu open.<br/>

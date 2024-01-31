@@ -11,10 +11,11 @@ namespace V2.PlayerHandling.PredPlayerGoals.Beginner
 {
 	public class SleepSpeedsDigestion : PredPlayerGoal
 	{
-		public static double FlatFullnessThreshold => 0.45;
+		public static double FlatFullnessThreshold => 0.75;
 		public override string InternalName => "SleepSpeedsDigestion";
-		public override string DisplayName(Player pred) => Language.GetTextValue("Mods.V2.PredPlayerGoals.Beginner.SleepSpeedsDigestion.Name");
-		public override string Description(Player pred) => Language.GetTextValue("Mods.V2.PredPlayerGoals.Beginner.SleepSpeedsDigestion.Description");
+		public override string DisplayName(Player pred) => "Mods.V2.PredPlayerGoals.Beginner.SleepSpeedsDigestion.Name";
+		public override string Description(Player pred) => "Mods.V2.PredPlayerGoals.Beginner.SleepSpeedsDigestion.Description";
+		public override bool HasClearDescription(Player pred) => true;
 
 		public override int StatPointsFromCompletion => 1;
 

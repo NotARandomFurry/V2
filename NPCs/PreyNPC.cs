@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
@@ -95,10 +96,10 @@ namespace V2.NPCs
 			DigestedDeathSound = null;
 		}
 
-		public override void SetDefaults(NPC entity)
+		public override void SetDefaults(NPC npc)
 		{
-			if (!NPCID.Sets.ProjectileNPC[entity.type])
-				entity.AsFood().OnKilledByDigestion = OnKilledByDigestion_GrantLivePreyGoal;
+			if (!NPCID.Sets.ProjectileNPC[npc.type])
+				npc.AsFood().OnKilledByDigestion = OnKilledByDigestion_GrantLivePreyGoal;
 		}
 
 		public override void ResetEffects(NPC npc)
@@ -213,59 +214,6 @@ namespace V2.NPCs
 			return null;
 		}
 
-		/*
-		public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
-		{
-			binaryWriter.Write(npc.AsFood().IsCurrentlyEaten);
-			binaryWriter.Write(npc.AsFood().EatenSafetyFrames);
-			binaryWriter.Write(npc.AsFood().Digested);
-			if (npc.AsFood().IsCurrentlyEaten && npc.AsFood().CurrentCaptor.HasValue)
-			{
-				binaryWriter.Write(true);
-				Entity pred = npc.AsFood().CurrentCaptor.Value.Predator;
-				if (pred is NPC predNPC)
-				{
-					binaryWriter.Write("NPC pred");
-					binaryWriter.Write(predNPC.whoAmI);
-				}
-				else if (pred is Player predPlayer)
-				{
-					binaryWriter.Write("Player pred");
-					binaryWriter.Write(predPlayer.whoAmI);
-				}
-			}
-		}
-
-		public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
-		{
-			npc.AsFood().IsCurrentlyEaten = binaryReader.ReadBoolean();
-			npc.AsFood().EatenSafetyFrames = binaryReader.ReadInt32();
-			npc.AsFood().Digested = binaryReader.ReadBoolean();
-			if (npc.AsFood().IsCurrentlyEaten && binaryReader.ReadBoolean())
-			{
-				switch (binaryReader.ReadString())
-				{
-					case "NPC pred":
-						int npcPredIndex = binaryReader.ReadInt32();
-						npc.AsFood().CurrentCaptor = new PredEntityReference()
-						{
-							Predator = Main.npc[npcPredIndex],
-							PreyInstance = Main.npc[npcPredIndex].AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.NPC && x.Instance.whoAmI == npc.whoAmI)
-						};
-						break;
-					case "Player pred":
-						int playerPredIndex = binaryReader.ReadInt32();
-						npc.AsFood().CurrentCaptor = new PredEntityReference()
-						{
-							Predator = Main.player[playerPredIndex],
-							PreyInstance = Main.player[playerPredIndex].AsPred().stomachContents.FirstOrDefault(x => x.Type == PreyType.NPC && x.Instance.whoAmI == npc.whoAmI)
-						};
-						break;
-				}
-			}
-		}
-		*/
-
 		/// <summary>
 		/// Deals the given amount of digestion damage to the NPC, respecting damage variation and, if their predator is a player, said player's luck.
 		/// </summary>
@@ -277,13 +225,13 @@ namespace V2.NPCs
 			if (npc.life <= 0)
 				return true;
 
-			if (npc.realLife != -1)
+			if (npc.realLife != -1 && npc.realLife != npc.whoAmI)
 				return false;
 
 			int trueDigestionDamage = Main.DamageVar((float)digestionDamage, (pred is Player playerPred) ? -playerPred.luck : 0);
 			if (ModContent.GetInstance<V2ServerConfig>().DefenseInDigestionCalcs)
 			{
-				trueDigestionDamage -= npc.defense / 2;
+				trueDigestionDamage -= npc.defense;
 				if (trueDigestionDamage < 0)
 					trueDigestionDamage = 0;
 			}

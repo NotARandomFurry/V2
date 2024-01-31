@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using Terraria;
 using Terraria.GameContent;
+using Terraria.GameContent.Biomes;
 using Terraria.Graphics;
 using Terraria.Graphics.Renderers;
 using Terraria.ID;
@@ -18,7 +19,9 @@ using Terraria.UI.Chat;
 using Terraria.UI.Gamepad;
 using V2.Core;
 using V2.Core.MainDetours;
+using V2.Core.WorldGeneration;
 using V2.NPCs;
+using V2.NPCs.Vanilla.TownNPCs.TravellingMerchant;
 using V2.PlayerHandling;
 using V2.UI;
 using V2.UI.PredStatsMenu;
@@ -67,9 +70,9 @@ namespace V2
 			// and now, the rest of the detours
 			NPCLoader_NPCAI_Hook = new Hook(NPCLoader_NPCAI_MethodInfo, (orig_NPCAI orig, NPC npc) =>
 			{
-				PredNPC npcAsPred = npc.AsPred(risky: true);
+				V2NPC npcAsV2NPC = npc.AsV2NPC(risky: true);
 				PreyNPC npcAsPrey = npc.AsFood(risky: true);
-				if (npcAsPred is null || npcAsPrey is null)
+				if (npcAsV2NPC is null || npcAsPrey is null)
 					orig(npc);
 				else
 				{
@@ -80,9 +83,9 @@ namespace V2
 						npcAsPrey.SpecialPreyAI?.Invoke(npc, npc.CurrentCaptor().Predator);
 						NPCLoader.PostAI(npc);
 					}
-					else if (npcAsPred.SpecialPredAI != null)
+					else if (npcAsV2NPC.NewAIMethod is not null)
 					{
-						if (npcAsPred.SpecialPredAI.Invoke(npc))
+						if (npcAsV2NPC.NewAIMethod.Invoke(npc))
 							orig(npc);
 						else
 							NPCLoader.PostAI(npc);
@@ -92,6 +95,9 @@ namespace V2
 				}
 			});
 			NPCLoader_NPCAI_Hook.Apply();
+
+			On_Chest.SetupTravelShop_GetItem += (On_Chest.orig_SetupTravelShop_GetItem orig, Player playerWithHighestLuck, int[] rarity, ref int it, int minimumRarity)
+				=> TravellingMerchant.SetupTravelShop_GetItem(playerWithHighestLuck, rarity, ref it, minimumRarity);
 
 			On_Main.UpdateAudio_DecideOnNewMusic += (orig, instance) => MainDetours.UpdateAudio_DecideOnNewMusic();
 			On_Main.DrawInterface_36_Cursor += (orig) =>
@@ -136,6 +142,8 @@ namespace V2
 				if (!player.AsPred().InPredStatsMenu || Main.gamePaused)
 					orig(player);
 			};
+
+			On_DeadMansChestBiome.TurnGoldChestIntoDeadMansChest += (orig, instance, position) => WorldGenDetours.TurnGoldChestIntoDeadMansChest(position);
 		}
 
 		public static void DisengageVoraciousGameFuckery()
