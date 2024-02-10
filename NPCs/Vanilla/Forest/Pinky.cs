@@ -43,7 +43,7 @@ namespace V2.NPCs.Vanilla.Forest
 
 		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.type == NPCID.BlueSlime;
 
-		public override void SetDefaults(NPC npc)
+		public override void SetDefaultsFromNetId(NPC npc)
 		{
 			if (npc.netID != NPCID.Pinky)
 				return;

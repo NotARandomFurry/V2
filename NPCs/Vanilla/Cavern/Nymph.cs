@@ -1,30 +1,44 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
-using ReLogic.Utilities;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
-using Terraria.Audio;
-using Terraria.DataStructures;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 using V2.Core;
-using V2.Items.Voraria.Consumables.Catchables;
-using V2.NPCs.Vanilla.TownNPCs.PartyGirl;
-using V2.PlayerHandling;
+using V2.Items.Voraria;
 using V2.PlayerHandling.PredPlayerGoals.Amateur;
-using V2.PlayerHandling.PredPlayerGoals.Beginner;
 using V2.Sounds.Vore;
 
 namespace V2.NPCs.Vanilla.Cavern
 {
 	public static class NymphStuff
 	{
+		public static class ItemTheftRules
+		{
+			public static ItemTheftRule NymphHairStrands => new ItemTheftRule(
+				type: (npc, pred) => ModContent.ItemType<NymphHairStrand>(),
+				amount: (npc, pred) => {
+					return Main.GameMode switch
+					{
+						GameModeID.Master => 2,
+						GameModeID.Expert => Main.rand.Next(1, 2 + 1),
+						_ => 1,
+					};
+				},
+				chance: (npc, pred) => 1f
+			);
+			public static ItemTheftRule MetalDetector => new ItemTheftRule(
+				type: (npc, pred) => ItemID.MetalDetector,
+				amount: (npc, pred) => 1,
+				chance: (npc, pred) => {
+					return Main.GameMode switch
+					{
+						GameModeID.Master => 0.175f,
+						GameModeID.Expert => 0.14f,
+						_ => 0.10f,
+					};
+				}
+			);
+		}
 		public static Nymph AsNymph(this NPC npc)
 		{
 			if (!npc.TryGetGlobalNPC(out Nymph cuteGirlLure))
@@ -68,6 +82,12 @@ namespace V2.NPCs.Vanilla.Cavern
 			npc.AsFood().OnKilledByDigestion = PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
 			npc.AsFood().OnKilledByDigestion += PreyNPC.HandlePreyItemTheft;
 			npc.AsFood().OnKilledByDigestion += OnKilledByDigestion_GrantNymphGoal;
+
+			npc.AsFood().ItemTheftRules = new List<ItemTheftRule>()
+			{
+				NymphStuff.ItemTheftRules.NymphHairStrands,
+				NymphStuff.ItemTheftRules.MetalDetector,
+			};
 		}
 
 		public static bool CanNymphBeForceFed(NPC npc) => false;

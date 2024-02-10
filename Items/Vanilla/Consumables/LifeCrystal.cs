@@ -75,7 +75,7 @@ namespace V2.Items.Vanilla.Consumables
 		{
 			Player player = Main.LocalPlayer;
 			Color lifeCrystalsUsedColor = Color.Lerp(Color.DarkRed, Color.HotPink, (float)player.ConsumedLifeCrystals / (float)Player.LifeCrystalMax);
-			tooltips.AddVorariaDynamicTooltip(
+			tooltips.AddVorariaDynamicItemTooltip(
 				"Vanilla.Consumables.LifeCrystal",
 				new
 				{

@@ -32,7 +32,7 @@ namespace V2.Items.Voraria.Consumables.Potions
 			Item.useTime = 17;
 			Item.consumable = true;
 
-			Item.value = Item.sellPrice(0, 1, 0, 0);
+			Item.value = Item.buyPrice(0, 1, 25, 0);
 			Item.rare = ItemRarityID.Green;
 
 			Item.AsFood().EdibleOnUse = true;

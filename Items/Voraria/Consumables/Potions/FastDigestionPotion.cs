@@ -1,14 +1,19 @@
 ﻿using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.GameContent.Dyes;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace V2.Items.Voraria.Consumables.Potions
 {
 	public class FastDigestionPotion : ModItem
 	{
+		public override LocalizedText DisplayName => Language.GetText("Mods.V2.ItemName.Voraria.Consumables.Potions.FastDigestionPotion");
+		public override LocalizedText Tooltip => Language.GetText("Mods.V2.ItemTooltip.Voraria.Consumables.Potions.FastDigestionPotion.Short");
+		
 		public override void SetStaticDefaults()
 		{
 			Item.ResearchUnlockCount = 20;
@@ -32,8 +37,8 @@ namespace V2.Items.Voraria.Consumables.Potions
 			Item.useTime = 17;
 			Item.consumable = true;
 
-			Item.value = Item.sellPrice(0, 1, 0, 0);
-			Item.rare = ItemRarityID.Green;
+			Item.value = Item.sellPrice(silver: 75);
+			Item.rare = ItemRarityID.Blue;
 
 			Item.AsFood().EdibleOnUse = true;
 			Item.AsFood().AlwaysEatenByUse = true;

@@ -42,7 +42,7 @@ namespace V2.Items.Voraria.Consumables.Catchables
 
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
-			tooltips.AddVorariaDynamicTooltip(
+			tooltips.AddVorariaDynamicItemTooltip(
 				"Voraria.Consumables.Catchables.Pinky",
 				new
 				{

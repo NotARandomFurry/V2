@@ -1,8 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.GameContent.Dyes;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using V2.PlayerHandling;
 
@@ -10,6 +12,9 @@ namespace V2.Items.Voraria.Consumables.PermanentUpgrades
 {
 	public class PureSwallowBoost1 : ModItem
 	{
+		public static int GLPBonus => 8;
+		public override LocalizedText DisplayName => Language.GetText("Mods.V2.ItemName.Voraria.Consumables.PermanentUpgrades.PureSwallowBoost1");
+		public override LocalizedText Tooltip => Language.GetText("Mods.V2.ItemTooltip.Voraria.Consumables.PermanentUpgrades.PureSwallowBoost1.Short");
 		public override void SetStaticDefaults()
 		{
 			Item.ResearchUnlockCount = 20;
@@ -34,7 +39,7 @@ namespace V2.Items.Voraria.Consumables.PermanentUpgrades
 			Item.consumable = true;
 
 			Item.value = Item.sellPrice(0, 1, 0, 0);
-			Item.rare = ItemRarityID.Green;
+			Item.rare = ItemRarityID.Orange;
 
 			Item.AsFood().Size = 0.05;
 			Item.AsFood().MaxHealth = 80;
@@ -49,8 +54,12 @@ namespace V2.Items.Voraria.Consumables.PermanentUpgrades
 
 		public override bool? UseItem(Player player)
 		{
-			if (!player.AsPred().PermanentUpgradesUsed["PureSwallow1"])
-				player.AsPred().PermanentUpgradesUsed["PureSwallow1"] = true;
+			if (!player.AsPred().PermanentUpgradesGained.ContainsKey("PureSwallow1"))
+				player.AsPred().PermanentUpgradesGained.Add("PureSwallow1", false);
+
+			if (!player.AsPred().PermanentUpgradesGained["PureSwallow1"])
+				player.AsPred().PermanentUpgradesGained["PureSwallow1"] = true;
+
 			return true;
 		}
 
@@ -58,9 +67,24 @@ namespace V2.Items.Voraria.Consumables.PermanentUpgrades
 		{
 			if (pred is Player playerPred)
 			{
-				if (!playerPred.AsPred().PermanentUpgradesUsed["PureSwallow1"])
-					playerPred.AsPred().PermanentUpgradesUsed["PureSwallow1"] = true;
+				if (!playerPred.AsPred().PermanentUpgradesGained.ContainsKey("PureSwallow1"))
+					playerPred.AsPred().PermanentUpgradesGained.Add("PureSwallow1", false);
+
+				if (!playerPred.AsPred().PermanentUpgradesGained["PureSwallow1"])
+					playerPred.AsPred().PermanentUpgradesGained["PureSwallow1"] = true;
 			}
+		}
+
+		public override void ModifyTooltips(List<TooltipLine> tooltips)
+		{
+			Player player = Main.LocalPlayer;
+			tooltips.AddVorariaDynamicItemTooltip(
+				"Voraria.Consumables.PermanentUpgrades.PureSwallowBoost1",
+				new
+				{
+					PureSwallow1GLPBonus = GLPBonus
+				}
+			);
 		}
 	}
 }

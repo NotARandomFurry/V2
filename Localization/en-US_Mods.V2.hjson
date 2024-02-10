@@ -106,10 +106,11 @@ Configs: {
 				Tooltip:
 					'''
 					BALANCE BREAKAGE: High
-					Raises the following pred stats by absurd amounts:
+					Raises the following pred stats by absurd amounts for players:
 					- Swallow (non-liquid) and stomach capacities (x120)
 					- Stomachache meter capacity (x80)
 					- Absorption rate (x60)
+					Allows all bosses to be eaten by players regardless of progression.
 					Defaults to false.
 					'''
 			}
@@ -519,7 +520,6 @@ PredPlayerGoals: {
 
 		SleepSpeedsDigestion: {
 			Name: Digestive Nap
-
 			Description: {
 				Default:
 					'''
@@ -532,14 +532,13 @@ PredPlayerGoals: {
 
 		TooFull: {
 			Name: Overstuffed
-
 			Description: {
 				Default:
 					'''
 					Stay at or near your maximum capacity for a full minute.
 					'Eyes bigger than your stomach, eh? Happens to every newbie pred, and for good reason. It's hard to pace yourself sometimes, what with so much thick, juicy MEAT walking around everywhere...'
 					'''
-				Clarification: Remain at 97.5% fullness or higher for at least 60 seconds.
+				Clarification: Remain at 90% fullness or higher for at least 60 seconds.
 			}
 		}
 
@@ -585,14 +584,12 @@ PredPlayerGoals: {
 			Description: {
 				Default:
 					'''
-					Drink a bit of water.
-					'Even the best preds need a nice, cold drink every now and again! You might even get some seafood every so often as you drink, too!'
+					Drink a bit of honey.
+					'All good things must come to an end...inside a tum like yours. Honey just so happens to be entirely too many of those good things to NOT end up churned into belly fat. It's delicious, it's deliciously fattening, it fills you up perfectly...it even gives you a bit more health as you melt it down!'
 					'''
 				Clarification:
 					'''
-					Drink a tile's worth of water.
-					To drink liquids straight from the world, submerge yourself in them and hold the Swallow keybind.
-					Some liquids may pose a danger to you if you drink them without proper preparation.
+					Drink a tile's worth of honey.
 					'''
 			}
 		}
@@ -751,7 +748,7 @@ PredPlayerGoals: {
 			Name: Divine Belly Bath
 			Description:
 				'''
-				Drink a notable amount of holy water, then eat Promethia to treat her to a nice bath.
+				Drink a notable amount of homemade holy water, then eat Promethia to treat her to a nice bath.
 				'It's not as good as the stomachs and saunas alike she remembers from home, but she loves the experience nonetheless! Somehow, she's given you multiple stat points for this. How, you might ask? It's simple.
 
 				Don't underestimate the enticing nature, and latent magical abilities, of a dedicated gut slut.'
@@ -776,13 +773,25 @@ PredPlayerGoals: {
 ItemName: {
 	Voraria: {
 		Accessories: {
-			BalloonBelly: Belly-Shaped Balloon
+			Informational: {
+				MealSizeScanner: Sizemic Scanner
+				PredCapacityScanner: Servant's Scanner
+			}
+
+			Vanity.BalloonBelly: Belly-Shaped Balloon
 			NymphHairScarf: Sly Hunter's Scarf
 		}
 
 		Consumables: {
 			Catchables.Pinky: Pinky
 			PermanentUpgrades.PureSwallowBoost1: Swallowing Stimulant
+
+			Potions: {
+				FastDigestionPotion: Digestive Aid Pills
+				StomachacheMeterCapacityPotion: Internal Endurance Potion
+				StomachCapacityPotion: Elasticity Potion
+			}
+
 			DigestionRepairScroll: Scroll of Divine Indigestion
 			HairDyeCapacity: Hunger Hair Dye
 		}
@@ -795,6 +804,7 @@ ItemName: {
 		}
 
 		Weapons.Summon.PaperMaidSummon: Enchanted Origami Bell
+		NymphHairStrand: Sky Blue Strand
 	}
 }
 
@@ -870,7 +880,7 @@ ItemTooltip: {
 					'''
 				Flavor:
 					'''
-					A mysterious crystal which forms in the deeper caverns of Terraria, drawing in all manner of adventurers, curious and craving alike, to examine it. Upon breaking one apart, either via pure force or prolonged exposure to a gastric gauntlet of digestion, the crystal fires off a spell which lends its power to the user/consumer, greatly increasing their vitality...though part of the effect only occurs up to a certain number of times. The exact science behind this spell is poorly understood, but has led many to believe a powerful being created these crystals with the intention of leeting them be eaten by worldly creatures in need of strength to hunt. While this was initially thought to be an unfounded claim, the fact that powerful predators have caught truly unnaturally perfect prey in the past suggests otherwise...
+					A mysterious crystal which forms in the deeper caverns of Terraria, drawing in all manner of adventurers, curious and craving alike, to examine it. Upon breaking one apart, either via pure force or prolonged exposure to a gastric gauntlet of digestion, the crystal fires off a spell which lends its power to the user/consumer, greatly increasing their vitality...though part of the effect only occurs up to a certain number of times. The exact science behind this spell is poorly understood, but has led many to believe a powerful being created these crystals with the intention of letting them be eaten by worldly creatures in need of strength to hunt. While this was initially thought to be an unfounded claim, the fact that powerful predators have caught truly unnaturally perfect prey in the past suggests otherwise...
 					Those who have eaten Life Crystals before note that doing so feels a lot like eating rock candy, with a notable cherry-like flavor. The first person to do it ended up famous worldwide for quite some time because of a number of hilariously inept, yet somehow successful achievements. A pity he ended up getting gulped down and gurgled by a gleeful, gluttonous ghost.
 					'''
 			}
@@ -947,7 +957,7 @@ ItemTooltip: {
 				CopperCoin: {
 					Short:
 						'''
-						{$Mods.V2.ItemTooltip.Currency.Coins.Generic.Short}
+						{$Mods.V2.ItemTooltip.Vanilla.Currency.Coins.Generic.Short}
 						'Not made of chocolate, sadly'
 						{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
 						'''
@@ -955,11 +965,12 @@ ItemTooltip: {
 						'''
 						Used as the lowest denomination of "universal" currency.
 						100 of these have equal value to a [i:SilverCoin] Silver Coin.
-						{$Mods.V2.ItemTooltip.Currency.Coins.Generic.Long}
+						{$Mods.V2.ItemTooltip.Vanilla.Currency.Coins.Generic.Long}
 						'''
 					Flavor:
 						'''
-						The lowest denomination {$Mods.V2.ItemTooltip.Currency.Coins.Generic.Flavor}
+						The lowest denomination {$Mods.V2.ItemTooltip.Vanilla.Currency.Coins.Generic.Flavor}
+						These are often treated as little more than individual bites of cereal in most areas, these are often doomed in massive amounts to the gut of anything, and anyone, that wants to churn them into gut fat.
 						Roughly equal in value to:
 						- Avarsici: Favor.
 						- Sveetia: [c/FFAFAF:Too low value.]
@@ -971,7 +982,7 @@ ItemTooltip: {
 				SilverCoin: {
 					Short:
 						'''
-						{$Mods.V2.ItemTooltip.Currency.Coins.Generic.Short}
+						{$Mods.V2.ItemTooltip.Vanilla.Currency.Coins.Generic.Short}
 						'Also not made of chocolate, also sadly'
 						{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
 						'''
@@ -980,11 +991,12 @@ ItemTooltip: {
 						Used as the second-lowest denomination of "universal" currency.
 						1 of these has equal value to 100 [i:CopperCoin] Copper Coins.
 						100 of these have equal value to 1 [i:GoldCoin] Gold Coin.
-						{$Mods.V2.ItemTooltip.Currency.Coins.Generic.Long}
+						{$Mods.V2.ItemTooltip.Vanilla.Currency.Coins.Generic.Long}
 						'''
 					Flavor:
 						'''
-						The second-lowest denomination {$Mods.V2.ItemTooltip.Currency.Coins.Generic.Flavor}
+						The second-lowest denomination {$Mods.V2.ItemTooltip.Vanilla.Currency.Coins.Generic.Flavor}
+						Snacking on these is fairly common against those who can make a comfortable living elsewise, though you won't find those with lower-paying jobs doing so...very much.
 						Roughly equal in value to:
 						- Avarsici: 1 Mark.
 						- Sveetia: [c/FFAFAF:Too low value for conversion.]
@@ -996,7 +1008,7 @@ ItemTooltip: {
 				GoldCoin: {
 					Short:
 						'''
-						{$Mods.V2.ItemTooltip.Currency.Coins.Generic.Short}
+						{$Mods.V2.ItemTooltip.Vanilla.Currency.Coins.Generic.Short}
 						'Voted 'Most Likely To Be Made Of Chocolate'!...but it isn't'
 						{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
 						'''
@@ -1005,11 +1017,12 @@ ItemTooltip: {
 						Used as the second-highest denomination of "universal" currency.
 						1 of these has equal value to 100 [i:SilverCoin] Silver Coins.
 						100 of these have equal value to 1 [i:PlatinumCoin] Platinum Coin.
-						{$Mods.V2.ItemTooltip.Currency.Coins.Generic.Long}
+						{$Mods.V2.ItemTooltip.Vanilla.Currency.Coins.Generic.Long}
 						'''
 					Flavor:
 						'''
-						The second-highest denomination {$Mods.V2.ItemTooltip.Currency.Coins.Generic.Flavor}
+						The second-highest denomination {$Mods.V2.ItemTooltip.Vanilla.Currency.Coins.Generic.Flavor}
+						Snacking on these usually means you're fairly wealthy, being able to doom at your leisure small swathes of your riches to a fate even better than your bank account: bulking up your backside.
 						Roughly equal in value to:
 						- Avarsici: 1 Great Mark.
 						- Sveetia: 4 Sugar Sterlings.
@@ -1021,7 +1034,7 @@ ItemTooltip: {
 				PlatinumCoin: {
 					Short:
 						'''
-						{$Mods.V2.ItemTooltip.Currency.Coins.Generic.Short}
+						{$Mods.V2.ItemTooltip.Vanilla.Currency.Coins.Generic.Short}
 						'Still need to know if it's made of chocolate? Are you just that eager to gurgle all your wealth into a wealth of belly fat?'
 
 						'...because it's not made of chocolate'
@@ -1031,15 +1044,17 @@ ItemTooltip: {
 						'''
 						Used as the second-highest denomination of "universal" currency.
 						1 of these has equal value to 100 [i:GoldCoin] Gold Coins.
-						{$Mods.V2.ItemTooltip.Currency.Coins.Generic.Long}
+						{$Mods.V2.ItemTooltip.Vanilla.Currency.Coins.Generic.Long}
 						'''
 					Flavor:
 						'''
-						The highest denomination {$Mods.V2.ItemTooltip.Currency.Coins.Generic.Flavor}
+						The highest denomination {$Mods.V2.ItemTooltip.Vanilla.Currency.Coins.Generic.Flavor}
+						Snacking on these generally denotes someone of extremely high value --- such high value that even the best denomination of currency is naught but pleasant cereal to them.
+						Alternatively, some lower-class may swallow individual coins of this caliber for the experience --- there is a certain exotic rush that comes with swallowing something worth a small fortune like a mere snack, digesting it into naught but a few more calories or a bit of belly fat, and having the only evidence it was ever there be a pleasant little belch that rises from your belly.
 						Roughly equal in value to:
 						- Avarsici: 1 Grand Mark.
 						- Sveetia: 400 Sugar Sterlings.
-						- Turea: N/A. Turean folk trade in clear material wealth, not petty currency.
+						- Turea: N/A. Turean folk trade in material (or living) possessions, not petty currency.
 						- Desperais: N/A. People pay, and charge, in good, meaty, fighty food around those parts.
 						'''
 				}
@@ -1099,21 +1114,102 @@ ItemTooltip: {
 
 	Voraria: {
 		Accessories: {
-			BalloonBelly: {
+			Informational: {
+				MealSizeScanner: {
+					Short:
+						'''
+						Shows the size of nearby snacks, and helps you know if you're able to make them your next meals
+						Functions from the inventory as well as normal accessory slots
+						{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+						'''
+					Long:
+						'''
+						Most things that you can eat [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:display their size as a meal above themselves].
+						If their size number is [c/00FF00:green], you are able to swallow them with ease.
+						[c/7F7F7F:This means that your target meal would fit in your stomach normally, and nothing is keeping you from gobbling them up on sight. Go indulge a little!]
+						If their size number is [c/FFFF00:yellow], you are able to swallow them, but might have a bit of trouble keeping them down or properly mulching them.
+						[c/7F7F7F:This means that while your target meal would fit in your stomach normally, one of the following is true:]
+						[c/7F7F7F:> Your stomach is too full to fit them due to other meals already inside it]
+						[c/7F7F7F:> Your target meal's defense exceeds your stomach's digestion tick damage]
+						[c/7F7F7F:> Your target meal's health exceeds 1 minute of your stomach's final DDPS (digestion damage per second, factors in defense)]
+						[c/7F7F7F:> Your target meal's acid resist level exceeds your stomach's acid tier]
+						If their size number is [c/FF0000:red], you aren't able to gulp and gurgle them into gut fat yet.
+						[c/7F7F7F:This means that your target meal wouldn't fit in you due to your throat and/or stomach capacity being too low.]
+						[c/7F7F7F:If this is the case, try to increase your GLP and TUM stats by whatever means you find throughout the game!]
+						Functions from the inventory as well as when equipped in normal accessory slots.
+						'''
+					Flavor:
+						'''
+						This peculiar device was originally designed for use by a mechanic to ensure optimal fullness-to-caloric-value weighting when consuming nearby living creatures and converting them into (potential) energy.
+						It can do the same for you, if you care to, though its main use will almost certainly be making sure your eyes don't get bigger than your stomach...and/or throat.
+						'''
+				}
+
+				PredCapacityScanner: {
+					Short:
+						'''
+						Shows the stomach capacity of nearby entities that can eat you, and lets you know if you're able to take some time off in their gut
+						Functions from the inventory as well as normal accessory slots
+						{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+						'''
+					Long:
+						'''
+						Most things that can eat you [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:display their stomach capacity as predators below themselves].
+						If their capacity number is [c/00FF00:green], they're able to swallow you with ease.
+						[c/7F7F7F:This means that your choice predator could fit you in their stomach normally, and nothing is keeping them from gobbling you up on sight. Ready to get gurgled?]
+						If their capacity number is [c/FFFF00:yellow], they're able to swallow you, but might have a bit of trouble keeping you down or properly mulching you.
+						[c/7F7F7F:This means that while your target pred could fit you in their stomach normally, one of the following is true:]
+						[c/7F7F7F:> Their stomach is too full to fit you due to other meals already inside it]
+						[c/7F7F7F:> Your defense exceeds their digestion tick damage]
+						[c/7F7F7F:> Your health exceeds 20 seconds of their stomach's final DDPS (digestion damage per second, factors in defense)]
+						[c/7F7F7F:> Your acid resist level exceeds your desired predator's stomach's acid tier]
+						If their capacity number is [c/FF0000:red], they aren't able to gulp and gurgle you into gut fat.
+						[c/7F7F7F:This means that your target predator isn't able to eat you, since their stomach won't be able to hold you. A sad day, indeed.]
+						Functions from the inventory as well as when equipped in normal accessory slots.
+						'''
+					Flavor:
+						'''
+						Exposing an electronics implement to shimmer, most times, doesn't actually short-circuit it like water or stomach acid might, but instead tends to warp the implement's functionality to a new use case similar to, yet also very different, its initial purpose.
+						This almost otherworldy-looking device performs a similar task to its non-shimmered counterpart, but analyzes the digestive capacity of scanned subjects instead. While this is useful for anyone looking to get mulched by a nice, hungry tummy, it's not particularly useful to a predator in comparison to its normal form.
+						'''
+				}
+			}
+
+			Vanity: {
+				BalloonBelly: {
+					Short:
+						'''
+						Can be blown up or deflated, and wrapped around your tummy to make it look bigger!
+						{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+						'''
+					Long:
+						'''
+						Can be worn in any vanity accessory slot to make your stomach always appear larger proportional to the size of the balloon.
+						Current size is {InflatedSize}; maximum size is {MaximumInflatedSize}.
+						[c/{$Mods.V2.CommonColorCodes.DoSomething}:Left-click] to inflate the balloon if it is not at its max size, increasing its size by 1.
+						[c/{$Mods.V2.CommonColorCodes.DoSomething}:Right-click] to deflate the balloon if it has air in it, decreasing its size by 1.
+						Does nothing when equipped in a non-vanity accessory slot.
+						'''
+					Flavor: This funny-looking balloon is pre-fitted with a waistband for easy attachment to...well, specifically the stomach. Blow it up enough, and it'll replicate all the great looks of a massive, meat-filled gut without any of the downsides, complete with color-changing latex exterior so you get just the matching color you and your tummy want! Just note that it won't make all the happy gurgling and groaning a REAL bellyful of squirmy snacks makes.
+				}
+			}
+
+			NymphHairScarf: {
 				Short:
 					'''
-					Can be blown up or deflated, and wrapped around your tummy to make it look bigger!
+					Increases movement speed and lowers stomach weight
 					{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
 					'''
 				Long:
 					'''
-					Can be worn in any vanity accessory slot to make your stomach always appear larger proportional to the size of the balloon.
-					Current size is {InflatedSize}; maximum size is {MaximumInflatedSize}.
-					[c/{$Mods.V2.CommonColorCodes.DoSomething}:Left-click] to inflate the balloon if it is not at its max size, increasing its size by 1.
-					[c/{$Mods.V2.CommonColorCodes.DoSomething}:Right-click] to deflate the balloon if it has air in it, decreasing its size by 1.
-					Does nothing when equipped in a non-vanity accessory slot.
+					[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases movement speed by {NymphScarfMoveSpeedBuff}].
+					[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Decreases stomach weight by {NymphScarfWeightReduction}].
 					'''
-				Flavor: This funny-looking balloon is pre-fitted with a waistband for easy attachment to...well, specifically the stomach. Blow it up enough, and it'll replicate all the great looks of a massive, meat-filled gut without any of the downsides, complete with color-changing latex exterior so you get just the matching color you and your tummy want! Just note that it won't make all the happy gurgling and groaning a REAL bellyful of squirmy snacks makes.
+				Flavor:
+					'''
+					A pleasantly comfortable scarf sewn with the luscious locks of at least one or two delicious, deceitful damsels found throughout Terraria's great caverns.
+					Sewn into the scarf are sapphires and miniature runes which allow the wearer to be lighter on their feet, even (or perhaps, especially) with a good gutful of meat (still alive or otherwise) slowing them down, mimicking the stomach-centric swiftness of a hungry nymph.
+					'''
 			}
 		}
 
@@ -1225,13 +1321,47 @@ ItemTooltip: {
 					Long:
 						'''
 						[c/{$Mods.V2.CommonColorCodes.DoSomething}:Using or eating this item] will permanently grant you the following bonus:
-						> [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:+8 GLP]
+						> [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:+{PureSwallow1GLPBonus} GLP]
 						This bonus only applies once. Using or eating this item after you have already done so [c/{$Mods.V2.CommonColorCodes.NegativeEffect}:will have no further effect.]
 						'''
 					Flavor:
 						'''
-						One of the first physical stimulants for predators ever created was a drug to enhance the potential of the throat, allowing for easier swallowing of anything, and anyone, the recipient wanted in their gut.
+						One of the first physical stimulants for predators ever created was a drug to enhance the potential of the throat, allowing for easier swallowing of anything, and anyone, that the recipient wanted packed into their gut.
 						This stimulant has been replicated countless times, and is now standard-fare as an entry-level predatory aid across the world of Terraria.
+						'''
+				}
+			}
+
+			Potions: {
+				FastDigestionPotion: {
+					Short:
+						'''
+						Speeds up digestion for a short time, slowing it for a short time thereafter
+						{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+						'''
+					Long:
+						'''
+						Induces a variety of predatorily-centric effects when drank, almost all involving digestive power.
+						Since you're just swallowing the whole potion, bottle and all, you'll need the bottle to break first from running out of durability.
+						You're awfully lucky that glass is really easy to digest, and low in calories to boot.
+
+						Once the bottle breaks, until fully digested:
+						> [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:+{FastDigestionPotionACIBonus} ACI]
+						> [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:+{FastDigestionPotionABSBonus} ABS]
+						> [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:+1 acid tier, only if acid tier is 0]
+						For 1 minute after being fully digested:
+						> [c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:-{FastDigestionPotionACIAfterPenalty} ACI]
+						> [c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:-{FastDigestionPotionABSAfterPenalty} ABS]
+						Drinking one of these while already under the effects of another will:
+						> [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Refresh the positive effect]
+						> [c/{$Mods.V2.CommonColorCodes.NegativeEffect}:Deal 2% of your health per second as damage over time until at least one serving is fully digested]
+						'''
+					Flavor:
+						'''
+						Digestive aids are commonplace in medical establishments across Terraria to help with particularly rowdy or troublesome prey, with just about every option that entails available for use.
+						This one in particular aims to make sure your system doesn't get backed up with all the parts of your prey you can't quite melt down...yet...and is a commonly-used variant carried by medical practitioners at all times.
+
+						Whether they are predominantly carried for your use or their own is another matter entirely, and varies wildly between cases.
 						'''
 				}
 			}
@@ -1247,7 +1377,7 @@ ItemTooltip: {
 						Long:
 							'''
 							This item can be fed to {PaperMaidName}, the paper maid summoned by the [c/{$Mods.V2.CommonColorCodes.DoSomething}:{$Mods.V2.ItemName.Voraria.Weapons.Summon.PaperMaidSummon}], by right-clicking on her with it.
-							Once she fully digests this item, {PaperMaidName} will permanently gain self-lamination, conferring the following buffs:
+							Once she fully digests this item, {PaperMaidName} will permanently gain automagic self-lamination, conferring the following buffs:
 							> +{LaminatedHealth} health.
 							> +{LaminatedStomachCapacity} stomach capacity.
 							> +{LaminatedStomachacheMeterCapacity} stomachache meter capacity.
@@ -1297,7 +1427,7 @@ ItemTooltip: {
 					'''
 					This item can only be used once at least one full day has passed since the last time it was used.
 					Upon usage, it will instantly:
-					- [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Fully repair all items in your inventory] that have taken digestion damage and can be repaired.
+					- [c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Fully repair all items in your inventory] that have taken digestion damage and can be repaired.
 					- [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Remove all Softened stacks still applied to you] from any lingering acid burns from recent encounters.
 					- [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Clear all indigestion-related debuffs you may have] from particularly troublesome meals.
 					'''
@@ -1342,6 +1472,27 @@ ItemTooltip: {
 					'''
 					Despite how often these things were flaunted around as the future of predatory prowess and a marvel of modern magical bioengineering back in the day, the real marvel is that these somehow pose no significant health risks despite mixing an entire secondary acid into an already-powerful stomach. The label on the side suggests eating the entire pack...including the pack itself. The pack supposedly has much better nutritional value than the pills, so...bottoms up.
 					Obtaining more than one pack of these tablets is prohibited by Avarsician law and punishable by...well, predominantly fucking about and learning what for. It's not exactly hard to guess why a spell that assumes you haven't taken the pills at all is bad if you've already melted down a full pack of them before.
+					'''
+			}
+
+			FeatherDuster: {
+				Short:
+					'''
+					Can only be used in a hungry tummy
+					Can be used to tickle and/or agitate your predator's stomach a lot; often enough for them to belch you back up
+					{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+					'''
+				Long:
+					'''
+					Can only be used while inside something's stomach.
+					When used, [c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:instantly deals {FeatherDusterStruggleDamage} struggle damage to your predator].
+					If this would fill up their stomachache meter, it instead caps at its usual maximum, and you are [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:instantly belched out].
+					[c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:Using another of this item within 10 seconds of using one] will [c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:only deal half the struggle damage].
+					'''
+				Flavor:
+					'''
+					Often carried around by the bundle by harpies, the core purpose of this feathery broom-like implement is to agitate the stomach of hungry predators, forcing them to belch and/or cough up whatever (and WHOever) they ate alongside the user.
+					More modern uses for evolved forms of this implement include maids' cleaning work, on-the-job snacks for said maids, impromptu microphones-turned-mini-meals on budget karaoke nights, and mitigating a wide array of magical incantations.
 					'''
 			}
 
@@ -1415,6 +1566,17 @@ ItemTooltip: {
 				}
 			}
 		}
+
+		NymphHairStrand: {
+			Short:
+				'''
+				Used to make Sky Blue Dye
+				'Thieved from a deceitful, yet delicious damsel'
+				{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+				'''
+			Long: Can only be obtained by [c/{$Mods.V2.CommonColorCodes.DoSomething}:eating and digesting a Nymph with the Charm of the Thief equipped].
+			Flavor: A lock of a nymph's succulent silvery-blue hair, somehow spared from the gastric gauntlet of a gut such as yours. One could make a potent dye or a comfortable scarf out of this. A hair stylist would also quite like something as unique as this...
+		}
 	}
 }
 
@@ -1439,7 +1601,7 @@ StatusEffects: {
 				'''
 				[c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:Your stomach is about to end up quantum-superimposed on itself.]
 				[c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:Don't drink shimmer without a way to prevent this outcome.]
-				'Fool ya once, shame on me. Fool ya twice...'
+				'Fool you once, shame on me. Fool you twice...'
 				'''
 		}
 
@@ -2048,26 +2210,16 @@ NPCs: {
 	MeteorMarble.DisplayName: Meteor Marble
 }
 
-ItemObtainmentDetails.Voraria.Accessories.BalloonBelly: Mods.V2.ItemObtainmentDetails.Voraria.Accessories.BalloonBelly
+ItemObtainmentDetails.Voraria.Accessories.Vanity.BalloonBelly: Mods.V2.ItemObtainmentDetails.Voraria.Accessories.Vanity.BalloonBelly
 
 Items: {
-	PureSwallowBoost1: {
-		DisplayName: Pure Swallow Boost1
+	StomachCapacityPotion: {
 		Tooltip: ""
-	}
-
-	FastDigestionPotion: {
-		DisplayName: Fast Digestion Potion
-		Tooltip: ""
+		DisplayName: Stomach Capacity Potion
 	}
 
 	StomachacheMeterCapacityPotion: {
+		Tooltip: ""
 		DisplayName: Stomachache Meter Capacity Potion
-		Tooltip: ""
-	}
-
-	StomachCapacityPotion: {
-		DisplayName: Stomach Capacity Potion
-		Tooltip: ""
 	}
 }

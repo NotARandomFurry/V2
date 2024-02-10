@@ -16,6 +16,7 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using V2.Core;
 using V2.Items.Voraria.Accessories;
+using V2.Items.Voraria.Accessories.Vanity;
 using V2.NPCs.Voraria.TownNPCs;
 using V2.PlayerHandling;
 using V2.Sounds.Vore;
@@ -174,7 +175,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 
 			shop.Add(
 				ModContent.ItemType<BalloonBelly>(),
-				new Condition("Mods.V2.ItemObtainmentDetails.Voraria.Accessories.BalloonBelly", () => {
+				new Condition("Mods.V2.ItemObtainmentDetails.Voraria.Accessories.Vanity.BalloonBelly", () => {
 					if (Main.LocalPlayer.AsPred().TotalStatPoints >= 10)
 						return true;
 

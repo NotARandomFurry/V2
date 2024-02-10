@@ -29,7 +29,7 @@ namespace V2.NPCs
 			if (!npc.CanItemsBeThievedBy(pred))
 				return;
 
-			if (npc.AsFood().ItemTheftRules is null)
+			if (npc.AsFood().ItemTheftRules is null || npc.AsFood().ItemTheftRules.Count <= 0)
 				return;
 
 			foreach (ItemTheftRule rule in npc.AsFood().ItemTheftRules)

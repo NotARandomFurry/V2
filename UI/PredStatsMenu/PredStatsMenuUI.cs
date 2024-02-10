@@ -209,7 +209,7 @@ namespace V2.UI.PredStatsMenu
 						}
 
 						if (goalToDraw.HasClearDescription(Main.LocalPlayer) && !Main.keyState.IsKeyDown(Keys.LeftShift))
-							goalFullHoverText += "[c/7F7F7F: " + Language.GetTextValue("Mods.V2.PredPlayerGoals.GenericText.HoldToLearnMore." + (goalToDraw.Complete(Main.LocalPlayer) ? "Complete" : "Incomplete")) + "]";
+							goalFullHoverText += "[c/7F7F7F:" + Language.GetTextValue("Mods.V2.PredPlayerGoals.GenericText.HoldToLearnMore." + (goalToDraw.Complete(Main.LocalPlayer) ? "Complete" : "Incomplete")) + "]";
 
 						UICommon.TooltipMouseText(goalFullHoverText);
 						Main.mouseText = true;
@@ -499,7 +499,7 @@ namespace V2.UI.PredStatsMenu
 								GLPSpent = Main.LocalPlayer.AsPred().GLP.Spent,
 								GLPBase = Main.LocalPlayer.AsPred().GLP.Base,
 								GLPExtra = Main.LocalPlayer.AsPred().GLP.Extra,
-								PreySwallowSize = Main.LocalPlayer.AsPred().SwallowSize.CastToDecimalPlaces(2),
+								PreySwallowSize = Main.LocalPlayer.AsPred().SwallowCapacity.CastToDecimalPlaces(2),
 								LiquidSwallowRate = (Main.LocalPlayer.AsPred().LiquidSwallowSize / 255.0 * 60.0).CastToDecimalPlaces(2),
 								StruggleGracePeriod = Main.LocalPlayer.AsPred().StruggleGraceTimeReadable,
 								PredPlayer.BaseSwallowSize,

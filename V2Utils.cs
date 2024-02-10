@@ -170,7 +170,7 @@ namespace V2
 			}
 		}
 
-		public static void AddVorariaDynamicTooltip(this List<TooltipLine> tooltips, string itemTooltipKey, object tooltipVariables)
+		public static void AddVorariaDynamicItemTooltip(this List<TooltipLine> tooltips, string itemTooltipKey, object tooltipVariables)
 		{
 			TooltipLine dynamicTooltip = new TooltipLine(
 				V2.Instance,

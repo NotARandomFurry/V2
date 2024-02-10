@@ -6,6 +6,7 @@ using Terraria.ModLoader;
 using Terraria.UI;
 using V2.PlayerHandling;
 using V2.UI.PredStatsMenu;
+using V2.UI.SizeScanners;
 using V2.UI.StomachacheMeter;
 using V2.UI.StomachCapacityMeter;
 using V2.UI.StruggleSystem;
@@ -35,6 +36,11 @@ namespace V2.UI
 		public PredStatsMenuMouthUI PredStatsMenuMouthInterface;
 		public UserInterface PredStatsMenuInterfaceLayer;
 		public PredStatsMenuUI PredStatsMenuInterface;
+
+		public UserInterface MealSizeScannerInterfaceLayer;
+		public MealSizeScannerUI MealSizeScannerInterface;
+		public UserInterface PredCapacityScannerInterfaceLayer;
+		public PredCapacityScannerUI PredCapacityScannerInterface;
 
 		public override void OnWorldLoad()
 		{
@@ -75,6 +81,15 @@ namespace V2.UI
 			PredStatsMenuInterface = new PredStatsMenuUI();
 			PredStatsMenuInterface.Activate();
 			PredStatsMenuInterfaceLayer.SetState(PredStatsMenuInterface);
+
+			MealSizeScannerInterfaceLayer = new UserInterface();
+			MealSizeScannerInterface = new MealSizeScannerUI();
+			MealSizeScannerInterface.Activate();
+			MealSizeScannerInterfaceLayer.SetState(MealSizeScannerInterface);
+			PredCapacityScannerInterfaceLayer = new UserInterface();
+			PredCapacityScannerInterface = new PredCapacityScannerUI();
+			PredCapacityScannerInterface.Activate();
+			PredCapacityScannerInterfaceLayer.SetState(PredCapacityScannerInterface);
 		}
 
 		public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
@@ -126,10 +141,12 @@ namespace V2.UI
 			{
 				AddInterfaceLayer(layers, StomachCapacityBarInterfaceLayer, StomachCapacityBarInterface, OverriddenHairWindowIndex, "Stomach Capacity Meter");
 				AddInterfaceLayer(layers, StomachacheMeterInterfaceLayer, StomachacheMeterInterface, OverriddenHairWindowIndex + 1, "Stomachache Meter");
-				AddInterfaceLayer(layers, PlayerPredStruggleInterfaceLayer, PlayerPredStruggleInterface, OverriddenHairWindowIndex + 2, "Player Pred Struggles");
-				AddInterfaceLayer(layers, PlayerPreyStruggleInterfaceLayer, PlayerPreyStruggleInterface, OverriddenHairWindowIndex + 3, "Player Prey Struggles");
-				AddInterfaceLayer(layers, PredStatsMenuInterfaceLayer, PredStatsMenuInterface, OverriddenHairWindowIndex + 4, "Pred Stats Menu");
-				AddInterfaceLayer(layers, PredStatsMenuMouthInterfaceLayer, PredStatsMenuMouthInterface, OverriddenHairWindowIndex + 5, "Pred Stats Menu's Hungry Mouth");
+				AddInterfaceLayer(layers, MealSizeScannerInterfaceLayer, MealSizeScannerInterface, OverriddenHairWindowIndex + 2, "Sizemic Scanner");
+				AddInterfaceLayer(layers, PredCapacityScannerInterfaceLayer, PredCapacityScannerInterface, OverriddenHairWindowIndex + 3, "Servant's Scanner");
+				AddInterfaceLayer(layers, PlayerPredStruggleInterfaceLayer, PlayerPredStruggleInterface, OverriddenHairWindowIndex + 4, "Player Pred Struggles");
+				AddInterfaceLayer(layers, PlayerPreyStruggleInterfaceLayer, PlayerPreyStruggleInterface, OverriddenHairWindowIndex + 5, "Player Prey Struggles");
+				AddInterfaceLayer(layers, PredStatsMenuInterfaceLayer, PredStatsMenuInterface, OverriddenHairWindowIndex + 6, "Pred Stats Menu");
+				AddInterfaceLayer(layers, PredStatsMenuMouthInterfaceLayer, PredStatsMenuMouthInterface, OverriddenHairWindowIndex + 7, "Pred Stats Menu's Hungry Mouth");
 			}
 			int MouseTextIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Mouse Text"));
 			if (MouseTextIndex != -1)

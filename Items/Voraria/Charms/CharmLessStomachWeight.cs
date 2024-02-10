@@ -54,12 +54,12 @@ namespace V2.Items.Voraria.Charms
 
 		public static void CharmEffects(Player player)
 		{
-			player.AsPred().StomachWeightModifier -= (float)(MaxWeightReduction * WeightReductionEffectiveness(player));
+			player.AsPred().StomachWeightModifier *= 1f - (float)(MaxWeightReduction * WeightReductionEffectiveness(player));
 		}
 
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
-			tooltips.AddVorariaDynamicTooltip(
+			tooltips.AddVorariaDynamicItemTooltip(
 				"Voraria.Charms.LessStomachWeight",
 				new
 				{

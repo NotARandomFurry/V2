@@ -40,7 +40,7 @@ namespace V2.Items.Voraria.Charms
 
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
-			tooltips.AddVorariaDynamicTooltip(
+			tooltips.AddVorariaDynamicItemTooltip(
 				"Voraria.Charms.PreyItemTheft",
 				new
 				{

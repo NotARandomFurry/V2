@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -10,6 +11,21 @@ namespace V2.NPCs.Vanilla.Sky
 {
 	public static class HarpyStuff
 	{
+		public static class ItemTheftRules
+		{
+			public static ItemTheftRule GiantHarpyFeather => new ItemTheftRule(
+				type: (npc, pred) => ItemID.GiantHarpyFeather,
+				amount: (npc, pred) => 1,
+				chance: (npc, pred) => {
+					return Main.GameMode switch
+					{
+						GameModeID.Master => 1f / 30f,
+						GameModeID.Expert => 0.025f,
+						_ => 0.02f,
+					};
+				}
+			);
+		}
 		public static Harpy AsHarpy(this NPC npc)
 		{
 			if (!npc.TryGetGlobalNPC(out Harpy harpy))
@@ -34,6 +50,11 @@ namespace V2.NPCs.Vanilla.Sky
 			npc.AsFood().OnKilledByDigestion = PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
 			npc.AsFood().OnKilledByDigestion += PreyNPC.HandlePreyItemTheft;
 			npc.AsFood().OnKilledByDigestion += OnKilledByDigestion_GrantHarpyGoal;
+
+			npc.AsFood().ItemTheftRules = new List<ItemTheftRule>()
+			{
+				HarpyStuff.ItemTheftRules.GiantHarpyFeather,
+			};
 		}
 
 		public static void OnKilledByDigestion_GrantHarpyGoal(NPC npc, Entity pred)

@@ -42,7 +42,7 @@ namespace V2.Items.Vanilla.Weapons.Melee
 
 		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
 		{
-			tooltips.AddVorariaDynamicTooltip(
+			tooltips.AddVorariaDynamicItemTooltip(
 				"Vanilla.Weapons.Melee.CactusSword",
 				new
 				{

@@ -8,35 +8,54 @@ using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
+using V2.Core;
 using V2.PlayerHandling;
 
 namespace V2.Items.Voraria.Accessories
 {
 	public class NymphHairScarf : ModItem
 	{
-		public static int AcidStrengthBonus => 12;
+		public static float MoveSpeedBonus => 0.12f;
+		public static float StomachWeightReduction => 0.12f;
 
-		public override LocalizedText DisplayName => Language.GetText("Mods.V2.ItemName.Voraria.Accessories.NymphScarf");
-		public override LocalizedText Tooltip => Language.GetText("Mods.V2.ItemTooltip.Voraria.Accessories.NymphScarf.Short");
+		public override LocalizedText DisplayName => Language.GetText("Mods.V2.ItemName.Voraria.Accessories.NymphHairScarf");
+		public override LocalizedText Tooltip => Language.GetText("Mods.V2.ItemTooltip.Voraria.Accessories.NymphHairScarf.Short");
 		public override void SetDefaults()
 		{
 			Item.accessory = true;
 
 			Item.width = 30;
 			Item.height = 30;
-			Item.rare = ItemRarityID.Blue;
+			Item.rare = ItemRarityID.LightRed;
 			Item.value = Item.buyPrice(
 				gold: 5
 			);
 		}
 
+		public override void UpdateAccessory(Player player, bool hideVisual)
+		{
+			player.moveSpeed += MoveSpeedBonus;
+			player.AsPred().StomachWeightModifier *= 1f - StomachWeightReduction;
+		}
+
+		public override void AddRecipes()
+		{
+			CreateRecipe()
+				.AddIngredient(ModContent.ItemType<NymphHairStrand>(), 5)
+				.AddIngredient(ItemID.FallenStar, 7)
+				.AddIngredient(ItemID.Sapphire, 3)
+				.AddTile(TileID.Loom)
+				.Register();
+		}
+
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
-			tooltips.AddVorariaDynamicTooltip(
-				"Voraria.Charms.BetterDigestion",
+			tooltips.AddVorariaDynamicItemTooltip(
+				"Voraria.Accessories.NymphHairScarf",
 				new
 				{
-					AcidStrengthBonus
+					NymphScarfMoveSpeedBuff = MoveSpeedBonus.ToPercentage(2),
+					NymphScarfWeightReduction = StomachWeightReduction.ToPercentage(2),
 				}
 			);
 		}

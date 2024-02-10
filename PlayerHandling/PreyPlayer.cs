@@ -74,6 +74,8 @@ namespace V2.PlayerHandling
 		public StatModifier SoftenedWearoffRateModifier { get; set; }
 		public int SoftenedStacks => Math.Min(Softened.MaxStacks, (int)Math.Floor((double)Player.AsFood().SoftenedDigestionDamageTaken / (Player.statLifeMax * Softened.MaxHealthDigestedForOneStack)));
 
+		public bool PredScanner { get; set; }
+
 		public override void Initialize()
 		{
 			Player.AsFood().STR = new PredStat();
@@ -109,6 +111,8 @@ namespace V2.PlayerHandling
 			Player.AsFood().SoftenedWearoffRateModifier = StatModifier.Default;
 			if (Player.AsFood().SoftenedWearoffDelay > 0)
 				Player.AsFood().SoftenedWearoffDelay--;
+
+			PredScanner = false;
 		}
 
 		public override void UpdateDead()

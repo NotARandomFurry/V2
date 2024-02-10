@@ -20,14 +20,14 @@ using V2.Sounds.Vore;
 
 namespace V2.Items.Vanilla.Currency
 {
-	public class CopperCoin : GlobalItem
+	public class PlatinumCoin : GlobalItem
 	{
 		public override bool InstancePerEntity => true;
-		public override bool AppliesToEntity(Item entity, bool lateInstantiation) => entity.type == ItemID.CopperCoin;
+		public override bool AppliesToEntity(Item entity, bool lateInstantiation) => entity.type == ItemID.PlatinumCoin;
 
 		public override void SetDefaults(Item entity)
 		{
-			entity.AsFood().MaxHealth = 4;
+			entity.AsFood().MaxHealth = 100;
 			entity.AsFood().Size = 0.0005;
 			entity.AsFood().AcidResistTier = 2;
 
@@ -45,7 +45,7 @@ namespace V2.Items.Vanilla.Currency
 		{
 			Player player = Main.LocalPlayer;
 			tooltips.AddVorariaDynamicItemTooltip(
-				"Vanilla.Currency.Coins.CopperCoin",
+				"Vanilla.Currency.Coins.PlatinumCoin",
 				new
 				{
 					

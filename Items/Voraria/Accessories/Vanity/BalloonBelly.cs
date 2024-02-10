@@ -17,7 +17,7 @@ using Terraria.ModLoader.IO;
 using V2.Core;
 using V2.PlayerHandling;
 
-namespace V2.Items.Voraria.Accessories
+namespace V2.Items.Voraria.Accessories.Vanity
 {
 	public class BalloonBelly : ModItem
 	{
@@ -26,9 +26,9 @@ namespace V2.Items.Voraria.Accessories
 		public static int MaximumInflatedSize => 5;
 		public int InflatedSize { get; set; }
 		public Color SkinColor { get; set; }
-		public override LocalizedText DisplayName => Language.GetText("Mods.V2.ItemName.Voraria.Accessories.BalloonBelly");
-		public override LocalizedText Tooltip => Language.GetText("Mods.V2.ItemTooltip.Voraria.Accessories.BalloonBelly.Short");
-		public override string Texture => "V2/Items/Voraria/Accessories/BalloonBelly_Size0";
+		public override LocalizedText DisplayName => Language.GetText("Mods.V2.ItemName.Voraria.Accessories.Vanity.BalloonBelly");
+		public override LocalizedText Tooltip => Language.GetText("Mods.V2.ItemTooltip.Voraria.Accessories.Vanity.BalloonBelly.Short");
+		public override string Texture => "V2/Items/Voraria/Accessories/Vanity/BalloonBelly_Size0";
 		public override void SetDefaults()
 		{
 			Item.accessory = true;
@@ -46,6 +46,14 @@ namespace V2.Items.Voraria.Accessories
 
 			InflatedSize = 0;
 			SkinColor = Color.White;
+		}
+
+		public override ModItem Clone(Item newEntity)
+		{
+			BalloonBelly belly = newEntity.ModItem as BalloonBelly;
+			belly.InflatedSize = InflatedSize;
+			belly.SkinColor = SkinColor;
+			return base.Clone(newEntity);
 		}
 
 		public override Color? GetAlpha(Color lightColor) => SkinColor;
@@ -115,8 +123,8 @@ namespace V2.Items.Voraria.Accessories
 
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
-			tooltips.AddVorariaDynamicTooltip(
-				"Voraria.Accessories.BalloonBelly",
+			tooltips.AddVorariaDynamicItemTooltip(
+				"Voraria.Accessories.Vanity.BalloonBelly",
 				new
 				{
 					InflatedSize,
@@ -130,12 +138,12 @@ namespace V2.Items.Voraria.Accessories
 			TextureAssets.Item[Type] = ModContent.Request<Texture2D>(
 				InflatedSize switch
 				{
-					1 => "V2/Items/Voraria/Accessories/BalloonBelly_Size1",
-					2 => "V2/Items/Voraria/Accessories/BalloonBelly_Size2",
-					3 => "V2/Items/Voraria/Accessories/BalloonBelly_Size3",
-					4 => "V2/Items/Voraria/Accessories/BalloonBelly_Size4",
-					5 => "V2/Items/Voraria/Accessories/BalloonBelly_Size5",
-					_ => "V2/Items/Voraria/Accessories/BalloonBelly_Size0",
+					1 => "V2/Items/Voraria/Accessories/Vanity/BalloonBelly_Size1",
+					2 => "V2/Items/Voraria/Accessories/Vanity/BalloonBelly_Size2",
+					3 => "V2/Items/Voraria/Accessories/Vanity/BalloonBelly_Size3",
+					4 => "V2/Items/Voraria/Accessories/Vanity/BalloonBelly_Size4",
+					5 => "V2/Items/Voraria/Accessories/Vanity/BalloonBelly_Size5",
+					_ => "V2/Items/Voraria/Accessories/Vanity/BalloonBelly_Size0",
 				},
 				AssetRequestMode.ImmediateLoad
 			);
@@ -147,12 +155,12 @@ namespace V2.Items.Voraria.Accessories
 			TextureAssets.Item[Type] = ModContent.Request<Texture2D>(
 				InflatedSize switch
 				{
-					1 => "V2/Items/Voraria/Accessories/BalloonBelly_Size1",
-					2 => "V2/Items/Voraria/Accessories/BalloonBelly_Size2",
-					3 => "V2/Items/Voraria/Accessories/BalloonBelly_Size3",
-					4 => "V2/Items/Voraria/Accessories/BalloonBelly_Size4",
-					5 => "V2/Items/Voraria/Accessories/BalloonBelly_Size5",
-					_ => "V2/Items/Voraria/Accessories/BalloonBelly_Size0",
+					1 => "V2/Items/Voraria/Accessories/Vanity/BalloonBelly_Size1",
+					2 => "V2/Items/Voraria/Accessories/Vanity/BalloonBelly_Size2",
+					3 => "V2/Items/Voraria/Accessories/Vanity/BalloonBelly_Size3",
+					4 => "V2/Items/Voraria/Accessories/Vanity/BalloonBelly_Size4",
+					5 => "V2/Items/Voraria/Accessories/Vanity/BalloonBelly_Size5",
+					_ => "V2/Items/Voraria/Accessories/Vanity/BalloonBelly_Size0",
 				},
 				AssetRequestMode.ImmediateLoad
 			);

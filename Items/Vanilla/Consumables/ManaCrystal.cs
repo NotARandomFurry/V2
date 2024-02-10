@@ -74,7 +74,7 @@ namespace V2.Items.Vanilla.Consumables
 		{
 			Player player = Main.LocalPlayer;
 			Color manaCrystalsUsedColor = Color.Lerp(Color.DarkBlue, Color.CornflowerBlue, (float)player.ConsumedManaCrystals / (float)Player.ManaCrystalMax);
-			tooltips.AddVorariaDynamicTooltip(
+			tooltips.AddVorariaDynamicItemTooltip(
 				"Vanilla.Consumables.ManaCrystal",
 				new
 				{

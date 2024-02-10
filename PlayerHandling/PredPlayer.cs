@@ -22,6 +22,7 @@ using Terraria.ModLoader.IO;
 using V2.Core;
 using V2.Core.StruggleSystem;
 using V2.Items;
+using V2.Items.Voraria.Consumables.PermanentUpgrades;
 using V2.NPCs;
 using V2.PlayerHandling.PredPlayerGoals;
 using V2.PlayerHandling.PredPlayerGoals.Beginner;
@@ -100,7 +101,7 @@ namespace V2.PlayerHandling
 		public StatModifier SwallowSizeModifier;
 		public static double BaseSwallowSize => 0.80;
 		public static double SwallowSizePerLevel => 0.05;
-		public double SwallowSize
+		public double SwallowCapacity
 		{
 			get
 			{
@@ -216,10 +217,10 @@ namespace V2.PlayerHandling
 		public int AcidTier
 		{
 			get {
-				if (PermanentUpgradesUsed.ContainsKey("AcidTier2") && PermanentUpgradesUsed["AcidTier2"])
+				if (PermanentUpgradesGained.ContainsKey("AcidTier2") && PermanentUpgradesGained["AcidTier2"])
 					return 2;
 
-				if (PermanentUpgradesUsed.ContainsKey("AcidTier1") && PermanentUpgradesUsed["AcidTier1"])
+				if (PermanentUpgradesGained.ContainsKey("AcidTier1") && PermanentUpgradesGained["AcidTier1"])
 					return 1;
 
 				return 0;
@@ -314,7 +315,7 @@ namespace V2.PlayerHandling
 		public bool charmNoAirDrain;
 		public bool charmStealPreyLoot;
 
-		public Dictionary<string, bool> PermanentUpgradesUsed { get; set; }
+		public Dictionary<string, bool> PermanentUpgradesGained { get; set; }
 		public bool endoToggleUnlocked;
 		public bool endoToggle;
 		public bool SafeStomach => (charmNoDigest && charmNoAirDrain) || endoToggle;
@@ -545,6 +546,8 @@ namespace V2.PlayerHandling
 			}
 		}
 
+		public bool SizeScanner { get; set; }
+
 		public override void Initialize()
 		{
 			SmallBurps = Burps.Humanoid.Small;
@@ -580,10 +583,10 @@ namespace V2.PlayerHandling
 			PercentBellySizeModifier = 1.0;
 			FlatBellySizeModifier = 0;
 
-			PermanentUpgradesUsed = new Dictionary<string, bool>();
-			PermanentUpgradesUsed.Add("PureSwallow1", false);
-			PermanentUpgradesUsed.Add("AcidTier1", false);
-			PermanentUpgradesUsed.Add("AcidTier2", false);
+			PermanentUpgradesGained = new Dictionary<string, bool>();
+			PermanentUpgradesGained.Add("PureSwallow1", false);
+			PermanentUpgradesGained.Add("AcidTier1", false);
+			PermanentUpgradesGained.Add("AcidTier2", false);
 
 			GoalsCompleted = new Dictionary<string, bool>();
 			foreach (PredPlayerGoal goal in PredPlayerGoalLoader.PredPlayerGoals)
@@ -630,6 +633,16 @@ namespace V2.PlayerHandling
 
 			PercentBellySizeModifier = 1.0;
 			FlatBellySizeModifier = 0;
+
+			SizeScanner = false;
+
+			UpdatePredStatPointsFromPermUpgrades();
+		}
+
+		public void UpdatePredStatPointsFromPermUpgrades()
+		{
+			if (PermanentUpgradesGained.ContainsKey("PureSwallow1") && PermanentUpgradesGained["PureSwallow1"])
+				GLP.Base += PureSwallowBoost1.GLPBonus;
 		}
 
 		public override bool HoverSlot(Item[] inventory, int context, int slot)
@@ -963,7 +976,7 @@ namespace V2.PlayerHandling
 					return preyNPC.CurrentCaptor() is null;
 
 				bool isThisAFuckingBoss = preyNPC.boss || (preyNPC.type >= NPCID.EaterofWorldsHead && preyNPC.type <= NPCID.EaterofWorldsTail); // I hate EoW
-				if (isThisAFuckingBoss)
+				if (isThisAFuckingBoss && !ModContent.GetInstance<V2ServerConfig>().Glutton)
 					return false;
 
 				if (preyNPC.CurrentCaptor() is not null)
@@ -981,7 +994,7 @@ namespace V2.PlayerHandling
 					return false;
 			}
 
-			if (PreyData.GetPreySize(prey) > pred.AsPred().SwallowSize)
+			if (PreyData.GetPreySize(prey) > pred.AsPred().SwallowCapacity)
 				return false;
 
 			if (PreyData.GetPreySize(prey) > pred.AsPred().StomachCapacity - pred.AsPred().StomachFullness)
@@ -1512,7 +1525,7 @@ namespace V2.PlayerHandling
 			tag.Add("TUMSpent", TUM.Spent);
 			tag.Add("ACISpent", ACI.Spent);
 			tag.Add("ABSSpent", ABS.Spent);
-			foreach (KeyValuePair<string, bool> keyValuePair in Player.AsPred().PermanentUpgradesUsed)
+			foreach (KeyValuePair<string, bool> keyValuePair in Player.AsPred().PermanentUpgradesGained)
 			{
 				tag.Add("[PERM UPGRADES] " + keyValuePair.Key, keyValuePair.Value);
 			}
@@ -1536,7 +1549,7 @@ namespace V2.PlayerHandling
 			TUM.Spent = tag.GetInt("TUMSpent");
 			ACI.Spent = tag.GetInt("ACISpent");
 			ABS.Spent = tag.GetInt("ABSSpent");
-			PermanentUpgradesUsed = new Dictionary<string, bool>();
+			PermanentUpgradesGained = new Dictionary<string, bool>();
 			mealCount = new Dictionary<string, int>();
 			drinkCount = new Dictionary<string, int>();
 			GoalsCompleted = new Dictionary<string, bool>();
@@ -1546,7 +1559,7 @@ namespace V2.PlayerHandling
 				{
 					string realKey = keyValuePair.Key.Remove(0, 16);
 					bool permUpgradeUsed = tag.GetBool(keyValuePair.Key);
-					PermanentUpgradesUsed.Add(realKey, permUpgradeUsed);
+					PermanentUpgradesGained.Add(realKey, permUpgradeUsed);
 					continue;
 				}
 				if (keyValuePair.Key.StartsWith("[DIGESTED] "))
@@ -1654,14 +1667,14 @@ namespace V2.PlayerHandling
 						ref drawInfo,
 						3,
 						player.IsAirborne() ? -4 : -2,
-						player.IsAirborne() ? 2 : 2
+						player.IsAirborne() ? 6 : 6
 					);
 					break;
 				case 4:
 					DrawHungryPlayerTummy(
 						ref drawInfo,
 						4,
-						player.IsAirborne() ? -4 : -2,
+						player.IsAirborne() ? -4 : -4,
 						player.IsAirborne() ? 4 : 4
 					);
 					break;
@@ -1670,7 +1683,7 @@ namespace V2.PlayerHandling
 						ref drawInfo,
 						5,
 						player.IsAirborne() ? -4 : -4,
-						player.IsAirborne() ? 2 : 2
+						player.IsAirborne() ? 4 : 2
 					);
 					break;
 				case 6:
