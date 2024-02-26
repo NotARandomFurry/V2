@@ -24,7 +24,7 @@ namespace V2.NPCs.Vanilla.Cavern
 						_ => 1,
 					};
 				},
-				chance: (npc, pred) => 1f
+				chance: (npc, pred) => 1.0
 			);
 			public static ItemTheftRule MetalDetector => new ItemTheftRule(
 				type: (npc, pred) => ItemID.MetalDetector,
@@ -32,13 +32,14 @@ namespace V2.NPCs.Vanilla.Cavern
 				chance: (npc, pred) => {
 					return Main.GameMode switch
 					{
-						GameModeID.Master => 0.175f,
-						GameModeID.Expert => 0.14f,
-						_ => 0.10f,
+						GameModeID.Master => 0.175,
+						GameModeID.Expert => 0.15,
+						_ => 0.10,
 					};
 				}
 			);
 		}
+
 		public static Nymph AsNymph(this NPC npc)
 		{
 			if (!npc.TryGetGlobalNPC(out Nymph cuteGirlLure))
@@ -58,7 +59,7 @@ namespace V2.NPCs.Vanilla.Cavern
 		{
 			npc.AsV2NPC().Gender = EntityGender.Female;
 
-			npc.AsFood().Size = 1.04;
+			npc.AsFood().DefinedSize = 1.04;
 			npc.AsPred().MaxStomachCapacity = 5.5;
 			npc.AsPred().BaseStomachacheMeterCapacity = 275.0;
 
@@ -82,7 +83,6 @@ namespace V2.NPCs.Vanilla.Cavern
 			npc.AsFood().OnKilledByDigestion = PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
 			npc.AsFood().OnKilledByDigestion += PreyNPC.HandlePreyItemTheft;
 			npc.AsFood().OnKilledByDigestion += OnKilledByDigestion_GrantNymphGoal;
-
 			npc.AsFood().ItemTheftRules = new List<ItemTheftRule>()
 			{
 				NymphStuff.ItemTheftRules.NymphHairStrands,
@@ -132,9 +132,7 @@ namespace V2.NPCs.Vanilla.Cavern
 		public static void OnKilledByDigestion_GrantNymphGoal(NPC npc, Entity pred)
 		{
 			if (pred is Player predPlayer)
-			{
 				ModContent.GetInstance<EatNymph>().TrySetCompletion(predPlayer);
-			}
 		}
 	}
 }

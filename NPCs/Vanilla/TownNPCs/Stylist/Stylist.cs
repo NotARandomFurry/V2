@@ -83,7 +83,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 
 			npc.AsV2NPC().GetNewDialogue = GetStylistChat;
 
-			npc.AsFood().Size = 1.085;
+			npc.AsFood().DefinedSize = 1.085;
 			npc.AsPred().MaxStomachCapacity = 5.85;
 			npc.AsPred().BaseStomachacheMeterCapacity = 175.0;
 
@@ -97,7 +97,8 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 			npc.AsPred().GetDigestionTickRate = GetDigestionTickRate;
 			npc.AsPred().GetDigestionTickDamage = GetDigestionTickDamage;
 
-			npc.AsPred().OnDigestionKill = OnDigestionKill;
+			npc.AsPred().OnDigestionKill = null;
+			npc.AsPred().MouthSoundRawOffset = npc.TrueCenter() + new Vector2(npc.direction * 8f, -14f);
 			npc.AsPred().SmallBurps = Burps.Humanoid.Small;
 			npc.AsPred().SmallBurpThreshold = 0.3;
 			npc.AsPred().StandardBurps = Burps.Humanoid.Standard;

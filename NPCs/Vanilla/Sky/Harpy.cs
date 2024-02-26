@@ -19,9 +19,9 @@ namespace V2.NPCs.Vanilla.Sky
 				chance: (npc, pred) => {
 					return Main.GameMode switch
 					{
-						GameModeID.Master => 1f / 30f,
-						GameModeID.Expert => 0.025f,
-						_ => 0.02f,
+						GameModeID.Master => 1.0 / 30.0,
+						GameModeID.Expert => 1.0 / 40.0,
+						_ => 1.0 / 50.0,
 					};
 				}
 			);
@@ -45,12 +45,11 @@ namespace V2.NPCs.Vanilla.Sky
 		{
 			npc.AsV2NPC().Gender = EntityGender.Female;
 
-			npc.AsFood().Size = 1.45;
+			npc.AsFood().DefinedSize = 1.45;
 
 			npc.AsFood().OnKilledByDigestion = PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
 			npc.AsFood().OnKilledByDigestion += PreyNPC.HandlePreyItemTheft;
 			npc.AsFood().OnKilledByDigestion += OnKilledByDigestion_GrantHarpyGoal;
-
 			npc.AsFood().ItemTheftRules = new List<ItemTheftRule>()
 			{
 				HarpyStuff.ItemTheftRules.GiantHarpyFeather,

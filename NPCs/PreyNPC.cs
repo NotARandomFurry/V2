@@ -45,7 +45,7 @@ namespace V2.NPCs
 		public delegate void DelegatePreyAI(NPC npc, Entity pred);
 		public DelegatePreyAI SpecialPreyAI { get; set; }
 
-		public double Size { get; set; }
+		public double DefinedSize { get; set; }
 
 		public int STR { get; set; }
 		/// <summary>
@@ -84,7 +84,7 @@ namespace V2.NPCs
 		public PreyNPC()
 		{
 			SpecialPreyAI = null;
-			Size = 0;
+			DefinedSize = 0;
 
 			STR = 0;
 			StruggleEffectiveness = 5;

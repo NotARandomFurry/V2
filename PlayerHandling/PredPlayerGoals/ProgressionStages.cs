@@ -28,4 +28,11 @@ namespace V2.PlayerHandling.PredPlayerGoals
 		public override string Description => Language.GetTextValue("Mods.V2.PredPlayerGoals.Amateur.Description");
 		public override double Order => 2.0;
 	}
+	public class IntermediateStage : ProgressionStage
+	{
+		public override string DisplayName => Language.GetTextValue("Mods.V2.PredPlayerGoals.Intermediate.Name");
+		public override string DisplaySubtitle => Language.GetTextValue("Mods.V2.PredPlayerGoals.Intermediate.Subtitle");
+		public override string Description => Language.GetTextValue("Mods.V2.PredPlayerGoals.Intermediate.Description");
+		public override double Order => 3.0;
+	}
 }

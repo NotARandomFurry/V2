@@ -23,6 +23,7 @@ using V2.Core.WorldGeneration;
 using V2.NPCs;
 using V2.NPCs.Vanilla.TownNPCs.TravellingMerchant;
 using V2.PlayerHandling;
+using V2.Projectiles;
 using V2.UI;
 using V2.UI.PredStatsMenu;
 using V2.UI.StylistAteThePublishButton;
@@ -50,6 +51,11 @@ namespace V2
 		internal static Hook NPCLoader_NPCAI_Hook;
 		private static readonly MethodInfo NPCLoader_NPCAI_MethodInfo =
 			typeof(Main).Assembly.GetType("Terraria.ModLoader.NPCLoader")!.GetMethod("NPCAI", BindingFlags.Public | BindingFlags.Static)!;
+
+		private delegate void orig_ProjectileAI(Projectile projectile);
+		internal static Hook ProjectileLoader_ProjectileAI_Hook;
+		private static readonly MethodInfo ProjectileLoader_ProjectileAI_MethodInfo =
+			typeof(Main).Assembly.GetType("Terraria.ModLoader.ProjectileLoader")!.GetMethod("ProjectileAI", BindingFlags.Public | BindingFlags.Static)!;
 
 		public static void EngageVoraciousGameFuckery()
 		{
@@ -81,7 +87,6 @@ namespace V2
 						npc.velocity = Vector2.Zero;
 						npc.position = npc.CurrentCaptor().Predator.position;
 						npcAsPrey.SpecialPreyAI?.Invoke(npc, npc.CurrentCaptor().Predator);
-						NPCLoader.PostAI(npc);
 					}
 					else if (npcAsV2NPC.NewAIMethod is not null)
 					{
@@ -95,6 +100,36 @@ namespace V2
 				}
 			});
 			NPCLoader_NPCAI_Hook.Apply();
+
+
+			ProjectileLoader_ProjectileAI_Hook = new Hook(ProjectileLoader_ProjectileAI_MethodInfo, (orig_ProjectileAI orig, Projectile projectile) =>
+			{
+				V2Projectile projectileAsV2Projectile = projectile.AsV2Proj(risky: true);
+				PreyProjectile projectileAsPrey = projectile.AsFood(risky: true);
+				if (projectileAsV2Projectile is null || projectileAsPrey is null)
+					orig(projectile);
+				else
+				{
+					PredProjectile.ResetModifiers(projectile);
+					if (projectile.CurrentCaptor() is not null)
+					{
+						projectile.timeLeft += 1;
+						projectile.velocity = Vector2.Zero;
+						projectile.position = projectile.CurrentCaptor().Predator.position;
+						projectileAsPrey.SpecialPreyAI?.Invoke(projectile, projectile.CurrentCaptor().Predator);
+					}
+					else if (projectileAsV2Projectile.NewAIMethod is not null)
+					{
+						if (projectileAsV2Projectile.NewAIMethod.Invoke(projectile))
+							orig(projectile);
+						else
+							ProjectileLoader.PostAI(projectile);
+					}
+					else
+						orig(projectile);
+				}
+			});
+			ProjectileLoader_ProjectileAI_Hook.Apply();
 
 			On_Chest.SetupTravelShop_GetItem += (On_Chest.orig_SetupTravelShop_GetItem orig, Player playerWithHighestLuck, int[] rarity, ref int it, int minimumRarity)
 				=> TravellingMerchant.SetupTravelShop_GetItem(playerWithHighestLuck, rarity, ref it, minimumRarity);
@@ -150,6 +185,8 @@ namespace V2
 		{
 			NPCLoader_NPCAI_Hook.Undo();
 			NPCLoader_NPCAI_Hook = null;
+			ProjectileLoader_ProjectileAI_Hook.Undo();
+			ProjectileLoader_ProjectileAI_Hook = null;
 		}
 
 		private static void NoPotionsOrHeartsIfDigested(On_NPC.orig_DoDeathEvents_DropBossPotionsAndHearts orig, NPC npc, ref string typeName)

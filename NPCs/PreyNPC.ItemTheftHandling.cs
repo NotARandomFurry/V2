@@ -34,8 +34,11 @@ namespace V2.NPCs
 
 			foreach (ItemTheftRule rule in npc.AsFood().ItemTheftRules)
 			{
+				double ruleChance = rule.ItemChance.Invoke(npc, pred);
+				if (pred is not Player)
+					ruleChance /= 10.0;
 				double chanceCheck = Main.rand.NextDouble();
-				if (chanceCheck >= rule.ItemChance.Invoke(npc, pred))
+				if (chanceCheck >= ruleChance)
 					continue;
 
 				Vector2 mouthOffset = Vector2.Zero;
@@ -57,7 +60,13 @@ namespace V2.NPCs
 					itemType,
 					itemAmount
 				);
-				Main.item[belchedUpLeftovers].AsFood().Health = (int)Math.Round(LeftoversHealthModifier * Main.item[belchedUpLeftovers].AsFood().MaxHealth);
+				Item belchedUpItem = Main.item[belchedUpLeftovers];
+				belchedUpItem.AsFood().Health = (int)Math.Round(LeftoversHealthModifier * belchedUpItem.AsFood().MaxHealth);
+				belchedUpItem.position += new Vector2(Main.rand.NextFloat(1f), 0).RotatedByRandom(MathHelper.ToRadians(360));
+				belchedUpItem.velocity = new Vector2(pred.direction * 10f, -2.5f);
+				belchedUpItem.velocity *= Main.rand.NextFloat(0.98f, 1.02f);
+				belchedUpItem.velocity = belchedUpItem.velocity.RotatedByRandom(MathHelper.ToRadians(12));
+				belchedUpItem.noGrabDelay = 100;
 				NetMessage.SendData(MessageID.SyncItem, -1, -1, null, belchedUpLeftovers, 1f);
 			}
 		}

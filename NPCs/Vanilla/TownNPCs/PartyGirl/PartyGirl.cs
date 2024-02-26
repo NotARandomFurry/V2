@@ -91,7 +91,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 
 			npc.AsV2NPC().GetNewDialogue = GetPartyGirlChat;
 
-			npc.AsFood().Size = 1.0;
+			npc.AsFood().DefinedSize = 1.0;
 			npc.AsPred().MaxStomachCapacity = 999999.0;
 			npc.AsPred().BaseStomachacheMeterCapacity = 999999.0;
 
@@ -105,6 +105,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 			npc.AsPred().GetDigestionTickDamage = GetDigestionTickDamage;
 
 			npc.AsPred().OnDigestionKill = OnDigestionKill;
+			npc.AsPred().MouthSoundRawOffset = npc.TrueCenter() + new Vector2(npc.direction * 8f, -14f);
 			npc.AsPred().StandardBurps = Burps.Humanoid.Standard;
 			npc.AsPred().GetAdditionalDigestedPlayerMessages = GetDigestedPlayerAdditionalDeathMessages;
 

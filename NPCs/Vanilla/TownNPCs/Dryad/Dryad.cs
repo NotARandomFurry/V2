@@ -19,6 +19,19 @@ namespace V2.NPCs.Vanilla.TownNPCs.Dryad
 {
 	public static class DryadStuff
 	{
+		public static class ItemTheftRules
+		{
+			public static ItemTheftRule ClothingTop => new ItemTheftRule(
+				type: (npc, pred) => ItemID.DryadCoverings,
+				amount: (npc, pred) => 1,
+				chance: (npc, pred) => 1.0
+			);
+			public static ItemTheftRule ClothingBottom => new ItemTheftRule(
+				type: (npc, pred) => ItemID.DryadLoincloth,
+				amount: (npc, pred) => 1,
+				chance: (npc, pred) => 1.0
+			);
+		}
 		public static Dryad AsDryad(this NPC npc)
 		{
 			if (!npc.TryGetGlobalNPC(out Dryad predStylist))
@@ -75,7 +88,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Dryad
 
 			npc.AsV2NPC().GetNewDialogue = GetDryadChat;
 
-			npc.AsFood().Size = 1.118;
+			npc.AsFood().DefinedSize = 1.118;
 			npc.AsPred().MaxStomachCapacity = 12.50;
 			npc.AsPred().BaseStomachacheMeterCapacity = 450.0;
 
@@ -89,7 +102,8 @@ namespace V2.NPCs.Vanilla.TownNPCs.Dryad
 			npc.AsPred().GetDigestionTickRate = GetDigestionTickRate;
 			npc.AsPred().GetDigestionTickDamage = GetDigestionTickDamage;
 
-			npc.AsPred().OnDigestionKill = OnDigestionKill;
+			npc.AsPred().OnDigestionKill = null;
+			npc.AsPred().MouthSoundRawOffset = npc.TrueCenter() + new Vector2(npc.direction * 8f, -14f);
 			npc.AsPred().SmallBurps = Burps.Humanoid.Small;
 			npc.AsPred().SmallBurpThreshold = 0.35;
 			npc.AsPred().StandardBurps = Burps.Humanoid.Standard;
@@ -100,6 +114,11 @@ namespace V2.NPCs.Vanilla.TownNPCs.Dryad
 
 			npc.AsFood().OnKilledByDigestion = PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
 			npc.AsFood().OnKilledByDigestion += PreyNPC.HandlePreyItemTheft;
+			npc.AsFood().ItemTheftRules = new List<ItemTheftRule>
+			{
+				DryadStuff.ItemTheftRules.ClothingTop,
+				DryadStuff.ItemTheftRules.ClothingBottom,
+			};
 		}
 
 		public override ITownNPCProfile ModifyTownNPCProfile(NPC npc) => DryadStuff.DryadPredProfile;

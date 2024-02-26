@@ -1,0 +1,301 @@
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection.Metadata.Ecma335;
+using System.Runtime.Intrinsics;
+using System.Text;
+using System.Threading.Tasks;
+using Terraria;
+using Terraria.Audio;
+using Terraria.ID;
+using Terraria.Localization;
+using Terraria.ModLoader;
+using V2.Core;
+using V2.NPCs;
+using V2.PlayerHandling;
+using V2.PlayerHandling.PredPlayerGoals.Amateur;
+using V2.Sounds.Vore;
+
+namespace V2.Projectiles.Vanilla.Summons.Pets
+{
+	public partial class FairyPrincess
+	{
+		public static bool MiniCandyFairyAI(Projectile projectile)
+		{
+			Player ownerPlayer = Main.player[projectile.owner];
+			bool ateOwner = ownerPlayer.IsFoodFor(projectile, out bool churnedOwner);
+			float xOffset = V2Utils.TileCountAsPixelCount(2);
+			float yOffset = -V2Utils.TileCountAsPixelCount(4.5);
+
+			Vector2 offsetFromOwner = new Vector2((float)ownerPlayer.direction * xOffset, yOffset);
+			Vector2 intendedLocation = ownerPlayer.MountedCenter + offsetFromOwner;
+			float distanceToIntendedLocation = Vector2.Distance(projectile.Center, intendedLocation);
+
+
+			if (!ateOwner)
+			{
+				if (ownerPlayer.dead)
+				{
+					projectile.Kill();
+					return false;
+				}
+
+				if (ownerPlayer.petFlagFairyQueenPet)
+					projectile.timeLeft = 2;
+
+				if (distanceToIntendedLocation > 1000f)
+					projectile.Center = ownerPlayer.Center + offsetFromOwner;
+			}
+			else 
+			{
+				projectile.timeLeft = 2;
+			}
+
+			List<(PreyType, int)> diet = new List<(PreyType, int)>
+			{
+				(PreyType.NPC, NPCID.FairyCritterBlue),
+				(PreyType.NPC, NPCID.FairyCritterGreen),
+				(PreyType.NPC, NPCID.FairyCritterPink),
+				(PreyType.NPC, NPCID.Grasshopper),
+				(PreyType.NPC, NPCID.GoldGrasshopper),
+				(PreyType.NPC, NPCID.LadyBug),
+				(PreyType.NPC, NPCID.GoldLadyBug),
+				(PreyType.NPC, NPCID.Firefly),
+				(PreyType.NPC, NPCID.WaterStrider),
+				(PreyType.NPC, NPCID.GoldWaterStrider),
+				(PreyType.NPC, NPCID.LightningBug),
+				(PreyType.NPC, NPCID.Butterfly),
+				(PreyType.NPC, NPCID.GoldButterfly),
+				(PreyType.NPC, NPCID.HellButterfly),
+				(PreyType.NPC, NPCID.RedDragonfly),
+				(PreyType.NPC, NPCID.OrangeDragonfly),
+				(PreyType.NPC, NPCID.YellowDragonfly),
+				(PreyType.NPC, NPCID.GoldDragonfly),
+				(PreyType.NPC, NPCID.GreenDragonfly),
+				(PreyType.NPC, NPCID.BlueDragonfly),
+				(PreyType.NPC, NPCID.BlackDragonfly),
+				(PreyType.NPC, NPCID.CochinealBeetle),
+				(PreyType.NPC, NPCID.CyanBeetle),
+				(PreyType.NPC, NPCID.LacBeetle),
+				(PreyType.NPC, NPCID.Worm),
+				(PreyType.NPC, NPCID.EnchantedNightcrawler),
+				(PreyType.NPC, NPCID.GoldWorm),
+				(PreyType.NPC, NPCID.GiantWormHead),
+				(PreyType.NPC, NPCID.DiggerHead),
+				(PreyType.NPC, NPCID.TruffleWorm),
+				(PreyType.NPC, NPCID.TruffleWormDigger),
+				(PreyType.NPC, NPCID.MushiLadybug),
+				(PreyType.NPC, NPCID.Antlion),
+				(PreyType.NPC, NPCID.WalkingAntlion),
+				(PreyType.NPC, NPCID.FlyingAntlion),
+				(PreyType.NPC, NPCID.GiantWalkingAntlion),
+				(PreyType.NPC, NPCID.GiantFlyingAntlion),
+				(PreyType.NPC, NPCID.LarvaeAntlion),
+				(PreyType.NPC, NPCID.TombCrawlerHead),
+				(PreyType.NPC, NPCID.DuneSplicerHead),
+				(PreyType.NPC, NPCID.Buggy),
+				(PreyType.NPC, NPCID.Grubby),
+				(PreyType.NPC, NPCID.Sluggy),
+				(PreyType.NPC, NPCID.BeeSmall),
+				(PreyType.NPC, NPCID.Bee),
+				(PreyType.NPC, NPCID.QueenBee),
+				(PreyType.NPC, NPCID.Hornet),
+				(PreyType.NPC, NPCID.HornetFatty),
+				(PreyType.NPC, NPCID.HornetHoney),
+				(PreyType.NPC, NPCID.HornetLeafy),
+				(PreyType.NPC, NPCID.HornetSpikey),
+				(PreyType.NPC, NPCID.HornetStingy),
+				(PreyType.NPC, NPCID.MossHornet),
+				(PreyType.NPC, NPCID.JungleCreeper),
+				(PreyType.NPC, NPCID.JungleCreeperWall),
+				(PreyType.NPC, NPCID.Moth),
+				(PreyType.NPC, NPCID.WallCreeper),
+				(PreyType.NPC, NPCID.WallCreeperWall),
+				(PreyType.NPC, NPCID.BlackRecluse),
+				(PreyType.NPC, NPCID.BlackRecluseWall),
+				(PreyType.NPC, NPCID.BloodCrawler),
+				(PreyType.NPC, NPCID.BloodCrawlerWall),
+				(PreyType.NPC, NPCID.Pixie),
+				(PreyType.NPC, NPCID.Gastropod),
+				(PreyType.NPC, NPCID.EmpressButterfly),
+				(PreyType.NPC, NPCID.ThePossessed),
+				(PreyType.NPC, NPCID.Mothron),
+				(PreyType.NPC, NPCID.MothronEgg),
+				(PreyType.NPC, NPCID.MothronSpawn),
+				(PreyType.NPC, NPCID.DD2LightningBugT3),
+				(PreyType.NPC, NPCID.SolarCrawltipedeHead),
+				(PreyType.NPC, NPCID.VortexLarva),
+				(PreyType.NPC, NPCID.VortexHornet),
+				(PreyType.NPC, NPCID.VortexHornetQueen),
+				(PreyType.NPC, NPCID.StardustWormHead),
+				(PreyType.NPC, NPCID.StardustSpiderBig),
+				(PreyType.NPC, NPCID.StardustSpiderSmall),
+				(PreyType.NPC, NPCID.Shimmerfly),
+			};
+			if (!V2.BlacklistsActive)
+				diet.Add((PreyType.NPC, NPCID.Princess));
+			if (ModContent.GetInstance<V2ServerConfig>().EasilyEdibleEmpress)
+				diet.Add((PreyType.NPC, NPCID.HallowBoss));
+
+			PreyType targetPreyType = PreyType.Undefined;
+			int targetPreyIndex = -1;
+			double maxPreyDistanceFromFairy = V2Utils.TileCountAsPixelCount(25);
+			double maxPreyDistanceFromOwner = V2Utils.TileCountAsPixelCount(40);
+			for (int i = 0; i < Main.maxNPCs; i++)
+			{
+				NPC potentialPrey = Main.npc[i];
+				if (!potentialPrey.active)
+					continue;
+
+				if (potentialPrey.CurrentCaptor() is not null)
+					continue;
+
+				bool partOfDiet = false;
+				foreach ((PreyType type, int ID) in diet)
+				{
+					if (type == PreyType.NPC && ID == potentialPrey.type)
+						partOfDiet = true;
+				}
+				if (!partOfDiet)
+					continue;
+
+				float distanceToPotentialPrey = projectile.Distance(potentialPrey.TrueCenter());
+				float distanceToPotentialPreyFromOwner = ownerPlayer.Distance(potentialPrey.TrueCenter());
+				if (distanceToPotentialPrey <= maxPreyDistanceFromFairy && distanceToPotentialPreyFromOwner <= maxPreyDistanceFromOwner)
+				{
+					targetPreyType = PreyType.NPC;
+					targetPreyIndex = i;
+					maxPreyDistanceFromFairy = distanceToPotentialPrey;
+					maxPreyDistanceFromOwner = distanceToPotentialPreyFromOwner;
+				}
+			}
+
+			if (targetPreyType != PreyType.Undefined && targetPreyIndex != -1)
+			{
+				Entity targetPrey = targetPreyType switch
+				{
+					PreyType.Player => Main.player[targetPreyIndex],
+					PreyType.NPC => Main.npc[targetPreyIndex],
+					PreyType.Projectile => Main.projectile[targetPreyIndex],
+					_ => null,
+				};
+				float speed = 8.75f;
+				float inertia = 10f;
+				projectile.ai[1] += 0.05f;
+				if (projectile.ai[1] > 7f)
+					projectile.ai[1] = 7f;
+				Vector2 direction = targetPrey.TrueCenter() - projectile.TrueCenter();
+				direction.Normalize();
+				direction *= speed;
+				projectile.velocity = (projectile.velocity * (inertia - 1) + direction) / inertia;
+				projectile.netUpdate = true;
+				projectile.direction = projectile.spriteDirection = 1;
+				if (projectile.velocity.X < 0f)
+					projectile.direction = projectile.spriteDirection = -1;
+				projectile.DoContactGulpage(diet);
+			}
+			else if (!(ateOwner && !churnedOwner) && distanceToIntendedLocation <= V2Utils.TileCountAsPixelCount(20))
+			{
+				projectile.direction = projectile.spriteDirection = ownerPlayer.direction;
+
+				Vector3 vector156 = new Vector3(1f, 0.6f, 1f) * 1.5f;
+				DelegateMethods.v3_1 = vector156 * 0.75f;
+				Utils.PlotTileLine(ownerPlayer.Center, ownerPlayer.Center + ownerPlayer.velocity * 6f, 40f, DelegateMethods.CastLightOpen);
+				Utils.PlotTileLine(ownerPlayer.Left, ownerPlayer.Right, 40f, DelegateMethods.CastLightOpen);
+				DelegateMethods.v3_1 = vector156 * 1.5f;
+				Utils.PlotTileLine(projectile.Center, projectile.Center + projectile.velocity * 6f, 30f, DelegateMethods.CastLightOpen);
+				Utils.PlotTileLine(projectile.Left, projectile.Right, 20f, DelegateMethods.CastLightOpen);
+
+				Vector2 distanceFromIntendedLocation = intendedLocation - projectile.Center;
+				float lockInDistance = 10f;
+				if (distanceToIntendedLocation < lockInDistance)
+					projectile.velocity *= 0.85f;
+
+				if (distanceFromIntendedLocation != Vector2.Zero)
+				{
+					float maxSpeed = 15f;
+					projectile.velocity = distanceFromIntendedLocation * 0.1f;
+					if (projectile.velocity.Length() > maxSpeed)
+					{
+						projectile.velocity.Normalize();
+						projectile.velocity *= maxSpeed;
+					}
+				}
+
+				if (distanceToIntendedLocation > 50f)
+				{
+					projectile.direction = projectile.spriteDirection = 1;
+					if (projectile.velocity.X < 0f)
+						projectile.direction = projectile.spriteDirection = -1;
+				}
+			}
+			else
+				projectile.velocity *= 0.925f;
+
+			if (projectile.velocity.Length() > 6f)
+			{
+				float rotationSpeed = projectile.velocity.X * 0.1f;
+				if (Math.Abs(projectile.rotation - rotationSpeed) >= (float)Math.PI)
+				{
+					if (rotationSpeed < projectile.rotation)
+						projectile.rotation -= (float)Math.PI * 2f;
+					else
+						projectile.rotation += (float)Math.PI * 2f;
+				}
+
+				float rotationInertia = 12f;
+				projectile.rotation = (projectile.rotation * (rotationInertia - 1f) + rotationSpeed) / rotationInertia;
+				if (++projectile.frameCounter >= 3)
+				{
+					projectile.frameCounter = 0;
+					projectile.frame++;
+					if (projectile.frame >= Main.projFrames[projectile.type])
+						projectile.frame = 0;
+				}
+
+				if (projectile.frameCounter == 0 || Main.rand.NextBool(15))
+				{
+					int num974 = Dust.NewDust(
+						projectile.position,
+						projectile.width,
+						projectile.height,
+						Main.rand.NextFromCollection(new List<int> {
+								DustID.PinkTorch,
+								DustID.PinkTorch,
+								DustID.BlueTorch,
+								DustID.YellowTorch,
+						}),
+						0f,
+						0f,
+						50,
+						default,
+						2f
+					);
+					Main.dust[num974].noGravity = true;
+				}
+			}
+			else
+			{
+				if (projectile.rotation > (float)Math.PI)
+					projectile.rotation -= (float)Math.PI * 2f;
+
+				if (projectile.rotation > -0.005f && projectile.rotation < 0.005f)
+					projectile.rotation = 0f;
+				else
+					projectile.rotation *= 0.96f;
+
+				if (++projectile.frameCounter >= 5)
+				{
+					projectile.frameCounter = 0;
+					projectile.frame++;
+					if (projectile.frame >= Main.projFrames[projectile.type])
+						projectile.frame = 0;
+				}
+			}
+			return false;
+		}
+	}
+}

@@ -52,7 +52,7 @@ namespace V2.NPCs.Vanilla.Forest
 
 			npc.AsV2NPC().Gender = EntityGender.Other;
 
-			npc.AsFood().Size = 0.065;
+			npc.AsFood().DefinedSize = 0.065;
 			npc.AsPred().MaxStomachCapacity = 0.4;
 
 			npc.AsPred().CanBeForceFed = CanCottonCandySlimeBeForceFed;

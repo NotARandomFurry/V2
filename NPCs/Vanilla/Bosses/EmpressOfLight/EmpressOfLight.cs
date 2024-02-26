@@ -22,6 +22,129 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 {
 	public static class CandyFairyStuff
 	{
+		public static class ItemTheftRules
+		{
+			public static ItemTheftRule WeaponDrops => new ItemTheftRule(
+				type: (npc, pred) => {
+					List<int> weapons = new List<int>()
+					{
+						ItemID.PiercingStarlight,
+						ItemID.FairyQueenRangedItem,
+						ItemID.FairyQueenMagicItem,
+						ItemID.RainbowWhip
+					};
+					return Main.rand.NextFromCollection(weapons);
+				},
+				amount: (npc, pred) => 1,
+				chance: (npc, pred) => {
+					return Main.GameMode switch
+					{
+						GameModeID.Master => 0.40,
+						GameModeID.Expert => 1.0 / 3.0,
+						_ => 0.25,
+					};
+				}
+			);
+			public static ItemTheftRule StarGuitar => new ItemTheftRule(
+				type: (npc, pred) => ItemID.SparkleGuitar,
+				amount: (npc, pred) => 1,
+				chance: (npc, pred) => {
+					return Main.GameMode switch
+					{
+						GameModeID.Master => 0.0333,
+						GameModeID.Expert => 0.025,
+						_ => 0.02,
+					};
+				}
+			);
+			public static ItemTheftRule EmpressWings => new ItemTheftRule(
+				type: (npc, pred) => ItemID.RainbowWings,
+				amount: (npc, pred) => 1,
+				chance: (npc, pred) => {
+					return Main.GameMode switch
+					{
+						GameModeID.Master => 0.1,
+						GameModeID.Expert => 0.075,
+						_ => 0.05,
+					};
+				}
+			);
+			public static ItemTheftRule PrismaticDye => new ItemTheftRule(
+				type: (npc, pred) => ItemID.HallowBossDye,
+				amount: (npc, pred) => 1,
+				chance: (npc, pred) => {
+					return Main.GameMode switch
+					{
+						GameModeID.Master => 0.15,
+						GameModeID.Expert => 0.125,
+						_ => 0.1,
+					};
+				}
+			);
+			public static ItemTheftRule Mask => new ItemTheftRule(
+				type: (npc, pred) => ItemID.FairyQueenMask,
+				amount: (npc, pred) => 1,
+				chance: (npc, pred) => {
+					return Main.GameMode switch
+					{
+						GameModeID.Master => 0.125,
+						GameModeID.Expert => 0.1,
+						_ => 0.0667,
+					};
+				}
+			);
+			public static ItemTheftRule Trophy => new ItemTheftRule(
+				type: (npc, pred) => ItemID.FairyQueenTrophy,
+				amount: (npc, pred) => 1,
+				chance: (npc, pred) => {
+					return Main.GameMode switch
+					{
+						GameModeID.Master => 0.25,
+						GameModeID.Expert => 0.20,
+						_ => 0.1,
+					};
+				}
+			);
+			public static ItemTheftRule ExpertDrop => new ItemTheftRule(
+				type: (npc, pred) => ItemID.EmpressFlightBooster,
+				amount: (npc, pred) => 1,
+				chance: (npc, pred) => {
+					return Main.GameMode switch
+					{
+						GameModeID.Master => 1,
+						GameModeID.Expert => 0.5,
+						_ => 0,
+					};
+				}
+			);
+			public static ItemTheftRule MasterTrophy => new ItemTheftRule(
+				type: (npc, pred) => ItemID.FairyQueenMasterTrophy,
+				amount: (npc, pred) => 1,
+				chance: (npc, pred) => {
+					return Main.GameMode switch
+					{
+						GameModeID.Master => 1,
+						_ => 0,
+					};
+				}
+			);
+			public static ItemTheftRule MasterPetItem => new ItemTheftRule(
+				type: (npc, pred) => ItemID.FairyQueenPetItem,
+				amount: (npc, pred) => 1,
+				chance: (npc, pred) => {
+					return Main.GameMode switch
+					{
+						GameModeID.Master => 1.0 / 3.0,
+						_ => 0,
+					};
+				}
+			);
+			public static ItemTheftRule HangrySwordDrop => new ItemTheftRule(
+				type: (npc, pred) => ItemID.EmpressBlade,
+				amount: (npc, pred) => 1,
+				chance: (npc, pred) => (npc.AI_120_HallowBoss_IsGenuinelyEnraged() && pred is Player) ? 1f : 0f
+			);
+		}
 		public static CandyFairy AsCandyFairy(this NPC npc)
 		{
 			if (!npc.TryGetGlobalNPC(out CandyFairy unreasonablyThickFairy))
@@ -56,7 +179,7 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 		{
 			npc.AsV2NPC().Gender = EntityGender.Female;
 
-			npc.AsFood().Size = 41.4;
+			npc.AsFood().DefinedSize = 41.4;
 			npc.AsPred().MaxStomachCapacity = 200.0;
 			npc.AsPred().BaseStomachacheMeterCapacity = 5000.0;
 
@@ -74,6 +197,7 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 			npc.AsPred().GetDigestionTickRate = GetDigestionTickRate;
 
 			npc.AsPred().OnDigestionKill = OnDigestionKill;
+			npc.AsPred().MouthSoundRawOffset = npc.TrueCenter() + new Vector2(npc.direction * 0f, -40f);
 			npc.AsPred().SmallBurps = Burps.Humanoid.Small;
 			npc.AsPred().SmallBurpThreshold = 3.75;
 			npc.AsPred().StandardBurps = Burps.Humanoid.Standard;
@@ -84,11 +208,25 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 			npc.AsPred().GetVisualBellySize = GetVisualBellySize;
 			npc.AsPred().GetVisualWeightStage = GetVisualWeightStage;
 
+			npc.AsCandyFairy().MuffledScreechDelay = 0;
+
 			npc.AsFood().OnKilledByDigestion = PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
 			npc.AsFood().OnKilledByDigestion += PreyNPC.HandlePreyItemTheft;
 			npc.AsFood().DigestedDeathSound = CandyFairyStuff.MuffledCandyFairyDeathScreech;
 
-			npc.AsCandyFairy().MuffledScreechDelay = 0;
+			npc.AsFood().ItemTheftRules = new List<ItemTheftRule>
+			{
+				CandyFairyStuff.ItemTheftRules.WeaponDrops,
+				CandyFairyStuff.ItemTheftRules.StarGuitar,
+				CandyFairyStuff.ItemTheftRules.EmpressWings,
+				CandyFairyStuff.ItemTheftRules.PrismaticDye,
+				CandyFairyStuff.ItemTheftRules.Mask,
+				CandyFairyStuff.ItemTheftRules.Trophy,
+				CandyFairyStuff.ItemTheftRules.ExpertDrop,
+				CandyFairyStuff.ItemTheftRules.MasterTrophy,
+				CandyFairyStuff.ItemTheftRules.MasterPetItem,
+				CandyFairyStuff.ItemTheftRules.HangrySwordDrop,
+			};
 		}
 
 		public override void PostAI(NPC npc)

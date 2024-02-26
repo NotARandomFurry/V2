@@ -17,6 +17,7 @@ using Terraria.ModLoader.IO;
 using Terraria.UI.Chat;
 using V2.Core;
 using V2.NPCs;
+using V2.Projectiles;
 using V2.StatusEffects.Debuffs;
 
 namespace V2.PlayerHandling
@@ -225,6 +226,44 @@ namespace V2.PlayerHandling
 						maxDistanceFromCursor = potentialPred.Distance(cursorLocation);
 					}
 				}
+				for (int projectileIndex = 0; projectileIndex < Main.maxProjectiles; projectileIndex++)
+				{
+					Projectile potentialPred = Main.projectile[projectileIndex];
+					if (!potentialPred.active)
+						continue;
+
+					if (potentialPred.CurrentCaptor() is not null)
+						continue;
+
+					switch (ModContent.GetInstance<V2ServerConfig>().GenderBlacklist)
+					{
+						default:
+							// do absolutely fucking nothing lmao
+							break;
+						case "No Male":
+							if (potentialPred.AsV2Proj().Gender == EntityGender.Male)
+								continue;
+							break;
+						case "No Female":
+							if (potentialPred.AsV2Proj().Gender == EntityGender.Female)
+								continue;
+							break;
+						case "No M or F...but why?":
+							if (potentialPred.AsV2Proj().Gender != EntityGender.Other)
+								continue;
+							break;
+					}
+
+					if (potentialPred.Distance(playerLocation) >= maxDistanceFromPlayer)
+						continue;
+
+					if (potentialPred.Distance(cursorLocation) < maxDistanceFromCursor)
+					{
+						predIndex = projectileIndex;
+						predType = "projectile";
+						maxDistanceFromCursor = potentialPred.Distance(cursorLocation);
+					}
+				}
 
 				if (predType != "none" && predIndex != -1)
 				{
@@ -250,6 +289,15 @@ namespace V2.PlayerHandling
 
 							PredPlayer.Swallow(predPlayer, Player);
 							foodFor = predPlayer.name;
+							break;
+						case "projectile":
+							Projectile predProjectile = Main.projectile[predIndex];
+							if (!PredProjectile.CanSwallow(predProjectile, Player))
+								return;
+
+							PredProjectile.Swallow(predProjectile, Player);
+							predProjectile.AsPred().OnForceFed.Invoke(predProjectile, Player);
+							foodFor = predProjectile.Name;
 							break;
 					}
 					if (ModContent.GetInstance<V2ServerConfig>().DebugChatMessages)
@@ -342,6 +390,14 @@ namespace V2.PlayerHandling
 				{
 					Player.KillMe(
 						PlayerDeathReason.ByCustomReason(PredPlayer.GetDigestedPlayerDeathReason(predPlayer, Player)),
+						trueDigestionDamage,
+						0
+					);
+				}
+				else if (pred is Projectile predProjectile)
+				{
+					Player.KillMe(
+						PlayerDeathReason.ByCustomReason(PredProjectile.GetDigestedPlayerDeathReason(predProjectile, Player)),
 						trueDigestionDamage,
 						0
 					);

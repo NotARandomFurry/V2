@@ -601,6 +601,10 @@ namespace V2.NPCs
 				{
 					localName = predPlayer.name;
 				}
+				else if (pred is Projectile predProjectile)
+				{
+					localName = predProjectile.Name;
+				}
 				NetworkText networkName = NetworkText.FromLiteral(localName);
 				string gurgledBossKey = npc.type switch
 				{

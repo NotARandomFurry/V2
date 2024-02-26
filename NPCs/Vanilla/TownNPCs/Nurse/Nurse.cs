@@ -19,6 +19,24 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 {
 	public static class NurseStuff
 	{
+		public static class ItemTheftRules
+		{
+			public static ItemTheftRule ClothingHat => new ItemTheftRule(
+				type: (npc, pred) => ItemID.NurseHat,
+				amount: (npc, pred) => 1,
+				chance: (npc, pred) => 1.0
+			);
+			public static ItemTheftRule ClothingTop => new ItemTheftRule(
+				type: (npc, pred) => ItemID.NurseShirt,
+				amount: (npc, pred) => 1,
+				chance: (npc, pred) => 1.0
+			);
+			public static ItemTheftRule ClothingBottom => new ItemTheftRule(
+				type: (npc, pred) => ItemID.NursePants,
+				amount: (npc, pred) => 1,
+				chance: (npc, pred) => 1.0
+			);
+		}
 		public static Nurse AsNurse(this NPC npc)
 		{
 			if (!npc.TryGetGlobalNPC(out Nurse predNurse))
@@ -89,7 +107,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 
 			npc.AsV2NPC().NewAIMethod = V2NurseAI;
 
-			npc.AsFood().Size = 1.1625;
+			npc.AsFood().DefinedSize = 1.1625;
 			npc.AsPred().MaxStomachCapacity = 1.8;
 			npc.AsPred().BaseStomachacheMeterCapacity = 180.0;
 
@@ -103,7 +121,8 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 			npc.AsPred().GetDigestionTickRate = GetDigestionTickRate;
 			npc.AsPred().GetDigestionTickDamage = GetDigestionTickDamage;
 
-			npc.AsPred().OnDigestionKill = OnDigestionKill;
+			npc.AsPred().OnDigestionKill = null;
+			npc.AsPred().MouthSoundRawOffset = npc.TrueCenter() + new Vector2(npc.direction * 8f, -14f);
 			npc.AsPred().SmallBurps = Burps.Humanoid.Small;
 			npc.AsPred().SmallBurpThreshold = 0.65;
 			npc.AsPred().StandardBurps = Burps.Humanoid.Standard;
@@ -122,6 +141,12 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 			npc.AsFood().OnKilledByDigestion = PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
 			npc.AsFood().OnKilledByDigestion += PreyNPC.HandlePreyItemTheft;
 			npc.AsFood().OnKilledByDigestion += OnKilledByDigestion_GrantCheapskateGoal;
+			npc.AsFood().ItemTheftRules = new List<ItemTheftRule>
+			{
+				NurseStuff.ItemTheftRules.ClothingHat,
+				NurseStuff.ItemTheftRules.ClothingTop,
+				NurseStuff.ItemTheftRules.ClothingBottom,
+			};
 		}
 
 		public override void ResetEffects(NPC npc)

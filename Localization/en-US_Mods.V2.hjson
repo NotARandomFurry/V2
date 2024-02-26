@@ -505,7 +505,7 @@ PredPlayerGoals: {
 			Description:
 				'''
 				Eat and digest an angry dandelion.
-				'Some preds insist on never eating innocent animals. Or other people. Thankfully, there is an abundance of planty meals available for these preds to eat.'
+				'Some preds insist on never eating innocent animals. Or other people. Thankfully, there is an abundance of planty, and still very feisty, meals available for these preds to eat.'
 				'''
 		}
 
@@ -518,37 +518,22 @@ PredPlayerGoals: {
 				'''
 		}
 
-		SleepSpeedsDigestion: {
-			Name: Digestive Nap
-			Description: {
-				Default:
-					'''
-					Sleep in a bed for a little while to help digest a big meal better.
-					'Everyone knows a good, long nap is the #1 way to turn friends and foes alike into a doughier tum after putting in all that hard work to eat them!'
-					'''
-				Clarification: Get into bed with a stomach weight of 0.75 or more, and sleep in it until your belly is empty.
-			}
-		}
-
-		TooFull: {
-			Name: Overstuffed
-			Description: {
-				Default:
-					'''
-					Stay at or near your maximum capacity for a full minute.
-					'Eyes bigger than your stomach, eh? Happens to every newbie pred, and for good reason. It's hard to pace yourself sometimes, what with so much thick, juicy MEAT walking around everywhere...'
-					'''
-				Clarification: Remain at 90% fullness or higher for at least 60 seconds.
-			}
-		}
-
-		ColorfulSoup: {
+		Eat3DifferentSlimes: {
 			Name: Dessert Before Breakfast
-			Description:
-				'''
-				Have a Green, Blue, and Purple Slime sloshing around in you all at once.
-				'A great source of sugar!...very flammable sugar, but still!'
-				'''
+
+			Description: {
+				Default:
+					'''
+					Have 3 different colors of slime sloshing around in you all at once.
+					'A great source of sugar!...very flammable sugar, but still!'
+					'''
+				Clarification:
+					'''
+					Have 3 different slime-type enemies in your stomach simultaneously.
+					It is not required to have all 3 dead or alive specifically.
+					Frankly, they don't care, and will digest rather calmly either way.
+					'''
+			}
 		}
 
 		EatPinky: {
@@ -578,6 +563,32 @@ PredPlayerGoals: {
 				'''
 		}
 
+		SleepSpeedsDigestion: {
+			Name: Digestive Nap
+
+			Description: {
+				Default:
+					'''
+					Sleep in a bed for a little while to help digest a big meal better.
+					'Everyone knows a good, long nap is the #1 way to turn friends and foes alike into a doughier tum after putting in all that hard work to eat them!'
+					'''
+				Clarification: Get into bed with a stomach weight of 0.75 or more, and sleep in it until your belly is empty.
+			}
+		}
+
+		TooFull: {
+			Name: Overstuffed
+
+			Description: {
+				Default:
+					'''
+					Stay at or near your maximum capacity for a full minute.
+					'Eyes bigger than your stomach, eh? Happens to every newbie pred, and for good reason. It's hard to pace yourself sometimes, what with so much thick, juicy MEAT walking around everywhere...'
+					'''
+				Clarification: Remain at 90% fullness or higher for at least 60 seconds.
+			}
+		}
+
 		DrinkHoney: {
 			Name: A Revitalizing Drink
 
@@ -587,10 +598,7 @@ PredPlayerGoals: {
 					Drink a bit of honey.
 					'All good things must come to an end...inside a tum like yours. Honey just so happens to be entirely too many of those good things to NOT end up churned into belly fat. It's delicious, it's deliciously fattening, it fills you up perfectly...it even gives you a bit more health as you melt it down!'
 					'''
-				Clarification:
-					'''
-					Drink a tile's worth of honey.
-					'''
+				Clarification: Drink a tile's worth of honey.
 			}
 		}
 	}
@@ -620,6 +628,23 @@ PredPlayerGoals: {
 				Eat and digest a hungry nymph.
 				'You could make a scarf out of her hair, y'know. Hang onto it.'
 				'''
+		}
+
+		EatGroomAndBridge: {
+			Name: "'Til Death..."
+
+			Description: {
+				Default:
+					'''
+					Reunite the Groom and Bride as fat for your belly.
+					'Now they can stay together forever!...though your belly has a few complaints about the idea, it would seem.'
+					'''
+				Clarification:
+					'''
+					Swallow the Groom and the Bride, and have one already digesting proper when the other dies to digestion damage.
+					Be advised that, as both are zombies, they will give you food poisoning while eaten/digesting.
+					'''
+			}
 		}
 
 		EatMaxLifeAndManaCrystals: {
@@ -661,7 +686,7 @@ PredPlayerGoals: {
 				'''
 		}
 
-		EatTownspersonWithVoodoo: {
+		DigestWithVoodoo: {
 			Name: Long-Distance Dinner
 
 			Description: {
@@ -674,16 +699,16 @@ PredPlayerGoals: {
 			}
 		}
 
-		EatFallingStar: {
-			Name: Wish Upon A Star
+		CatchFallingStar: {
+			Name: Wish Upon A Stomach
 
 			Description: {
 				Default:
 					'''
 					Let a star, falling from the outer skies, land inside your belly.
-					'They say digesting a piece of the heavens above can give you the great power of magically-propelled flight! Then again, they also say that it can give you radiation poisoning...and we aren't seeing any of that as you digest it, now, are we?'
+					'They say digesting a piece of the heavens above can give you the great power of magically-propelled flight! Then again, they also say that it can give you radiation poisoning...and we aren't seeing any of that as it turns into tummy fat, now, are we?'
 					'''
-				Clarification: Swallow a Falling Star while it is still falling from the sky.
+				Clarification: Swallow a Fallen Star while it is still falling from the sky.
 			}
 		}
 
@@ -741,6 +766,24 @@ PredPlayerGoals: {
 				'''
 				Eat and digest a mimic (before it can eat you).
 				'Now you're just hoarding its hoard in your belly, which could itself be considered a hoard, albeit strictly for food that your system hasn't digested yet. Does this qualify as hoardception...?'
+				'''
+		}
+
+		EatSandElemental: {
+			Name: Bite The Dust
+			Description:
+				'''
+				Eat and digest a sand elemental.
+				'Everyone hates sand. It's coarse, it's rough, and it gets all over you. It even gets all over your stomach walls when you gulp down a pretty girl made out of it. Thankfully, your stomach can resolve that problem fairly quickly by melting down even the smallest grains of sand into smooth, soft, squishy cellulite.'
+				'''
+		}
+
+		EatIceGolem: {
+			Name: Walking Popsicle
+			Description:
+				'''
+				Eat and digest an ice golem.
+				'It really is one, if you think about it. Very tall, rather lean, wide enough to suckle on a while as you swallow it, melts a little in your mouth...and tastes just like an ice cube!'
 				'''
 		}
 
@@ -856,6 +899,33 @@ ItemTooltip: {
 					Displays how many enemies have been killed in the world
 					Displays how many entities you've digested
 					'''
+			}
+
+			Pets: {
+				Light: {
+					CandyFairyMasterPetItem: {
+						Short:
+							'''
+							Summons a fairy princess to provide light and guard you from certain mobs (by eating them)
+							{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+							'''
+						Long:
+							'''
+							Summons a small prismatic fairy who calls herself the Heiress of Light.
+							The Heiress [c/{$Mods.V2.CommonColorCodes.PositiveEffect}:provides light in dark places].
+							The Heiress [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:will hunt down and eat nearby mobs] which classify as insects or arachnids.
+							The Heiress [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:digests much better] in the daylight.
+							'''
+						Flavor:
+							'''
+							The Empress always thought it very strange, the idea of having an heir to the throne in case she were rendered unfit to rule. The absolute AUDACITY of such a claim! Preposterous! She would quickly make a fool, and a fattening meal, of anyone that DARED to try and usurp her title!
+
+							...though, as she slowly began to tutor a small prismatic fairy like herself by the name of Radiane, she began to see the value in having someone to eventually preside over, and voraciously devour the residents of, the Hallow with her.
+
+							With the Empress now dead, be it by brawl or bellyache, she is unfit to rule. Thusly, the Heiress requires a supervisor anew. She prefers to feast upon those similar to herself --- insects, arachnids, and even other fairies, as well as foreign royalty --- so as to best ensure her continued growth (in more than just her power level...)
+							'''
+					}
+				}
 			}
 		}
 
@@ -1580,6 +1650,19 @@ ItemTooltip: {
 	}
 }
 
+Projectiles: {
+	DisplayName: {
+		Vanilla: {
+			Summons: {
+				Pets: {
+					FairyPrincess: Heiress of Light
+					MiniIceQueen: Ice Princess
+				}
+			}
+		}
+	}
+}
+
 InfoDisplayName.TallyCounterVore: Meal Count
 InfoDisplayText.TallyCounterVore.InvalidMeal: Meal count unavailable
 
@@ -1941,6 +2024,24 @@ Death: {
 				}
 			}
 		}
+
+		SpecificProjectile: {
+			Summons: {
+				Pets: {
+					MiniCandyFairy: {
+						1: "{Player} became a not-very-light snack for the Heiress of Light."
+						2: A fairy princess' gut mesmerized {Player} just a little too long.
+						3: "{Player} was too enamored by their prismatic fairy companion's shiny stomach walls to fight their way out."
+						4: The Princess of Light's stomach must've been just as twinkly as the Empress' for {Player} to get stuck so long.
+						Hardcore:
+							'''
+							{Player} fought many tough battles and even outlasted the voracious Empress of Light, befriending a smaller visage of her in the process.
+							That smaller visage, steadily growing fatter by the second due to a massive caloric excess, is now their gastric tomb.
+							'''
+					}
+				}
+			}
+		}
 	}
 
 	OverlyHungryPlayer: {
@@ -2213,13 +2314,13 @@ NPCs: {
 ItemObtainmentDetails.Voraria.Accessories.Vanity.BalloonBelly: Mods.V2.ItemObtainmentDetails.Voraria.Accessories.Vanity.BalloonBelly
 
 Items: {
-	StomachCapacityPotion: {
+	StomachacheMeterCapacityPotion: {
+		DisplayName: Stomachache Meter Capacity Potion
 		Tooltip: ""
-		DisplayName: Stomach Capacity Potion
 	}
 
-	StomachacheMeterCapacityPotion: {
+	StomachCapacityPotion: {
+		DisplayName: Stomach Capacity Potion
 		Tooltip: ""
-		DisplayName: Stomachache Meter Capacity Potion
 	}
 }

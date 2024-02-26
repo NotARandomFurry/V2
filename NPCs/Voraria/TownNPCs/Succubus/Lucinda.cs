@@ -132,7 +132,7 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 
 			NPC.AsV2NPC().GetNewDialogue = GetSuccubusChat;
 
-			NPC.AsFood().Size = 1.15;
+			NPC.AsFood().DefinedSize = 1.15;
 			NPC.AsPred().MaxStomachCapacity = 2.2;
 			NPC.AsPred().BaseStomachacheMeterCapacity = 155.0;
 
@@ -143,7 +143,8 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 			NPC.AsPred().GetDigestionTickRate = GetDigestionTickRate;
 			NPC.AsPred().GetDigestionTickDamage = GetDigestionTickDamage;
 
-			NPC.AsPred().OnDigestionKill = OnDigestionKill;
+			NPC.AsPred().OnDigestionKill = null;
+			NPC.AsPred().MouthSoundRawOffset = NPC.TrueCenter() + new Vector2(NPC.direction * 8f, -14f);
 			NPC.AsPred().SmallBurps = Burps.Humanoid.Small;
 			NPC.AsPred().SmallBurpThreshold = 0.75;
 			NPC.AsPred().StandardBurps = Burps.Humanoid.Standard;

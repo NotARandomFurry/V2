@@ -14,6 +14,7 @@ using V2.Core.StruggleSystem;
 using V2.Items;
 using V2.NPCs;
 using V2.PlayerHandling;
+using V2.Projectiles;
 
 namespace V2.Core
 {
@@ -172,7 +173,7 @@ namespace V2.Core
 			else if (Predator is NPC predNPC)
 				PredNPC.UpdatePrey(predNPC);
 			else if (Predator is Projectile predProjectile)
-				return;
+				PredProjectile.UpdatePrey(predProjectile);
 		}
 
 		public int TotalPreySTR
@@ -198,6 +199,9 @@ namespace V2.Core
 							case PreyType.NPC:
 								STR += (prey.Instance as NPC).AsFood().STR;
 								break;
+							case PreyType.Projectile:
+								STR += (prey.Instance as Projectile).AsFood().STR;
+								break;
 						}
 					}
 				}
@@ -218,6 +222,9 @@ namespace V2.Core
 								break;
 							case PreyType.NPC:
 								STR += (prey.Instance as NPC).AsFood().STR;
+								break;
+							case PreyType.Projectile:
+								STR += (prey.Instance as Projectile).AsFood().STR;
 								break;
 						}
 					}
@@ -328,6 +335,95 @@ namespace V2.Core
 			else if (Predator is NPC npcPredator)
 			{
 				int counterSkill = npcPredator.AsPred().CounterStruggleEffectiveness;
+				if (closeNotes is null)
+					goto HandlePreyNotes;
+				foreach ((StruggleChartNote note, double proximity) noteData in closeNotes)
+				{
+					double absoluteProximity = Math.Abs(noteData.proximity);
+					double proximityEffectivenessMultiplier = (MaximumNoteProximityRatio - absoluteProximity) / MaximumNoteProximityRatio;
+					switch (counterSkill)
+					{
+						case 0:
+							break;
+						case 1:
+							if (absoluteProximity > MaximumNoteProximityRatio)
+								break;
+
+							if (Main.rand.NextBool(35) && Math.Abs(noteData.proximity) < MaximumNoteProximityRatio && !noteData.note.Failed)
+							{
+								ModifyPredStomachacheMeter(-(TotalPreySTR * 0.96) * proximityEffectivenessMultiplier / PredatorStruggleChart.DifficultyCoeff);
+								SignifyNotePressed(noteData);
+							}
+							else
+							{
+								ModifyPredStomachacheMeter(0.4);
+								noteData.note.Failed = true;
+							}
+							break;
+						case 2:
+						case 3:
+						case 4:
+							break;
+						case 5:
+						default:
+							if (absoluteProximity >= MaximumNoteProximityRatio)
+								break;
+
+							if (absoluteProximity > 4.0)
+							{
+								if (Main.rand.NextBool(20))
+								{
+									ModifyPredStomachacheMeter(-(TotalPreySTR * 0.96) * proximityEffectivenessMultiplier / PredatorStruggleChart.DifficultyCoeff);
+									SignifyNotePressed(noteData);
+								}
+							}
+							if (4.0 >= absoluteProximity && absoluteProximity > 3.0)
+							{
+								if (Main.rand.NextBool(15))
+								{
+									ModifyPredStomachacheMeter(-(TotalPreySTR * 0.96) * proximityEffectivenessMultiplier / PredatorStruggleChart.DifficultyCoeff);
+									SignifyNotePressed(noteData);
+								}
+							}
+							if (3.0 >= absoluteProximity && absoluteProximity > 2.0)
+							{
+								if (Main.rand.NextBool(12))
+								{
+									ModifyPredStomachacheMeter(-(TotalPreySTR * 0.96) * proximityEffectivenessMultiplier / PredatorStruggleChart.DifficultyCoeff);
+									SignifyNotePressed(noteData);
+								}
+							}
+							if (2.0 >= absoluteProximity && absoluteProximity > 1.0)
+							{
+								if (Main.rand.NextBool(10))
+								{
+									ModifyPredStomachacheMeter(-(TotalPreySTR * 0.96) * proximityEffectivenessMultiplier / PredatorStruggleChart.DifficultyCoeff);
+									SignifyNotePressed(noteData);
+								}
+							}
+							if (1.0 >= absoluteProximity)
+							{
+								if (Main.rand.NextBool(8))
+								{
+									ModifyPredStomachacheMeter(-(TotalPreySTR * 0.96) * proximityEffectivenessMultiplier / PredatorStruggleChart.DifficultyCoeff);
+									SignifyNotePressed(noteData);
+								}
+							}
+							break;
+						case 6:
+						case 7:
+						case 8:
+						case 9:
+						case 10:
+						case 11:
+						case 12:
+							break;
+					}
+				}
+			}
+			else if (Predator is Projectile projectilePredator)
+			{
+				int counterSkill = projectilePredator.AsPred().CounterStruggleEffectiveness;
 				if (closeNotes is null)
 					goto HandlePreyNotes;
 				foreach ((StruggleChartNote note, double proximity) noteData in closeNotes)
@@ -619,6 +715,10 @@ namespace V2.Core
 					NPC npc = Predator as NPC;
 					npc.AsPred().Stomachache += amount;
 					break;
+				case PredType.Projectile:
+					Projectile projectile = Predator as Projectile;
+					projectile.AsPred().Stomachache += amount;
+					break;
 			}
 		}
 
@@ -689,6 +789,11 @@ namespace V2.Core
 			else if (Predator is NPC NPCPred)
 			{
 				if (NPCPred.life <= 0)
+					return true;
+			}
+			else if (Predator is Projectile projectilePred)
+			{
+				if (projectilePred.AsFood().Health <= 0)
 					return true;
 			}
 
@@ -848,10 +953,7 @@ namespace V2.Core
 			switch (Type)
 			{
 				case PreyType.Player:
-					if (Instance is null)
-						break;
-
-					if (Instance is not Player preyPlayer)
+					if (Instance is null || Instance is not Player preyPlayer)
 						break;
 
 					ExactType = 0;
@@ -865,15 +967,12 @@ namespace V2.Core
 					}
 					return;
 				case PreyType.NPC:
-					if (Instance is null)
-						break;
-
-					if (Instance is not NPC preyNPC)
+					if (Instance is null || Instance is not NPC preyNPC)
 						break;
 
 					ExactType = preyNPC.netID;
-					if (preyNPC.AsFood().Size != 0)
-						InitialWeight = InitialSize = WeightLeftToDigest = preyNPC.AsFood().Size;
+					if (preyNPC.AsFood().DefinedSize != 0)
+						InitialWeight = InitialSize = WeightLeftToDigest = preyNPC.AsFood().DefinedSize;
 					else
 					{
 						double playerToNPCWidthRatio = (double)preyNPC.width / refPlayerWidth;
@@ -889,16 +988,18 @@ namespace V2.Core
 					}
 					return;
 				case PreyType.Projectile:
-					if (Instance is null)
-						break;
-
-					if (Instance is not Projectile preyProjectile)
+					if (Instance is null || Instance is not Projectile preyProjectile)
 						break;
 
 					ExactType = preyProjectile.type;
-					double playerToProjWidthRatio = (double)preyProjectile.width / refPlayerWidth;
-					double playerToProjHeightRatio = (double)preyProjectile.height / refPlayerHeight;
-					InitialWeight = InitialSize = WeightLeftToDigest = playerToProjWidthRatio * playerToProjHeightRatio;
+					if (preyProjectile.AsFood().DefinedSize != 0)
+						InitialWeight = InitialSize = WeightLeftToDigest = preyProjectile.AsFood().DefinedSize;
+					else
+					{
+						double playerToProjWidthRatio = (double)preyProjectile.width / refPlayerWidth;
+						double playerToProjHeightRatio = (double)preyProjectile.height / refPlayerHeight;
+						InitialWeight = InitialSize = WeightLeftToDigest = playerToProjWidthRatio * playerToProjHeightRatio;
+					}
 					if (ConnectedTracker is not null)
 					{
 						AssignedStruggleChart = new ProceduralStruggleChart();
@@ -908,10 +1009,7 @@ namespace V2.Core
 					}
 					return;
 				case PreyType.Item:
-					if (Instance is null)
-						break;
-
-					if (Instance is not Item preyItem)
+					if (Instance is null || Instance is not Item preyItem)
 						break;
 
 					ExactType = preyItem.type;
@@ -920,11 +1018,13 @@ namespace V2.Core
 					return;
 				case PreyType.Liquid:
 					if (Instance is not null)
-						break;
+						Instance = null;
+
 					return;
 				case PreyType.Custom:
 					if (Instance is not null)
-						break;
+						Instance = null;
+
 					return;
 			}
 
@@ -993,6 +1093,8 @@ namespace V2.Core
 				return initialSize + preyPlayer.AsPred().StomachFullness;
 			if (preyEntity is NPC preyNPC)
 				return initialSize + PredNPC.GetCurrentBellyWeight(preyNPC);
+			if (preyEntity is Projectile preyProjectile)
+				return initialSize + PredProjectile.GetCurrentBellyWeight(preyProjectile);
 
 			return initialSize;
 		}

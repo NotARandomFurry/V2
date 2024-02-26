@@ -27,6 +27,7 @@ using V2.NPCs;
 using V2.PlayerHandling.PredPlayerGoals;
 using V2.PlayerHandling.PredPlayerGoals.Beginner;
 using V2.PlayerHandling.PredPlayerGoals.Starter;
+using V2.Projectiles;
 using V2.Sounds.Vore;
 using V2.StatusEffects.Debuffs;
 using V2.UI.PredStatsMenu;
@@ -135,6 +136,8 @@ namespace V2.PlayerHandling
 				_ => effectiveBaseLiquidSwallowSize,
 			};
 		}
+		public static int LiquidSwallowDelay => 3;
+		public static double LiquidSwallowRatePerMinute = 60.0 / (double)LiquidSwallowDelay;
 		public StatModifier StruggleGraceTimeModifier;
 		public static double BaseStruggleGraceTime => 0.8;
 		public static double StruggleGraceTimePer5Levels => 0.1;
@@ -431,6 +434,11 @@ namespace V2.PlayerHandling
 								totalBellyWeight += preyPredNPC.AsPred().ExtraWeight;
 								totalBellyWeight += PredNPC.GetCurrentBellyWeight(preyPredNPC);
 								break;
+							case PreyType.Projectile:
+								Projectile preyPredProjectile = prey.Instance as Projectile;
+								totalBellyWeight += preyPredProjectile.AsPred().ExtraWeight;
+								totalBellyWeight += PredProjectile.GetCurrentBellyWeight(preyPredProjectile);
+								break;
 						}
 					}
 				}
@@ -461,6 +469,11 @@ namespace V2.PlayerHandling
 								NPC preyPredNPC = prey.Instance as NPC;
 								totalBellyWeight += preyPredNPC.AsPred().ExtraWeight;
 								totalBellyWeight += PredNPC.GetCurrentBellyWeight(preyPredNPC);
+								break;
+							case PreyType.Projectile:
+								Projectile preyPredProjectile = prey.Instance as Projectile;
+								totalBellyWeight += preyPredProjectile.AsPred().ExtraWeight;
+								totalBellyWeight += PredProjectile.GetCurrentBellyWeight(preyPredProjectile);
 								break;
 						}
 					}
@@ -495,6 +508,11 @@ namespace V2.PlayerHandling
 								totalBellyWeight += preyPredNPC.AsPred().ExtraWeight;
 								totalBellyWeight += PredNPC.GetCurrentBellyWeight(preyPredNPC);
 								break;
+							case PreyType.Projectile:
+								Projectile preyPredProjectile = prey.Instance as Projectile;
+								totalBellyWeight += preyPredProjectile.AsPred().ExtraWeight;
+								totalBellyWeight += PredProjectile.GetCurrentBellyWeight(preyPredProjectile);
+								break;
 						}
 					}
 				}
@@ -525,6 +543,11 @@ namespace V2.PlayerHandling
 								NPC preyPredNPC = prey.Instance as NPC;
 								totalBellyWeight += preyPredNPC.AsPred().ExtraWeight;
 								totalBellyWeight += PredNPC.GetCurrentBellyWeight(preyPredNPC);
+								break;
+							case PreyType.Projectile:
+								Projectile preyPredProjectile = prey.Instance as Projectile;
+								totalBellyWeight += preyPredProjectile.AsPred().ExtraWeight;
+								totalBellyWeight += PredProjectile.GetCurrentBellyWeight(preyPredProjectile);
 								break;
 						}
 					}
@@ -651,6 +674,9 @@ namespace V2.PlayerHandling
 			{
 				if (V2.ItemGulpHotkey.JustPressed && Player.whoAmI == Main.myPlayer)
 				{
+					if (inventory[slot].IsAir)
+						return true;
+
 					int origStack = inventory[slot].stack;
 					inventory[slot].stack = 1;
 					if (CanSwallow(Player, inventory[slot]))
@@ -771,6 +797,31 @@ namespace V2.PlayerHandling
 							maxDistanceFromCursor = potentialMeal.Distance(cursorLocation);
 						}
 					}
+					for (int projIndex = 0; projIndex < Main.maxProjectiles; projIndex++)
+					{
+						Projectile potentialMeal = Main.projectile[projIndex];
+						if (!potentialMeal.active)
+							continue;
+
+						if (potentialMeal.CurrentCaptor() is not null)
+							continue;
+
+						if (potentialMeal.AsFood().DefinedSize <= 0.0)
+							continue;
+
+						if (!Collision.CanHit(Player.TrueCenter(), 1, 1, potentialMeal.TrueCenter(), 1, 1))
+							continue;
+
+						if (potentialMeal.Distance(playerLocation) >= maxDistanceFromPlayer)
+							continue;
+
+						if (potentialMeal.Distance(cursorLocation) < maxDistanceFromCursor)
+						{
+							mealIndex = projIndex;
+							mealType = "projectile";
+							maxDistanceFromCursor = potentialMeal.Distance(cursorLocation);
+						}
+					}
 					for (int playerIndex = 0; playerIndex < Main.maxPlayers; playerIndex++)
 					{
 						Player potentialMeal = Main.player[playerIndex];
@@ -802,6 +853,9 @@ namespace V2.PlayerHandling
 								Swallow(Player, Main.npc[mealIndex]);
 								Player.lastCreatureHit = Item.NPCtoBanner(Main.npc[mealIndex].BannerID());
 								break;
+							case "projectile":
+								Swallow(Player, Main.projectile[mealIndex]);
+								break;
 							case "player":
 								Swallow(Player, Main.player[mealIndex]);
 								break;
@@ -811,7 +865,7 @@ namespace V2.PlayerHandling
 				#endregion
 				#region Drinking liquids
 				bool inAnyLiquid = Player.wet || Player.lavaWet || Player.honeyWet || Player.shimmerWet;
-				if (V2.SwallowHotkey.Current && inAnyLiquid && Main.GameUpdateCount % 4 == 0)
+				if (V2.SwallowHotkey.Current && inAnyLiquid && Main.GameUpdateCount % LiquidSwallowDelay == 0)
 				{
 					Point playerTileLocation = (Player.Center + new Vector2(0, -10)).ToTileCoordinates();
 					Tile tile = Main.tile[playerTileLocation];
@@ -918,6 +972,10 @@ namespace V2.PlayerHandling
 						{
 							realPreyNPC.AsFood().EatenSafetyFrames = 20;
 						}
+						else if (realPrey is Projectile realPreyProjectile)
+						{
+
+						}
 						else if (realPrey is Player realPreyPlayer)
 						{
 
@@ -980,6 +1038,17 @@ namespace V2.PlayerHandling
 					return false;
 
 				if (preyNPC.CurrentCaptor() is not null)
+					return false;
+			}
+			else if (prey is Projectile preyProjectile)
+			{
+				if (V2.VoreProjectileBlacklist.Contains(preyProjectile.type))
+					return false;
+
+				if (preyProjectile.AsFood().DefinedSize <= 0.0)
+					return false;
+
+				if (preyProjectile.CurrentCaptor() is not null)
 					return false;
 			}
 			else if (prey is Item preyItem)
@@ -1060,6 +1129,13 @@ namespace V2.PlayerHandling
 
 					pred.AsPred().lastEntitySwallowed = npc.TypeName;
 					pred.AsPred().lastEntitySwallowedMod = npc.ModNPC != null ? npc.ModNPC.Mod.DisplayName : "Terraria";
+					break;
+				case PreyType.Projectile:
+					Projectile projectile = prey as Projectile;
+					projectile.AsFood().OnSwallowedBy?.Invoke(projectile, pred);
+
+					pred.AsPred().lastEntitySwallowed = projectile.Name;
+					pred.AsPred().lastEntitySwallowedMod = projectile.ModProjectile != null ? projectile.ModProjectile.Mod.DisplayName : "Terraria";
 					break;
 				case PreyType.Item:
 					Item item = prey as Item;
@@ -1185,6 +1261,7 @@ namespace V2.PlayerHandling
 							break;
 						case PreyType.Item:
 							Item preyItem = prey.Instance as Item;
+							preyItem.AsV2Item().State = ItemLocation.BeingFood;
 							preyItem.AsFood().UpdateInStomach?.Invoke(preyItem, pred, prey.NoHealth);
 							break;
 					}
@@ -1231,6 +1308,31 @@ namespace V2.PlayerHandling
 										if (!pred.AsPred().mealCount.ContainsKey(preyNPCMod + ": " + preyNPC.TypeName))
 											pred.AsPred().mealCount.Add(preyNPCMod + ": " + preyNPC.TypeName, 0);
 										pred.AsPred().mealCount[preyNPCMod + ": " + preyNPC.TypeName] += 1;
+										SoundEngine.PlaySound(
+											prey.WeightLeftToDigest < 0.3 ? pred.AsPred().SmallBurps : pred.AsPred().StandardBurps,
+											pred.TrueCenter() + new Vector2(pred.direction * 8f, -14f)
+										);
+									}
+								}
+								break;
+							case PreyType.Projectile:
+								Projectile preyProjectile = prey.Instance as Projectile;
+								bool shouldDigestProjectile = true;
+								if (shouldDigestProjectile)
+								{
+									prey.NoHealth = preyProjectile.TakeDigestionDamage(pred, digestionDamage);
+									preyProjectile.netUpdate = true;
+									if (ModContent.GetInstance<V2ServerConfig>().DebugChatMessages)
+										Main.NewText("Successfully dealt digestion damage to prey: " + preyProjectile.Name);
+									else if (ModContent.GetInstance<V2ServerConfig>().DebugChatMessages)
+										Main.NewText("Failed to deal digestion damage to prey: " + preyProjectile.Name);
+									if (prey.NoHealth)
+									{
+										prey.Instance = null;
+										string preyProjectileMod = preyProjectile.ModProjectile != null ? preyProjectile.ModProjectile.Mod.DisplayName : "Terraria";
+										if (!pred.AsPred().mealCount.ContainsKey(preyProjectileMod + ": " + preyProjectile.Name))
+											pred.AsPred().mealCount.Add(preyProjectileMod + ": " + preyProjectile.Name, 0);
+										pred.AsPred().mealCount[preyProjectileMod + ": " + preyProjectile.Name] += 1;
 										SoundEngine.PlaySound(
 											prey.WeightLeftToDigest < 0.3 ? pred.AsPred().SmallBurps : pred.AsPred().StandardBurps,
 											pred.TrueCenter() + new Vector2(pred.direction * 8f, -14f)

@@ -75,7 +75,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.ArmsDealer
 
 			npc.AsV2NPC().GetNewDialogue = GetArmsDealerChat;
 
-			npc.AsFood().Size = 1.04;
+			npc.AsFood().DefinedSize = 1.04;
 			npc.AsPred().MaxStomachCapacity = 1.75;
 			npc.AsPred().BaseStomachacheMeterCapacity = 115.0;
 
@@ -89,7 +89,8 @@ namespace V2.NPCs.Vanilla.TownNPCs.ArmsDealer
 			npc.AsPred().GetDigestionTickRate = GetDigestionTickRate;
 			npc.AsPred().GetDigestionTickDamage = GetDigestionTickDamage;
 
-			npc.AsPred().OnDigestionKill = OnDigestionKill;
+			npc.AsPred().OnDigestionKill = null;
+			npc.AsPred().MouthSoundRawOffset = npc.TrueCenter() + new Vector2(npc.direction * 8f, -14f);
 			npc.AsPred().SmallBurps = Burps.Humanoid.Small;
 			npc.AsPred().SmallBurpThreshold = 0.6;
 			npc.AsPred().StandardBurps = Burps.Humanoid.Standard;

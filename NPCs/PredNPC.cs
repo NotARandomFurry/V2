@@ -20,6 +20,7 @@ using V2.Core.StruggleSystem;
 using V2.Items;
 using V2.NPCs.Vanilla.TownNPCs.Nurse;
 using V2.PlayerHandling;
+using V2.Projectiles;
 using V2.Sounds.Vore;
 using V2.StatusEffects.Debuffs;
 
@@ -231,15 +232,29 @@ namespace V2.NPCs
 				if (tastesLikeSkittles)
 					return preyNPC.CurrentCaptor() is null;
 
-				bool isThePreyAFuckingBoss = preyNPC.boss || (preyNPC.type >= NPCID.EaterofWorldsHead && preyNPC.type <= NPCID.EaterofWorldsTail);	// I hate EoW
-				bool isThePredAFuckingBoss = pred.boss || (pred.type >= NPCID.EaterofWorldsHead && pred.type <= NPCID.EaterofWorldsTail);			// I hate EoW
-				if (isThePreyAFuckingBoss && !isThePredAFuckingBoss)
+				bool isThePreyAFuckingBoss = preyNPC.boss || (preyNPC.type >= NPCID.EaterofWorldsHead && preyNPC.type <= NPCID.EaterofWorldsTail);  // I hate EoW
+				bool isThePredAFuckingBoss = pred.boss || (pred.type >= NPCID.EaterofWorldsHead && pred.type <= NPCID.EaterofWorldsTail);           // I hate EoW
+				if (!pred.AsPred().CanSwallowBosses && isThePreyAFuckingBoss && !isThePredAFuckingBoss)
 					return false;
 
 				if (PreyData.GetPreySize(preyNPC) >= pred.AsPred().MaxStomachCapacity - GetCurrentBellyWeight(pred))
 					return false;
 
 				if (preyNPC.CurrentCaptor() is not null)
+					return false;
+			}
+			else if (prey is Projectile preyProjectile)
+			{
+				if (V2.VoreProjectileBlacklist.Contains(preyProjectile.type))
+					return false;
+
+				if (preyProjectile.AsFood().MaxHealth == -1)
+					return false;
+
+				if (PreyData.GetPreySize(preyProjectile) >= pred.AsPred().MaxStomachCapacity - GetCurrentBellyWeight(pred))
+					return false;
+
+				if (preyProjectile.CurrentCaptor() is not null)
 					return false;
 			}
 			else if (prey is Item preyItem)
@@ -520,6 +535,25 @@ namespace V2.NPCs
 										Main.NewText("Successfully dealt digestion damage to prey: " + preyNPC.GivenOrTypeName);
 									else if (ModContent.GetInstance<V2ServerConfig>().DebugChatMessages)
 										Main.NewText("Failed to deal digestion damage to prey: " + preyNPC.GivenOrTypeName);
+									if (prey.NoHealth)
+									{
+										if (pred.AsPred().OnDigestionKill is not null)
+											pred.AsPred().OnDigestionKill.Invoke(pred, prey);
+										PlayDigestionBelch(pred, prey);
+									}
+								}
+								break;
+							case PreyType.Projectile:
+								Projectile preyProjectile = prey.Instance as Projectile;
+								bool shouldDigestProjectile = true;
+								if (shouldDigestProjectile)
+								{
+									prey.NoHealth = preyProjectile.TakeDigestionDamage(pred, digestionDamage);
+									preyProjectile.netUpdate = true;
+									if (ModContent.GetInstance<V2ServerConfig>().DebugChatMessages)
+										Main.NewText("Successfully dealt digestion damage to prey: " + preyProjectile.Name);
+									else if (ModContent.GetInstance<V2ServerConfig>().DebugChatMessages)
+										Main.NewText("Failed to deal digestion damage to prey: " + preyProjectile.Name);
 									if (prey.NoHealth)
 									{
 										if (pred.AsPred().OnDigestionKill is not null)

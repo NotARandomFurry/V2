@@ -11,6 +11,7 @@ using Terraria.GameContent.Events;
 using Terraria.ID;
 using Terraria.ModLoader;
 using V2.Core;
+using V2.Items.Voraria.Accessories.Informational;
 using V2.Items.Voraria.Charms;
 using V2.NPCs.Voraria.TownNPCs.Succubus;
 using V2.PlayerHandling;
@@ -20,6 +21,33 @@ namespace V2.NPCs.Vanilla.TownNPCs.Mechanic
 {
 	public static class MechanicStuff
 	{
+		public static class ItemTheftRules
+		{
+			public static ItemTheftRule CombatWrench => new ItemTheftRule(
+				type: (npc, pred) => ItemID.CombatWrench,
+				amount: (npc, pred) => 1,
+				chance: (npc, pred) => {
+					return Main.GameMode switch
+					{
+						GameModeID.Master => 2.0 / 3.0,
+						GameModeID.Expert => 1.0 / 2.0,
+						_ => 1.0 / 3.0,
+					};
+				}
+			);
+			public static ItemTheftRule MealSizeScanner => new ItemTheftRule(
+				type: (npc, pred) => ModContent.ItemType<MealSizeScanner>(),
+				amount: (npc, pred) => 1,
+				chance: (npc, pred) => {
+					return Main.GameMode switch
+					{
+						GameModeID.Master => 0.175,
+						GameModeID.Expert => 0.15,
+						_ => 0.10,
+					};
+				}
+			);
+		}
 		public static Mechanic AsMechanic(this NPC npc)
 		{
 			if (!npc.TryGetGlobalNPC(out Mechanic predMechanic))
@@ -79,7 +107,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Mechanic
 
 			npc.AsV2NPC().GetNewDialogue = GetMechanicChat;
 			
-			npc.AsFood().Size = 0.96;
+			npc.AsFood().DefinedSize = 0.96;
 			npc.AsPred().MaxStomachCapacity = 1.75;
 			npc.AsPred().BaseStomachacheMeterCapacity = 300.0;
 
@@ -93,7 +121,8 @@ namespace V2.NPCs.Vanilla.TownNPCs.Mechanic
 			npc.AsPred().GetDigestionTickRate = GetDigestionTickRate;
 			npc.AsPred().GetDigestionTickDamage = GetDigestionTickDamage;
 
-			npc.AsPred().OnDigestionKill = OnDigestionKill;
+			npc.AsPred().OnDigestionKill = null;
+			npc.AsPred().MouthSoundRawOffset = npc.TrueCenter() + new Vector2(npc.direction * 8f, -14f);
 			npc.AsPred().SmallBurps = Burps.Humanoid.Small;
 			npc.AsPred().SmallBurpThreshold = 0.5;
 			npc.AsPred().StandardBurps = Burps.Humanoid.Standard;
@@ -104,6 +133,11 @@ namespace V2.NPCs.Vanilla.TownNPCs.Mechanic
 
 			npc.AsFood().OnKilledByDigestion = PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
 			npc.AsFood().OnKilledByDigestion += PreyNPC.HandlePreyItemTheft;
+			npc.AsFood().ItemTheftRules = new List<ItemTheftRule>
+			{
+				MechanicStuff.ItemTheftRules.CombatWrench,
+				MechanicStuff.ItemTheftRules.MealSizeScanner,
+			};
 		}
 
 		public override ITownNPCProfile ModifyTownNPCProfile(NPC npc) => MechanicStuff.PredMechanicProfile;

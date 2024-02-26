@@ -24,11 +24,19 @@ namespace V2
 		public static ModKeybind StruggleDownHotkey { get; set; }
 		public static ModKeybind StruggleSpecialHotkey { get; set; }
 
+		/// <summary>
+		/// A special flag which decides whether or not the vore blacklists are actually filled.<br/>
+		/// Defaults to <see langword="false"/>. If set to <see langword="true"/> instead, the blacklists remain empty.<br/>
+		/// This allows several enemies which otherwise would not be included in vore mechanics, namely as predators, to instead be given full reign.<br/>
+		/// </summary>
+		public static bool BlacklistsActive { get; set; } 
 		public static List<int> VoreNPCBlacklist { get; set; }
+		public static List<int> VoreProjectileBlacklist { get; set; }
 
 		public V2()
 		{
 			Instance = this;
+			BlacklistsActive = false;
 		}
 
 		public override void Load()
@@ -61,6 +69,9 @@ namespace V2
 
 		public override void PostSetupContent()
 		{
+			if (!BlacklistsActive)
+				return;
+
 			VoreNPCBlacklist = new List<int>
 			{
 				NPCID.Angler,
@@ -69,6 +80,11 @@ namespace V2
 			};
 			if (ModContent.TryFind("Fargowiltas", "Deviantt", out ModNPC Deviantt))
 				VoreNPCBlacklist.Add(Deviantt.Type);
+
+			VoreProjectileBlacklist = new List<int>
+			{
+
+			};
 		}
 	}
 }

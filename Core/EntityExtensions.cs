@@ -3,8 +3,10 @@ using System;
 using System.Linq;
 using Terraria;
 using Terraria.ModLoader;
+using V2.Items;
 using V2.NPCs;
 using V2.PlayerHandling;
+using V2.Projectiles;
 
 namespace V2.Core
 {
@@ -49,10 +51,10 @@ namespace V2.Core
 			{
 				if (ModContent.GetInstance<V2MasterSystem>().VoreTrackers.FirstOrDefault(
 						x => x.Prey.FirstOrDefault(
-							y => y.Instance is Player preyPlayer && preyPlayer.whoAmI == player.whoAmI && !y.NoHealth
+							y => !y.NoHealth && y.Instance is Player preyPlayer && preyPlayer.whoAmI == player.whoAmI
 						) is not null
 						  || x.PreyQueue.FirstOrDefault(
-							y => y.Instance is Player preyPlayer && preyPlayer.whoAmI == player.whoAmI && !y.NoHealth
+							y => !y.NoHealth && y.Instance is Player preyPlayer && preyPlayer.whoAmI == player.whoAmI
 						) is not null
 					) is VoreTracker tracker)
 					return tracker;
@@ -63,10 +65,10 @@ namespace V2.Core
 			{
 				if (ModContent.GetInstance<V2MasterSystem>().VoreTrackers.FirstOrDefault(
 						x => x.Prey.FirstOrDefault(
-							y => y.Instance is NPC preyNPC && preyNPC.whoAmI == npc.whoAmI && !y.NoHealth
+							y => !y.NoHealth && y.Instance is NPC preyNPC && preyNPC.whoAmI == npc.whoAmI
 						) is not null
 						  || x.PreyQueue.FirstOrDefault(
-							y => y.Instance is NPC preyNPC && preyNPC.whoAmI == npc.whoAmI && !y.NoHealth
+							y => !y.NoHealth && y.Instance is NPC preyNPC && preyNPC.whoAmI == npc.whoAmI
 						) is not null
 					) is VoreTracker tracker)
 					return tracker;
@@ -77,10 +79,10 @@ namespace V2.Core
 			{
 				if (ModContent.GetInstance<V2MasterSystem>().VoreTrackers.FirstOrDefault(
 						x => x.Prey.FirstOrDefault(
-							y => y.Instance is Projectile preyProjectile && preyProjectile.whoAmI == projectile.whoAmI && !y.NoHealth
+							y => !y.NoHealth && y.Instance is Projectile preyProjectile && preyProjectile.whoAmI == projectile.whoAmI
 						) is not null
 						  || x.PreyQueue.FirstOrDefault(
-							y => y.Instance is Projectile preyProjectile && preyProjectile.whoAmI == projectile.whoAmI && !y.NoHealth
+							y => !y.NoHealth && y.Instance is Projectile preyProjectile && preyProjectile.whoAmI == projectile.whoAmI
 						) is not null
 					) is VoreTracker tracker)
 					return tracker;
@@ -91,10 +93,10 @@ namespace V2.Core
 			{
 				if (ModContent.GetInstance<V2MasterSystem>().VoreTrackers.FirstOrDefault(
 						x => x.Prey.FirstOrDefault(
-							y => y.Instance is Item preyItem && preyItem.type == item.type && preyItem.stack == item.stack && !y.NoHealth
+							y => !y.NoHealth && y.Instance is Item preyItem && preyItem.type == item.type && preyItem.stack == item.stack && preyItem.AsV2Item().State == ItemLocation.BeingFood && preyItem.AsV2Item().State == item.AsV2Item().State
 						) is not null
 						  || x.PreyQueue.FirstOrDefault(
-							y => y.Instance is Item preyItem && preyItem.type == item.type && preyItem.stack == item.stack && !y.NoHealth
+							y => !y.NoHealth && y.Instance is Item preyItem && preyItem.type == item.type && preyItem.stack == item.stack && preyItem.AsV2Item().State == ItemLocation.BeingFood && preyItem.AsV2Item().State == item.AsV2Item().State
 						) is not null
 					) is VoreTracker tracker)
 					return tracker;
@@ -121,6 +123,10 @@ namespace V2.Core
 			{
 				return (int)Math.Max(0, Math.Floor(Math.Max(npc.AsPred().MaxStomachCapacity - 0.80, 0) / 0.04));
 			}
+			else if (entity is Projectile projectile)
+			{
+				return (int)Math.Max(0, Math.Floor(Math.Max(projectile.AsPred().MaxStomachCapacity - 0.80, 0) / 0.04));
+			}
 			return 0;
 		}
 
@@ -130,6 +136,8 @@ namespace V2.Core
 				return player.AsFood().StruggleStrength;
 			else if (entity is NPC npc)
 				return npc.AsFood().StruggleStrength;
+			else if (entity is Projectile projectile)
+				return projectile.AsFood().StruggleStrength;
 
 			return 0;
 		}

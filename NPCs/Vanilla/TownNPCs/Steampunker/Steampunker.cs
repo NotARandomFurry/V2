@@ -79,7 +79,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Steampunker
 
 			npc.AsV2NPC().GetNewDialogue = GetSteampunkerChat;
 
-			npc.AsFood().Size = 1.06;
+			npc.AsFood().DefinedSize = 1.06;
 			npc.AsPred().MaxStomachCapacity = 50.0;
 			npc.AsPred().BaseStomachacheMeterCapacity = 1250.0;
 
@@ -93,7 +93,8 @@ namespace V2.NPCs.Vanilla.TownNPCs.Steampunker
 			npc.AsPred().GetDigestionTickRate = GetDigestionTickRate;
 			npc.AsPred().GetDigestionTickDamage = GetDigestionTickDamage;
 
-			npc.AsPred().OnDigestionKill = OnDigestionKill;
+			npc.AsPred().OnDigestionKill = null;
+			npc.AsPred().MouthSoundRawOffset = npc.TrueCenter() + new Vector2(npc.direction * 8f, -14f);
 			npc.AsPred().SmallBurps = Burps.Humanoid.Small;
 			npc.AsPred().SmallBurpThreshold = 1.5;
 			npc.AsPred().StandardBurps = Burps.Humanoid.Standard;
@@ -363,11 +364,6 @@ namespace V2.NPCs.Vanilla.TownNPCs.Steampunker
 		public static double GetDigestionTickRate(NPC npc, PreyData prey) => Main.bloodMoon ? 5.0 : 2.5;
 
 		public static double GetDigestionTickDamage(NPC npc, PreyData prey) => 20.0;
-
-		public static void OnDigestionKill(NPC npc, PreyData digestedPrey)
-		{
-			
-		}
 
 		public static double GetPreyAbsorptionRate(NPC npc)
 		{

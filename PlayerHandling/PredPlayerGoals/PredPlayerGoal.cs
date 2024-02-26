@@ -85,7 +85,11 @@ namespace V2.PlayerHandling.PredPlayerGoals
 		/// </param>
 		public virtual bool Available(Player pred) => true;
 
-		public void TrySetCompletion(Player pred, bool intendedCompletionState = true) {
+		public void TrySetCompletion(Player pred, bool intendedCompletionState = true)
+		{
+			if (!pred.AsPred().GoalsCompleted.ContainsKey(InternalName))
+				pred.AsPred().GoalsCompleted.Add(InternalName, !intendedCompletionState);
+
 			if (pred.AsPred().GoalsCompleted[InternalName] == intendedCompletionState)
 				return;
 

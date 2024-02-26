@@ -8,6 +8,7 @@ using Terraria;
 using Terraria.ID;
 using V2.Core;
 using V2.PlayerHandling;
+using V2.Projectiles;
 using V2.StatusEffects.Debuffs;
 
 namespace V2.NPCs
@@ -32,6 +33,13 @@ namespace V2.NPCs
 					return false;
 
 				return npc.CurrentCaptor() == predPlayer.AsPred().StomachTracker;
+			}
+			else if (pred is Projectile predProjectile)
+			{
+				if (PredProjectile.GetStomachTracker(predProjectile) is null)
+					return false;
+
+				return npc.CurrentCaptor() == PredProjectile.GetStomachTracker(predProjectile);
 			}
 			return false;
 		}
@@ -82,7 +90,7 @@ namespace V2.NPCs
 			return false;
 		}
 
-		public static void DoContactGulpage(this NPC npc)
+		public static void DoContactGulpage(this NPC npc, List<(PreyType, int)> specificWhitelist = null)
 		{
 			if (npc.CurrentCaptor() is not null)
 				return;
@@ -92,6 +100,24 @@ namespace V2.NPCs
 				NPC preyNPC = Main.npc[i];
 				if (preyNPC.active && preyNPC.life > 0 && preyNPC.whoAmI != npc.whoAmI)
 				{
+					bool inSpecificWhitelist = false;
+					if (specificWhitelist is not null)
+					{
+						foreach ((PreyType type, int ID) in specificWhitelist)
+						{
+							if (type == PreyType.NPC && ID == preyNPC.type)
+							{
+								inSpecificWhitelist = true;
+								break;
+							}
+						}
+					}
+					else
+						inSpecificWhitelist = true;
+
+					if (!inSpecificWhitelist)
+						continue;
+
 					if (npc.Hitbox.Intersects(preyNPC.Hitbox) && PredNPC.CanSwallow(npc, preyNPC))
 					{
 						if (npc.type == NPCID.HallowBoss && preyNPC.type == NPCID.PartyGirl)
@@ -106,8 +132,53 @@ namespace V2.NPCs
 				Player preyPlayer = Main.player[i];
 				if (preyPlayer.active && !preyPlayer.dead)
 				{
+					bool inSpecificWhitelist = false;
+					if (specificWhitelist is not null)
+					{
+						foreach ((PreyType type, int ID) in specificWhitelist)
+						{
+							if (type == PreyType.Player)
+							{
+								inSpecificWhitelist = true;
+								break;
+							}
+						}
+					}
+					else
+						inSpecificWhitelist = true;
+
+					if (!inSpecificWhitelist)
+						continue;
+
 					if (npc.Hitbox.Intersects(preyPlayer.Hitbox) && PredNPC.CanSwallow(npc, preyPlayer))
 						PredNPC.Swallow(npc, preyPlayer);
+				}
+			}
+			for (int i = 0; i < Main.maxProjectiles; i++)
+			{
+				Projectile preyProjectile = Main.projectile[i];
+				if (preyProjectile.active)
+				{
+					bool inSpecificWhitelist = false;
+					if (specificWhitelist is not null)
+					{
+						foreach ((PreyType type, int ID) in specificWhitelist)
+						{
+							if (type == PreyType.Projectile && ID == preyProjectile.type)
+							{
+								inSpecificWhitelist = true;
+								break;
+							}
+						}
+					}
+					else
+						inSpecificWhitelist = true;
+
+					if (!inSpecificWhitelist)
+						continue;
+
+					if (npc.Hitbox.Intersects(preyProjectile.Hitbox) && PredNPC.CanSwallow(npc, preyProjectile))
+						PredNPC.Swallow(npc, preyProjectile);
 				}
 			}
 			for (int i = 0; i < Main.maxItems; i++)
@@ -115,6 +186,24 @@ namespace V2.NPCs
 				Item preyItem = Main.item[i];
 				if (preyItem.active)
 				{
+					bool inSpecificWhitelist = false;
+					if (specificWhitelist is not null)
+					{
+						foreach ((PreyType type, int ID) in specificWhitelist)
+						{
+							if (type == PreyType.Item && ID == preyItem.type)
+							{
+								inSpecificWhitelist = true;
+								break;
+							}
+						}
+					}
+					else
+						inSpecificWhitelist = true;
+
+					if (!inSpecificWhitelist)
+						continue;
+
 					if (npc.Hitbox.Intersects(preyItem.Hitbox) && PredNPC.CanSwallow(npc, preyItem))
 						PredNPC.Swallow(npc, preyItem);
 				}

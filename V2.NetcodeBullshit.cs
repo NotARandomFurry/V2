@@ -101,7 +101,7 @@ namespace V2
 		/// 1) Pred type as a <see cref="byte"/>.<br/>
 		/// - 0 => Player<br/>
 		/// - 1 => NPC<br/>
-		/// - 2 => Projectile (currently unused)<br/>
+		/// - 2 => Projectile<br/>
 		/// - 3 => Item (not yet implemented)<br/>
 		/// - 4 => Custom (not yet implemented)<br/>
 		/// 2) The index of the pred to gulp down a free meal as an <see cref="int"/>.<br/>
@@ -182,7 +182,7 @@ namespace V2
 		/// 1) Pred type as a <see cref="byte"/>.<br/>
 		/// - 0 => Player<br/>
 		/// - 1 => NPC<br/>
-		/// - 2 => Projectile (currently unused)<br/>
+		/// - 2 => Projectile<br/>
 		/// - 3 => Item (not yet implemented)<br/>
 		/// - 4 => Custom (not yet implemented)<br/>
 		/// 2) The index of the pred to gulp down a free meal as an <see cref="int"/>.<br/>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Steamworks;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,8 +11,15 @@ using V2.UI;
 
 namespace V2.Items
 {
+	public enum ItemLocation
+	{
+		InWorld,
+		InPlayerInventory,
+		BeingFood,
+	}
 	public class V2Item : GlobalItem
 	{
+		public ItemLocation State { get; set; }
 		public DelegateHeldItemDrawingUI heldItemUIDrawMethod;
 
 		public int ReleasedNPCNetID;
@@ -23,6 +31,16 @@ namespace V2.Items
 			heldItemUIDrawMethod = null;
 
 			ReleasedNPCNetID = 0;
+		}
+
+		public override void Update(Item item, ref float gravity, ref float maxFallSpeed)
+		{
+			item.AsV2Item().State = ItemLocation.InWorld;
+		}
+
+		public override void UpdateInventory(Item item, Player player)
+		{
+			item.AsV2Item().State = ItemLocation.InPlayerInventory;
 		}
 
 		public override void HorizontalWingSpeeds(Item item, Player player, ref float speed, ref float acceleration)

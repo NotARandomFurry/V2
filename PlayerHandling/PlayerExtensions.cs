@@ -10,6 +10,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using V2.Core;
 using V2.NPCs;
+using V2.Projectiles;
 
 namespace V2.PlayerHandling
 {
@@ -38,6 +39,19 @@ namespace V2.PlayerHandling
 			else if (entity is Player predPlayer)
 			{
 				List<PreyData> playerAsPreyList = predPlayer.AsPred().StomachTracker?.Prey.FindAll(x => x.Type == PreyType.Player && x.Instance.whoAmI == player.whoAmI);
+				if (playerAsPreyList != null && playerAsPreyList.Count > 0)
+				{
+					if (playerAsPreyList.FirstOrDefault(x => !x.NoHealth) == null)
+						pastTense = true;
+					return true;
+				}
+			}
+			else if (entity is Projectile predProjectile)
+			{
+				if (PredProjectile.GetStomachTracker(predProjectile) is null)
+					return false;
+
+				List<PreyData> playerAsPreyList = PredProjectile.GetStomachTracker(predProjectile)?.Prey.FindAll(x => x.Type == PreyType.Player && x.Instance.whoAmI == player.whoAmI);
 				if (playerAsPreyList != null && playerAsPreyList.Count > 0)
 				{
 					if (playerAsPreyList.FirstOrDefault(x => !x.NoHealth) == null)

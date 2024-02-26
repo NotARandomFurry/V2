@@ -29,7 +29,7 @@ namespace V2.NPCs.Vanilla.Forest
 		{
 			npc.AsV2NPC().Gender = EntityGender.Other;
 
-			npc.AsFood().Size = 0.475;
+			npc.AsFood().DefinedSize = 0.475;
 
 			npc.AsFood().OnKilledByDigestion = PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
 			npc.AsFood().OnKilledByDigestion += OnKilledByDigestion_GrantAngryDandelionGoal;
