@@ -101,20 +101,6 @@ Configs: {
 					'''
 			}
 
-			Glutton: {
-				Label: Play The Apex
-				Tooltip:
-					'''
-					BALANCE BREAKAGE: High
-					Raises the following pred stats by absurd amounts for players:
-					- Swallow (non-liquid) and stomach capacities (x120)
-					- Stomachache meter capacity (x80)
-					- Absorption rate (x60)
-					Allows all bosses to be eaten by players regardless of progression.
-					Defaults to false.
-					'''
-			}
-
 			EasilyEdibleEmpress: {
 				Label: Invoke The Second Law
 				Tooltip:
@@ -630,7 +616,7 @@ PredPlayerGoals: {
 				'''
 		}
 
-		EatGroomAndBridge: {
+		EatGroomAndBride: {
 			Name: "'Til Death..."
 
 			Description: {
@@ -815,6 +801,8 @@ PredPlayerGoals: {
 
 ItemName: {
 	Voraria: {
+		CheatItems.RoseFlower: Rose's Flower Pin
+
 		Accessories: {
 			Informational: {
 				MealSizeScanner: Sizemic Scanner
@@ -822,7 +810,7 @@ ItemName: {
 			}
 
 			Vanity.BalloonBelly: Belly-Shaped Balloon
-			NymphHairScarf: Sly Hunter's Scarf
+			NymphHairScarf: Sly Huntress' Scarf
 		}
 
 		Consumables: {
@@ -830,7 +818,7 @@ ItemName: {
 			PermanentUpgrades.PureSwallowBoost1: Swallowing Stimulant
 
 			Potions: {
-				FastDigestionPotion: Digestive Aid Pills
+				FastDigestionPotion: Digestive Aid Potion
 				StomachacheMeterCapacityPotion: Internal Endurance Potion
 				StomachCapacityPotion: Elasticity Potion
 			}
@@ -911,18 +899,30 @@ ItemTooltip: {
 							'''
 						Long:
 							'''
-							Summons a small prismatic fairy who calls herself the Heiress of Light.
+							Summons a small prismatic fairy who calls herself the Heiress of Light. Her real name is Radianne.
 							The Heiress [c/{$Mods.V2.CommonColorCodes.PositiveEffect}:provides light in dark places].
-							The Heiress [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:will hunt down and eat nearby mobs] which classify as insects or arachnids.
-							The Heiress [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:digests much better] in the daylight.
+							The Heiress [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:will hunt down and eat nearby mobs] which are shiny or twinkly enough for her tastes (including other fairies), as well as royalty.
+							Her stats are as follows:
+							[c/7F7F7F:> Health:] [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:{MiniCandyFairyMaxHealth}]
+							[c/7F7F7F:>] [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:No swallow capacity limit (+ can swallow bosses)]
+							[c/7F7F7F:> Stomach capacity:] [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:{MiniCandyFairyStomachCapacity}]
+							[c/7F7F7F:>] [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Cannot be escaped]
+							[c/7F7F7F:> Digestion tick damage:] [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:{MiniCandyFairyDigestDamage}]
+							[c/7F7F7F:> Digestion tick rate:] [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:{MiniCandyFairyDigestRate}/sec]
+							[c/7F7F7F:> Absorption rate:] [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:{MiniCandyFairyAbsorbRate}/min]
+							The Heiress [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:digests better] while a blood moon is out.
+							[c/7F7F7F:> 1.5x digestion tick rate and absorption rate]
+							The Heiress [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:digests much better] while the sun is out.
+							[c/7F7F7F:> 2.0x digestion tick rate and absorption rate]
+							The Heiress [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:digests better] while her escort is sleeping.
+							[c/7F7F7F:> 1.25x digestion tick rate and absorption rate, also makes both scale with the speed of time]
 							'''
 						Flavor:
 							'''
 							The Empress always thought it very strange, the idea of having an heir to the throne in case she were rendered unfit to rule. The absolute AUDACITY of such a claim! Preposterous! She would quickly make a fool, and a fattening meal, of anyone that DARED to try and usurp her title!
+							...though, as she slowly began to tutor a small prismatic fairy like herself by the name of Radianne, she began to see the value in having someone to eventually preside over, and voraciously devour the residents of, the Hallow with her. She would eat her if she tried to usurp the Empress, of course, but even a snack like her could be useful as an enforcer.
 
-							...though, as she slowly began to tutor a small prismatic fairy like herself by the name of Radiane, she began to see the value in having someone to eventually preside over, and voraciously devour the residents of, the Hallow with her.
-
-							With the Empress now dead, be it by brawl or bellyache, she is unfit to rule. Thusly, the Heiress requires a supervisor anew. She prefers to feast upon those similar to herself --- insects, arachnids, and even other fairies, as well as foreign royalty --- so as to best ensure her continued growth (in more than just her power level...)
+							With the Empress now dead (and/or digested), she now acts as your enforcer instead. She seeks to increase her brightness (and bulk, naturally) by devouring the brightest snacks she can swallow. Don't worry about her gut; she's eaten plenty of tough meals in the past.
 							'''
 					}
 				}
@@ -1144,7 +1144,7 @@ ItemTooltip: {
 						'''
 						When eaten:
 						- [c/{$Mods.V2.CommonColorCodes.NegativeEffect}:Deals {CactusSwordSwallowDamage} damage to the pred] when swallowed.
-						- [c/{$Mods.V2.CommonColorCodes.NegativeEffect}:Inflicts {$Mods.V2.StatusEffects.Debuffs.SoreThroat.Name} for {CactusSwordSoreThroatTime} seconds] when swallowed.
+						- [c/{$Mods.V2.CommonColorCodes.NegativeEffect}:Inflicts {$Mods.V2.StatusEffects.Voraria.Debuffs.SoreThroat.Name} for {CactusSwordSoreThroatTime} seconds] when swallowed.
 						- [c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Grants the Thorns buff] while digesting, and for [c/FFFF7F:{CactusSwordThornsTime} seconds] longer once fully digested.
 						'''
 					Flavor: A dubiously-wieldy sword fashioned from cactus cuttings. While its prickly nature makes it fairly usable as a weapon, one has to wonder how it would taste...and if there's any way to get around the discomforting amount of spines it still has.
@@ -1161,7 +1161,7 @@ ItemTooltip: {
 						'''
 						When eaten:
 						- [c/{$Mods.V2.CommonColorCodes.NegativeEffect}:Deals {FruitcakeChakramSwallowDamage} damage to the pred] when swallowed, because it just tastes that bad.
-						- [c/{$Mods.V2.CommonColorCodes.NegativeEffect}:Inflicts {$Mods.V2.StatusEffects.Debuffs.SoreThroat.Name} for {FruitcakeChakramSoreThroatTime} seconds] when swallowed; see above
+						- [c/{$Mods.V2.CommonColorCodes.NegativeEffect}:Inflicts {$Mods.V2.StatusEffects.Voraria.Debuffs.SoreThroat.Name} for {FruitcakeChakramSoreThroatTime} seconds] when swallowed; see above
 						- [c/{$Mods.V2.CommonColorCodes.NegativeEffect}:Inflicts the Poison debuff] while in your stomach, and for [c/FFFF7F:{FruitcakeChakramPoisonTime} seconds] longer once fully digested; see above.
 						- [c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Grants the Wrath buff] while in your stomach, and for [c/FFFF7F:{FruitcakeChakramWrathTime} seconds] longer once fully digested, because needing to eat this thing makes one VERY angry.
 						'''
@@ -1183,6 +1183,37 @@ ItemTooltip: {
 	}
 
 	Voraria: {
+		CheatItems: {
+			RoseFlower: {
+				Short: Gives you the same predatory prowess that Rose has, at no cost whatsoever
+				Long:
+					'''
+					While worn, provides a number of extremely- and outright unfairly-beneficial predatorily-centric effects:
+					[c/7F7F7F:> ][c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Makes your stomach weightless, no matter what or who is in it.]
+					[c/7F7F7F:> ][c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Grants infinite swallow and stomach capacity, and makes it impossible for prey to escape your stomach unless you regurgitate them.]
+					[c/7F7F7F:> ][c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Grants the ability to eat bosses regardless of whether your currently-selected gear and abilities would allow you to.]
+					Several item effects and UI elements will be modified while this item is equipped.
+					'''
+				Flavor:
+					'''
+					[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:this is a prefabricated copy of Rose's personal hairpin]
+					[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:it's where some of her more                egregious predatory abilities come from]
+					[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:she is naturally just that much a glutton, though. ate an entire mountain range once]
+					[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:she tells people that it was the very last thing left from the last world she ate]
+					[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:she doesn't tell them that I made it for her when I made her]
+					[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:I made a virtually-infinite number of 'em so that if she accidentally ate it]
+					[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:(and she has, multiple times)]
+					[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:she'd have another rarin' to go shortly thereafter to keep her strong]
+					[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:she tells me these flowers are delicious]
+					[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:then again, she thinks everything's delicious, so maybe take her word with a grain of salt]
+					[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:don't try to eat it]
+					[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:she'll know]
+					[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:and she'll make you a meal, no matter how strong you are]
+					[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:after all, she REALLY likes the taste of these flowers]
+					'''
+			}
+		}
+
 		Accessories: {
 			Informational: {
 				MealSizeScanner: {
@@ -1290,7 +1321,7 @@ ItemTooltip: {
 					Makes your acids a little bit stronger
 					{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
 					'''
-				Long: "[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases your acid strength stat (ACI) by {AcidStrengthBonus}]."
+				Long: "[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases your acid strength (ACI) by {AcidStrengthBonus}]."
 				Flavor: A beginner-level charm designed to make the bearer's stomach acids substantially more potent than if they were to go without it. Very useful for first-time predators who could really use that extra kick to their digestive juices to secure their first few big meals, though sadly not particularly worthwhile past those starting stages.
 			}
 
@@ -1406,7 +1437,7 @@ ItemTooltip: {
 				FastDigestionPotion: {
 					Short:
 						'''
-						Speeds up digestion for a short time, slowing it for a short time thereafter
+						Speeds up digestion
 						{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
 						'''
 					Long:
@@ -1415,23 +1446,65 @@ ItemTooltip: {
 						Since you're just swallowing the whole potion, bottle and all, you'll need the bottle to break first from running out of durability.
 						You're awfully lucky that glass is really easy to digest, and low in calories to boot.
 
-						Once the bottle breaks, until fully digested:
+						Once the bottle breaks, until fully digested, and for 1 minute thereafter:
 						> [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:+{FastDigestionPotionACIBonus} ACI]
 						> [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:+{FastDigestionPotionABSBonus} ABS]
-						> [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:+1 acid tier, only if acid tier is 0]
-						For 1 minute after being fully digested:
-						> [c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:-{FastDigestionPotionACIAfterPenalty} ACI]
-						> [c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:-{FastDigestionPotionABSAfterPenalty} ABS]
-						Drinking one of these while already under the effects of another will:
-						> [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Refresh the positive effect]
-						> [c/{$Mods.V2.CommonColorCodes.NegativeEffect}:Deal 2% of your health per second as damage over time until at least one serving is fully digested]
+						> [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:+1 acid tier][c/7F7F7F:, but only if acid tier is 0]
 						'''
 					Flavor:
 						'''
-						Digestive aids are commonplace in medical establishments across Terraria to help with particularly rowdy or troublesome prey, with just about every option that entails available for use.
-						This one in particular aims to make sure your system doesn't get backed up with all the parts of your prey you can't quite melt down...yet...and is a commonly-used variant carried by medical practitioners at all times.
+						Digestive aids are commonplace in medical establishments across Terraria to help with particularly rowdy or troublesome prey, with just about every option that entails available for use to make sure your system doesn't get backed up with all the parts of your prey you can't quite melt down (yet).
+						This is a rather simple variant carried by medical practitioners at all times (be they for your use or theirs). Dropping something small into the bottle seems to cause it to be swiftly dissolved by the mysterious substance within...not that it's much of a surprise, really. Even inanimate objects can be ravenously hungry --- enough to eat a person, in the right circumstance. People just always seem to make great meals...
 
-						Whether they are predominantly carried for your use or their own is another matter entirely, and varies wildly between cases.
+						...well, that snack in your stomach won't wait much longer. Bon appetit!
+						'''
+				}
+
+				StomachCapacityPotion: {
+					Short:
+						'''
+						Allows your stomach to hold a bit more than usual
+						'For when you're craving an extra snack or two for dessert'
+						{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+						'''
+					Long:
+						'''
+						Improves your stomach's holding capacity when drank.
+						Since you're just swallowing the whole potion, bottle and all, you'll need the bottle to break first from running out of durability.
+						You're awfully lucky that glass is really easy to digest, and low in calories to boot.
+
+						Once the bottle breaks, until fully digested, and for 3 minutes thereafter:
+						> [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:+{StomachCapacityPotionCapacityBonus} stomach capacity]
+						'''
+					Flavor:
+						'''
+						A commonplace and easily-brewable predatory enhancer in the Terrarian world, this potion uses a simple mix of relaxing agents, mainly found in fish, to allow a predator's stomach to stretch a good bit past its normal limits.
+						Sadly, though, it won't bolster your stomach's durability against internal fighting at all; you'd best hope you can keep down all that extra meat you'll be able to fit into your hungry tummy.
+						'''
+				}
+
+				StomachacheMeterCapacityPotion: {
+					Short:
+						'''
+						Improves your stomach's resistance to the struggles of your prey
+						{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+						'''
+					Long:
+						'''
+						Improves your stomach's ability to keep prey from causing a ruckus inside you when drank.
+						Since you're just swallowing the whole potion, bottle and all, you'll need the bottle to break first from running out of durability.
+						You're awfully lucky that glass is really easy to digest, and low in calories to boot.
+
+						Once the bottle breaks, until fully digested, and for 3 minutes thereafter:
+						> [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:+{StomachacheMeterCapacityPotionMeterCapacityBonus} stomachache meter capacity]
+						> [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:-{StomachacheMeterCapacityPotionUneaseDefenseBonus} stomach unease caused from prey struggles]
+						'''
+					Flavor:
+						'''
+						Digestive aids are commonplace in medical establishments across Terraria to help with particularly rowdy or troublesome prey, with just about every option that entails available for use. This one in particular aims to make sure your system doesn't get backed up with all the parts of your prey you can't quite melt down...yet...and is a commonly-used variant carried by medical practitioners at all times. Whether they are predominantly carried for your use or their own is another matter entirely, and varies wildly between cases.
+						Dropping something small into the bottle seems to cause it to be swiftly dissolved by the mysterious substance within...not that it's much of a surprise, really. Even inanimate objects can be ravenously hungry --- enough to eat a person, in the right circumstance. People just always seem to make great meals...
+
+						...well, that snack in your stomach won't wait much longer. Bon appetit!
 						'''
 				}
 			}
@@ -1667,63 +1740,123 @@ InfoDisplayName.TallyCounterVore: Meal Count
 InfoDisplayText.TallyCounterVore.InvalidMeal: Meal count unavailable
 
 StatusEffects: {
-	Debuffs: {
-		MoltenStomach: {
-			Name: Molten Stomach
-			Description:
+	Vanilla: {
+		Buffs: {
+			Wrath.Description:
 				'''
-				[c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:Your stomach is getting melted from the inside by the lava you drank.]
-				[c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:Maybe don't drink lava without a way to prevent this outcome.]
-				'do you are have stupid'
+				[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases damage by {WrathDamageBonus}.]
+				[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases stomach strength (TUM) by {WrathTUMBonus}.]
+				[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases acid strength (ACI) by {WrathACIBonus}.]
+				'You and your stomach feel a rush of raw fury'
 				'''
-		}
-
-		ShimmeringStomach: {
-			Name: Shimmering Stomach
-			Description:
+			Rage.Description:
 				'''
-				[c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:Your stomach is about to end up quantum-superimposed on itself.]
-				[c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:Don't drink shimmer without a way to prevent this outcome.]
-				'Fool you once, shame on me. Fool you twice...'
+				[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases critical strike chance by {RageCritChanceBonus}.]
+				[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases throat strength (GLP) by {RageGLPBonus}.]
+				[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases absorption strength (ABS) by {RageABSBonus}.]
+				'You and your stomach feel a rush of pointed fury'
 				'''
 		}
 
-		Softened: {
-			Name: Softened
+		Summons.Pets.FairyPrincess.Description:
+			'''
+			A small, but very hungry prismatic fairy [c/{$Mods.V2.CommonColorCodes.DoSomething}:follows you around].
+			She will [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:eat insects, arachnids, and other fairies that get too close].
+			'The light of the fair folk illuminates all (especially her next lunch)'
+			'''
+	}
 
-			Description: {
-				Base:
+	Voraria: {
+		Buffs: {
+			FastDigestionPotionBuff: {
+				Name: Digestive Aid
+				Description:
 					'''
-					A stack of this debuff is applied for every [c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:{SoftenedMaxHealthThreshold} of your BASE maximum health you take in digestion damage.]
-					Up to [c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:{SoftenedMaxStacks}] can be applied on you (current: [c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:{SoftenedStacks}]).
-					[c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:Decreases defense by {SoftenedDefReduction}] per stack (current: [c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:{SoftenedCurrentDefReduction}]).
-					[c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:Increases taken digestion damage by {SoftenedDigestiveAid}] per stack (current: [c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:{SoftenedCurrentDigestiveAid}]).
+					[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases acid strength (ACI) by {FastDigestionPotionACIBonus}.]
+					[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases absorption strength (ABS) by {FastDigestionPotionABSBonus}.]
+					[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases your acid tier by 1 if it is 0.]
+					'Maybe now your stomach can solve that little blockage for you...'
 					'''
+			}
 
-				Flavor: {
-					0: You've stayed acid-free for a good while, haven't you?
-					1: You feel a light itch in a few places
-					2: You're starting to itch a good deal more
-					3: Your skin is starting to sting, badly
-					4: Your skin feels like it's burning
-					5: You feel patches of skin starting to decay
-					6: Your skin is starting to melt off
-					7: Your predator's stomach has picked up the pace now
-					8: The muscles beneath your bones are melting away now
-					9: You can barely fight the acidic onslaught anymore
-					10: Say your goodbyes; they're more likely to escape this gut than you are
-				}
+			StomachCapacityPotionBuff: {
+				Name: Elasticity
+				Description:
+					'''
+					[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases your maximum stomach capacity by {StomachCapacityPotionCapacityBonus}.]
+					'Now go and have a little dessert! You've earned it.'
+					'''
+			}
+
+			StomachacheMeterCapacityPotionBuff: {
+				Name: Internal Endurance
+				Description:
+					'''
+					[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases your maximum stomach unease by {StomachacheMeterCapacityPotionMeterCapacityBonus}.]
+					[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Decreases the amount of unease generated by struggling prey by {StomachacheMeterCapacityPotionUneaseDefenseBonus}.]
+					'That should keep your squirmier snacks down a bit better!'
+					'''
 			}
 		}
 
-		SoreThroat: {
-			Name: Sore Throat
-			Description:
-				'''
-				[c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:Prevents swallowing anything orally]
-				Does not stop other methods of consumption
-				'Something's bothering your throat pretty bad'
-				'''
+		Debuffs: {
+			MoltenStomach: {
+				Name: Molten Stomach
+				Description:
+					'''
+					[c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:Your stomach is getting melted from the inside by the lava you drank.]
+					[c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:Maybe don't drink lava without a way to prevent this outcome.]
+					'do you are have stupid'
+					'''
+			}
+
+			ShimmeringStomach: {
+				Name: Shimmering Stomach
+				Description:
+					'''
+					[c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:Your stomach is about to end up quantum-superimposed on itself.]
+					[c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:Don't drink shimmer without a way to prevent this outcome.]
+					'Fool you once, shame on me. Fool you twice...'
+					'''
+			}
+
+			Softened: {
+				Name: Softened
+
+				Description: {
+					Base:
+						'''
+						A stack of this debuff is applied for every [c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:{SoftenedMaxHealthThreshold} of your BASE maximum health you take in digestion damage.]
+						Up to [c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:{SoftenedMaxStacks}] can be applied on you (current: [c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:{SoftenedStacks}]).
+						[c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:Decreases defense by {SoftenedDefReduction}] per stack (current: [c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:{SoftenedCurrentDefReduction}]).
+						[c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:Increases taken digestion damage by {SoftenedDigestiveAid}] per stack (current: [c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:{SoftenedCurrentDigestiveAid}]).
+						'''
+
+					Flavor: {
+						0: You've stayed acid-free for a good while, haven't you?
+						1: You feel a light itch in a few places
+						2: You're starting to itch a good deal more
+						3: Your skin is starting to sting, badly
+						4: Your skin feels like it's burning
+						5: You feel patches of skin starting to decay
+						6: Your skin is starting to melt off
+						7: Your predator's stomach has picked up the pace now
+						8: The muscles beneath your bones are melting away now
+						9: You can barely fight the acidic onslaught anymore
+						10: Say your goodbyes; they're more likely to escape this gut than you are
+					}
+				}
+			}
+
+			SoreThroat: {
+				Name: Sore Throat
+				Description:
+					'''
+					[c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:Prevents swallowing anything orally]
+					Does not stop other methods of consumption
+					'Something's bothering your throat pretty bad'
+					'''
+			}
 		}
 	}
 }
@@ -1789,7 +1922,7 @@ Death: {
 				1: "{Player} got torched."
 				2: "{Player} was smelted by {Pred}."
 				3: "{Player} burned to a fine crisp inside {Pred}."
-				4: "{Player} misjudged the digestive strength of fire."
+				4: "{Player} misjudged the digestive strength of heat."
 				5: "{Player} was burned to death in {Pred}'s stomach."
 			}
 		}
@@ -1857,7 +1990,7 @@ Death: {
 					5: A Meteor Maiden saw {Player} as a sufficient fuel source, and secured them for herself.
 					Hardcore:
 						'''
-						A pleasant sound, almost like a belch, but bassier and rockier, rings out over the mountaintops.
+						A pleasant chime, almost like a bell mixed with a belch, but bassier and rockier, rings out over the mountaintops.
 						{Player} has ended up as little more than a meal for a Meteor Maiden, never to be seen again.
 						Perhaps that Meteor Maiden will go on to eat a moon or seven, and countless celestial bodies beyond? Only time will tell...
 						'''
@@ -2036,7 +2169,7 @@ Death: {
 						Hardcore:
 							'''
 							{Player} fought many tough battles and even outlasted the voracious Empress of Light, befriending a smaller visage of her in the process.
-							That smaller visage, steadily growing fatter by the second due to a massive caloric excess, is now their gastric tomb.
+							That smaller visage, steadily growing fatter by the minute due to caloric excess, is now their gastric tomb.
 							'''
 					}
 				}
@@ -2098,7 +2231,7 @@ Menu: {
 TownNPCMood: {
 	Angel: {
 		Content: I- I'm doing wonderfully, thank you! Of course, i- if you'd like me to, I wouldn't object to...s- studying your internals...
-		NoHome: As...e- exciting as it is to study and experience the various i- ins and outs of the creatures of this world, I wouldn't mind a home to s- stay at in the downtime.
+		NoHome: As...e- exciting as it is to study and experience the various i- ins and outs of the creatures of this world, I wouldn't mind a home to s- stay at in my downtime.
 		FarFromHome: W- wow! I've certainly traveled farther than usual today...wh- what predatory thing could I have been attempting to s- study this far out...?
 
 		Biomes: {
@@ -2176,11 +2309,11 @@ TownNPCMood: {
 				DislikeCadence: Queen Cadence? As great as that blimp-sized booty on her would look blimping up mine instead...she's got a kid, and she's gulped preds way bigger and tougher than me. Don't have a hope in hell of eatin' her, so I'd rather just keep my distance...if you'll let me.
 				HateAngler: If it weren't for the fact that children are way too small to be decent meals, that scrawny little fisherman brat would be padding out my waistline right now. Keep your TRASH off my lawn, got it?
 				CadenceAndAria: I'm really not a fan of where you've got me here. Aria's too young for me to feel comfortable around her, and I think I'm just going to aggravate her mom if I say anything about it. Given I'd rather NOT end up adding to Cadence's ass, could I bother you to lemme stay somewhere else?
-				HateDryad: I'm really close to just using my stomach to solve the problem of {NPCName}'s constant preaching about "purity" and "cleansing". Pompous bitch can't make an ass of herself about my eating habits if she's busy fattening up mine, now, can she?
+				HateDryad: I'm really close to just using my stomach to solve the problem of {NPCName}'s constant preaching about "purity" and "cleansing". Pompous bitch can't make an ass of herself about my eating habits if she and her ass are too busy fattening up mine, now, can she?
 				HateTaxCollector: You've already done the impossible twice; once to get me outta that shithole I called home, and once to take down that massive fleshbag from the other edge. Do it a third time and get {NPCName} to either shut the hell up or move out; I'm already more than sick of him.
 
 				Calamity: {
-					LoveCirrus: That royal bombshell, Cirrus? "Lethal alcohol contents" my demonic derri�re! Just look at those thick-ass thighs and titanic tankers she hauls around! She'll make some grade-A+ gut fat, y'hear me?
+					LoveCirrus: That royal bombshell, Cirrus? "Lethal alcohol contents" my ass! Just look at those thick, thundery thighs and titanic tankers she hauls around! She'll make some grade-A+ gut fat, y'hear me?
 					DislikeCalamitas: There's bein' an apex predator, and then there's bein a stupid predator. Anyone tryin' to eat that grumpy old witch'll learn pretty fast that they're the latter...and I don't like that. Might scare off my food.
 					HateAmidias: That old seahorse is just no fun at all. Won't let me have any, either. I honestly don't even feel like eating him. He's just...he's THAT kinda guy, y'know? Anyway, move him.
 				}
@@ -2240,7 +2373,7 @@ NPCs: {
 			LoveBiome: It's great to be around the ocean, don'tcha think? Sittin' in the warm sand, lookin' over the sunset as your prey-stuffed gut churns and gurgles even the meatiest meals into more of ya...it's the BEST. My only regret's that I didn't come up here sooner.
 			LikeBiome: The desert's nice and warm, I have to say. Reminds me of home, in all the good ways, and it's a lot more open to boot. Plenty of good prey to snatch up, too, if you know where to look. I like it.
 			DislikeBiome: It's way too cold around here, if you ask me. Food's a bit too fluffy for me, too. I'd kill for a warm lava bath right now; find me one, or at least a warmer place to crash.
-			HateBiome: Seriously!? This place is awful! I can't even eat the stuff here; I might get food poisoning from how rotten it all is!
+			HateBiome: Seriously!? This place is awful! I can't even eat the stuff here; I might get food poisonin' from how rotten it all is!
 			LoveNPC: I love {NPCName}.
 			LikeNPC: I like {NPCName}.
 			DislikeNPC: I dislike {NPCName}.
@@ -2265,7 +2398,7 @@ NPCs: {
 					'''
 				SwallowSize:
 					'''
-					A pred's throat can only handle so much before it starts to hurt. That's called their [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:swallow size] on paper.
+					A pred's throat can only handle so much before it starts to hurt. That's called their [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:swallow capacity] on paper.
 					The higher it is, the bigger the meals that can fit down their gullet, and the easier smaller meals go down. Simple enough, yeah?
 					So, don't wanna get eaten? Steer clear of preds that can get you down easy until you're sure you can gulp 'em down yourself.
 					'''
@@ -2312,15 +2445,3 @@ NPCs: {
 }
 
 ItemObtainmentDetails.Voraria.Accessories.Vanity.BalloonBelly: Mods.V2.ItemObtainmentDetails.Voraria.Accessories.Vanity.BalloonBelly
-
-Items: {
-	StomachacheMeterCapacityPotion: {
-		DisplayName: Stomachache Meter Capacity Potion
-		Tooltip: ""
-	}
-
-	StomachCapacityPotion: {
-		DisplayName: Stomach Capacity Potion
-		Tooltip: ""
-	}
-}

@@ -15,7 +15,7 @@ using V2.Items;
 using V2.NPCs;
 using V2.PlayerHandling;
 using V2.Sounds.Vore;
-using V2.StatusEffects.Debuffs;
+using V2.StatusEffects.Voraria.Debuffs;
 
 namespace V2.Projectiles
 {
@@ -88,6 +88,9 @@ namespace V2.Projectiles
 		{
 			get
 			{
+				if (BaseStomachacheMeterCapacity == -1)
+					return -1;
+
 				double baseStomachacheMeterCapacity = BaseStomachacheMeterCapacity;
 				return StomachacheMeterCapacityModifier.ApplyTo((float)baseStomachacheMeterCapacity);
 			}
@@ -157,14 +160,19 @@ namespace V2.Projectiles
 			GetVisualWeightStage = null;
 		}
 
-		public static void ResetModifiers(Projectile pred)
+		public static void ResetEffects(Projectile projectile)
 		{
-			pred.AsPred().StomachacheMeterCapacityModifier = StatModifier.Default;
+			double stomachacheQuellPerTick = projectile.AsPred().StomachacheMeterCapacity * (0.05 / (double)V2Utils.SensibleTime(seconds: 1));
+			if (GetStomachTracker(projectile) is null || !AnyPreyStillAlive(projectile))
+				stomachacheQuellPerTick *= 0.1;
+			projectile.AsPred().Stomachache -= stomachacheQuellPerTick;
+
+			projectile.AsPred().StomachacheMeterCapacityModifier = StatModifier.Default;
 		}
 
 		public static bool CanSwallow(Projectile pred, Entity prey)
 		{
-			if (V2.VoreProjectileBlacklist.Contains(pred.type))
+			if (V2.VoreNPCBlacklist is not null && V2.VoreProjectileBlacklist.Count > 0 && V2.VoreProjectileBlacklist.Contains(pred.type))
 				return false;
 
 			if (GetCurrentBellyWeight(pred) >= pred.AsPred().MaxStomachCapacity)
@@ -202,7 +210,7 @@ namespace V2.Projectiles
 			}
 			else if (prey is NPC preyNPC)
 			{
-				if (V2.VoreNPCBlacklist.Contains(preyNPC.type))
+				if (V2.VoreNPCBlacklist is not null && V2.VoreNPCBlacklist.Count > 0 && V2.VoreNPCBlacklist.Contains(preyNPC.type))
 					return false;
 
 				bool tastesLikeSkittles = preyNPC.type == NPCID.HallowBoss && ModContent.GetInstance<V2ServerConfig>().EasilyEdibleEmpress;
@@ -221,7 +229,7 @@ namespace V2.Projectiles
 			}
 			else if (prey is Projectile preyProjectile)
 			{
-				if (V2.VoreProjectileBlacklist.Contains(preyProjectile.type))
+				if (V2.VoreNPCBlacklist is not null && V2.VoreProjectileBlacklist.Count > 0 && V2.VoreProjectileBlacklist.Contains(preyProjectile.type))
 					return false;
 
 				if (preyProjectile.AsFood().MaxHealth == -1)
@@ -344,7 +352,7 @@ namespace V2.Projectiles
 		/// <param name="pred">The projectile to update all food in the stomach of.</param>
 		public static void UpdatePrey(Projectile pred)
 		{
-			if (pred.AsPred().Stomachache >= pred.AsPred().StomachacheMeterCapacity)
+			if (pred.AsPred().StomachacheMeterCapacity > 0 && pred.AsPred().Stomachache >= pred.AsPred().StomachacheMeterCapacity)
 			{
 				foreach (PreyData prey in GetStomachTracker(pred).Prey)
 				{
@@ -381,6 +389,8 @@ namespace V2.Projectiles
 			{
 				if (!prey.NoHealth)
 				{
+					prey.UpdateInStomach?.Invoke(prey.Instance, pred, false);
+
 					switch (prey.Type)
 					{
 						case PreyType.Player:
@@ -493,6 +503,8 @@ namespace V2.Projectiles
 				}
 				else
 				{
+					prey.UpdateInStomach?.Invoke(null, pred, true);
+
 					if (pred.AsPred().GetPreyAbsorptionRate is null)
 						break;
 

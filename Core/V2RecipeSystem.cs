@@ -10,9 +10,11 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using V2.Core.StruggleSystem;
+using V2.Items.Voraria;
 using V2.Items.Voraria.Accessories;
 using V2.Items.Voraria.Accessories.Informational;
 using V2.Items.Voraria.Accessories.Vanity;
+using V2.Items.Voraria.Consumables.Potions;
 
 namespace V2.Core
 {
@@ -126,8 +128,8 @@ namespace V2.Core
 
 		/// <summary>
 		/// Removes all existing recipes which result in the given item type.<br/>
-		/// Used to instate DD recipes instead of vanilla/othermod ones.<br/>
-		/// ONLY CALL IN POSTADDRECIPES! PostAddRecipes is used for stability reasons.<br/>
+		/// Used to instate VSC recipes instead of vanilla/othermod ones.<br/>
+		/// ONLY CALL IN <see cref="EstablishRecipeCollection"/>! This is used only in <see cref="Mod.PostAddRecipes"/>, for stability reasons.<br/>
 		/// </summary>
 		/// <param name="type">
 		/// The item type to remove all existing recipes for.
@@ -144,8 +146,7 @@ namespace V2.Core
 
 		/// <summary>
 		/// Removes any instances of the given item type from all existing recipes' ingredient lists.<br/>
-		/// Currently used exclusively to prevent Excalibur from being used in other recipes.<br/>
-		/// ONLY CALL IN POSTADDRECIPES! PostAddRecipes is used for stability reasons.<br/>
+		/// ONLY CALL IN <see cref="EstablishRecipeCollection"/>! This is used only in <see cref="Mod.PostAddRecipes"/>, for stability reasons.<br/>
 		/// </summary>
 		/// <param name="type">
 		/// The item type to remove from all existing recipes.
@@ -161,21 +162,75 @@ namespace V2.Core
 
 		public static void EstablishRecipeCollection()
 		{
-			// Vanilla
-				// Accessories
-					// Informational
-				// Defensive
-					// Adhesive Bandage
-					RemoveExistingRecipesForItem(ItemID.AdhesiveBandage);
-			// Voraria
-				// Accessories
-					// Informational
-						// Sizemic Scanner
-						RemoveExistingRecipesForItem(ModContent.ItemType<MealSizeScanner>());
-						// Servant's Scanner
-						RemoveExistingRecipesForItem(ModContent.ItemType<PredCapacityScanner>());
-					// Belly-Shaped Balloon
-					RemoveExistingRecipesForItem(ModContent.ItemType<BalloonBelly>());
+			#region Vanilla
+			#region Accessories
+			#region Informational
+			#region Defensive
+			#region Adhesive Bandage
+			RemoveExistingRecipesForItem(ItemID.AdhesiveBandage);
+			#endregion
+			#endregion
+			#endregion
+			#endregion
+			#region Dyes
+			#region Sky Blue Dye
+			Recipe.Create(ItemID.SkyBlueDye, 3)
+				.AddIngredient(ModContent.ItemType<NymphHairStrand>())
+				.AddTile(TileID.DyeVat)
+				.Register();
+			#endregion
+			#endregion
+			#endregion
+			#region Voraria
+			#region Accessories
+			#region Informational
+			#region Sizemic Scanner
+			RemoveExistingRecipesForItem(ModContent.ItemType<MealSizeScanner>());
+			#endregion
+			#region Servant's Scanner
+			RemoveExistingRecipesForItem(ModContent.ItemType<PredCapacityScanner>());
+			#endregion
+			#endregion
+			#region Vanity
+			#region Belly-Shaped Balloon
+			RemoveExistingRecipesForItem(ModContent.ItemType<BalloonBelly>());
+			#endregion
+			#endregion
+			#region Sly Huntress' Scarf
+			RemoveExistingRecipesForItem(ModContent.ItemType<NymphHairScarf>());
+			Recipe.Create(ModContent.ItemType<NymphHairScarf>())
+				.AddIngredient(ModContent.ItemType<NymphHairStrand>(), 5)
+				.AddIngredient(ItemID.FallenStar, 7)
+				.AddIngredient(ItemID.Sapphire, 3)
+				.AddTile(TileID.Loom)
+				.Register();
+			#endregion
+			#endregion
+			#region Consumables
+			#region Potions
+			#region Digestive Aid Potion
+			RemoveExistingRecipesForItem(ModContent.ItemType<FastDigestionPotion>());
+			#endregion
+			#region Elasticity Potion
+			RemoveExistingRecipesForItem(ModContent.ItemType<StomachCapacityPotion>());
+			Recipe.Create(ModContent.ItemType<StomachCapacityPotion>(), 2)
+				.AddIngredient(ItemID.BottledHoney, 2)
+				.AddIngredient(ItemID.VariegatedLardfish, 1)
+				.AddIngredient(ItemID.DoubleCod, 1)
+				.AddTile(TileID.Bottles)
+				.Register();
+			#endregion
+			#region Internal Endurance Potion
+			RemoveExistingRecipesForItem(ModContent.ItemType<StomachacheMeterCapacityPotion>());
+			#endregion
+			#endregion
+			#endregion
+			#region Misc.
+			#region Sky Blue Strand
+			RemoveExistingRecipesForItem(ModContent.ItemType<NymphHairStrand>());
+			#endregion
+			#endregion
+			#endregion
 		}
 	}
 }

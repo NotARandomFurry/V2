@@ -110,7 +110,7 @@ namespace V2
 					orig(projectile);
 				else
 				{
-					PredProjectile.ResetModifiers(projectile);
+					PredProjectile.ResetEffects(projectile);
 					if (projectile.CurrentCaptor() is not null)
 					{
 						projectile.timeLeft += 1;

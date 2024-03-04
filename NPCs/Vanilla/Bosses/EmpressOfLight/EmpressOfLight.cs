@@ -423,7 +423,8 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 					{
 						Volume = 1f,
 						PitchVariance = 0.07f
-					}
+					},
+					pred.TrueCenter()
 				);
 			}
 		}

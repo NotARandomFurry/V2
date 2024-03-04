@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Terraria.ID;
 using Terraria.ModLoader;
 using V2.Core.StruggleSystem;
+using V2.Items.Voraria.Consumables.Potions;
 using V2.NPCs.Voraria.TownNPCs.Succubus;
 using V2.PlayerHandling.PredPlayerGoals;
 
@@ -27,7 +28,7 @@ namespace V2
 		/// <summary>
 		/// A special flag which decides whether or not the vore blacklists are actually filled.<br/>
 		/// Defaults to <see langword="false"/>. If set to <see langword="true"/> instead, the blacklists remain empty.<br/>
-		/// This allows several enemies which otherwise would not be included in vore mechanics, namely as predators, to instead be given full reign.<br/>
+		/// This allows several entities which otherwise would not be included in vore mechanics, namely as predators, to instead be given full reign.<br/>
 		/// </summary>
 		public static bool BlacklistsActive { get; set; } 
 		public static List<int> VoreNPCBlacklist { get; set; }
@@ -53,6 +54,7 @@ namespace V2
 
 			BetterDialogue.BetterDialogue.SupportedNPCs.Add(ModContent.NPCType<Lucinda>());
 
+			BetterDialogue.BetterDialogue.RegisterShoppableNPC(NPCID.Nurse);
 			BetterDialogue.BetterDialogue.RegisterShoppableNPC(ModContent.NPCType<Lucinda>());
 
 			StruggleChartLoader.Load();
@@ -62,6 +64,9 @@ namespace V2
 
 		public override void Unload()
 		{
+			VoreNPCBlacklist = null;
+			VoreProjectileBlacklist = null;
+
 			StruggleChartLoader.Unload();
 
 			DisengageVoraciousGameFuckery();
@@ -69,9 +74,6 @@ namespace V2
 
 		public override void PostSetupContent()
 		{
-			if (!BlacklistsActive)
-				return;
-
 			VoreNPCBlacklist = new List<int>
 			{
 				NPCID.Angler,
@@ -85,6 +87,12 @@ namespace V2
 			{
 
 			};
+
+			if (!BlacklistsActive)
+			{
+				VoreNPCBlacklist.Clear();
+				VoreProjectileBlacklist.Clear();
+			}
 		}
 	}
 }

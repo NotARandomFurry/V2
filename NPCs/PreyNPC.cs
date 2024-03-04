@@ -18,7 +18,7 @@ using V2.Core;
 using V2.NPCs.Voraria.TownNPCs.Succubus;
 using V2.PlayerHandling;
 using V2.PlayerHandling.PredPlayerGoals.Starter;
-using V2.StatusEffects.Debuffs;
+using V2.StatusEffects.Voraria.Debuffs;
 
 namespace V2.NPCs
 {

@@ -14,6 +14,7 @@ namespace V2.PlayerHandling.PredPlayerGoals.Amateur
 		public override string InternalName => "EatGroomAndBride";
 		public override string DisplayName(Player pred) => "Mods.V2.PredPlayerGoals.Amateur.EatGroomAndBride.Name";
 		public override string Description(Player pred) => "Mods.V2.PredPlayerGoals.Amateur.EatGroomAndBride.Description";
+		public override bool HasClearDescription(Player pred) => true;
 
 		public override int StatPointsFromCompletion => 10;
 

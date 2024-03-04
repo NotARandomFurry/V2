@@ -18,7 +18,7 @@ using V2.Core;
 using V2.NPCs;
 using V2.PlayerHandling;
 
-namespace V2.StatusEffects.Debuffs
+namespace V2.StatusEffects.Voraria.Debuffs
 {
 	public class Softened : ModBuff
 	{
@@ -26,8 +26,8 @@ namespace V2.StatusEffects.Debuffs
 		public static double DefenseReductionPerStack => 0.075;
 		public static float DigestionDamageIncreasePerStack => 0.15f;
 		public static int MaxStacks => 10;
-		public override LocalizedText DisplayName => Language.GetText("Mods.V2.StatusEffects.Debuffs.Softened.Name");
-		public override LocalizedText Description => Language.GetText("Mods.V2.StatusEffects.Debuffs.Softened.Description.Base");
+		public override LocalizedText DisplayName => Language.GetText("Mods.V2.StatusEffects.Voraria.Debuffs.Softened.Name");
+		public override LocalizedText Description => Language.GetText("Mods.V2.StatusEffects.Voraria.Debuffs.Softened.Description.Base");
 
 		public override void SetStaticDefaults()
 		{
@@ -40,7 +40,7 @@ namespace V2.StatusEffects.Debuffs
 				buffName += " " + Main.LocalPlayer.AsFood().SoftenedStacks.ToRoman();
 			rare = ItemRarityID.Lime;
 			string baseTooltip = Language.GetTextValueWith(
-				"Mods.V2.StatusEffects.Debuffs.Softened.Description.Base",
+				"Mods.V2.StatusEffects.Voraria.Debuffs.Softened.Description.Base",
 				new
 				{
 					SoftenedMaxHealthThreshold = MaxHealthDigestedForOneStack.ToPercentage(1),
@@ -52,7 +52,7 @@ namespace V2.StatusEffects.Debuffs
 					SoftenedCurrentDigestiveAid = (Main.LocalPlayer.AsFood().SoftenedStacks * DigestionDamageIncreasePerStack).ToPercentage(1),
 				}
 			);
-			string dynamicFlavorText = "'" + Language.GetTextValue("Mods.V2.StatusEffects.Debuffs.Softened.Description.Flavor." + Main.LocalPlayer.AsFood().SoftenedStacks) + "'";
+			string dynamicFlavorText = "'" + Language.GetTextValue("Mods.V2.StatusEffects.Voraria.Debuffs.Softened.Description.Flavor." + Main.LocalPlayer.AsFood().SoftenedStacks) + "'";
 			tip = baseTooltip + "\n" + dynamicFlavorText;
 		}
 
@@ -72,7 +72,7 @@ namespace V2.StatusEffects.Debuffs
 
 		public override bool PreDraw(SpriteBatch spriteBatch, int buffIndex, ref BuffDrawParams drawParams)
 		{
-			Texture2D buffTextureSheet = ModContent.Request<Texture2D>("V2/StatusEffects/Debuffs/SoftenedSheet").Value;
+			Texture2D buffTextureSheet = ModContent.Request<Texture2D>("V2/StatusEffects/Voraria/Debuffs/SoftenedSheet").Value;
 
 			spriteBatch.Draw(
 				buffTextureSheet,

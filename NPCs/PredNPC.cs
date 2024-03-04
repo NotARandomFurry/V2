@@ -22,7 +22,7 @@ using V2.NPCs.Vanilla.TownNPCs.Nurse;
 using V2.PlayerHandling;
 using V2.Projectiles;
 using V2.Sounds.Vore;
-using V2.StatusEffects.Debuffs;
+using V2.StatusEffects.Voraria.Debuffs;
 
 namespace V2.NPCs
 {
@@ -179,15 +179,18 @@ namespace V2.NPCs
 
 		public override void ResetEffects(NPC npc)
 		{
+			double stomachacheQuellPerTick = npc.AsPred().StomachacheMeterCapacity * (0.05 / (double)V2Utils.SensibleTime(seconds: 1));
 			if (GetStomachTracker(npc) is null || !AnyPreyStillAlive(npc))
-				npc.AsPred().Stomachache -= 0.08;
+				stomachacheQuellPerTick *= 0.1;
+			Stomachache -= stomachacheQuellPerTick;
+				npc.AsPred().Stomachache -= stomachacheQuellPerTick;
 
 			StomachacheMeterCapacityModifier = StatModifier.Default;
 		}
 
 		public static bool CanSwallow(NPC pred, Entity prey)
 		{
-			if (V2.VoreNPCBlacklist.Contains(pred.type))
+			if (V2.VoreNPCBlacklist is not null && V2.VoreNPCBlacklist.Count > 0 && V2.VoreNPCBlacklist.Contains(pred.type))
 				return false;
 
 			if (GetCurrentBellyWeight(pred) >= pred.AsPred().MaxStomachCapacity)
@@ -225,7 +228,7 @@ namespace V2.NPCs
 			}
 			else if (prey is NPC preyNPC)
 			{
-				if (V2.VoreNPCBlacklist.Contains(preyNPC.type))
+				if (V2.VoreNPCBlacklist is not null && V2.VoreNPCBlacklist.Count > 0 && V2.VoreNPCBlacklist.Contains(preyNPC.type))
 					return false;
 
 				bool tastesLikeSkittles = preyNPC.type == NPCID.HallowBoss && ModContent.GetInstance<V2ServerConfig>().EasilyEdibleEmpress;
@@ -245,7 +248,7 @@ namespace V2.NPCs
 			}
 			else if (prey is Projectile preyProjectile)
 			{
-				if (V2.VoreProjectileBlacklist.Contains(preyProjectile.type))
+				if (V2.VoreNPCBlacklist is not null && V2.VoreProjectileBlacklist.Count > 0 && V2.VoreProjectileBlacklist.Contains(preyProjectile.type))
 					return false;
 
 				if (preyProjectile.AsFood().MaxHealth == -1)
@@ -419,6 +422,8 @@ namespace V2.NPCs
 			{
 				if (!prey.NoHealth)
 				{
+					prey.UpdateInStomach?.Invoke(prey.Instance, pred, false);
+
 					switch (prey.Type)
 					{
 						case PreyType.Player:
@@ -567,6 +572,8 @@ namespace V2.NPCs
 				}
 				else
 				{
+					prey.UpdateInStomach?.Invoke(null, pred, true);
+
 					if (pred.AsPred().GetPreyAbsorptionRate is null)
 						break;
 

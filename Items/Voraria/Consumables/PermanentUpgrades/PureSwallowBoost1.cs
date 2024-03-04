@@ -1,12 +1,15 @@
 ﻿using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.Audio;
 using Terraria.GameContent.Dyes;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
+using V2.Core;
 using V2.PlayerHandling;
+using V2.Sounds.MuffledSounds;
 
 namespace V2.Items.Voraria.Consumables.PermanentUpgrades
 {
@@ -65,6 +68,7 @@ namespace V2.Items.Voraria.Consumables.PermanentUpgrades
 
 		public static void OnBreak(Item item, Entity pred)
 		{
+			SoundEngine.PlaySound(MuffledMiscSounds.Shatter, pred.TrueCenter());
 			if (pred is Player playerPred)
 			{
 				if (!playerPred.AsPred().PermanentUpgradesGained.ContainsKey("PureSwallow1"))

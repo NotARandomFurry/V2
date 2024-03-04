@@ -27,15 +27,15 @@ namespace V2.Items.Vanilla.Consumables
 		public override bool InstancePerEntity => true;
 		public override bool AppliesToEntity(Item entity, bool lateInstantiation) => entity.type == ItemID.ManaCrystal;
 
-		public override void SetDefaults(Item entity)
+		public override void SetDefaults(Item item)
 		{
-			entity.AsFood().MaxHealth = 200;
-			entity.AsFood().Size = 0.42;
+			item.AsFood().MaxHealth = 200;
+			item.AsFood().Size = 0.42;
 
-			entity.AsFood().UpdateInStomach += UpdateInStomach;
-			entity.AsFood().OnBreak += OnBreak;
+			item.AsFood().UpdateInStomach += UpdateInStomach;
+			item.AsFood().OnBreak += OnBreak;
 
-			entity.AsFood().EdibleOnUse = true;
+			item.AsFood().EdibleOnUse = true;
 		}
 
 		public static void UpdateInStomach(Entity prey, Entity pred, bool dead)
@@ -43,7 +43,7 @@ namespace V2.Items.Vanilla.Consumables
 			if (!dead)
 				return;
 
-			pred.AddStatus(BuffID.ManaRegeneration, DigestedManaRegenTime);
+			pred.AddStatus(BuffID.ManaRegeneration, DigestedManaRegenTime, true);
 		}
 
 		public static void OnBreak(Item item, Entity pred)

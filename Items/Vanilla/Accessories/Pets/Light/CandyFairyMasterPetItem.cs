@@ -7,6 +7,8 @@ using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
+using V2.Core;
+using V2.Projectiles.Vanilla.Summons.Pets;
 
 namespace V2.Items.Vanilla.Accessories.Pets.Light
 {
@@ -22,7 +24,11 @@ namespace V2.Items.Vanilla.Accessories.Pets.Light
 				"Vanilla.Accessories.Pets.Light.CandyFairyMasterPetItem",
 				new
 				{
-
+					MiniCandyFairyMaxHealth = FairyPrincessStuff.MaxHealth,
+					MiniCandyFairyStomachCapacity = FairyPrincessStuff.MaxStomachCapacity,
+					MiniCandyFairyDigestDamage = FairyPrincessStuff.MaxHealth,
+					MiniCandyFairyDigestRate = FairyPrincessStuff.MaxHealth,
+					MiniCandyFairyAbsorbRate = (FairyPrincessStuff.AbsorbRate * 60 * 60).CastToDecimalPlaces(2),
 				}
 			);
 		}

@@ -709,6 +709,10 @@ namespace V2.Core
 			{
 				case PredType.Player:
 					Player player = Predator as Player;
+					amount -= player.AsPred().StomachacheDefense.Base;
+					amount /= player.AsPred().StomachacheDefense.Additive;
+					amount /= player.AsPred().StomachacheDefense.Multiplicative;
+					amount -= player.AsPred().StomachacheDefense.Flat;
 					player.AsPred().Stomachache += amount;
 					break;
 				case PredType.NPC:

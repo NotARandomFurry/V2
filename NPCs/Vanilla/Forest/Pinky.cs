@@ -122,9 +122,9 @@ namespace V2.NPCs.Vanilla.Forest
 		{
 			if (Player.AsPred().StomachTracker?.Prey.FirstOrDefault(x => x.Type == PreyType.NPC && x.ExactType == NPCID.Pinky) is PreyData pinkyPrey)
 			{
-				Player.AddStatus(BuffID.Sunflower, Pinky.EatenHappyLength);
+				Player.AddStatus(BuffID.Sunflower, Pinky.EatenHappyLength, true);
 				if (pinkyPrey.NoHealth)
-					Player.AddStatus(BuffID.Regeneration, Pinky.DigestedRegenTime);
+					Player.AddStatus(BuffID.Regeneration, Pinky.DigestedRegenTime, true);
 			}
 		}
 	}
@@ -137,9 +137,9 @@ namespace V2.NPCs.Vanilla.Forest
 		{
 			if (PredNPC.GetStomachTracker(npc)?.Prey.FirstOrDefault(x => x.Type == PreyType.NPC && x.ExactType == NPCID.Pinky) is PreyData pinkyPrey)
 			{
-				npc.AddStatus(BuffID.Sunflower, Pinky.EatenHappyLength);
+				npc.AddStatus(BuffID.Sunflower, Pinky.EatenHappyLength, true);
 				if (pinkyPrey.NoHealth)
-					npc.AddStatus(BuffID.Regeneration, Pinky.DigestedRegenTime);
+					npc.AddStatus(BuffID.Regeneration, Pinky.DigestedRegenTime, true);
 			}
 		}
 	}

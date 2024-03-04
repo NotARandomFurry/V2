@@ -19,6 +19,9 @@ namespace V2.Items.Voraria.Consumables
 		public override LocalizedText Tooltip => Language.GetText("Mods.V2.ItemTooltip.Voraria.Consumables.HairDyeCapacity.Short");
 		public override Color LegacyShaderMethod(Player player, Color newColor, ref bool lighting)
 		{
+			if (player.AsPred().Rose)
+				return new Color(122, 0, 0);
+
 			double fullnessRatio = player.AsPred().StomachFullness / player.AsPred().StomachCapacity;
 			return Color.Lerp(
 				new Color(114, 0, 0),

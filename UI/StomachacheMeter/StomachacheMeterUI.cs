@@ -20,8 +20,6 @@ namespace V2.UI.StomachacheMeter
 		public double Stomachache;
 		public double StomachacheMax;
 
-		public double StomachacheValuePerSegment => StomachacheMax / (double)AmountOfStomachacheMeterSegments;
-
 		private int numCapacitySegments;
 		private static readonly int minCapacitySegments = 4;
 		private static readonly int maxCapacitySegments = 20;
@@ -47,7 +45,10 @@ namespace V2.UI.StomachacheMeter
 			Stomachache = player.AsPred().Stomachache;
 			StomachacheMax = player.AsPred().StomachacheMeterCapacity;
 
-			numCapacitySegments = (int)(StomachacheMax / 20.0);
+			if (StomachacheMax == -1)
+				numCapacitySegments = 5;
+			else
+				numCapacitySegments = (int)(StomachacheMax / 20.0);
 		}
 	}
 	public class StomachacheMeterUI : UIState
@@ -141,15 +142,23 @@ namespace V2.UI.StomachacheMeter
 			{
 				Player localPlayer = Main.LocalPlayer;
 				localPlayer.cursorItemIconEnabled = false;
-				string text =
-					"Stomach Unease: "
-				  + localPlayer.AsPred().Stomachache.CastToDecimalPlaces(2)
-				  + "/"
-				  + localPlayer.AsPred().StomachacheMeterCapacity.CastToDecimalPlaces(2)
-				  + " ("
-				  + (localPlayer.AsPred().Stomachache / localPlayer.AsPred().StomachacheMeterCapacity).ToPercentage(2)
-				  + ")";
-				Main.instance.MouseTextHackZoom(text);
+				if (localPlayer.AsPred().StomachacheMeterCapacity == -1)
+				{
+					string bottomlessText = "Stomach Unease: 0 (and it will stay that way)";
+					Main.instance.MouseTextHackZoom(bottomlessText);
+				}
+				else
+				{
+					string normalText =
+						"Stomach Unease: "
+					  + localPlayer.AsPred().Stomachache.CastToDecimalPlaces(2)
+					  + "/"
+					  + localPlayer.AsPred().StomachacheMeterCapacity.CastToDecimalPlaces(2)
+					  + " ("
+					  + (localPlayer.AsPred().Stomachache / localPlayer.AsPred().StomachacheMeterCapacity).ToPercentage(2)
+					  + ")";
+					Main.instance.MouseTextHackZoom(normalText);
+				}
 				Main.mouseText = true;
 			}
 		}
@@ -159,7 +168,10 @@ namespace V2.UI.StomachacheMeter
 			PlayerPredStomachacheSnapshot PlayerPredStatsSnapshot = new PlayerPredStomachacheSnapshot(player);
 
 			_stomachacheSegments = PlayerPredStatsSnapshot.AmountOfStomachacheMeterSegments;
-			_stomachachePercent = (float)PlayerPredStatsSnapshot.Stomachache / (float)PlayerPredStatsSnapshot.StomachacheMax;
+			if (PlayerPredStatsSnapshot.StomachacheMax == -1)
+				_stomachachePercent = 0f;
+			else
+				_stomachachePercent = (float)PlayerPredStatsSnapshot.Stomachache / (float)PlayerPredStatsSnapshot.StomachacheMax;
 		}
 	}
 }

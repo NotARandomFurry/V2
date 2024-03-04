@@ -10,6 +10,7 @@ using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
+using V2.Core;
 using V2.PlayerHandling;
 
 namespace V2.Items.Voraria.Consumables
@@ -66,7 +67,7 @@ namespace V2.Items.Voraria.Consumables
 				repairableItem.AsFood().Health = repairableItem.AsFood().MaxHealth;
 			}
 			player.AsFood().SoftenedDigestionDamageTaken = 0;
-			SoundEngine.PlaySound(SoundID.Item35 with { Pitch = -0.5f, PitchVariance = 0.0f });
+			SoundEngine.PlaySound(SoundID.Item35 with { Pitch = -0.5f, PitchVariance = 0.0f }, player.TrueCenter());
 		}
 
 		public override void ModifyTooltips(List<TooltipLine> tooltips)

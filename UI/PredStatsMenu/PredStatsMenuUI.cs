@@ -115,7 +115,7 @@ namespace V2.UI.PredStatsMenu
 				List<PredPlayerGoal> selectedStageGoals = ModContent.GetContent<PredPlayerGoal>().ToList();
 				List<ProgressionStage> stagesOrdered = PredPlayerGoalLoader.ProgressionStages.OrderBy(x => x.Order).ToList();
 
-				selectedStageGoals.RemoveAll(x => x.Stage != SelectedProgressionStage);
+				selectedStageGoals.RemoveAll(x => x.Stage != SelectedProgressionStage || !x.Available(Main.LocalPlayer));
 
 				switch (SortStyle)
 				{
@@ -282,7 +282,8 @@ namespace V2.UI.PredStatsMenu
 						Color completionRatiosBaseColor = new Color(145, 155, 215);
 						Color goalsCompleteColor = Color.Lerp(new Color(100, 20, 20), new Color(60, 220, 60), goalCompletionRatio.CastToDecimalPlaces(1));
 						Color pointsGainedColor = Color.Lerp(new Color(100, 20, 20), new Color(60, 220, 60), pointsCompletionRatio.CastToDecimalPlaces(1));
-						stageFullHoverText += "[c/" + (completionRatiosBaseColor * mouseTextColorFactor).Hex3() + ":Stage Goals Completed:] [c/" + (goalsCompleteColor * mouseTextColorFactor).Hex3() + ":" + stageGoalsCompleted.Count + " / " + stageGoals.Count + " (" + goalCompletionRatio.ToPercentage(1) + ")] [c/" + (subtitleColor * mouseTextColorFactor).Hex3() + ":(" + stageGoals.FindAll(x => !x.Available(Main.LocalPlayer)).Count + " goals are currently hidden)]\n";
+						int currentHiddenGoalsInStage = stageGoals.FindAll(x => !x.Available(Main.LocalPlayer)).Count;
+						stageFullHoverText += "[c/" + (completionRatiosBaseColor * mouseTextColorFactor).Hex3() + ":Stage Goals Completed:] [c/" + (goalsCompleteColor * mouseTextColorFactor).Hex3() + ":" + stageGoalsCompleted.Count + " / " + stageGoals.Count + " (" + goalCompletionRatio.ToPercentage(1) + ")] [c/" + (subtitleColor * mouseTextColorFactor).Hex3() + ":(" + (currentHiddenGoalsInStage == 1 ? "1 goal is" : (currentHiddenGoalsInStage + " goals are")) + " currently hidden)]\n";
 						stageFullHoverText += "[c/" + (completionRatiosBaseColor * mouseTextColorFactor).Hex3() + ":Points Gained From Stage:] [c/" + (pointsGainedColor * mouseTextColorFactor).Hex3() + ":" + pointsGainedFromStage + " / " + pointsPossibleFromStage + " (" + pointsCompletionRatio.ToPercentage(1) + ")]";
 						UICommon.TooltipMouseText(stageFullHoverText);
 						Main.mouseText = true;
@@ -513,7 +514,7 @@ namespace V2.UI.PredStatsMenu
 								TUMBase = Main.LocalPlayer.AsPred().TUM.Base,
 								TUMExtra = Main.LocalPlayer.AsPred().TUM.Extra,
 								StomachCapacity = Main.LocalPlayer.AsPred().StomachCapacity.CastToDecimalPlaces(2),
-								StomachacheMeterCapacity = Main.LocalPlayer.AsPred().StomachacheMeterCapacity.CastToDecimalPlaces(2),
+								StomachacheMeterCapacity = Main.LocalPlayer.AsPred().StomachacheMeterCapacity != -1 ? ("" + Main.LocalPlayer.AsPred().StomachacheMeterCapacity.CastToDecimalPlaces(2)) : "Infinite",
 								StruggleChartEstimatedDifficulty = "Something for me to figure out later",
 								PredPlayer.BaseStomachCapacity,
 								PredPlayer.StomachCapacityPerLevel,

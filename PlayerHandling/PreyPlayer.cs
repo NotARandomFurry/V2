@@ -18,7 +18,7 @@ using Terraria.UI.Chat;
 using V2.Core;
 using V2.NPCs;
 using V2.Projectiles;
-using V2.StatusEffects.Debuffs;
+using V2.StatusEffects.Voraria.Debuffs;
 
 namespace V2.PlayerHandling
 {

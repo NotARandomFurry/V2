@@ -9,12 +9,12 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using V2.PlayerHandling;
 
-namespace V2.StatusEffects.Debuffs
+namespace V2.StatusEffects.Voraria.Debuffs
 {
 	public class ShimmeringStomach : ModBuff
 	{
-		public override LocalizedText DisplayName => Language.GetText("Mods.V2.StatusEffects.Debuffs.ShimmeringStomach.Name");
-		public override LocalizedText Description => Language.GetText("Mods.V2.StatusEffects.Debuffs.ShimmeringStomach.Description");
+		public override LocalizedText DisplayName => Language.GetText("Mods.V2.StatusEffects.Voraria.Debuffs.ShimmeringStomach.Name");
+		public override LocalizedText Description => Language.GetText("Mods.V2.StatusEffects.Voraria.Debuffs.ShimmeringStomach.Description");
 
 		public override void ModifyBuffText(ref string buffName, ref string tip, ref int rare)
 		{

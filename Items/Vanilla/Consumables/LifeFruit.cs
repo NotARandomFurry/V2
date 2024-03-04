@@ -27,21 +27,21 @@ namespace V2.Items.Vanilla.Consumables
 		public override bool InstancePerEntity => true;
 		public override bool AppliesToEntity(Item entity, bool lateInstantiation) => entity.type == ItemID.LifeFruit;
 
-		public override void SetDefaults(Item entity)
+		public override void SetDefaults(Item item)
 		{
-			entity.AsFood().MaxHealth = 500;
-			entity.AsFood().Size = 0.34;
+			item.AsFood().MaxHealth = 500;
+			item.AsFood().Size = 0.34;
 
-			entity.AsFood().UpdateInStomach += UpdateInStomach;
-			entity.AsFood().OnBreak += OnBreak;
+			item.AsFood().UpdateInStomach += UpdateInStomach;
+			item.AsFood().OnBreak += OnBreak;
 
-			entity.AsFood().EdibleOnUse = true;
+			item.AsFood().EdibleOnUse = true;
 		}
 
 		public static void UpdateInStomach(Entity prey, Entity pred, bool dead)
 		{
 			if (dead)
-				pred.AddStatus(BuffID.Regeneration, DigestedRegenTime);
+				pred.AddStatus(BuffID.Regeneration, DigestedRegenTime, true);
 		}
 
 		public static void OnBreak(Item item, Entity pred)

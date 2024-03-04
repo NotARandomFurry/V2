@@ -29,7 +29,8 @@ using V2.PlayerHandling.PredPlayerGoals.Beginner;
 using V2.PlayerHandling.PredPlayerGoals.Starter;
 using V2.Projectiles;
 using V2.Sounds.Vore;
-using V2.StatusEffects.Debuffs;
+using V2.StatusEffects.Voraria.Buffs;
+using V2.StatusEffects.Voraria.Debuffs;
 using V2.UI.PredStatsMenu;
 
 namespace V2.PlayerHandling
@@ -106,10 +107,11 @@ namespace V2.PlayerHandling
 		{
 			get
 			{
+				if (Rose)
+					return -1;
+
 				double baseSwallowSize = BaseSwallowSize;
 				baseSwallowSize += SwallowSizePerLevel * GLP.Total;
-				if (ModContent.GetInstance<V2ServerConfig>().Glutton)
-					baseSwallowSize *= 120.0;
 				return SwallowSizeModifier.ApplyTo((float)baseSwallowSize);
 			}
 		}
@@ -185,10 +187,11 @@ namespace V2.PlayerHandling
 		{
 			get
 			{
+				if (Rose)
+					return -1;
+
 				double baseStomachCapacity = BaseStomachCapacity;
 				baseStomachCapacity += StomachCapacityPerLevel * TUM.Total;
-				if (ModContent.GetInstance<V2ServerConfig>().Glutton)
-					baseStomachCapacity *= 120.0;
 				return StomachCapacityModifier.ApplyTo((float)baseStomachCapacity);
 			}
 		}
@@ -199,13 +202,15 @@ namespace V2.PlayerHandling
 		{
 			get
 			{
+				if (Rose)
+					return -1;
+
 				double baseStomachacheMeterCapacity = BaseStomachacheMeterCapacity;
 				baseStomachacheMeterCapacity += StomachacheMeterCapacityPer5Levels * Math.Floor(TUM.Total / 5.0);
-				if (ModContent.GetInstance<V2ServerConfig>().Glutton)
-					baseStomachacheMeterCapacity *= 80.0;
 				return StomachacheMeterCapacityModifier.ApplyTo((float)baseStomachacheMeterCapacity);
 			}
 		}
+		public StatModifier StomachacheDefense;
 		public PredStat ACI { get; set; }
 		/// <summary>
 		/// Denotes the tier of stomach acids this player currently has.<br/>
@@ -224,6 +229,9 @@ namespace V2.PlayerHandling
 					return 2;
 
 				if (PermanentUpgradesGained.ContainsKey("AcidTier1") && PermanentUpgradesGained["AcidTier1"])
+					return 1;
+
+				if (Player.HasBuff(ModContent.BuffType<FastDigestionPotionBuff>()))
 					return 1;
 
 				return 0;
@@ -263,8 +271,6 @@ namespace V2.PlayerHandling
 			{
 				double basePreyAbsorptionRate = BasePreyAbsorptionRate;
 				basePreyAbsorptionRate += PreyAbsorptionRatePerLevel * ABS.Total;
-				if (ModContent.GetInstance<V2ServerConfig>().Glutton)
-					basePreyAbsorptionRate *= 60.0;
 				return PreyAbsorptionRateModifier.ApplyTo((float)basePreyAbsorptionRate);
 			}
 		}
@@ -571,6 +577,8 @@ namespace V2.PlayerHandling
 
 		public bool SizeScanner { get; set; }
 
+		public bool Rose { get; set; }
+
 		public override void Initialize()
 		{
 			SmallBurps = Burps.Humanoid.Small;
@@ -638,10 +646,18 @@ namespace V2.PlayerHandling
 			StruggleGraceTimeModifier = StatModifier.Default;
 			TUM.Base = 0;
 			TUM.Extra = 0;
-			if (StomachTracker is null || KickyStomachFullness == 0.0)
-				Stomachache -= 0.08;
+
+			if (StomachacheMeterCapacity != -1)
+			{
+				double stomachacheQuellPerTick = StomachacheMeterCapacity * (0.05 / (double)V2Utils.SensibleTime(seconds: 1));
+				if (StomachTracker is not null && KickyStomachFullness > 0.0)
+					stomachacheQuellPerTick *= 0.1;
+				Stomachache -= stomachacheQuellPerTick;
+			}
+
 			StomachCapacityModifier = StatModifier.Default;
 			StomachacheMeterCapacityModifier = StatModifier.Default;
+			StomachacheDefense = StatModifier.Default;
 			ACI.Base = 0;
 			ACI.Extra = 0;
 			DigestionTickDamageModifier = StatModifier.Default;
@@ -660,6 +676,8 @@ namespace V2.PlayerHandling
 			SizeScanner = false;
 
 			UpdatePredStatPointsFromPermUpgrades();
+
+			Rose = false;
 		}
 
 		public void UpdatePredStatPointsFromPermUpgrades()
@@ -806,7 +824,7 @@ namespace V2.PlayerHandling
 						if (potentialMeal.CurrentCaptor() is not null)
 							continue;
 
-						if (potentialMeal.AsFood().DefinedSize <= 0.0)
+						if (potentialMeal.AsFood().MaxHealth == -1)
 							continue;
 
 						if (!Collision.CanHit(Player.TrueCenter(), 1, 1, potentialMeal.TrueCenter(), 1, 1))
@@ -1026,7 +1044,7 @@ namespace V2.PlayerHandling
 			}
 			else if (prey is NPC preyNPC)
 			{
-				if (V2.VoreNPCBlacklist.Contains(preyNPC.type))
+				if (V2.VoreNPCBlacklist is not null && V2.VoreNPCBlacklist.Count > 0 && V2.VoreNPCBlacklist.Contains(preyNPC.type))
 					return false;
 
 				bool tastesLikeSkittles = preyNPC.type == NPCID.HallowBoss && ModContent.GetInstance<V2ServerConfig>().EasilyEdibleEmpress;
@@ -1034,7 +1052,7 @@ namespace V2.PlayerHandling
 					return preyNPC.CurrentCaptor() is null;
 
 				bool isThisAFuckingBoss = preyNPC.boss || (preyNPC.type >= NPCID.EaterofWorldsHead && preyNPC.type <= NPCID.EaterofWorldsTail); // I hate EoW
-				if (isThisAFuckingBoss && !ModContent.GetInstance<V2ServerConfig>().Glutton)
+				if (isThisAFuckingBoss && !pred.AsPred().Rose)
 					return false;
 
 				if (preyNPC.CurrentCaptor() is not null)
@@ -1042,10 +1060,10 @@ namespace V2.PlayerHandling
 			}
 			else if (prey is Projectile preyProjectile)
 			{
-				if (V2.VoreProjectileBlacklist.Contains(preyProjectile.type))
+				if (V2.VoreNPCBlacklist is not null && V2.VoreProjectileBlacklist.Count > 0 && V2.VoreProjectileBlacklist.Contains(preyProjectile.type))
 					return false;
 
-				if (preyProjectile.AsFood().DefinedSize <= 0.0)
+				if (preyProjectile.AsFood().MaxHealth == -1)
 					return false;
 
 				if (preyProjectile.CurrentCaptor() is not null)
@@ -1063,10 +1081,10 @@ namespace V2.PlayerHandling
 					return false;
 			}
 
-			if (PreyData.GetPreySize(prey) > pred.AsPred().SwallowCapacity)
+			if (pred.AsPred().SwallowCapacity != -1 && PreyData.GetPreySize(prey) > pred.AsPred().SwallowCapacity)
 				return false;
 
-			if (PreyData.GetPreySize(prey) > pred.AsPred().StomachCapacity - pred.AsPred().StomachFullness)
+			if (pred.AsPred().StomachCapacity != -1 && PreyData.GetPreySize(prey) > pred.AsPred().StomachCapacity - pred.AsPred().StomachFullness)
 				return false;
 
 			return true;
@@ -1195,7 +1213,7 @@ namespace V2.PlayerHandling
 		/// </summary>
 		public static void UpdatePrey(Player pred)
 		{
-			if (pred.AsPred().Stomachache == pred.AsPred().StomachacheMeterCapacity && pred.AsPred().StomachTracker is not null && pred.AsPred().StomachTracker.Prey.Count > 0)
+			if (pred.AsPred().StomachacheMeterCapacity != -1 && pred.AsPred().Stomachache == pred.AsPred().StomachacheMeterCapacity && pred.AsPred().StomachTracker is not null && pred.AsPred().StomachTracker.Prey.Count > 0)
 			{
 				foreach (PreyData prey in pred.AsPred().StomachTracker.Prey)
 				{
@@ -1241,6 +1259,8 @@ namespace V2.PlayerHandling
 			{
 				if (!prey.NoHealth)
 				{
+					prey.UpdateInStomach?.Invoke(prey.Instance, pred, false);
+
 					switch (prey.Type)
 					{
 						case PreyType.Player:
@@ -1368,6 +1388,8 @@ namespace V2.PlayerHandling
 				}
 				else
 				{
+					prey.UpdateInStomach?.Invoke(null, pred, true);
+
 					double absorptionRate = pred.AsPred().PreyAbsorptionRatePerTick / (double)pred.AsPred().StomachTracker?.Prey.Count;
 					prey.WeightLeftToDigest -= absorptionRate;
 					if (prey.WeightLeftToDigest < 0)

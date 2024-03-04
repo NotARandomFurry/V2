@@ -4,9 +4,11 @@ using ReLogic.Content;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
+using Terraria.Chat;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -18,6 +20,19 @@ using V2.Sounds.Vore;
 
 namespace V2.Projectiles.Vanilla.Summons.Pets
 {
+	public static class FairyPrincessStuff
+	{
+		public static int MaxHealth => 3500;
+		public static double Size => 0.742;
+		public static double MaxStomachCapacity => 30.0;
+		public static double DigestDamage => 40.0;
+		public static double DigestRate => 2.0;
+		public static double AbsorbRate => 1.0 / (double)V2Utils.SensibleTime(
+			minutes: 3,
+			seconds: 0
+		);
+	}
+
 	public partial class FairyPrincess : GlobalProjectile
 	{
 		public override bool InstancePerEntity => true;
@@ -31,14 +46,15 @@ namespace V2.Projectiles.Vanilla.Summons.Pets
 			projectile.AsV2Proj().Gender = EntityGender.Female;
 			projectile.AsV2Proj().NewAIMethod = MiniCandyFairyAI;
 
-			projectile.AsPred().MaxStomachCapacity = 20.0;
-			projectile.AsPred().BaseStomachacheMeterCapacity = 10000.0;
+			projectile.AsPred().MaxStomachCapacity = FairyPrincessStuff.MaxStomachCapacity;
+			projectile.AsPred().BaseStomachacheMeterCapacity = -1;
 			projectile.AsPred().CanSwallowBosses = true;
 
-			projectile.AsFood().DefinedSize = 0.742;
-			projectile.AsFood().MaxHealth = 3500;
-			projectile.AsFood().Health = 3500;
+			projectile.AsFood().DefinedSize = FairyPrincessStuff.Size;
+			projectile.AsFood().MaxHealth = FairyPrincessStuff.MaxHealth;
+			projectile.AsFood().Health = FairyPrincessStuff.MaxHealth;
 
+			projectile.AsPred().MouthSoundRawOffset = new Vector2(2f, -14f);
 			projectile.AsPred().SmallGulps = Gulps.Short;
 			projectile.AsPred().SmallGulpThreshold = 0.1;
 			projectile.AsPred().BigGulps = Gulps.Standard;
@@ -89,29 +105,98 @@ namespace V2.Projectiles.Vanilla.Summons.Pets
 			}
 		}
 
-		public static double GetDigestionTickDamage(Projectile projectile, PreyData prey) => Main.dayTime ? 80.0 : (Main.bloodMoon ? 60.0 : 40.0);
-		public static double GetDigestionTickRate(Projectile projectile, PreyData prey) => Main.dayTime ? 4.0 : (Main.bloodMoon ? 3.0 : 2.0);
+		public static double GetDigestionTickDamage(Projectile projectile, PreyData prey)
+		{
+			double digestDamage = FairyPrincessStuff.DigestDamage;
+			if (Main.dayTime)
+				digestDamage *= 2.0;
+			else if (Main.bloodMoon)
+				digestDamage *= 1.5;
+
+			return digestDamage;
+		}
+		public static double GetDigestionTickRate(Projectile projectile, PreyData prey)
+		{
+			double digestRate = FairyPrincessStuff.DigestRate;
+			if (Main.dayTime)
+				digestRate *= 2.0;
+			else if (Main.bloodMoon)
+				digestRate *= 1.5;
+
+			Player ownerPlayer = Main.player[projectile.owner];
+			if (!ownerPlayer.dead && ownerPlayer.sleeping.FullyFallenAsleep)
+			{
+				digestRate *= 1.25f;
+				bool isEveryoneAsleep = Main.CurrentFrameFlags.SleepingPlayersCount == Main.CurrentFrameFlags.ActivePlayersCount && Main.CurrentFrameFlags.SleepingPlayersCount > 0;
+				if (isEveryoneAsleep)
+					digestRate *= (float)Main.dayRate;
+			}
+
+			return digestRate;
+		}
 
 		public static void OnDigestionKill(Projectile projectile, PreyData digestedPrey)
 		{
+			int dustCount = 4 + (int)Math.Floor(10.5 * Math.Sqrt(digestedPrey.WeightLeftToDigest));
+			int spawnedDustCount = 0;
+			for (int i = 0; i < dustCount; i++)
+			{
+				Dust belchedUpDust = Dust.NewDustPerfect(
+					projectile.TrueCenter() + PredProjectile.MouthSoundOffset(projectile),
+					Main.rand.NextFromCollection(new List<int> {
+						DustID.GreenTorch,
+						DustID.GreenTorch,
+						DustID.PinkTorch,
+						DustID.BlueTorch,
+						DustID.YellowTorch,
+					}),
+					new Vector2(projectile.direction * 2.5f, -0.5f),
+					50,
+					default,
+					Main.rand.NextFloat(2.25f, 2.75f)
+				);
+				belchedUpDust.position += new Vector2(Main.rand.NextFloat(2f), 0).RotatedByRandom(MathHelper.ToRadians(360));
+				belchedUpDust.velocity *= Main.rand.NextFloat(0.85f, 1.15f);
+				belchedUpDust.velocity = belchedUpDust.velocity.RotatedByRandom(MathHelper.ToRadians(18));
+				belchedUpDust.noGravity = true;
+				spawnedDustCount++;
+			}
 
+			if (!ModContent.GetInstance<V2ServerConfig>().DebugChatMessages)
+				return;
+
+			string debugText = "Trying to spawn dusts for the Heiress' post-digestion-kill belch...\n";
+			if (spawnedDustCount == dustCount)
+				debugText += "All " + dustCount + " dusts were successfully spawned!";
+			else
+				debugText += "ERROR: Only " + spawnedDustCount + " out of " + dustCount + " dusts were spawned.";
+			if (Main.netMode == NetmodeID.SinglePlayer)
+				Main.NewText(debugText, Color.PaleVioletRed);
+			else if (Main.netMode == NetmodeID.Server)
+				ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral(debugText), Color.PaleVioletRed);
 		}
 
 		public static double GetPreyAbsorptionRate(Projectile projectile)
 		{
-			double baseAbsorptionRate = 1.0 / (double)V2Utils.SensibleTime(
-				minutes: 3,
-				seconds: 0
-			);
+			double absorbRate = FairyPrincessStuff.AbsorbRate;
 			if (Main.dayTime)
-				baseAbsorptionRate *= 3.0;
-			return baseAbsorptionRate;
+				absorbRate *= 3.0;
+
+			Player ownerPlayer = Main.player[projectile.owner];
+			if (!ownerPlayer.dead && ownerPlayer.sleeping.FullyFallenAsleep)
+			{
+				absorbRate *= 1.25f;
+				bool isEveryoneAsleep = Main.CurrentFrameFlags.SleepingPlayersCount == Main.CurrentFrameFlags.ActivePlayersCount && Main.CurrentFrameFlags.SleepingPlayersCount > 0;
+				if (isEveryoneAsleep)
+					absorbRate *= (float)Main.dayRate;
+			}
+			return absorbRate;
 		}
 
 		public static int GetVisualBellySize(Projectile projectile)
 		{
 			return Math.Min(
-				(int)Math.Floor(6.5 * Math.Sqrt(PredProjectile.GetCurrentBellyWeight(projectile))),
+				(int)Math.Floor(4.0 * Math.Sqrt(PredProjectile.GetCurrentBellyWeight(projectile))),
 				8
 			);
 		}

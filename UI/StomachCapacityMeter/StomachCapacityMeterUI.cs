@@ -21,8 +21,6 @@ namespace V2.UI.StomachCapacityMeter
 		public double CapacityMax;
 		public double KickyPreyPercentage;
 
-		public double CapacityPerSegment => CapacityMax / (double)AmountOfCapacitySegments;
-
 		private int numCapacitySegments;
 		private static readonly int minCapacitySegments = 4;
 		private static readonly int maxCapacitySegments = 15;
@@ -47,9 +45,19 @@ namespace V2.UI.StomachCapacityMeter
 		{
 			Fullness = player.AsPred().StomachFullness;
 			CapacityMax = player.AsPred().StomachCapacity;
-			KickyPreyPercentage = player.AsPred().KickyStomachFullness / CapacityMax;
 
-			numCapacitySegments = (int)(CapacityMax / 0.2);
+			if (CapacityMax == -1)
+			{
+				KickyPreyPercentage = player.AsPred().KickyStomachFullness / player.AsPred().StomachFullness;
+
+				numCapacitySegments = 10;
+			}
+			else
+			{
+				KickyPreyPercentage = player.AsPred().KickyStomachFullness / CapacityMax;
+
+				numCapacitySegments = (int)(CapacityMax / 0.2);
+			}
 		}
 	}
 
@@ -165,15 +173,26 @@ namespace V2.UI.StomachCapacityMeter
 			{
 				Player localPlayer = Main.LocalPlayer;
 				localPlayer.cursorItemIconEnabled = false;
-				string text =
-					"Stomach Weight: "
-				  + localPlayer.AsPred().StomachFullness.CastToDecimalPlaces(2)
-				  + "/"
-				  + localPlayer.AsPred().StomachCapacity.CastToDecimalPlaces(2)
-				  + " ("
-				  + (localPlayer.AsPred().StomachFullness / localPlayer.AsPred().StomachCapacity).ToPercentage(2)
-				  + ")";
-				Main.instance.MouseTextHackZoom(text);
+				if (localPlayer.AsPred().StomachCapacity == -1)
+				{
+					string bottomlessText =
+						"Stomach Fullness: "
+					  + localPlayer.AsPred().StomachFullness.CastToDecimalPlaces(2)
+					  + " (Infinite Capacity)";
+					Main.instance.MouseTextHackZoom(bottomlessText);
+				}
+				else
+				{
+					string normalText =
+						"Stomach Fullness: "
+					  + localPlayer.AsPred().StomachFullness.CastToDecimalPlaces(2)
+					  + "/"
+					  + localPlayer.AsPred().StomachCapacity.CastToDecimalPlaces(2)
+					  + " ("
+					  + (localPlayer.AsPred().StomachFullness / localPlayer.AsPred().StomachCapacity).ToPercentage(2)
+					  + ")";
+					Main.instance.MouseTextHackZoom(normalText);
+				}
 				Main.mouseText = true;
 			}
 		}
@@ -184,7 +203,10 @@ namespace V2.UI.StomachCapacityMeter
 
 			_capacitySegmentsCount = PlayerPredStatsSnapshot.AmountOfCapacitySegments;
 			_kickyPreyPercent = PlayerPredStatsSnapshot.KickyPreyPercentage;
-			_capacityPercent = (float)PlayerPredStatsSnapshot.Fullness / (float)PlayerPredStatsSnapshot.CapacityMax;
+			if (PlayerPredStatsSnapshot.CapacityMax == -1)
+				_capacityPercent = 1f;
+			else
+				_capacityPercent = (float)PlayerPredStatsSnapshot.Fullness / (float)PlayerPredStatsSnapshot.CapacityMax;
 		}
 	}
 }

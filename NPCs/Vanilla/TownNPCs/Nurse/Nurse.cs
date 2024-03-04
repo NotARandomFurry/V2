@@ -10,6 +10,7 @@ using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 using V2.Core;
+using V2.Items.Voraria.Consumables.Potions;
 using V2.NPCs.Voraria.TownNPCs.Succubus;
 using V2.PlayerHandling;
 using V2.PlayerHandling.PredPlayerGoals.Amateur;
@@ -577,53 +578,18 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 			return nurseChatPool;
 		}
 
-		public static bool CanNurseBeForceFed(NPC npc) => PredNPC.GetStomachTracker(npc)?.Prey.FirstOrDefault(x => x.Type == PreyType.NPC && x.ExactType == NPCID.ArmsDealer) is null;
-
-		public static void OnNurseForceFed(NPC npc, Player player)
+		public override void ModifyShop(NPCShop shop)
 		{
-			PredNPC.SetChatboxText(
-				npc,
-				player,
-				"[c/7F7F7F:<" + npc.GivenName + "'s stomach growls with glee as you cram yourself into her mouth and throat; shrugging, she just gulps you down without a care and pats her gut once you're settled in.>]\n"
-			  + "Well, that's one way to give me a lunch break, I guess. Make sure to add a little bit to the back, alright? It's the least you can do, if you want me to eat you that badly..."
-			);
-			npc.AsNurse().healPlayerIndex = -1;
-			npc.AsNurse().healOvertime = 0;
-			npc.AsNurse().digestScamPatient = false;
-		}
-
-
-		public static void GetDigestedPlayerAdditionalDeathMessages(NPC npc, Player player, List<string> deathReasonKeyList)
-		{
-			deathReasonKeyList.AddHumanoidPredMessages();
-			deathReasonKeyList.AddRange(new List<string>
-			{
-				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Nurse.1",
-				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Nurse.2",
-				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Nurse.3",
-				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Nurse.4",
-				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Nurse.5",
-				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Nurse.6",
-				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Nurse.7",
-				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Nurse.8",
-			});
-
-			if (player.IsFoodFor(npc, out bool pastTense) && !pastTense && npc.AsNurse().healPlayerIndex != -1 && npc.AsNurse().healPlayerIndex == player.whoAmI && npc.AsNurse().digestScamPatient)
-			{
-				deathReasonKeyList.AddRange(new List<string>
-				{
-					"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Nurse.NoFundsForHeal.1",
-					"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Nurse.NoFundsForHeal.2",
-					"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Nurse.NoFundsForHeal.3",
-					"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Nurse.NoFundsForHeal.4",
-				});
-			}
-
-			if (player.difficulty == PlayerDifficultyID.Hardcore)
-			{
-				deathReasonKeyList.Clear();
-				deathReasonKeyList.Add("Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Nurse.Hardcore");
-			}
+			NPCShop nurseShop = new NPCShop(NPCID.Nurse, "Shop");
+			nurseShop.Add(ItemID.LesserHealingPotion, new Condition[] { Condition.NotDownedEowOrBoc });
+			nurseShop.Add(ItemID.HealingPotion, new Condition[] { Condition.DownedEowOrBoc, Condition.NotDownedMechBossAny });
+			nurseShop.Add(ItemID.GreaterHealingPotion, new Condition[] { Condition.DownedMechBossAny, Condition.NotDownedCultist });
+			nurseShop.Add(ItemID.SuperHealingPotion, new Condition[] { Condition.DownedCultist });
+			nurseShop.Add(ItemID.AdhesiveBandage);
+			nurseShop.Add<FastDigestionPotion>();
+			nurseShop.Add<StomachacheMeterCapacityPotion>(new Condition[] { Condition.DownedEowOrBoc });
+			nurseShop.Add(new Item(ItemID.LifeCrystal) { shopCustomPrice = Item.buyPrice(gold: 20) }, new Condition[] { Condition.DownedSkeletron });
+			nurseShop.Register();
 		}
 
 		public override void PostAI(NPC npc)
@@ -743,6 +709,55 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 					  + "Don't worry, just taking a quick lunch break. " + Main.rand.NextFromCollection(potentialRandomGulpLines)
 					);
 				}
+			}
+		}
+
+		public static bool CanNurseBeForceFed(NPC npc) => PredNPC.GetStomachTracker(npc)?.Prey.FirstOrDefault(x => x.Type == PreyType.NPC && x.ExactType == NPCID.ArmsDealer) is null;
+
+		public static void OnNurseForceFed(NPC npc, Player player)
+		{
+			PredNPC.SetChatboxText(
+				npc,
+				player,
+				"[c/7F7F7F:<" + npc.GivenName + "'s stomach growls with glee as you cram yourself into her mouth and throat; shrugging, she just gulps you down without a care and pats her gut once you're settled in.>]\n"
+			  + "Well, that's one way to give me a lunch break, I guess. Make sure to add a little bit to the back, alright? It's the least you can do, if you want me to eat you that badly..."
+			);
+			npc.AsNurse().healPlayerIndex = -1;
+			npc.AsNurse().healOvertime = 0;
+			npc.AsNurse().digestScamPatient = false;
+		}
+
+
+		public static void GetDigestedPlayerAdditionalDeathMessages(NPC npc, Player player, List<string> deathReasonKeyList)
+		{
+			deathReasonKeyList.AddHumanoidPredMessages();
+			deathReasonKeyList.AddRange(new List<string>
+			{
+				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Nurse.1",
+				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Nurse.2",
+				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Nurse.3",
+				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Nurse.4",
+				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Nurse.5",
+				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Nurse.6",
+				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Nurse.7",
+				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Nurse.8",
+			});
+
+			if (player.IsFoodFor(npc, out bool pastTense) && !pastTense && npc.AsNurse().healPlayerIndex != -1 && npc.AsNurse().healPlayerIndex == player.whoAmI && npc.AsNurse().digestScamPatient)
+			{
+				deathReasonKeyList.AddRange(new List<string>
+				{
+					"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Nurse.NoFundsForHeal.1",
+					"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Nurse.NoFundsForHeal.2",
+					"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Nurse.NoFundsForHeal.3",
+					"Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Nurse.NoFundsForHeal.4",
+				});
+			}
+
+			if (player.difficulty == PlayerDifficultyID.Hardcore)
+			{
+				deathReasonKeyList.Clear();
+				deathReasonKeyList.Add("Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Nurse.Hardcore");
 			}
 		}
 

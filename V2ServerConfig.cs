@@ -44,11 +44,6 @@ namespace V2
 		[DefaultValue(true)]
 		public bool DefenseInDigestionCalcs { get; set; }
 
-		[LabelKey("$Mods.V2.Configs.Server.JustForFun.Glutton.Label")]
-		[TooltipKey("$Mods.V2.Configs.Server.JustForFun.Glutton.Tooltip")]
-		[DefaultValue(false)]
-		public bool Glutton { get; set; }
-
 		[LabelKey("$Mods.V2.Configs.Server.JustForFun.EasilyEdibleEmpress.Label")]
 		[TooltipKey("$Mods.V2.Configs.Server.JustForFun.EasilyEdibleEmpress.Tooltip")]
 		[DefaultValue(false)]

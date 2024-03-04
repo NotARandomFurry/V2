@@ -50,26 +50,28 @@ namespace V2.UI.SizeScanners
 				string size = "[c/";
 
 				double npcSize = PreyData.GetPreySize(futureFood).CastToDecimalPlaces(3);
-				if (player.AsPred().SwallowCapacity < npcSize)
-					size += "FF00";
+				if (player.AsPred().Rose)
+					size += "00FFFF";
+				else if (player.AsPred().SwallowCapacity < npcSize)
+					size += "FF0000";
 				else if (player.AsPred().StomachCapacity < npcSize)
-					size += "FF00";
+					size += "FF0000";
 				else
 				{
 					double playerGutFreeRoom = playerGutCapacity - playerGutFullness;
 					double playerGutTickDamage = Math.Max(player.AsPred().DigestionTickDamage - futureFood.defense, 0);
 					double playerGutDPS = playerGutTickDamage * player.AsPred().DigestionTickRate;
 					if (playerGutFreeRoom < npcSize)
-						size += "FFFF";
+						size += "FFFF00";
 					else if (playerGutTickDamage <= 0)
-						size += "FFFF";
+						size += "FFFF00";
 					else if (futureFood.life > playerGutDPS * 60.0)
-						size += "FFFF";
+						size += "FFFF00";
 					else
-						size += "00FF";
+						size += "00FF00";
 				}
 
-				size += "00:" + npcSize + "]";
+				size += ":" + npcSize + "]";
 
 
 				ChatManager.DrawColorCodedStringWithShadow(

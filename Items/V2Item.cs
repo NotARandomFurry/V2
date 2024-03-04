@@ -35,12 +35,14 @@ namespace V2.Items
 
 		public override void Update(Item item, ref float gravity, ref float maxFallSpeed)
 		{
-			item.AsV2Item().State = ItemLocation.InWorld;
+			if (!item.IsAir)
+				item.AsV2Item().State = ItemLocation.InWorld;
 		}
 
 		public override void UpdateInventory(Item item, Player player)
 		{
-			item.AsV2Item().State = ItemLocation.InPlayerInventory;
+			if (!item.IsAir)
+				item.AsV2Item().State = ItemLocation.InPlayerInventory;
 		}
 
 		public override void HorizontalWingSpeeds(Item item, Player player, ref float speed, ref float acceleration)

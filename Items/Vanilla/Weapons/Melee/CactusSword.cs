@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 using V2.Core;
 using V2.NPCs;
 using V2.PlayerHandling;
-using V2.StatusEffects.Debuffs;
+using V2.StatusEffects.Voraria.Debuffs;
 
 namespace V2.Items.Vanilla.Weapons.Melee
 {
@@ -37,7 +37,7 @@ namespace V2.Items.Vanilla.Weapons.Melee
 		public static void UpdateInStomach(Entity prey, Entity pred, bool dead)
 		{
 			if (dead)
-				pred.AddStatus(BuffID.Thorns, ThornsBuffTime);
+				pred.AddStatus(BuffID.Thorns, ThornsBuffTime, true);
 		}
 
 		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)

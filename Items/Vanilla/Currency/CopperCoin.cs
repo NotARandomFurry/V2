@@ -25,15 +25,15 @@ namespace V2.Items.Vanilla.Currency
 		public override bool InstancePerEntity => true;
 		public override bool AppliesToEntity(Item entity, bool lateInstantiation) => entity.type == ItemID.CopperCoin;
 
-		public override void SetDefaults(Item entity)
+		public override void SetDefaults(Item item)
 		{
-			entity.AsFood().MaxHealth = 4;
-			entity.AsFood().Size = 0.0005;
-			entity.AsFood().AcidResistTier = 2;
+			item.AsFood().MaxHealth = 4;
+			item.AsFood().Size = 0.0005;
+			item.AsFood().AcidResistTier = 2;
 
-			entity.AsFood().OnBreak += OnBreak;
+			item.AsFood().OnBreak += OnBreak;
 
-			entity.AsFood().EdibleOnUse = true;
+			item.AsFood().EdibleOnUse = true;
 		}
 
 		public static void OnBreak(Item item, Entity pred)

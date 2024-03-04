@@ -38,16 +38,6 @@ namespace V2.Items.Voraria.Accessories
 			player.AsPred().StomachWeightModifier *= 1f - StomachWeightReduction;
 		}
 
-		public override void AddRecipes()
-		{
-			CreateRecipe()
-				.AddIngredient(ModContent.ItemType<NymphHairStrand>(), 5)
-				.AddIngredient(ItemID.FallenStar, 7)
-				.AddIngredient(ItemID.Sapphire, 3)
-				.AddTile(TileID.Loom)
-				.Register();
-		}
-
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
 			tooltips.AddVorariaDynamicItemTooltip(

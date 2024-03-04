@@ -9,12 +9,12 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using V2.PlayerHandling;
 
-namespace V2.StatusEffects.Debuffs
+namespace V2.StatusEffects.Voraria.Debuffs
 {
 	public class MoltenStomach : ModBuff
 	{
-		public override LocalizedText DisplayName => Language.GetText("Mods.V2.StatusEffects.Debuffs.MoltenStomach.Name");
-		public override LocalizedText Description => Language.GetText("Mods.V2.StatusEffects.Debuffs.MoltenStomach.Description");
+		public override LocalizedText DisplayName => Language.GetText("Mods.V2.StatusEffects.Voraria.Debuffs.MoltenStomach.Name");
+		public override LocalizedText Description => Language.GetText("Mods.V2.StatusEffects.Voraria.Debuffs.MoltenStomach.Description");
 
 		public override void SetStaticDefaults()
 		{
