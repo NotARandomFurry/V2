@@ -80,7 +80,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Dryad
 	{
 		public override bool InstancePerEntity => true;
 
-		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.type == NPCID.Dryad;
+		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.type == NPCID.Dryad && !V2.GetFooled;
 
 		public override void SetDefaults(NPC npc)
 		{

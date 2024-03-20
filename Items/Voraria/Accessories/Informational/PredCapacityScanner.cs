@@ -37,8 +37,6 @@ namespace V2.Items.Voraria.Accessories.Informational
 		{
 			Item.accessory = true;
 
-			Item.useStyle = ItemUseStyleID.Swing;
-
 			Item.width = 30;
 			Item.height = 30;
 			Item.rare = ItemRarityID.Orange;

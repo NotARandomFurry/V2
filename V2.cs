@@ -27,17 +27,35 @@ namespace V2
 
 		/// <summary>
 		/// A special flag which decides whether or not the vore blacklists are actually filled.<br/>
-		/// Defaults to <see langword="false"/>. If set to <see langword="true"/> instead, the blacklists remain empty.<br/>
+		/// Defaults to <see langword="true"/>. If set to <see langword="false"/> instead, the blacklists remain empty.<br/>
 		/// This allows several entities which otherwise would not be included in vore mechanics, namely as predators, to instead be given full reign.<br/>
 		/// </summary>
 		public static bool BlacklistsActive { get; set; } 
 		public static List<int> VoreNPCBlacklist { get; set; }
 		public static List<int> VoreProjectileBlacklist { get; set; }
 
+		/// <summary>
+		/// A special flag which decides whether or not the April Fool's branch is active.<br/>
+		/// Defaults to <see langword="false"/>. If set to <see langword="true"/> instead, the following things become true:<br/>
+		/// - <see cref="BlacklistsActive"/> is overridden to <see langword="false"/>. Nothing shall escape the fury of the Fool of April.<br/>
+		/// - All normal <see cref="GlobalNPC"/>s used for specific NPCs are inactive; instead, the universal AprilFoolsPredNPC is used.<br/>
+		/// - All of the nice, well-made belly sprites are replaced with a unified circle tool from Paint.NET because I can't be bothered to rember if I still have MS Paint on here.<br/>
+		/// - Only one tum gurgly sound is used. This sound is never used in the normal game.<br/>
+		/// - Only one burp sound is used. This sound is also never used in the normal game.<br/>
+		/// - Both of the above are intentionally made to sound incredibly bad.<br/>
+		/// - VSC's dialogue changes are completely undone.<br/>
+		/// More may be added if time permits.<br/>
+		/// <br/>
+		/// overall, this was made by yours truly stepping backwards about a decade in time mentally and channeling that energy into assessment of mod quality<br/>
+		/// now get the fuck off my lawn<br/>
+		/// </summary>
+		public static bool GetFooled { get; set; }
+
 		public V2()
 		{
 			Instance = this;
 			BlacklistsActive = false;
+			GetFooled = true;
 		}
 
 		public override void Load()
@@ -88,7 +106,7 @@ namespace V2
 
 			};
 
-			if (!BlacklistsActive)
+			if (!BlacklistsActive || GetFooled)
 			{
 				VoreNPCBlacklist.Clear();
 				VoreProjectileBlacklist.Clear();

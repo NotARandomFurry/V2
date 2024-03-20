@@ -9,11 +9,11 @@ using Terraria.ModLoader;
 
 namespace V2.PlayerHandling.PredPlayerGoals.Amateur
 {
-	public class EatGroomAndBride : PredPlayerGoal
+	public class EatBrideAndGroom : PredPlayerGoal
 	{
-		public override string InternalName => "EatGroomAndBride";
-		public override string DisplayName(Player pred) => "Mods.V2.PredPlayerGoals.Amateur.EatGroomAndBride.Name";
-		public override string Description(Player pred) => "Mods.V2.PredPlayerGoals.Amateur.EatGroomAndBride.Description";
+		public override string InternalName => "EatBrideAndGroom";
+		public override string DisplayName(Player pred) => "Mods.V2.PredPlayerGoals.Amateur.EatBrideAndGroom.Name";
+		public override string Description(Player pred) => "Mods.V2.PredPlayerGoals.Amateur.EatBrideAndGroom.Description";
 		public override bool HasClearDescription(Player pred) => true;
 
 		public override int StatPointsFromCompletion => 10;

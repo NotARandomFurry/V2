@@ -173,7 +173,7 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 
 		public override bool InstancePerEntity => true;
 
-		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.type == NPCID.HallowBoss;
+		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.type == NPCID.HallowBoss && !V2.GetFooled;
 
 		public override void SetDefaults(NPC npc)
 		{

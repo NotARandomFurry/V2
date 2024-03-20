@@ -31,13 +31,13 @@ namespace V2.Items.Voraria.Accessories.Informational
 			DrawAnimationVertical anim = new DrawAnimationVertical(6, 12);
 			Main.RegisterItemAnimation(Type, anim);
 			ItemID.Sets.AnimatesAsSoul[Type] = true;
+
+			ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<PredCapacityScanner>();
 		}
 
 		public override void SetDefaults()
 		{
 			Item.accessory = true;
-
-			Item.useStyle = ItemUseStyleID.Swing;
 
 			Item.width = 30;
 			Item.height = 30;

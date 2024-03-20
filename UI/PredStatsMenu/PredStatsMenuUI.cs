@@ -66,7 +66,7 @@ namespace V2.UI.PredStatsMenu
 			Visible = false;
 			Player player = Main.LocalPlayer;
 
-			if (!Main.playerInventory)
+			if (!Main.playerInventory || V2.GetFooled)
 				player.AsPred().InPredStatsMenu = false;
 
 			if (player.AsPred().InPredStatsMenu)
@@ -500,7 +500,7 @@ namespace V2.UI.PredStatsMenu
 								GLPSpent = Main.LocalPlayer.AsPred().GLP.Spent,
 								GLPBase = Main.LocalPlayer.AsPred().GLP.Base,
 								GLPExtra = Main.LocalPlayer.AsPred().GLP.Extra,
-								PreySwallowSize = Main.LocalPlayer.AsPred().SwallowCapacity.CastToDecimalPlaces(2),
+								PreySwallowSize = Main.LocalPlayer.AsPred().SwallowCapacity != -1 ? ("" + Main.LocalPlayer.AsPred().SwallowCapacity.CastToDecimalPlaces(2)) : "Infinite",
 								LiquidSwallowRate = (Main.LocalPlayer.AsPred().LiquidSwallowSize / 255.0 * PredPlayer.LiquidSwallowRatePerMinute).CastToDecimalPlaces(2),
 								StruggleGracePeriod = Main.LocalPlayer.AsPred().StruggleGraceTimeReadable,
 								PredPlayer.BaseSwallowSize,
@@ -513,7 +513,7 @@ namespace V2.UI.PredStatsMenu
 								TUMSpent = Main.LocalPlayer.AsPred().TUM.Spent,
 								TUMBase = Main.LocalPlayer.AsPred().TUM.Base,
 								TUMExtra = Main.LocalPlayer.AsPred().TUM.Extra,
-								StomachCapacity = Main.LocalPlayer.AsPred().StomachCapacity.CastToDecimalPlaces(2),
+								StomachCapacity = Main.LocalPlayer.AsPred().StomachCapacity != -1 ? ("" + Main.LocalPlayer.AsPred().StomachCapacity.CastToDecimalPlaces(2)) : "Infinite",
 								StomachacheMeterCapacity = Main.LocalPlayer.AsPred().StomachacheMeterCapacity != -1 ? ("" + Main.LocalPlayer.AsPred().StomachacheMeterCapacity.CastToDecimalPlaces(2)) : "Infinite",
 								StruggleChartEstimatedDifficulty = "Something for me to figure out later",
 								PredPlayer.BaseStomachCapacity,

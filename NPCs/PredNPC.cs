@@ -480,7 +480,7 @@ namespace V2.NPCs
 					double digestionDamage = pred.AsPred().GetDigestionTickDamage.Invoke(pred, prey);
 					double digestionTickRate = pred.AsPred().GetDigestionTickRate.Invoke(pred, prey);
 					int digestionTickFrameRate = (int)Math.Round(60.0 / digestionTickRate);
-					if (prey.timeSpentInStomach % digestionTickFrameRate == 0)
+					if (digestionTickFrameRate == 0 || prey.timeSpentInStomach % digestionTickFrameRate == 0)
 					{
 						switch (prey.Type)
 						{
@@ -689,7 +689,7 @@ namespace V2.NPCs
 				new
 				{
 					Player = player.name,
-					Pred = npc.GivenOrTypeName
+					Pred = V2.GetFooled ? npc.FullName : npc.GivenOrTypeName
 				}
 			);
 		}
@@ -749,6 +749,16 @@ namespace V2.NPCs
 				}
 			}
 			return false;
+		}
+
+		public override void SaveData(NPC npc, TagCompound tag)
+		{
+			tag.Add("ExtraWeight", npc.AsPred().ExtraWeight);
+		}
+
+		public override void LoadData(NPC npc, TagCompound tag)
+		{
+			ExtraWeight = tag.GetDouble("ExtraWeight");
 		}
 	}
 }

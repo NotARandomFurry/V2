@@ -71,7 +71,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Steampunker
 	public class Steampunker : GlobalNPC
 	{
 		public override bool InstancePerEntity => true;
-		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.type == NPCID.Steampunker;
+		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.type == NPCID.Steampunker && !V2.GetFooled;
 
 		public override void SetDefaults(NPC npc)
 		{

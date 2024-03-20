@@ -37,7 +37,7 @@ namespace V2.NPCs
 		}
 	}
 
-	public class V2NPC : GlobalNPC
+	public partial class V2NPC : GlobalNPC
 	{
 		public EntityGender Gender;
 		public delegate bool DelegateNewAI(NPC npc);

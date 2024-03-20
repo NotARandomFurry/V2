@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Terraria;
 using Terraria.ID;
 using V2.Core;
+using V2.Items;
 using V2.PlayerHandling;
 using V2.Projectiles;
 using V2.StatusEffects.Voraria.Debuffs;
@@ -202,6 +203,9 @@ namespace V2.NPCs
 						inSpecificWhitelist = true;
 
 					if (!inSpecificWhitelist)
+						continue;
+
+					if (preyItem.AsV2Item().State == ItemLocation.BeingFood)
 						continue;
 
 					if (npc.Hitbox.Intersects(preyItem.Hitbox) && PredNPC.CanSwallow(npc, preyItem))

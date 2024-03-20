@@ -139,7 +139,7 @@ namespace V2.PlayerHandling
 			};
 		}
 		public static int LiquidSwallowDelay => 3;
-		public static double LiquidSwallowRatePerMinute = 60.0 / (double)LiquidSwallowDelay;
+		public static double LiquidSwallowRatePerMinute => 60.0 / (double)LiquidSwallowDelay;
 		public StatModifier StruggleGraceTimeModifier;
 		public static double BaseStruggleGraceTime => 0.8;
 		public static double StruggleGraceTimePer5Levels => 0.1;
@@ -887,7 +887,7 @@ namespace V2.PlayerHandling
 				{
 					Point playerTileLocation = (Player.Center + new Vector2(0, -10)).ToTileCoordinates();
 					Tile tile = Main.tile[playerTileLocation];
-					if (tile.LiquidAmount > 0 && Player.AsPred().StomachCapacity - Player.AsPred().StomachFullness >= Player.AsPred().EffectiveLiquidSwallowSize(tile.LiquidType))
+					if (tile.LiquidAmount > 0 && (Player.AsPred().Rose || Player.AsPred().StomachCapacity - Player.AsPred().StomachFullness >= Player.AsPred().EffectiveLiquidSwallowSize(tile.LiquidType)))
 					{
 						int liquidToDrink = (tile.LiquidAmount > Player.AsPred().LiquidSwallowSize) ? Player.AsPred().LiquidSwallowSize : tile.LiquidAmount;
 

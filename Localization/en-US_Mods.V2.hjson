@@ -612,11 +612,11 @@ PredPlayerGoals: {
 			Description:
 				'''
 				Eat and digest a hungry nymph.
-				'You could make a scarf out of her hair, y'know. Hang onto it.'
+				'You could make a scarf and a couple other things out of her hair, y'know. Hang onto it.'
 				'''
 		}
 
-		EatGroomAndBride: {
+		EatBrideAndGroom: {
 			Name: "'Til Death..."
 
 			Description: {
@@ -1199,7 +1199,7 @@ ItemTooltip: {
 					[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:this is a prefabricated copy of Rose's personal hairpin]
 					[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:it's where some of her more                egregious predatory abilities come from]
 					[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:she is naturally just that much a glutton, though. ate an entire mountain range once]
-					[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:she tells people that it was the very last thing left from the last world she ate]
+					[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:she tells people that this flower was the very last thing left from the last world she ate]
 					[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:she doesn't tell them that I made it for her when I made her]
 					[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:I made a virtually-infinite number of 'em so that if she accidentally ate it]
 					[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:(and she has, multiple times)]
@@ -1356,9 +1356,10 @@ ItemTooltip: {
 					'''
 				Flavor:
 					'''
-					Greed produces greed.
-					Eating others endlessly.
-					So what makes it wait?
+					A very simple charm.
+					The only noteworthy thing about it is the big, shiny...tasty coin...perfectly...in the center...
+
+					...donning it makes you feel incredibly...hungry. Hungry for valuables. Maybe your future meals would be kind enough to give you some so you don't end up snacking on your tasty new charm?
 					'''
 			}
 
@@ -1873,6 +1874,7 @@ Death: {
 	DigestedPlayer: {
 		YouWereEaten: You were eaten...
 		Paradox: Awfully full of yourself today, aren't you, {Player}?
+		AprilFools: "{Player} was suddenly devoured and digested in the dumbest way imaginable by {Pred}."
 
 		Universal: {
 			1: "{Player} was eaten by {Pred}."

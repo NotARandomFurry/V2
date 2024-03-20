@@ -16,6 +16,7 @@ using Terraria.Chat;
 using Terraria.Graphics.Shaders;
 using System.Reflection;
 using V2.Items;
+using V2.Core;
 
 namespace V2.PlayerHandling
 {
@@ -101,17 +102,20 @@ namespace V2.PlayerHandling
 					{
 						if (player.inventory[i].stack > 0 && ((player.inventory[i].type >= ItemID.LargeAmethyst && player.inventory[i].type <= ItemID.LargeDiamond) || player.inventory[i].type == ItemID.LargeAmber))
 						{
-							int num = Item.NewItem(player.GetSource_Death(), (int)player.position.X, (int)player.position.Y, player.width, player.height, player.inventory[i].type);
-							Main.item[num].netDefaults(player.inventory[i].netID);
-							Main.item[num].Prefix(player.inventory[i].prefix);
-							Main.item[num].stack = player.inventory[i].stack;
-							Main.item[num].velocity.Y = (float)Main.rand.Next(-20, 1) * 0.2f;
-							Main.item[num].velocity.X = (float)Main.rand.Next(-20, 21) * 0.2f;
-							Main.item[num].noGrabDelay = 100;
-							Main.item[num].favorited = false;
-							Main.item[num].newAndShiny = false;
-							if (Main.netMode == NetmodeID.MultiplayerClient)
-								NetMessage.SendData(MessageID.SyncItem, -1, -1, null, num);
+								int num = Item.NewItem(player.GetSource_Death(), (int)player.position.X, (int)player.position.Y, player.width, player.height, player.inventory[i].type);
+								Main.item[num].netDefaults(player.inventory[i].netID);
+								Main.item[num].Prefix(player.inventory[i].prefix);
+								Main.item[num].stack = player.inventory[i].stack;
+								Main.item[num].velocity.Y = (float)Main.rand.Next(-20, 1) * 0.2f;
+								Main.item[num].velocity.X = (float)Main.rand.Next(-20, 21) * 0.2f;
+								Main.item[num].noGrabDelay = 100;
+								Main.item[num].favorited = false;
+								Main.item[num].newAndShiny = false;
+								if (player.CurrentCaptor() is not null)
+									player.CurrentCaptor().QueueNewPrey(PreyData.NewData(Main.item[num], player.CurrentCaptor()));
+
+								if (Main.netMode == NetmodeID.MultiplayerClient)
+									NetMessage.SendData(MessageID.SyncItem, -1, -1, null, num);
 
 							player.inventory[i].SetDefaults();
 						}

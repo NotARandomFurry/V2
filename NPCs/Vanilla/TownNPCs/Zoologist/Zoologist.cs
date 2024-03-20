@@ -13,7 +13,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Zoologist
 	public class Zoologist : GlobalNPC
 	{
 		public override bool InstancePerEntity => true;
-		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.type == NPCID.BestiaryGirl;
+		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.type == NPCID.BestiaryGirl && !V2.GetFooled;
 
 		public override void SetDefaults(NPC npc)
 		{

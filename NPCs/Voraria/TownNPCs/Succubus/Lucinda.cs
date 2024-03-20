@@ -53,7 +53,9 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 			string exactTextureToUse = "V2/NPCs/Voraria/TownNPCs/Succubus/Lucinda";
 			string weightString = "_WeightBase";
 			exactTextureToUse += weightString;
-			int bellySize = npc.AsPred().GetVisualBellySize.Invoke(npc);
+			int bellySize = 0;
+			if (!V2.GetFooled)
+				bellySize = npc.AsPred().GetVisualBellySize.Invoke(npc);
 			string bellyString = "_Belly" + (bellySize == 0 ? "Base" : bellySize);
 			exactTextureToUse += bellyString;
 
@@ -165,7 +167,7 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 
 		public override void ModifyTypeName(ref string typeName) => typeName = "Succubus";
 
-		public override bool CanTownNPCSpawn(int numTownNPCs)/* tModPorter Suggestion: Copy the implementation of NPC.SpawnAllowed_Merchant in vanilla if you to count money, and be sure to set a flag when unlocked, so you don't count every tick. */ => ModContent.GetInstance<V2MasterSystem>().freedSucc;
+		public override bool CanTownNPCSpawn(int numTownNPCs) => ModContent.GetInstance<V2MasterSystem>().freedSucc;
 
 		public override ITownNPCProfile TownNPCProfile() => SuccubusStuff.SuccubusProfile;
 

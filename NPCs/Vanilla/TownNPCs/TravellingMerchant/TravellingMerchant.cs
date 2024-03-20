@@ -14,7 +14,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.TravellingMerchant
 	public class TravellingMerchant : GlobalNPC
 	{
 		public override bool InstancePerEntity => true;
-		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.type == NPCID.TravellingMerchant;
+		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.type == NPCID.TravellingMerchant && !V2.GetFooled;
 
 		public override void SetDefaults(NPC npc)
 		{

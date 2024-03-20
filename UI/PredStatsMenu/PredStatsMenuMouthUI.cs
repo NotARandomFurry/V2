@@ -59,7 +59,7 @@ namespace V2.UI.PredStatsMenu
 		public override void Update(GameTime gameTime)
 		{
 			Visible = false;
-			if (Main.playerInventory && Main.EquipPage == 0 && !Main.LocalPlayer.dead)
+			if (Main.playerInventory && Main.EquipPage == 0 && !Main.LocalPlayer.dead && !V2.GetFooled)
 				Visible = true;
 			else
 			{

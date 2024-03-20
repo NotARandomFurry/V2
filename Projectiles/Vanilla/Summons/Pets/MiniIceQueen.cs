@@ -16,7 +16,7 @@ namespace V2.Projectiles.Vanilla.Summons.Pets
 	{
 		public override bool InstancePerEntity => true;
 
-		public override bool AppliesToEntity(Projectile entity, bool lateInstantiation) => entity.type == ProjectileID.IceQueenPet;
+		public override bool AppliesToEntity(Projectile entity, bool lateInstantiation) => entity.type == ProjectileID.IceQueenPet && !V2.GetFooled;
 
 		public override void SetDefaults(Projectile projectile)
 		{
