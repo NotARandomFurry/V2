@@ -14,6 +14,7 @@ namespace V2.Items.Voraria.Charms
 {
 	public class CharmPreyItemTheft : ModItem
 	{
+		public override bool IsLoadingEnabled(Mod mod) => !V2.GetFooled;
 		public static int AcidStrengthBonus => 12;
 
 		public override LocalizedText DisplayName => Language.GetText("Mods.V2.ItemName.Voraria.Charms.PreyItemTheft");

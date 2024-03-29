@@ -597,7 +597,9 @@ namespace V2.NPCs
 				if (!stomachNoisesPlaying)
 				{
 					pred.AsPred().ActiveStomachNoises = SoundEngine.PlaySound(
-						StomachNoises.Muffled with { Volume = 0.2f + (0.1f * pred.AsPred().GetVisualBellySize.Invoke(pred)) },
+						(V2.GetFooled
+							? new SoundStyle("V2/Sounds/Vore/StomachNoises/AprilFools", SoundType.Sound)
+							: StomachNoises.Muffled) with { Volume = 0.25f + (0.15f * pred.AsPred().GetVisualBellySize.Invoke(pred)) },
 						pred.TrueCenter()
 					);
 					SoundEngine.TryGetActiveSound(pred.AsPred().ActiveStomachNoises, out stomachNoises);

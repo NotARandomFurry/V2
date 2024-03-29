@@ -71,6 +71,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 
 	public partial class PartyGirl : GlobalNPC
 	{
+		public override bool IsLoadingEnabled(Mod mod) => !V2.GetFooled;
 		public int HungerForEmpress { get; set; }
 		public static int MaxHungerForEmpress => V2Utils.SensibleTime(seconds: 25);
 
@@ -79,7 +80,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 		public int SpecialGutFrames;
 		public override bool InstancePerEntity => true;
 
-		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.type == NPCID.PartyGirl && !V2.GetFooled;
+		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.type == NPCID.PartyGirl;
 
 		public override void SetDefaults(NPC npc)
 		{

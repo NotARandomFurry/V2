@@ -51,9 +51,10 @@ namespace V2.NPCs.Vanilla.Cavern
 
 	public class Nymph : GlobalNPC
 	{
+		public override bool IsLoadingEnabled(Mod mod) => !V2.GetFooled;
 		public override bool InstancePerEntity => true;
 
-		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.type is NPCID.LostGirl or NPCID.Nymph && !V2.GetFooled;
+		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.type is NPCID.LostGirl or NPCID.Nymph;
 
 		public override void SetDefaults(NPC npc)
 		{

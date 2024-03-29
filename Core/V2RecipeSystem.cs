@@ -20,6 +20,7 @@ namespace V2.Core
 {
 	public class V2RecipeSystem : ModSystem
 	{
+		public override bool IsLoadingEnabled(Mod mod) => !V2.GetFooled;
 		public override void AddRecipes()
 		{
 			// surprisingly, I don't actually usw this as a recipe method; that title belongs to the shitshow that is EstablishRecipeCollection below

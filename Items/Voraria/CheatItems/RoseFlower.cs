@@ -16,6 +16,7 @@ namespace V2.Items.Voraria.CheatItems
 	[AutoloadEquip(EquipType.Face)]
 	public class RoseFlower : ModItem
 	{
+		public override bool IsLoadingEnabled(Mod mod) => !V2.GetFooled;
 		public override LocalizedText DisplayName => Language.GetText("Mods.V2.ItemName.Voraria.CheatItems.RoseFlower");
 		public override LocalizedText Tooltip => Language.GetText("Mods.V2.ItemTooltip.Voraria.CheatItems.RoseFlower.Short");
 		public override void SetDefaults()

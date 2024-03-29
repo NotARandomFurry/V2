@@ -35,13 +35,14 @@ namespace V2.NPCs.Vanilla.Forest
 
 	public class Pinky : GlobalNPC
 	{
+		public override bool IsLoadingEnabled(Mod mod) => !V2.GetFooled;
 		public static int DigestedHeal => 40;
 		public static int EatenHappyLength => V2Utils.SensibleTime(seconds: 35);
 		public static int DigestedRegenTime => V2Utils.SensibleTime(seconds: 15);
 
 		public override bool InstancePerEntity => true;
 
-		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.type == NPCID.BlueSlime && !V2.GetFooled;
+		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.type == NPCID.BlueSlime;
 
 		public override void SetDefaultsFromNetId(NPC npc)
 		{

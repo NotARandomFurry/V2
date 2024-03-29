@@ -59,9 +59,10 @@ namespace V2.NPCs.Vanilla.BloodMoon
 
 	public class TheGroom : GlobalNPC
 	{
+		public override bool IsLoadingEnabled(Mod mod) => !V2.GetFooled;
 		public override bool InstancePerEntity => true;
 
-		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.type is NPCID.TheGroom && !V2.GetFooled;
+		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.type is NPCID.TheGroom;
 
 		public override void SetDefaults(NPC npc)
 		{

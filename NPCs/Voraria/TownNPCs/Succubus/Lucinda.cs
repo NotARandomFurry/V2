@@ -70,6 +70,7 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 	{
 		const int BaseTownNPC = NPCID.Dryad;
 
+		public override bool IsLoadingEnabled(Mod mod) => !V2.GetFooled;
 		public override string Texture => "V2/NPCs/Voraria/TownNPCs/Succubus/Lucinda_WeightBase_BellyBase";
 		public override string HeadTexture => "V2/NPCs/Voraria/TownNPCs/Succubus/Lucinda_Head";
 

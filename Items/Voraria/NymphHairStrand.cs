@@ -8,6 +8,7 @@ namespace V2.Items.Voraria
 {
 	public class NymphHairStrand : ModItem
 	{
+		public override bool IsLoadingEnabled(Mod mod) => !V2.GetFooled;
 		public override LocalizedText DisplayName => Language.GetText("Mods.V2.ItemName.Voraria.NymphHairStrand");
 		public override LocalizedText Tooltip => Language.GetText("Mods.V2.ItemTooltip.Voraria.NymphHairStrand.Short");
 		public override void SetDefaults()

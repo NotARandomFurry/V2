@@ -20,9 +20,10 @@ namespace V2.NPCs.Vanilla.Forest
 
 	public class BlueSlime : GlobalNPC
 	{
+		public override bool IsLoadingEnabled(Mod mod) => !V2.GetFooled;
 		public override bool InstancePerEntity => true;
 
-		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.type == NPCID.BlueSlime && !V2.GetFooled;
+		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.type == NPCID.BlueSlime;
 
 		public override void SetDefaultsFromNetId(NPC npc)
 		{

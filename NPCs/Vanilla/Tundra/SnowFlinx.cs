@@ -20,9 +20,10 @@ namespace V2.NPCs.Vanilla.Tundra
 
 	public class SnowFlinx : GlobalNPC
 	{
+		public override bool IsLoadingEnabled(Mod mod) => !V2.GetFooled;
 		public override bool InstancePerEntity => true;
 
-		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.type == NPCID.SnowFlinx && !V2.GetFooled;
+		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.type == NPCID.SnowFlinx;
 
 		public override void SetDefaults(NPC NPC)
 		{

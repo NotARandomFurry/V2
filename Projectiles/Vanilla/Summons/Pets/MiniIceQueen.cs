@@ -14,9 +14,10 @@ namespace V2.Projectiles.Vanilla.Summons.Pets
 {
 	public class MiniIceQueen : GlobalProjectile
 	{
+		public override bool IsLoadingEnabled(Mod mod) => !V2.GetFooled;
 		public override bool InstancePerEntity => true;
 
-		public override bool AppliesToEntity(Projectile entity, bool lateInstantiation) => entity.type == ProjectileID.IceQueenPet && !V2.GetFooled;
+		public override bool AppliesToEntity(Projectile entity, bool lateInstantiation) => entity.type == ProjectileID.IceQueenPet;
 
 		public override void SetDefaults(Projectile projectile)
 		{

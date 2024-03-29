@@ -1874,7 +1874,7 @@ Death: {
 	DigestedPlayer: {
 		YouWereEaten: You were eaten...
 		Paradox: Awfully full of yourself today, aren't you, {Player}?
-		AprilFools: "{Player} was suddenly devoured and digested in the dumbest way imaginable by {Pred}."
+		AprilFools: "{Player} was fooled by {Pred}."
 
 		Universal: {
 			1: "{Player} was eaten by {Pred}."

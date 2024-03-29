@@ -14,6 +14,7 @@ namespace V2.Items.Voraria.Consumables
 	/// </summary>
 	public abstract class HairDyeBase : ModItem
 	{
+		public override bool IsLoadingEnabled(Mod mod) => !V2.GetFooled;
 		/// <summary>
 		/// If true, automatically registers the shader using <see cref="LegacyShaderMethod"/>.<br/>
 		/// </summary>

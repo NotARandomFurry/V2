@@ -15,6 +15,7 @@ namespace V2.Items.Voraria.Charms
 
 	public class CharmGlobalItem : GlobalItem
 	{
+		public override bool IsLoadingEnabled(Mod mod) => !V2.GetFooled;
 		/// <summary>
 		/// Whether or not this item is valid for use in charm slots.<br/>
 		/// Defaults to <see langword="false"/>.

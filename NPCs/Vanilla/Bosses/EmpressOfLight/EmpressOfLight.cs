@@ -162,6 +162,7 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 
 	public class CandyFairy : GlobalNPC
 	{
+		public override bool IsLoadingEnabled(Mod mod) => !V2.GetFooled;
 		public static int MuffledScreechMinDelay => V2Utils.SensibleTime(seconds: 5);
 		private int _muffledScreechDelay;
 		public int MuffledScreechDelay
@@ -173,7 +174,7 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 
 		public override bool InstancePerEntity => true;
 
-		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.type == NPCID.HallowBoss && !V2.GetFooled;
+		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.type == NPCID.HallowBoss;
 
 		public override void SetDefaults(NPC npc)
 		{

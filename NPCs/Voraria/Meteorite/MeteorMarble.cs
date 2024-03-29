@@ -41,6 +41,7 @@ namespace V2.NPCs.Voraria.Meteorite
 
 	public class MeteorMarble : ModNPC
 	{
+		public override bool IsLoadingEnabled(Mod mod) => false;
 		public override string Texture => "V2/NPCs/Voraria/Meteorite/MeteorMarble_Core_Heat0";
 		public override void SetStaticDefaults()
 		{

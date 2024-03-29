@@ -44,10 +44,12 @@ namespace V2
 		/// - Only one burp sound is used. This sound is also never used in the normal game.<br/>
 		/// - Both of the above are intentionally made to sound incredibly bad.<br/>
 		/// - VSC's dialogue changes are completely undone.<br/>
+		/// - NPCs slowly increase in size as they digest more food. All digestion stats are based on their scale.<br/>
+		/// - None of VSC's unique content is loaded.<br/>
 		/// More may be added if time permits.<br/>
 		/// <br/>
 		/// overall, this was made by yours truly stepping backwards about a decade in time mentally and channeling that energy into assessment of mod quality<br/>
-		/// now get the fuck off my lawn<br/>
+		/// now get the fuck out of my house<br/>
 		/// </summary>
 		public static bool GetFooled { get; set; }
 

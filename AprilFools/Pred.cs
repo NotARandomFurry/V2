@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ModLoader;
 using V2.Core;
 using V2.NPCs;
@@ -24,6 +25,7 @@ namespace V2.AprilFools
 		public override void SetDefaults(NPC npc)
 		{
 			npc.AsPred().CanSwallowBosses = true;
+			npc.AsPred().BigGulps = new SoundStyle("V2/Sounds/Vore/Gulps/AprilFools", SoundType.Sound) with { MaxInstances = 0, PitchVariance = 0f };
 
 			npc.AsPred().BaseStomachacheMeterCapacity = 9999999;
 			npc.AsPred().MaxStomachCapacity = 9999999;
@@ -32,6 +34,7 @@ namespace V2.AprilFools
 			npc.AsPred().GetDigestionTickRate = GetDigestionTickRate;
 
 			npc.AsPred().GetAdditionalDigestedPlayerMessages = GetDigestedPlayerDeathMessage;
+			npc.AsPred().StandardBurps = new SoundStyle("V2/Sounds/Vore/Burps/AprilFools", SoundType.Sound) with { MaxInstances = 0, PitchVariance = 0f };
 			npc.AsPred().GetPreyAbsorptionRate = GetPreyAbsorptionRate;
 		}
 

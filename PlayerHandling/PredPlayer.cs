@@ -1454,7 +1454,9 @@ namespace V2.PlayerHandling
 				if (!stomachNoisesPlaying)
 				{
 					pred.AsPred().ActiveStomachNoises = SoundEngine.PlaySound(
-						StomachNoises.Muffled with { Volume = 0.25f + (0.15f * pred.AsPred().StomachSize) },
+						(V2.GetFooled
+							? new SoundStyle("V2/Sounds/Vore/StomachNoises/AprilFools", SoundType.Sound)
+							: StomachNoises.Muffled) with { Volume = 0.25f + (0.15f * pred.AsPred().StomachSize) },
 						pred.TrueCenter()
 					);
 					SoundEngine.TryGetActiveSound(pred.AsPred().ActiveStomachNoises, out stomachNoises);

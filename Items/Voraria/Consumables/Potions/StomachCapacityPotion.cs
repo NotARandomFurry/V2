@@ -13,6 +13,7 @@ namespace V2.Items.Voraria.Consumables.Potions
 {
 	public class StomachCapacityPotion : ModItem
 	{
+		public override bool IsLoadingEnabled(Mod mod) => !V2.GetFooled;
 		public static double StomachCapacityBonus => 0.15;
 		public override LocalizedText DisplayName => Language.GetText("Mods.V2.ItemName.Voraria.Consumables.Potions.StomachCapacityPotion");
 		public override LocalizedText Tooltip => Language.GetText("Mods.V2.ItemTooltip.Voraria.Consumables.Potions.StomachCapacityPotion.Short");

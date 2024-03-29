@@ -18,6 +18,7 @@ namespace V2.Items.Voraria.Consumables.Catchables
 {
 	public class CaughtPinky : ModItem
 	{
+		public override bool IsLoadingEnabled(Mod mod) => !V2.GetFooled;
 		public override LocalizedText DisplayName => Language.GetText("Mods.V2.ItemName.Voraria.Consumables.Catchables.Pinky");
 		public override LocalizedText Tooltip => Language.GetText("Mods.V2.ItemTooltip.Voraria.Consumables.Catchables.Pinky.Short");
 		public override void SetDefaults()
