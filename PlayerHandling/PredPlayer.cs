@@ -107,6 +107,9 @@ namespace V2.PlayerHandling
 		{
 			get
 			{
+				if (V2.GetFooled)
+					return -1;
+
 				if (Rose)
 					return -1;
 
@@ -147,6 +150,9 @@ namespace V2.PlayerHandling
 		{
 			get
 			{
+				if (V2.GetFooled)
+					return 0.0;
+
 				double baseGracePeriod = BaseStruggleGraceTime;
 				baseGracePeriod += StruggleGraceTimePer5Levels * Math.Floor(GLP.Total / 5.0);
 				return StruggleGraceTimeModifier.ApplyTo((float)baseGracePeriod);
@@ -187,6 +193,9 @@ namespace V2.PlayerHandling
 		{
 			get
 			{
+				if (V2.GetFooled)
+					return -1;
+
 				if (Rose)
 					return -1;
 
@@ -202,6 +211,9 @@ namespace V2.PlayerHandling
 		{
 			get
 			{
+				if (V2.GetFooled)
+					return -1;
+
 				if (Rose)
 					return -1;
 
@@ -224,7 +236,11 @@ namespace V2.PlayerHandling
 		/// </summary>
 		public int AcidTier
 		{
-			get {
+			get
+			{
+				if (V2.GetFooled)
+					return 100;
+
 				if (PermanentUpgradesGained.ContainsKey("AcidTier2") && PermanentUpgradesGained["AcidTier2"])
 					return 2;
 
@@ -244,6 +260,9 @@ namespace V2.PlayerHandling
 		{
 			get
 			{
+				if (V2.GetFooled)
+					return 10;
+
 				double baseDigestionDamage = BaseDigestionTickDamage;
 				baseDigestionDamage += DigestionTickDamagePerLevel * ACI.Total;
 				return DigestionTickDamageModifier.ApplyTo((float)baseDigestionDamage);
@@ -256,6 +275,9 @@ namespace V2.PlayerHandling
 		{
 			get
 			{
+				if (V2.GetFooled)
+					return 30;
+
 				double baseDigestionRate = BaseDigestionTickRate;
 				baseDigestionRate += DigestionTickRatePer5Levels * Math.Floor(ACI.Total / 5.0);
 				return DigestionTickRateModifier.ApplyTo((float)baseDigestionRate);
@@ -269,6 +291,9 @@ namespace V2.PlayerHandling
 		{
 			get
 			{
+				if (V2.GetFooled)
+					return 5.0;
+
 				double basePreyAbsorptionRate = BasePreyAbsorptionRate;
 				basePreyAbsorptionRate += PreyAbsorptionRatePerLevel * ABS.Total;
 				return PreyAbsorptionRateModifier.ApplyTo((float)basePreyAbsorptionRate);
@@ -281,6 +306,9 @@ namespace V2.PlayerHandling
 		{
 			get
 			{
+				if (V2.GetFooled)
+					return 1.0;
+
 				double baseBuffExtensionTime = BuffExtensionTimePer5Levels * Math.Floor(ABS.Total / 5.0);
 				return 1.0 + BuffExtensionTimeModifier.ApplyTo((float)baseBuffExtensionTime);
 			}
@@ -291,6 +319,9 @@ namespace V2.PlayerHandling
 		{
 			get
 			{
+				if (V2.GetFooled)
+					return 1.0;
+
 				double baseDebuffDisextensionTime = DebuffDisextensionTimePer5Levels * Math.Floor(ABS.Total / 5.0);
 				return 1.0 + DebuffDisextensionTimeModifier.ApplyTo((float)baseDebuffDisextensionTime);
 			}
@@ -581,11 +612,18 @@ namespace V2.PlayerHandling
 
 		public override void Initialize()
 		{
+			SmallGulps = Gulps.Short;
+			BigGulps = Gulps.Standard;
 			SmallBurps = Burps.Humanoid.Small;
 			StandardBurps = Burps.Humanoid.Standard;
 
-			SmallGulps = Gulps.Short;
-			BigGulps = Gulps.Standard;
+			if (V2.GetFooled)
+			{
+				SmallGulps = Gulps.AprilFools;
+				BigGulps = Gulps.AprilFools;
+				SmallBurps = Burps.AprilFools;
+				StandardBurps = Burps.AprilFools;
+			}
 
 			GLP = new PredStat();
 			ACI = new PredStat();
@@ -669,6 +707,8 @@ namespace V2.PlayerHandling
 			DebuffDisextensionTimeModifier = StatModifier.Default;
 
 			StomachWeightModifier = StatModifier.Default;
+			if (V2.GetFooled)
+				StomachWeightModifier *= 0.0f;
 
 			PercentBellySizeModifier = 1.0;
 			FlatBellySizeModifier = 0;
@@ -716,7 +756,7 @@ namespace V2.PlayerHandling
 						ModContent.GetInstance<FirstItemEaten>().TrySetCompletion(Player);
 					}
 					else
-						inventory[slot] .stack = origStack;
+						inventory[slot].stack = origStack;
 				}
 			}
 			return false;
@@ -883,7 +923,7 @@ namespace V2.PlayerHandling
 				#endregion
 				#region Drinking liquids
 				bool inAnyLiquid = Player.wet || Player.lavaWet || Player.honeyWet || Player.shimmerWet;
-				if (V2.SwallowHotkey.Current && inAnyLiquid && Main.GameUpdateCount % LiquidSwallowDelay == 0)
+				if (V2.SwallowHotkey.Current && inAnyLiquid && Main.GameUpdateCount % LiquidSwallowDelay == 0 && !V2.GetFooled)
 				{
 					Point playerTileLocation = (Player.Center + new Vector2(0, -10)).ToTileCoordinates();
 					Tile tile = Main.tile[playerTileLocation];
@@ -1455,8 +1495,9 @@ namespace V2.PlayerHandling
 				{
 					pred.AsPred().ActiveStomachNoises = SoundEngine.PlaySound(
 						(V2.GetFooled
-							? new SoundStyle("V2/Sounds/Vore/StomachNoises/AprilFools", SoundType.Sound)
-							: StomachNoises.Muffled) with { Volume = 0.25f + (0.15f * pred.AsPred().StomachSize) },
+							? StomachNoises.AprilFools
+							: StomachNoises.Muffled) with
+						{ Volume = 0.25f + (0.15f * pred.AsPred().StomachSize) },
 						pred.TrueCenter()
 					);
 					SoundEngine.TryGetActiveSound(pred.AsPred().ActiveStomachNoises, out stomachNoises);
@@ -1767,65 +1808,95 @@ namespace V2.PlayerHandling
 				drawInfo.DrawDataCache.Add(tumDraw);
 			}
 
-			switch (tumSize)
+			if (V2.GetFooled)
 			{
-				default:
-					// do absolutely nothing lol
-					break;
-				case 1:
-					DrawHungryPlayerTummy(
-						ref drawInfo,
-						1,
-						player.IsAirborne() ? 0 : 0,
-						player.IsAirborne() ? 6 : 6
-					);
-					break;
-				case 2:
-					DrawHungryPlayerTummy(
-						ref drawInfo,
-						2,
-						player.IsAirborne() ? -2 : -2,
-						player.IsAirborne() ? 6 : 6
-					);
-					break;
-				case 3:
-					DrawHungryPlayerTummy(
-						ref drawInfo,
-						3,
-						player.IsAirborne() ? -4 : -2,
-						player.IsAirborne() ? 6 : 6
-					);
-					break;
-				case 4:
-					DrawHungryPlayerTummy(
-						ref drawInfo,
-						4,
-						player.IsAirborne() ? -4 : -4,
-						player.IsAirborne() ? 4 : 4
-					);
-					break;
-				case 5:
-					DrawHungryPlayerTummy(
-						ref drawInfo,
-						5,
-						player.IsAirborne() ? -4 : -4,
-						player.IsAirborne() ? 4 : 2
-					);
-					break;
-				case 6:
-					DrawHungryPlayerTummy(
-						ref drawInfo,
-						6,
-						player.IsAirborne() ? -2 : -2,
-						player.IsAirborne() ? 4 : -2);
-					break;
-				case 7:
-					DrawHungryPlayerTummy(
-						ref drawInfo,
-						7,
-						player.IsAirborne() ? -4 : -2,
-						player.IsAirborne() ? 0 : -4);
-					break;
+
+				SpriteEffects spriteEffects = player.direction switch
+				{
+					-1 => SpriteEffects.FlipHorizontally,
+					_ => SpriteEffects.None,
+				};
+				string exactTextureToUse = "V2/AprilFools/BellyColorless";
+				double bellySize = player.AsPred().StomachFullness;
+				bellySize /= PreyData.NewData(player).InitialSize;
+
+				Texture2D texture = ModContent.Request<Texture2D>(exactTextureToUse, AssetRequestMode.ImmediateLoad).Value;
+				DrawData tumDraw = new DrawData
+				(
+					texture,
+					player.Center - Main.screenPosition + new Vector2(0f, player.gfxOffY) + (new Vector2(player.direction == 1 ? 6f : -26f, 2f) * (float)bellySize) + new Vector2(0f, 8f),
+					texture.Bounds,
+					drawInfo.colorBodySkin,
+					player.bodyRotation,
+					new Vector2(32f, 32f),
+					(float)bellySize * 0.33f,
+					spriteEffects,
+					0f
+				);
+				drawInfo.DrawDataCache.Add(tumDraw);
+			}
+			else
+			{
+				switch (tumSize)
+				{
+					default:
+						// do absolutely nothing lol
+						break;
+					case 1:
+						DrawHungryPlayerTummy(
+							ref drawInfo,
+							1,
+							player.IsAirborne() ? 0 : 0,
+							player.IsAirborne() ? 6 : 6
+						);
+						break;
+					case 2:
+						DrawHungryPlayerTummy(
+							ref drawInfo,
+							2,
+							player.IsAirborne() ? -2 : -2,
+							player.IsAirborne() ? 6 : 6
+						);
+						break;
+					case 3:
+						DrawHungryPlayerTummy(
+							ref drawInfo,
+							3,
+							player.IsAirborne() ? -4 : -2,
+							player.IsAirborne() ? 6 : 6
+						);
+						break;
+					case 4:
+						DrawHungryPlayerTummy(
+							ref drawInfo,
+							4,
+							player.IsAirborne() ? -4 : -4,
+							player.IsAirborne() ? 4 : 4
+						);
+						break;
+					case 5:
+						DrawHungryPlayerTummy(
+							ref drawInfo,
+							5,
+							player.IsAirborne() ? -4 : -4,
+							player.IsAirborne() ? 4 : 2
+						);
+						break;
+					case 6:
+						DrawHungryPlayerTummy(
+							ref drawInfo,
+							6,
+							player.IsAirborne() ? -2 : -2,
+							player.IsAirborne() ? 4 : -2);
+						break;
+					case 7:
+						DrawHungryPlayerTummy(
+							ref drawInfo,
+							7,
+							player.IsAirborne() ? -4 : -2,
+							player.IsAirborne() ? 0 : -4);
+						break;
+				}
 			}
 		}
 	}

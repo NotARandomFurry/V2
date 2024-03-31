@@ -529,8 +529,9 @@ namespace V2.Projectiles
 				{
 					pred.AsPred().ActiveStomachNoises = SoundEngine.PlaySound(
 						(V2.GetFooled
-							? new SoundStyle("V2/Sounds/Vore/StomachNoises/AprilFools", SoundType.Sound)
-							: StomachNoises.Muffled) with { Volume = 0.25f + (0.15f * pred.AsPred().GetVisualBellySize.Invoke(pred)) },
+							? StomachNoises.AprilFools
+							: StomachNoises.Muffled) with
+						{ Volume = 0.25f + (0.15f * pred.AsPred().GetVisualBellySize.Invoke(pred)) },
 						pred.TrueCenter()
 					);
 					SoundEngine.TryGetActiveSound(pred.AsPred().ActiveStomachNoises, out stomachNoises);
@@ -540,10 +541,8 @@ namespace V2.Projectiles
 					return;
 
 				stomachNoises.Position = pred.TrueCenter();
-				stomachNoises.Volume = 0.2f;
-				stomachNoises.Volume += 0.1f * pred.AsPred().GetVisualBellySize.Invoke(pred);
-				if (stomachNoises.Volume > 0.75f)
-					stomachNoises.Volume = 0.75f;
+				stomachNoises.Volume = 0.25f;
+				stomachNoises.Volume += 0.15f * pred.AsPred().GetVisualBellySize.Invoke(pred);
 			}
 		}
 

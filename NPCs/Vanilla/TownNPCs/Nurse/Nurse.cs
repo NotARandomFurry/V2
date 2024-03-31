@@ -579,20 +579,6 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 			return nurseChatPool;
 		}
 
-		public override void ModifyShop(NPCShop shop)
-		{
-			NPCShop nurseShop = new NPCShop(NPCID.Nurse, "Shop");
-			nurseShop.Add(ItemID.LesserHealingPotion, new Condition[] { Condition.NotDownedEowOrBoc });
-			nurseShop.Add(ItemID.HealingPotion, new Condition[] { Condition.DownedEowOrBoc, Condition.NotDownedMechBossAny });
-			nurseShop.Add(ItemID.GreaterHealingPotion, new Condition[] { Condition.DownedMechBossAny, Condition.NotDownedCultist });
-			nurseShop.Add(ItemID.SuperHealingPotion, new Condition[] { Condition.DownedCultist });
-			nurseShop.Add(ItemID.AdhesiveBandage);
-			nurseShop.Add<FastDigestionPotion>();
-			nurseShop.Add<StomachacheMeterCapacityPotion>(new Condition[] { Condition.DownedEowOrBoc });
-			nurseShop.Add(new Item(ItemID.LifeCrystal) { shopCustomPrice = Item.buyPrice(gold: 20) }, new Condition[] { Condition.DownedSkeletron });
-			nurseShop.Register();
-		}
-
 		public override void PostAI(NPC npc)
 		{
 			if (npc.CurrentCaptor() is not null)

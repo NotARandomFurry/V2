@@ -182,36 +182,6 @@ namespace V2.NPCs
 						PredNPC.Swallow(npc, preyProjectile);
 				}
 			}
-			for (int i = 0; i < Main.maxItems; i++)
-			{
-				Item preyItem = Main.item[i];
-				if (preyItem.active)
-				{
-					bool inSpecificWhitelist = false;
-					if (specificWhitelist is not null)
-					{
-						foreach ((PreyType type, int ID) in specificWhitelist)
-						{
-							if (type == PreyType.Item && ID == preyItem.type)
-							{
-								inSpecificWhitelist = true;
-								break;
-							}
-						}
-					}
-					else
-						inSpecificWhitelist = true;
-
-					if (!inSpecificWhitelist)
-						continue;
-
-					if (preyItem.AsV2Item().State == ItemLocation.BeingFood)
-						continue;
-
-					if (npc.Hitbox.Intersects(preyItem.Hitbox) && PredNPC.CanSwallow(npc, preyItem))
-						PredNPC.Swallow(npc, preyItem);
-				}
-			}
 		}
 
 		public static int SoftenedStacks(this NPC npc) => Math.Min(Softened.MaxStacks, (int)Math.Floor((double)npc.AsFood().SoftenedDigestionDamageTaken / (npc.lifeMax * Softened.MaxHealthDigestedForOneStack)));

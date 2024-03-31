@@ -13,6 +13,7 @@ namespace V2.UI
 {
 	public class GameTipSystem : ModSystem
 	{
+		public override bool IsLoadingEnabled(Mod mod) => !V2.GetFooled;
 		public override void ModifyGameTipVisibility(IReadOnlyList<GameTipData> gameTips)
 		{
 			gameTips[GameTipID.MagicMirror].Hide();

@@ -18,6 +18,7 @@ using Terraria.ModLoader;
 using Terraria.Utilities;
 using V2.Core;
 using V2.Items.Voraria.Charms;
+using V2.Items.Voraria.Consumables.Potions;
 using V2.NPCs.Voraria.TownNPCs.Succubus.ChatButtons;
 using V2.PlayerHandling;
 using V2.Sounds.Vore;
@@ -467,6 +468,17 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 			succubusShop.Add<CharmBetterDigestion>();
 			succubusShop.Add<CharmRegenFromAbsorption>();
 			succubusShop.Register();
+
+			NPCShop nurseShop = new NPCShop(NPCID.Nurse, "Shop");
+			nurseShop.Add(ItemID.LesserHealingPotion, new Condition[] { Condition.NotDownedEowOrBoc });
+			nurseShop.Add(ItemID.HealingPotion, new Condition[] { Condition.DownedEowOrBoc, Condition.NotDownedMechBossAny });
+			nurseShop.Add(ItemID.GreaterHealingPotion, new Condition[] { Condition.DownedMechBossAny, Condition.NotDownedCultist });
+			nurseShop.Add(ItemID.SuperHealingPotion, new Condition[] { Condition.DownedCultist });
+			nurseShop.Add(ItemID.AdhesiveBandage);
+			nurseShop.Add<FastDigestionPotion>();
+			nurseShop.Add<StomachacheMeterCapacityPotion>(new Condition[] { Condition.DownedEowOrBoc });
+			nurseShop.Add(new Item(ItemID.LifeCrystal) { shopCustomPrice = Item.buyPrice(gold: 20) }, new Condition[] { Condition.DownedSkeletron });
+			nurseShop.Register();
 		}
 
 
