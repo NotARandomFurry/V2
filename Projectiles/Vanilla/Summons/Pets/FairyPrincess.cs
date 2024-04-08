@@ -3,10 +3,6 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Chat;
 using Terraria.ID;
@@ -14,8 +10,6 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using V2.Core;
 using V2.NPCs;
-using V2.PlayerHandling;
-using V2.PlayerHandling.PredPlayerGoals.Amateur;
 using V2.Sounds.Vore;
 
 namespace V2.Projectiles.Vanilla.Summons.Pets

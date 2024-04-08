@@ -15,6 +15,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using V2.Core;
 using V2.Items.Voraria.Consumables.Catchables;
+using V2.NPCs.NPCGroupUtils;
 using V2.NPCs.Vanilla.TownNPCs.PartyGirl;
 using V2.PlayerHandling;
 using V2.PlayerHandling.PredPlayerGoals.Beginner;
@@ -33,7 +34,7 @@ namespace V2.NPCs.Vanilla.Forest
 		}
 	}
 
-	public class Pinky : GlobalNPC
+	public partial class Pinky : GlobalNPC
 	{
 		public override bool IsLoadingEnabled(Mod mod) => !V2.GetFooled;
 		public static int DigestedHeal => 40;
@@ -52,13 +53,30 @@ namespace V2.NPCs.Vanilla.Forest
 			npc.catchItem = ModContent.ItemType<CaughtPinky>();
 
 			npc.AsV2NPC().Gender = EntityGender.Other;
+			npc.AsV2NPC().NewAIMethod = V2PinkyAI;
 
-			npc.AsFood().DefinedSize = 0.065;
-			npc.AsPred().MaxStomachCapacity = 0.4;
+			npc.AsSlime().JumpSpeed = new Vector2(5f, 8f);
+			npc.AsSlime().JumpDelayBase = V2Utils.SensibleTime(
+				seconds: 0,
+				frames: 30
+			);
+			npc.AsSlime().JumpDelayExtra = (
+				V2Utils.SensibleTime(
+					frames: 0
+				),
+				V2Utils.SensibleTime(
+					frames: 10
+				)
+			);
 
-			npc.AsPred().CanBeForceFed = CanCottonCandySlimeBeForceFed;
-			npc.AsPred().MaxSwallowRange = V2Utils.TileCountAsPixelCount(1.3);
+			npc.AsSlime().OccasionalHighJumps = false;
+
+			npc.AsFood().DefinedBaseSize = 0.1;
+			npc.AsPred().MaxStomachCapacity = 0.15;
+
 			npc.AsPred().SmallGulpThreshold = 0.00;
+			npc.AsPred().BigGulps = null;
+			npc.AsPred().CanBeForceFed = CanCottonCandySlimeBeForceFed;
 
 			npc.AsPred().DigestionType = EntityDigestionType.Acidic;
 			npc.AsPred().GetDigestionTickDamage = GetDigestionTickDamage;
@@ -70,6 +88,7 @@ namespace V2.NPCs.Vanilla.Forest
 			npc.AsFood().OnKilledByDigestion = PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
 			npc.AsFood().OnKilledByDigestion += PreyNPC.HandlePreyItemTheft;
 			npc.AsFood().OnKilledByDigestion += OnKilledByDigestion_GrantPinkyGoal;
+			npc.AsFood().OnKilledByDigestion += SlimeNPC.OnKilledByDigestion_GrantSlimeMultiPreyGoal;
 		}
 
 		public override bool? CanBeCaughtBy(NPC npc, Item item, Player player) {
@@ -87,6 +106,7 @@ namespace V2.NPCs.Vanilla.Forest
 			{
 				"Mods.V2.Death.DigestedPlayer.SlimePred.1",
 				"Mods.V2.Death.DigestedPlayer.SlimePred.2",
+				"Mods.V2.Death.DigestedPlayer.SlimePred.3",
 				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Forest.Pinky.1",
 				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Forest.Pinky.2",
 			});
@@ -97,13 +117,17 @@ namespace V2.NPCs.Vanilla.Forest
 			}
 		}
 
-		public static double GetDigestionTickRate(NPC npc, PreyData prey) => 0.10;
-		public static double GetDigestionTickDamage(NPC npc, PreyData prey) => 1;
+		public static double GetDigestionTickRate(NPC npc, PreyData prey) => 0.65;
+		public static double GetDigestionTickDamage(NPC npc, PreyData prey)
+		{
+			double baseDigestionTickDamage = 4.0;
+			baseDigestionTickDamage *= npc.AsFood().DefinedEffectiveSize / npc.AsFood().DefinedBaseSize;
+			return baseDigestionTickDamage;
+		}
 		public static double GetPreyAbsorptionRate(NPC npc)
 		{
 			double baseAbsorptionRate = 1.0 / (double)V2Utils.SensibleTime(
-				minutes: 6,
-				seconds: 40
+				minutes: 15
 			);
 			return baseAbsorptionRate;
 		}
@@ -111,9 +135,7 @@ namespace V2.NPCs.Vanilla.Forest
 		public static void OnKilledByDigestion_GrantPinkyGoal(NPC npc, Entity pred)
 		{
 			if (pred is Player predPlayer)
-			{
 				ModContent.GetInstance<EatPinky>().TrySetCompletion(predPlayer);
-			}
 		}
 	}
 

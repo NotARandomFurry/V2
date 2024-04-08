@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Terraria;
 using Terraria.ModLoader;
 
 namespace V2.PlayerHandling.PredPlayerGoals
@@ -19,6 +20,8 @@ namespace V2.PlayerHandling.PredPlayerGoals
 		public abstract string DisplayName { get; }
 		public abstract string DisplaySubtitle { get; }
 		public abstract string Description { get; }
+		public abstract string FooterAdvice { get; }
+		public abstract bool Available(Player pred);
 		public abstract double Order { get; }
 	}
 }

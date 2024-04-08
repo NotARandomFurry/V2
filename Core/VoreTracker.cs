@@ -975,8 +975,8 @@ namespace V2.Core
 						break;
 
 					ExactType = preyNPC.netID;
-					if (preyNPC.AsFood().DefinedSize != 0)
-						InitialWeight = InitialSize = WeightLeftToDigest = preyNPC.AsFood().DefinedSize;
+					if (preyNPC.AsFood().DefinedEffectiveSize != 0)
+						InitialWeight = InitialSize = WeightLeftToDigest = preyNPC.AsFood().DefinedEffectiveSize;
 					else
 					{
 						double playerToNPCWidthRatio = (double)preyNPC.width / refPlayerWidth;

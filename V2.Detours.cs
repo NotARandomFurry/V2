@@ -90,6 +90,11 @@ namespace V2
 					}
 					else if (npcAsV2NPC.NewAIMethod is not null)
 					{
+						if (npcAsV2NPC.FirstFrame && npcAsV2NPC.FirstFramePreAIMethod is not null)
+						{
+							npcAsV2NPC.FirstFrame = false;
+							npcAsV2NPC.FirstFramePreAIMethod.Invoke(npc);
+						}
 						if (npcAsV2NPC.NewAIMethod.Invoke(npc))
 							orig(npc);
 						else

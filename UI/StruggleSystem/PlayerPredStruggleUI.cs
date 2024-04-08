@@ -23,6 +23,7 @@ namespace V2.UI.StruggleSystem
 		public override void Update(GameTime gameTime)
 		{
 			Visible = false;
+			return;
 			Player player = Main.LocalPlayer;
 			if (player.AsPred().KickyStomachFullness > 0.0 && player.AsPred().StomachTracker.PredatorStruggleChart is not null)
 				Visible = true;

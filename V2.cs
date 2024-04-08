@@ -56,8 +56,8 @@ namespace V2
 		public V2()
 		{
 			Instance = this;
-			BlacklistsActive = false;
-			GetFooled = true;
+			BlacklistsActive = true;
+			GetFooled = false;
 		}
 
 		public override void Load()

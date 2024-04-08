@@ -92,7 +92,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 
 			npc.AsV2NPC().GetNewDialogue = GetPartyGirlChat;
 
-			npc.AsFood().DefinedSize = 1.0;
+			npc.AsFood().DefinedBaseSize = 1.0;
 			npc.AsPred().MaxStomachCapacity = 999999.0;
 			npc.AsPred().BaseStomachacheMeterCapacity = 999999.0;
 

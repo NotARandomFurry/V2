@@ -31,7 +31,7 @@ namespace V2.NPCs
 				if (risky)
 					return null;
 
-				throw new Exception("this NPC can't be a pred at all, and thus, doesn't have a PredNPC global attached to them. look for your favorite gut to sleep in elsewhere");
+				throw new Exception("this NPC, somehow, has been (possibly) completely untouched by VSC. how?");
 			}
 			return V2NPC;
 		}
@@ -41,7 +41,21 @@ namespace V2.NPCs
 	{
 		public EntityGender Gender;
 		public delegate bool DelegateNewAI(NPC npc);
+		/// <summary>
+		/// Used to define a new AI method for existing NPCs.<br/>
+		/// </summary>
 		public DelegateNewAI NewAIMethod { get; set; }
+		/// <summary>
+		/// Denotes whether or not this NPC is on their first frame of existing.<br/>
+		/// Used almost expressly to ask whether or not <see cref="FirstFramePreAIMethod"/> should run.<br/>
+		/// </summary>
+		public bool FirstFrame { get; set; }
+
+		public delegate void DelegateFirstFramePreAIMethod(NPC npc);
+		/// <summary>
+		/// Used to define first-frame behavior for NPCs with new AI methods.<br/>
+		/// </summary>
+		public DelegateFirstFramePreAIMethod FirstFramePreAIMethod { get; set; }
 
 		public delegate List<string> DelegateGetChat(NPC npc, Player player);
 		public DelegateGetChat GetNewDialogue { get; set; }
@@ -55,6 +69,8 @@ namespace V2.NPCs
 			Gender = EntityGender.Other;
 
 			NewAIMethod = null;
+			FirstFrame = true;
+			FirstFramePreAIMethod = null;
 
 			GetNewDialogue = null;
 		}

@@ -80,7 +80,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Steampunker
 
 			npc.AsV2NPC().GetNewDialogue = GetSteampunkerChat;
 
-			npc.AsFood().DefinedSize = 1.06;
+			npc.AsFood().DefinedBaseSize = 1.06;
 			npc.AsPred().MaxStomachCapacity = 50.0;
 			npc.AsPred().BaseStomachacheMeterCapacity = 1250.0;
 

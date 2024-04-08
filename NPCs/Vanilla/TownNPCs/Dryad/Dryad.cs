@@ -89,7 +89,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Dryad
 
 			npc.AsV2NPC().GetNewDialogue = GetDryadChat;
 
-			npc.AsFood().DefinedSize = 1.118;
+			npc.AsFood().DefinedBaseSize = 1.118;
 			npc.AsPred().MaxStomachCapacity = 12.50;
 			npc.AsPred().BaseStomachacheMeterCapacity = 450.0;
 

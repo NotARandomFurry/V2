@@ -46,7 +46,7 @@ namespace V2.NPCs.Vanilla.Sky
 		{
 			npc.AsV2NPC().Gender = EntityGender.Female;
 
-			npc.AsFood().DefinedSize = 1.45;
+			npc.AsFood().DefinedBaseSize = 1.335;
 
 			npc.AsFood().OnKilledByDigestion = PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
 			npc.AsFood().OnKilledByDigestion += PreyNPC.HandlePreyItemTheft;

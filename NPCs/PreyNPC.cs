@@ -45,7 +45,8 @@ namespace V2.NPCs
 		public delegate void DelegatePreyAI(NPC npc, Entity pred);
 		public DelegatePreyAI SpecialPreyAI { get; set; }
 
-		public double DefinedSize { get; set; }
+		public double DefinedBaseSize { get; set; }
+		public double DefinedEffectiveSize { get; set; }
 
 		public int STR { get; set; }
 		/// <summary>
@@ -84,7 +85,7 @@ namespace V2.NPCs
 		public PreyNPC()
 		{
 			SpecialPreyAI = null;
-			DefinedSize = 0;
+			DefinedBaseSize = 0;
 
 			STR = 0;
 			StruggleEffectiveness = 5;
@@ -123,6 +124,7 @@ namespace V2.NPCs
 			else if (npc.AsFood().SoftenedDigestionDamageTaken > 0)
 				npc.AsFood().SoftenedDigestionDamageTaken -= npc.AsFood().SoftenedWearoffRateModifier.ApplyTo((float)(25.0 / 60.0));
 
+			npc.AsFood().DefinedEffectiveSize = npc.AsFood().DefinedBaseSize;
 			DetermineDigestingSounds(npc);
 		}
 

@@ -131,6 +131,14 @@ namespace V2.PlayerHandling
 				Player.AsFood().SoftenedDigestionDamageTaken -= Player.AsFood().SoftenedWearoffRateModifier.ApplyTo((float)(25.0 / 60.0));
 		}
 
+		public override bool CanUseItem(Item item)
+		{
+			if (Player.CurrentCaptor() is not null)
+				return false;
+
+			return true;
+		}
+
 		public override void PostItemCheck()
 		{
 			if (V2.FeedHotkey.JustPressed && Player.whoAmI == Main.myPlayer)

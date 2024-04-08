@@ -34,7 +34,7 @@ namespace V2.Core
 					if (Main.debuff[statusID])
 						intendedTime = (int)Math.Round((double)intendedTime / playerPred.AsPred().DebuffDisextensionFactor);
 					else
-						intendedTime = (int)Math.Round((double)intendedTime / playerPred.AsPred().BuffExtensionFactor);
+						intendedTime = (int)Math.Round((double)intendedTime * playerPred.AsPred().BuffExtensionFactor);
 				}
 				playerPred.AddBuff(statusID, intendedTime);
 			}

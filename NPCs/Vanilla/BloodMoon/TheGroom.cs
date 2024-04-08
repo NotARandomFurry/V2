@@ -1,8 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 using V2.Core;
@@ -57,20 +60,21 @@ namespace V2.NPCs.Vanilla.BloodMoon
 		}
 	}
 
-	public class TheGroom : GlobalNPC
+	public partial class TheGroom : GlobalNPC
 	{
 		public override bool IsLoadingEnabled(Mod mod) => !V2.GetFooled;
 		public override bool InstancePerEntity => true;
 
-		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.type is NPCID.TheGroom;
+		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.type == NPCID.TheGroom;
 
 		public override void SetDefaults(NPC npc)
 		{
 			npc.AsV2NPC().Gender = EntityGender.Male;
+			npc.AsV2NPC().NewAIMethod = V2TheGroomAI;
 
-			npc.AsFood().DefinedSize = 1.04;
-			npc.AsPred().MaxStomachCapacity = 5.5;
-			npc.AsPred().BaseStomachacheMeterCapacity = 275.0;
+			npc.AsFood().DefinedBaseSize = 1.04;
+			npc.AsPred().MaxStomachCapacity = 1.5;
+			npc.AsPred().BaseStomachacheMeterCapacity = 145.0;
 
 			npc.AsPred().SmallGulps = Gulps.Short;
 			npc.AsPred().SmallGulpThreshold = 0.5;
@@ -80,14 +84,13 @@ namespace V2.NPCs.Vanilla.BloodMoon
 			npc.AsPred().OnForceFed = OnTheGroomForceFed;
 
 			npc.AsPred().GetVisualBellySize = GetVisualBellySize;
+			npc.AsPred().GetVisualWeightStage = GetVisualWeightStage;
 
 			npc.AsPred().DigestionType = EntityDigestionType.Acidic;
 			npc.AsPred().GetDigestionTickDamage = GetDigestionTickDamage;
 			npc.AsPred().GetDigestionTickRate = GetDigestionTickRate;
 
-			npc.AsPred().SmallBurps = Burps.Humanoid.Small;
-			npc.AsPred().SmallBurpThreshold = 0.65;
-			npc.AsPred().StandardBurps = Burps.Humanoid.Standard;
+			npc.AsPred().StandardBurps = Burps.Humanoid.Zombie.Standard;
 			npc.AsPred().GetAdditionalDigestedPlayerMessages = GetDigestedPlayerAdditionalDeathMessages;
 			npc.AsPred().GetPreyAbsorptionRate = GetPreyAbsorptionRate;
 
@@ -97,10 +100,12 @@ namespace V2.NPCs.Vanilla.BloodMoon
 			npc.AsFood().ItemTheftRules = new List<ItemTheftRule>()
 			{
 				TheGroomStuff.ItemTheftRules.TopHat,
+				TheGroomStuff.ItemTheftRules.TuxedoShirt,
+				TheGroomStuff.ItemTheftRules.TuxedoPants,
 			};
 		}
 
-		public static bool CanTheGroomBeForceFed(NPC npc) => false;
+		public static bool CanTheGroomBeForceFed(NPC npc) => true;
 
 		public static void OnTheGroomForceFed(NPC npc, Player player)
 		{
@@ -112,18 +117,22 @@ namespace V2.NPCs.Vanilla.BloodMoon
 			deathReasonKeyList.AddHumanoidPredMessages();
 			deathReasonKeyList.AddRange(new List<string>
 			{
-				"Mods.V2.Death.DigestedPlayer.SpecificNPC.BloodMoon.TheGroom.1",
-				"Mods.V2.Death.DigestedPlayer.SpecificNPC.BloodMoon.TheGroom.2",
+				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Forest.Zombie.1",
+				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Forest.Zombie.2",
+				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Forest.Zombie.3",
+				"Mods.V2.Death.DigestedPlayer.SpecificNPC.BloodMoon.GroomAndBride.1",
+				"Mods.V2.Death.DigestedPlayer.SpecificNPC.BloodMoon.GroomAndBride.2",
+				"Mods.V2.Death.DigestedPlayer.SpecificNPC.BloodMoon.GroomAndBride.TheGroom.1",
 			});
 			if (player.difficulty == PlayerDifficultyID.Hardcore)
 			{
 				deathReasonKeyList.Clear();
-				deathReasonKeyList.Add("Mods.V2.Death.DigestedPlayer.SpecificNPC.BloodMoon.TheGroom.Hardcore");
+				deathReasonKeyList.Add("Mods.V2.Death.DigestedPlayer.SpecificNPC.BloodMoon.GroomAndBride.TheGroom.Hardcore");
 			}
 		}
 
-		public static double GetDigestionTickRate(NPC npc, PreyData prey) => 1.4;
-		public static double GetDigestionTickDamage(NPC npc, PreyData prey) => 22;
+		public static double GetDigestionTickRate(NPC npc, PreyData prey) => 0.7;
+		public static double GetDigestionTickDamage(NPC npc, PreyData prey) => 18;
 
 		public static void OnDigestionKill(NPC npc, PreyData digestedPrey)
 		{
@@ -143,7 +152,15 @@ namespace V2.NPCs.Vanilla.BloodMoon
 		{
 			return Math.Min(
 				(int)Math.Floor(5.0 * Math.Sqrt(PredNPC.GetCurrentBellyWeight(npc))),
-				5
+				4
+			);
+		}
+
+		public static int GetVisualWeightStage(NPC npc)
+		{
+			return Math.Min(
+				(int)Math.Floor(0.20 * Math.Sqrt(npc.AsPred().ExtraWeight)),
+				0
 			);
 		}
 
@@ -155,10 +172,10 @@ namespace V2.NPCs.Vanilla.BloodMoon
 		public override void ModifyHoverBoundingBox(NPC npc, ref Rectangle boundingBox)
 		{
 			boundingBox = new Rectangle(
-				(int)npc.Center.X - 18,
-				(int)npc.Center.Y - 27,
-				36,
-				54
+				(int)npc.Center.X - 17,
+				(int)npc.Center.Y - 26,
+				34,
+				52
 			);
 		}
 
@@ -166,10 +183,22 @@ namespace V2.NPCs.Vanilla.BloodMoon
 		{
 			if (pred is Player predPlayer)
 			{
-				PreyData groom = predPlayer.AsPred().StomachTracker?.Prey.FirstOrDefault(x => x.Type == PreyType.NPC && x.ExactType == NPCID.TheBride && x.NoHealth);
-				if (groom is not null)
+				PreyData bride = predPlayer.AsPred().StomachTracker?.Prey.FirstOrDefault(x => x.Type == PreyType.NPC && x.ExactType == NPCID.TheBride && x.NoHealth);
+				if (bride is not null)
 					ModContent.GetInstance<EatBrideAndGroom>().TrySetCompletion(predPlayer);
 			}
+		}
+
+		public override bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+		{
+			int weightStage = npc.AsPred().GetVisualWeightStage.Invoke(npc);
+			string weightString = "_Weight" + (weightStage == 0 ? "Base" : weightStage);
+			int bellySize = npc.AsPred().GetVisualBellySize.Invoke(npc);
+			string bellyString = "_Belly" + (bellySize == 0 ? "Base" : bellySize);
+
+			string exactMainBodyTexture = "V2/NPCs/Vanilla/BloodMoon/TheGroom" + weightString + bellyString;
+			TextureAssets.Npc[NPCID.TheGroom] = ModContent.Request<Texture2D>(exactMainBodyTexture, AssetRequestMode.ImmediateLoad);
+			return true;
 		}
 	}
 }

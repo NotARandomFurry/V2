@@ -23,6 +23,7 @@ namespace V2.UI.StruggleSystem
 		public override void Update(GameTime gameTime)
 		{
 			Visible = false;
+			return;
 			Player player = Main.LocalPlayer;
 			if (player.CurrentCaptor() is not null && !player.dead)
 				Visible = true;

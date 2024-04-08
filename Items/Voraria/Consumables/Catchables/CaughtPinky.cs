@@ -26,11 +26,6 @@ namespace V2.Items.Voraria.Consumables.Catchables
 			Item.DefaultToCapturedCritter(NPCID.BlueSlime);
 			Item.AsV2Item().ReleasedNPCNetID = NPCID.Pinky;
 
-			ContentSamples.NpcsByNetId[NPCID.Pinky].GetLifeStats(out int _, out int statLifeMax);
-			Item.AsFood().MaxHealth = statLifeMax;
-			Item.AsFood().AcidResistTier = 0;
-			Item.AsFood().Size = 0.065;
-
 			Item.width = 30;
 			Item.height = 30;
 			Item.alpha = 100;

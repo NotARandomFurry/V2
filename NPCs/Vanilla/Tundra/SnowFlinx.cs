@@ -29,7 +29,7 @@ namespace V2.NPCs.Vanilla.Tundra
 		{
 			NPC.AsV2NPC().Gender = EntityGender.Other;
 
-			NPC.AsFood().DefinedSize = 0.72;
+			NPC.AsFood().DefinedBaseSize = 0.72;
 
 			NPC.AsFood().OnKilledByDigestion = PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
 			NPC.AsFood().OnKilledByDigestion += PreyNPC.HandlePreyItemTheft;

@@ -1,8 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 using V2.Core;
@@ -38,20 +41,21 @@ namespace V2.NPCs.Vanilla.BloodMoon
 		}
 	}
 
-	public class TheBride : GlobalNPC
+	public partial class TheBride : GlobalNPC
 	{
 		public override bool IsLoadingEnabled(Mod mod) => !V2.GetFooled;
 		public override bool InstancePerEntity => true;
 
-		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.type is NPCID.TheBride;
+		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.type == NPCID.TheBride;
 
 		public override void SetDefaults(NPC npc)
 		{
 			npc.AsV2NPC().Gender = EntityGender.Female;
+			npc.AsV2NPC().NewAIMethod = V2TheBrideAI;
 
-			npc.AsFood().DefinedSize = 1.04;
-			npc.AsPred().MaxStomachCapacity = 5.5;
-			npc.AsPred().BaseStomachacheMeterCapacity = 275.0;
+			npc.AsFood().DefinedBaseSize = 1.04;
+			npc.AsPred().MaxStomachCapacity = 1.7;
+			npc.AsPred().BaseStomachacheMeterCapacity = 120.0;
 
 			npc.AsPred().SmallGulps = Gulps.Short;
 			npc.AsPred().SmallGulpThreshold = 0.5;
@@ -61,14 +65,13 @@ namespace V2.NPCs.Vanilla.BloodMoon
 			npc.AsPred().OnForceFed = OnTheBrideForceFed;
 
 			npc.AsPred().GetVisualBellySize = GetVisualBellySize;
+			npc.AsPred().GetVisualWeightStage = GetVisualWeightStage;
 
 			npc.AsPred().DigestionType = EntityDigestionType.Acidic;
 			npc.AsPred().GetDigestionTickDamage = GetDigestionTickDamage;
 			npc.AsPred().GetDigestionTickRate = GetDigestionTickRate;
 
-			npc.AsPred().SmallBurps = Burps.Humanoid.Small;
-			npc.AsPred().SmallBurpThreshold = 0.65;
-			npc.AsPred().StandardBurps = Burps.Humanoid.Standard;
+			npc.AsPred().StandardBurps = Burps.Humanoid.Zombie.Standard;
 			npc.AsPred().GetAdditionalDigestedPlayerMessages = GetDigestedPlayerAdditionalDeathMessages;
 
 			npc.AsPred().GetPreyAbsorptionRate = GetPreyAbsorptionRate;
@@ -83,7 +86,7 @@ namespace V2.NPCs.Vanilla.BloodMoon
 			};
 		}
 
-		public static bool CanTheBrideBeForceFed(NPC npc) => false;
+		public static bool CanTheBrideBeForceFed(NPC npc) => true;
 
 		public static void OnTheBrideForceFed(NPC npc, Player player)
 		{
@@ -95,18 +98,22 @@ namespace V2.NPCs.Vanilla.BloodMoon
 			deathReasonKeyList.AddHumanoidPredMessages();
 			deathReasonKeyList.AddRange(new List<string>
 			{
-				"Mods.V2.Death.DigestedPlayer.SpecificNPC.BloodMoon.TheBride.1",
-				"Mods.V2.Death.DigestedPlayer.SpecificNPC.BloodMoon.TheBride.2",
+				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Forest.Zombie.1",
+				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Forest.Zombie.2",
+				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Forest.Zombie.3",
+				"Mods.V2.Death.DigestedPlayer.SpecificNPC.BloodMoon.GroomAndBride.1",
+				"Mods.V2.Death.DigestedPlayer.SpecificNPC.BloodMoon.GroomAndBride.2",
+				"Mods.V2.Death.DigestedPlayer.SpecificNPC.BloodMoon.GroomAndBride.TheBride.1",
 			});
 			if (player.difficulty == PlayerDifficultyID.Hardcore)
 			{
 				deathReasonKeyList.Clear();
-				deathReasonKeyList.Add("Mods.V2.Death.DigestedPlayer.SpecificNPC.BloodMoon.TheBride.Hardcore");
+				deathReasonKeyList.Add("Mods.V2.Death.DigestedPlayer.SpecificNPC.BloodMoon.GroomAndBride.TheBride.Hardcore");
 			}
 		}
 
-		public static double GetDigestionTickRate(NPC npc, PreyData prey) => 0.7;
-		public static double GetDigestionTickDamage(NPC npc, PreyData prey) => 14;
+		public static double GetDigestionTickRate(NPC npc, PreyData prey) => 0.8;
+		public static double GetDigestionTickDamage(NPC npc, PreyData prey) => 17;
 
 		public static void OnDigestionKill(NPC npc, PreyData digestedPrey)
 		{
@@ -126,22 +133,30 @@ namespace V2.NPCs.Vanilla.BloodMoon
 		{
 			return Math.Min(
 				(int)Math.Floor(5.0 * Math.Sqrt(PredNPC.GetCurrentBellyWeight(npc))),
-				5
+				4
+			);
+		}
+
+		public static int GetVisualWeightStage(NPC npc)
+		{
+			return Math.Min(
+				(int)Math.Floor(0.20 * Math.Sqrt(npc.AsPred().ExtraWeight)),
+				0
 			);
 		}
 
 		public override void FindFrame(NPC npc, int frameHeight)
 		{
-			npc.frame.Width = 160;
+			npc.frame.Width = 150;
 		}
 
 		public override void ModifyHoverBoundingBox(NPC npc, ref Rectangle boundingBox)
 		{
 			boundingBox = new Rectangle(
-				(int)npc.Center.X - 18,
-				(int)npc.Center.Y - 27,
-				36,
-				54
+				(int)npc.Center.X - 17,
+				(int)npc.Center.Y - 25,
+				34,
+				50
 			);
 		}
 
@@ -153,6 +168,18 @@ namespace V2.NPCs.Vanilla.BloodMoon
 				if (groom is not null)
 					ModContent.GetInstance<EatBrideAndGroom>().TrySetCompletion(predPlayer);
 			}
+		}
+
+		public override bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+		{
+			int weightStage = npc.AsPred().GetVisualWeightStage.Invoke(npc);
+			string weightString = "_Weight" + (weightStage == 0 ? "Base" : weightStage);
+			int bellySize = npc.AsPred().GetVisualBellySize.Invoke(npc);
+			string bellyString = "_Belly" + (bellySize == 0 ? "Base" : bellySize);
+
+			string exactMainBodyTexture = "V2/NPCs/Vanilla/BloodMoon/TheBride" + weightString + bellyString;
+			TextureAssets.Npc[NPCID.TheBride] = ModContent.Request<Texture2D>(exactMainBodyTexture, AssetRequestMode.ImmediateLoad);
+			return true;
 		}
 	}
 }

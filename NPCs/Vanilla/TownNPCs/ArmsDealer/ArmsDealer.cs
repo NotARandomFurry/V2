@@ -76,7 +76,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.ArmsDealer
 
 			npc.AsV2NPC().GetNewDialogue = GetArmsDealerChat;
 
-			npc.AsFood().DefinedSize = 1.04;
+			npc.AsFood().DefinedBaseSize = 1.04;
 			npc.AsPred().MaxStomachCapacity = 1.75;
 			npc.AsPred().BaseStomachacheMeterCapacity = 115.0;
 

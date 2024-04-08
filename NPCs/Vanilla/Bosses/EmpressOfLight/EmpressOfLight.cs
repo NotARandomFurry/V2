@@ -180,7 +180,7 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 		{
 			npc.AsV2NPC().Gender = EntityGender.Female;
 
-			npc.AsFood().DefinedSize = 41.4;
+			npc.AsFood().DefinedBaseSize = 41.4;
 			npc.AsPred().MaxStomachCapacity = 200.0;
 			npc.AsPred().BaseStomachacheMeterCapacity = 5000.0;
 
@@ -191,7 +191,6 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 			npc.AsPred().SmallGulpThreshold = 3.75;
 			npc.AsPred().BigGulps = Gulps.Standard;
 			npc.AsPred().CanBeForceFed = CanUnreasonablyThickFairyBeForceFed;
-			npc.AsPred().MaxSwallowRange = V2Utils.TileCountAsPixelCount(12.5);
 
 			npc.AsPred().DigestionType = EntityDigestionType.Acidic;
 			npc.AsPred().GetDigestionTickDamage = GetDigestionTickDamage;

@@ -60,7 +60,7 @@ namespace V2.NPCs.Vanilla.Cavern
 		{
 			npc.AsV2NPC().Gender = EntityGender.Female;
 
-			npc.AsFood().DefinedSize = 1.04;
+			npc.AsFood().DefinedBaseSize = 1.04;
 			npc.AsPred().MaxStomachCapacity = 5.5;
 			npc.AsPred().BaseStomachacheMeterCapacity = 275.0;
 
@@ -91,7 +91,7 @@ namespace V2.NPCs.Vanilla.Cavern
 			};
 		}
 
-		public static bool CanNymphBeForceFed(NPC npc) => false;
+		public static bool CanNymphBeForceFed(NPC npc) => true;
 
 		public static void OnNymphForceFed(NPC npc, Player player)
 		{

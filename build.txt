@@ -1,4 +1,4 @@
-displayName = [18+] Voraria: The April Fool's De-Release
+displayName = [18+] Voraria: Second Course
 author = the pixelated Sign Painter
 modReferences = BetterDialogue
-version = 9000.1
+version = 1.0

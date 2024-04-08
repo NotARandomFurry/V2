@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Terraria;
 using Terraria.GameContent;
+using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 
@@ -24,31 +25,89 @@ namespace V2
 
 	public static class V2Utils
 	{
+		public static class NPCIDSets
+		{
+			public static List<int> Slimes => new List<int>
+			{
+				NPCID.GreenSlime,
+				NPCID.BlueSlime,
+				NPCID.PurpleSlime,
+				NPCID.YellowSlime,
+				NPCID.RedSlime,
+				NPCID.BlackSlime,
+				NPCID.SlimeRibbonGreen,
+				NPCID.SlimeRibbonRed,
+				NPCID.SlimeRibbonWhite,
+				NPCID.SlimeRibbonYellow,
+				NPCID.MotherSlime,
+				NPCID.BabySlime,
+				NPCID.JungleSlime,
+				NPCID.SpikedJungleSlime,
+				NPCID.KingSlime,
+				NPCID.SlimeSpiked,
+				NPCID.QueenSlimeBoss,
+				NPCID.QueenSlimeMinionBlue,
+				NPCID.QueenSlimeMinionPink,
+				NPCID.QueenSlimeMinionPurple,
+				NPCID.RainbowSlime,
+				NPCID.CorruptSlime,
+				NPCID.Crimslime,
+				NPCID.ToxicSludge,
+				NPCID.Slimer,
+				NPCID.Slimer2,
+				NPCID.BigCrimslime,
+				NPCID.LittleCrimslime,
+				NPCID.IlluminantSlime,
+				NPCID.Gastropod,
+				NPCID.ShimmerSlime,
+				NPCID.SlimeMasked,
+				NPCID.UmbrellaSlime,
+				NPCID.Pinky,
+				NPCID.GoldenSlime,
+				NPCID.TownSlimeBlue,
+				NPCID.TownSlimeCopper,
+				NPCID.TownSlimeGreen,
+				NPCID.TownSlimeOld,
+				NPCID.TownSlimePurple,
+				NPCID.TownSlimeRainbow,
+				NPCID.TownSlimeRed,
+				NPCID.TownSlimeYellow,
+				NPCID.BoundTownSlimeOld,
+				NPCID.BoundTownSlimePurple,
+				NPCID.BoundTownSlimeYellow,
+				NPCID.LavaSlime,
+				NPCID.DungeonSlime,
+				NPCID.IceSlime,
+				NPCID.SpikedIceSlime,
+				NPCID.SandSlime,
+			};
+		}
 		/// <summary>
-		/// Takes the given amount of time for an effect to last and converts it to a concrete frame count.<br/>
-		/// Measurements are all based on real-life time, and assume a constant FPS (frames per second rate) of 60.
+		/// Takes the given amount of readable time and converts it to a concrete frame count.<br/>
+		/// Measurements are all based on real-life time, and assume a constant FPS (frames per second rate) of 60.<br/>
+		/// Used for the purpose of setting time-related fields, such as enemy attack delays or status effect durations.<br/>
 		/// </summary>
 		/// <param name="hours">
-		/// The number of hours an effect should last for.<br/>
-		/// Defaults to 0, because no sane person ever makes an effect last for an hour or more.<br/>
+		/// The number of hours to convert.<br/>
+		/// Defaults to 0, because no sane person ever makes anything last for an hour or more...right?<br/>
 		/// </param>
 		/// <param name="minutes">
-		/// The number of minutes an effect should last for.<br/>
-		/// Defaults to 0.
+		/// The number of minutes to convert.<br/>
+		/// Defaults to 0.<br/>
 		/// </param>
 		/// <param name="seconds">
-		/// The number of hours an effect should last for.<br/>
-		/// Defaults to 0.
+		/// The number of seconds to convert.<br/>
+		/// Defaults to 0.<br/>
 		/// </param>
 		/// <param name="frames">
-		/// The number of individual frames an effect should last for.<br/>
+		/// The number of individual frames to add to the converted time.<br/>
 		/// Used only for very specific adjustments.<br/>
 		/// Defaults to 0. To cover many common use cases for this:<br/>
 		/// - 15 is a quarter of a second.<br/>
 		/// - 20 is a third of a second.<br/>
-		/// - 30 is a half of a second.
+		/// - 30 is a half of a second.<br/>
 		/// </param>
-		/// <returns>The total number of frames that the effect should last for, for the purpose of setting time-related fields.</returns>
+		/// <returns>The total number of frames needed to cover the input amount of time.</returns>
 		public static int SensibleTime(int hours = 0, int minutes = 0, int seconds = 0, int frames = 0)
 		{
 			int totalFrameCount = hours * 60 * 60 * 60;
@@ -204,7 +263,7 @@ namespace V2
 				dynamicTooltip.Text = tooltipFlavorText;
 				dynamicTooltip.OverrideColor = Color.Gray;
 			}
-			
+
 			if (tooltips.FirstOrDefault(x => x.Mod == "Terraria" && x.Name.Contains("Tooltip")) is TooltipLine tooltipLine)
 			{
 				tooltips.Insert(

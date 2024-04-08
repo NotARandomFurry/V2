@@ -48,8 +48,10 @@ namespace V2.UI.PredStatsMenu
 		private static Asset<Texture2D> _predStatsOverviewPanel = ModContent.Request<Texture2D>("V2/UI/PredStatsMenu/PredStatsMenu_StatOverviewPanel", AssetRequestMode.ImmediateLoad);
 		private static Asset<Texture2D> _predStatsAvailablePointsPanel = ModContent.Request<Texture2D>("V2/UI/PredStatsMenu/PredStatsMenu_AvailableStatPointsPanel", AssetRequestMode.ImmediateLoad);
 		private static Asset<Texture2D> _predStatsGoalsMenuBook = ModContent.Request<Texture2D>("V2/UI/PredStatsMenu/PredStatsMenu_GoalsBook", AssetRequestMode.ImmediateLoad);
-		private static Asset<Texture2D> _predStatsStageDeselected = ModContent.Request<Texture2D>("V2/UI/PredStatsMenu/PredStatsMenu_Goals_SectionDeselected", AssetRequestMode.ImmediateLoad);
-		private static Asset<Texture2D> _predStatsStageSelected = ModContent.Request<Texture2D>("V2/UI/PredStatsMenu/PredStatsMenu_Goals_SectionSelected", AssetRequestMode.ImmediateLoad);
+		private static Asset<Texture2D> _predStatsGoalsStageDeselected = ModContent.Request<Texture2D>("V2/UI/PredStatsMenu/PredStatsMenu_Goals_SectionDeselected", AssetRequestMode.ImmediateLoad);
+		private static Asset<Texture2D> _predStatsGoalsStageSelected = ModContent.Request<Texture2D>("V2/UI/PredStatsMenu/PredStatsMenu_Goals_SectionSelected", AssetRequestMode.ImmediateLoad);
+		private static Asset<Texture2D> _predStatsGoalsMenuHeader = ModContent.Request<Texture2D>("V2/UI/PredStatsMenu/PredStatsMenu_Goals_Header", AssetRequestMode.ImmediateLoad);
+		private static Asset<Texture2D> _predStatsGoalsMenuFooter = ModContent.Request<Texture2D>("V2/UI/PredStatsMenu/PredStatsMenu_Goals_Footer", AssetRequestMode.ImmediateLoad);
 		private static Asset<Texture2D> _predStatsGoalsMenuExitButton = ModContent.Request<Texture2D>("V2/UI/PredStatsMenu/PredStatsMenu_Goals_ExitButton", AssetRequestMode.ImmediateLoad);
 		private static Asset<Texture2D> _predStatsExitButton = ModContent.Request<Texture2D>("V2/UI/PredStatsMenu/PredStatsMenu_Exit", AssetRequestMode.ImmediateLoad);
 		private static readonly SoundStyle AllocateSuccess = new SoundStyle("V2/Sounds/PredStatsMenu/AllocateSuccess", SoundType.Sound) with { MaxInstances = 0, PitchVariance = 0f };
@@ -132,8 +134,8 @@ namespace V2.UI.PredStatsMenu
 						break;
 				}
 
-				int columnCountPerPage = 7;
-				int rowCountPerPage = 4;
+				int columnCountPerPage = 12;
+				int rowCountPerPage = 5;
 				int totalGoalsPerPage = columnCountPerPage * rowCountPerPage;
 				int goalPages = 1 + (int)Math.Floor((double)(selectedStageGoals.Count - 1) / (double)totalGoalsPerPage);
 				int firstIndexForThisPage = (GoalsPage - 1) * totalGoalsPerPage;
@@ -147,7 +149,7 @@ namespace V2.UI.PredStatsMenu
 					int x = placementIndex % columnCountPerPage;
 					int y = (int)Math.Floor((double)placementIndex / (double)columnCountPerPage);
 					PredPlayerGoal goalToDraw = selectedStageGoals[i];
-					Vector2 goalDrawPos = backdropPos + new Vector2(80f, 100f) + new Vector2((PredPlayerGoal.TextureBounds.Width + 2) * x, (PredPlayerGoal.TextureBounds.Height + 2) * y);
+					Vector2 goalDrawPos = backdropPos + new Vector2(80f, 140f) + new Vector2((PredPlayerGoal.TextureBounds.Width + 2) * x, (PredPlayerGoal.TextureBounds.Height + 2) * y);
 					spriteBatch.Draw(
 						goalToDraw.Complete(Main.LocalPlayer)
 						? goalToDraw.CompleteTexture
@@ -220,6 +222,9 @@ namespace V2.UI.PredStatsMenu
 				for (int i = 0; i < stagesOrdered.Count; i++)
 				{
 					ProgressionStage stageToDraw = stagesOrdered[i];
+					if (!stageToDraw.Available(Main.LocalPlayer))
+						break;
+
 					List<PredPlayerGoal> stageGoals = ModContent.GetContent<PredPlayerGoal>().ToList();
 					stageGoals.RemoveAll(x => x.Stage != stageToDraw);
 					List<PredPlayerGoal> stageGoalsCompleted = stageGoals.FindAll(x => x.Complete(Main.LocalPlayer));
@@ -234,7 +239,7 @@ namespace V2.UI.PredStatsMenu
 					}
 					float pointsCompletionRatio = (float)pointsGainedFromStage / (float)pointsPossibleFromStage;
 
-					Vector2 stageTabDrawPos = backdropPos + new Vector2(10f, 100f);
+					Vector2 stageTabDrawPos = backdropPos + new Vector2(10f, 140f);
 					if (i <= selectedStageIndex)
 						stageTabDrawPos.Y += i * 20;
 					else
@@ -242,12 +247,12 @@ namespace V2.UI.PredStatsMenu
 
 					spriteBatch.Draw(
 						i == selectedStageIndex
-						? _predStatsStageSelected.Value
-						: _predStatsStageDeselected.Value,
+						? _predStatsGoalsStageSelected.Value
+						: _predStatsGoalsStageDeselected.Value,
 						stageTabDrawPos,
 						i == selectedStageIndex
-						? _predStatsStageSelected.Value.Bounds
-						: _predStatsStageDeselected.Value.Bounds,
+						? _predStatsGoalsStageSelected.Value.Bounds
+						: _predStatsGoalsStageDeselected.Value.Bounds,
 						Color.White,
 						0f,
 						Vector2.Zero,
@@ -259,8 +264,8 @@ namespace V2.UI.PredStatsMenu
 					Rectangle stageHoverRect = new Rectangle(
 						(int)stageTabDrawPos.X,
 						(int)stageTabDrawPos.Y,
-						i == selectedStageIndex ? _predStatsStageSelected.Value.Width : _predStatsStageDeselected.Value.Width,
-						i == selectedStageIndex ? _predStatsStageSelected.Value.Height : _predStatsStageDeselected.Value.Height
+						i == selectedStageIndex ? _predStatsGoalsStageSelected.Value.Width : _predStatsGoalsStageDeselected.Value.Width,
+						i == selectedStageIndex ? _predStatsGoalsStageSelected.Value.Height : _predStatsGoalsStageDeselected.Value.Height
 					);
 					if (stageHoverRect.Contains(Main.MouseScreen.ToPoint()))
 					{
@@ -296,6 +301,77 @@ namespace V2.UI.PredStatsMenu
 				}
 
 				spriteBatch.Draw(
+					_predStatsGoalsMenuHeader.Value,
+					backdropPos + new Vector2(_predStatsMenuBackground.Value.Width / 2f, 10f),
+					_predStatsGoalsMenuHeader.Value.Bounds,
+					Color.White,
+					0f,
+					new Vector2(
+						_predStatsGoalsMenuHeader.Value.Width / 2f,
+						0
+					),
+					1f,
+					SpriteEffects.None,
+					0f
+				);
+				ChatManager.DrawColorCodedStringWithShadow(
+					Main.spriteBatch,
+					FontAssets.MouseText.Value,
+					Language.GetTextValue("Mods.V2.PredPlayerGoals.GenericText.Header.Title"),
+					backdropPos + new Vector2(_predStatsMenuBackground.Value.Width / 2f, 12f),
+					Color.White,
+					0f,
+					new Vector2(
+						ChatManager.GetStringSize(FontAssets.MouseText.Value, Language.GetTextValue("Mods.V2.PredPlayerGoals.GenericText.Header.Title"), new Vector2(1.2f)).X / 2f,
+						0f
+					),
+					new Vector2(1.2f)
+				);
+				ChatManager.DrawColorCodedStringWithShadow(
+					Main.spriteBatch,
+					FontAssets.MouseText.Value,
+					Language.GetTextValue("Mods.V2.PredPlayerGoals.GenericText.Header.Description"),
+					backdropPos + new Vector2(
+						(_predStatsMenuBackground.Value.Width / 2f) - (_predStatsGoalsMenuHeader.Value.Width / 2f) + 8f,
+						12f + ChatManager.GetStringSize(FontAssets.MouseText.Value, Language.GetTextValue("Mods.V2.PredPlayerGoals.GenericText.Header.Title"), new Vector2(1.25f)).Y + 2f
+					),
+					Color.White,
+					0f,
+					Vector2.Zero,
+					new Vector2(0.75f),
+					_predStatsGoalsMenuHeader.Value.Width - 16f
+				);
+
+				spriteBatch.Draw(
+					_predStatsGoalsMenuFooter.Value,
+					backdropPos + new Vector2((_predStatsMenuBackground.Value.Width / 2f) - 30f, _predStatsMenuBackground.Value.Height - 10f),
+					_predStatsGoalsMenuFooter.Value.Bounds,
+					Color.White,
+					0f,
+					new Vector2(
+						_predStatsGoalsMenuFooter.Value.Width / 2f,
+						_predStatsGoalsMenuFooter.Value.Height
+					),
+					1f,
+					SpriteEffects.None,
+					0f
+				);
+				ChatManager.DrawColorCodedStringWithShadow(
+					Main.spriteBatch,
+					FontAssets.MouseText.Value,
+					SelectedProgressionStage.FooterAdvice,
+					backdropPos + new Vector2(
+						(_predStatsMenuBackground.Value.Width / 2f) - 30f - (_predStatsGoalsMenuFooter.Value.Width / 2f) + 8f,
+						_predStatsMenuBackground.Value.Height - _predStatsGoalsMenuFooter.Value.Height
+					),
+					Color.White,
+					0f,
+					Vector2.Zero,
+					new Vector2(0.75f),
+					_predStatsGoalsMenuFooter.Value.Width - 16f
+				);
+
+				spriteBatch.Draw(
 					_predStatsGoalsMenuExitButton.Value,
 					backdropPos + new Vector2(644f, 394f),
 					goalsMenuBookRect.Contains(Main.MouseScreen.ToPoint())
@@ -320,6 +396,12 @@ namespace V2.UI.PredStatsMenu
 					}
 				}
 
+				if (PredStatsMenuMouthUI.MouthState == PredStatsMenuMouthState.YourCursorGotFuckingGulpedIdiot && Main.keyState.IsKeyDown(Keys.Escape))
+				{
+					SoundEngine.PlaySound(SoundID.MenuClose);
+					GoalsMenuOpen = false;
+					return;
+				}
 			}
 			else
 			{

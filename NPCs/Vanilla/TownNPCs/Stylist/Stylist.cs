@@ -84,7 +84,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 
 			npc.AsV2NPC().GetNewDialogue = GetStylistChat;
 
-			npc.AsFood().DefinedSize = 1.085;
+			npc.AsFood().DefinedBaseSize = 1.085;
 			npc.AsPred().MaxStomachCapacity = 5.85;
 			npc.AsPred().BaseStomachacheMeterCapacity = 175.0;
 

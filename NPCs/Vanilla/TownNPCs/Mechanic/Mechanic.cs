@@ -108,7 +108,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Mechanic
 
 			npc.AsV2NPC().GetNewDialogue = GetMechanicChat;
 			
-			npc.AsFood().DefinedSize = 0.96;
+			npc.AsFood().DefinedBaseSize = 0.96;
 			npc.AsPred().MaxStomachCapacity = 1.75;
 			npc.AsPred().BaseStomachacheMeterCapacity = 300.0;
 

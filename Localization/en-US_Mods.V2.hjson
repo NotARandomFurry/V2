@@ -308,7 +308,7 @@ PredStatsMenu: {
 
 					Thankfully, there exist a virtually infinite number of other universes out there, all with one newfound shared purpose: as an endless food supply for you. Your acids are reality's new great constant, dissolving entire bubbles of existence in moments, should you will it.
 
-					Reality is your buffet. All that exists, has ever existed, and ever will have existed is doomed- no, DESTINED to end up as fat for your frame in time.
+					Reality is your buffet. All that exists, has ever existed, and ever will have existed is doomed- no, destined- ...no. DESIGNED to end up as fat for your frame in time.
 					Bon appetit.
 					'''
 			}
@@ -329,17 +329,16 @@ PredStatsMenu: {
 					Your stomach acids are just as mundane as the next predator's.
 					[c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:Bones, clothing, and various other materials are easily able to survive your hungry tummy, despite its best efforts to melt them down.]
 
-					An old enchantress from Avarsici is rumored to live below the surface of the tundra.
-					She's no less wise or witty for it, and may be able to help remedy this fault, for a price...
+					An old researcher from Avarsici is rumored to live below the surface of the tundra.
+					She's past her prime, sure, but she's no less wise or witty for it, and may be able to help remedy this fault, for a price...
 					'''
 				Recursive:
 					'''
 					Stomach Acid Tier: [c/FF4FFF:Recursive (2)]
-					Your stomach acids have been enchanted to digest prey recursively as a token of gratitude from a rather...eccentric micro-grade fairy enchantress who now lives in the depths of the frozen tundra.
+					Your stomach acids have been enchanted to digest prey recursively as a token of gratitude from a rather...eccentric fairy enchantress living within a pocket dimension inside the belly of an old Avarsician space researcher.
 					Bones and clothing can no longer escape their fate of being fat on your frame anywhere near as easily. However, [c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:plastics and various metals still manage to evade your gut's gastric assault with ease.]
 
-					That said, there were advertisements in the enchantress' room about a product made and sold
-					entirely within Avarsician borders which can resolve this problem...
+					That said, there were advertisements in the enchantress' room about a product made and sold entirely within Avarsician borders which can resolve this problem...
 					'''
 				Royal:
 					'''
@@ -354,11 +353,11 @@ PredStatsMenu: {
 				Divine:
 					'''
 					Stomach Acid Tier: [c/167200:Divine (4)]
-					By the will of Melodia, as gratitude for bringing her star songbird back to her, your royal acids have been further granted the privilege which only a Sinhunter can otherwise enjoy.
+					By the will of Melodia, as gratitude for bringing her beloved Lead Conductor back to her, your royal acids have been further granted the privilege which only an angel can otherwise enjoy.
 					Nothing shall escape your stomach --- you can even hold and digest non-divine souls innately, and not even the delicacies of the Divine Realm can outlast your supreme digestive system.
 					Thus, all your battles with breakfast (and other meals) are now a war of attrition --- one which, should you will it, you are destined to win.
 
-					An even greater boost would be necessary to begin digesting the souls of the Divine Realm's inhabitants on your quest to truly become the apex, and someday, hopefully soon, devour the WHOLE of the world in which you live...but where would one even BEGIN to gain such raw, unadulterated gastric strength?
+					An even greater boost would be necessary to begin digesting the souls of the Divine Realm's inhabitants on your quest to truly become the apex and someday, hopefully soon, devour the WHOLE of the world in which you live...but where would one even BEGIN to gain such raw, unadulterated gastric strength, never mind the edge needed to break though divine soul protection?
 					'''
 			}
 		}
@@ -386,8 +385,8 @@ PredStatsMenu: {
 
 					{$Mods.V2.PredStatsMenu.StatDescription.HoldSHIFTToSeeDescription}
 					Absorption: {AbsorptionRate} weight/minute
-					Buffs from eaten prey last {BuffExtensionTime}x longer
-					Debuffs from eaten prey take {DebuffDisextensionTime}x less time to wear off
+					Buffs from eaten prey last {BuffExtensionTime}x as long
+					Debuffs from eaten prey wear off {DebuffDisextensionTime}x as fast
 					'''
 				Chronological:
 					'''
@@ -405,6 +404,11 @@ PredStatsMenu: {
 
 PredPlayerGoals: {
 	GenericText: {
+		Header: {
+			Title: "[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Pred Player Goals]"
+			Description: This is a collection of achievements, for lack of a better word, which you can complete to earn [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:stat points]! [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Stat points] can be spent in the main pred stats menu to [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:make your digestive system stronger]. The more you complete and the more you progress in the rest of the game, the more goals you'll be able to view!
+		}
+
 		HoldToLearnMore: {
 			Incomplete: Hold LEFT SHIFT for more specific information on how to complete this goal
 			Complete: Hold LEFT SHIFT for more specific information on how you completed this goal
@@ -418,6 +422,11 @@ PredPlayerGoals: {
 			'''
 			Just getting started on the wonderful world of...well, eating the world, one meal at a time? No worries; you're already free to start snacking!
 			Here are some of the first things you ought to do to make sure you and your gut are as ready as can be to get some proper good eats in you!
+			'''
+		FooterAdvice:
+			'''
+			[c/{$Mods.V2.CommonColorCodes.DoSomething}:Starter Advice:]
+			If you're finding the more impressive feats too difficult, remember that progressing outside of pred gameplay is important, too! Try to keep a healthy balance of pred progression and normal progression until you're certain can properly feast to your heart's content.
 			'''
 
 		FirstLivePrey: {
@@ -451,9 +460,9 @@ PredPlayerGoals: {
 					'''
 					Eat an item. Digestion is optional.
 					To swallow an item, hover over it in your inventory and press the Swallow Item keybind.
-					If you cannot swallow the item, make sure it's not too large for your swallow or stomach capacities to handle.
-					Some items (e.g. Life and Mana Crystals) can be swallowed on left-click by holding the Swallow Item keybind while using them.
-					Some items (e.g. food and drink) force you to swallow them on use.
+					If you cannot swallow the item, make sure it's not larger than your swallow or stomach capacities can currently handle.
+					Some items (e.g. Life and Mana Crystals, critters) can be swallowed on left-click by holding the Swallow Item keybind while using them.
+					Some items (e.g. "normal" food and drink) force you to swallow them on use.
 					'''
 			}
 		}
@@ -485,50 +494,108 @@ PredPlayerGoals: {
 			Okay, so you know the basics now, but there's still a nigh-endless supply of succulent, mouth-watering mounds of MEAT out there for you to sink those pearly whites into as they sink into your gut.
 			Try to snag a good few courses of breakfast to help yourself get used to swallowing and digesting bigger and/or squirmier meals.
 			'''
+		FooterAdvice:
+			'''
+			[c/{$Mods.V2.CommonColorCodes.DoSomething}:Beginner Advice:]
+			Make sure to spend the stat points you earn from completing goals in the main pred stats menu! Each pred stat has its own advantages to investing points into it. Sometimes, you'll also be able to snag permanent buffs to these stats!
+			'''
 
-		EatAngyFlower: {
-			Name: Vegan Option
-			Description:
-				'''
-				Eat and digest an angry dandelion.
-				'Some preds insist on never eating innocent animals. Or other people. Thankfully, there is an abundance of planty, and still very feisty, meals available for these preds to eat.'
-				'''
-		}
-
-		EatSnowFlinx: {
-			Name: It Was So Fluffy!
-			Description:
-				'''
-				Eat and digest a snow flinx.
-				'The fur honestly just bothers the throat on the way down...it's a really comfy feeling to have one in your belly, though. It's like gulping down a huge pillow.'
-				'''
-		}
-
-		Eat3DifferentSlimes: {
-			Name: Dessert Before Breakfast
+		EatGoldCritter: {
+			Name: Gilded Gut Fodder
 
 			Description: {
 				Default:
 					'''
-					Have 3 different colors of slime sloshing around in you all at once.
-					'A great source of sugar!...very flammable sugar, but still!'
+					Take part in some fine local cuisine and dine on a small golden creature.
+					'You sure you can digest a meal that expensi- ...oh, it's already pudge.'
 					'''
 				Clarification:
 					'''
-					Have 3 different slime-type enemies in your stomach simultaneously.
-					It is not required to have all 3 dead or alive specifically.
-					Frankly, they don't care, and will digest rather calmly either way.
+					Eat and digest any gold critter.
+					Gold critters have a rare chance to appear in place of their respective normal counterparts.
+					'''
+			}
+		}
+
+		EatAngyFlower: {
+			Name: Vegan Option
+
+			Description: {
+				Default:
+					'''
+					Nip an angry dandelion in the bud, and try out a healthier option than normal (just kidding; walking, talking MEAT is the healthiest option there is).
+					'Some preds insist on never eating innocent animals. Or other people. Thankfully, there is an abundance of planty, and still very feisty, meals available for these preds to eat.'
+					'''
+				Clarification:
+					'''
+					Eat and digest an Angry Dandelion.
+					Angry Dandelions can only be found and hunted down when it is a particularly windy day.
+					'''
+			}
+		}
+
+		EatSnowFlinx: {
+			Name: It Was So Fluffy!
+
+			Description: {
+				Default:
+					'''
+					Swallow up a snow flinx from deep in the tundra's caverns.
+					'The fur honestly just tickles the throat on the way down, which can be bothersome...it's a REALLY comfy feeling to have one in your belly, though. It's like gulping down a huge pillow that moves around in your tummy for a while.'
+					'''
+				Clarification:
+					'''
+					Eat and digest a Snow Flinx.
+					[c/{Mods.V2.CommonColorCodes.ThomasCommentary}:okay, story time: these motherfuckers used to have the most abominable spawn condition known to man. they always spawned in the Underground Tundra, but only on blocks which weren't actually classified as part of the biome (so e.g. everything the boreal wood houses are made of). to say this made it a nightmare to farm them is an understatement and a half. they're less dumb, now, though, so I wouldn't worry too much if I were you]
+					'''
+			}
+		}
+
+		Eat3DifferentSlimes: {
+			Name: Gel-y Belly
+
+			Description: {
+				Default:
+					'''
+					Have a bunch of different colors of tasty slime sloshing around in you all at once.
+					'A great source of sugar!...very flammable and mediocre sugar, but still!'
+					'''
+				Clarification:
+					'''
+					Be digesting 3 or more different slime-type enemies simultaneously.
+					All enemies counted for the Gelatin World Tour achievement are counted for the purposes of this one.
 					'''
 			}
 		}
 
 		EatPinky: {
 			Name: Too Sweet To Live
-			Description:
-				'''
-				Eat and digest Pinky.
-				'The little thing tastes like cotton candy, and it's small enough for just about anyone to swallow! How could someone bear to NOT gobble this little delicacy up on the spot?'
-				'''
+
+			Description: {
+				Default:
+					'''
+					Pop a little Pinky into your mouth and let it find its way onto your hips.
+					'The little thing tastes like cotton candy, and it's small enough for just about anyone to swallow! How could someone bear to NOT gobble this little delicacy up on the spot?'
+					'''
+				Clarification:
+					'''
+					Eat and digest a Pinky.
+					Pinky is a rare pink slime that rarely appears in surface forests.
+					'''
+			}
+		}
+
+		EatGhost: {
+			Name: Ghostgutter
+
+			Description: {
+				Default:
+					'''
+					Got a ghost trying to haunt you? Force them to haunt your tummy instead.
+					'Who ya gonna swallow?'
+					'''
+				Clarification: Eat and digest a ghost.
+			}
 		}
 
 		EatFirstLifeCrystal: {
@@ -587,6 +654,34 @@ PredPlayerGoals: {
 				Clarification: Drink a tile's worth of honey.
 			}
 		}
+
+		Calamity: {
+			EatCrawler: {
+				Name: Crunchy Crawler
+
+				Description: {
+					Default:
+						'''
+						Gulp down and gurgle a crawler in the caves.
+						'With how shiny and pleasantly crunchy these "little" guys are, one can't help but wonder how they're still so abundant with all the gem-hungry predators such as yourself about.'
+						'''
+					Clarification: Eat and digest any Gem Crawler or a Crystal Crawler.
+				}
+			}
+
+			EatFearlessGoldfish: {
+				Name: Full Omen
+
+				Description: {
+					Default:
+						'''
+						Put the foolish ambitions of a goldfish to rest (with the help of your hungry stomach).
+						'A flame extinguished, yet the flame of grace (and gluttony) still burns bright.'
+						'''
+					Clarification: Eat and digest a Fearless Goldfish Warrior
+				}
+			}
+		}
 	}
 
 	Amateur: {
@@ -597,23 +692,45 @@ PredPlayerGoals: {
 			You're starting to get the hang of eating now. By now, you should be able to pack away at least another person your size...if not a bit more.
 			Feel free to start hunting down the meals in this section to help train up your system even more; eating just one person at once simply won't do for much longer!
 			'''
+		FooterAdvice:
+			'''
+			[c/{$Mods.V2.CommonColorCodes.DoSomething}:Amateur Advice:]
+			Many goals may be unavailable to view until you've either completed them or visited the area to which their completion check is relevant. Some may also only appear when certain NPCs are active, after certain bosses are downed, or during certain weather events.
+			'''
 
 		EatHarpy: {
 			Name: Finger-Lickin' Good
-			Description:
-				'''
-				Eat and digest a harpy.
-				'Tastes like chicken. More specifically, the breasts and thighs.'
-				'''
+
+			Description: {
+				Default:
+					'''
+					Help yourself to a harpy, nabbed fresh from the skies.
+					'Tastes like chicken. More specifically, the breasts and thighs.'
+					'''
+				Clarification:
+					'''
+					Eat and digest a Harpy.
+					Harpies spawn very frequently in the Sky layer.
+					Note that, prior to Hardmode, they will not spawn near the horizontal center of the world.
+					'''
+			}
 		}
 
 		EatNymph: {
 			Name: Damsel In Digest
-			Description:
-				'''
-				Eat and digest a hungry nymph.
-				'You could make a scarf and a couple other things out of her hair, y'know. Hang onto it.'
-				'''
+
+			Description: {
+				Default:
+					'''
+					Nom a hungry nymph so she doesn't eat you first.
+					'Maybe you could make a scarf out of what's left of her hair?'
+					'''
+				Clarification:
+					'''
+					Eat and digest a Nymph.
+					Nymphs are rare mobs which can be found in the lower caverns.
+					'''
+			}
 		}
 
 		EatBrideAndGroom: {
@@ -622,12 +739,13 @@ PredPlayerGoals: {
 			Description: {
 				Default:
 					'''
-					Reunite the Groom and Bride as fat for your belly.
+					Reunite the Groom and Bride...as your food.
 					'Now they can stay together forever!...though your belly has a few complaints about the idea, it would seem.'
 					'''
 				Clarification:
 					'''
-					Swallow the Groom and the Bride, and have one already digesting proper when the other dies to digestion damage.
+					Be digesting The Groom and The Bride simultaneously.
+					Both are rare mobs which will only come out to shamble towards their prey during Blood Moons.
 					Be advised that, as both are zombies, they will give you food poisoning while eaten/digesting.
 					'''
 			}
@@ -639,7 +757,7 @@ PredPlayerGoals: {
 			Description: {
 				Default:
 					'''
-					Eat and digest a total of 15 Life Crystals and 9 Mana Crystals.
+					Snack on a lot of Life and Mana Crystals to top off your max health and mana (for now).
 					'Feeling strong enough to snack on some properly lively prey yet, or do you need a bit more?'
 					'''
 				Clarification:
@@ -663,15 +781,6 @@ PredPlayerGoals: {
 			}
 		}
 
-		FastFood: {
-			Name: Fast Food
-			Description:
-				'''
-				Gobble up 4 distinct live prey (that are actually a challenge) within 2 seconds.
-				'Be sure you don't catch hiccups!'
-				'''
-		}
-
 		DigestWithVoodoo: {
 			Name: Long-Distance Dinner
 
@@ -681,7 +790,11 @@ PredPlayerGoals: {
 					Gleefully mulch a tasty townsperson...without ever actually swallowing them.
 					'Whodoo the voodoo?'
 					'''
-				Clarification: Eat and digest a voodoo doll corresponding to a townsperson that is currently alive.
+				Clarification:
+					'''
+					Eat and digest a voodoo doll corresponding to a townsperson that is currently alive.
+					Whether the voodoo doll is yours or not doesn't matter.
+					'''
 			}
 		}
 
@@ -730,7 +843,6 @@ PredPlayerGoals: {
 					Have an effect active which prevents damage from lava. Valid sources include:
 					- Lava Charm and tinkers
 					- Obsidian Skin Potion
-					- Burn-Proof Belly pred ability
 					Swallow a tile's worth of lava.
 					'''
 			}
@@ -743,14 +855,19 @@ PredPlayerGoals: {
 		Description:
 			'''
 			Alright. You've got a good grip on gulping down things bigger than yourself; time for lunch!
-			Be sure to keep an eye on your acid tier starting about here; many of the snacks you...well, snack on...will start being highly resistant or even immune to normal acids, so you'll need to find a way to help your system keep up with demand!
+			These latest meals should give your belly a nice big buffet to work on while you're busy preparing for even bigger snacks to come!
+			'''
+		FooterAdvice:
+			'''
+			[c/{$Mods.V2.CommonColorCodes.DoSomething}:Intermediate Advice:]
+			Keep an eye on your [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:acid tier]. Some of your tastiest prey may be entirely immune to normal acids, and that'll mean you can't churn them into tummy fat! As such, be on the lookout for ways to raise your acid tier; some may be tied to progression (in future updates)...
 			'''
 
 		EatMimic: {
 			Name: Mimic's Miscalculation
 			Description:
 				'''
-				Eat and digest a mimic (before it can eat you).
+				Munch on a mimic (before it can do the same to you).
 				'Now you're just hoarding its hoard in your belly, which could itself be considered a hoard, albeit strictly for food that your system hasn't digested yet. Does this qualify as hoardception...?'
 				'''
 		}
@@ -759,7 +876,7 @@ PredPlayerGoals: {
 			Name: Bite The Dust
 			Description:
 				'''
-				Eat and digest a sand elemental.
+				Swallow up a sand elemental and add her to your figure.
 				'Everyone hates sand. It's coarse, it's rough, and it gets all over you. It even gets all over your stomach walls when you gulp down a pretty girl made out of it. Thankfully, your stomach can resolve that problem fairly quickly by melting down even the smallest grains of sand into smooth, soft, squishy cellulite.'
 				'''
 		}
@@ -778,7 +895,7 @@ PredPlayerGoals: {
 			Description:
 				'''
 				Drink a notable amount of homemade holy water, then eat Promethia to treat her to a nice bath.
-				'It's not as good as the stomachs and saunas alike she remembers from home, but she loves the experience nonetheless! Somehow, she's given you multiple stat points for this. How, you might ask? It's simple.
+				'It's not as good as the stomachs and saunas alike she knows from home, but she loves the experience nonetheless! Somehow, she's given you multiple stat points for this. How, you might ask? It's simple.
 
 				Don't underestimate the enticing nature, and latent magical abilities, of a dedicated gut slut.'
 				'''
@@ -1940,10 +2057,23 @@ Death: {
 		SlimePred: {
 			1: "{Player} wanted to eat a tasty dessert, but ended up part of one instead."
 			2: A wobbly {Pred} managed to dissolve {Player}.
+			3: "{Player} melted into more of a {Pred}."
 		}
 
 		SpecificNPC: {
 			Forest: {
+				Zombie: {
+					1: "{Player}'s brain, and the rest of them, was eaten by {Pred}."
+					2: "{Player} thought {Pred}'s stomach stopped working after they died. They were then proven very wrong."
+					3: "{Player} couldn't even make it out of a weak, shambling zombie's gut."
+					Hardcore:
+						'''
+						Zombies often seek fresh life to devour and make their own, being too stupid to realize it won't make them alive again.
+						Of course, {Player} unfortunately ended up in the crossfire of this eternal hunt for new life to eat.
+						Their legacy will be short-lived, as will their undead predator. Zombies really aren't hard to fight for most...
+						'''
+				}
+
 				Pinky: {
 					1: A Pinky turned {Player} into some pretty pink gel.
 					2: "{Player} got a little too into a cute little Pinky."
@@ -1967,8 +2097,37 @@ Death: {
 						Upon closer inspection, she turned out to be a gluttonous nymph in need of her next meal.
 						She cared little for the fact they couldn't reform; she only cared about getting her breakfast.
 						All that will remain of them once she's done is a new layer of fat on the nymph's more attractive features.
-						After all, the curvier she is, the easier she can lure in future prey...
+						After all, the curvier and chubbier she is, the easier she can lure in future prey...
 						'''
+				}
+			}
+
+			BloodMoon: {
+				GroomAndBride: {
+					1: "{Player} will be on {Pred}'s stomach 'til death do them part."
+					2: "{Pred} might not get a wedding cake, but {Player} seems to have worked fine as a substitute."
+
+					TheGroom: {
+						1: "{Pred}'s long-decayed suit might be a bit tighter by wedding day, thanks to {Player}."
+						Hardcore:
+							'''
+							He wished to marry her one night,
+							but fate tore them far apart.
+							With {Player} filling his stomach eternal,
+							he seeks her again with his missing heart.
+							'''
+					}
+
+					TheBride: {
+						1: "{Pred}'s already-tattered wedding dress might end up bursting from her new weight, thanks to {Player}."
+						Hardcore:
+							'''
+							A bridal carry was her singular concession,
+							and she once longed for her husband to hear.
+							She now shambles in deathly depression,
+							{Player} forever padding out her rear.
+							'''
+					}
 				}
 			}
 
@@ -2135,7 +2294,7 @@ Death: {
 					3: "{Pred} fed {Player} into her countless internal devices and doohickeys."
 					4: "{Pred} hid {Player} away in her stomach, never to see the sun again."
 					5: "{Player} wanted to know how steam is made. {Pred} happily demonstrated."
-					6: The only thing left of {Player} is a gutful of steam inside {Pred}.
+					6: The only thing left of {Player} is a healthy gutful of steam inside {Pred}.
 					7: "{Pred}'s body has become a little bit denser, thanks to {Prey}."
 					Hardcore:
 						'''
@@ -2170,8 +2329,8 @@ Death: {
 						4: The Princess of Light's stomach must've been just as twinkly as the Empress' for {Player} to get stuck so long.
 						Hardcore:
 							'''
-							{Player} fought many tough battles and even outlasted the voracious Empress of Light, befriending a smaller visage of her in the process.
-							That smaller visage, steadily growing fatter by the minute due to caloric excess, is now their gastric tomb.
+							{Player} fought many tough battles and even outlasted the voracious Empress of Light, befriending an apprentice of hers in the process.
+							That apprentice, steadily growing fatter by the minute due to caloric excess, is now their gastric tomb.
 							'''
 					}
 				}
@@ -2211,7 +2370,7 @@ Death: {
 		SkelePrime: Skeletron Prime has been digested by {Pred}!
 		Plantera: Plantera has been digested by {Pred}!
 		Golem: Golem has been digested by {Pred}!
-		LightSnack: The Empress of Light has been rightfully digested by {Pred}!
+		LightSnack: The Empress of Light has been digested by {Pred}!
 		Fishron: Duke Fishron has been digested by {Pred}!
 		Cultist: The Lunatic Cultist has been digested by {Pred}!
 		SolarPillar: The Solar Pillar has been digested by {Pred}!
@@ -2232,45 +2391,43 @@ Menu: {
 
 TownNPCMood: {
 	Angel: {
-		Content: I- I'm doing wonderfully, thank you! Of course, i- if you'd like me to, I wouldn't object to...s- studying your internals...
-		NoHome: As...e- exciting as it is to study and experience the various i- ins and outs of the creatures of this world, I wouldn't mind a home to s- stay at in my downtime.
-		FarFromHome: W- wow! I've certainly traveled farther than usual today...wh- what predatory thing could I have been attempting to s- study this far out...?
+		Content: I- I'm doing wonderfully, thank you! Of course, if you'd like me to, I wouldn't object to...e- examining your internals...j- just in case there's any dissonance in there!
+		NoHome: As...e- exciting as it is to study and experience the various i- ins and outs of the creatures of this world, I wouldn't mind someplace to stay in my downtime between band practice and...w- well, my actual line of work.
+		FarFromHome: W- wow! I've certainly traveled farther than usual today...hrm. What predatory thing could I have been attempting to s- soothe or s- study this far out...?
 
 		Biomes: {
-			Jungle: I absolutely LOVE this locale! Sure, it's awfully hot and humid here...but just LOOK at all those hungry predators!~ Oh, I'll be able to do TONS of science with them! Sweet, sizzling, SCALDING science...~
-			Sky: It's always nice to be up in the skies...reminds me a lot of home. O- of course, it also doesn't have any of the complaining whenever I get e- eaten and start my...r- research.
-			Forest: I'm not sure I like it here. S- sure, it's very calm here, and the locals are nice, but there simply aren't enough things for me to...s- study, as it were.
-			Corruption: As fascinating as the specimens here are, this place is hardly suited for sustained housing! S- still...one must study the fallen to- well, to avoid BECOMING the fallen...a- and the subjects here certainly get the mind m- moving...
-			Crimson: This place is very...g- gorey. That said, the local...wildlife, if you can c- call them that, are certainly eager to...g- get me on my way into them...wh- which I don't mind all that m- much!
+			Jungle: I absolutely LOVE this locale! Sure, it's awfully hot and humid here...oh, but just LOOK at all those hungry predators!~ I'm sure there's some glaring dissonance to be resolved with them! Sweet, sizzling, SCALDING dissonance...~
+			Sky: It's always nice to be up in the skies...it reminds me a lot of home, in some ways. I do wonder how Melodia would like a place like this...m- maybe she'd be inspired to write a new song, even!
+			Forest: I'm not sure I like it here. S- sure, it's very calm here, and the locals are nice, but...nothing here serves purpose for my job, and they're not very...e- enticing for me, either.
+			Corruption: As fascinating as the specimens here are, this place is hardly suited for sustained housing! S- still...one must study the fallen to- well, to avoid BECOMING the fallen...a- and the creatures here certainly get the mind m- moving...
+			Crimson: This place is very...gorey. That said, the local...wildlife, if you can call them that, are certainly eager to...g- get me on my way into them...wh- which I don't mind all that m- much! Just...I can think of b- better places to do my work than here...
 			Dungeon: I DESPISE this place. There's nothing worth studying. There's nothing to even EAT ME in the first place aside from the slimes. The slimes here are pointless to study, as ANY and all information about them could be gleaned from other, more visually-pleasing and scientifically-stimulating slimes. All of the humanoids I could be eaten by are specimens I could study literally ANYWHERE else. I'd very much like to leave.
 		}
 
 		Neighbors: {
 			CrowdLevel: {
-				Alone: It's very quiet here. I suppose the solitude isn't AWFUL, but...would you be so kind as to d- deliver the occasional pred to sweep me off of my feet a- and onto their figure?...f- for purely scientific p- purposes, of course!
-				GoodCompany: I enjoy the company you've given me. Very amicable, and very willing to further my studies!...a- and give me a comfortable s- sytem to sit in and...e- enjoy myself to.
+				Alone: It's very quiet here. I suppose the solitude isn't AWFUL, but...would you be so kind as to d- deliver the occasional pred with tum troubles to sweep me off of my feet a- and onto their figure?...f- for purely professional p- purposes, of course!
+				GoodCompany: I enjoy the company you've given me. Very amicable, and very willing to further my work!...a- and generally give me a comfortable s- sytem to sit in and...s- soothe.
 				BadCompany: I don't really enjoy the company you've given me. As for why...well, it varies from person to person.
-				ThreesTheSweetSpot: Three is a c- crowd, they say...I- I say three is a healthy s- selection of potential p- predators to work with and analyze!...a- and throw myself into.
+				ThreesTheSweetSpot: Three is a c- crowd, they say...I- I say three is a healthy s- selection of potential p- predators to work with and analyze!...a- and throw myself into. I- it's not MY fault they need routine e- examinations!
 				ThreesNotTheSweetSpot: Three is a crowd, they say. I- I say three WOULD be a healthy selection of potential predators to work with...i- if none of the elements were problematic.
-				TooCrowded: I- is it a valid complaint in the field of g- gastronomy to be suffering from ch- choice paralysis!?
+				TooCrowded: I- is it a valid complaint in the field of m- medicinal gastronomy to be suffering from ch- choice paralysis!?
 			}
 
 			SpecificNPCs: {
-				LoveSuccubus: Th- the demon lady? Lucinda!? I- I do NOT have...I d- don't...oh, who am I kidding? I- I could NEVER be anything less than s- SMITTEN for that b- beautiful body...and that s- strong, searing s- stomach...PERFECT!~
-				LoveCadence: Qu- Queen Cadence? Oh...I- I would look HEAVENLY as p- padding on her rear...a- and I can just imagine her s- stomach...MMMF! O- oh, I want- ...n- no, I NEED her to annex me, YESTERDAY!~
-				LoveTavernkeep: "{NPCName}...the tavernk- keeper. Ooohhhhh...j- just LOOK at those arms. Those m- massive, manly muscles...unf, my t- temperature's rising just THINKING about him! I- I can only imagine how s- strong and s- sturdy his s- s- stomach must be...~"
-				LikeNurse: "{NPCName} is such a wonderful woman, m- making sure everyone is happy, healthy, AND healthily hungry!...p- primarily because they can't really help me with my s- studies if they're too sick to e- eat me."
-				LikeDryad: Dryads are a very fascinating creature from external AND i- internal perspectives, so it should be no surprise that I find {NPCName} particularly fruitful to study!...a- and particularly...a- attractive.
-				DislikeZoologist: B- by all accounts, I should like {NPCName} more than I do. Her s- system...changes dramatically in certain conditions, providing a rare opportunity to s- study two states at once...and yet, it just bothers me. M- maybe it's just because other people's i- internals are the same experience each time...her s- stomach is inconsistent by comparison.
-				DislikeArmsDealer: "{NPCName} bothers me slightly. I- it's not even that he doesn't want to eat me, o- or that I don't let him; he's m- MORE than enthusiastic enough, a- and I don't mind studying him! The problem is, he's...n- not my type, but he keeps insisting he is."
-				DislikeAria: Cadence's daughter? U- um...well, she's certainly fascinating...most children her age are only able to swallow so much as a large grape before their teenage years. Still...I don't feel I should be around her. Th- the inherent...nature of my experiments m- may ultimately upset Cadence if Aria is nearby when they're...p- performed.
-				CadenceAndAria: I- I feel...conflicted. O- on one hand, I'm s- sure I would...g- garner invaluable information...wh- while plumping up C- Cadence's backside. O- on the other hand, as...s- stimulating as Her R- Royal Highnass may b- be to me, I- I'd rather keep my c- composure in the p- presence of her d- daughter. P- please look into a solution.
-				HateAngler: "{NPCName}? Oh, that little fisherman's no fun. Too young to eat me, too young to get WHY I want to be eaten so much on any front...and he poses no scientifically significant qualities whatsoever except for how much of a little BRAT he is!"
+				LoveSuccubus: Th- the demon lady? Lucinda!? I- I do NOT have...I d- don't...oh, who am I kidding? I- I could NEVER be anything less than s- SMITTEN for that b- beautiful body...and that s- strong, searing s- stomach...PERFECT! I o- only wish I had a professional reason t- to rest on her th- thighs for a while...
+				LoveCadence: Qu- Queen Cadence? Oh...I- I would look HEAVENLY as p- padding on her rear...a- and I can just imagine her s- stomach...MMMF! O- oh, I want- ...n- no, I n- need to focus o- on my work...!
+				LoveTavernkeep: "{NPCName}...the tavernk- keeper. Ooohhhhh...j- just LOOK at those arms. Those m- massive, manly muscles...unf, my t- temperature's rising just THINKING about him! I- I can only imagine how s- strong and s- sturdy his s- s- stomach must be...d- do you think he needs a medicinal g- gastronomist to snack on...?~"
+				LikeNurse: "{NPCName} is such a wonderful woman, m- making sure everyone is happy, healthy, AND healthily hungry!...p- primarily because they can't really help me with my w- work if they're too sick to e- eat me."
+				LikeDryad: Dryads are a very fascinating creature from external AND i- internal perspectives, so it should be no surprise that I find {NPCName} particularly fruitful to study!...a- and particularly...a- attractive. N- not as attractive as Melodia, mind you, but still attractive!
+				DislikeZoologist: B- by all accounts, I should like {NPCName} more than I do. Her s- system...changes dramatically in certain conditions, providing a rare opportunity to s- study and potentially soothe two states at once...and yet, it just bothers me. M- maybe it's just because other people's i- internals are the same experience each time...her s- stomach is inconsistent by comparison.
+				DislikeArmsDealer: "{NPCName} bothers me slightly. I- it's not even that he doesn't want to eat me, o- or that I don't let him; he's m- MORE than enthusiastic enough, a- and I don't mind helping him! The problem is, he's...n- not my type, but he keeps insisting he is."
+				HateAngler: "{NPCName}? Oh, that little fisherman's no fun. Too young to eat me, too young to get WHY I want to be eaten so much on any front --- hell, he doesn't even know who my employer IS --- and he poses no noticeably distinct qualities whatsoever except for how much of a little BRAT he is!"
 
 				Calamity: {
 					LikeAmidias: Th- that seahorse king is great! He always gives me all sorts of information about the- ...the marine life that once populated his old home! He, himself, is also quite...i- interesting...compared to most I meet!
-					LikeCirrus: It's q- quite fascinating to study Cirrus' internals! Sh- she always drinks so much to chase down her...m- meals, to the point one might think her liver is broken...b- but it's actually stronger than any normal person's! O- of course, she also has...q- quite the...a- appealing figure.
-					HateCalamitas: I once asked the witch to allow me to...s- study her internals for science...a- and she threatened to burn me on the spot for asking! Seriously, what did HER boss make her put up with to make her such a k- killjoy!?
+					LikeCirrus: It's q- quite fascinating to study Cirrus' internals! Sh- she always drinks so much to chase down her...m- meals, to the point one might think her liver is broken...b- but it's actually stronger than any normal person's! O- of course, she also has...q- quite the...a- appealing figure. There's always s- something to soothe in there, too...
+					HateCalamitas: I once asked the witch to allow me to...s- study her internals for my job...a- and she threatened to burn me on the spot for asking! Seriously, what did HER boss m- make her put up with to make her such a k- killjoy!?
 				}
 			}
 		}
