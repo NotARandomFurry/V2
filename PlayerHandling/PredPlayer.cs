@@ -1321,7 +1321,6 @@ namespace V2.PlayerHandling
 							break;
 						case PreyType.Item:
 							Item preyItem = prey.Instance as Item;
-							preyItem.AsV2Item().State = ItemLocation.BeingFood;
 							preyItem.AsFood().UpdateInStomach?.Invoke(preyItem, pred, prey.NoHealth);
 							break;
 					}

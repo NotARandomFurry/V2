@@ -27,18 +27,7 @@ namespace V2.Items.Vanilla.Currency
 
 		public override void SetDefaults(Item item)
 		{
-			item.AsFood().MaxHealth = 4;
-			item.AsFood().Size = 0.0005;
-			item.AsFood().AcidResistTier = 2;
 
-			item.AsFood().OnBreak += OnBreak;
-
-			item.AsFood().EdibleOnUse = true;
-		}
-
-		public static void OnBreak(Item item, Entity pred)
-		{
-			SoundEngine.PlaySound(StomachNoises.Muffled, pred.Center);
 		}
 
 		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)

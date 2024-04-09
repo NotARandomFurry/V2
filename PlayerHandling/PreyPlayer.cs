@@ -128,7 +128,11 @@ namespace V2.PlayerHandling
 				Player.AsFood().SoftenedWearoffRateModifier *= 2.0f;
 
 			if (Player.AsFood().SoftenedWearoffDelay <= 0 && Player.AsFood().SoftenedDigestionDamageTaken > 0)
+			{
 				Player.AsFood().SoftenedDigestionDamageTaken -= Player.AsFood().SoftenedWearoffRateModifier.ApplyTo((float)(25.0 / 60.0));
+				if (Player.AsFood().SoftenedDigestionDamageTaken < 0)
+					Player.AsFood().SoftenedDigestionDamageTaken = 0;
+			}
 		}
 
 		public override bool CanUseItem(Item item)

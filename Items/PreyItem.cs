@@ -227,9 +227,6 @@ namespace V2.Items
 			if (destination.IsAir || source.IsAir)
 				return false;
 
-			if (destination.AsV2Item().State == ItemLocation.BeingFood || source.AsV2Item().State == ItemLocation.BeingFood)
-				return false;
-
 			return true;
 		}
 
@@ -238,7 +235,7 @@ namespace V2.Items
 			if (item.IsAir)
 				return;
 
-			if (item.AsV2Item().State == ItemLocation.BeingFood)
+			if (item.CurrentCaptor() is not null)
 				grabRange = 0;
 		}
 
@@ -247,13 +244,13 @@ namespace V2.Items
 			if (item.IsAir)
 				return true;
 
-			if (item.AsV2Item().State == ItemLocation.BeingFood)
+			if (item.CurrentCaptor() is not null)
 				return false;
 
 			return true;
 		}
 
-		public override bool CanPickup(Item item, Player player) => !item.IsAir && item.AsV2Item().State != ItemLocation.BeingFood;
+		public override bool CanPickup(Item item, Player player) => !item.IsAir && item.CurrentCaptor() is null;
 
 		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
 		{

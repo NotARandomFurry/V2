@@ -50,8 +50,8 @@ namespace V2.NPCs.Vanilla.Desert
 
 			npc.AsSlime().OccasionalHighJumps = true;
 			npc.AsSlime().HighJumpFrequency = 6;
-			npc.AsSlime().HighJumpXModifier += 5f;
-			npc.AsSlime().HighJumpYModifier += 5f;
+			npc.AsSlime().HighJumpXModifier += 1.5f;
+			npc.AsSlime().HighJumpYModifier += 1.5f;
 
 			npc.AsFood().DefinedBaseSize = 0.52;
 			npc.AsPred().MaxStomachCapacity = 0.78;

@@ -19,7 +19,6 @@ namespace V2.Items
 	}
 	public class V2Item : GlobalItem
 	{
-		public ItemLocation State { get; set; }
 		public DelegateHeldItemDrawingUI heldItemUIDrawMethod;
 
 		public int ReleasedNPCNetID;
@@ -31,18 +30,6 @@ namespace V2.Items
 			heldItemUIDrawMethod = null;
 
 			ReleasedNPCNetID = 0;
-		}
-
-		public override void Update(Item item, ref float gravity, ref float maxFallSpeed)
-		{
-			if (!item.IsAir)
-				item.AsV2Item().State = ItemLocation.InWorld;
-		}
-
-		public override void UpdateInventory(Item item, Player player)
-		{
-			if (!item.IsAir)
-				item.AsV2Item().State = ItemLocation.InPlayerInventory;
 		}
 
 		public override void HorizontalWingSpeeds(Item item, Player player, ref float speed, ref float acceleration)
