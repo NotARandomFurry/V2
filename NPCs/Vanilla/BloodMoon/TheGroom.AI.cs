@@ -346,62 +346,62 @@ namespace V2.NPCs.Vanilla.BloodMoon
 
 		public override void PostAI(NPC npc)
 		{
-			List<(PreyType, int)> diet = new List<(PreyType, int)>
+			List<(TargetType, int)> diet = new List<(TargetType, int)>
 			{
 				// Town NPCs
-				(PreyType.NPC, NPCID.Guide),
-				(PreyType.NPC, NPCID.Merchant),
-				(PreyType.NPC, NPCID.Nurse),
-				(PreyType.NPC, NPCID.Demolitionist),
-				(PreyType.NPC, NPCID.DyeTrader),
-				(PreyType.NPC, NPCID.BestiaryGirl),
-				(PreyType.NPC, NPCID.Dryad),
-				(PreyType.NPC, ModContent.NPCType<LucindaBound>()),
-				(PreyType.NPC, ModContent.NPCType<Lucinda>()),
-				(PreyType.NPC, NPCID.Painter),
-				(PreyType.NPC, NPCID.GolferRescue),
-				(PreyType.NPC, NPCID.Golfer),
-				(PreyType.NPC, NPCID.ArmsDealer),
-				(PreyType.NPC, NPCID.TravellingMerchant),
-				(PreyType.NPC, NPCID.BartenderUnconscious),
-				(PreyType.NPC, NPCID.DD2Bartender),
-				(PreyType.NPC, NPCID.WebbedStylist),
-				(PreyType.NPC, NPCID.Stylist),
-				(PreyType.NPC, NPCID.Clothier),
-				(PreyType.NPC, NPCID.BoundMechanic),
-				(PreyType.NPC, NPCID.Mechanic),
-				(PreyType.NPC, NPCID.PartyGirl),
-				(PreyType.NPC, NPCID.BoundWizard),
-				(PreyType.NPC, NPCID.Wizard),
-				(PreyType.NPC, NPCID.TaxCollector),
-				(PreyType.NPC, NPCID.Pirate),
-				(PreyType.NPC, NPCID.Steampunker),
+				(TargetType.NPC, NPCID.Guide),
+				(TargetType.NPC, NPCID.Merchant),
+				(TargetType.NPC, NPCID.Nurse),
+				(TargetType.NPC, NPCID.Demolitionist),
+				(TargetType.NPC, NPCID.DyeTrader),
+				(TargetType.NPC, NPCID.BestiaryGirl),
+				(TargetType.NPC, NPCID.Dryad),
+				(TargetType.NPC, ModContent.NPCType<LucindaBound>()),
+				(TargetType.NPC, ModContent.NPCType<Lucinda>()),
+				(TargetType.NPC, NPCID.Painter),
+				(TargetType.NPC, NPCID.GolferRescue),
+				(TargetType.NPC, NPCID.Golfer),
+				(TargetType.NPC, NPCID.ArmsDealer),
+				(TargetType.NPC, NPCID.TravellingMerchant),
+				(TargetType.NPC, NPCID.BartenderUnconscious),
+				(TargetType.NPC, NPCID.DD2Bartender),
+				(TargetType.NPC, NPCID.WebbedStylist),
+				(TargetType.NPC, NPCID.Stylist),
+				(TargetType.NPC, NPCID.Clothier),
+				(TargetType.NPC, NPCID.BoundMechanic),
+				(TargetType.NPC, NPCID.Mechanic),
+				(TargetType.NPC, NPCID.PartyGirl),
+				(TargetType.NPC, NPCID.BoundWizard),
+				(TargetType.NPC, NPCID.Wizard),
+				(TargetType.NPC, NPCID.TaxCollector),
+				(TargetType.NPC, NPCID.Pirate),
+				(TargetType.NPC, NPCID.Steampunker),
 
 				// Pirates
-				(PreyType.NPC, NPCID.PirateCorsair),
-				(PreyType.NPC, NPCID.PirateCrossbower),
-				(PreyType.NPC, NPCID.PirateDeadeye),
-				(PreyType.NPC, NPCID.PirateDeckhand),
-				(PreyType.NPC, NPCID.PirateCaptain),
+				(TargetType.NPC, NPCID.PirateCorsair),
+				(TargetType.NPC, NPCID.PirateCrossbower),
+				(TargetType.NPC, NPCID.PirateDeadeye),
+				(TargetType.NPC, NPCID.PirateDeckhand),
+				(TargetType.NPC, NPCID.PirateCaptain),
 
 				// Lamia
-				(PreyType.NPC, NPCID.DesertLamiaDark),
-				(PreyType.NPC, NPCID.DesertLamiaLight),
+				(TargetType.NPC, NPCID.DesertLamiaDark),
+				(TargetType.NPC, NPCID.DesertLamiaLight),
 
 				// Misc. humanoid NPCs
-				(PreyType.NPC, NPCID.LostGirl),
-				(PreyType.NPC, NPCID.Nymph),
+				(TargetType.NPC, NPCID.LostGirl),
+				(TargetType.NPC, NPCID.Nymph),
 
 				// Players, of course
-				(PreyType.Player, -1),
+				(TargetType.Player, -1),
 			};
 			if (!V2.BlacklistsActive)
 			{
-				diet.AddRange(new List<(PreyType, int)>
+				diet.AddRange(new List<(TargetType, int)>
 				{
-					(PreyType.NPC, NPCID.SleepingAngler),
-					(PreyType.NPC, NPCID.Angler),
-					(PreyType.NPC, NPCID.Princess),
+					(TargetType.NPC, NPCID.SleepingAngler),
+					(TargetType.NPC, NPCID.Angler),
+					(TargetType.NPC, NPCID.Princess),
 				});
 			}
 			npc.DoContactGulpage(diet);

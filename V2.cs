@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using ReLogic.Content;
 using System.Collections.Generic;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 using V2.Core.StruggleSystem;
@@ -82,16 +83,6 @@ namespace V2
 			EngageVoraciousGameFuckery();
 		}
 
-		public override void Unload()
-		{
-			VoreNPCBlacklist = null;
-			VoreProjectileBlacklist = null;
-
-			StruggleChartLoader.Unload();
-
-			DisengageVoraciousGameFuckery();
-		}
-
 		public override void PostSetupContent()
 		{
 			VoreNPCBlacklist = new List<int>
@@ -112,6 +103,25 @@ namespace V2
 			{
 				VoreNPCBlacklist.Clear();
 				VoreProjectileBlacklist.Clear();
+			}
+		}
+
+		public override void Unload()
+		{
+			VoreNPCBlacklist = null;
+			VoreProjectileBlacklist = null;
+
+			StruggleChartLoader.Unload();
+
+			DisengageVoraciousGameFuckery();
+
+			for (int i = 0; i < NPCID.Count; i++)
+			{
+				TextureAssets.Npc[i] = ModContent.Request<Texture2D>("Terraria/Images/NPC_" + i);
+			}
+			for (int i = 0; i < ProjectileID.Count; i++)
+			{
+				TextureAssets.Projectile[i] = ModContent.Request<Texture2D>("Terraria/Images/Projectile_" + i);
 			}
 		}
 	}

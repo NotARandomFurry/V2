@@ -2102,6 +2102,23 @@ Death: {
 				}
 			}
 
+			Sky: {
+				Harpy: {
+					1: "{Player} was snatched out of the sky by a hungry harpy girl."
+					2: A harpy swooped in to snack on {Player}, and left with a hearty meal in tow.
+					3: The early bird caught the {Player}.
+					4: "{Player} might be weighing down a harpy a bit too much to fly for a while."
+					5: "{Player} went birdwatching the wrong way."
+					Hardcore:
+						'''
+						The earliest bird of them all nabbed herself a tasty meal of {Player}.
+						Snacked on by a harpy, history won't remember them as any more than bird food.
+						The tasty bird that ate them, at least, will make a fine meal for a hungrier pred!
+						After all, most people find the thighs of a harpy the tastiest part, and those thighs'll get much larger after her meal digests...
+						'''
+				}
+			}
+
 			BloodMoon: {
 				GroomAndBride: {
 					1: "{Player} will be on {Pred}'s stomach 'til death do them part."
@@ -2122,8 +2139,8 @@ Death: {
 						1: "{Pred}'s already-tattered wedding dress might end up bursting from her new weight, thanks to {Player}."
 						Hardcore:
 							'''
-							A bridal carry was her singular concession,
-							and she once longed for her husband to hear.
+							A bridal carry was her one concession,
+							one she longed for her husband to hear.
 							She now shambles in deathly depression,
 							{Player} forever padding out her rear.
 							'''

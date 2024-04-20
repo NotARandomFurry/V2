@@ -11,6 +11,7 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.Chat;
 using Terraria.DataStructures;
+using Terraria.Enums;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -46,6 +47,11 @@ namespace V2.NPCs
 		/// </summary>
 		public DelegateNewAI NewAIMethod { get; set; }
 		/// <summary>
+		/// The <see cref="NPCBehaviorPattern"/> that this NPC is currently using to determine its behavior.<br/>
+		/// Please see the <see cref="NPCBehaviorPattern"/> documentation for more information.<br/>
+		/// </summary>
+		public NPCBehaviorPattern BehaviorPattern { get; internal set; } = null;
+		/// <summary>
 		/// Denotes whether or not this NPC is on their first frame of existing.<br/>
 		/// Used almost expressly to ask whether or not <see cref="FirstFramePreAIMethod"/> should run.<br/>
 		/// </summary>
@@ -60,6 +66,15 @@ namespace V2.NPCs
 		public delegate List<string> DelegateGetChat(NPC npc, Player player);
 		public DelegateGetChat GetNewDialogue { get; set; }
 
+		public double HealthRegenCount { get; set; }
+		public double MaxHealthBoostCount { get; set; }
+
+		public float TargetRange { get; set; }
+		public bool TargetRequiresLineOfSight { get; set; }
+		public TargetType TargetType { get; set; }
+
+		public int Aggro { get; set; }
+
 		public override bool InstancePerEntity => true;
 
 		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => true;
@@ -71,6 +86,11 @@ namespace V2.NPCs
 			NewAIMethod = null;
 			FirstFrame = true;
 			FirstFramePreAIMethod = null;
+			TargetRange = 0f;
+			TargetRequiresLineOfSight = false;
+			TargetType = TargetType.None;
+
+			Aggro = 0;
 
 			GetNewDialogue = null;
 		}

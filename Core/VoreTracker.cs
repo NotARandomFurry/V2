@@ -977,6 +977,8 @@ namespace V2.Core
 					ExactType = preyNPC.netID;
 					if (preyNPC.AsFood().DefinedEffectiveSize != 0)
 						InitialWeight = InitialSize = WeightLeftToDigest = preyNPC.AsFood().DefinedEffectiveSize;
+					else if (preyNPC.AsFood().DefinedBaseSize != 0)
+						InitialWeight = InitialSize = WeightLeftToDigest = preyNPC.AsFood().DefinedBaseSize + preyNPC.AsPred().ExtraWeight;
 					else
 					{
 						double playerToNPCWidthRatio = (double)preyNPC.width / refPlayerWidth;
@@ -997,7 +999,7 @@ namespace V2.Core
 
 					ExactType = preyProjectile.type;
 					if (preyProjectile.AsFood().DefinedSize != 0)
-						InitialWeight = InitialSize = WeightLeftToDigest = preyProjectile.AsFood().DefinedSize;
+						InitialWeight = InitialSize = WeightLeftToDigest = preyProjectile.AsFood().DefinedSize + preyProjectile.AsPred().ExtraWeight;
 					else
 					{
 						double playerToProjWidthRatio = (double)preyProjectile.width / refPlayerWidth;
@@ -1096,9 +1098,9 @@ namespace V2.Core
 			if (preyEntity is Player preyPlayer)
 				return initialSize + preyPlayer.AsPred().StomachFullness;
 			if (preyEntity is NPC preyNPC)
-				return initialSize + PredNPC.GetCurrentBellyWeight(preyNPC);
+				return initialSize + preyNPC.AsPred().ExtraWeight + PredNPC.GetCurrentBellyWeight(preyNPC);
 			if (preyEntity is Projectile preyProjectile)
-				return initialSize + PredProjectile.GetCurrentBellyWeight(preyProjectile);
+				return initialSize + preyProjectile.AsPred().ExtraWeight + PredProjectile.GetCurrentBellyWeight(preyProjectile);
 
 			return initialSize;
 		}

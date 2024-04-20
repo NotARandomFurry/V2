@@ -45,6 +45,187 @@ namespace V2.NPCs
 			return false;
 		}
 
+		public static void SwitchToPattern<T>(this NPC npc, Entity target) where T : NPCBehaviorPattern, new()
+		{
+			npc.AsV2NPC().BehaviorPattern = new T();
+			npc.AsV2NPC().BehaviorPattern.DoBehavior(npc, target);
+		}
+
+		public static void TryFindNewTarget(this NPC npc, List<(TargetType, int)> specificWhitelist = null)
+		{
+			List<(int index, TargetType type, int aggro, float dist)> targetList = new List<(int, TargetType, int, float)>();
+			foreach (Player targetPlayer in Main.ActivePlayers)
+			{
+				if (targetPlayer.dead || targetPlayer.npcTypeNoAggro[npc.type] || targetPlayer.aggro <= -1000)
+					continue;
+
+				bool inSpecificWhitelist = false;
+				if (specificWhitelist is not null)
+				{
+					foreach ((TargetType type, int ID) in specificWhitelist)
+					{
+						if (type == TargetType.Player)
+						{
+							inSpecificWhitelist = true;
+							break;
+						}
+					}
+				}
+				else
+					inSpecificWhitelist = true;
+
+				if (!inSpecificWhitelist)
+					continue;
+
+				float distanceToTarget = npc.Distance(targetPlayer.TrueCenter());
+				float negativeAggroDistMult = 1f;
+				if (targetPlayer.aggro < 0)
+					negativeAggroDistMult -= (float)Math.Abs(targetPlayer.aggro) / 1000f;
+				bool canTarget = distanceToTarget <= npc.AsV2NPC().TargetRange * negativeAggroDistMult;
+				if (npc.AsV2NPC().TargetRequiresLineOfSight)
+					canTarget &= Collision.CanHitLine(npc.TrueCenter(), npc.width, npc.height, targetPlayer.TrueCenter(), targetPlayer.width, targetPlayer.height);
+
+				if (canTarget)
+					targetList.Add((targetPlayer.whoAmI, TargetType.Player, targetPlayer.aggro, distanceToTarget));
+			}
+			foreach (NPC targetNPC in Main.ActiveNPCs)
+			{
+				if (targetNPC.life <= 0 || targetNPC.AsV2NPC().Aggro <= -1000)
+					continue;
+
+				bool inSpecificWhitelist = false;
+				if (specificWhitelist is not null)
+				{
+					foreach ((TargetType type, int ID) in specificWhitelist)
+					{
+						if (type == TargetType.NPC && (ID == targetNPC.type || ID == targetNPC.netID))
+						{
+							inSpecificWhitelist = true;
+							break;
+						}
+					}
+				}
+				else
+					inSpecificWhitelist = true;
+
+				if (!inSpecificWhitelist)
+					continue;
+
+				float distanceToTarget = npc.Distance(targetNPC.TrueCenter());
+				float negativeAggroDistMult = 1f;
+				if (targetNPC.AsV2NPC().Aggro < 0)
+					negativeAggroDistMult -= (float)Math.Abs(targetNPC.AsV2NPC().Aggro) / 1000f;
+				bool canTarget = distanceToTarget <= npc.AsV2NPC().TargetRange * negativeAggroDistMult;
+				if (npc.AsV2NPC().TargetRequiresLineOfSight)
+					canTarget &= Collision.CanHitLine(npc.TrueCenter(), npc.width, npc.height, targetNPC.TrueCenter(), targetNPC.width, targetNPC.height);
+
+				if (canTarget)
+					targetList.Add((targetNPC.whoAmI, TargetType.NPC, targetNPC.AsV2NPC().Aggro, distanceToTarget));
+			}
+			foreach (Projectile targetProjectile in Main.ActiveProjectiles)
+			{
+				if (targetProjectile.AsFood().Health <= 0 || targetProjectile.AsV2Proj().Aggro <= -1000)
+					continue;
+
+				bool inSpecificWhitelist = false;
+				if (specificWhitelist is not null)
+				{
+					foreach ((TargetType type, int ID) in specificWhitelist)
+					{
+						if (type == TargetType.Projectile && ID == targetProjectile.type)
+						{
+							inSpecificWhitelist = true;
+							break;
+						}
+					}
+				}
+				else
+					inSpecificWhitelist = true;
+
+				if (!inSpecificWhitelist)
+					continue;
+
+				float distanceToTarget = npc.Distance(targetProjectile.TrueCenter());
+				float negativeAggroDistMult = 1f;
+				if (targetProjectile.AsV2Proj().Aggro < 0)
+					negativeAggroDistMult -= (float)Math.Abs(targetProjectile.AsV2Proj().Aggro) / 1000f;
+				bool canTarget = distanceToTarget <= npc.AsV2NPC().TargetRange * negativeAggroDistMult;
+				if (npc.AsV2NPC().TargetRequiresLineOfSight)
+					canTarget &= Collision.CanHitLine(npc.TrueCenter(), npc.width, npc.height, targetProjectile.TrueCenter(), targetProjectile.width, targetProjectile.height);
+
+				if (canTarget)
+					targetList.Add((targetProjectile.whoAmI, TargetType.Projectile, targetProjectile.AsV2Proj().Aggro, distanceToTarget));
+			}
+
+			if (targetList.Count > 0)
+			{
+				targetList = targetList.OrderByDescending(x => x.aggro).ToList();
+				if (npc.target != -1 && npc.AsV2NPC().TargetType != TargetType.None)
+				{
+					switch (npc.AsV2NPC().TargetType)
+					{
+						case TargetType.Player:
+							Player previousTargetPlayer = Main.player[npc.target];
+							if (previousTargetPlayer.aggro >= targetList[0].aggro)
+								return;
+							break;
+						case TargetType.NPC:
+							NPC previousTargetNPC = Main.npc[npc.target];
+							if (previousTargetNPC.AsV2NPC().Aggro >= targetList[0].aggro)
+								return;
+							break;
+						case TargetType.Projectile:
+							Projectile previousTargetProjectile = Main.projectile[npc.target];
+							if (previousTargetProjectile.AsV2Proj().Aggro >= targetList[0].aggro)
+								return;
+							break;
+					}
+				}
+				targetList.RemoveAll(x => x.aggro < targetList[0].aggro);
+				targetList = targetList.OrderBy(x => x.dist).ToList();
+				npc.target = targetList[0].index;
+				npc.AsV2NPC().TargetType = targetList[0].type;
+			}
+		}
+ 
+		public static void TryVerifyRemainingTarget(this NPC npc, List<(TargetType, int)> specificWhitelist = null)
+		{
+			if (npc.target != -1)
+			{
+				switch (npc.AsV2NPC().TargetType)
+				{
+					case TargetType.Player:
+						Player targetPlayer = Main.player[npc.target];
+						if (!targetPlayer.active || targetPlayer.dead || targetPlayer.CurrentCaptor() is not null || (npc.AsV2NPC().TargetRequiresLineOfSight && !Collision.CanHitLine(npc.TrueCenter(), npc.width, npc.height, targetPlayer.TrueCenter(), targetPlayer.width, targetPlayer.height)))
+						{
+							npc.AsV2NPC().TargetType = TargetType.None;
+							npc.target = -1;
+						}
+						break;
+					case TargetType.NPC:
+						NPC targetNPC = Main.npc[npc.target];
+						if (!targetNPC.active || targetNPC.life <= 0 || targetNPC.CurrentCaptor() is not null || (npc.AsV2NPC().TargetRequiresLineOfSight && !Collision.CanHitLine(npc.TrueCenter(), npc.width, npc.height, targetNPC.TrueCenter(), targetNPC.width, targetNPC.height)))
+						{
+							npc.AsV2NPC().TargetType = TargetType.None;
+							npc.target = -1;
+						}
+						break;
+					case TargetType.Projectile:
+						Projectile targetProjectile = Main.projectile[npc.target];
+						if (!targetProjectile.active || targetProjectile.AsFood().Health <= 0 || targetProjectile.CurrentCaptor() is not null || (npc.AsV2NPC().TargetRequiresLineOfSight && !Collision.CanHitLine(npc.TrueCenter(), npc.width, npc.height, targetProjectile.TrueCenter(), targetProjectile.width, targetProjectile.height)))
+						{
+							npc.AsV2NPC().TargetType = TargetType.None;
+							npc.target = -1;
+						}
+						break;
+					case TargetType.Other:
+					case TargetType.None:
+					default:
+						break;
+				}
+			}
+		}
+
 		public static List<NPC> GetNearbyResidentNPCs(this NPC npc, out int npcsWithinHouse, out int npcsWithinVillage)
 		{
 			List<NPC> list = new List<NPC>();
@@ -91,7 +272,7 @@ namespace V2.NPCs
 			return false;
 		}
 
-		public static void DoContactGulpage(this NPC npc, List<(PreyType, int)> specificWhitelist = null)
+		public static void DoContactGulpage(this NPC npc, List<(TargetType, int)> specificWhitelist = null)
 		{
 			if (npc.CurrentCaptor() is not null)
 				return;
@@ -104,9 +285,9 @@ namespace V2.NPCs
 					bool inSpecificWhitelist = false;
 					if (specificWhitelist is not null)
 					{
-						foreach ((PreyType type, int ID) in specificWhitelist)
+						foreach ((TargetType type, int ID) in specificWhitelist)
 						{
-							if (type == PreyType.NPC && ID == preyNPC.type)
+							if (type == TargetType.NPC && ID == preyNPC.netID)
 							{
 								inSpecificWhitelist = true;
 								break;
@@ -136,9 +317,9 @@ namespace V2.NPCs
 					bool inSpecificWhitelist = false;
 					if (specificWhitelist is not null)
 					{
-						foreach ((PreyType type, int ID) in specificWhitelist)
+						foreach ((TargetType type, int ID) in specificWhitelist)
 						{
-							if (type == PreyType.Player)
+							if (type == TargetType.Player)
 							{
 								inSpecificWhitelist = true;
 								break;
@@ -163,9 +344,9 @@ namespace V2.NPCs
 					bool inSpecificWhitelist = false;
 					if (specificWhitelist is not null)
 					{
-						foreach ((PreyType type, int ID) in specificWhitelist)
+						foreach ((TargetType type, int ID) in specificWhitelist)
 						{
-							if (type == PreyType.Projectile && ID == preyProjectile.type)
+							if (type == TargetType.Projectile && ID == preyProjectile.type)
 							{
 								inSpecificWhitelist = true;
 								break;

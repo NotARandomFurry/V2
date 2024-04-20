@@ -19,6 +19,8 @@ namespace V2.Projectiles
 		public delegate List<string> DelegateGetChat(Projectile projectile, Player player);
 		public DelegateGetChat GetChat { get; set; }
 
+		public int Aggro { get; set; }
+
 		public override bool InstancePerEntity => true;
 
 		public override bool AppliesToEntity(Projectile entity, bool lateInstantiation) => true;
@@ -30,6 +32,8 @@ namespace V2.Projectiles
 			NewAIMethod = null;
 
 			GetChat = null;
+
+			Aggro = 0;
 		}
 
 	}
