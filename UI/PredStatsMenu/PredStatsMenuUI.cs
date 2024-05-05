@@ -396,7 +396,7 @@ namespace V2.UI.PredStatsMenu
 					}
 				}
 
-				if (PredStatsMenuMouthUI.MouthState == PredStatsMenuMouthState.YourCursorGotFuckingGulpedIdiot && Main.keyState.IsKeyDown(Keys.Escape))
+				if (PredStatsMenuMouthUI.MouthState == PredStatsMenuMouthState.YourCursorGotFuckingGulpedIdiot && Main.keyState.IsKeyDown(Keys.Escape) && !Main.oldKeyState.IsKeyDown(Keys.Escape))
 				{
 					SoundEngine.PlaySound(SoundID.MenuClose);
 					GoalsMenuOpen = false;
@@ -722,7 +722,7 @@ namespace V2.UI.PredStatsMenu
 						PredStatsMenuMouthUI.MouthState = PredStatsMenuMouthState.RegurgitatingCursor;
 				}
 
-				if (PredStatsMenuMouthUI.MouthState == PredStatsMenuMouthState.YourCursorGotFuckingGulpedIdiot && Main.keyState.IsKeyDown(Keys.Escape))
+				if (PredStatsMenuMouthUI.MouthState == PredStatsMenuMouthState.YourCursorGotFuckingGulpedIdiot && Main.keyState.IsKeyDown(Keys.Escape) && !Main.oldKeyState.IsKeyDown(Keys.Escape))
 					PredStatsMenuMouthUI.MouthState = PredStatsMenuMouthState.RegurgitatingCursor;
 			}
 		}

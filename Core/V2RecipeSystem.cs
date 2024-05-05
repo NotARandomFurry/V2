@@ -14,7 +14,10 @@ using V2.Items.Voraria;
 using V2.Items.Voraria.Accessories;
 using V2.Items.Voraria.Accessories.Informational;
 using V2.Items.Voraria.Accessories.Vanity;
+using V2.Items.Voraria.Consumables;
 using V2.Items.Voraria.Consumables.Potions;
+using V2.Items.Voraria.Weapons.Ranged.Throwables;
+using V2.Items.Voraria.Weapons.Summon;
 
 namespace V2.Core
 {
@@ -223,6 +226,48 @@ namespace V2.Core
 			#endregion
 			#region Internal Endurance Potion
 			RemoveExistingRecipesForItem(ModContent.ItemType<StomachacheMeterCapacityPotion>());
+			#endregion
+			#endregion
+			#region Feather Duster
+			RemoveExistingRecipesForItem(ModContent.ItemType<FeatherDuster>());
+			Recipe.Create(ModContent.ItemType<FeatherDuster>(), 3)
+				.AddIngredient(ItemID.Feather, 5)
+				.AddIngredient(ItemID.Wood, 12)
+				.AddTile(TileID.Loom)
+				.AddTile(TileID.SkyMill)
+				.Register();
+			#endregion
+			#endregion
+			#region Weapons
+			#region Voraria
+			#region Ranged
+			#region Throwables
+			#region Fragile Bottles
+			#region Fragile Bottle of Honey
+			RemoveExistingRecipesForItem(ModContent.ItemType<ThrowableHoneyBottle>());
+			Recipe.Create(ModContent.ItemType<ThrowableHoneyBottle>())
+				.AddIngredient(ItemID.HoneyBlock, 4)
+				.AddIngredient(ItemID.Glass, 8)
+				.AddIngredient(ItemID.Wood, 3)
+				.AddTile(TileID.GlassKiln)
+				.Register();
+			Recipe.Create(ModContent.ItemType<ThrowableHoneyBottle>())
+				.AddIngredient(ItemID.Glass, 8)
+				.AddIngredient(ItemID.Wood, 3)
+				.AddTile(TileID.GlassKiln)
+				.AddTile(TileID.HoneyDispenser)
+				.Register();
+			#endregion
+			#region Fragile Bottle of Scalding Sauce
+			RemoveExistingRecipesForItem(ModContent.ItemType<ThrowableHotSauceBottle>());
+			#endregion
+			#endregion
+			#endregion
+			#endregion
+			#region Summon
+			#region Enchanted Origami Bell
+			RemoveExistingRecipesForItem(ModContent.ItemType<PaperMaidSummon>());
+			#endregion
 			#endregion
 			#endregion
 			#endregion

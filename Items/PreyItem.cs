@@ -109,6 +109,11 @@ namespace V2.Items
 		public string OnSwallowDeathReason { get; set; }
 		public int OnSwallowSoreThroatTime { get; set; }
 
+		public delegate bool DelegateCanUseInStomach(Item item, Player player, Entity pred);
+		public DelegateCanUseInStomach CanUseInStomach { get; set; }
+		public delegate void DelegateUseInStomach(Item item, Player player, Entity pred);
+		public DelegateUseInStomach UseInStomach { get; set; }
+
 		public PreyData.DelegateUpdateInStomach UpdateInStomach { get; set; }
 		public delegate void DelegateOnBreak(Item item, Entity pred);
 		public DelegateOnBreak OnBreak { get; set; }
@@ -132,6 +137,9 @@ namespace V2.Items
 			OnSwallowDamage = 0;
 			OnSwallowDeathReason = null;
 			OnSwallowSoreThroatTime = 0;
+
+			CanUseInStomach = (item, player, pred) => false;
+			UseInStomach = null;
 
 			UpdateInStomach = null;
 			OnBreak = null;

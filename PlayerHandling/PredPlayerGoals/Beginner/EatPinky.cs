@@ -17,6 +17,7 @@ namespace V2.PlayerHandling.PredPlayerGoals.Beginner
 		public override string Description(Player pred) => "Mods.V2.PredPlayerGoals.Beginner.EatPinky.Description";
 		public override Texture2D IncompleteTexture => ModContent.Request<Texture2D>("V2/PlayerHandling/PredPlayerGoals/Beginner/EatPinky_Incomplete").Value;
 		public override Texture2D CompleteTexture => ModContent.Request<Texture2D>("V2/PlayerHandling/PredPlayerGoals/Beginner/EatPinky_Complete").Value;
+		public override bool HasClearDescription(Player pred) => true;
 
 		public override int StatPointsFromCompletion => 2;
 

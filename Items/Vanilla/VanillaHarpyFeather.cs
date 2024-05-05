@@ -1,0 +1,48 @@
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Terraria;
+using Terraria.Audio;
+using Terraria.ID;
+using Terraria.Localization;
+using Terraria.ModLoader;
+using V2.Core;
+using V2.NPCs;
+using V2.PlayerHandling;
+using V2.PlayerHandling.PredPlayerGoals.Amateur;
+using V2.PlayerHandling.PredPlayerGoals.Beginner;
+using V2.Sounds.MuffledSounds;
+using V2.Sounds.Vore;
+
+namespace V2.Items.Vanilla
+{
+	public class VanillaHarpyFeather : GlobalItem
+	{
+		public override bool InstancePerEntity => true;
+		public override bool AppliesToEntity(Item entity, bool lateInstantiation) => entity.type == ItemID.Feather;
+
+		public override void SetDefaults(Item item)
+		{
+			item.SetNameOverride(Language.GetTextValue("Mods.V2.ItemName.Vanilla.Feather"));
+
+			item.AsFood().MaxHealth = 12;
+			item.AsFood().Size = 0.008;
+		}
+
+		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
+		{
+			Player player = Main.LocalPlayer;
+			tooltips.AddVorariaDynamicItemTooltip(
+				"Vanilla.Feather",
+				new
+				{
+					
+				}
+			);
+		}
+	}
+}

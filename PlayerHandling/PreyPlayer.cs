@@ -66,13 +66,13 @@ namespace V2.PlayerHandling
 			set => _timesEaten._gurgleCount = value;
 		}
 
-		public StatModifier TakenDigestionDamageModifier { get; set; }
+		public StatModifier TakenDigestionDamageModifier;
 
 		public double SoftenedDigestionDamageTaken { get; set; }
-		public StatModifier SoftenedDigestionDamageModifier { get; set; }
+		public StatModifier SoftenedDigestionDamageModifier;
 		public int SoftenedWearoffDelay { get; set; }
 		public static int SoftenedWearoffMaxDelay => V2Utils.SensibleTime(seconds: 2, frames: 30);
-		public StatModifier SoftenedWearoffRateModifier { get; set; }
+		public StatModifier SoftenedWearoffRateModifier;
 		public int SoftenedStacks => Math.Min(Softened.MaxStacks, (int)Math.Floor((double)Player.AsFood().SoftenedDigestionDamageTaken / (Player.statLifeMax * Softened.MaxHealthDigestedForOneStack)));
 
 		public bool PredScanner { get; set; }

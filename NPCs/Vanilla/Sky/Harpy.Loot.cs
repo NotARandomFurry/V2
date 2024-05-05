@@ -4,6 +4,7 @@ using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 using V2.Core;
+using V2.Items.Voraria.Consumables;
 
 namespace V2.NPCs.Vanilla.Sky
 {
@@ -88,6 +89,29 @@ namespace V2.NPCs.Vanilla.Sky
 					amountDroppedMinimum: 1,
 					amountDroppedMaximum: 1,
 					minimumWeightLevel: 0
+				)
+			));
+			npcLoot.Add(new V2CommonDropRules.DifficultyScalingDrop(
+				new CommonDrop(
+					itemId: ModContent.ItemType<FeatherDuster>(),
+					chanceNumerator: 1,
+					chanceDenominator: 10,
+					amountDroppedMinimum: 1,
+					amountDroppedMaximum: 1
+				),
+				new CommonDrop(
+					itemId: ModContent.ItemType<FeatherDuster>(),
+					chanceNumerator: 1,
+					chanceDenominator: 8,
+					amountDroppedMinimum: 1,
+					amountDroppedMaximum: 1
+				),
+				new CommonDrop(
+					itemId: ModContent.ItemType<FeatherDuster>(),
+					chanceNumerator: 1,
+					chanceDenominator: 6,
+					amountDroppedMinimum: 1,
+					amountDroppedMaximum: 1
 				)
 			));
 		}

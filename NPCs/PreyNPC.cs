@@ -48,6 +48,13 @@ namespace V2.NPCs
 		public double DefinedBaseSize { get; set; }
 		public double DefinedEffectiveSize { get; set; }
 
+		public bool TastySweet { get; set; }
+		public bool TastySpicy { get; set; }
+		public bool TastySour { get; set; }
+		public bool TastyMeaty { get; set; }
+		public bool TastyBitter { get; set; }
+		public bool TastyFruity { get; set; }
+
 		public int STR { get; set; }
 		/// <summary>
 		/// Expresses, from 0 to 12, how well this NPC struggles.<br/>
@@ -123,6 +130,13 @@ namespace V2.NPCs
 				npc.AsFood().SoftenedWearoffDelay--;
 			else if (npc.AsFood().SoftenedDigestionDamageTaken > 0)
 				npc.AsFood().SoftenedDigestionDamageTaken -= npc.AsFood().SoftenedWearoffRateModifier.ApplyTo((float)(25.0 / 60.0));
+
+			npc.AsFood().TastySweet = false;
+			npc.AsFood().TastySpicy = false;
+			npc.AsFood().TastySour = false;
+			npc.AsFood().TastyMeaty = false;
+			npc.AsFood().TastyBitter = false;
+			npc.AsFood().TastyFruity = false;
 
 			npc.AsFood().DefinedEffectiveSize = npc.AsFood().DefinedBaseSize;
 			DetermineDigestingSounds(npc);

@@ -19,6 +19,7 @@ using Terraria.Utilities;
 using V2.Core;
 using V2.Items.Voraria.Charms;
 using V2.Items.Voraria.Consumables.Potions;
+using V2.Items.Voraria.Weapons.Ranged.Throwables;
 using V2.NPCs.Voraria.TownNPCs.Succubus.ChatButtons;
 using V2.PlayerHandling;
 using V2.Sounds.Vore;
@@ -467,6 +468,7 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 			NPCShop succubusShop = new NPCShop(NPC.type, "Shop");
 			succubusShop.Add<CharmBetterDigestion>();
 			succubusShop.Add<CharmRegenFromAbsorption>();
+			succubusShop.Add<ThrowableHotSauceBottle>();
 			succubusShop.Register();
 
 			NPCShop nurseShop = new NPCShop(NPCID.Nurse, "Shop");

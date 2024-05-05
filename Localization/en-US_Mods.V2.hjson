@@ -546,7 +546,9 @@ PredPlayerGoals: {
 				Clarification:
 					'''
 					Eat and digest a Snow Flinx.
-					[c/{Mods.V2.CommonColorCodes.ThomasCommentary}:okay, story time: these motherfuckers used to have the most abominable spawn condition known to man. they always spawned in the Underground Tundra, but only on blocks which weren't actually classified as part of the biome (so e.g. everything the boreal wood houses are made of). to say this made it a nightmare to farm them is an understatement and a half. they're less dumb, now, though, so I wouldn't worry too much if I were you]
+					Snow Flinxes sometimes spawn in the Underground Tundra.
+					-------------------------
+					okay, story time: these motherfuckers used to have the most abominable spawn condition known to man. they always spawned in the Underground Tundra. but only on blocks which weren't actually classified as part of the biome (so e.g. everything the boreal wood houses are made of). to say this made it a nightmare to farm them is an understatement and a half. they're less dumb, now, though, so I wouldn't worry too much if I were you
 					'''
 			}
 		}
@@ -594,26 +596,47 @@ PredPlayerGoals: {
 					Got a ghost trying to haunt you? Force them to haunt your tummy instead.
 					'Who ya gonna swallow?'
 					'''
-				Clarification: Eat and digest a ghost.
+				Clarification:
+					'''
+					Eat and digest a Ghost.
+					Ghosts spawn in graveyards regardless of time and may also spawn when breaking tombstones.
+					When the season is particularly spooky and autumn is in full swing, they may also spawn in caves.
+					'''
 			}
 		}
 
 		EatFirstLifeCrystal: {
 			Name: Healthy Rock Candy
-			Description:
-				'''
-				Eat and digest a Life Crystal.
-				'Tastes like cherry.'
-				'''
+
+			Description: {
+				Default:
+					'''
+					Snack on a life crystal to boost your body's durability a little.
+					'Tastes like cherry.'
+					'''
+				Clarification:
+					'''
+					Eat and digest a Life Crystal.
+					Life Crystals can occasionally be found in caves and can be used or eaten to increase your maximum health.
+					'''
+			}
 		}
 
 		EatFirstManaCrystal: {
 			Name: Magically Delicious
-			Description:
-				'''
-				Eat and digest a Mana Crystal.
-				'Tastes like blue raspberry.'
-				'''
+
+			Description: {
+				Default:
+					'''
+					Snack on a life crystal to boost your magical potential.
+					'Tastes like blue raspberry.'
+					'''
+				Clarification:
+					'''
+					Eat and digest a Mana Crystal.
+					Mana Crystals can occasionally be found in caves and can be used or eaten to increase your maximum mana pool.
+					'''
+			}
 		}
 
 		SleepSpeedsDigestion: {
@@ -676,9 +699,9 @@ PredPlayerGoals: {
 					Default:
 						'''
 						Put the foolish ambitions of a goldfish to rest (with the help of your hungry stomach).
-						'A flame extinguished, yet the flame of grace (and gluttony) still burns bright.'
+						'A flame inspired, snuffed in moments by the gluttonous gullet of grace.'
 						'''
-					Clarification: Eat and digest a Fearless Goldfish Warrior
+					Clarification: Eat and digest a Fearless Goldfish Warrior.
 				}
 			}
 		}
@@ -907,16 +930,18 @@ PredPlayerGoals: {
 			Description: {
 				Default:
 					'''
-					Gulp down a Boulder to avoid a hit from it that otherwise would've killed you.
+					Gulp down a Boulder so it doesn't flatten you like the big, juicy pancake a hungry pred could treat you as.
 					[c/{Mods.V2.CommonColorCodes.ThomasCommentary}:this joke sounded a lot funnier in my head]
 					'''
-				Clarification: Eat and digest a rolling Boulder which was originally rolling towards you and, if it were to hit you, would've killed you via contact damage (before defensive calculations and luck).
+				Clarification: Eat and digest a rolling Boulder.
 			}
 		}
 	}
 }
 
 ItemName: {
+	Vanilla.Feather: Harpy Feather
+
 	Voraria: {
 		CheatItems.RoseFlower: Rose's Flower Pin
 
@@ -927,6 +952,8 @@ ItemName: {
 			}
 
 			Vanity.BalloonBelly: Belly-Shaped Balloon
+			AntiDigestionSash: Assurance Sash
+			PromethiaAntiDigestionSash: Angelic Assurance Sash
 			NymphHairScarf: Sly Huntress' Scarf
 		}
 
@@ -941,6 +968,7 @@ ItemName: {
 			}
 
 			DigestionRepairScroll: Scroll of Divine Indigestion
+			FeatherDuster: Feather Duster
 			HairDyeCapacity: Hunger Hair Dye
 		}
 
@@ -951,7 +979,19 @@ ItemName: {
 			RegenFromAbsorption: Revitalization Charm
 		}
 
-		Weapons.Summon.PaperMaidSummon: Enchanted Origami Bell
+		Weapons: {
+			Ranged: {
+				Throwables: {
+					FragileBottles: {
+						Honey: Fragile Bottle of Honey
+						HotSauce: Fragile Bottle of Scalding Sauce
+					}
+				}
+			}
+
+			Summon.PaperMaidSummon: Enchanted Origami Bell
+		}
+
 		NymphHairStrand: Sky Blue Strand
 	}
 }
@@ -1297,6 +1337,8 @@ ItemTooltip: {
 				}
 			}
 		}
+
+		Feather.Short: "'Don't pluck me! They went thataway!'"
 	}
 
 	Voraria: {
@@ -1412,6 +1454,24 @@ ItemTooltip: {
 				}
 			}
 
+			AntiDigestionSash: {
+				Short:
+					'''
+					Decreases taken digestion damage and slows Softened buildup slightly
+					{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+					'''
+				Long:
+					'''
+					[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Decreases taken digestion damage by {AntiDigestionSashDigestionDefenseBonus}].
+					[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Slows Softened buildup by {AntiDigestionSashSoftenedBuildupReduction}].
+					'''
+				Flavor:
+					'''
+					A simple sash made out of leathers and feathers, often hastily put together and worn by less confident adventurers.
+					While it won't hold up to a continued gastric assault, it can help stave off the acids of a hungry tummy in a pinch.
+					'''
+			}
+
 			NymphHairScarf: {
 				Short:
 					'''
@@ -1427,6 +1487,25 @@ ItemTooltip: {
 					'''
 					A pleasantly comfortable scarf sewn with the luscious locks of at least one or two delicious, deceitful damsels found throughout Terraria's great caverns.
 					Sewn into the scarf are sapphires and miniature runes which allow the wearer to be lighter on their feet, even (or perhaps, especially) with a good gutful of meat (still alive or otherwise) slowing them down, mimicking the stomach-centric swiftness of a hungry nymph.
+					'''
+			}
+
+			PromethiaAntiDigestionSash: {
+				Short:
+					'''
+					Decreases taken digestion damage and slows Softened buildup substantially
+					{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+					'''
+				Long:
+					'''
+					[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Decreases taken digestion damage by {PromethiaAntiDigestionSashDigestionDefenseBonus}].
+					[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Slows Softened buildup by {PromethiaAntiDigestionSashSoftenedBuildupReduction}].
+					'''
+				Flavor:
+					'''
+					A sparkly, tasty-looking sash made of a material similar to gold, yet possessing the consistency of silk...as well as some actual divine-looking silk, this sash is standard-issue equipment for lower-ranking Sinhunters from the heavens beyond.
+					It holds up against greedier gastric assaults much better than its mortally-designed counterpart, and is designed to grant eaten angels some time to properly teach their predator just how low said predator still is on the greater food chain.
+					Promethia, of course, keeps hers with her not because she wants to get out of the predators that snack on her, but rather, because she wants just a little more time to...enjoy herself, for lack of a better term, inside those hungry tummies.
 					'''
 			}
 		}
@@ -1741,6 +1820,7 @@ ItemTooltip: {
 					'''
 					Can only be used in a hungry tummy
 					Can be used to tickle and/or agitate your predator's stomach a lot; often enough for them to belch you back up
+					'Now taken very literally'
 					{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
 					'''
 				Long:
@@ -1781,6 +1861,56 @@ ItemTooltip: {
 		}
 
 		Weapons: {
+			Ranged: {
+				Throwables: {
+					FragileBottles: {
+						Generic: {
+							Short:
+								'''
+								Can be thrown to coat a target in {ThrowableBottleLowercaseCondimentName}
+								Coated targets may attract the appetites of certain predators
+								Will damage friendly entities
+								'''
+							Long:
+								'''
+								[c/{$Mods.V2.CommonColorCodes.DoSomething}:Left-click] to throw a bottle of {ThrowableBottleLowercaseCondimentName}.
+								The bottle [c/{$Mods.V2.CommonColorCodes.DealDamage}:deals 100% damage] to the first entity it hits, shattering instantly.
+								Struck enemies are [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:coated in {ThrowableBottleLowercaseCondimentName}] for 20 seconds.
+								'''
+							Flavor: For virtually as long as humanoids have existed on Terraria, they have tried to find numerous ways to coat their prey, living and otherwise, in delicious substances to enhance their flavor. A popular pick amongst modern-day brawlers is these throwable bottles, shattering on impact and coating prey in whatever they contain.
+						}
+
+						Honey: {
+							Short: "{$Mods.V2.ItemTooltip.Voraria.Weapons.Ranged.Throwables.FragileBottles.Generic.Short}"
+							Long:
+								'''
+								{$Mods.V2.ItemTooltip.Voraria.Weapons.Ranged.Throwables.FragileBottles.Generic.Long}
+								Honey-coated snacks will attract the attention of predators that like [c/FF7FBF:sweet] flavors.
+								'''
+							Flavor:
+								'''
+								{$Mods.V2.ItemTooltip.Voraria.Weapons.Ranged.Throwables.FragileBottles.Generic.Flavor}
+								This bottle contains a healthy helping of sweet, delicious honey, sourced from the genuinely obscenely large bee hives scattered about Terrarian jungles. A single sip enlightens the tongue with a sugary-sweet flavor that, while by far beaten out by Sveetian sugar and its resultant papercrafts, still brings happiness to the mind. Any predator with a sweet tooth is sure to come a-hunting prey coated in this stuff.
+								'''
+						}
+
+						HotSauce: {
+							Short: "{$Mods.V2.ItemTooltip.Voraria.Weapons.Ranged.Throwables.FragileBottles.Generic.Short}"
+							Long:
+								'''
+								{$Mods.V2.ItemTooltip.Voraria.Weapons.Ranged.Throwables.FragileBottles.Generic.Long}
+								Hot sauce-coated snacks will attract the attention of predators that like [c/FF7F00:spicy] flavors.
+								'''
+							Flavor:
+								'''
+								{$Mods.V2.ItemTooltip.Voraria.Weapons.Ranged.Throwables.FragileBottles.Generic.Flavor}
+								This bottle contains a healthy helping of dangerously-hot Luke's Lightweight Lava(tm), a brand of hot sauce based in Desperais which Lucinda and countless other demons buy in bulk on the regular. A single sip trials the tongue with a scorching-hot sensation akin to drinking lava straight out of the lake...just without any of the gastrointestinal death that comes with unprotected lava drinking. Any predator craving some spice in their diet is bound to come running for prey coated in this stuff.
+								'''
+						}
+					}
+				}
+			}
+
 			Summon: {
 				PaperMaidSummon: {
 					Short:
@@ -1879,7 +2009,7 @@ StatusEffects: {
 		Summons.Pets.FairyPrincess.Description:
 			'''
 			A small, but very hungry prismatic fairy [c/{$Mods.V2.CommonColorCodes.DoSomething}:follows you around].
-			She will [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:eat insects, arachnids, and other fairies that get too close].
+			She will [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:hunt down and eat nearby entities] which are shiny or twinkly enough for her tastes (including other fairies), as well as royalty..
 			'The light of the fair folk illuminates all (especially her next lunch)'
 			'''
 	}
@@ -1944,10 +2074,10 @@ StatusEffects: {
 				Description: {
 					Base:
 						'''
-						A stack of this debuff is applied for every [c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:{SoftenedMaxHealthThreshold} of your BASE maximum health you take in digestion damage.]
-						Up to [c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:{SoftenedMaxStacks}] can be applied on you (current: [c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:{SoftenedStacks}]).
-						[c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:Decreases defense by {SoftenedDefReduction}] per stack (current: [c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:{SoftenedCurrentDefReduction}]).
-						[c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:Increases taken digestion damage by {SoftenedDigestiveAid}] per stack (current: [c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:{SoftenedCurrentDigestiveAid}]).
+						A stack of this debuff is applied for every [c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:{SoftenedMaxHealthThreshold} of your BASE maximum health you take in digestion damage]
+						Up to [c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:{SoftenedMaxStacks}] can be applied on you (current: [c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:{SoftenedStacks}])
+						[c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:Decreases defense by {SoftenedDefReduction}] per stack (current: [c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:{SoftenedCurrentDefReduction}])
+						[c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:Increases taken digestion damage by {SoftenedDigestiveAid}] per stack (current: [c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:{SoftenedCurrentDigestiveAid}])
 						'''
 
 					Flavor: {
@@ -1973,6 +2103,66 @@ StatusEffects: {
 					[c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:Prevents swallowing anything orally]
 					Does not stop other methods of consumption
 					'Something's bothering your throat pretty bad'
+					'''
+			}
+
+			TastySweet: {
+				Name: Sweet Taste
+				Description:
+					'''
+					[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Makes you taste] [c/FF7FBF:sweet]
+					This may attract the attention and appetite of predators that like sweet flavors
+					'Home, sweet-tasting home...'
+					'''
+			}
+
+			TastySpicy: {
+				Name: Spicy Taste
+				Description:
+					'''
+					[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Makes you taste] [c/FF7F00:spicy]
+					This may attract the attention and appetite of predators that like spicy flavors
+					'Think you can handle the spice?'
+					'''
+			}
+
+			TastySour: {
+				Name: Sour Taste
+				Description:
+					'''
+					[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Makes you taste] [c/FFFF00:sour]
+					This may attract the attention and appetite of predators that like sour flavors
+					'Don't be such sour pudge!'
+					'''
+			}
+
+			TastyMeaty: {
+				Name: Meaty Taste
+				Description:
+					'''
+					[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Makes you taste] [c/D85D3D:meaty] (even more than you already are)
+					This may attract the attention and appetite of predators that like meaty flavors
+					'Meatception? Depends on who you're tasting.'
+					'''
+			}
+
+			TastyBitter: {
+				Name: Bitter Taste
+				Description:
+					'''
+					[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Makes you taste] [c/73A032:bitter]
+					This may attract the attention and appetite of predators that like bitter flavors
+					'Seems you've met your matcha.'
+					'''
+			}
+
+			TastyFruity: {
+				Name: Fruity Taste
+				Description:
+					'''
+					[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Makes you taste] [c/3F8FFF:fruity]
+					This may attract the attention and appetite of predators that like fruity flavors
+					'Just follow your nose!'
 					'''
 			}
 		}
