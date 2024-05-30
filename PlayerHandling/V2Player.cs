@@ -11,13 +11,21 @@ using V2.UI;
 
 namespace V2.PlayerHandling
 {
-	public class V2Player : ModPlayer
+	public partial class V2Player : ModPlayer
 	{
 		public List<DelegateGeneralItemDrawingUI> generalItemUIDrawMethods;
+
+		public override void Initialize()
+		{
+			ResetHealthRegenTime();
+			ResetHealthRegenEffectList();
+		}
 
 		public override void ResetEffects()
 		{
 			generalItemUIDrawMethods = new List<DelegateGeneralItemDrawingUI>();
+			setBonusActive = false;
+			setBonusShouldBeDisplayed = false;
 
 			if (Player.whoAmI != Main.myPlayer)
 				return;
@@ -28,6 +36,19 @@ namespace V2.PlayerHandling
 				if (npc.CurrentCaptor() is not null)
 					Main.CloseNPCChatOrSign();
 			}
+
+			ResetHealthRegenEffectList();
+		}
+
+		public override void UpdateDead()
+		{
+			ResetHealthRegenTime();
+			ResetHealthRegenEffectList();
+		}
+
+		public override void PostUpdateMiscEffects()
+		{
+			HandleSittingAndSleepingHealthRegenEffect();
 		}
 	}
 }

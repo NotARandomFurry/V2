@@ -24,7 +24,7 @@ namespace V2
 		[LabelKey("$Mods.V2.Configs.Server.Personalization.NoRandomGulpsAgainstPlayers.Label")]
 		[TooltipKey("$Mods.V2.Configs.Server.Personalization.NoRandomGulpsAgainstPlayers.Tooltip")]
 		[DefaultValue(false)]
-		public bool NoRandomGulpsAgainstPlayers { get; set; }
+		public bool RandomGulpsAgainstPlayers { get; set; }
 
 		[LabelKey("$Mods.V2.Configs.Server.Personalization.GenderBlacklist.Label")]
 		[TooltipKey("$Mods.V2.Configs.Server.Personalization.GenderBlacklist.Tooltip")]

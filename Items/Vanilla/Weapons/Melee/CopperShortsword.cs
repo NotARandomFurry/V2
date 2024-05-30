@@ -14,12 +14,13 @@ namespace V2.Items.Vanilla.Weapons.Melee
 		public override bool InstancePerEntity => true;
 		public override bool AppliesToEntity(Item entity, bool lateInstantiation) => entity.type == ItemID.CopperShortsword;
 
-		public override void SetDefaults(Item entity)
+		public override void SetDefaults(Item item)
 		{
-			entity.AsFood().MaxHealth = 25;
-			entity.AsFood().Size = 0.18;
+			item.AsFood().MaxHealth = 145;
+			item.AsFood().Size = 0.18;
+			item.AsFood().AcidResistTier = 2;
 
-			entity.AsTaggable().Shortsword = true;
+			item.AsTaggable().Shortsword = true;
 		}
 	}
 }

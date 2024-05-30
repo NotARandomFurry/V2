@@ -1,32 +1,19 @@
-using Ionic.Zip;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
 using MonoMod.RuntimeDetour;
-using MonoMod.RuntimeDetour.HookGen;
 using System;
-using System.Collections.Generic;
 using System.Reflection;
 using Terraria;
-using Terraria.GameContent;
 using Terraria.GameContent.Biomes;
-using Terraria.Graphics;
-using Terraria.Graphics.Renderers;
-using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Core;
-using Terraria.ModLoader.UI;
-using Terraria.UI.Chat;
-using Terraria.UI.Gamepad;
 using V2.Core;
 using V2.Core.MainDetours;
 using V2.Core.WorldGeneration;
+using V2.Items;
 using V2.NPCs;
 using V2.NPCs.Vanilla.TownNPCs.TravellingMerchant;
 using V2.PlayerHandling;
 using V2.Projectiles;
-using V2.UI;
 using V2.UI.PredStatsMenu;
-using V2.UI.StylistAteThePublishButton;
 
 namespace V2
 {
@@ -176,6 +163,27 @@ namespace V2
 			On_NPC.DoDeathEvents_CelebrateBossDeath += (orig, npc, typeName) => NPCDetours.DoDeathEvents_CelebrateBossDeath(npc, typeName);
 
 			On_Player.KillMe += (orig, player, damageSource, dmg, hitDirection, pvp) => PlayerDetours.KillMe(player, damageSource, dmg, hitDirection, pvp);
+			On_Player.ApplyEquipFunctional += (orig, player, item, hideVisual) =>
+			{
+				if (item.IsAir)
+					return;
+
+				if ((item.expertOnly && !Main.expertMode) || (item.masterOnly && !Main.masterMode))
+					return;
+
+				if (item.AsV2Item() is not null && item.AsV2Item().AccessoryEffectCode is not null)
+					item.AsV2Item().AccessoryEffectCode.Invoke(item, player, hideVisual);
+				else
+					orig(player, item, hideVisual);
+			};
+			On_Player.UpdateArmorSets += (orig, player, i) =>
+			{
+				if (ArmorSetHandler.CheckDefinedArmorSets(player))
+					player.ApplyArmorSoundAndDustChanges();
+				else
+					orig(player, i);
+			};
+			On_Player.UpdateBuffs += (orig, player, i) => PlayerDetours.Detour_UpdateBuffs(player);
 			On_Player.DashMovement += (orig, player) =>
 			{
 				if (player.CurrentCaptor() is null)

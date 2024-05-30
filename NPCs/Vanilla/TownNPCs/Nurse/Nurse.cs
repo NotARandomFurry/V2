@@ -648,7 +648,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 			if (bestGirl != null && bestGirl.Distance(npc.Center) <= npc.AsPred().MaxSwallowRange && tryToStealBestGirlAss)
 				PredNPC.Swallow(npc, bestGirl);
 
-			if (ModContent.GetInstance<V2ServerConfig>().NoRandomGulpsAgainstPlayers)
+			if (!ModContent.GetInstance<V2ServerConfig>().RandomGulpsAgainstPlayers)
 				return;
 
 			if (!Main.CurrentPlayer.active || Main.CurrentPlayer.dead || Main.CurrentPlayer.Distance(npc.Center) > npc.AsPred().MaxSwallowRange || Main.CurrentPlayer.CurrentCaptor() is not null)

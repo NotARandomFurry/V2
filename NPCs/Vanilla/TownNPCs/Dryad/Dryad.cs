@@ -419,7 +419,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Dryad
 			if (funnyShroom != null && funnyShroom.Distance(npc.Center) <= npc.AsPred().MaxSwallowRange && shouldSnackOnShroom)
 				PredNPC.Swallow(npc, funnyShroom);
 
-			if (ModContent.GetInstance<V2ServerConfig>().NoRandomGulpsAgainstPlayers)
+			if (!ModContent.GetInstance<V2ServerConfig>().RandomGulpsAgainstPlayers)
 				return;
 
 			if (!Main.CurrentPlayer.active || Main.CurrentPlayer.dead || Main.CurrentPlayer.Distance(npc.Center) > npc.AsPred().MaxSwallowRange || Main.CurrentPlayer.CurrentCaptor() is not null)

@@ -211,7 +211,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.ArmsDealer
 								"Make it quick, will ya? Got a date with " + helloNurse.GivenName + " pretty soon here, and I wouldn't want you, ah...we'll go with \"gettin' in the way\".",
 								"Don't know about you, but I want what " + helloNurse.GivenName + "'s sellin'.\n"
 							  + "\n"
-							  + "...whaddaya mean, she doesn't sell anything?",
+							  + "...whaddaya mean, she doesn't sell anything? She sells stuff just fine!",
 							});
 						}
 					}
@@ -254,24 +254,12 @@ namespace V2.NPCs.Vanilla.TownNPCs.ArmsDealer
 
 		public static void OnArmsDealerForceFed(NPC npc, Player player)
 		{
-			if (player.statLife < (int)((double)player.statLifeMax2 * 0.33))
-			{
-				PredNPC.SetChatboxText(
-					npc,
-					player,
-					"[c/7F7F7F:<" + npc.GivenName + "'s stomach growls with glee as you cram yourself into her mouth and throat; shrugging, she just gulps you down without a care and pats her gut once you're settled in.>]\n"
-				  + "Well, that's one way to give me a lunch break, I guess. Make sure to add a little bit to the back, alright? It's the least you can do, if you want me to eat you that badly..."
-				);
-			}
-			else
-			{
-				PredNPC.SetChatboxText(
-					npc,
-					player,
-					"[c/7F7F7F:<" + npc.GivenName + "'s stomach growls with glee as you cram yourself into her mouth and throat; shrugging, she just gulps you down without a care and pats her gut once you're settled in.>]\n"
-				  + "Well, that's one way to give me a lunch break, I guess. Make sure to add a little bit to the back, alright? It's the least you can do, if you want me to eat you that badly..."
-				);
-			}
+			PredNPC.SetChatboxText(
+				npc,
+				player,
+				"[c/7F7F7F:<" + npc.GivenName + "'s stomach gurgles ominously as he intercepts your attempt to force-feed him and wolfs you down with ease, grinning as he slaps his gut full of you.>]\n"
+			  + "Easiest prey of my life. Didn't even hafta shoot at ya for it! Be sure not to leave much behind...the girls like a fit fella like me without too much chub."
+			);
 		}
 
 
@@ -308,7 +296,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.ArmsDealer
 			if (helloNurse != null && helloNurse.Distance(npc.Center) <= npc.AsPred().MaxSwallowRange && snackOnCrush)
 				PredNPC.Swallow(npc, helloNurse);
 
-			if (ModContent.GetInstance<V2ServerConfig>().NoRandomGulpsAgainstPlayers)
+			if (!ModContent.GetInstance<V2ServerConfig>().RandomGulpsAgainstPlayers)
 				return;
 
 			if (!Main.CurrentPlayer.active || Main.CurrentPlayer.dead || Main.CurrentPlayer.Distance(npc.Center) > npc.AsPred().MaxSwallowRange || Main.CurrentPlayer.CurrentCaptor() is not null)

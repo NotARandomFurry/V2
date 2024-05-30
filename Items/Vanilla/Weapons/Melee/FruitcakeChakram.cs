@@ -23,17 +23,17 @@ namespace V2.Items.Vanilla.Weapons.Melee
 		public override bool InstancePerEntity => true;
 		public override bool AppliesToEntity(Item entity, bool lateInstantiation) => entity.type == ItemID.FruitcakeChakram;
 
-		public override void SetDefaults(Item entity)
+		public override void SetDefaults(Item item)
 		{
-			entity.AsFood().MaxHealth = 250;
-			entity.AsFood().Size = 0.82;
-			entity.AsFood().MealSizeTextOverride = "Despite its size, it makes for a terrible meal";
+			item.AsFood().MaxHealth = 444;
+			item.AsFood().Size = 0.82;
+			item.AsFood().MealSizeTextOverride = "Despite its size, it makes for a terrible meal";
 
-			entity.AsFood().OnSwallowDamage = 40;
-			entity.AsFood().OnSwallowDeathReason = "{0} thought fruitcake was a good idea to eat. Ever.";
-			entity.AsFood().OnSwallowSoreThroatTime = V2Utils.SensibleTime(seconds: 10, frames: 0);
+			item.AsFood().OnSwallowDamage = 40;
+			item.AsFood().OnSwallowDeathReason = "{0} thought fruitcake was a good idea to eat. Ever.";
+			item.AsFood().OnSwallowSoreThroatTime = V2Utils.SensibleTime(seconds: 10, frames: 0);
 
-			entity.AsFood().UpdateInStomach += UpdateInStomach;
+			item.AsFood().UpdateInStomach += UpdateInStomach;
 		}
 
 		public static void UpdateInStomach(Entity prey, Entity pred, bool dead)

@@ -173,14 +173,52 @@ GameTips: {
 }
 
 PredStatsMenu: {
-	StatSliceHover:
-		'''
-		[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:{PredStatName} ({PredStatShorthand})]
-		[c/BFBFBF:{SpentPoints} points invested]
+	StatSliceHover: {
+		Default:
+			'''
+			[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:{PredStatName} ({PredStatShorthand})]
+			{SpentPoints} points invested
 
-		[c/7F7F7F:Left-click to add 1 point]
-		[c/7F7F7F:Right-click to remove 1 point]
-		'''
+			Left-click to add 1 point
+			Right-click to remove 1 point
+			[c/FFBF00:To allocate points in sets of 10, hold LEFT SHIFT]
+			[c/FFBF00:To alllocate points in sets of 100, hold LEFT SHIFT and LEFT CONTROL]
+			[c/FFBF00:To alllocate all available points at once, hold LEFT CONTROL]
+			'''
+		Bulk10:
+			'''
+			[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:{PredStatName} ({PredStatShorthand})]
+			{SpentPoints} points invested
+
+			Left-click to add up to 10 points
+			Right-click to remove up to 10 points
+			[c/FFBF00:To allocate points individually, release LEFT SHIFT]
+			[c/FFBF00:To alllocate points in sets of 100, hold LEFT CONTROL]
+			[c/FFBF00:To alllocate all available points at once, release LEFT SHIFT and hold LEFT CONTROL]
+			'''
+		Bulk100:
+			'''
+			[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:{PredStatName} ({PredStatShorthand})]
+			{SpentPoints} points invested
+
+			Left-click to add up to 100 points
+			Right-click to remove up to 100 points
+			[c/FFBF00:To allocate points individually, release LEFT SHIFT and LEFT CONTROL]
+			[c/FFBF00:To alllocate points in sets of 10, release LEFT CONTROL]
+			[c/FFBF00:To alllocate all available points at once, release LEFT SHIFT]
+			'''
+		BulkMaximum:
+			'''
+			[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:{PredStatName} ({PredStatShorthand})]
+			{SpentPoints} points invested
+
+			Left-click to add all available points
+			Right-click to remove all invested points
+			[c/FFBF00:To allocate points individually, release LEFT SHIFT and LEFT CONTROL]
+			[c/FFBF00:To alllocate points in sets of 10, release LEFT CONTROL]
+			[c/FFBF00:To alllocate points in sets of 100, hold LEFT SHIFT]
+			'''
+	}
 
 	StatDescription: {
 		HoldSHIFTToSeeDescription: "[c/7F7F7F:Hold LEFT SHIFT to see more detailed descriptions of the following statistics.]"
@@ -930,7 +968,7 @@ PredPlayerGoals: {
 			Description: {
 				Default:
 					'''
-					Gulp down a Boulder so it doesn't flatten you like the big, juicy pancake a hungry pred could treat you as.
+					Gulp down a Boulder so it doesn't flatten you like the big, juicy pancake a hungry pred could treat you as afterwards.
 					[c/{Mods.V2.CommonColorCodes.ThomasCommentary}:this joke sounded a lot funnier in my head]
 					'''
 				Clarification: Eat and digest a rolling Boulder.
@@ -940,7 +978,53 @@ PredPlayerGoals: {
 }
 
 ItemName: {
-	Vanilla.Feather: Harpy Feather
+	Vanilla: {
+		Armor: {
+			OakWood: {
+				Head: Oak Wood Helm
+				Chest: Oak Wood Chestguard
+				Legs: Oak Wood Makeshift Boots
+			}
+		}
+
+		Placeables: {
+			NormalAssWood: {
+				Item: Oak Wood
+
+				Furniture: {
+					Bed: Oak Wood Bed
+					Bookcase: Oak Wood Bookcase
+					Chair: Oak Wood Chair
+					Chest: Oak Wood Chest
+					Clock: Oak Wood Clock
+					Door: Oak Wood Door
+					Dresser: Oak Wood Dresser
+					Fence: Oak Wood Fence
+					Piano: Oak Wood Piano
+					Platform: Oak Wood Platform
+					Sink: Oak Wood Sink
+					Sofa: Oak Wood Sofa
+					Table: Oak Wood Table
+					TallDoor: Large Oak Wood Sliding Door
+					TrappedChest: Trapped Oak Wood Chest
+					Wall: Oak Wood Wall
+					Workbench: Oak Wood Work Bench
+				}
+			}
+		}
+
+		Tools: {
+			OakWoodHammer: Oak Wood Hammer
+			OakWoodFishingRod: Oak Wood Fishing Rod
+		}
+
+		Weapons: {
+			Melee.OakWoodSword: Oak Wood Sword
+			Ranged.OakWoodBow: Oak Wood Bow
+		}
+
+		Feather: Harpy Feather
+	}
 
 	Voraria: {
 		CheatItems.RoseFlower: Rose's Flower Pin
@@ -1026,17 +1110,18 @@ ItemTooltip: {
 				Chronological: Indigestible...but not for you
 			}
 		}
+
+		LongTooltipHelpers.SunlightExposureRules:
+			'''
+			[c/7F7F7F:You are considered exposed to sunlight when:]
+			[c/7F7F7F:- You are above 0']
+			[c/7F7F7F:- You are not in front of a background wall]
+			[c/7F7F7F:- It is daytime]
+			'''
 	}
 
 	Vanilla: {
 		Accessories: {
-			Utility.ShimmerCloak:
-				'''
-				Grants immunity to Intangibility
-				Hold <down> to temporarily bypass this immunity
-				Allows you to safely drink shimmer
-				'''
-
 			Informational: {
 				REK3K: Displays number of enemies, kill and meal counts, and rare creatures
 				TallyCounter:
@@ -1082,6 +1167,102 @@ ItemTooltip: {
 							With the Empress now dead (and/or digested), she now acts as your enforcer instead. She seeks to increase her brightness (and bulk, naturally) by devouring the brightest snacks she can swallow. Don't worry about her gut; she's eaten plenty of tough meals in the past.
 							'''
 					}
+				}
+			}
+
+			HealthRegenAndPotionCooldownBand: {
+				Short:
+					'''
+					Slightly boosts health regeneration and passive reduces potion cooldown while worn
+					Boosts health regeneration more and actively reduces potion cooldown while digesting
+					{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+					'''
+				Long:
+					'''
+					While worn by a player:
+					- [c/{$Mods.V2.CommonColorCodes.Heal}:Increases health regeneration] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{HealthRegenBandIIWornHealthRegen} HP/sec].
+					- [c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Reduces the initial duration of Potion Sickness] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:25%].
+					When eaten by a player:
+					- [c/{$Mods.V2.CommonColorCodes.Heal}:Increases health regeneration] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{HealthRegenBandIIEatenHealthRegen} HP/sec] while digesting; this lingers for [c/FFFF00:{HealthRegenerationBandIIEatenHealthRegenLength} seconds]
+					- [c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Potion Sickness wears off twice as quickly] while digesting. This effect does not linger.
+					'''
+				Flavor:
+					'''
+					By combining a simple rejuvenating wristband and a magical stone imbued with life essence, you've managed to make: another wristband. That does the exact same thing.
+					That said, it tastes better than either of its parts! Which is always a good reason to upgrade anything, frankly.
+					'''
+			}
+
+			ShimmerCloak:
+				'''
+				Grants immunity to Intangibility
+				Hold <down> to temporarily bypass this immunity
+				Allows you to safely drink shimmer
+				'''
+		}
+
+		Armor: {
+			OakWood: {
+				Head: {
+					Short:
+						'''
+						Increases defense very slightly in daylight
+						{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+						'''
+					Long:
+						'''
+						[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases defense] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:1] when [c/{$Mods.V2.CommonColorCodes.DoSomething}:exposed to sunlight].
+						{$Mods.V2.ItemTooltip.Generic.LongTooltipHelpers.SunlightExposureRules}
+						Has no special effects when eaten.
+						'''
+					Flavor:
+						'''
+						A makeshift helmet fashioned from oak wood.
+						It has a very plain taste.
+						'''
+				}
+
+				Chest: {
+					Short:
+						'''
+						Increases defense very slightly in daylight
+						{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+						'''
+					Long:
+						'''
+						[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases defense] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:1] when [c/{$Mods.V2.CommonColorCodes.DoSomething}:exposed to sunlight].
+						{$Mods.V2.ItemTooltip.Generic.LongTooltipHelpers.SunlightExposureRules}
+						Has no special effects when eaten.
+						'''
+					Flavor:
+						'''
+						A makeshift chestplate fashioned from oak wood.
+						It has a very plain taste.
+						'''
+				}
+
+				Legs: {
+					Short:
+						'''
+						Increases defense very slightly in daylight
+						{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+						'''
+					Long:
+						'''
+						[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases defense] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:1] when [c/{$Mods.V2.CommonColorCodes.DoSomething}:exposed to sunlight].
+						{$Mods.V2.ItemTooltip.Generic.LongTooltipHelpers.SunlightExposureRules}
+						Has no special effects when eaten.
+						'''
+					Flavor:
+						'''
+						A makeshift pair of boots fashioned from oak wood.
+						They have a very plain taste.
+						'''
+				}
+
+				SetBonus: {
+					Short: Boosts natural health regeneration, moreso in daylight
+					Long: "[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases natural health regeneration] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:5%]; this is [c/{$Mods.V2.CommonColorCodes.PositiveEffect}:doubled] when [c/{$Mods.V2.CommonColorCodes.DoSomething}:exposed to sunlight]."
 				}
 			}
 		}
@@ -1288,8 +1469,165 @@ ItemTooltip: {
 			}
 		}
 
+		Placeables: {
+			Gems: {
+				Amber: {
+					Short:
+						'''
+						A very sweet-tasting "gem"
+						'Pretty sappy, if you ask me'
+						{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+						'''
+					Long:
+						'''
+						Can be found sometimes within the desert, either on its own or when extracted from [i:3347] Desert Fossils.
+						Can be used to fashion a select assortment of desert-related items.
+						'''
+					Flavor:
+						'''
+						Many people in old times assumed this was a gemstone. It's not! It's actually fossilized tree sap which found a home in desert regions, nestling in the remains of creatures from ages past.
+						While it IS possible to create amber through fairly simple means, most of these means have subsequently been heavily commercialized and privatized by the desserts industry. Why? It's simple!
+
+						Amber tastes very sweet. Sweet-tasting things are desserts to be enjoyed! And where there are desserts to be enjoyed...there's ALWAYS money to be made.
+						'''
+				}
+
+				Amethyst: {
+					Short:
+						'''
+						A rather common gemstone
+						'Conducts mischief, predominantly'
+						{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+						'''
+					Long:
+						'''
+						Found fairly commonly in the caves of the world.
+						Can be used to fashion assorted early-game items.
+						'''
+					Flavor:
+						'''
+						A common gemstone such as amethyst can be found in virtually any cave that travels subsurface, though the purple hues of this one give off a certain...vibe.
+						Amethysts are most typically used as conduits for the abilities of shapeshifters to be more easily controlled, amongst other mischievous use cases.
+						'''
+				}
+
+				Diamond: {
+					Short:
+						'''
+						A valuable, rare gemstone
+						'Chromatic diversity is so last setting'
+						{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+						'''
+					Long:
+						'''
+						Found rarely in the deeper (accessible) layers of the world.
+						Highly valuable, or at least used to be. Could sell for a lot of money.
+						Can be used to fashion assorted powerful early-game items.
+						'''
+					Flavor:
+						'''
+						Oftentimes mistakenly assumed to be the hardest gem in existence, formed in the deep layers of Terraria's crust as the result of ages of time and temperament. However, in more recent times, alongside the view of a natural set of four as an omen from worlds beyond being proven false, even tougher gems have been found and even forged with modern life's own means.
+						While technology --- both magical and electrical entwined --- has advanced enough to create these gems decently reliably, naturally-formed diamonds are still a valuable commodity, as artificially-compressed diamonds carry traces of other materials and thus have substantially lower purity.
+						Swallowing one isn't recommended, as it is by far the toughest gem to digest due to its sheer hardness...but if you can, having a large enough diamond for dinner is said to make your body much sturdier, inside and out.
+						'''
+				}
+
+				Emerald: {
+					Short:
+						'''
+						A fairly valuable and rare gem
+						'Conducts...focus? Is focus a quantifiable metric?'
+						{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+						'''
+					Long:
+						'''
+						Found fairly rarely in the deeper (accessible) layers of the world.
+						Valuable. Could sell for a decent amount of money.
+						Can be used to fashion assorted accuracy-boosting early-game items.
+						'''
+					Flavor:
+						'''
+						A fairly rare gemstone colored a precise, hungering green.
+						Emeralds are gemstones often attributed to the likes of ranged weapon enthusiasts, its shine when held to light almost resembling the predatory glint in a storied archer's eye when they spot their latest prey.
+						Swallowing one often isn't recommended due to its hardness, but if you can, having a large enough emerald for dinner is said to improve your eyesight, and thus, your accuracy for the shots and snacks  that matter.
+						'''
+				}
+
+				Ruby: {
+					Short:
+						'''
+						A fairly valuable and rare gem
+						'Conducts heat'
+						{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+						'''
+					Long:
+						'''
+						Found rarely in the deeper (accessible) layers of the world.
+						Highly valuable, or at least used to be. Could sell for a lot of money.
+						Can be used to fashion assorted strength-boosting early-game items.
+						'''
+					Flavor:
+						'''
+						A fairly rare gemstone colored a pleasantly warm red.
+						Rubies are very common gems to find in any gear suited to a brawler, as they're often said to represent the fire inside of the fighter's heart (and stomach).
+						Swallowing one often isn't recommended due to its hardness, but if you can, having a large enough ruby for dinner is said to make you and your stomach pack a bigger punch.
+						'''
+				}
+
+				Sapphire: {
+					Short:
+						'''
+						A fairly valuable and rare gem
+						'Conducts mana'
+						{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+						'''
+					Long:
+						'''
+						Found rarely in the deeper (accessible) layers of the world.
+						Highly valuable, or at least used to be. Could sell for a lot of money.
+						Can be used to fashion assorted magical early-game items.
+						'''
+					Flavor:
+						'''
+						A fairly rare gemstone, colored a pleasantly dark blue.
+						Sapphires are very common gems to find in any gear suited to a mage or adjacent, as they tend to conduct mana the best out of all gemstones.
+						Swallowing one often isn't recommended due to its hardness, but if you can, having a large enough sapphire for dinner is said to make you smarter.
+						'''
+				}
+
+				Topaz: {
+					Short:
+						'''
+						A rather common gemstone
+						'The lamest of them, too'
+						{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+						'''
+					Long:
+						'''
+						Found very commonly in caves that travel beneath the surface.
+						Can be used to fashion assorted (not very powerful) early-game items.
+						'''
+					Flavor:
+						'''
+						Easily one of the most common and, not coincidentally, most lame gemstones ever discovered on Terraria.
+						Can make for a good snack in a pinch, though it can be tough to digest without a strong system.
+						'''
+				}
+			}
+		}
+
 		Weapons: {
 			Melee: {
+				BorealWoodSword: {
+					Short:
+						'''
+						Can be swung to deal damage
+						{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+						'''
+					Long: "[c/{$Mods.V2.CommonColorCodes.DoSomething}:Left-click] to swing the sword, dealing [c/{$Mods.V2.CommonColorCodes.DealDamage}:100% damage] to struck targets."
+					Flavor: A simple sword fashioned from boreal wood. Has a chilly aftertaste resembling the taste of snow.
+				}
+
 				CactusSword: {
 					Short:
 						'''
@@ -1334,6 +1672,46 @@ ItemTooltip: {
 
 						The only use this has is as a weapon, and POTENTIALLY as emergency rations if all else is gone.
 						'''
+				}
+
+				OakWoodSword: {
+					Short:
+						'''
+						Can be swung to deal damage
+						{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+						'''
+					Long: "[c/{$Mods.V2.CommonColorCodes.DoSomething}:Left-click] to swing the sword, dealing [c/{$Mods.V2.CommonColorCodes.DealDamage}:100% damage] to struck targets."
+					Flavor: A simple sword fashioned from oak wood, and tasting about the same.
+				}
+			}
+
+			Ranged: {
+				BorealWoodBow: {
+					Short:
+						'''
+						Can fire arrows to deal damageF
+						{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+						'''
+					Long:
+						'''
+						[c/{$Mods.V2.CommonColorCodes.DoSomething}:Left-click] to shoot an arrow, dealing [c/{$Mods.V2.CommonColorCodes.DealDamage}:100% damage] to the first target it hits.
+						Some arrows may have [c/{$Mods.V2.CommonColorCodes.DoSomething}:special properties]; examine these in the tooltips of your arrows.
+						'''
+					Flavor: A simple bow fashioned from boreal wood. Has a chilly aftertaste resembling the taste of snow.
+				}
+
+				OakWoodBow: {
+					Short:
+						'''
+						Can fire arrows to deal damage
+						{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+						'''
+					Long:
+						'''
+						[c/{$Mods.V2.CommonColorCodes.DoSomething}:Left-click] to shoot an arrow, dealing [c/{$Mods.V2.CommonColorCodes.DealDamage}:100% damage] to the first target it hits.
+						Some arrows may have [c/{$Mods.V2.CommonColorCodes.DoSomething}:special properties]; examine these in the tooltips of your arrows.
+						'''
+					Flavor: A simple bow fashioned from oak wood, and tasting about the same.
 				}
 			}
 		}
@@ -1567,9 +1945,9 @@ ItemTooltip: {
 					'''
 				Long:
 					'''
-					[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:While digesting dead prey:]
-					- [c/{$Mods.V2.CommonColorCodes.Heal}:Health is regenerated] at a rate of {HealthRegenerationRatio} of your [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:absorption rate].
-					- [c/{$Mods.V2.CommonColorCodes.ManaHeal}:Mana is regenerated] at a rate of {ManaRegenerationRatio} of your [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:absorption rate].
+					While digesting dead prey, [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:based on how much you absorb in a minute:]
+					- [c/{$Mods.V2.CommonColorCodes.Heal}:Increases health regeneration] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{HealthRegenerationRatio} of absorption rate in HP/sec]. [c/7F7F7F:(Natural)]
+					- [c/{$Mods.V2.CommonColorCodes.ManaHeal}:Increases mana regeneration] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{ManaRegenerationRatio} of absorption rate in MP/sec].
 					[c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:Effectiveness decreases if there are prey in your stomach still alive.]
 
 					Current Regeneration ({RegenEffectiveness} effectiveness with {LivePreyRemaining} out of {PreyRemaining} prey still alive):
@@ -1990,26 +2368,54 @@ InfoDisplayText.TallyCounterVore.InvalidMeal: Meal count unavailable
 StatusEffects: {
 	Vanilla: {
 		Buffs: {
-			Wrath.Description:
+			Campfire.Description:
 				'''
-				[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases damage by {WrathDamageBonus}.]
-				[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases stomach strength (TUM) by {WrathTUMBonus}.]
-				[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases acid strength (ACI) by {WrathACIBonus}.]
-				'You and your stomach feel a rush of raw fury'
+				[c/{$Mods.V2.CommonColorCodes.Heal}:Increases health regeneration] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{CampfireRegenFlat} HP/sec]. [c/7F7F7F:(Natural)]
+				[c/{$Mods.V2.CommonColorCodes.Heal}:Increases base natural regeneration buildup speed] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{CampfireNaturalRegenBuildupSpeed}].
+				[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases digestion tick rate and absorption rate] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{CampfireDigestionSpeedBonus}].
+				'Everything's better with a nice, warm fire nearby'
+				'''
+			HeartLantern.Description:
+				'''
+				[c/{$Mods.V2.CommonColorCodes.Heal}:Increases health regeneration] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{HeartLanternRegenFlat} HP/sec]. [c/7F7F7F:(Artificial)]
+				'You feel a bit more lively than usual'
+				'''
+			Honey.Description:
+				'''
+				[c/{$Mods.V2.CommonColorCodes.Heal}:Increases health regeneration] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{HoneyRegenFlat} HP/sec]. [c/7F7F7F:(Natural)]
+				[c/{$Mods.V2.CommonColorCodes.Heal}:Increases the speed at which natural regeneration builds up] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{HoneyNaturalRegenBuildupSpeed}].
+				'Savor the sweet, delicious taste of good health!'
 				'''
 			Rage.Description:
 				'''
-				[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases critical strike chance by {RageCritChanceBonus}.]
-				[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases throat strength (GLP) by {RageGLPBonus}.]
-				[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases absorption strength (ABS) by {RageABSBonus}.]
+				[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases critical strike chance] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{RageCritChanceBonus}].
+				[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases throat strength (GLP)] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{RageGLPBonus}].
+				[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases absorption strength (ABS)] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{RageABSBonus}].
 				'You and your stomach feel a rush of pointed fury'
+				'''
+			RapidHealing.Description:
+				'''
+				[c/{$Mods.V2.CommonColorCodes.Heal}:Increases health regeneration] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{RapidHealingRegenFlat}]. [c/7F7F7F:(Artificial)]
+				[c/{$Mods.V2.CommonColorCodes.Heal}:Increases the speed at which natural regeneration builds up] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{RapidHealingNaturalRegenBuildupSpeed}].
+				'''
+			Regeneration.Description:
+				'''
+				[c/{$Mods.V2.CommonColorCodes.Heal}:Increases health regeneration] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{RegenPotionRegenFlat}]. [c/7F7F7F:(Artificial)]
+				'You feel slightly revitalized'
+				'''
+			Wrath.Description:
+				'''
+				[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases damage] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{WrathDamageBonus}].
+				[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases stomach strength (TUM)] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{WrathTUMBonus}].
+				[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases acid strength (ACI)] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{WrathACIBonus}].
+				'You and your stomach feel a rush of raw fury'
 				'''
 		}
 
 		Summons.Pets.FairyPrincess.Description:
 			'''
 			A small, but very hungry prismatic fairy [c/{$Mods.V2.CommonColorCodes.DoSomething}:follows you around].
-			She will [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:hunt down and eat nearby entities] which are shiny or twinkly enough for her tastes (including other fairies), as well as royalty..
+			She will [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:hunt down and eat nearby entities] which are shiny or twinkly enough for her tastes (including other fairies), as well as royalty.
 			'The light of the fair folk illuminates all (especially her next lunch)'
 			'''
 	}
@@ -2481,6 +2887,21 @@ Death: {
 					Hardcore: "{Player} has become the best battery {Pred}'s ever used, at the cost of their continued existence."
 				}
 
+				Painter: {
+					1: "{Pred} found {Player} too colorful a snack to pass up."
+					2: "{Player} was painted red by the stomach of a starving artist."
+					3: "{Pred} swallowed up {Player} to focus on his next masterpiece...even though they wouldn't stop fighting to get out of his gut."
+					4: "{Player} didn't stop jostling around {Pred}'s gut, and now he's gotta start his newest artwork over because of a wrong brushstroke. How rude!"
+					5: "{Player} made a great model for {Pred}'s latest artpiece!...of himself with a nice, full belly!"
+					Hardcore:
+						'''
+						{Pred} seems to be finishing up painting a beautiful picture! What's it a picture of?
+
+						...oh! It's of {Player}'s last moments digesting in his gut!
+						What a lovely way to send them off as they churn into more of his ass...
+						'''
+				}
+
 				PartyGirl: {
 					1: "{Pred} had {Player} as a pre-party pick-me-up."
 					2: "{Player} will be the life of the party as {Pred}'s tum fat."
@@ -2606,7 +3027,7 @@ TownNPCMood: {
 			Jungle: I absolutely LOVE this locale! Sure, it's awfully hot and humid here...oh, but just LOOK at all those hungry predators!~ I'm sure there's some glaring dissonance to be resolved with them! Sweet, sizzling, SCALDING dissonance...~
 			Sky: It's always nice to be up in the skies...it reminds me a lot of home, in some ways. I do wonder how Melodia would like a place like this...m- maybe she'd be inspired to write a new song, even!
 			Forest: I'm not sure I like it here. S- sure, it's very calm here, and the locals are nice, but...nothing here serves purpose for my job, and they're not very...e- enticing for me, either.
-			Corruption: As fascinating as the specimens here are, this place is hardly suited for sustained housing! S- still...one must study the fallen to- well, to avoid BECOMING the fallen...a- and the creatures here certainly get the mind m- moving...
+			Corruption: As fascinating as the specimens here are, this place is hardly suited for sustained housing! S- still...one must study the fallen to- well, to avoid BECOMING the fallen themselves...a- and the creatures here certainly get the mind m- moving...
 			Crimson: This place is very...gorey. That said, the local...wildlife, if you can call them that, are certainly eager to...g- get me on my way into them...wh- which I don't mind all that m- much! Just...I can think of b- better places to do my work than here...
 			Dungeon: I DESPISE this place. There's nothing worth studying. There's nothing to even EAT ME in the first place aside from the slimes. The slimes here are pointless to study, as ANY and all information about them could be gleaned from other, more visually-pleasing and scientifically-stimulating slimes. All of the humanoids I could be eaten by are specimens I could study literally ANYWHERE else. I'd very much like to leave.
 		}
@@ -2687,13 +3108,18 @@ TownNPCMood: {
 		}
 	}
 
+	Painter: {
+		Content: Huh? Oh, am I good? Yeah, I'm fine right now! This is a fine spot to paint!
+		Neighbors.SpecificNPCs.LoveDryad: "{NPCName}? Oh, yeah, she's REALLY pretty! I definitely wanna paint her more...both outside and inside my gut......mmmmm...such a [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:deliciously] colorful dryad..."
+	}
+
 	Steampunker: {
 		Content: I'm jolly good enough, thanks.
 
 		Neighbors: {
 			SpecificNPCs: {
-				LoveCyborg: It's quite a good show, having {NPCName} around. The old bucket of bolts and I always have plenty of lovely things to chit and chat about.
-				LikePainter: The painter? Yeah, {NPCName}'s a good sort. Spruces up my works all the time! Plenty nice bloke, he is.
+				LoveCyborg: It's quite a good show, having {NPCName} around. The old bucket of bolts and I always have plenty of lovely things to chit and chat about!
+				LikePainter: The painter? Yeah, {NPCName}'s a good sort. Spruces up my works all the time! Plenty nice bloke, he is, save for how often I end up tunin' up his system.
 				HateMechanic: "{NPCName}? She can put a sock right in it, for all I care! I'm NOT falling for her gaudy gizmos and gadgets!"
 			}
 		}
@@ -2710,7 +3136,7 @@ Bestiary: {
 
 	Divine: {
 		Sinhunters: {
-			Promethia: If ever there was a word for a Sinhunter who never did their expected job, that word would be "Promethia". Being much more interested in studying the internals of other creatures than swallowing them herself, Promethia was exiled from the Divine Realm decades ago, and now searches the mortal plane for the perfect predator to become a part of.
+			StPromethia: If ever there was a word for a Sinhunter who was everything many others aspire not to be, that word would be "Promethia". St. Promethia is a turbo-masochist gutslut who'd love nothing more than to be a heaping helping of fat on any predator she finds...and, of course, her job ends up letting her do this very often. Word on the street is she even gets to fatten up her employer's rear end every once in a while as a reward for good performance.
 			StJerne: A fearsome Sinhunter with over a millenium of experience under her belt, St. Jerne is the bane of any being that thinks they can threaten Her Twinkling Majesty. Even the most stoic of Sinhunters can have lofty aspirations, though, and very occasionally, a select few have noticed her looking longingly, almost hungrily, at Aurora's titanic form...
 		}
 
@@ -2718,7 +3144,7 @@ Bestiary: {
 			Constitua: A truly unparalleled mechanic with a knack for working with otherworldly materials, Constitua is nothing if not amazingly gifted with their work. They are responsible for a vast quantity of the more modern-looking inventions across the Divine Realm, taking inspiration from mortals and immortals alike.
 			Judico: The great judge of the Divine Realm; equal parts masculine and feminine, Judico truly seeks nothing more than fair, equal, and uncompromising judgement --- even for the deities he is obligated to call his peers. His path to monotheism has been laced with trouble after trouble, but victory is within his grasp...
 			Aurora: The titanic woman known as the Mother of the Stars. Countless stars have both been birthed by her and ended up right back in her gargantuan gut to be churned into ever more fat for her figure; her truly immeasurably strong belches are said to be the source of the aurora borealis that paint vast swathes of space.
-			Chrona: The endless march of time shall forget countless things. It shall not forget Chrona, the being that granted the flow of time to the universe, and in turn, was granted a place to reside as the supreme ruler of the Divine Realm and all creatures within it. To devour their soul would be to upend the very treads of time itself for a midday meal.
+			Chrona: The endless march of time shall forget countless things. It shall not forget Chrona, the being that granted the flow of time to the universe, and in turn, was granted a place to reside as the supreme ruler of the Divine Realm and all creatures within it. To devour their soul would be to upend the very treads of time itself, just for an immaculately mega-powerful meal.
 		}
 	}
 }

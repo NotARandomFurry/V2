@@ -412,9 +412,25 @@ namespace V2.UI.PredStatsMenu
 						return;
 
 					hoveredStatSlice = statShorthand;
+					string pointsAllocationText;
+					switch (Main.keyState.IsKeyDown(Keys.LeftShift), Main.keyState.IsKeyDown(Keys.LeftControl))
+					{
+						case (false, false):
+							pointsAllocationText = "Mods.V2.PredStatsMenu.StatSliceHover.Default";
+							break;
+						case (true, false):
+							pointsAllocationText = "Mods.V2.PredStatsMenu.StatSliceHover.Bulk10";
+							break;
+						case (true, true):
+							pointsAllocationText = "Mods.V2.PredStatsMenu.StatSliceHover.Bulk100";
+							break;
+						case (false, true):
+							pointsAllocationText = "Mods.V2.PredStatsMenu.StatSliceHover.BulkMaximum";
+							break;
+					}
 					UICommon.TooltipMouseText(
 						Language.GetTextValueWith(
-							"Mods.V2.PredStatsMenu.StatSliceHover",
+							pointsAllocationText,
 							new {
 								PredStatName = statFullName,
 								PredStatShorthand = statShorthand,
@@ -430,7 +446,21 @@ namespace V2.UI.PredStatsMenu
 						}
 						else
 						{
-							stat.Spent++;
+							switch (Main.keyState.IsKeyDown(Keys.LeftShift), Main.keyState.IsKeyDown(Keys.LeftControl))
+							{
+								case (false, false):
+									stat.Spent++;
+									break;
+								case (true, false):
+									stat.Spent += Math.Min(10, Main.LocalPlayer.AsPred().AvailableStatPoints);
+									break;
+								case (true, true):
+									stat.Spent += Math.Min(100, Main.LocalPlayer.AsPred().AvailableStatPoints);
+									break;
+								case (false, true):
+									stat.Spent += Main.LocalPlayer.AsPred().AvailableStatPoints;
+									break;
+							}
 							SoundEngine.PlaySound(AllocateSuccess);
 							if (Main.netMode == NetmodeID.MultiplayerClient)
 							{
@@ -453,7 +483,21 @@ namespace V2.UI.PredStatsMenu
 						}
 						else
 						{
-							stat.Spent--;
+							switch (Main.keyState.IsKeyDown(Keys.LeftShift), Main.keyState.IsKeyDown(Keys.LeftControl))
+							{
+								case (false, false):
+									stat.Spent--;
+									break;
+								case (true, false):
+									stat.Spent -= Math.Min(10, Main.LocalPlayer.AsPred().AvailableStatPoints);
+									break;
+								case (true, true):
+									stat.Spent -= Math.Min(100, Main.LocalPlayer.AsPred().AvailableStatPoints);
+									break;
+								case (false, true):
+									stat.Spent -= Main.LocalPlayer.AsPred().AvailableStatPoints;
+									break;
+							}
 							SoundEngine.PlaySound(AllocateSuccess with { Pitch = -0.15f });
 							if (Main.netMode == NetmodeID.MultiplayerClient)
 							{
@@ -493,7 +537,7 @@ namespace V2.UI.PredStatsMenu
 				#region TUM
 				spriteBatch.Draw(
 					_predStatsPizzaSlice_TUM.Value,
-					backdropPos + new Vector2(596f, 40f),
+					backdropPos + new Vector2(620f, 40f),
 					_predStatsPizzaSlice_TUM.Value.Bounds,
 					Color.White,
 					0f,
@@ -503,7 +547,7 @@ namespace V2.UI.PredStatsMenu
 					0f
 				);
 				Rectangle sliceRectTUM = new Rectangle(
-					backdropRect.X + 596,
+					backdropRect.X + 620,
 					backdropRect.Y + 40,
 					_predStatsPizzaSlice_TUM.Value.Width,
 					_predStatsPizzaSlice_TUM.Value.Height
@@ -513,7 +557,7 @@ namespace V2.UI.PredStatsMenu
 				#region ACI
 				spriteBatch.Draw(
 					_predStatsPizzaSlice_ACI.Value,
-					backdropPos + new Vector2(560f, 76f),
+					backdropPos + new Vector2(560f, 100f),
 					_predStatsPizzaSlice_ACI.Value.Bounds,
 					Color.White,
 					0f,
@@ -524,7 +568,7 @@ namespace V2.UI.PredStatsMenu
 				);
 				Rectangle sliceRectACI = new Rectangle(
 					backdropRect.X + 560,
-					backdropRect.Y + 76,
+					backdropRect.Y + 100,
 					_predStatsPizzaSlice_ACI.Value.Width,
 					_predStatsPizzaSlice_ACI.Value.Height
 				);
@@ -533,7 +577,7 @@ namespace V2.UI.PredStatsMenu
 				#region ABS
 				spriteBatch.Draw(
 					_predStatsPizzaSlice_ABS.Value,
-					backdropPos + new Vector2(596f, 76f),
+					backdropPos + new Vector2(620f, 100f),
 					_predStatsPizzaSlice_ABS.Value.Bounds,
 					Color.White,
 					0f,
@@ -543,8 +587,8 @@ namespace V2.UI.PredStatsMenu
 					0f
 				);
 				Rectangle sliceRectABS = new Rectangle(
-					backdropRect.X + 596,
-					backdropRect.Y + 76,
+					backdropRect.X + 620,
+					backdropRect.Y + 100,
 					_predStatsPizzaSlice_ABS.Value.Width,
 					_predStatsPizzaSlice_ABS.Value.Height
 				);

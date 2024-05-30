@@ -246,7 +246,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 			if (scrooge != null && scrooge.Distance(npc.Center) <= npc.AsPred().MaxSwallowRange && shouldSnackOnScrooge)
 				PredNPC.Swallow(npc, scrooge);
 
-			if (ModContent.GetInstance<V2ServerConfig>().NoRandomGulpsAgainstPlayers)
+			if (!ModContent.GetInstance<V2ServerConfig>().RandomGulpsAgainstPlayers)
 				return;
 
 			if (!Main.CurrentPlayer.active || Main.CurrentPlayer.dead || Main.CurrentPlayer.Distance(npc.Center) > npc.AsPred().MaxSwallowRange || Main.CurrentPlayer.CurrentCaptor() is not null)

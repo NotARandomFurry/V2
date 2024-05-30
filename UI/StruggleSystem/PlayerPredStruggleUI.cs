@@ -2,16 +2,11 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System;
-using System.Linq;
 using Terraria;
-using Terraria.GameContent;
-using Terraria.GameContent.UI.ResourceSets;
-using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.UI;
 using V2.Core;
 using V2.Core.StruggleSystem;
-using V2.Items;
 using V2.PlayerHandling;
 
 namespace V2.UI.StruggleSystem
@@ -23,7 +18,6 @@ namespace V2.UI.StruggleSystem
 		public override void Update(GameTime gameTime)
 		{
 			Visible = false;
-			return;
 			Player player = Main.LocalPlayer;
 			if (player.AsPred().KickyStomachFullness > 0.0 && player.AsPred().StomachTracker.PredatorStruggleChart is not null)
 				Visible = true;
@@ -68,34 +62,38 @@ namespace V2.UI.StruggleSystem
 			VoreTracker tracker = Main.LocalPlayer.AsPred().StomachTracker;
 			foreach ((StruggleChartNote note, double proximity) noteData in tracker.CheckCloseNotes(-1, true))
 			{
+				if (noteData.note.CorrectlyPressed && noteData.note.PressAnimTimer >= 28)
+					continue;
 				float alpha = 1f;
-				if (noteData.proximity >= 0)
+				if (!noteData.note.CorrectlyPressed)
 				{
-					double realProximity = 2.5 - noteData.proximity;
-					if (realProximity < 0.0)
-						realProximity = 0.0;
-					alpha = (float)Math.Min(Math.Max(realProximity / 2.5, 0.0), 1.0);
-				}
-				else if (noteData.proximity < 0)
-				{
-					double realProximity = 0.5 + noteData.proximity;
-					if (realProximity < 0.0)
-						realProximity = 0.0;
-					alpha = (float)Math.Min(Math.Max(realProximity / 0.5, 0.0), 1.0);
+					if (noteData.proximity >= 0)
+					{
+						double realProximity = 2.5 - noteData.proximity;
+						if (realProximity < 0.0)
+							realProximity = 0.0;
+						alpha = (float)Math.Min(Math.Max(realProximity / 2.5, 0.0), 1.0);
+					}
+					else if (noteData.proximity < 0)
+					{
+						double realProximity = 0.5 + noteData.proximity;
+						if (realProximity < 0.0)
+							realProximity = 0.0;
+						alpha = (float)Math.Min(Math.Max(realProximity / 0.5, 0.0), 1.0);
+					}
 				}
 				Vector2 notePosition = bottomCenter;
 				notePosition.X -= 16;
 				notePosition.X += noteData.note.Lane switch
 				{
-					NoteLane.Up => -32,
-					NoteLane.Right => -16,
+					NoteLane.Up => -48,
+					NoteLane.Left => -24,
 					NoteLane.Special => 0,
-					NoteLane.Left => 16,
-					NoteLane.Down => 32,
+					NoteLane.Right => 24,
+					NoteLane.Down => 48,
 					_ => 0,
 				};
-				notePosition.Y -= (float)((noteData.note.CorrectlyPressed ? noteData.note.PressedPosition : noteData.proximity) * 18.0) * 1.5f;
-				notePosition.Y += _struggleNoteSpecial.Height() / 2f;
+				notePosition.Y -= (float)((noteData.note.CorrectlyPressed ? noteData.note.PressedPosition : noteData.proximity) * 26.0) * 1.5f;
 
 				int frame = 0;
 				if (noteData.note.PressAnimTimer > 7)
@@ -105,10 +103,10 @@ namespace V2.UI.StruggleSystem
 				if (noteData.note.PressAnimTimer > 21)
 					frame = 3;
 				Rectangle noteFrame = new Rectangle(
-					frame * 20,
+					frame * 28,
 					0,
-					18,
-					18
+					26,
+					26
 				);
 
 				Texture2D noteTexture = noteData.note.Lane switch

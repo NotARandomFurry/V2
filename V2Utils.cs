@@ -233,7 +233,7 @@ namespace V2
 		{
 			TooltipLine dynamicTooltip = new TooltipLine(
 				V2.Instance,
-				"VorariaDynamicTooltip",
+				"V2DynamicTooltip",
 				(Main.keyState.IsKeyDown(Keys.LeftShift) && Main.keyState.IsKeyDown(Keys.LeftControl))
 				? Language.GetTextValue(
 					"Mods.V2.ItemTooltip." + itemTooltipKey + ".Flavor"
@@ -266,15 +266,22 @@ namespace V2
 
 			if (tooltips.FirstOrDefault(x => x.Mod == "Terraria" && x.Name.Contains("Tooltip")) is TooltipLine tooltipLine)
 			{
+				foreach (TooltipLine potentialTooltipLine in tooltips)
+				{
+					if (potentialTooltipLine.Mod == "Terraria" && potentialTooltipLine.Name.Contains("Tooltip"))
+						potentialTooltipLine.Hide();
+				}
 				tooltips.Insert(
-					tooltips.IndexOf(tooltipLine),
+					tooltips.IndexOf(tooltipLine) + 1,
 					dynamicTooltip
 				);
-				tooltips.RemoveAll(x => x.Mod == "Terraria" && x.Name.Contains("Tooltip"));
 			}
-			else
+			else if (FindLastTooltipLineBeforeFlavorText(tooltips, out TooltipLine lastPreFlavorLine))
 			{
-				tooltips.Add(dynamicTooltip);
+				tooltips.Insert(
+					tooltips.IndexOf(lastPreFlavorLine) + 1,
+					dynamicTooltip
+				);
 			}
 		}
 
@@ -323,9 +330,12 @@ namespace V2
 			return line != null;
 		}
 
-		public static bool FindFirstTooltipLineAfterFlavorText(List<TooltipLine> tooltips, out TooltipLine line)
+		public static bool FindFirstTooltipLineThatIsOrComesAfterFlavorText(List<TooltipLine> tooltips, out TooltipLine line)
 		{
-			line = tooltips.FirstOrDefault(x => x.Name == "EtherianManaWarning")
+			line = tooltips.FirstOrDefault(x => x.Name == "V2DynamicTooltip")
+				?? tooltips.FirstOrDefault(x => x.Name == "V2SetBonus")
+				?? tooltips.FirstOrDefault(x => x.Name == "V2LongAndFlavorTooltipNotice")
+				?? tooltips.FirstOrDefault(x => x.Name == "EtherianManaWarning")
 				?? tooltips.FirstOrDefault(x => x.Name == "WellFedExpert")
 				?? tooltips.FirstOrDefault(x => x.Name == "BuffTime")
 				?? tooltips.FirstOrDefault(x => x.Name == "OneDropLogo")

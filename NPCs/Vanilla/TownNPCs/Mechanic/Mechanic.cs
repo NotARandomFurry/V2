@@ -179,24 +179,24 @@ namespace V2.NPCs.Vanilla.TownNPCs.Mechanic
 				{
 					mechanicChatPool.AddRange(new List<string>
 					{
-						"I instruct that you cease and desist your senseless complaining. My stomach's food processing protocol will melt you starting any second now.",
-						"My sustenance detainment policy is holding up with utmost efficiency. You, on the other hand, are melting exactly as my calculations predicted. Continue.",
+						"Shut your mouth. Do that and melt. I'm trying to work.",
+						"Exactly as calculated; you're digesting fine. Continue, quietly.",
 					});
 				}
 				else
 				{
 					mechanicChatPool.AddRange(new List<string>
 					{
-						"You do not need to worry about getting in the way while I work; these overalls are designed to keep ALL of my sustenance processing system's contents nice and compact.",
-						"Do not make any movements without first notifying me. Unapproved movements, if strong enough, may cause damages to my system; else, they may cause damages to you.",
+						"...you shouldn't bother worrying about getting in the way. I stitched these overalls myself specifically to resolve that issue.",
+						"...you know that moving around too much in there is going to hurt both of us, right? System damage goes both ways...",
 					});
 					if (noDigest)
 					{
 						mechanicChatPool.AddRange(new List<string>
 						{
-							"Could you provide some assistance by pushing up some spare wire while you are in there? I am in need of a little bit more for this project, and I believe I ate some alongside you...",
-							"Thank you again for filling out my system, " + player.name + ". Simply containing you within it is already improving my ability to focus tenfold.",
-							"Your continued stay inside me is providing plenty of data on the ability for a human's food processing system to contain large meals inside undigested. Proceed as you are; I will continue to use you to generate new machine concepts.",
+							"...there should be some spare wire inside there. Push some up. I need some.",
+							"...thank you for staying calm inside me. This helps me focus.",
+							"...this gives me valuable additional data on how the human stomach handles live prey without digesting. Continue.",
 						});
 					}
 					else
@@ -204,10 +204,10 @@ namespace V2.NPCs.Vanilla.TownNPCs.Mechanic
 						mechanicChatPool.AddRange(new List<string>
 						{
 							"[c/00BB00:*BUOARP!*]\n"
-						  + "Focus levels...improved. I simply required expulsion of excess heat...my system, after all, is working extremely diligently to convert you to energy, kinetic and potential alike.",
-							"Are you impressed by the strength of my internal food processor? I certainly am, although I always think that, with the right tools, I could optimize it just a bit further...",
-							"There's nothing quite like some high-quality brain food to keep my attention on my work...and, thankfully, I have you available to fulfill that role in my system.",
-							"I cannot say I am entirely looking forward to seeing how much potential energy you're converted into...working becomes overly difficult if my weight exceeds a critical threshold.",
+						  + "...my focus is coming back after that. Good. I need to work.",
+							"...you're digesting well, or at least it sounds like you are. Can't help but wonder if I could optimize my stomach just a bit more...",
+							"...nothing like some decent brain food while you work. Helps the mind stay on track.",
+							"...better not add too much cellulite to me. Gets hard to work if I'm heavy past a certain breakpoint.",
 						});
 					}
 				}
@@ -216,46 +216,84 @@ namespace V2.NPCs.Vanilla.TownNPCs.Mechanic
 			{
 				if (Main.bloodMoon)
 				{
+					mechanicChatPool.AddRange(new List<string>
+					{
+						"Don't bother me. You're [c/FFFF00:just as easy to swallow as wire].",
+						"My workflow is interrupted. Leave or become a [c/FFFF00:part of it].",
+						"I've eaten [c/FFFF00:skeletons] less bothersome than you. What do you want?",
+					});
 					if (GetVisualBellySize(npc) >= 3)
 					{
 						mechanicChatPool.AddRange(new List<string>
 						{
-							"You happen to be interrupting my work...fortunately for you, I already had some quality brain food for the night. Spit it out; what do you want?",
 							"[c/00BB00:*BUOARP!*]\n"
-						  + "...what are you looking at me like that for? Gaseous expulsion of excess heat is NORMAL. Now then, idiot, did you come to buy the wire you don't have?",
-							"Massage my primary processing chamber to aid in clearing the cache of sustenance currently being evaluated inside it, and I might not eat you for interrupting my workflow.",
+						  + "...what? Never witnessed gaseous expulsion before?",
+							"My workflow is interrupted. Leave or become another part of it.",
+							"Count yourself lucky I'm on decent fueling. Spit it out, then: what do you want?",
 						});
 					}
-					else
+					if (Main.IsItRaining)
 					{
 						mechanicChatPool.AddRange(new List<string>
 						{
-							"Finally, someone to process who isn't already bones...yet. If you're just here to bother me, feed yourself into my processing system. NOW.",
-							"The Destroyer is also an alternative name I use for my stomach. Don't understand? Stand still for a few more seconds, and I'll demonstrate why.",
-							"You and wire are very similar. Easy to swallow, easy to process, and easy to explain away if you happen to disappear. Still want to bother me?",
-							"Listen, I am WORKING right now. Let me work in peace, or let me take a five-second snack break.",
-							"What do you WANT? I already had to eat my lunchbox just to hold me over so I can finish this blueprint draft!",
-							"Let me guess. Didn't buy enough wire, idiot. Well, I ate a lot of it trying to fill my stomach, so if you want it, either pay extra or go in after it.",
-							"You're interrupting my work. Quit it, or quit being outside of my system.",
+							"I like rain only when I can control it. This is not controllable to the degree I'd like. [c/FFFF00:Feed me the clouds to fix that.]",
+							"I will whip you with a frayed extension cord if you bother me tonight. [c/FFFF00:The rain will make sure you're fried to a fine crisp as a result.]",
 						});
+					}
+					if (Main.IsItStorming)
+					{
+						mechanicChatPool.AddRange(new List<string>
+						{
+							"If my wires get shorted [c/FFFF00:one more fucking time], I'm going to find a way to swallow the sky.",
+							"Storms like this are only [c/FFFF00:EVER] good as batteries. The only problem is ingesting them.",
+						});
+					}
+					if (steamLass != null)
+					{
+						if (steamLass.IsFoodFor(player))
+						{
+							mechanicChatPool.AddRange(new List<string>
+							{
+								"Made " + steamLass.GivenName + " into a battery? Good. [c/FFFF00:It's the only thing she's EVER been good for.]",
+								"Steam is worse. Every time. Good to know we can agree on that. If there's ANYTHING of hers left undigested by morning, you're [c/FFFF00:breakfast.]",
+							});
+						}
+						else if (steamLass.IsFoodFor(npc))
+						{
+							mechanicChatPool.AddRange(new List<string>
+							{
+								steamLass.GivenName + " is busy digesting into ass fat. If I find you back in the morning before I've had the chance to calm down, I'll [c/FFFF00:smother you with whatever she adds.]",
+								"Steam is worse than electricity. Doesn't matter where, when, or why. It always is. Get the [c/FFFF00:dumbfuck] inside me to quit screaming that it isn't.",
+							});
+						}
+						else
+						{
+							mechanicChatPool.AddRange(new List<string>
+							{
+								"You. " + steamLass.GivenName + "'s engines are broken. [c/FFFF00:Feed her to me.]",
+								"Steam is [c/FFFF00:worthless] for anything except a marginally more attractive belch. My [c/FFFF00:stuck-up, idiotic] \"rival\" should know this by now.",
+								"I'm [c/FFFF00:sick and tired] of that steam bitch's yelling. She'll make a perfect midnight snack.",
+							});
+						}
 					}
 				}
 				else
 				{
 					mechanicChatPool.AddRange(new List<string>
 					{
-						"Always purchase more wire than you need. Its flavor is defined as pleasant, and it fills chambers of all kinds, including internal ones, with uncomparable cost efficiency.",
-						"You know what this house needs? More blinking lights. Probably some lights inside me, too, as an energy source.",
-						"My primary food processing chamber, or \"stomach\", if you will, is a very well-optimized mechanism...if you would like, and are not currently busy with other tasks, I can provide you a more hands-on demonstration if requested.",
-						"When I'm not busy with other tasks, would you like to take a tour through my internal food processing pipes? They're VERY efficient at transporting food and converting it into potential energy.",
-						"Did you make sure your device was plugged in? Preferably NOT to any consumption cavities you may use, your navel, or your digestive system, but to an actual power outlet?",
+						"...if you don't buy enough wire this time, I'm gonna start charging extra.",
+						"...I should install more lights here. Inside me, too. My stomach's craving a bit of electrical light right now.",
+						"...my stomach's really well-optimized. Most of my other machines are, too. If you're not busy, I can demonstrate them.",
+						"...did you make sure your device was plugged in? To an actual power outlet, and NOT your navel?",
+						"...why do I eat wire so much? It's easy to eat, and I wasn't asked questions about it much.",
 					});
 					if (GetVisualBellySize(npc) >= 3)
 					{
 						mechanicChatPool.AddRange(new List<string>
 						{
-							"Mmm...with a fuel source as substantial as this, I am able to work extremely efficiently. I believe I am able to repay you with a...present, if you can refer to it as such. I will require a small sum of...\"dessert\", I believe, but that should not be of any significant issue.",
-							"My primary food processing chamber is making innumerable variants of soundly-structured audial emanations as it works diligently to convert the sizable mass within us into additional fuel. I believe I like this feeling.",
+							"...a full stomach like this makes a lot of useful ideas. I can make one for you real quick, in exchange for a quick dessert. Coins are easy to swallow and taste nice.",
+							"...the sounds of my stomach digesting a large meal often help calm my mind. Does it have the same benefit for you, I wonder...?",
+							"...it's always nice to have a flavorful battery inside your stomach, isn't it? I think I can make something to make it easier to carry that battery around until it's digested, too.",
 						});
 					}
 					if (bootlegChippy != null)
@@ -264,24 +302,24 @@ namespace V2.NPCs.Vanilla.TownNPCs.Mechanic
 						{
 							mechanicChatPool.AddRange(new List<string>
 							{
-								"...seeing him move around in your stomach and gradually slow is...I believe the term is \"satisfying\". Continue keeping him inside you; do not let him go. Ever.",
-								bootlegChippy.GivenName + " has already done enough damage as it is. It is...pleasant to see that you have fed him into your system.",
+								"...seeing him gradually slow to a grinding halt in your stomach as it digests him is...satisfying. Continue keeping him inside you; don't let him go. Ever.",
+								"..." + bootlegChippy.GivenName + " has already done enough damage as it is. It's...pleasant to see that you've made him your power source. Finally gets what's coming to him...",
 							});
 						}
 						else if (bootlegChippy.IsFoodFor(npc))
 						{
 							mechanicChatPool.AddRange(new List<string>
 							{
-								"...what? I have reached my maximum patience quota for people that have violated my safety and freedom protocols for years on end. I have no concern for his physical or mental states to communicate.",
-								bootlegChippy.GivenName + " has already done enough damage as it is. It is...strangely pleasant to feel him inside me, and to have him beg for mercy. I have received that which I am owed; a sufficient fuel source for my internals.",
+								"...what? I have no patience for people that violate my safety policy for years on end. I'm sure you have something more important to address.",
+								"..." + bootlegChippy.GivenName + " has already done enough damage as it is. It's...pleasant to feel him inside me, and to have him beg for mercy. To finally be paid his debt.",
 							});
 						}
 						else
 						{
 							mechanicChatPool.AddRange(new List<string>
 							{
-								"If you have a moment to spare, I request that you inform " + bootlegChippy.GivenName + " that he is behind on his electrical payments, and should visit me as soon as possible so I can...collect his dues, in a manner of speaking.",
-								bootlegChippy.GivenName + " bothers me to no end. I find it incredibly difficult to ascertain his reason for pretending he didn't do what he did, but I plan to feed him into my system and resolve his continued presence.",
+								"...tell " + bootlegChippy.GivenName + " that he's behind on electrical. He should visit me as soon as possible so I can...collect his dues, for lack of a better phrase.",
+								"..." + bootlegChippy.GivenName + " won't stop bothering me. I don't know WHY he keeps pretending he didn't do what he did, but if you don't resolve his continued presence soon, I'll do so for you.",
 							});
 						}
 					}
@@ -291,24 +329,26 @@ namespace V2.NPCs.Vanilla.TownNPCs.Mechanic
 						{
 							mechanicChatPool.AddRange(new List<string>
 							{
-								"I see that " + steamLass.GivenName + " is compressed into your stomach. I am...I believe the word is \"happy\", to know that she is in her rightful place; that of a battery.",
-								"It is just like I told you. Electricity is factually better than steam by a significant margin. The fact that " + steamLass.GivenName + " is wasting away in your system as we speak is proof of this simple fact.",
+								"...finally turned " + steamLass.GivenName + " into the battery she ought to be, did you? Good. She's better off that way.",
+								"...it's just like I told you. Electricity is factually better than steam. The current contents of your stomach prove that.",
 							});
 						}
 						else if (steamLass.IsFoodFor(npc))
 						{
 							mechanicChatPool.AddRange(new List<string>
 							{
-								steamLass.GivenName + "? She is currently busy being processed by my factually superior system. Please allow up to 8 hours for sufficient processing and storage; she will return at some point.",
-								"It is just like I told you. Electricity is factually better than steam by a significant margin. My internal food processing unit is currently demonstrating this fact to " + steamLass.GivenName + ", who doesn't seem to believe me.",
+								"...huh? You need to talk to " + steamLass.GivenName + "?\n"
+							  + "...give me up to 8 hours to process her. Shouldn't take any longer than that. She'll return afterwards, if you need her THAT badly.",
+								"...I've always told people that steam is strictly inferior to electricity, and that's because I'm RIGHT. Unfortunately..." + steamLass.GivenName + ", who's currently melting in my stomach, doesn't seem to believe me.",
 							});
 						}
 						else
 						{
 							mechanicChatPool.AddRange(new List<string>
 							{
-								"If you have a moment to spare, I request that you inform " + steamLass.GivenName + " that her engines, both internal and external, are outdated, and to advise her on coming over for a \"tune-up\" sometime in the next few weeks.",
-								"Electricity is significantly better than steam in almost every capacity there is...save for being non-expellable in a gaseous state after consumption of sufficiently large meals. I currently discern this to be the core reason " + steamLass.GivenName + " likes it so much.",
+								"...got a moment? Good. Tell " + steamLass.GivenName + " that her engines, both internal and external, are outdated. Send her here for a...tune-up.",
+								"...the only advantage I can see to steam, and the only reason I can see that " + steamLass.GivenName + " would love it so much, is that you can belch it out after a healthy meal.",
+								"...teleportation? Via steam power? Eugh...that sort of weirder magic bothers me, and I hate steam. Unpredictable and unreliable...nothing like the circuits I'm used to.",
 							});
 						}
 					}
@@ -316,34 +356,133 @@ namespace V2.NPCs.Vanilla.TownNPCs.Mechanic
 					{
 						mechanicChatPool.AddRange(new List<string>
 						{
-							player.name + ", I require assistance testing something. Since wires are clearly not sufficient in this weather, can wind be combined with my internal mechanisms to generate and transfer power?",
-							"Frustration levels, rising at too steep a pace. Storing these wires in my STOMACH would leave them less tangled than they're getting from the excessive force of this wind.",
+							"...I need help testing something. Wires don't work in this weather. Do you think my stomach could work for power generation and transfer instead?",
+							"...frustation levels rising...why would storing wire in my stomach genuinely be easier than dealing with all its tangling in this wind?",
 						});
 					}
 					if (Main.IsItRaining)
 					{
 						mechanicChatPool.AddRange(new List<string>
 						{
-							"This rain makes for a wonderful electrical conductor. I...feel a compulsion to think about whether or not filling myself with it would allow for me to effectively \"swallow\" and \"digest\" common electrical currents.",
-							"Exercise caution around my machines. In the current weather, one misstep may cause you to be electrocuted...which would then leave me no other option but feeding you into my system to harvest and store the resulting energy.",
+							"...rain makes for a wonderful electrical conductor. I'm wondering whether or not filling myself with it would let me effectively \"digest\" electrical currents.",
+							"...exercise caution around my machines. Rain makes a great conductor...for better or worse, and I particularly like food fried by electrical shock.",
 						});
 					}
 					if (Main.IsItStorming)
 					{
 						mechanicChatPool.AddRange(new List<string>
 						{
-							"Hmm...if I could funnel all this lightning into my stomach, would I then be able to harness its power from inside me by...digesting it, in a manner of speaking? Maybe then it would quit frying my equipment...",
-							player.name + ", would you mind helping me out? I need to consume one of those stormclouds so I can test if processing one lets my stomach produce electrical power instead of cellulite deposits.",
-							"Securing the power grid is much easier said than done...is there anything I haven't stored yet? If there IS much more, then I will need to begin reconstituting my internal food processor for this purpose, which never ends well.",
+							"...do you think it's possible to swallow and digesting lightning? I'm tired of it overloading my devices. So much time, having to be wasted on increasingly-annoying repairs...",
+							"...would you mind helping me out? I need to eat one of those stormclouds. The many books and manuals I've read in my time suggest it can turn my stomach into a portable battery.",
+							"...so many different things to bolt down in this weather. I have half a mind to start storing pieces of the power grid in my stomach...even if I know by now that it never ends well.",
 						});
 					}
 					if (LanternNight.LanternsUp)
 					{
 						mechanicChatPool.AddRange(new List<string>
 						{
-							"If I could get my food processing system to produce and transfer light somehow, we could have one of these nights every night without fail, and perfectly renewably...as long as said system is, of course, given sufficient power, be it food or otherwise.",
-							"I am currently wondering if I could feed some of these lanterns into my system and, through its innate processes and conversion techniques, transmute the lanterns into permanent bioluminescence. Such a feat would most certainly aid working late nights...",
+							"...I wonder if my stomach, if provided good fuel, could serve as one of these lanterns with a bit of technical work. The light that comes from them seems enticing...appetizing, almost.",
+							"...does this activity actually influence \"luck\" in any way? All it seems like to me is a way to celebrate an important night. Doesn't help that \"luck\" isn't usually quantifiable...",
 						});
+					}
+					if (player.ZoneSnow)
+					{
+						if (player.ZoneOverworldHeight)
+						{
+							mechanicChatPool.AddRange(new List<string>
+							{
+								"...this place is nice. Nice and cold, and in a way I can enjoy, too. My machines also quite like it; it helps them run better.",
+								"...electricity flows better in low-heat environments like this. I like it here.",
+							});
+						}
+						else if (player.ZoneDirtLayerHeight)
+						{
+							mechanicChatPool.AddRange(new List<string>
+							{
+								"...the protection of a roof without the bothers of maintenance, and it's still cold enough to keep my machines running well. This, I think, is the ideal workspace.",
+								"...being a light distance underground helps to keep the weather from bothering me. Good.",
+							});
+						}
+						else if (player.ZoneRockLayerHeight)
+						{
+							mechanicChatPool.AddRange(new List<string>
+							{
+								"...the cold here makes my machines work well, but I don't enjoy being this far underground.",
+								"...I have mixed feelings about this place. Useful for my work. Not so much for me.",
+							});
+						}
+					}
+					if (Main.hardMode)
+					{
+						if (!NPC.downedMechBossAny)
+						{
+							mechanicChatPool.AddRange(new List<string>
+							{
+								"...when the sun sets, and you hear mechanical rumbling coming closer, be ready to fight. Those robots won't go easy on you.",
+								"...if you get the chance...could you try and \"fix\" one of those...THINGS I was forced to make? I'm not very proud of them.",
+							});
+						}
+						else
+						{
+							if (NPC.downedMechBoss1 && !NPC.downedMechBoss2 && !NPC.downedMechBoss3)
+							{
+								mechanicChatPool.AddRange(new List<string>
+								{
+									"...you dismantled the Spine. That's good to hear. She always tended to be the most...destructive of the parts I was allowed to finish, by no small margin.",
+									"...one down. The Eyes and the Hand are still at large. Prepare for further encounters while you can.",
+								});
+							}
+							else if (!NPC.downedMechBoss1 && NPC.downedMechBoss2 && !NPC.downedMechBoss3)
+							{
+								mechanicChatPool.AddRange(new List<string>
+								{
+									"...you dismantled the Eyes. This is good. They were always too perceptive for their own good...only held back by their fights. I count myself lucky as having been allowed to make them siblings...to a fault.",
+									"...one down. The Spine and the Hand are still at large. Prepare for further encounters while you can.",
+								});
+							}
+							else if (!NPC.downedMechBoss1 && !NPC.downedMechBoss2 && NPC.downedMechBoss3)
+							{
+								mechanicChatPool.AddRange(new List<string>
+								{
+									"...you dismantled the Hand. Good. It always tended to be the most...destructive of the parts I was allowed to finish.",
+									"...one down. The Spine and the Eyes are still at large. Prepare for further encounters while you can.",
+								});
+							}
+							else if (NPC.downedMechBoss1 && NPC.downedMechBoss2 && !NPC.downedMechBoss3)
+							{
+								mechanicChatPool.AddRange(new List<string>
+								{
+									"...you dismantled the Spine and the Eyes. Very good. All that's left is the Hand.",
+									"...two parts gone, but the Hand still lays dormant back in those haunted halls. He always seemed to get \"hungrier\" with certain paintings around; I could never figure out why.",
+								});
+							}
+							else if (NPC.downedMechBoss1 && !NPC.downedMechBoss2 && NPC.downedMechBoss3)
+							{
+								mechanicChatPool.AddRange(new List<string>
+								{
+									"...you dismantled the Spine and the Hand. Very good. All that's left are the Eyes.",
+									"...two parts gone, but the Eyes are still in the low atmosphere. If it helps, she likes to prey on particularly rare birds; he, on particularly heavy birds. These two preferences can overlap.",
+								});
+							}
+							else if (!NPC.downedMechBoss1 && NPC.downedMechBoss2 && NPC.downedMechBoss3)
+							{
+								mechanicChatPool.AddRange(new List<string>
+								{
+									"...you dismantled the Eyes and the Hand. Very good. All that's left is the Spine.",
+									"...two parts gone, but the Spine still roams free underground. She likes to prey on gemstone constructs, if that helps you figure out how to get her attention.",
+								});
+							}
+							else if (!NPC.downedPlantBoss)
+							{
+								mechanicChatPool.AddRange(new List<string>
+								{
+									"...why were the robots a threat? Well...I made those mechanical monstrosities under orders from the High Priest of the Fallen Star. They seek to make augmented body parts for...[c/7F5FBF:them].",
+									"...you dismantled all three of the mechs to be used for the cult's goal? Hm...\n"
+								  + "\n"
+								  + "...thank you. Maybe now I can return to my normal work.",
+								});
+							}
+						}
 					}
 				}
 			}
@@ -360,9 +499,9 @@ namespace V2.NPCs.Vanilla.TownNPCs.Mechanic
 				"[c/7F7F7F:<" + npc.GivenName + " is completely silent as you feed yourself into her throat, simply helping the process along with steady, calculated swallows, until her system has completely accepted its spontaneous input.>]\n"
 			  + Main.rand.NextFromCollection(new List<string>
 				{
-					"You seem...disproportionately eager to feed yourself into my system. Nonetheless, I won't deny you the opportunity to be a battery for me. You taste much better than my lunches often do...",
-					"...and that, " + player.name + ", is a hands-on demonstration of the sustenance intake mechanisms located in my mouth and throat. As per logical progression, I will begin to demonstrate my internal food processor now.",
-					"Mm...you have so many interlocking flavors. I'm very curious as to how they all come together to form such a pleasantly-flavored sustenance unit...I will be studying you as you digest. For now, though, I need to work, so quiet down.",
+					"...intake works fine. My stomach seems eager to get to know you, too. It's not often I have someone give themselves to me as brain food.",
+					"...and that, " + player.name + ", is a hands-on demonstration of the human body's capacity for ingestion. Naturally, it follows that I'll demonstrate digestion now.",
+					"...your flavors interlock nicely. I'll study your tastes more in-depth later; for now, I have things I'd like to continue blueprinting. Stay quiet and don't move...much.",
 				})
 			);
 		}
@@ -430,7 +569,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Mechanic
 			if (steamLass != null && steamLass.Distance(npc.Center) <= npc.AsPred().MaxSwallowRange && resolveSteamLass)
 				PredNPC.Swallow(npc, steamLass);
 
-			if (ModContent.GetInstance<V2ServerConfig>().NoRandomGulpsAgainstPlayers)
+			if (!ModContent.GetInstance<V2ServerConfig>().RandomGulpsAgainstPlayers)
 				return;
 
 			if (!Main.CurrentPlayer.active || Main.CurrentPlayer.dead || Main.CurrentPlayer.Distance(npc.Center) > npc.AsPred().MaxSwallowRange || Main.CurrentPlayer.CurrentCaptor() is not null)
@@ -443,13 +582,13 @@ namespace V2.NPCs.Vanilla.TownNPCs.Mechanic
 			{
 				List<string> potentialRandomGulpLines = new List<string>
 				{
-					"Sorry, " + Main.CurrentPlayer.name + ", but I need some brain food. You will have to do.",
-					"I apologize for the interruption, but my body requires fuel to continue functioning. You will need to suffice.",
+					"...I need some brain food. You'll have to do.",
+					"...sorry, but I need fuel, and you were right there.",
 				};
 				PredNPC.SwallowWithTextIfApplicable(
 					npc,
 					Main.CurrentPlayer,
-					"[c/7F7F7F:<Without warning, " + npc.GivenName + " stuffs you down her throat, headfirst. With your body being compacted into a rather tight state due to her space-efficient outfit, " + npc.GivenName + " pats her belly.>]\n"
+					"[c/7F7F7F:<Without warning, " + npc.GivenName + " stuffs you down her throat, headfirst. With your body being compacted into a rather tight state due to her space-efficient outfit, " + npc.GivenName + " pats her belly exactly once before returning to her work.>]\n"
 				  + Main.rand.NextFromCollection(potentialRandomGulpLines)
 				);
 			}

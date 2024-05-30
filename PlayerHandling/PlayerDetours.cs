@@ -22,6 +22,2366 @@ namespace V2.PlayerHandling
 {
 	public static class PlayerDetours
 	{
+		public static void Detour_UpdateLifeRegen(Player player)
+		{
+			bool shinyStoneShouldEverFuckingWork = false;
+			if (player.shinyStone && player.velocity.Length() < 0.05f && player.itemAnimation == 0)
+				shinyStoneShouldEverFuckingWork = true;
+
+			player.AsV2Player().healthRegenTime += 1.0;
+			foreach (HealthRegenEffect healthRegenEffect in player.AsV2Player().HealthRegenEffects)
+			{
+				healthRegenEffect.modifyHealthRegenTimeMethod?.Invoke(
+					player,
+					ref player.AsV2Player().healthRegenTime
+				);
+			}
+			double oneMinuteFrameCount = (double)V2Utils.SensibleTime(
+				minutes: 1
+			);
+			if (player.AsV2Player().healthRegenTime >= oneMinuteFrameCount)
+				player.AsV2Player().healthRegenTime = oneMinuteFrameCount;
+
+			player.AsV2Player().HealthRegenNatural.baseRegen = 0.0;
+			player.AsV2Player().HealthRegenNatural.additiveRegenModifier = 1.0;
+			player.AsV2Player().HealthRegenNatural.flatRegenBonus = 0.0;
+			player.AsV2Player().HealthRegenArtificial.baseRegen = 0.0;
+			player.AsV2Player().HealthRegenArtificial.additiveRegenModifier = 1.0;
+			player.AsV2Player().HealthRegenArtificial.flatRegenBonus = 0.0;
+			foreach (HealthRegenEffect healthRegenEffect in player.AsV2Player().HealthRegenEffects)
+			{
+				if (healthRegenEffect.natural)
+					player.AsV2Player().HealthRegenNatural.baseRegen += (float)healthRegenEffect.healthPerSecond.Invoke(player);
+				else
+					player.AsV2Player().HealthRegenArtificial.baseRegen += (float)healthRegenEffect.healthPerSecond.Invoke(player);
+			}
+
+			foreach (HealthRegenEffect healthRegenEffect in player.AsV2Player().HealthRegenEffects)
+			{
+				healthRegenEffect.modifyTotalHealthRegenMethod?.Invoke(
+					player,
+					ref player.AsV2Player().HealthRegenNatural.additiveRegenModifier,
+					ref player.AsV2Player().HealthRegenNatural.multiplicativeRegenModifier,
+					ref player.AsV2Player().HealthRegenArtificial.additiveRegenModifier,
+					ref player.AsV2Player().HealthRegenArtificial.multiplicativeRegenModifier
+				);
+			}
+
+			double naturalHealthRegenCount =
+				(player.AsV2Player().HealthRegenNatural.baseRegen * player.AsV2Player().HealthRegenNatural.additiveRegenModifier)
+			   + player.AsV2Player().HealthRegenNatural.flatRegenBonus;
+			double artificialHealthRegenCount =
+				(player.AsV2Player().HealthRegenArtificial.baseRegen * player.AsV2Player().HealthRegenArtificial.additiveRegenModifier)
+			   + player.AsV2Player().HealthRegenArtificial.flatRegenBonus;
+			player.AsV2Player().healthRegenCount += naturalHealthRegenCount + artificialHealthRegenCount;
+			while (player.AsV2Player().healthRegenCount >= 60.0)
+			{
+				player.AsV2Player().healthRegenCount -= 60.0;
+				if (player.statLife < player.statLifeMax2)
+				{
+					player.statLife++;
+					foreach (HealthRegenEffect healthRegenEffect in player.AsV2Player().HealthRegenEffects)
+					{
+						healthRegenEffect.onHealthAdjustmentMethod?.Invoke(player, 1);
+					}
+				}
+
+				if (player.statLife > player.statLifeMax2)
+					player.statLife = player.statLifeMax2;
+			}
+
+			while (player.AsV2Player().healthRegenCount <= -60.0)
+			{
+				if (player.AsV2Player().healthRegenCount <= -240.0)
+				{
+					player.AsV2Player().healthRegenCount += 240.0;
+					player.statLife -= 4;
+					CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y, player.width, player.height), CombatText.LifeRegen, 4, dramatic: false, dot: true);
+					foreach (HealthRegenEffect healthRegenEffect in player.AsV2Player().HealthRegenEffects)
+					{
+						healthRegenEffect.onHealthAdjustmentMethod?.Invoke(player, -4);
+					}
+				}
+				else if (player.AsV2Player().healthRegenCount <= -180.0)
+				{
+					player.AsV2Player().healthRegenCount += 180.0;
+					player.statLife -= 3;
+					CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y, player.width, player.height), CombatText.LifeRegen, 3, dramatic: false, dot: true);
+					foreach (HealthRegenEffect healthRegenEffect in player.AsV2Player().HealthRegenEffects)
+					{
+						healthRegenEffect.onHealthAdjustmentMethod?.Invoke(player, -3);
+					}
+				}
+				else if (player.AsV2Player().healthRegenCount <= -120.0)
+				{
+					player.AsV2Player().healthRegenCount += 120.0;
+					player.statLife -= 2;
+					CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y, player.width, player.height), CombatText.LifeRegen, 2, dramatic: false, dot: true);
+					foreach (HealthRegenEffect healthRegenEffect in player.AsV2Player().HealthRegenEffects)
+					{
+						healthRegenEffect.onHealthAdjustmentMethod?.Invoke(player, -2);
+					}
+				}
+				else
+				{
+					player.AsV2Player().healthRegenCount += 60.0;
+					player.statLife--;
+					CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y, player.width, player.height), CombatText.LifeRegen, 1, dramatic: false, dot: true);
+					foreach (HealthRegenEffect healthRegenEffect in player.AsV2Player().HealthRegenEffects)
+					{
+						healthRegenEffect.onHealthAdjustmentMethod?.Invoke(player, -1);
+					}
+				}
+
+				if (player.statLife <= 0 && player.whoAmI == Main.myPlayer)
+				{
+					if (player.poisoned || player.venom)
+						player.KillMe(PlayerDeathReason.ByOther(9), 10.0, 0);
+					else if (player.electrified)
+						player.KillMe(PlayerDeathReason.ByOther(10), 10.0, 0);
+					else
+						player.KillMe(PlayerDeathReason.ByOther(8), 10.0, 0);
+
+					return;
+				}
+			}
+
+			// compatibility with vanilla-style health regen effects
+			PlayerLoader.UpdateBadLifeRegen(player);
+
+			player.lifeRegenTime++;
+			if (player.lifeRegenTime >= 3600)
+				player.lifeRegenTime = 3600;
+
+			PlayerLoader.UpdateLifeRegen(player);
+			float num5 = 0f;
+			PlayerLoader.NaturalLifeRegen(player, ref num5);
+			float num7 = (float)player.statLifeMax2 / 400f * 0.85f + 0.15f;
+			num5 *= num7;
+			player.lifeRegen += (int)Math.Round(num5);
+			player.lifeRegenCount += player.lifeRegen;
+
+			if (shinyStoneShouldEverFuckingWork && player.lifeRegen > 0 && player.statLife < player.statLifeMax2)
+			{
+				player.lifeRegenCount++;
+				if (shinyStoneShouldEverFuckingWork && (Main.rand.Next(30000) < player.lifeRegenTime || Main.rand.NextBool(30)))
+				{
+					int num8 = Dust.NewDust(player.position, player.width, player.height, DustID.Pixie, 0f, 0f, 200, default(Color), 0.5f);
+					Main.dust[num8].noGravity = true;
+					Main.dust[num8].velocity *= 0.75f;
+					Main.dust[num8].fadeIn = 1.3f;
+					Vector2 vector = new Vector2(Main.rand.Next(-100, 101), Main.rand.Next(-100, 101));
+					vector.Normalize();
+					vector *= (float)Main.rand.Next(50, 100) * 0.04f;
+					Main.dust[num8].velocity = vector;
+					vector.Normalize();
+					vector *= 34f;
+					Main.dust[num8].position = player.Center - vector;
+				}
+			}
+
+			while (player.lifeRegenCount >= 120)
+			{
+				player.lifeRegenCount -= 120;
+				if (player.statLife < player.statLifeMax2)
+				{
+					player.statLife++;
+					if (player.crimsonRegen)
+					{
+						for (int i = 0; i < 10; i++)
+						{
+							int num9 = Dust.NewDust(player.position, player.width, player.height, DustID.Blood, 0f, 0f, 175, default(Color), 1.75f);
+							Main.dust[num9].noGravity = true;
+							Main.dust[num9].velocity *= 0.75f;
+							int num10 = Main.rand.Next(-40, 41);
+							int num11 = Main.rand.Next(-40, 41);
+							Main.dust[num9].position.X += num10;
+							Main.dust[num9].position.Y += num11;
+							Main.dust[num9].velocity.X = (float)(-num10) * 0.075f;
+							Main.dust[num9].velocity.Y = (float)(-num11) * 0.075f;
+						}
+					}
+				}
+
+				if (player.statLife > player.statLifeMax2)
+					player.statLife = player.statLifeMax2;
+			}
+
+			if (player.burned || player.suffocating || (player.tongued && Main.expertMode))
+			{
+				while (player.lifeRegenCount <= -600)
+				{
+					player.lifeRegenCount += 600;
+					player.statLife -= 5;
+					CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y, player.width, player.height), CombatText.LifeRegen, 5, dramatic: false, dot: true);
+					if (player.statLife <= 0 && player.whoAmI == Main.myPlayer)
+					{
+						if (player.suffocating)
+							player.KillMe(PlayerDeathReason.ByOther(7), 10.0, 0);
+						else
+							player.KillMe(PlayerDeathReason.ByOther(8), 10.0, 0);
+					}
+				}
+
+				return;
+			}
+
+			if (player.starving)
+			{
+				int num12 = player.statLifeMax2 / 50;
+				if (num12 < 2)
+					num12 = 2;
+
+				int num13 = (player.ZoneDesert || player.ZoneSnow) ? (num12 * 2) : num12;
+				int num14 = 120 * num12;
+				while (player.lifeRegenCount <= -num14)
+				{
+					player.lifeRegenCount += num14;
+					player.statLife -= num13;
+					CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y, player.width, player.height), CombatText.LifeRegen, num13, dramatic: false, dot: true);
+					if (player.statLife <= 0 && player.whoAmI == Main.myPlayer)
+						player.KillMe(PlayerDeathReason.ByOther(18), 10.0, 0);
+				}
+
+				return;
+			}
+
+			while (player.lifeRegenCount <= -120)
+			{
+				if (player.lifeRegenCount <= -480)
+				{
+					player.lifeRegenCount += 480;
+					player.statLife -= 4;
+					CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y, player.width, player.height), CombatText.LifeRegen, 4, dramatic: false, dot: true);
+				}
+				else if (player.lifeRegenCount <= -360)
+				{
+					player.lifeRegenCount += 360;
+					player.statLife -= 3;
+					CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y, player.width, player.height), CombatText.LifeRegen, 3, dramatic: false, dot: true);
+				}
+				else if (player.lifeRegenCount <= -240)
+				{
+					player.lifeRegenCount += 240;
+					player.statLife -= 2;
+					CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y, player.width, player.height), CombatText.LifeRegen, 2, dramatic: false, dot: true);
+				}
+				else
+				{
+					player.lifeRegenCount += 120;
+					player.statLife--;
+					CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y, player.width, player.height), CombatText.LifeRegen, 1, dramatic: false, dot: true);
+				}
+
+				if (player.statLife <= 0 && player.whoAmI == Main.myPlayer)
+				{
+					if (player.poisoned || player.venom)
+						player.KillMe(PlayerDeathReason.ByOther(9), 10.0, 0);
+					else if (player.electrified)
+						player.KillMe(PlayerDeathReason.ByOther(10), 10.0, 0);
+					else
+						player.KillMe(PlayerDeathReason.ByOther(8), 10.0, 0);
+				}
+			}
+		}
+
+		public static void Detour_UpdateBuffs(Player player)
+		{
+			if (player.soulDrain > 0 && player.whoAmI == Main.myPlayer)
+				player.AddBuff(151, 2);
+
+			if (Main.dontStarveWorld)
+				player.UpdateStarvingState(withEmote: true);
+
+			for (int j = 0; j < Player.MaxBuffs; j++)
+			{
+				if (player.buffType[j] <= 0 || player.buffTime[j] <= 0)
+					continue;
+
+				bool actuallyModifiedByVSC = V2.ModifiedStatusEffects.ContainsKey(player.buffType[j]);
+				if (actuallyModifiedByVSC)
+				{
+					GlobalBuff buffReplacement = V2.ModifiedStatusEffects[player.buffType[j]];
+					buffReplacement.Update(player.buffType[j], player, ref j);
+					continue;
+				}
+
+				if (player.whoAmI == Main.myPlayer && !BuffID.Sets.TimeLeftDoesNotDecrease[player.buffType[j]])
+					player.buffTime[j]--;
+
+				//TML: this will be used at the very end of player scope.
+				int originalIndex = j;
+
+				if (player.buffType[j] == 1)
+				{
+					player.lavaImmune = true;
+					player.fireWalk = true;
+					player.buffImmune[24] = true;
+				}
+				else if (BuffID.Sets.BasicMountData[player.buffType[j]] != null)
+				{
+					BuffID.Sets.BuffMountData buffMountData = BuffID.Sets.BasicMountData[player.buffType[j]];
+					player.mount.SetMount(buffMountData.mountID, player, buffMountData.faceLeft);
+					player.buffTime[j] = 10;
+				}
+				else if (player.buffType[j] == 158)
+				{
+					player.manaRegenDelayBonus += 0.5f;
+					player.manaRegenBonus += 10;
+				}
+				else if (player.buffType[j] == 159)
+				{
+					player.GetArmorPenetration(DamageClass.Melee) += 12;
+				}
+				else if (player.buffType[j] == 192)
+				{
+					player.pickSpeed -= 0.2f;
+					player.moveSpeed += 0.2f;
+				}
+				else if (player.buffType[j] == 321)
+				{
+					player.GetCritChance(DamageClass.Generic) += 10;
+					player.GetDamage(DamageClass.Summon) += 0.1f;
+				}
+				else if (player.buffType[j] == 3)
+				{
+					player.moveSpeed += 0.25f;
+				}
+				else if (player.buffType[j] == 4)
+				{
+					player.gills = true;
+				}
+				else if (player.buffType[j] == 5)
+				{
+					player.statDefense += 8;
+				}
+				else if (player.buffType[j] == 6)
+				{
+					player.manaRegenBuff = true;
+				}
+				else if (player.buffType[j] == 7)
+				{
+					player.GetDamage(DamageClass.Magic) += 0.2f;
+				}
+				else if (player.buffType[j] == 8)
+				{
+					player.slowFall = true;
+				}
+				else if (player.buffType[j] == 9)
+				{
+					player.findTreasure = true;
+				}
+				else if (player.buffType[j] == 343)
+				{
+					player.biomeSight = true;
+				}
+				else if (player.buffType[j] == 10)
+				{
+					player.invis = true;
+				}
+				else if (player.buffType[j] == 11)
+				{
+					Lighting.AddLight((int)(player.position.X + (float)(player.width / 2)) / 16, (int)(player.position.Y + (float)(player.height / 2)) / 16, 0.8f, 0.95f, 1f);
+				}
+				else if (player.buffType[j] == 12)
+				{
+					player.nightVision = true;
+				}
+				else if (player.buffType[j] == 13)
+				{
+					player.enemySpawns = true;
+				}
+				else if (player.buffType[j] == 14)
+				{
+					if (player.thorns < 1f)
+						player.thorns = 1f;
+				}
+				else if (player.buffType[j] == 15)
+				{
+					player.waterWalk = true;
+				}
+				else if (player.buffType[j] == 16)
+				{
+					player.archery = true;
+
+					//TML: Moved from PickAmmo, as StatModifier allows multiplicative buffs to be 'registered' alongside additive ones.
+					player.arrowDamage *= 1.1f;
+				}
+				else if (player.buffType[j] == 17)
+				{
+					player.detectCreature = true;
+				}
+				else if (player.buffType[j] == 18)
+				{
+					player.gravControl = true;
+				}
+				else if (player.buffType[j] == 30)
+				{
+					player.bleed = true;
+				}
+				else if (player.buffType[j] == 31)
+				{
+					player.confused = true;
+				}
+				else if (player.buffType[j] == 32)
+				{
+					player.slow = true;
+				}
+				else if (player.buffType[j] == 35)
+				{
+					player.silence = true;
+				}
+				else if (player.buffType[j] == 160)
+				{
+					player.dazed = true;
+				}
+				else if (player.buffType[j] == 46)
+				{
+					player.chilled = true;
+				}
+				else if (player.buffType[j] == 47)
+				{
+					player.frozen = true;
+				}
+				else if (player.buffType[j] == 156)
+				{
+					player.stoned = true;
+				}
+				else if (player.buffType[j] == 69)
+				{
+					player.ichor = true;
+					player.statDefense -= 15;
+				}
+				else if (player.buffType[j] == 36)
+				{
+					player.brokenArmor = true;
+				}
+				else if (player.buffType[j] == 48)
+				{
+					player.honey = true;
+				}
+				else if (player.buffType[j] == 59)
+				{
+					player.shadowDodge = true;
+				}
+				else if (player.buffType[j] == 93)
+				{
+					player.ammoBox = true;
+				}
+				else if (player.buffType[j] == 58)
+				{
+					player.palladiumRegen = true;
+				}
+				else if (player.buffType[j] == 306)
+				{
+					player.hasTitaniumStormBuff = true;
+				}
+				else if (player.buffType[j] == 88)
+				{
+					player.chaosState = true;
+				}
+				else if (player.buffType[j] == 215)
+				{
+					player.statDefense += 5;
+				}
+				else if (player.buffType[j] == 311)
+				{
+					player.GetAttackSpeed(DamageClass.SummonMeleeSpeed) += 0.35f;
+				}
+				else if (player.buffType[j] == 308)
+				{
+					player.GetAttackSpeed(DamageClass.SummonMeleeSpeed) += 0.25f;
+				}
+				else if (player.buffType[j] == 314)
+				{
+					player.GetAttackSpeed(DamageClass.SummonMeleeSpeed) += 0.12f;
+				}
+				else if (player.buffType[j] == 312)
+				{
+					player.coolWhipBuff = true;
+				}
+				else if (player.buffType[j] == 63)
+				{
+					player.moveSpeed += 1f;
+				}
+				else if (player.buffType[j] == 104)
+				{
+					player.pickSpeed -= 0.25f;
+				}
+				else if (player.buffType[j] == 105)
+				{
+					player.lifeMagnet = true;
+				}
+				else if (player.buffType[j] == 106)
+				{
+					player.calmed = true;
+				}
+				else if (player.buffType[j] == 121)
+				{
+					player.fishingSkill += 15;
+				}
+				else if (player.buffType[j] == 122)
+				{
+					player.sonarPotion = true;
+				}
+				else if (player.buffType[j] == 123)
+				{
+					player.cratePotion = true;
+				}
+				else if (player.buffType[j] == 107)
+				{
+					player.tileSpeed += 0.25f;
+					player.wallSpeed += 0.25f;
+					player.blockRange++;
+				}
+				else if (player.buffType[j] == 108)
+				{
+					player.kbBuff = true;
+				}
+				else if (player.buffType[j] == 109)
+				{
+					player.ignoreWater = true;
+					player.accFlipper = true;
+				}
+				else if (player.buffType[j] == 110)
+				{
+					player.maxMinions++;
+				}
+				else if (player.buffType[j] == 150)
+				{
+					player.maxMinions++;
+				}
+				else if (player.buffType[j] == 348)
+				{
+					player.maxTurrets++;
+				}
+				else if (player.buffType[j] == 111)
+				{
+					player.dangerSense = true;
+				}
+				else if (player.buffType[j] == 112)
+				{
+					player.ammoPotion = true;
+				}
+				else if (player.buffType[j] == 113)
+				{
+					player.lifeForce = true;
+					player.statLifeMax2 += player.statLifeMax / 5 / 20 * 20;
+				}
+				else if (player.buffType[j] == 114)
+				{
+					player.endurance += 0.1f;
+				}
+				else if (player.buffType[j] == 115)
+				{
+					player.GetCritChance(DamageClass.Generic) += 10;
+				}
+				else if (player.buffType[j] == 116)
+				{
+					player.inferno = true;
+					Lighting.AddLight((int)(player.Center.X / 16f), (int)(player.Center.Y / 16f), 0.65f, 0.4f, 0.1f);
+					int num2 = 323;
+					float num3 = 200f;
+					bool flag = player.infernoCounter % 60 == 0;
+					int damage = 20;
+					if (player.whoAmI != Main.myPlayer)
+						continue;
+
+					for (int k = 0; k < 200; k++)
+					{
+						NPC nPC = Main.npc[k];
+						if (nPC.active && !nPC.friendly && nPC.damage > 0 && !nPC.dontTakeDamage && !nPC.buffImmune[num2] && player.CanNPCBeHitByPlayerOrPlayerProjectile(nPC) && Vector2.Distance(player.Center, nPC.Center) <= num3)
+						{
+							if (nPC.FindBuffIndex(num2) == -1)
+								nPC.AddBuff(num2, 120);
+
+							if (flag)
+								player.ApplyDamageToNPC(nPC, damage, 0f, 0, crit: false);
+						}
+					}
+
+					if (!player.hostile)
+						continue;
+
+					for (int l = 0; l < 255; l++)
+					{
+						Player otherPlayer = Main.player[l];
+						if (otherPlayer == player || !otherPlayer.active || otherPlayer.dead || !otherPlayer.hostile || otherPlayer.buffImmune[num2] || (otherPlayer.team == player.team && otherPlayer.team != 0) || !(Vector2.Distance(player.Center, otherPlayer.Center) <= num3))
+							continue;
+
+						if (otherPlayer.FindBuffIndex(num2) == -1)
+							otherPlayer.AddBuff(num2, 120);
+
+						if (flag)
+						{
+							PlayerDeathReason reason = PlayerDeathReason.ByOther(16, otherPlayer.whoAmI);
+							otherPlayer.Hurt(reason, damage, 0, pvp: true);
+						}
+					}
+				}
+				else if (player.buffType[j] == 117)
+				{
+					player.GetDamage(DamageClass.Generic) += 0.1f;
+				}
+				else if (player.buffType[j] == 119)
+				{
+					player.loveStruck = true;
+				}
+				else if (player.buffType[j] == 120)
+				{
+					player.stinky = true;
+				}
+				else if (player.buffType[j] == 124)
+				{
+					player.resistCold = true;
+				}
+				else if (player.buffType[j] == 257)
+				{
+					if (Main.myPlayer == player.whoAmI)
+					{
+						if (player.buffTime[j] > 36000)
+							player.luckPotion = 3;
+						else if (player.buffTime[j] > 18000)
+							player.luckPotion = 2;
+						else
+							player.luckPotion = 1;
+					}
+				}
+				else if (player.buffType[j] == 144)
+				{
+					player.electrified = true;
+					Lighting.AddLight((int)player.Center.X / 16, (int)player.Center.Y / 16, 0.3f, 0.8f, 1.1f);
+				}
+				else if (player.buffType[j] == 94)
+				{
+					player.manaSick = true;
+					player.manaSickReduction = Player.manaSickLessDmg * ((float)player.buffTime[j] / (float)Player.manaSickTime);
+				}
+				else if (player.buffType[j] >= 95 && player.buffType[j] <= 97)
+				{
+					player.buffTime[j] = 5;
+					int num4 = (byte)(1 + player.buffType[j] - 95);
+					if (player.beetleOrbs > 0 && player.beetleOrbs != num4)
+					{
+						if (player.beetleOrbs > num4)
+						{
+							player.DelBuff(j);
+							j--;
+						}
+						else
+						{
+							for (int m = 0; m < Player.MaxBuffs; m++)
+							{
+								if (player.buffType[m] >= 95 && player.buffType[m] <= 95 + num4 - 1)
+								{
+									player.DelBuff(m);
+									m--;
+								}
+							}
+						}
+					}
+
+					player.beetleOrbs = num4;
+					if (!player.beetleDefense)
+					{
+						player.beetleOrbs = 0;
+						player.DelBuff(j);
+						j--;
+					}
+					else
+					{
+						player.beetleBuff = true;
+					}
+				}
+				else if (player.buffType[j] >= 170 && player.buffType[j] <= 172)
+				{
+					player.buffTime[j] = 5;
+					int num5 = (byte)(1 + player.buffType[j] - 170);
+					if (player.solarShields > 0 && player.solarShields != num5)
+					{
+						if (player.solarShields > num5)
+						{
+							player.DelBuff(j);
+							j--;
+						}
+						else
+						{
+							for (int n = 0; n < Player.MaxBuffs; n++)
+							{
+								if (player.buffType[n] >= 170 && player.buffType[n] <= 170 + num5 - 1)
+								{
+									player.DelBuff(n);
+									n--;
+								}
+							}
+						}
+					}
+
+					player.solarShields = num5;
+					if (!player.setSolar)
+					{
+						player.solarShields = 0;
+						player.DelBuff(j);
+						j--;
+					}
+				}
+				else if (player.buffType[j] >= 98 && player.buffType[j] <= 100)
+				{
+					int num6 = (byte)(1 + player.buffType[j] - 98);
+					if (player.beetleOrbs > 0 && player.beetleOrbs != num6)
+					{
+						if (player.beetleOrbs > num6)
+						{
+							player.DelBuff(j);
+							j--;
+						}
+						else
+						{
+							for (int num7 = 0; num7 < Player.MaxBuffs; num7++)
+							{
+								if (player.buffType[num7] >= 98 && player.buffType[num7] <= 98 + num6 - 1)
+								{
+									player.DelBuff(num7);
+									num7--;
+								}
+							}
+						}
+					}
+
+					player.beetleOrbs = num6;
+					player.GetDamage(DamageClass.Melee) += 0.1f * (float)player.beetleOrbs;
+					player.GetAttackSpeed(DamageClass.Melee) += 0.1f * (float)player.beetleOrbs;
+					if (!player.beetleOffense)
+					{
+						player.beetleOrbs = 0;
+						player.DelBuff(j);
+						j--;
+					}
+					else
+					{
+						player.beetleBuff = true;
+					}
+				}
+				else if (player.buffType[j] >= 176 && player.buffType[j] <= 178)
+				{
+					int num8 = player.nebulaLevelMana;
+					int num9 = (byte)(1 + player.buffType[j] - 176);
+					if (num8 > 0 && num8 != num9)
+					{
+						if (num8 > num9)
+						{
+							player.DelBuff(j);
+							j--;
+						}
+						else
+						{
+							for (int num10 = 0; num10 < Player.MaxBuffs; num10++)
+							{
+								if (player.buffType[num10] >= 176 && player.buffType[num10] <= 178 + num9 - 1)
+								{
+									player.DelBuff(num10);
+									num10--;
+								}
+							}
+						}
+					}
+
+					player.nebulaLevelMana = num9;
+					if (player.buffTime[j] == 2 && player.nebulaLevelMana > 1)
+					{
+						player.nebulaLevelMana--;
+						player.buffType[j]--;
+						player.buffTime[j] = 480;
+					}
+				}
+				else if (player.buffType[j] >= 173 && player.buffType[j] <= 175)
+				{
+					int num11 = player.nebulaLevelLife;
+					int num12 = (byte)(1 + player.buffType[j] - 173);
+					if (num11 > 0 && num11 != num12)
+					{
+						if (num11 > num12)
+						{
+							player.DelBuff(j);
+							j--;
+						}
+						else
+						{
+							for (int num13 = 0; num13 < Player.MaxBuffs; num13++)
+							{
+								if (player.buffType[num13] >= 173 && player.buffType[num13] <= 175 + num12 - 1)
+								{
+									player.DelBuff(num13);
+									num13--;
+								}
+							}
+						}
+					}
+
+					player.nebulaLevelLife = num12;
+					if (player.buffTime[j] == 2 && player.nebulaLevelLife > 1)
+					{
+						player.nebulaLevelLife--;
+						player.buffType[j]--;
+						player.buffTime[j] = 480;
+					}
+
+					player.AddHealthRegenEffect(
+						healthPerSecond: 3 * player.nebulaLevelLife
+					);
+				}
+				else if (player.buffType[j] >= 179 && player.buffType[j] <= 181)
+				{
+					int num14 = player.nebulaLevelDamage;
+					int num15 = (byte)(1 + player.buffType[j] - 179);
+					if (num14 > 0 && num14 != num15)
+					{
+						if (num14 > num15)
+						{
+							player.DelBuff(j);
+							j--;
+						}
+						else
+						{
+							for (int num16 = 0; num16 < Player.MaxBuffs; num16++)
+							{
+								if (player.buffType[num16] >= 179 && player.buffType[num16] <= 181 + num15 - 1)
+								{
+									player.DelBuff(num16);
+									num16--;
+								}
+							}
+						}
+					}
+
+					player.nebulaLevelDamage = num15;
+					if (player.buffTime[j] == 2 && player.nebulaLevelDamage > 1)
+					{
+						player.nebulaLevelDamage--;
+						player.buffType[j]--;
+						player.buffTime[j] = 480;
+					}
+
+					player.GetDamage(DamageClass.Generic) += 0.15f * (float)player.nebulaLevelDamage;
+				}
+				else if (player.buffType[j] == 62)
+				{
+					if ((double)player.statLife <= (double)player.statLifeMax2 * 0.5)
+					{
+						Lighting.AddLight((int)(player.Center.X / 16f), (int)(player.Center.Y / 16f), 0.1f, 0.2f, 0.45f);
+						player.iceBarrier = true;
+						player.endurance += 0.25f;
+						player.iceBarrierFrameCounter++;
+						if (player.iceBarrierFrameCounter > 2)
+						{
+							player.iceBarrierFrameCounter = 0;
+							player.iceBarrierFrame++;
+							if (player.iceBarrierFrame >= 12)
+								player.iceBarrierFrame = 0;
+						}
+					}
+					else
+					{
+						player.DelBuff(j);
+						j--;
+					}
+				}
+				else if (player.buffType[j] == 49)
+				{
+					for (int num18 = 191; num18 <= 194; num18++)
+					{
+						if (player.ownedProjectileCounts[num18] > 0)
+							player.pygmy = true;
+					}
+
+					if (!player.pygmy)
+					{
+						player.DelBuff(j);
+						j--;
+					}
+					else
+					{
+						player.buffTime[j] = 18000;
+					}
+				}
+				else if (player.buffType[j] == 83)
+				{
+					if (player.ownedProjectileCounts[317] > 0)
+						player.raven = true;
+
+					if (!player.raven)
+					{
+						player.DelBuff(j);
+						j--;
+					}
+					else
+					{
+						player.buffTime[j] = 18000;
+					}
+				}
+				else if (player.buffType[j] == 64)
+				{
+					if (player.ownedProjectileCounts[266] > 0)
+						player.slime = true;
+
+					if (!player.slime)
+					{
+						player.DelBuff(j);
+						j--;
+					}
+					else
+					{
+						player.buffTime[j] = 18000;
+					}
+				}
+				else if (player.buffType[j] == 125)
+				{
+					if (player.ownedProjectileCounts[373] > 0)
+						player.hornetMinion = true;
+
+					if (!player.hornetMinion)
+					{
+						player.DelBuff(j);
+						j--;
+					}
+					else
+					{
+						player.buffTime[j] = 18000;
+					}
+				}
+				else if (player.buffType[j] == 126)
+				{
+					if (player.ownedProjectileCounts[375] > 0)
+						player.impMinion = true;
+
+					if (!player.impMinion)
+					{
+						player.DelBuff(j);
+						j--;
+					}
+					else
+					{
+						player.buffTime[j] = 18000;
+					}
+				}
+				else if (player.buffType[j] == 133)
+				{
+					if (player.ownedProjectileCounts[390] > 0 || player.ownedProjectileCounts[391] > 0 || player.ownedProjectileCounts[392] > 0)
+						player.spiderMinion = true;
+
+					if (!player.spiderMinion)
+					{
+						player.DelBuff(j);
+						j--;
+					}
+					else
+					{
+						player.buffTime[j] = 18000;
+					}
+				}
+				else if (player.buffType[j] == 134)
+				{
+					if (player.ownedProjectileCounts[387] > 0 || player.ownedProjectileCounts[388] > 0)
+						player.twinsMinion = true;
+
+					if (!player.twinsMinion)
+					{
+						player.DelBuff(j);
+						j--;
+					}
+					else
+					{
+						player.buffTime[j] = 18000;
+					}
+				}
+				else if (player.buffType[j] == 135)
+				{
+					if (player.ownedProjectileCounts[393] > 0 || player.ownedProjectileCounts[394] > 0 || player.ownedProjectileCounts[395] > 0)
+						player.pirateMinion = true;
+
+					if (!player.pirateMinion)
+					{
+						player.DelBuff(j);
+						j--;
+					}
+					else
+					{
+						player.buffTime[j] = 18000;
+					}
+				}
+				else if (player.buffType[j] == 214)
+				{
+					if (player.ownedProjectileCounts[758] > 0)
+						player.vampireFrog = true;
+
+					if (!player.vampireFrog)
+					{
+						player.DelBuff(j);
+						j--;
+					}
+					else
+					{
+						player.buffTime[j] = 18000;
+					}
+				}
+				else if (player.buffType[j] == 139)
+				{
+					if (player.ownedProjectileCounts[407] > 0)
+						player.sharknadoMinion = true;
+
+					if (!player.sharknadoMinion)
+					{
+						player.DelBuff(j);
+						j--;
+					}
+					else
+					{
+						player.buffTime[j] = 18000;
+					}
+				}
+				else if (player.buffType[j] == 140)
+				{
+					if (player.ownedProjectileCounts[423] > 0)
+						player.UFOMinion = true;
+
+					if (!player.UFOMinion)
+					{
+						player.DelBuff(j);
+						j--;
+					}
+					else
+					{
+						player.buffTime[j] = 18000;
+					}
+				}
+				else if (player.buffType[j] == 182)
+				{
+					if (player.ownedProjectileCounts[613] > 0)
+						player.stardustMinion = true;
+
+					if (!player.stardustMinion)
+					{
+						player.DelBuff(j);
+						j--;
+					}
+					else
+					{
+						player.buffTime[j] = 18000;
+					}
+				}
+				else if (player.buffType[j] == 213)
+				{
+					if (player.ownedProjectileCounts[755] > 0)
+						player.batsOfLight = true;
+
+					if (!player.batsOfLight)
+					{
+						player.DelBuff(j);
+						j--;
+					}
+					else
+					{
+						player.buffTime[j] = 18000;
+					}
+				}
+				else if (player.buffType[j] == 216)
+				{
+					bool flag2 = true;
+					if (player.ownedProjectileCounts[759] > 0)
+					{
+						player.babyBird = true;
+					}
+					else if (player.whoAmI == Main.myPlayer)
+					{
+						if (player.numMinions < player.maxMinions)
+						{
+							int num19 = player.FindItem(4281);
+							if (num19 != -1)
+							{
+								Item item = player.inventory[num19];
+								int num20 = Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Top, Vector2.Zero, item.shoot, item.damage, item.knockBack, player.whoAmI);
+								Main.projectile[num20].originalDamage = item.damage;
+								player.babyBird = true;
+							}
+						}
+
+						if (!player.babyBird)
+						{
+							player.DelBuff(j);
+							j--;
+							flag2 = false;
+						}
+					}
+
+					if (flag2)
+						player.buffTime[j] = 18000;
+				}
+				else if (player.buffType[j] == 325)
+				{
+					if (player.ownedProjectileCounts[951] > 0)
+						player.flinxMinion = true;
+
+					if (!player.flinxMinion)
+					{
+						player.DelBuff(j);
+						j--;
+					}
+					else
+					{
+						player.buffTime[j] = 18000;
+					}
+				}
+				else if (player.buffType[j] == 335)
+				{
+					if (player.ownedProjectileCounts[970] > 0)
+						player.abigailMinion = true;
+
+					if (!player.abigailMinion)
+					{
+						player.DelBuff(j);
+						j--;
+					}
+					else
+					{
+						player.buffTime[j] = 18000;
+					}
+
+					if (player.whoAmI == Main.myPlayer)
+						UpdateAbigailStatus(player);
+				}
+				else if (player.buffType[j] == 263)
+				{
+					if (player.ownedProjectileCounts[831] > 0)
+						player.stormTiger = true;
+
+					if (!player.stormTiger)
+					{
+						player.DelBuff(j);
+						j--;
+					}
+					else
+					{
+						player.buffTime[j] = 18000;
+					}
+
+					if (player.whoAmI == Main.myPlayer)
+						UpdateStormTigerStatus(player);
+				}
+				else if (player.buffType[j] == 271)
+				{
+					if (player.ownedProjectileCounts[864] > 0)
+						player.smolstar = true;
+
+					if (!player.smolstar)
+					{
+						player.DelBuff(j);
+						j--;
+					}
+					else
+					{
+						player.buffTime[j] = 18000;
+					}
+				}
+				else if (player.buffType[j] == 322)
+				{
+					if (player.ownedProjectileCounts[946] > 0)
+						player.empressBlade = true;
+
+					if (!player.empressBlade)
+					{
+						player.DelBuff(j);
+						j--;
+					}
+					else
+					{
+						player.buffTime[j] = 18000;
+					}
+				}
+				else if (player.buffType[j] == 187)
+				{
+					if (player.ownedProjectileCounts[623] > 0)
+						player.stardustGuardian = true;
+
+					if (!player.stardustGuardian)
+					{
+						player.DelBuff(j);
+						j--;
+					}
+					else
+					{
+						player.buffTime[j] = 18000;
+					}
+				}
+				else if (player.buffType[j] == 188)
+				{
+					if (player.ownedProjectileCounts[625] > 0)
+						player.stardustDragon = true;
+
+					if (!player.stardustDragon)
+					{
+						player.DelBuff(j);
+						j--;
+					}
+					else
+					{
+						player.buffTime[j] = 18000;
+					}
+				}
+				else if (player.buffType[j] == 161)
+				{
+					if (player.ownedProjectileCounts[533] > 0)
+						player.DeadlySphereMinion = true;
+
+					if (!player.DeadlySphereMinion)
+					{
+						player.DelBuff(j);
+						j--;
+					}
+					else
+					{
+						player.buffTime[j] = 18000;
+					}
+				}
+				else if (player.buffType[j] == 90)
+				{
+					player.mount.SetMount(0, player);
+					player.buffTime[j] = 10;
+				}
+				else if (player.buffType[j] == 128)
+				{
+					player.mount.SetMount(1, player);
+					player.buffTime[j] = 10;
+				}
+				else if (player.buffType[j] == 129)
+				{
+					player.mount.SetMount(2, player);
+					player.buffTime[j] = 10;
+				}
+				else if (player.buffType[j] == 130)
+				{
+					player.mount.SetMount(3, player);
+					player.buffTime[j] = 10;
+				}
+				else if (player.buffType[j] == 131)
+				{
+					player.ignoreWater = true;
+					player.accFlipper = true;
+					player.mount.SetMount(4, player);
+					player.buffTime[j] = 10;
+				}
+				else if (player.buffType[j] == 132)
+				{
+					player.mount.SetMount(5, player);
+					player.buffTime[j] = 10;
+				}
+				else if (player.buffType[j] == 168)
+				{
+					player.ignoreWater = true;
+					player.accFlipper = true;
+					player.mount.SetMount(12, player);
+					player.buffTime[j] = 10;
+				}
+				else if (player.buffType[j] == 141)
+				{
+					player.mount.SetMount(7, player);
+					player.buffTime[j] = 10;
+				}
+				else if (player.buffType[j] == 142)
+				{
+					player.mount.SetMount(8, player);
+					player.buffTime[j] = 10;
+				}
+				else if (player.buffType[j] == 143)
+				{
+					player.mount.SetMount(9, player);
+					player.buffTime[j] = 10;
+				}
+				else if (player.buffType[j] == 162)
+				{
+					player.mount.SetMount(10, player);
+					player.buffTime[j] = 10;
+				}
+				else if (player.buffType[j] == 193)
+				{
+					player.mount.SetMount(14, player);
+					player.buffTime[j] = 10;
+				}
+				else if (player.buffType[j] == 212)
+				{
+					player.mount.SetMount(17, player);
+					player.buffTime[j] = 10;
+				}
+				else if (player.buffType[j] == 230)
+				{
+					player.mount.SetMount(23, player);
+					player.buffTime[j] = 10;
+				}
+				else if (player.buffType[j] == 265)
+				{
+					player.canFloatInWater = true;
+					player.accFlipper = true;
+					player.mount.SetMount(37, player);
+					player.buffTime[j] = 10;
+				}
+				else if (player.buffType[j] == 275)
+				{
+					player.mount.SetMount(40, player);
+					player.buffTime[j] = 10;
+				}
+				else if (player.buffType[j] == 276)
+				{
+					player.mount.SetMount(41, player);
+					player.buffTime[j] = 10;
+				}
+				else if (player.buffType[j] == 277)
+				{
+					player.mount.SetMount(42, player);
+					player.buffTime[j] = 10;
+				}
+				else if (player.buffType[j] == 278)
+				{
+					player.mount.SetMount(43, player);
+					player.buffTime[j] = 10;
+				}
+				else if (player.buffType[j] == 279)
+				{
+					player.ignoreWater = true;
+					player.accFlipper = true;
+					player.mount.SetMount(44, player);
+					player.buffTime[j] = 10;
+				}
+				else if (player.buffType[j] == 280)
+				{
+					player.mount.SetMount(45, player);
+					player.buffTime[j] = 10;
+				}
+				else if (player.buffType[j] == 281)
+				{
+					player.mount.SetMount(46, player);
+					player.buffTime[j] = 10;
+				}
+				else if (player.buffType[j] == 282)
+				{
+					player.mount.SetMount(47, player);
+					player.buffTime[j] = 10;
+				}
+				else if (player.buffType[j] == 283)
+				{
+					player.mount.SetMount(48, player);
+					player.buffTime[j] = 10;
+				}
+				else if (player.buffType[j] == 305)
+				{
+					player.ignoreWater = true;
+					player.accFlipper = true;
+					player.lavaImmune = true;
+					player.mount.SetMount(49, player);
+					player.buffTime[j] = 10;
+				}
+				else if (player.buffType[j] == 318)
+				{
+					player.mount.SetMount(50, player);
+					player.buffTime[j] = 10;
+				}
+				else if (player.buffType[j] == 342)
+				{
+					player.mount.SetMount(52, player);
+					player.buffTime[j] = 10;
+				}
+				else if (player.buffType[j] == BuffID.Horrified)
+				{
+					if (Main.wofNPCIndex >= 0 && Main.npc[Main.wofNPCIndex].type == NPCID.WallofFlesh)
+					{
+						player.gross = true;
+						player.buffTime[j] = 10;
+					}
+					else
+					{
+						player.DelBuff(j);
+						j--;
+					}
+				}
+				else if (player.buffType[j] == BuffID.TheTongue)
+				{
+					player.buffTime[j] = 10;
+					player.tongued = true;
+				}
+				else if (player.buffType[j] == BuffID.Sunflower)
+				{
+					player.moveSpeed += 0.1f;
+					player.moveSpeed *= 1.1f;
+					player.sunflower = true;
+				}
+				else if (player.buffType[j] == 19)
+				{
+					player.buffTime[j] = 18000;
+					player.lightOrb = true;
+					bool flag3 = true;
+					if (player.ownedProjectileCounts[18] > 0)
+						flag3 = false;
+
+					if (flag3 && player.whoAmI == Main.myPlayer)
+						Projectile.NewProjectile(player.GetSource_Buff(j), player.position.X + (float)(player.width / 2), player.position.Y + (float)(player.height / 2), 0f, 0f, 18, 0, 0f, player.whoAmI);
+				}
+				else if (player.buffType[j] == 155)
+				{
+					player.buffTime[j] = 18000;
+					player.crimsonHeart = true;
+					bool flag4 = true;
+					if (player.ownedProjectileCounts[500] > 0)
+						flag4 = false;
+
+					if (flag4 && player.whoAmI == Main.myPlayer)
+						Projectile.NewProjectile(player.GetSource_Buff(j), player.position.X + (float)(player.width / 2), player.position.Y + (float)(player.height / 2), 0f, 0f, 500, 0, 0f, player.whoAmI);
+				}
+				else if (player.buffType[j] == 191)
+				{
+					player.BuffHandle_SpawnPetIfNeededAndSetTime(j, ref player.companionCube, 653);
+				}
+				else if (player.buffType[j] == 202)
+				{
+					player.BuffHandle_SpawnPetIfNeededAndSetTime(j, ref player.petFlagDD2Dragon, 701);
+				}
+				else if (player.buffType[j] == 217)
+				{
+					player.BuffHandle_SpawnPetIfNeededAndSetTime(j, ref player.petFlagUpbeatStar, 764);
+				}
+				else if (player.buffType[j] == 219)
+				{
+					player.BuffHandle_SpawnPetIfNeededAndSetTime(j, ref player.petFlagBabyShark, 774);
+				}
+				else if (player.buffType[j] == 258)
+				{
+					player.BuffHandle_SpawnPetIfNeededAndSetTime(j, ref player.petFlagLilHarpy, 815);
+				}
+				else if (player.buffType[j] == 259)
+				{
+					player.BuffHandle_SpawnPetIfNeededAndSetTime(j, ref player.petFlagFennecFox, 816);
+				}
+				else if (player.buffType[j] == 260)
+				{
+					player.BuffHandle_SpawnPetIfNeededAndSetTime(j, ref player.petFlagGlitteryButterfly, 817);
+				}
+				else if (player.buffType[j] == 261)
+				{
+					player.BuffHandle_SpawnPetIfNeededAndSetTime(j, ref player.petFlagBabyImp, 821);
+				}
+				else if (player.buffType[j] == 262)
+				{
+					player.BuffHandle_SpawnPetIfNeededAndSetTime(j, ref player.petFlagBabyRedPanda, 825);
+				}
+				else if (player.buffType[j] == 264)
+				{
+					player.BuffHandle_SpawnPetIfNeededAndSetTime(j, ref player.petFlagPlantero, 854);
+				}
+				else if (player.buffType[j] == 266)
+				{
+					player.BuffHandle_SpawnPetIfNeededAndSetTime(j, ref player.petFlagDynamiteKitten, 858);
+				}
+				else if (player.buffType[j] == 267)
+				{
+					player.BuffHandle_SpawnPetIfNeededAndSetTime(j, ref player.petFlagBabyWerewolf, 859);
+				}
+				else if (player.buffType[j] == 268)
+				{
+					player.BuffHandle_SpawnPetIfNeededAndSetTime(j, ref player.petFlagShadowMimic, 860);
+				}
+				else if (player.buffType[j] == 274)
+				{
+					player.BuffHandle_SpawnPetIfNeededAndSetTime(j, ref player.petFlagVoltBunny, 875);
+				}
+				else if (player.buffType[j] == 284)
+				{
+					player.BuffHandle_SpawnPetIfNeededAndSetTime(j, ref player.petFlagKingSlimePet, 881);
+				}
+				else if (player.buffType[j] == 285)
+				{
+					player.BuffHandle_SpawnPetIfNeededAndSetTime(j, ref player.petFlagEyeOfCthulhuPet, 882);
+				}
+				else if (player.buffType[j] == 286)
+				{
+					player.BuffHandle_SpawnPetIfNeededAndSetTime(j, ref player.petFlagEaterOfWorldsPet, 883);
+				}
+				else if (player.buffType[j] == 287)
+				{
+					player.BuffHandle_SpawnPetIfNeededAndSetTime(j, ref player.petFlagBrainOfCthulhuPet, 884);
+				}
+				else if (player.buffType[j] == 288)
+				{
+					player.BuffHandle_SpawnPetIfNeededAndSetTime(j, ref player.petFlagSkeletronPet, 885);
+				}
+				else if (player.buffType[j] == 289)
+				{
+					player.BuffHandle_SpawnPetIfNeededAndSetTime(j, ref player.petFlagQueenBeePet, 886);
+				}
+				else if (player.buffType[j] == 290)
+				{
+					player.BuffHandle_SpawnPetIfNeededAndSetTime(j, ref player.petFlagDestroyerPet, 887);
+				}
+				else if (player.buffType[j] == 291)
+				{
+					player.BuffHandle_SpawnPetIfNeededAndSetTime(j, ref player.petFlagTwinsPet, 888);
+				}
+				else if (player.buffType[j] == 292)
+				{
+					player.BuffHandle_SpawnPetIfNeededAndSetTime(j, ref player.petFlagSkeletronPrimePet, 889);
+				}
+				else if (player.buffType[j] == 293)
+				{
+					player.BuffHandle_SpawnPetIfNeededAndSetTime(j, ref player.petFlagPlanteraPet, 890);
+				}
+				else if (player.buffType[j] == 294)
+				{
+					player.BuffHandle_SpawnPetIfNeededAndSetTime(j, ref player.petFlagGolemPet, 891);
+				}
+				else if (player.buffType[j] == 295)
+				{
+					player.BuffHandle_SpawnPetIfNeededAndSetTime(j, ref player.petFlagDukeFishronPet, 892);
+				}
+				else if (player.buffType[j] == 296)
+				{
+					player.BuffHandle_SpawnPetIfNeededAndSetTime(j, ref player.petFlagLunaticCultistPet, 893);
+				}
+				else if (player.buffType[j] == 297)
+				{
+					player.BuffHandle_SpawnPetIfNeededAndSetTime(j, ref player.petFlagMoonLordPet, 894);
+				}
+				else if (player.buffType[j] == 298)
+				{
+					player.BuffHandle_SpawnPetIfNeededAndSetTime(j, ref player.petFlagFairyQueenPet, 895);
+				}
+				else if (player.buffType[j] == 299)
+				{
+					player.BuffHandle_SpawnPetIfNeededAndSetTime(j, ref player.petFlagPumpkingPet, 896);
+				}
+				else if (player.buffType[j] == 300)
+				{
+					player.BuffHandle_SpawnPetIfNeededAndSetTime(j, ref player.petFlagEverscreamPet, 897);
+				}
+				else if (player.buffType[j] == 301)
+				{
+					player.BuffHandle_SpawnPetIfNeededAndSetTime(j, ref player.petFlagIceQueenPet, 898);
+				}
+				else if (player.buffType[j] == 302)
+				{
+					player.BuffHandle_SpawnPetIfNeededAndSetTime(j, ref player.petFlagMartianPet, 899);
+				}
+				else if (player.buffType[j] == 303)
+				{
+					player.BuffHandle_SpawnPetIfNeededAndSetTime(j, ref player.petFlagDD2OgrePet, 900);
+				}
+				else if (player.buffType[j] == 304)
+				{
+					player.BuffHandle_SpawnPetIfNeededAndSetTime(j, ref player.petFlagDD2BetsyPet, 901);
+				}
+				else if (player.buffType[j] == 317)
+				{
+					player.BuffHandle_SpawnPetIfNeededAndSetTime(j, ref player.petFlagQueenSlimePet, 934);
+				}
+				else if (player.buffType[j] == 327)
+				{
+					player.BuffHandle_SpawnPetIfNeededAndSetTime(j, ref player.petFlagBerniePet, 956);
+				}
+				else if (player.buffType[j] == 328)
+				{
+					player.BuffHandle_SpawnPetIfNeededAndSetTime(j, ref player.petFlagGlommerPet, 957);
+				}
+				else if (player.buffType[j] == 329)
+				{
+					player.BuffHandle_SpawnPetIfNeededAndSetTime(j, ref player.petFlagDeerclopsPet, 958);
+				}
+				else if (player.buffType[j] == 330)
+				{
+					player.BuffHandle_SpawnPetIfNeededAndSetTime(j, ref player.petFlagPigPet, 959);
+				}
+				else if (player.buffType[j] == 331)
+				{
+					player.BuffHandle_SpawnPetIfNeededAndSetTime(j, ref player.petFlagChesterPet, 960);
+				}
+				else if (player.buffType[j] == 341)
+				{
+					player.BuffHandle_SpawnPetIfNeededAndSetTime(j, ref player.petFlagKingSlimePet, 881);
+					player.BuffHandle_SpawnPetIfNeededAndSetTime(j, ref player.petFlagQueenSlimePet, 934);
+				}
+				else if (player.buffType[j] == 345)
+				{
+					player.BuffHandle_SpawnPetIfNeededAndSetTime(j, ref player.petFlagJunimoPet, 994);
+				}
+				else if (player.buffType[j] == 349)
+				{
+					player.BuffHandle_SpawnPetIfNeededAndSetTime(j, ref player.petFlagBlueChickenPet, 998);
+				}
+				else if (player.buffType[j] == 351)
+				{
+					player.BuffHandle_SpawnPetIfNeededAndSetTime(j, ref player.petFlagSpiffo, 1003);
+				}
+				else if (player.buffType[j] == 352)
+				{
+					player.BuffHandle_SpawnPetIfNeededAndSetTime(j, ref player.petFlagCaveling, 1004);
+				}
+				else if (player.buffType[j] == 354)
+				{
+					player.BuffHandle_SpawnPetIfNeededAndSetTime(j, ref player.petFlagDirtiestBlock, 1018);
+				}
+				else if (player.buffType[j] == 200)
+				{
+					player.BuffHandle_SpawnPetIfNeededAndSetTime(j, ref player.petFlagDD2Gato, 703);
+				}
+				else if (player.buffType[j] == 201)
+				{
+					player.BuffHandle_SpawnPetIfNeededAndSetTime(j, ref player.petFlagDD2Ghost, 702);
+				}
+				else if (player.buffType[j] == 218)
+				{
+					player.BuffHandle_SpawnPetIfNeededAndSetTime(j, ref player.petFlagSugarGlider, 765);
+				}
+				else if (player.buffType[j] == 190)
+				{
+					player.buffTime[j] = 18000;
+					player.suspiciouslookingTentacle = true;
+					bool flag5 = true;
+					if (player.ownedProjectileCounts[650] > 0)
+						flag5 = false;
+
+					if (flag5 && player.whoAmI == Main.myPlayer)
+						Projectile.NewProjectile(player.GetSource_Buff(j), player.position.X + (float)(player.width / 2), player.position.Y + (float)(player.height / 2), 0f, 0f, 650, 0, 0f, player.whoAmI);
+				}
+				else if (player.buffType[j] == 27 || player.buffType[j] == 101 || player.buffType[j] == 102)
+				{
+					player.buffTime[j] = 18000;
+					bool flag6 = true;
+					int num21 = 72;
+					if (player.buffType[j] == 27)
+						player.blueFairy = true;
+
+					if (player.buffType[j] == 101)
+					{
+						num21 = 86;
+						player.redFairy = true;
+					}
+
+					if (player.buffType[j] == 102)
+					{
+						num21 = 87;
+						player.greenFairy = true;
+					}
+
+					if (player.head == 45 && player.body == 26 && player.legs == 25)
+						num21 = 72;
+
+					if (player.ownedProjectileCounts[num21] > 0)
+						flag6 = false;
+
+					if (flag6 && player.whoAmI == Main.myPlayer)
+						Projectile.NewProjectile(player.GetSource_Buff(j), player.position.X + (float)(player.width / 2), player.position.Y + (float)(player.height / 2), 0f, 0f, num21, 0, 0f, player.whoAmI);
+				}
+				else if (player.buffType[j] == 40)
+				{
+					player.buffTime[j] = 18000;
+					player.bunny = true;
+					bool flag7 = true;
+					if (player.ownedProjectileCounts[111] > 0)
+						flag7 = false;
+
+					if (flag7 && player.whoAmI == Main.myPlayer)
+						Projectile.NewProjectile(player.GetSource_Buff(j), player.position.X + (float)(player.width / 2), player.position.Y + (float)(player.height / 2), 0f, 0f, 111, 0, 0f, player.whoAmI);
+				}
+				else if (player.buffType[j] == 148)
+				{
+					player.rabid = true;
+					if (Main.rand.NextBool(1200))
+					{
+						int num22 = Main.rand.Next(6);
+						float num23 = (float)Main.rand.Next(60, 100) * 0.01f;
+						switch (num22)
+						{
+							case 0:
+								player.AddBuff(22, (int)(60f * num23 * 3f));
+								break;
+							case 1:
+								player.AddBuff(23, (int)(60f * num23 * 0.75f));
+								break;
+							case 2:
+								player.AddBuff(31, (int)(60f * num23 * 1.5f));
+								break;
+							case 3:
+								player.AddBuff(32, (int)(60f * num23 * 3.5f));
+								break;
+							case 4:
+								player.AddBuff(33, (int)(60f * num23 * 5f));
+								break;
+							case 5:
+								player.AddBuff(35, (int)(60f * num23 * 1f));
+								break;
+						}
+					}
+
+					player.GetDamage(DamageClass.Generic) += 0.2f;
+				}
+				else if (player.buffType[j] == 41)
+				{
+					player.buffTime[j] = 18000;
+					player.penguin = true;
+					bool flag8 = true;
+					if (player.ownedProjectileCounts[112] > 0)
+						flag8 = false;
+
+					if (flag8 && player.whoAmI == Main.myPlayer)
+						Projectile.NewProjectile(player.GetSource_Buff(j), player.position.X + (float)(player.width / 2), player.position.Y + (float)(player.height / 2), 0f, 0f, 112, 0, 0f, player.whoAmI);
+				}
+				else if (player.buffType[j] == 152)
+				{
+					player.buffTime[j] = 18000;
+					player.magicLantern = true;
+					if (player.ownedProjectileCounts[492] == 0 && player.whoAmI == Main.myPlayer)
+						Projectile.NewProjectile(player.GetSource_Buff(j), player.position.X + (float)(player.width / 2), player.position.Y + (float)(player.height / 2), 0f, 0f, 492, 0, 0f, player.whoAmI);
+				}
+				else if (player.buffType[j] == 91)
+				{
+					player.buffTime[j] = 18000;
+					player.puppy = true;
+					bool flag9 = true;
+					if (player.ownedProjectileCounts[334] > 0)
+						flag9 = false;
+
+					if (flag9 && player.whoAmI == Main.myPlayer)
+						Projectile.NewProjectile(player.GetSource_Buff(j), player.position.X + (float)(player.width / 2), player.position.Y + (float)(player.height / 2), 0f, 0f, 334, 0, 0f, player.whoAmI);
+				}
+				else if (player.buffType[j] == 92)
+				{
+					player.buffTime[j] = 18000;
+					player.grinch = true;
+					bool flag10 = true;
+					if (player.ownedProjectileCounts[353] > 0)
+						flag10 = false;
+
+					if (flag10 && player.whoAmI == Main.myPlayer)
+						Projectile.NewProjectile(player.GetSource_Buff(j), player.position.X + (float)(player.width / 2), player.position.Y + (float)(player.height / 2), 0f, 0f, 353, 0, 0f, player.whoAmI);
+				}
+				else if (player.buffType[j] == 84)
+				{
+					player.buffTime[j] = 18000;
+					player.blackCat = true;
+					bool flag11 = true;
+					if (player.ownedProjectileCounts[319] > 0)
+						flag11 = false;
+
+					if (flag11 && player.whoAmI == Main.myPlayer)
+						Projectile.NewProjectile(player.GetSource_Buff(j), player.position.X + (float)(player.width / 2), player.position.Y + (float)(player.height / 2), 0f, 0f, 319, 0, 0f, player.whoAmI);
+				}
+				else if (player.buffType[j] == 61)
+				{
+					player.buffTime[j] = 18000;
+					player.dino = true;
+					bool flag12 = true;
+					if (player.ownedProjectileCounts[236] > 0)
+						flag12 = false;
+
+					if (flag12 && player.whoAmI == Main.myPlayer)
+						Projectile.NewProjectile(player.GetSource_Buff(j), player.position.X + (float)(player.width / 2), player.position.Y + (float)(player.height / 2), 0f, 0f, 236, 0, 0f, player.whoAmI);
+				}
+				else if (player.buffType[j] == 154)
+				{
+					player.buffTime[j] = 18000;
+					player.babyFaceMonster = true;
+					bool flag13 = true;
+					if (player.ownedProjectileCounts[499] > 0)
+						flag13 = false;
+
+					if (flag13 && player.whoAmI == Main.myPlayer)
+						Projectile.NewProjectile(player.GetSource_Buff(j), player.position.X + (float)(player.width / 2), player.position.Y + (float)(player.height / 2), 0f, 0f, 499, 0, 0f, player.whoAmI);
+				}
+				else if (player.buffType[j] == 65)
+				{
+					player.buffTime[j] = 18000;
+					player.eyeSpring = true;
+					bool flag14 = true;
+					if (player.ownedProjectileCounts[268] > 0)
+						flag14 = false;
+
+					if (flag14 && player.whoAmI == Main.myPlayer)
+						Projectile.NewProjectile(player.GetSource_Buff(j), player.position.X + (float)(player.width / 2), player.position.Y + (float)(player.height / 2), 0f, 0f, 268, 0, 0f, player.whoAmI);
+				}
+				else if (player.buffType[j] == 66)
+				{
+					player.buffTime[j] = 18000;
+					player.snowman = true;
+					bool flag15 = true;
+					if (player.ownedProjectileCounts[269] > 0)
+						flag15 = false;
+
+					if (flag15 && player.whoAmI == Main.myPlayer)
+						Projectile.NewProjectile(player.GetSource_Buff(j), player.position.X + (float)(player.width / 2), player.position.Y + (float)(player.height / 2), 0f, 0f, 269, 0, 0f, player.whoAmI);
+				}
+				else if (player.buffType[j] == 42)
+				{
+					player.buffTime[j] = 18000;
+					player.turtle = true;
+					bool flag16 = true;
+					if (player.ownedProjectileCounts[127] > 0)
+						flag16 = false;
+
+					if (flag16 && player.whoAmI == Main.myPlayer)
+						Projectile.NewProjectile(player.GetSource_Buff(j), player.position.X + (float)(player.width / 2), player.position.Y + (float)(player.height / 2), 0f, 0f, 127, 0, 0f, player.whoAmI);
+				}
+				else if (player.buffType[j] == 45)
+				{
+					player.buffTime[j] = 18000;
+					player.eater = true;
+					bool flag17 = true;
+					if (player.ownedProjectileCounts[175] > 0)
+						flag17 = false;
+
+					if (flag17 && player.whoAmI == Main.myPlayer)
+						Projectile.NewProjectile(player.GetSource_Buff(j), player.position.X + (float)(player.width / 2), player.position.Y + (float)(player.height / 2), 0f, 0f, 175, 0, 0f, player.whoAmI);
+				}
+				else if (player.buffType[j] == 50)
+				{
+					player.buffTime[j] = 18000;
+					player.skeletron = true;
+					bool flag18 = true;
+					if (player.ownedProjectileCounts[197] > 0)
+						flag18 = false;
+
+					if (flag18 && player.whoAmI == Main.myPlayer)
+						Projectile.NewProjectile(player.GetSource_Buff(j), player.position.X + (float)(player.width / 2), player.position.Y + (float)(player.height / 2), 0f, 0f, 197, 0, 0f, player.whoAmI);
+				}
+				else if (player.buffType[j] == 51)
+				{
+					player.buffTime[j] = 18000;
+					player.hornet = true;
+					bool flag19 = true;
+					if (player.ownedProjectileCounts[198] > 0)
+						flag19 = false;
+
+					if (flag19 && player.whoAmI == Main.myPlayer)
+						Projectile.NewProjectile(player.GetSource_Buff(j), player.position.X + (float)(player.width / 2), player.position.Y + (float)(player.height / 2), 0f, 0f, 198, 0, 0f, player.whoAmI);
+				}
+				else if (player.buffType[j] == 52)
+				{
+					player.buffTime[j] = 18000;
+					player.tiki = true;
+					bool flag20 = true;
+					if (player.ownedProjectileCounts[199] > 0)
+						flag20 = false;
+
+					if (flag20 && player.whoAmI == Main.myPlayer)
+						Projectile.NewProjectile(player.GetSource_Buff(j), player.position.X + (float)(player.width / 2), player.position.Y + (float)(player.height / 2), 0f, 0f, 199, 0, 0f, player.whoAmI);
+				}
+				else if (player.buffType[j] == 53)
+				{
+					player.buffTime[j] = 18000;
+					player.lizard = true;
+					bool flag21 = true;
+					if (player.ownedProjectileCounts[200] > 0)
+						flag21 = false;
+
+					if (flag21 && player.whoAmI == Main.myPlayer)
+						Projectile.NewProjectile(player.GetSource_Buff(j), player.position.X + (float)(player.width / 2), player.position.Y + (float)(player.height / 2), 0f, 0f, 200, 0, 0f, player.whoAmI);
+				}
+				else if (player.buffType[j] == 54)
+				{
+					player.buffTime[j] = 18000;
+					player.parrot = true;
+					bool flag22 = true;
+					if (player.ownedProjectileCounts[208] > 0)
+						flag22 = false;
+
+					if (flag22 && player.whoAmI == Main.myPlayer)
+						Projectile.NewProjectile(player.GetSource_Buff(j), player.position.X + (float)(player.width / 2), player.position.Y + (float)(player.height / 2), 0f, 0f, 208, 0, 0f, player.whoAmI);
+				}
+				else if (player.buffType[j] == 55)
+				{
+					player.buffTime[j] = 18000;
+					player.truffle = true;
+					bool flag23 = true;
+					if (player.ownedProjectileCounts[209] > 0)
+						flag23 = false;
+
+					if (flag23 && player.whoAmI == Main.myPlayer)
+						Projectile.NewProjectile(player.GetSource_Buff(j), player.position.X + (float)(player.width / 2), player.position.Y + (float)(player.height / 2), 0f, 0f, 209, 0, 0f, player.whoAmI);
+				}
+				else if (player.buffType[j] == 56)
+				{
+					player.buffTime[j] = 18000;
+					player.sapling = true;
+					bool flag24 = true;
+					if (player.ownedProjectileCounts[210] > 0)
+						flag24 = false;
+
+					if (flag24 && player.whoAmI == Main.myPlayer)
+						Projectile.NewProjectile(player.GetSource_Buff(j), player.position.X + (float)(player.width / 2), player.position.Y + (float)(player.height / 2), 0f, 0f, 210, 0, 0f, player.whoAmI);
+				}
+				else if (player.buffType[j] == 85)
+				{
+					player.buffTime[j] = 18000;
+					player.cSapling = true;
+					bool flag25 = true;
+					if (player.ownedProjectileCounts[324] > 0)
+						flag25 = false;
+
+					if (flag25 && player.whoAmI == Main.myPlayer)
+						Projectile.NewProjectile(player.GetSource_Buff(j), player.position.X + (float)(player.width / 2), player.position.Y + (float)(player.height / 2), 0f, 0f, 324, 0, 0f, player.whoAmI);
+				}
+				else if (player.buffType[j] == 81)
+				{
+					player.buffTime[j] = 18000;
+					player.spider = true;
+					bool flag26 = true;
+					if (player.ownedProjectileCounts[313] > 0)
+						flag26 = false;
+
+					if (flag26 && player.whoAmI == Main.myPlayer)
+						Projectile.NewProjectile(player.GetSource_Buff(j), player.position.X + (float)(player.width / 2), player.position.Y + (float)(player.height / 2), 0f, 0f, 313, 0, 0f, player.whoAmI);
+				}
+				else if (player.buffType[j] == 82)
+				{
+					player.buffTime[j] = 18000;
+					player.squashling = true;
+					bool flag27 = true;
+					if (player.ownedProjectileCounts[314] > 0)
+						flag27 = false;
+
+					if (flag27 && player.whoAmI == Main.myPlayer)
+						Projectile.NewProjectile(player.GetSource_Buff(j), player.position.X + (float)(player.width / 2), player.position.Y + (float)(player.height / 2), 0f, 0f, 314, 0, 0f, player.whoAmI);
+				}
+				else if (player.buffType[j] == 57)
+				{
+					player.buffTime[j] = 18000;
+					player.wisp = true;
+					bool flag28 = true;
+					if (player.ownedProjectileCounts[211] > 0)
+						flag28 = false;
+
+					if (flag28 && player.whoAmI == Main.myPlayer)
+						Projectile.NewProjectile(player.GetSource_Buff(j), player.position.X + (float)(player.width / 2), player.position.Y + (float)(player.height / 2), 0f, 0f, 211, 0, 0f, player.whoAmI);
+				}
+				else if (player.buffType[j] == 60)
+				{
+					player.buffTime[j] = 18000;
+					player.crystalLeaf = true;
+					bool flag29 = true;
+					for (int num24 = 0; num24 < 1000; num24++)
+					{
+						if (Main.projectile[num24].active && Main.projectile[num24].owner == player.whoAmI && Main.projectile[num24].type == 226)
+						{
+							if (!flag29)
+								Main.projectile[num24].Kill();
+
+							flag29 = false;
+						}
+					}
+
+					if (flag29 && player.whoAmI == Main.myPlayer)
+						Projectile.NewProjectile(player.GetSource_Buff(j), player.position.X + (float)(player.width / 2), player.position.Y + (float)(player.height / 2), 0f, 0f, 226, 0, 0f, player.whoAmI);
+				}
+				else if (player.buffType[j] == 127)
+				{
+					player.buffTime[j] = 18000;
+					player.zephyrfish = true;
+					bool flag30 = true;
+					if (player.ownedProjectileCounts[380] > 0)
+						flag30 = false;
+
+					if (flag30 && player.whoAmI == Main.myPlayer)
+						Projectile.NewProjectile(player.GetSource_Buff(j), player.position.X + (float)(player.width / 2), player.position.Y + (float)(player.height / 2), 0f, 0f, 380, 0, 0f, player.whoAmI);
+				}
+				else if (player.buffType[j] == 136)
+				{
+					player.buffTime[j] = 18000;
+					player.miniMinotaur = true;
+					bool flag31 = true;
+					if (player.ownedProjectileCounts[398] > 0)
+						flag31 = false;
+
+					if (flag31 && player.whoAmI == Main.myPlayer)
+						Projectile.NewProjectile(player.GetSource_Buff(j), player.position.X + (float)(player.width / 2), player.position.Y + (float)(player.height / 2), 0f, 0f, 398, 0, 0f, player.whoAmI);
+				}
+				else if (player.buffType[j] == 70)
+				{
+					player.venom = true;
+				}
+				else if (player.buffType[j] == 20)
+				{
+					player.poisoned = true;
+				}
+				else if (player.buffType[j] == 21)
+				{
+					player.potionDelay = player.buffTime[j];
+				}
+				else if (player.buffType[j] == 22)
+				{
+					player.blind = true;
+				}
+				else if (player.buffType[j] == 80)
+				{
+					player.blackout = true;
+				}
+				else if (player.buffType[j] == 23)
+				{
+					player.noItems = true;
+					player.cursed = true;
+				}
+				else if (player.buffType[j] == 24)
+				{
+					player.onFire = true;
+				}
+				else if (player.buffType[j] == 103)
+				{
+					player.dripping = true;
+				}
+				else if (player.buffType[j] == 137)
+				{
+					player.drippingSlime = true;
+				}
+				else if (player.buffType[j] == 320)
+				{
+					player.drippingSparkleSlime = true;
+				}
+				else if (player.buffType[j] == 67)
+				{
+					player.burned = true;
+				}
+				else if (player.buffType[j] == 68)
+				{
+					player.suffocating = true;
+				}
+				else if (player.buffType[j] == 39)
+				{
+					player.onFire2 = true;
+				}
+				else if (player.buffType[j] == 323)
+				{
+					player.onFire3 = true;
+				}
+				else if (player.buffType[j] == 44)
+				{
+					player.onFrostBurn = true;
+				}
+				else if (player.buffType[j] == 324)
+				{
+					player.onFrostBurn2 = true;
+				}
+				else if (player.buffType[j] == 353)
+				{
+					player.shimmering = true;
+					player.frozen = true;
+					player.fallStart = (int)(player.position.Y / 16f);
+					if (Main.myPlayer != player.whoAmI)
+						continue;
+
+					if (player.position.Y / 16f > (float)Main.UnderworldLayer)
+					{
+						if (Main.myPlayer == player.whoAmI)
+							player.DelBuff(j);
+
+						continue;
+					}
+
+					if (player.shimmerWet)
+					{
+						player.buffTime[j] = 60;
+						continue;
+					}
+
+					bool flag32 = false;
+					for (int num25 = (int)(player.position.X / 16f); (float)num25 <= (player.position.X + (float)player.width) / 16f; num25++)
+					{
+						for (int num26 = (int)(player.position.Y / 16f); (float)num26 <= (player.position.Y + (float)player.height) / 16f; num26++)
+						{
+							if (WorldGen.SolidTile3(num25, num26))
+								flag32 = true;
+						}
+					}
+
+					if (flag32)
+						player.buffTime[j] = 6;
+					else
+						player.DelBuff(j);
+				}
+				else if (player.buffType[j] == 163)
+				{
+					player.headcovered = true;
+					player.bleed = true;
+				}
+				else if (player.buffType[j] == 164)
+				{
+					player.vortexDebuff = true;
+				}
+				else if (player.buffType[j] == 194)
+				{
+					player.windPushed = true;
+				}
+				else if (player.buffType[j] == 195)
+				{
+					player.witheredArmor = true;
+				}
+				else if (player.buffType[j] == 205)
+				{
+					player.ballistaPanic = true;
+				}
+				else if (player.buffType[j] == 196)
+				{
+					player.witheredWeapon = true;
+				}
+				else if (player.buffType[j] == 197)
+				{
+					player.slowOgreSpit = true;
+				}
+				else if (player.buffType[j] == 198)
+				{
+					player.parryDamageBuff = true;
+				}
+				else if (player.buffType[j] == 145)
+				{
+					player.moonLeech = true;
+				}
+				else if (player.buffType[j] == 149)
+				{
+					player.webbed = true;
+					if (player.velocity.Y != 0f)
+						player.velocity = new Vector2(0f, 1E-06f);
+					else
+						player.velocity = Vector2.Zero;
+
+					Player.jumpHeight = 0;
+					player.gravity = 0f;
+					player.moveSpeed = 0f;
+					player.dash = 0;
+					player.dashType = 0;
+					player.noKnockback = true;
+					player.RemoveAllGrapplingHooks();
+				}
+				else if (player.buffType[j] == 43)
+				{
+					player.defendedByPaladin = true;
+				}
+				else if (player.buffType[j] == 29)
+				{
+					player.GetCritChance(DamageClass.Magic) += 2;
+					player.GetDamage(DamageClass.Magic) += 0.05f;
+					player.statManaMax2 += 20;
+					player.manaCost -= 0.02f;
+				}
+				else if (player.buffType[j] == 28)
+				{
+					if (!Main.dayTime && player.wolfAcc && !player.merman)
+					{
+						player.AddHealthRegenEffect(
+							healthPerSecond: 0.5
+						);
+						player.wereWolf = true;
+						player.GetCritChance(DamageClass.Melee) += 2;
+						player.GetDamage(DamageClass.Melee) += 0.051f;
+						player.GetAttackSpeed(DamageClass.Melee) += 0.051f;
+						player.statDefense += 3;
+						player.moveSpeed += 0.05f;
+					}
+					else
+					{
+						player.DelBuff(j);
+						j--;
+					}
+				}
+				else if (player.buffType[j] == 33)
+				{
+					player.GetDamage(DamageClass.Melee) -= 0.051f;
+					player.GetAttackSpeed(DamageClass.Melee) -= 0.051f;
+					player.statDefense -= 4;
+					player.moveSpeed -= 0.1f;
+				}
+				else if (player.buffType[j] == 25)
+				{
+					player.tipsy = true;
+					player.statDefense -= 4;
+					player.GetCritChance(DamageClass.Melee) += 2;
+					player.GetDamage(DamageClass.Melee) += 0.1f;
+					player.GetAttackSpeed(DamageClass.Melee) += 0.1f;
+				}
+				else if (player.buffType[j] == 26)
+				{
+					player.wellFed = true;
+					player.statDefense += 2;
+					player.GetCritChance(DamageClass.Generic) += 2;
+					player.GetDamage(DamageClass.Generic) += 0.05f;
+					player.GetAttackSpeed(DamageClass.Melee) += 0.05f;
+					player.GetKnockback(DamageClass.Summon) += 0.5f;
+					player.moveSpeed += 0.2f;
+					player.pickSpeed -= 0.05f;
+				}
+				else if (player.buffType[j] == 206)
+				{
+					player.wellFed = true;
+					player.statDefense += 3;
+					player.GetCritChance(DamageClass.Generic) += 3;
+					player.GetDamage(DamageClass.Generic) += 0.075f;
+					player.GetAttackSpeed(DamageClass.Melee) += 0.075f;
+					player.GetKnockback(DamageClass.Summon) += 0.75f;
+					player.moveSpeed += 0.3f;
+					player.pickSpeed -= 0.1f;
+				}
+				else if (player.buffType[j] == 207)
+				{
+					player.wellFed = true;
+					player.statDefense += 4;
+					player.GetCritChance(DamageClass.Generic) += 4;
+					player.GetDamage(DamageClass.Generic) += 0.1f;
+					player.GetAttackSpeed(DamageClass.Melee) += 0.1f;
+					player.GetKnockback(DamageClass.Summon) += 1f;
+					player.moveSpeed += 0.4f;
+					player.pickSpeed -= 0.15f;
+				}
+				else if (player.buffType[j] == 333)
+				{
+					player.hungry = true;
+					player.statDefense -= 2;
+					player.GetCritChance(DamageClass.Generic) -= 2;
+					player.GetDamage(DamageClass.Generic) -= 0.05f;
+					player.GetAttackSpeed(DamageClass.Melee) -= 0.05f;
+					player.GetKnockback(DamageClass.Summon) -= 0.5f;
+					player.pickSpeed += 0.05f;
+				}
+				else if (player.buffType[j] == 334)
+				{
+					player.starving = true;
+					player.statDefense -= 4;
+					player.GetCritChance(DamageClass.Generic) -= 4;
+					player.GetDamage(DamageClass.Generic) -= 0.1f;
+					player.GetAttackSpeed(DamageClass.Melee) -= 0.1f;
+					player.GetKnockback(DamageClass.Summon) -= 1f;
+					player.pickSpeed += 0.15f;
+				}
+				else if (player.buffType[j] == 336)
+				{
+					player.heartyMeal = true;
+				}
+				else if (player.buffType[j] == 71)
+				{
+					player.meleeEnchant = 1;
+				}
+				else if (player.buffType[j] == 73)
+				{
+					player.meleeEnchant = 2;
+				}
+				else if (player.buffType[j] == 74)
+				{
+					player.meleeEnchant = 3;
+				}
+				else if (player.buffType[j] == 75)
+				{
+					player.meleeEnchant = 4;
+				}
+				else if (player.buffType[j] == 76)
+				{
+					player.meleeEnchant = 5;
+				}
+				else if (player.buffType[j] == 77)
+				{
+					player.meleeEnchant = 6;
+				}
+				else if (player.buffType[j] == 78)
+				{
+					player.meleeEnchant = 7;
+				}
+				else if (player.buffType[j] == 79)
+				{
+					player.meleeEnchant = 8;
+				}
+
+				if (j == originalIndex)
+					BuffLoader.Update(player.buffType[j], player, ref j);
+			}
+
+			player.UpdateHungerBuffs();
+			if (player.whoAmI == Main.myPlayer && player.luckPotion != player.oldLuckPotion)
+			{
+				player.luckNeedsSync = true;
+				player.oldLuckPotion = player.luckPotion;
+			}
+		}
+		private static void UpdateAbigailStatus(Player player)
+		{
+			int num = 963;
+			if (player.ownedProjectileCounts[970] < 1)
+			{
+				for (int i = 0; i < 1000; i++)
+				{
+					Projectile projectile = Main.projectile[i];
+					if (projectile.active && projectile.owner == player.whoAmI && projectile.type == num)
+						projectile.Kill();
+				}
+			}
+			else if (player.ownedProjectileCounts[num] < 1)
+			{
+				Projectile.NewProjectile(player.GetSource_Misc("AbigailTierSwap"), player.Center, Vector2.Zero, num, 0, 0f, player.whoAmI);
+			}
+		}
+
+		private static void UpdateStormTigerStatus(Player player)
+		{
+			int num;
+			switch (GetDesiredStormTigerMinionRank(player))
+			{
+				default:
+					num = -1;
+					break;
+				case 1:
+					num = 833;
+					break;
+				case 2:
+					num = 834;
+					break;
+				case 3:
+					num = 835;
+					break;
+			}
+
+			bool flag = false;
+			if (num == -1)
+				flag = true;
+
+			for (int i = 0; i < ProjectileID.Sets.StormTigerIds.Length; i++)
+			{
+				int num2 = ProjectileID.Sets.StormTigerIds[i];
+				if (num2 != num && player.ownedProjectileCounts[num2] >= 1)
+				{
+					flag = true;
+					break;
+				}
+			}
+
+			if (flag)
+			{
+				for (int j = 0; j < 1000; j++)
+				{
+					Projectile projectile = Main.projectile[j];
+					if (projectile.active && projectile.owner == player.whoAmI && projectile.type != num && ProjectileID.Sets.StormTiger[projectile.type])
+						projectile.Kill();
+				}
+			}
+			else if (player.ownedProjectileCounts[num] < 1)
+			{
+				int num3 = Projectile.NewProjectile(player.GetSource_Misc("StormTigerTierSwap"), player.Center, Vector2.Zero, num, 0, 0f, player.whoAmI, 0f, 1f);
+				Main.projectile[num3].localAI[0] = 60f;
+			}
+		}
+
+		private static int GetDesiredStormTigerMinionRank(Player player)
+		{
+			int result = 0;
+			int num = player.ownedProjectileCounts[831];
+			if (num > 0)
+				result = 1;
+
+			if (num > 3)
+				result = 2;
+
+			if (num > 6)
+				result = 3;
+
+			return result;
+		}
+
 		public static void ItemCheck_ReleaseCritter(Player player, Item sItem)
 		{
 			if (sItem.makeNPC == NPCID.ExplosiveBunny)

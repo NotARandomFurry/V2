@@ -535,7 +535,7 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 			if (scrooge != null && scrooge.Distance(NPC.Center) <= NPC.AsPred().MaxSwallowRange && shouldSnackOnScrooge)
 				PredNPC.Swallow(NPC, scrooge);
 
-			if (ModContent.GetInstance<V2ServerConfig>().NoRandomGulpsAgainstPlayers)
+			if (!ModContent.GetInstance<V2ServerConfig>().RandomGulpsAgainstPlayers)
 				return;
 
 			if (!Main.CurrentPlayer.active || Main.CurrentPlayer.dead || Main.CurrentPlayer.Distance(NPC.Center) > NPC.AsPred().MaxSwallowRange || Main.CurrentPlayer.CurrentCaptor() is not null)

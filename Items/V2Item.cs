@@ -1,4 +1,5 @@
-﻿using Steamworks;
+﻿using Microsoft.Xna.Framework;
+using Steamworks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +21,15 @@ namespace V2.Items
 	public class V2Item : GlobalItem
 	{
 		public DelegateHeldItemDrawingUI heldItemUIDrawMethod;
+
+		public delegate void DelegateArmorEffectCode(Item item, Player player);
+		public DelegateArmorEffectCode ArmorEffectCode { get; internal set; }
+
+		public delegate void DelegateAccessoryEffectCode(Item item, Player player, bool hideVisual);
+		public DelegateAccessoryEffectCode AccessoryEffectCode { get; internal set; }
+
+		public delegate void DelegateAccessoryVanityEffectCode(Item item, Player player);
+		public DelegateAccessoryVanityEffectCode AccessoryVanityEffectCode { get; internal set; }
 
 		public int ReleasedNPCNetID;
 
@@ -47,6 +57,30 @@ namespace V2.Items
 			maxCanAscendMultiplier *= weightMovementMult;
 			maxAscentMultiplier *= weightMovementMult;
 			constantAscend *= weightMovementMult;
+		}
+
+		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
+		{
+			Player player = Main.LocalPlayer;
+			if (item.wornArmor && player.AsV2Player().setBonusActive)
+			{
+				TooltipLine setBonusLine = tooltips.FirstOrDefault(x => x.Name == "SetBonus");
+				setBonusLine.Hide();
+				if (player.AsV2Player().setBonusShouldBeDisplayed && V2Utils.FindFirstTooltipLineThatIsOrComesAfterFlavorText(tooltips, out TooltipLine newSetBonusLineDestination))
+				{
+					tooltips.Insert(
+						tooltips.IndexOf(newSetBonusLineDestination) + 1,
+						new TooltipLine(
+							Mod,
+							"V2SetBonus",
+							player.setBonus
+						)
+						{
+							OverrideColor = Color.Gold
+						}
+					);
+				}
+			}
 		}
 	}
 }

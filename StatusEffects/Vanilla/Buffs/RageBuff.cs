@@ -12,25 +12,14 @@ using V2.PlayerHandling;
 
 namespace V2.StatusEffects.Vanilla.Buffs
 {
-	public class Rage : GlobalBuff
+	public class RageBuff : GlobalBuff
 	{
 		public static double CritChanceBonus => 0.10;
 		public static int GLPBonus => 5;
 		public static int ABSBonus => 5;
-		public override void ModifyBuffText(int type, ref string buffName, ref string tip, ref int rare)
+		public override void SetStaticDefaults()
 		{
-			if (type != BuffID.Rage)
-				return;
-
-			tip = Language.GetTextValueWith(
-				"Mods.V2.StatusEffects.Vanilla.Buffs.Rage.Description",
-				new
-				{
-					RageCritChanceBonus = CritChanceBonus.ToPercentage(2),
-					RageGLPBonus = GLPBonus,
-					RageABSBonus = ABSBonus,
-				}
-			);
+			V2.ModifiedStatusEffects.Add(BuffID.Rage, this);
 		}
 
 		public override void Update(int type, Player player, ref int buffIndex)
@@ -40,6 +29,23 @@ namespace V2.StatusEffects.Vanilla.Buffs
 
 			player.AsPred().GLP.Extra += GLPBonus;
 			player.AsPred().ABS.Extra += ABSBonus;
+		}
+
+		public override void ModifyBuffText(int type, ref string buffName, ref string tip, ref int rare)
+		{
+			if (type != BuffID.Rage)
+				return;
+
+			rare = ItemRarityID.Red;
+			tip = Language.GetTextValueWith(
+				"Mods.V2.StatusEffects.Vanilla.Buffs.Rage.Description",
+				new
+				{
+					RageCritChanceBonus = CritChanceBonus.ToPercentage(2),
+					RageGLPBonus = GLPBonus,
+					RageABSBonus = ABSBonus,
+				}
+			);
 		}
 	}
 }

@@ -1,26 +1,19 @@
-﻿using Humanizer;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using ReLogic.Utilities;
 using System;
 using System.Collections.Generic;
-using System.Dynamic;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.Chat;
 using Terraria.DataStructures;
-using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using V2.Core;
-using V2.Core.StruggleSystem;
 using V2.Items;
 using V2.Items.Voraria.Consumables.PermanentUpgrades;
 using V2.NPCs;
@@ -31,7 +24,6 @@ using V2.Projectiles;
 using V2.Sounds.Vore;
 using V2.StatusEffects.Voraria.Buffs;
 using V2.StatusEffects.Voraria.Debuffs;
-using V2.UI.PredStatsMenu;
 
 namespace V2.PlayerHandling
 {
@@ -81,6 +73,8 @@ namespace V2.PlayerHandling
 
 		public bool InPredStatsMenu { get; set; }
 		public Dictionary<string, bool> GoalsCompleted { get; set; }
+		public bool DirectStatPointModsAvailable => Rose;
+		public int DirectStatPointMod { get; set; }
 		public int TotalStatPoints
 		{
 			get
@@ -94,7 +88,7 @@ namespace V2.PlayerHandling
 					if (GoalsCompleted[goal.InternalName])
 						points += goal.StatPointsFromCompletion;
 				}
-				return points;
+				return points + DirectStatPointMod;
 			}
 		}
 		public int AllocatedStatPoints => GLP.Spent + TUM.Spent + ACI.Spent + ABS.Spent;
@@ -300,6 +294,7 @@ namespace V2.PlayerHandling
 			}
 		}
 		public double PreyAbsorptionRatePerTick => PreyAbsorptionRate / (double)V2Utils.SensibleTime(minutes: 1);
+		public double PreyAbsorptionRatePerSecond => PreyAbsorptionRate / (double)V2Utils.SensibleTime(seconds: 1);
 		public StatModifier BuffExtensionTimeModifier;
 		public static double BuffExtensionTimePer5Levels => 0.04;
 		public double BuffExtensionFactor
@@ -430,7 +425,6 @@ namespace V2.PlayerHandling
 		public double StomachWeightAtSleepStart;
 		public int OverfullTime;
 
-		public double specialHealthRegenCount;
 		public double specialManaRegenCount;
 
 		public bool BlockSwallowAttempts
@@ -785,13 +779,6 @@ namespace V2.PlayerHandling
 					Player.AsPred().DigestionTickRateModifier *= (float)Main.dayRate;
 					Player.AsPred().PreyAbsorptionRateModifier *= (float)Main.dayRate;
 				}
-			}
-			while (specialHealthRegenCount >= 60.0)
-			{
-				specialHealthRegenCount -= 60.0;
-				Player.statLife += 1;
-				if (Player.statLife > Player.statLifeMax2)
-					Player.statLife = Player.statLifeMax2;
 			}
 			while (specialManaRegenCount >= 60.0)
 			{

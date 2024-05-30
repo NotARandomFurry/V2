@@ -12,7 +12,7 @@ using V2.PlayerHandling;
 
 namespace V2.StatusEffects.Vanilla.Buffs
 {
-	public class Happy : GlobalBuff
+	public class HappyBuff : GlobalBuff
 	{
 		public override void SetStaticDefaults()
 		{

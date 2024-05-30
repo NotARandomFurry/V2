@@ -20,18 +20,18 @@ namespace V2.Items.Vanilla.Weapons.Melee
 		public override bool InstancePerEntity => true;
 		public override bool AppliesToEntity(Item entity, bool lateInstantiation) => entity.type == ItemID.CactusSword;
 
-		public override void SetDefaults(Item entity)
+		public override void SetDefaults(Item item)
 		{
-			entity.AsFood().MaxHealth = 51;
-			entity.AsFood().Size = 0.52;
+			item.AsFood().MaxHealth = 151;
+			item.AsFood().Size = 0.52;
 
-			entity.AsFood().OnSwallowDamage = 6;
-			entity.AsFood().OnSwallowDeathReason = "{0} tried to deepthroat a cactus.";
-			entity.AsFood().OnSwallowSoreThroatTime = V2Utils.SensibleTime(seconds: 3, frames: 30);
+			item.AsFood().OnSwallowDamage = 6;
+			item.AsFood().OnSwallowDeathReason = "{0} tried to deepthroat a cactus.";
+			item.AsFood().OnSwallowSoreThroatTime = V2Utils.SensibleTime(seconds: 3, frames: 30);
 
-			entity.AsFood().UpdateInStomach += UpdateInStomach;
+			item.AsFood().UpdateInStomach += UpdateInStomach;
 
-			entity.AsTaggable().Broadsword = true;
+			item.AsTaggable().Broadsword = true;
 		}
 
 		public static void UpdateInStomach(Entity prey, Entity pred, bool dead)

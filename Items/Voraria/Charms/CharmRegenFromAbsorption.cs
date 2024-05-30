@@ -42,8 +42,11 @@ namespace V2.Items.Voraria.Charms
 			if (player.AsPred().StomachTracker?.Prey.Count > 0)
 			{
 				double effectiveness = (double)player.AsPred().StomachTracker?.Prey.FindAll(x => x.NoHealth).Count / (double)player.AsPred().StomachTracker?.Prey.Count;
-				player.AsPred().specialHealthRegenCount += HealthRegenerationRatio * player.AsPred().PreyAbsorptionRatePerTick * effectiveness;
-				player.AsPred().specialManaRegenCount += ManaRegenerationRatio * player.AsPred().PreyAbsorptionRatePerTick * effectiveness;
+				player.AddHealthRegenEffect(
+					healthPerSecond: HealthRegenerationRatio * player.AsPred().PreyAbsorptionRate * effectiveness,
+					natural: true
+				);
+				player.AsPred().specialManaRegenCount += ManaRegenerationRatio * player.AsPred().PreyAbsorptionRatePerSecond * effectiveness;
 			}
 		}
 
@@ -60,10 +63,10 @@ namespace V2.Items.Voraria.Charms
 					HealthRegenerationRatio = HealthRegenerationRatio.ToPercentage(0),
 					ManaRegenerationRatio = ManaRegenerationRatio.ToPercentage(0),
 					RegenEffectiveness = regenEffectiveness.ToPercentage(2),
-					LivePreyRemaining = player.AsPred().StomachTracker?.Prey.FindAll(x => !x.NoHealth).Count,
-					PreyRemaining = player.AsPred().StomachTracker?.Prey.Count,
-					CurrentHealthRegen = ((regenEffectiveness > 0.0 ? HealthRegenerationRatio * player.AsPred().PreyAbsorptionRatePerTick * regenEffectiveness : 0.0) * 60.0).CastToDecimalPlaces(2),
-					CurrentManaRegen = ((regenEffectiveness > 0.0 ? ManaRegenerationRatio * player.AsPred().PreyAbsorptionRatePerTick * regenEffectiveness : 0.0) * 60.0).CastToDecimalPlaces(2),
+					LivePreyRemaining = player.AsPred().StomachTracker?.Prey.FindAll(x => !x.NoHealth).Count ?? 0,
+					PreyRemaining = player.AsPred().StomachTracker?.Prey.Count ?? 0,
+					CurrentHealthRegen = (regenEffectiveness > 0.0 ? (HealthRegenerationRatio * player.AsPred().PreyAbsorptionRate * regenEffectiveness) : 0.0).CastToDecimalPlaces(2),
+					CurrentManaRegen = (regenEffectiveness > 0.0 ? (ManaRegenerationRatio * player.AsPred().PreyAbsorptionRate * regenEffectiveness) : 0.0).CastToDecimalPlaces(2),
 				}
 			);
 		}

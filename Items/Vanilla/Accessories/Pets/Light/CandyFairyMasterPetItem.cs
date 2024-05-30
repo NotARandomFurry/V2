@@ -18,9 +18,7 @@ namespace V2.Items.Vanilla.Accessories.Pets.Light
 
 		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
 		{
-			tooltips.RemoveAll(x => x.Name.Contains("Tooltip"));
-			V2Utils.AddVorariaDynamicItemTooltip(
-				tooltips,
+			tooltips.AddVorariaDynamicItemTooltip(
 				"Vanilla.Accessories.Pets.Light.CandyFairyMasterPetItem",
 				new
 				{

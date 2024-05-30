@@ -602,7 +602,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Stylist
 			if (salad != null && salad.Distance(npc.Center) <= npc.AsPred().MaxSwallowRange && shouldSnackOnSalad)
 				PredNPC.Swallow(npc, salad);
 
-			if (ModContent.GetInstance<V2ServerConfig>().NoRandomGulpsAgainstPlayers)
+			if (!ModContent.GetInstance<V2ServerConfig>().RandomGulpsAgainstPlayers)
 				return;
 
 			if (!Main.CurrentPlayer.active || Main.CurrentPlayer.dead || Main.CurrentPlayer.Distance(npc.Center) > npc.AsPred().MaxSwallowRange || Main.CurrentPlayer.CurrentCaptor() is not null)

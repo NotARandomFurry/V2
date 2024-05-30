@@ -18,7 +18,7 @@ namespace V2.NPCs.Vanilla.TownNPCs
 {
 	public static class TownNPCAIReference
 	{
-		public static void TownNPCVanillAI(NPC npc)
+		public static void TownNPCVanillaAI(NPC npc)
 		{
 			NPC.ShimmeredTownNPCs[npc.type] = npc.IsShimmerVariant;
 			if (npc.type == NPCID.TaxCollector && npc.GivenName == "Andrew")

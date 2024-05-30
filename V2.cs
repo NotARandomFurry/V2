@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using ReLogic.Content;
+using System;
 using System.Collections.Generic;
 using Terraria.GameContent;
 using Terraria.ID;
@@ -54,11 +55,14 @@ namespace V2
 		/// </summary>
 		public static bool GetFooled { get; set; }
 
+		public static Dictionary<int, GlobalBuff> ModifiedStatusEffects { get; set; }
+
 		public V2()
 		{
 			Instance = this;
 			BlacklistsActive = true;
 			GetFooled = false;
+			ModifiedStatusEffects = [];
 		}
 
 		public override void Load()
