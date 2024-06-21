@@ -73,29 +73,28 @@ namespace V2.PlayerHandling
 
 		public bool InPredStatsMenu { get; set; }
 		public Dictionary<string, bool> GoalsCompleted { get; set; }
-		public bool DirectStatPointModsAvailable => Rose;
-		public int DirectStatPointMod { get; set; }
-		public int TotalStatPoints
+		public bool CheatedStatPointsWork => Rose;
+		public int CheatedStatPoints { get; set; }
+		public int LegitStatPoints
 		{
 			get
 			{
 				int points = 0;
 				foreach (PredPlayerGoal goal in PredPlayerGoalLoader.PredPlayerGoals)
 				{
-					if (!GoalsCompleted.ContainsKey(goal.InternalName))
-						GoalsCompleted.Add(goal.InternalName, false);
-
+					GoalsCompleted.TryAdd(goal.InternalName, false);
 					if (GoalsCompleted[goal.InternalName])
 						points += goal.StatPointsFromCompletion;
 				}
-				return points + DirectStatPointMod;
+				return points;
 			}
 		}
+		public int TotalStatPoints => CheatedStatPointsWork ? (LegitStatPoints + CheatedStatPoints) : LegitStatPoints;
 		public int AllocatedStatPoints => GLP.Spent + TUM.Spent + ACI.Spent + ABS.Spent;
 		public int AvailableStatPoints => TotalStatPoints - AllocatedStatPoints;
 		public PredStat GLP { get; set; }
 		public StatModifier SwallowSizeModifier;
-		public static double BaseSwallowSize => 0.80;
+		public static double BaseSwallowSize => 0.75;
 		public static double SwallowSizePerLevel => 0.05;
 		public double SwallowCapacity
 		{
@@ -199,8 +198,8 @@ namespace V2.PlayerHandling
 			}
 		}
 		public StatModifier StomachacheMeterCapacityModifier;
-		public static double BaseStomachacheMeterCapacity => 100.0;
-		public static double StomachacheMeterCapacityPer5Levels => 10.0;
+		public static double BaseStomachacheMeterCapacity => 250.0;
+		public static double StomachacheMeterCapacityPer5Levels => 25.0;
 		public double StomachacheMeterCapacity
 		{
 			get
@@ -235,10 +234,10 @@ namespace V2.PlayerHandling
 				if (V2.GetFooled)
 					return 100;
 
-				if (PermanentUpgradesGained.ContainsKey("AcidTier2") && PermanentUpgradesGained["AcidTier2"])
+				if (PermanentUpgradesGained.TryGetValue("AcidTier2", out bool acidTier2Acquired) && acidTier2Acquired)
 					return 2;
 
-				if (PermanentUpgradesGained.ContainsKey("AcidTier1") && PermanentUpgradesGained["AcidTier1"])
+				if (PermanentUpgradesGained.TryGetValue("AcidTier1", out bool acidTier1Acquired) && acidTier1Acquired)
 					return 1;
 
 				if (Player.HasBuff(ModContent.BuffType<FastDigestionPotionBuff>()))
@@ -248,8 +247,8 @@ namespace V2.PlayerHandling
 			}
 		}
 		public StatModifier DigestionTickDamageModifier;
-		public static double BaseDigestionTickDamage => 12.0;
-		public static double DigestionTickDamagePerLevel => 1.5;
+		public static double BaseDigestionTickDamage => 8.0;
+		public static double DigestionTickDamagePerLevel => 0.8;
 		public double DigestionTickDamage
 		{
 			get
@@ -263,8 +262,8 @@ namespace V2.PlayerHandling
 			}
 		}
 		public StatModifier DigestionTickRateModifier;
-		public static double BaseDigestionTickRate => 1.0;
-		public static double DigestionTickRatePer5Levels => 0.1;
+		public static double BaseDigestionTickRate => 0.80;
+		public static double DigestionTickRatePer5Levels => 0.04;
 		public double DigestionTickRate
 		{
 			get
@@ -279,8 +278,8 @@ namespace V2.PlayerHandling
 		}
 		public PredStat ABS { get; set; }
 		public StatModifier PreyAbsorptionRateModifier;
-		public static double BasePreyAbsorptionRate => 0.2;
-		public static double PreyAbsorptionRatePerLevel => 0.02;
+		public static double BasePreyAbsorptionRate => 0.3;
+		public static double PreyAbsorptionRatePerLevel => 0.01;
 		public double PreyAbsorptionRate
 		{
 			get
@@ -296,7 +295,7 @@ namespace V2.PlayerHandling
 		public double PreyAbsorptionRatePerTick => PreyAbsorptionRate / (double)V2Utils.SensibleTime(minutes: 1);
 		public double PreyAbsorptionRatePerSecond => PreyAbsorptionRate / (double)V2Utils.SensibleTime(seconds: 1);
 		public StatModifier BuffExtensionTimeModifier;
-		public static double BuffExtensionTimePer5Levels => 0.04;
+		public static double BuffExtensionTimePer5Levels => 0.06;
 		public double BuffExtensionFactor
 		{
 			get
@@ -309,7 +308,7 @@ namespace V2.PlayerHandling
 			}
 		}
 		public StatModifier DebuffDisextensionTimeModifier;
-		public static double DebuffDisextensionTimePer5Levels => 0.04;
+		public static double DebuffDisextensionTimePer5Levels => 0.06;
 		public double DebuffDisextensionFactor
 		{
 			get
@@ -635,23 +634,25 @@ namespace V2.PlayerHandling
 
 			lastEntitySwallowed = null;
 			lastEntitySwallowedMod = null;
-			mealCount = new Dictionary<string, int>();
+			mealCount = [];
 			lastSwallowWasDrinking = false;
 			lastLiquidDrank = null;
 			lastLiquidDrankMod = null;
-			drinkCount = new Dictionary<string, int>();
+			drinkCount = [];
 
 			PrimedForShimmerStomachDeath = false;
 
 			PercentBellySizeModifier = 1.0;
 			FlatBellySizeModifier = 0;
 
-			PermanentUpgradesGained = new Dictionary<string, bool>();
-			PermanentUpgradesGained.Add("PureSwallow1", false);
-			PermanentUpgradesGained.Add("AcidTier1", false);
-			PermanentUpgradesGained.Add("AcidTier2", false);
+			PermanentUpgradesGained = new Dictionary<string, bool>
+			{
+				{ "PureSwallow1", false },
+				{ "AcidTier1", false },
+				{ "AcidTier2", false }
+			};
 
-			GoalsCompleted = new Dictionary<string, bool>();
+			GoalsCompleted = [];
 			foreach (PredPlayerGoal goal in PredPlayerGoalLoader.PredPlayerGoals)
 			{
 				GoalsCompleted.Add(goal.InternalName, false);
@@ -716,7 +717,7 @@ namespace V2.PlayerHandling
 
 		public void UpdatePredStatPointsFromPermUpgrades()
 		{
-			if (PermanentUpgradesGained.ContainsKey("PureSwallow1") && PermanentUpgradesGained["PureSwallow1"])
+			if (PermanentUpgradesGained.TryGetValue("PureSwallow1", out bool swallowStimsEaten) && swallowStimsEaten)
 				GLP.Base += PureSwallowBoost1.GLPBonus;
 		}
 
@@ -983,7 +984,6 @@ namespace V2.PlayerHandling
 						}
 						else
 							tile.LiquidAmount -= (byte)Player.AsPred().LiquidSwallowSize;
-
 						WorldGen.SquareTileFrame(playerTileLocation.X, playerTileLocation.Y);
 
 						if (Main.GameUpdateCount % 60 == 0)
@@ -1161,14 +1161,12 @@ namespace V2.PlayerHandling
 					break;
 				case PreyType.NPC:
 					NPC npc = prey as NPC;
-					if (npc.realLife != 1 && npc.realLife == npc.whoAmI)
+					npc.AsFood().OnSwallowedBy?.Invoke(npc, pred);
+					for (int i = 0; i < Main.maxNPCs; i++)
 					{
-						for (int i = 0; i < Main.maxNPCs; i++)
+						if (Main.npc[i].whoAmI != npc.whoAmI && Main.npc[i].realLife == npc.whoAmI)
 						{
-							if (Main.npc[i].whoAmI != npc.whoAmI && Main.npc[i].realLife == npc.whoAmI)
-							{
-								Swallow(pred, Main.npc[i]);
-							}
+							Swallow(pred, Main.npc[i]);
 						}
 					}
 
@@ -1230,7 +1228,7 @@ namespace V2.PlayerHandling
 		public static void AddNewPrey(Player pred, PreyData prey)
 		{
 			if (pred.AsPred().StomachTracker is null)
-				VoreTracker.NewTracker(pred, new List<PreyData>() { prey });
+				VoreTracker.NewTracker(pred, [prey]);
 			else
 				pred.AsPred().StomachTracker.QueueNewPrey(prey);
 		}
@@ -1329,8 +1327,7 @@ namespace V2.PlayerHandling
 									prey.NoHealth = preyPlayer.AsFood().TakeDigestionDamage(pred, digestionDamage);
 									if (prey.NoHealth)
 									{
-										if (!pred.AsPred().mealCount.ContainsKey("Terraria: Player"))
-											pred.AsPred().mealCount.Add("Terraria: Player", 0);
+										pred.AsPred().mealCount.TryAdd("Terraria: Player", 0);
 										pred.AsPred().mealCount["Terraria: Player"] += 1;
 										SoundEngine.PlaySound(
 											pred.AsPred().StandardBurps,
@@ -1351,8 +1348,7 @@ namespace V2.PlayerHandling
 									{
 										prey.Instance = null;
 										string preyNPCMod = preyNPC.ModNPC != null ? preyNPC.ModNPC.Mod.DisplayName : "Terraria";
-										if (!pred.AsPred().mealCount.ContainsKey(preyNPCMod + ": " + preyNPC.TypeName))
-											pred.AsPred().mealCount.Add(preyNPCMod + ": " + preyNPC.TypeName, 0);
+										pred.AsPred().mealCount.TryAdd(preyNPCMod + ": " + preyNPC.TypeName, 0);
 										pred.AsPred().mealCount[preyNPCMod + ": " + preyNPC.TypeName] += 1;
 										SoundEngine.PlaySound(
 											prey.WeightLeftToDigest < 0.3 ? pred.AsPred().SmallBurps : pred.AsPred().StandardBurps,
@@ -1376,8 +1372,7 @@ namespace V2.PlayerHandling
 									{
 										prey.Instance = null;
 										string preyProjectileMod = preyProjectile.ModProjectile != null ? preyProjectile.ModProjectile.Mod.DisplayName : "Terraria";
-										if (!pred.AsPred().mealCount.ContainsKey(preyProjectileMod + ": " + preyProjectile.Name))
-											pred.AsPred().mealCount.Add(preyProjectileMod + ": " + preyProjectile.Name, 0);
+										pred.AsPred().mealCount.TryAdd(preyProjectileMod + ": " + preyProjectile.Name, 0);
 										pred.AsPred().mealCount[preyProjectileMod + ": " + preyProjectile.Name] += 1;
 										SoundEngine.PlaySound(
 											prey.WeightLeftToDigest < 0.3 ? pred.AsPred().SmallBurps : pred.AsPred().StandardBurps,

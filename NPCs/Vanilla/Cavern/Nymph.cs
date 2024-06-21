@@ -10,7 +10,7 @@ using V2.Sounds.Vore;
 
 namespace V2.NPCs.Vanilla.Cavern
 {
-	public static class NymphStuff
+    public static class NymphStuff
 	{
 		public static class ItemTheftRules
 		{

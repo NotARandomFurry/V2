@@ -1,12 +1,14 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 using V2.Core;
 using V2.NPCs.Vanilla.NPCAIReference;
 using V2.PlayerHandling;
@@ -92,6 +94,18 @@ namespace V2.NPCs.NPCGroupUtils
 				if (distinctSlimesInTummy >= 3)
 					ModContent.GetInstance<Eat3DifferentSlimes>().TrySetCompletion(predPlayer);
 			}
+		}
+
+		public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
+		{
+			binaryWriter.Write(TimeSinceLastJump);
+			binaryWriter.Write(JumpsUntilNextHighJump);
+		}
+
+		public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
+		{
+			TimeSinceLastJump = binaryReader.ReadInt32();
+			JumpsUntilNextHighJump = binaryReader.ReadInt32();
 		}
 	}
 

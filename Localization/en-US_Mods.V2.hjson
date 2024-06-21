@@ -7,7 +7,7 @@ CommonColorCodes: {
 	NegativeEffect: FFBF5F
 	PositiveVoreEffect: 00BF00
 	NegativeVoreEffect: BF5F00
-	ThomasCommentary: "E06666"
+	ThomasCommentary: "960024"
 }
 
 Keybinds: {
@@ -57,14 +57,12 @@ Configs: {
 				[c/7F7F7F:(these let you fine-tune the experience to your preferences without breakin' the balance of the game)]
 				'''
 
-			NoRandomGulpsAgainstPlayers: {
-				Label: Selectively Hungry Town NPCs
+			RandomGulpsAgainstPlayers: {
+				Label: Townsfolk Tumscares
 				Tooltip:
 					'''
-					Prevents town NPCs from randomly eating players.
-					Included for players who prefer being pred.
-					Does not prevent non-town NPCs from eating players where applicable.
-					Does not prevent town NPCs from randomly eating other town NPCs.
+					Allows townsfolk to randomly eat nearby players.
+					Does not affect townsfolk randomly eating each other.
 					Defaults to false.
 					'''
 			}
@@ -108,7 +106,7 @@ Configs: {
 					BALANCE BREAKAGE: Who cares?
 					Makes it possible for the Empress of Light to fit down throats of any strength, into stomachs of any capacity, and massively increases digestion damage against her.
 					Defaults to false.
-					'Fairies are food. They can also be friends or foes, even full with or fattened up from other food, but they are ALWAYS food. No exceptions.'
+					'Fairies are food. They can also be friends or foes, even full with or fattened up from other food, but they are ALWAYS food. Exceptions are very sparse.'
 					'''
 			}
 		}
@@ -173,6 +171,30 @@ GameTips: {
 }
 
 PredStatsMenu: {
+	StatPointHover: {
+		Default:
+			'''
+			You have {StatPointCount} points currently available to spend, out of {StatPointTotal} total accumulated.
+			[c/7F7F7F:- {GLPSpent} invested in GLP]
+			[c/7F7F7F:- {TUMSpent} invested in TUM]
+			[c/7F7F7F:- {ACISpent} invested in ACI]
+			[c/7F7F7F:- {ABSSpent} invested in ABS]
+			'''
+		RoseAddon:
+			'''
+			Because you're wearing [c/{RoseFlowerColor}:Rose's Flower Pin], you may add and subtract points at your leisure by clicking on this element.
+			[c/{CheatedPointAllocColor}:Left-click] to add points; [c/{CheatedPointAllocColor}:right-click] to subtract them.
+			[c/{CheatedPointAllocColor}:Hold LEFT SHIFT only] to add/subtract points in multiples of 10.
+			[c/{CheatedPointAllocColor}:Hold LEFT SHIFT + LEFT CONTROL] to add/subtract points in multiples of 100.
+			[c/{CheatedPointAllocColor}:Hold LEFT CONTROL only] to add/subtract points equal to the number of points you've earned from player pred goals.
+
+			Cheated points become [c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:null and void] when unequipping Rose's Flower Pin.
+			If you have a setup which uses more stat points than you would have after, [c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:all stat point investments will be instantly rescinded].
+
+			Your current Flower Pin point modifier stands at [c/{$Mods.V2.CommonColorCodes.DoSomething}:{CheatedPointModifier}].
+			'''
+	}
+
 	StatSliceHover: {
 		Default:
 			'''
@@ -408,9 +430,9 @@ PredStatsMenu: {
 				[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Influences the speed at which your body absorbs prey.]
 				[c/7F7F7F:| {BaseAbsorbRate} weight/minute at base.]
 				[c/7F7F7F:| +{AbsorbRatePerLevel} weight/minute per stat point invested.]
-				[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Influences the duration of status effects from eaten food and drink.]
-				[c/7F7F7F:| +{BuffExtendPer5Levels} buff duration per 5 stat points invested.]
-				[c/7F7F7F:| -{DebuffLossPer5Levels} debuff duration per 5 stat points invested.]
+				[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Influences the duration of status effects from eaten foods, drinks, and prey.]
+				[c/7F7F7F:| Buff duration is multiplied by +{BuffExtendPer5Levels} per 5 stat points invested.]
+				[c/7F7F7F:| Debuff time is divided by +{DebuffLossPer5Levels} per 5 stat points invested.]
 				'''
 
 			RelevantStats: {
@@ -422,16 +444,16 @@ PredStatsMenu: {
 					[c/7F7F7F:| {ABSExtra} from temporary bonuses (potions, charms, etc.)]
 
 					{$Mods.V2.PredStatsMenu.StatDescription.HoldSHIFTToSeeDescription}
-					Absorption: {AbsorptionRate} weight/minute
-					Buffs from eaten prey last {BuffExtensionTime}x as long
-					Debuffs from eaten prey wear off {DebuffDisextensionTime}x as fast
+					Absorption rate: {AbsorptionRate} weight/minute
+					Buffs from snacks have {BuffExtensionTime} duration
+					Debuffs from snacks have {DebuffDisextensionTime} duration
 					'''
 				Chronological:
 					'''
 					Total ABS: [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:∞]
 					[c/7F7F7F:| ∞ from digesting at least one Timekeeper]
 
-					Absorption: ∞ weight/minute
+					Absorption rate: ∞ weight/minute
 					Buffs from eaten prey are infinite and infinitely stackable
 					Debuffs are never gained from eaten prey at all
 					'''
@@ -453,6 +475,24 @@ PredPlayerGoals: {
 		}
 	}
 
+	SortingText:
+		'''
+		[c/{HeaderColor}:Stage Goal Sorting]
+		Need to have your to-devours sorted out nice and neat?
+		Try one of these options on for size!
+
+		- [c/{DefaultSortColor}:Internal Name (default)]
+		- [c/{AlphabeticalSortColor}:Alphabetical (A to Z)]
+		- [c/{AlphabeticalBackwardsSortColor}:Alphabetical (Z to A)]
+		- [c/{PointValueSortColor}:Point Value (Low to High)]
+		- [c/{PointValueBackwardsSortColor}:Point Value (High to Low)]
+		- [c/{CompletionSortColor}:Complete First]
+		- [c/{IncompletionSortColor}:Incomplete First]
+
+		[c/{CycleColor}:Left-click to cycle forwards]
+		[c/{CycleColor}:Right-click to cycle backwards]
+		'''
+
 	Starter: {
 		Name: Starter
 		Subtitle: New Game
@@ -466,6 +506,7 @@ PredPlayerGoals: {
 			[c/{$Mods.V2.CommonColorCodes.DoSomething}:Starter Advice:]
 			If you're finding the more impressive feats too difficult, remember that progressing outside of pred gameplay is important, too! Try to keep a healthy balance of pred progression and normal progression until you're certain can properly feast to your heart's content.
 			'''
+		UnlockCondition: start the game
 
 		FirstLivePrey: {
 			Name: First Chyme
@@ -537,6 +578,7 @@ PredPlayerGoals: {
 			[c/{$Mods.V2.CommonColorCodes.DoSomething}:Beginner Advice:]
 			Make sure to spend the stat points you earn from completing goals in the main pred stats menu! Each pred stat has its own advantages to investing points into it. Sometimes, you'll also be able to snag permanent buffs to these stats!
 			'''
+		UnlockCondition: complete all 3 of the Starter stage's goals
 
 		EatGoldCritter: {
 			Name: Gilded Gut Fodder
@@ -637,8 +679,25 @@ PredPlayerGoals: {
 				Clarification:
 					'''
 					Eat and digest a Ghost.
-					Ghosts spawn in graveyards regardless of time and may also spawn when breaking tombstones.
-					When the season is particularly spooky and autumn is in full swing, they may also spawn in caves.
+					Ghosts haunt graveyards regardless of time and may also come for you when breaking tombstones.
+					When the season is particularly spooky and autumn is in full swing, they may also appear on occasion in caves.
+					'''
+			}
+		}
+
+		EatHelpfulFairy: {
+			Name: The Second Rule of Predation
+
+			Description: {
+				Default:
+					'''
+					Down a fairy that was, at one point, leading you to treasure.
+					'Fairies are food, not friends.'
+					'''
+				Clarification:
+					'''
+					Eat and digest a Fairy attempting to lead you to treasure. The color doesn't matter.
+					Fairies can come out above ground as well, but only those that rarely find you in non-stomach caverns can attempt to help you find treasures to treat yourself to.
 					'''
 			}
 		}
@@ -758,6 +817,7 @@ PredPlayerGoals: {
 			[c/{$Mods.V2.CommonColorCodes.DoSomething}:Amateur Advice:]
 			Many goals may be unavailable to view until you've either completed them or visited the area to which their completion check is relevant. Some may also only appear when certain NPCs are active, after certain bosses are downed, or during certain weather events.
 			'''
+		UnlockCondition: defeat the Eye of Cthulhu, the Eater of Worlds, or the Brain of Cthulhu
 
 		EatHarpy: {
 			Name: Finger-Lickin' Good
@@ -808,6 +868,23 @@ PredPlayerGoals: {
 					Be digesting The Groom and The Bride simultaneously.
 					Both are rare mobs which will only come out to shamble towards their prey during Blood Moons.
 					Be advised that, as both are zombies, they will give you food poisoning while eaten/digesting.
+					'''
+			}
+		}
+
+		EatSquid: {
+			Name: The Calamari Mood
+
+			Description: {
+				Default:
+					'''
+					Find a rare squid out in the ocean and treat yourself to some delicious calamari.
+					[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:laugh, damn you]
+					'''
+				Clarification:
+					'''
+					Eat and digest a Squid.
+					Squids rarely emerge from hiding in the ocean.
 					'''
 			}
 		}
@@ -926,29 +1003,106 @@ PredPlayerGoals: {
 
 		EatMimic: {
 			Name: Mimic's Miscalculation
-			Description:
-				'''
-				Munch on a mimic (before it can do the same to you).
-				'Now you're just hoarding its hoard in your belly, which could itself be considered a hoard, albeit strictly for food that your system hasn't digested yet. Does this qualify as hoardception...?'
-				'''
+
+			Description: {
+				Default:
+					'''
+					Munch on a mimic (before it can do the same to you).
+					'Now you're just hoarding its hoard in your belly, which could itself be considered a hoard, albeit strictly for food that your system hasn't digested yet. Does this qualify as hoardception...?'
+					'''
+				Clarification:
+					'''
+					Eat and digest any kind of Mimic.
+					Mimics only emerge in Hardmode, and can be found at varying elevations underground.
+					Larger mimics may spawn in tainted areas, and are much stronger, but have their own drops.
+					'''
+			}
 		}
 
 		EatSandElemental: {
 			Name: Bite The Dust
-			Description:
-				'''
-				Swallow up a sand elemental and add her to your figure.
-				'Everyone hates sand. It's coarse, it's rough, and it gets all over you. It even gets all over your stomach walls when you gulp down a pretty girl made out of it. Thankfully, your stomach can resolve that problem fairly quickly by melting down even the smallest grains of sand into smooth, soft, squishy cellulite.'
-				'''
+
+			Description: {
+				Default:
+					'''
+					Swallow up a sand elemental and add her to your figure.
+					'Everyone hates sand. It's coarse, it's rough, and it gets all over you. It even gets all over your stomach walls when you gulp down a pretty girl made out of it. Thankfully, your stomach can resolve that problem fairly quickly by melting down even the smallest grains of sand into smooth, soft, squishy cellulite.'
+					'''
+				Clarification:
+					'''
+					Eat and digest a Sand Elemental.
+					Sand Elementals are rare, large ladies that manifest during desert sandstorms in Hardmode.
+					'''
+			}
 		}
 
 		EatIceGolem: {
 			Name: Walking Popsicle
-			Description:
-				'''
-				Eat and digest an ice golem.
-				'It really is one, if you think about it. Very tall, rather lean, wide enough to suckle on a while as you swallow it, melts a little in your mouth...and tastes just like an ice cube!'
-				'''
+
+			Description: {
+				Default:
+					'''
+					Gulp and gurgle a golem grown of ice.
+					'It really is one, if you think about it. Very tall, rather lean, wide enough to suckle on a while as you swallow it, melts a little in your mouth...and tastes just like an ice cube!'
+					'''
+				Clarification:
+					'''
+					Eat and digest an Ice Golem.
+					Ice Golems can only be found in Hardmode where fierce blizzards batter the snowy tundra.
+					'''
+			}
+		}
+
+		EatShark: {
+			Name: Shark Ate
+
+			Description: {
+				Default:
+					'''
+					Lure in a shark to turn the tables on it.
+					'Ooh ha ha!'
+					'''
+				Clarification:
+					'''
+					Eat and digest a Shark.
+					Sharks commonly spawn in the ocean at any time.
+					'''
+			}
+		}
+
+		HoardGemCritters: {
+			Name: Squirmy Sparklers
+
+			Description: {
+				Default:
+					'''
+					Hoard a bunch of different gem critters in your belly.
+					'Sparkly meals like that DESERVE to be gut fat! Bet that Zoologist never told you anything about these...'
+					'''
+				Clarification:
+					'''
+					Eat 7 different Gem Critters simultaneously. Being mid-digestion does still count, but is not required.
+					Gem Critters --- comprised of Bunnies and Squirrels --- can come out to play wherever townsfolk live underground.
+					Be aware that Gem Critters universally resist unimproved acids --- you'll need a potion or similar to increase your acid tier enough to digest them.
+					'''
+			}
+		}
+
+		HoardLargeGems: {
+			Name: Pristine Pudge
+
+			Description: {
+				Default:
+					'''
+					Churn a collection of massive gemstones into a massive new influx of ass fat.
+					'Gemstones are really the best sorts of meals...tough as a rock, sky-high in calories, and expensive as all hell! Just imagine, all that unadulterated pristine WEALTH, steadily turned into nothing but a slew of caloric sludge fattening up your frame...'
+					'''
+				Clarification:
+					'''
+					Eat and digest all 7 Large Gems simultaneously.
+					Be aware that gemstones and their large variants universally resist unimproved acids --- you'll need a potion or similar to increase your acid tier enough to digest them.
+					'''
+			}
 		}
 
 		GivePromethiaBellyBath: {
@@ -1027,7 +1181,10 @@ ItemName: {
 	}
 
 	Voraria: {
-		CheatItems.RoseFlower: Rose's Flower Pin
+		CheatItems: {
+			RoseFlower: Rose's Flower Pin
+			ServerMessageRelay: A Page of the Author's Book
+		}
 
 		Accessories: {
 			Informational: {
@@ -1109,6 +1266,15 @@ ItemTooltip: {
 				Normal: Indigestible...?
 				Chronological: Indigestible...but not for you
 			}
+		}
+
+		Food: {
+			Short: The satisfaction of a good meal lingers longer after digesting this item
+			Long:
+				'''
+				While digesting this item:
+				- You [c/{ImportantInfoColor}:build up the Well Fed buff] for [c/{ImportantInfoColor}:as long as it takes you to digest] this item; the buff then [c/{NormalBuffColor}:lingers for the same amount of time].
+				'''
 		}
 
 		LongTooltipHelpers.SunlightExposureRules:
@@ -1268,6 +1434,100 @@ ItemTooltip: {
 		}
 
 		Consumables: {
+			Food: {
+				ChickenNugget: {
+					Short:
+						'''
+						{$Mods.V2.ItemTooltip.Generic.Food.Short}
+						'Definitely contains harpy'
+						{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+						'''
+					Long: "{$Mods.V2.ItemTooltip.Generic.Food.Long}"
+					Flavor:
+						'''
+						Often collectively called "chicken nuggets" for simplicity's sake, these nuggets of breaded, thoroughly-cooked meat actually come from a wide variety of birds and harpies alike.
+						You'll most often find these in kids' meals in fast food chains, or on the young ones' section of the menu in restaurants; more mature folks generally prefer at least full limbs of well-prepared meat, if they're not swallowing the origin bird whole and alive.
+						'''
+				}
+
+				ChocolateChipCookie: {
+					Short:
+						'''
+						{$Mods.V2.ItemTooltip.Generic.Food.Short}
+						'New and mmmproved'
+						{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+						'''
+					Long: "{$Mods.V2.ItemTooltip.Generic.Food.Long}"
+					Flavor:
+						'''
+						One of the easiest cookie types to bake.
+						The chocolate chips provide an undeniably sweet and delectable tint to the firm base of a normal cookie.
+						Can be easily experimented with using additional ingredients to create even more delicious cookies.
+						'''
+				}
+
+				Fries: {
+					Short:
+						'''
+						{$Mods.V2.ItemTooltip.Generic.Food.Short}
+						'Hey, where's the ketchup?'
+						{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+						'''
+					Long: "{$Mods.V2.ItemTooltip.Generic.Food.Long}"
+					Flavor:
+						'''
+						One of the most common things to do with a potato is to carve it up into nice little sticks and fry them. The result, rather uncreatively, is called a batch of fries.
+						Depending on where you find these in restaurants, they can be served with a wide variety of different other foods, such as fish or burgers.
+						'''
+				}
+
+				GingerbreadCookie: {
+					Short:
+						'''
+						{$Mods.V2.ItemTooltip.Generic.Food.Short}
+						'No plot armor this time, fuckboy'
+						{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+						'''
+					Long: "{$Mods.V2.ItemTooltip.Generic.Food.Long}"
+					Flavor:
+						'''
+						The easiest type of cookie to bake. Uses no captivating ingredients whatsoever.
+						In old times, an extra ingredient added to these sorts of cookies would cause them to grow sentient, fleeing from their creators. Sveetian culture still allows these cookies a place of their own (with limitations), but elsewhere? They have nowhere to run with all the sweets-hungry predators around.
+						This one represents one of the simplest and least nuanced cookies to be baked with that peculiar ingredient.
+						'''
+				}
+
+				PotatoChips: {
+					Short:
+						'''
+						{$Mods.V2.ItemTooltip.Generic.Food.Short}
+						'Also known as crisps'
+						{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+						'''
+					Long: "{$Mods.V2.ItemTooltip.Generic.Food.Long}"
+					Flavor:
+						'''
+						Not quite as common a culinary choice as fries, chips are still a frequently-utilized use case for potatoes in cooking.
+						Generally much crispier and crunchier than fries, which lends well to seeing them offered as snacks in places where that crunchiness is preferred.
+						'''
+				}
+
+				SugarCookie: {
+					Short:
+						'''
+						{$Mods.V2.ItemTooltip.Generic.Food.Short}
+						'Not made with snow, surprisingly'
+						{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+						'''
+					Long: "{$Mods.V2.ItemTooltip.Generic.Food.Long}"
+					Flavor:
+						'''
+						A very common treat in Sveetia due to the commonplace nature of sugar as a cooking and baking ingredient.
+						Provides plenty of energy to help get through the day in batches, or a quick pick-me-up as a lone snack.
+						'''
+				}
+			}
+
 			LifeCrystal: {
 				Short:
 					'''
@@ -1722,7 +1982,11 @@ ItemTooltip: {
 	Voraria: {
 		CheatItems: {
 			RoseFlower: {
-				Short: Gives you the same predatory prowess that Rose has, at no cost whatsoever
+				Short:
+					'''
+					Gives you the same predatory prowess that Rose has, at no cost whatsoever
+					{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+					'''
 				Long:
 					'''
 					While worn, provides a number of extremely- and outright unfairly-beneficial predatorily-centric effects:
@@ -1734,13 +1998,13 @@ ItemTooltip: {
 				Flavor:
 					'''
 					[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:this is a prefabricated copy of Rose's personal hairpin]
-					[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:it's where some of her more                egregious predatory abilities come from]
-					[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:she is naturally just that much a glutton, though. ate an entire mountain range once]
+					[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:it's not where any of her more                egregious predatory abilities come from]
+					[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:she is naturally just that much a glutton. ate an entire mountain range once]
 					[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:she tells people that this flower was the very last thing left from the last world she ate]
 					[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:she doesn't tell them that I made it for her when I made her]
 					[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:I made a virtually-infinite number of 'em so that if she accidentally ate it]
 					[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:(and she has, multiple times)]
-					[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:she'd have another rarin' to go shortly thereafter to keep her strong]
+					[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:she'd have another rarin' to go shortly thereafter to keep her happy]
 					[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:she tells me these flowers are delicious]
 					[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:then again, she thinks everything's delicious, so maybe take her word with a grain of salt]
 					[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:don't try to eat it]
@@ -1748,6 +2012,16 @@ ItemTooltip: {
 					[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:and she'll make you a meal, no matter how strong you are]
 					[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:after all, she REALLY likes the taste of these flowers]
 					'''
+			}
+
+			ServerMessageRelay: {
+				Short:
+					'''
+					Allows the Author to speak directly into your world
+					{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+					'''
+				Long: When kept in Rose's inventory, allows the [c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:/authormessage] command to work.
+				Flavor: "[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:hi :>]"
 			}
 		}
 
@@ -2400,7 +2674,7 @@ StatusEffects: {
 				'''
 			Regeneration.Description:
 				'''
-				[c/{$Mods.V2.CommonColorCodes.Heal}:Increases health regeneration] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{RegenPotionRegenFlat}]. [c/7F7F7F:(Artificial)]
+				[c/{$Mods.V2.CommonColorCodes.Heal}:Increases health regeneration] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{RegenPotionRegenFlat} HP/sec]. [c/7F7F7F:(Artificial)]
 				'You feel slightly revitalized'
 				'''
 			Wrath.Description:
@@ -2772,6 +3046,16 @@ Death: {
 			}
 
 			Townsfolk: {
+				Guide: {
+					1: "{Pred} gave {Player} a hands-on demonstration of digestion mechanics."
+					2: "{Player} was guided into {Pred}'s stomach."
+					Hardcore:
+						'''
+						After having a voodoo doll of him thrown into lava countless times, {Pred} got to throw someone into his acids instead.
+						That someone was the short-lived {Player}, who digested without much issue.
+						'''
+				}
+
 				Nurse: {
 					1: "{Player} made a very healthy meal for {Pred}."
 					2: "{Player} helped to keep {Pred}'s belly happy and healthy."
@@ -3044,10 +3328,9 @@ TownNPCMood: {
 
 			SpecificNPCs: {
 				LoveSuccubus: Th- the demon lady? Lucinda!? I- I do NOT have...I d- don't...oh, who am I kidding? I- I could NEVER be anything less than s- SMITTEN for that b- beautiful body...and that s- strong, searing s- stomach...PERFECT! I o- only wish I had a professional reason t- to rest on her th- thighs for a while...
-				LoveCadence: Qu- Queen Cadence? Oh...I- I would look HEAVENLY as p- padding on her rear...a- and I can just imagine her s- stomach...MMMF! O- oh, I want- ...n- no, I n- need to focus o- on my work...!
 				LoveTavernkeep: "{NPCName}...the tavernk- keeper. Ooohhhhh...j- just LOOK at those arms. Those m- massive, manly muscles...unf, my t- temperature's rising just THINKING about him! I- I can only imagine how s- strong and s- sturdy his s- s- stomach must be...d- do you think he needs a medicinal g- gastronomist to snack on...?~"
 				LikeNurse: "{NPCName} is such a wonderful woman, m- making sure everyone is happy, healthy, AND healthily hungry!...p- primarily because they can't really help me with my w- work if they're too sick to e- eat me."
-				LikeDryad: Dryads are a very fascinating creature from external AND i- internal perspectives, so it should be no surprise that I find {NPCName} particularly fruitful to study!...a- and particularly...a- attractive. N- not as attractive as Melodia, mind you, but still attractive!
+				LikeDryad: Dryads are a very fascinating creature from external AND i- internal perspectives, so it should be no surprise that I find {NPCName} particularly fruitful to study!...a- and particularly...a- attractive. N- not NEARLY as attractive as Melodia, mind you, but still attractive!
 				DislikeZoologist: B- by all accounts, I should like {NPCName} more than I do. Her s- system...changes dramatically in certain conditions, providing a rare opportunity to s- study and potentially soothe two states at once...and yet, it just bothers me. M- maybe it's just because other people's i- internals are the same experience each time...her s- stomach is inconsistent by comparison.
 				DislikeArmsDealer: "{NPCName} bothers me slightly. I- it's not even that he doesn't want to eat me, o- or that I don't let him; he's m- MORE than enthusiastic enough, a- and I don't mind helping him! The problem is, he's...n- not my type, but he keeps insisting he is."
 				HateAngler: "{NPCName}? Oh, that little fisherman's no fun. Too young to eat me, too young to get WHY I want to be eaten so much on any front --- hell, he doesn't even know who my employer IS --- and he poses no noticeably distinct qualities whatsoever except for how much of a little BRAT he is!"
@@ -3092,11 +3375,8 @@ TownNPCMood: {
 				LikeNurse: You know, I think my gut needs a check-up from {NPCName}; it's just DYING to...get to know her a bit better. Think you can get her to find the time to stay on my waist for a while?~
 				LikeGuide: I can't figure out why, but something about the idea of melting {NPCName} down into fat gets me all giddy for some reason.
 				DislikeStylist: That hair stylist, Amber...she's a pretty spicy gal, isn't she? 'Course, that's nothing bad...I like spicy food. What I DON'T like is if that spice means they're not food. She's definitely spicy enough to try and eat me first. Not dumb enough to challenge that.
-				DislikeAria: That little princess, Aria...she's too "pure" for me, if you catch my drift. That, and I'd rather not piss off her mom; could probably mulch me in half a second flat if I did. Might be good to consider separating us.
-				DislikeCadence: Queen Cadence? As great as that blimp-sized booty on her would look blimping up mine instead...she's got a kid, and she's gulped preds way bigger and tougher than me. Don't have a hope in hell of eatin' her, so I'd rather just keep my distance...if you'll let me.
 				HateAngler: If it weren't for the fact that children are way too small to be decent meals, that scrawny little fisherman brat would be padding out my waistline right now. Keep your TRASH off my lawn, got it?
-				CadenceAndAria: I'm really not a fan of where you've got me here. Aria's too young for me to feel comfortable around her, and I think I'm just going to aggravate her mom if I say anything about it. Given I'd rather NOT end up adding to Cadence's ass, could I bother you to lemme stay somewhere else?
-				HateDryad: I'm really close to just using my stomach to solve the problem of {NPCName}'s constant preaching about "purity" and "cleansing". Pompous bitch can't make an ass of herself about my eating habits if she and her ass are too busy fattening up mine, now, can she?
+				HateDryad: I'm really close to just using my stomach to solve the problem of {NPCName}'s constant preachin' about "purity" and "cleansing". Pompous bitch can't make an ass of herself about my eatin' habits if she's too busy fattenin' up mine, now, can she?
 				HateTaxCollector: You've already done the impossible twice; once to get me outta that shithole I called home, and once to take down that massive fleshbag from the other edge. Do it a third time and get {NPCName} to either shut the hell up or move out; I'm already more than sick of him.
 
 				Calamity: {
@@ -3109,7 +3389,7 @@ TownNPCMood: {
 	}
 
 	Painter: {
-		Content: Huh? Oh, am I good? Yeah, I'm fine right now! This is a fine spot to paint!
+		Content: Huh? Oh, am I good? Yeah, I'm fine right now. This is a good spot to paint.
 		Neighbors.SpecificNPCs.LoveDryad: "{NPCName}? Oh, yeah, she's REALLY pretty! I definitely wanna paint her more...both outside and inside my gut......mmmmm...such a [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:deliciously] colorful dryad..."
 	}
 
@@ -3119,7 +3399,7 @@ TownNPCMood: {
 		Neighbors: {
 			SpecificNPCs: {
 				LoveCyborg: It's quite a good show, having {NPCName} around. The old bucket of bolts and I always have plenty of lovely things to chit and chat about!
-				LikePainter: The painter? Yeah, {NPCName}'s a good sort. Spruces up my works all the time! Plenty nice bloke, he is, save for how often I end up tunin' up his system.
+				LikePainter: The painter? Yeah, {NPCName}'s a good sort. Spruces up my works all the time! Plenty nice bloke, he is, save for how often I end up tuning up his system. Can't say I blame him; he's always awfully hungry!
 				HateMechanic: "{NPCName}? She can put a sock right in it, for all I care! I'm NOT falling for her gaudy gizmos and gadgets!"
 			}
 		}

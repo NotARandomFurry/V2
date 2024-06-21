@@ -283,10 +283,11 @@ namespace V2.Projectiles
 					break;
 				case PreyType.NPC:
 					NPC npc = prey as NPC;
+					npc.AsFood().OnSwallowedBy?.Invoke(npc, pred);
 					break;
 				case PreyType.Projectile:
 					Projectile projectile = prey as Projectile;
-					projectile.AsFood().OnSwallowedBy.Invoke(projectile, pred);
+					projectile.AsFood().OnSwallowedBy?.Invoke(projectile, pred);
 					break;
 				case PreyType.Item:
 					Item item = prey as Item;

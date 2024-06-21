@@ -21,8 +21,8 @@ namespace V2
 
 		[Header("$Mods.V2.Configs.Server.Personalization.Header")]
 
-		[LabelKey("$Mods.V2.Configs.Server.Personalization.NoRandomGulpsAgainstPlayers.Label")]
-		[TooltipKey("$Mods.V2.Configs.Server.Personalization.NoRandomGulpsAgainstPlayers.Tooltip")]
+		[LabelKey("$Mods.V2.Configs.Server.Personalization.RandomGulpsAgainstPlayers.Label")]
+		[TooltipKey("$Mods.V2.Configs.Server.Personalization.RandomGulpsAgainstPlayers.Tooltip")]
 		[DefaultValue(false)]
 		public bool RandomGulpsAgainstPlayers { get; set; }
 

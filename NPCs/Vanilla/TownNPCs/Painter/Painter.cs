@@ -4,15 +4,11 @@ using ReLogic.Content;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
-using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 using V2.Core;
-using V2.NPCs.Voraria.TownNPCs.Succubus;
 using V2.PlayerHandling;
 using V2.Sounds.Vore;
 
@@ -72,6 +68,9 @@ namespace V2.NPCs.Vanilla.TownNPCs.Painter
 			string bellyString = "_Belly" + (bellySize == 0 ? "Base" : bellySize);
 			exactTextureToUse += bellyString;
 
+			if (npc.altTexture == 1)
+				exactTextureToUse += "_Party";
+
 			return ModContent.Request<Texture2D>(exactTextureToUse, AssetRequestMode.ImmediateLoad);
 		}
 
@@ -107,7 +106,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Painter
 			npc.AsPred().OnDigestionKill = null;
 			npc.AsPred().MouthSoundRawOffset = npc.TrueCenter() + new Vector2(npc.direction * 8f, -14f);
 			npc.AsPred().SmallBurps = Burps.Humanoid.Small;
-			npc.AsPred().SmallBurpThreshold = 0.6;
+			npc.AsPred().SmallBurpThreshold = 0.15;
 			npc.AsPred().StandardBurps = Burps.Humanoid.Standard;
 			npc.AsPred().GetAdditionalDigestedPlayerMessages = GetDigestedPlayerAdditionalDeathMessages;
 			npc.AsPred().GetPreyAbsorptionRate = GetPreyAbsorptionRate;
@@ -149,7 +148,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Painter
 					painterChatPool.AddRange(new List<string>
 					{
 						"[c/FF0000:QUIET!] I can't focus on my latest work with you [c/FF0000:screaming for help] in there!",
-						"Ughhh, I KNEW I should've eaten lighter tonight...shut up, SHUT UP, [c/FF0000:SHUT UP!]",
+						"Ughhh, I KNEW I should've eaten lighter tonight...[c/FF0000:or maybe even heavier]...shut up, SHUT UP, [c/FF0000:SHUT UP IN THERE!]",
 					});
 				}
 				else
@@ -170,7 +169,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Painter
 						painterChatPool.AddRange(new List<string>
 						{
 							"Hey, stop kicking and- NO! Aww, GREAT! Now the best part of this piece is all messed up!",
-							"Keep it down and melt. Gonna make you into a fresh new protein boost so I get even MORE ripped!",
+							"Would you mind settling down and digesting? I really wanna paint this lovely gut, but all this...YOU is in the way like this...",
 						});
 					}
 				}
@@ -182,7 +181,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Painter
 					painterChatPool.AddRange(new List<string>
 					{
 						"Tonight gives me a lot of inspiration. Inspiration to make people [c/FF0000:my beautifully blood-red meals!]",
-						"If you look out at the [c/FF0000:yearning, hungering] moon in the sky, you can see it glint red onto the rivers! It's a [c/FF0000:great] piece idea.",
+						"If you look out at the [c/FF0000:yearning, hungering] moon in the sky, you can see it glint red onto the rivers! It's a [c/FF0000:truly great] piece idea.",
 						"These sorts of nights are great for finding [c/FF0000:vampires] to paint. They're all REALLY pretty...[c/FF0000:especially all the tasty girls...]",
 					});
 				}
@@ -215,7 +214,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Painter
 						{
 							painterChatPool.AddRange(new List<string>
 							{
-								"...oh, is that " + salad.GivenName + " in your stomach? Ugh, luckyyyyy...she's the prettiest mea- I MEAN model around!",
+								"Hey!...oh, is that " + salad.GivenName + " in your stomach? Ugh, luckyyyyy...she's the prettiest mea- I MEAN model around!",
 								"Oh, you must be havin' a GREAT time with a treat like that dryad in your belly! Do you mind if I paint you while you're still full of her?",
 							});
 						}
@@ -244,6 +243,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Painter
 							painterChatPool.AddRange(new List<string>
 							{
 								"...oh, is that " + helloNurse.GivenName + " in your stomach? She makes a great centerpiece for art...and a great snack...send her my way next time!",
+								"Hm? Do I need a nurse to eat? No...well, not RIGHT NOW, at least...of course, it helps that she's currently bein' a meal for you instead!",
 							});
 						}
 						else if (helloNurse.IsFoodFor(npc))
@@ -253,6 +253,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Painter
 								"...oh, " + helloNurse.GivenName + "? W- well, I was just painting her, getting a good show of her good side...her r- REALLY good front side...and, well, I just couldn't help myself!",
 								"Hiya! Oh, yeah, don't worry about this big ol' belly! Just a very HEALTHY gutful of girl settling into my stomach, haha!\n"
 							  + "[c/BFBFBF:<A less-than-amused groan emanates from within " + npc.GivenName + "'s gut, the medical practitioner inside not appreciating the terrible joke.>]",
+								"What? You gotta talk to " + helloNurse.GivenName + "? Well, if you talk loud enough to my belly, she miiight be able to hear you! Get it out fast, though...I don't think she has much longer, and I gotta paint a lovely picture of me and my meal before she churns up.",
 							});
 						}
 						else
@@ -266,6 +267,31 @@ namespace V2.NPCs.Vanilla.TownNPCs.Painter
 					}
 					if (npc.position.Y < Main.worldSurface)
 					{
+						if (WorldGen.tEvil >= 5)
+						{
+							painterChatPool.AddRange(new List<string>
+							{
+								"There aren't many plants on corrupted surface soil, but when you CAN find them, they make for a great show of how life finds ways to flourish. Makes me wonder if life can find a way to flourish in my gut, too...I'd never have to eat again!\n\n"
+							  + "...not that I wouldn't. Some gals are just too tasty to pass up.",
+								"I've painted a landscape of the Corruption once or twice. It's beautiful, in a very dreary sort of way. Doesn't taste all that great, though, and I hear eatin' too much corrupted stuff gives you some kind of sickness.",
+							});
+						}
+						if (WorldGen.tBlood >= 5)
+						{
+							painterChatPool.AddRange(new List<string>
+							{
+								"The Crimson makes for a really macabre sort of display. It's kinda like if you took everything that ISN'T pretty about the human body and went \"okay, but what if it was huge?\", and turned the result into a landscape.",
+								"People say you get really sick if you eat too bloody stuff from the giant fleshmasses I find engagin' landscapes...I wouldn't blame them. Most of the things there are only even remotely appetizing as art subjects, NOT as easy meals.",
+							});
+						}
+						if (WorldGen.tGood >= 5)
+						{
+							painterChatPool.AddRange(new List<string>
+							{
+								"Sometimes, when you're explorin' hallowed land...well, actually, a LOT of the time...you'll see rainbows in the sky. I hear they taste great, and I KNOW they're stunning when put to a fresh canvas.",
+								"Unicorns are some of the Hallow's most majestic creatures...at least, when you can actually get them to sit still. I lost too many canvases and got a BAD stomachache the last time I tried paintin' one...but it digested well, at least!",
+							});
+						}
 						if (Main.IsItAHappyWindyDay)
 						{
 							painterChatPool.AddRange(new List<string>
@@ -278,8 +304,8 @@ namespace V2.NPCs.Vanilla.TownNPCs.Painter
 						{
 							painterChatPool.AddRange(new List<string>
 							{
-								"I like listening to the rain pitter-patter against the windowsill. It makes for pleasant background noise while I paint.",
-								"Sometimes, while it's raining, you'll see special species of fish flying around. They're both really tasty and make for majestic art subjects...if you can keep them still, anyway.",
+								"I like listening to the rain pitter-patter against the windowsill. It makes for pleasant background noise while I paint, especially if you couple it with the calming gurgles of a full, still belly.",
+								"Sometimes, while it's raining, you'll see special species of fish flying around. They're both really tasty and make for majestic art subjects...if you can keep them still and outside of your stomach, anyway.",
 							});
 							if (Main.hardMode)
 							{
@@ -295,6 +321,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Painter
 							{
 								"A lot of people get spooked by thunder, but honestly...? I find it a nice parallel to dashes of inspiration, broad brushstrokes of genius!",
 								"Inspiration comes less often, but strikes as hard as lightning in weather like this! I can show you an example in my next painting, if you want!",
+								"Hey, random question...if I ate a lightning bolt, or even a whole thundercloud, do you think I'd be able to paint at breakneck speeds while it digests? I could make so many pieces in a single dash of inspiration...!",
 							});
 						}
 					}
@@ -307,24 +334,13 @@ namespace V2.NPCs.Vanilla.TownNPCs.Painter
 
 		public static void OnPainterForceFed(NPC npc, Player player)
 		{
-			if (player.statLife < (int)((double)player.statLifeMax2 * 0.33))
-			{
-				PredNPC.SetChatboxText(
-					npc,
-					player,
-					"[c/7F7F7F:<" + npc.GivenName + " seems overtly startled as you suddenly force yourself into his gullet, swiftly swallowing you down so as to keep you from getting in the way too long.>]\n"
-				  + "Well, that's one way to give me a lunch break, I guess. Make sure to add a little bit to the back, alright? It's the least you can do, if you want me to eat you that badly..."
-				);
-			}
-			else
-			{
-				PredNPC.SetChatboxText(
-					npc,
-					player,
-					"[c/7F7F7F:<" + npc.GivenName + "'s stomach growls with glee as you cram yourself into her mouth and throat; shrugging, she just gulps you down without a care and pats her gut once you're settled in.>]\n"
-				  + "Well, that's one way to give me a lunch break, I guess. Make sure to add a little bit to the back, alright? It's the least you can do, if you want me to eat you that badly..."
-				);
-			}
+			PredNPC.SetChatboxText(
+				npc,
+				player,
+				"[c/7F7F7F:<" + npc.GivenName + " seems overtly startled as you suddenly force yourself into his gullet, swiftly swallowing you down so as to keep you from getting in the way too long.>]\n"
+			  + "[c/00BF00:*EEEOOOUUURP!*]\n"
+			  + "I mean, if you REALLY wanna be food for a simple painter boy that bad...I guess I can't say no! Once you get back...well, IF you get back...be sure to stop by! I'm sure I'll have painted a great picture of the meal you gave me!"
+			);
 		}
 
 
@@ -433,7 +449,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Painter
 		public static double GetPreyAbsorptionRate(NPC npc)
 		{
 			double baseAbsorptionRate = 1.0 / (double)V2Utils.SensibleTime(
-				minutes: 5,
+				minutes: 7,
 				seconds: 0
 			);
 			return baseAbsorptionRate;

@@ -62,7 +62,7 @@ namespace V2.NPCs
 		/// </summary>
 		public bool CanSwallowBosses { get; set; }
 
-		public Vector2 MouthSoundRawOffset { internal get; set; }
+		public Vector2 MouthSoundRawOffset { get; set; }
 		public static Vector2 MouthSoundOffset(NPC npc)
 		{
 			Vector2 happyBurpyOffsetDirectionized = npc.AsPred().MouthSoundRawOffset;
@@ -310,9 +310,11 @@ namespace V2.NPCs
 					break;
 				case PreyType.NPC:
 					NPC npc = prey as NPC;
+					npc.AsFood().OnSwallowedBy?.Invoke(npc, pred);
 					break;
 				case PreyType.Projectile:
 					Projectile projectile = prey as Projectile;
+					projectile.AsFood().OnSwallowedBy?.Invoke(projectile, pred);
 					break;
 				case PreyType.Item:
 					Item item = prey as Item;
@@ -337,25 +339,25 @@ namespace V2.NPCs
 
 			if (MPstate == 1)
 			{
-				ModPacket packet = V2.Instance.GetPacket();
-				packet.Write((byte)V2.MessageType.RequestSwallowPrey);
-				packet.Write((byte)1);
-				packet.Write(pred.whoAmI);
-				packet.Write((byte)food.Type);
-				packet.Write(prey.whoAmI);
-				packet.Write(MPwhoAmI);
-				packet.Send();
+				ModPacket requestSwallowPacket = V2.Instance.GetPacket();
+				requestSwallowPacket.Write((byte)V2.MessageType.RequestSwallowPrey);
+				requestSwallowPacket.Write((byte)1);
+				requestSwallowPacket.Write(pred.whoAmI);
+				requestSwallowPacket.Write((byte)food.Type);
+				requestSwallowPacket.Write(prey.whoAmI);
+				requestSwallowPacket.Write(MPwhoAmI);
+				requestSwallowPacket.Send();
 			}
 			else if (MPstate == 2)
 			{
-				ModPacket packet = V2.Instance.GetPacket();
-				packet.Write((byte)V2.MessageType.SyncSwallowPrey);
-				packet.Write((byte)1);
-				packet.Write(pred.whoAmI);
-				packet.Write((byte)food.Type);
-				packet.Write(prey.whoAmI);
-				packet.Write(MPwhoAmI);
-				packet.Send(-1, ignoreClient: MPwhoAmI);
+				ModPacket syncSwallowPacket = V2.Instance.GetPacket();
+				syncSwallowPacket.Write((byte)V2.MessageType.SyncSwallowPrey);
+				syncSwallowPacket.Write((byte)1);
+				syncSwallowPacket.Write(pred.whoAmI);
+				syncSwallowPacket.Write((byte)food.Type);
+				syncSwallowPacket.Write(prey.whoAmI);
+				syncSwallowPacket.Write(MPwhoAmI);
+				syncSwallowPacket.Send(-1, ignoreClient: MPwhoAmI);
 			}
 		}
 

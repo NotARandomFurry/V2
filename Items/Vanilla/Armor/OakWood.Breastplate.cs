@@ -20,10 +20,18 @@ namespace V2.Items.Vanilla.Armor
 		{
 			item.SetNameOverride(Language.GetTextValue("Mods.V2.ItemName.Vanilla.Armor.OakWood.Chest"));
 
+			item.AsV2Item().ArmorEffectCode = OakWoodBreastplateEffect;
+
 			item.AsFood().MaxHealth = 200;
 			item.AsFood().Size = 0.50;
 
 			item.defense = 1;
+		}
+
+		public static void OakWoodBreastplateEffect(Item item, Player player)
+		{
+			if (player.position.Y < Main.worldSurface && player.behindBackWall && Main.dayTime)
+				player.statDefense++;
 		}
 
 		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)

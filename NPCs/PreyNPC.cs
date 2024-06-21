@@ -55,6 +55,9 @@ namespace V2.NPCs
 		public bool TastyBitter { get; set; }
 		public bool TastyFruity { get; set; }
 
+		public delegate void DelegateOnSwallowedBy(NPC npc, Entity pred);
+		public DelegateOnSwallowedBy OnSwallowedBy { get; set; }
+
 		public int STR { get; set; }
 		/// <summary>
 		/// Expresses, from 0 to 12, how well this NPC struggles.<br/>
@@ -255,22 +258,36 @@ namespace V2.NPCs
 			npc.AsFood().SoftenedDigestionDamageTaken += npc.AsFood().SoftenedDigestionDamageModifier.ApplyTo(trueDigestionDamage);
 			npc.AsFood().SoftenedWearoffDelay = SoftenedWearoffMaxDelay;
 			npc.life -= trueDigestionDamage;
-			CombatText digestionText = Main.combatText[CombatText.NewText(
-				npc.Hitbox,
-				npc.friendly ? Color.DarkGreen : Color.LimeGreen,
-				trueDigestionDamage,
-				false,
-				true
-			)];
-			digestionText.position.X = pred.Center.X;
-			digestionText.position.X += pred.direction * 14;
-			if (pred.direction == -1)
-				digestionText.position.X -= ChatManager.GetStringSize(FontAssets.CombatText[0].Value, digestionText.text, new Vector2(digestionText.scale)).X;
-			digestionText.position.Y = npc.Center.Y;
-			digestionText.position.Y += npc.height / 5f;
-			digestionText.velocity.X = pred.direction * 2.5f;
-			digestionText.velocity.Y = -4f;
-
+			switch (Main.netMode)
+			{
+				case NetmodeID.SinglePlayer:
+					CombatText digestionDamageText = Main.combatText[CombatText.NewText(
+						npc.Hitbox,
+						npc.friendly ? Color.DarkGreen : Color.LimeGreen,
+						trueDigestionDamage,
+						false,
+						true
+					)];
+					digestionDamageText.position.X = pred.Center.X + (pred.direction * 28);
+					digestionDamageText.position.Y = npc.Center.Y + (npc.height / 5f);
+					digestionDamageText.velocity.X = pred.direction * 2.5f;
+					digestionDamageText.velocity.Y = -4f;
+					break;
+				case NetmodeID.Server:
+					ModPacket digestionDamageTextPacket = V2.Instance.GetPacket();
+					digestionDamageTextPacket.Write((byte)V2.MessageType.SyncDigestionCombatTextForPreyNPC);
+					digestionDamageTextPacket.Write(npc.whoAmI);
+					digestionDamageTextPacket.Write(trueDigestionDamage);
+					digestionDamageTextPacket.Write(pred.Center.X + (pred.direction * 28));
+					digestionDamageTextPacket.Write(npc.Center.Y + (npc.height / 5f));
+					digestionDamageTextPacket.Write(pred.direction * 2.5f);
+					digestionDamageTextPacket.Write(-4f);
+					digestionDamageTextPacket.Send();
+					break;
+				case NetmodeID.MultiplayerClient:
+					// here we do nothing because the packet takes care of this
+					break;
+			}
 			if (npc.life <= 0)
 			{
 				npc.life = 0;

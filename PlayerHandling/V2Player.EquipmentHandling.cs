@@ -5,12 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.GameContent.Achievements;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using V2.Core;
+using V2.Items;
 using V2.NPCs;
 using V2.UI;
 
@@ -18,8 +20,1036 @@ namespace V2.PlayerHandling
 {
 	public partial class V2Player : ModPlayer
 	{
+		public static List<NPC> _hallucinationCandidates = new List<NPC>();
+
 		public bool setBonusActive;
 		public bool setBonusShouldBeDisplayed;
+
+		public static void GrantArmorBenefits(Player player, Item armorPiece)
+		{
+			int type = armorPiece.type;
+			player.RefreshInfoAccsFromItemType(armorPiece);
+			player.RefreshMechanicalAccsFromItemType(type);
+			if (armorPiece.type == ItemID.FlowerBoots || armorPiece.type == ItemID.FairyBoots)
+			{
+				player.flowerBoots = true;
+				if (player.whoAmI == Main.myPlayer)
+					player.DoBootsEffect(player.DoBootsEffect_PlaceFlowersOnTile);
+			}
+
+			if (armorPiece.type == 5001)
+			{
+				player.moveSpeed += 0.25f;
+				player.moonLordLegs = true;
+			}
+
+			player.statDefense += armorPiece.defense;
+			player.lifeRegen += armorPiece.lifeRegen;
+			if (armorPiece.shieldSlot > 0)
+				player.hasRaisableShield = true;
+
+			if (armorPiece.AsV2Item().ArmorEffectCode is not null)
+			{
+				armorPiece.AsV2Item().ArmorEffectCode.Invoke(armorPiece, player);
+				return;
+			}
+
+			switch (armorPiece.type)
+			{
+				case 3797:
+					player.maxTurrets++;
+					player.manaCost -= 0.1f;
+					player.GetDamage(DamageClass.Magic) += 0.1f;
+					break;
+				case 3798:
+					player.GetDamage(DamageClass.Magic) += 0.1f;
+					player.GetDamage(DamageClass.Summon) += 0.2f;
+					break;
+				case 3799:
+					player.GetDamage(DamageClass.Summon) += 0.1f;
+					player.GetCritChance(DamageClass.Magic) += 20;
+					player.moveSpeed += 0.2f;
+					break;
+				case 3800:
+					player.maxTurrets++;
+					player.lifeRegen += 4;
+					break;
+				case 3801:
+					player.GetDamage(DamageClass.Melee) += 0.15f;
+					player.GetDamage(DamageClass.Summon) += 0.15f;
+					break;
+				case 3802:
+					player.GetDamage(DamageClass.Summon) += 0.15f;
+					player.GetCritChance(DamageClass.Melee) += 15;
+					player.moveSpeed += 0.15f;
+					break;
+				case 3806:
+					player.maxTurrets++;
+					player.GetAttackSpeed(DamageClass.Melee) += 0.2f;
+					break;
+				case 3807:
+					player.GetDamage(DamageClass.Melee) += 0.2f;
+					player.GetDamage(DamageClass.Summon) += 0.2f;
+					break;
+				case 3808:
+					player.GetDamage(DamageClass.Summon) += 0.1f;
+					player.GetCritChance(DamageClass.Melee) += 15;
+					player.moveSpeed += 0.2f;
+					break;
+				case 3803:
+					player.maxTurrets++;
+					player.GetCritChance(DamageClass.Ranged) += 10;
+					break;
+				case 3804:
+					player.GetDamage(DamageClass.Ranged) += 0.2f;
+					player.GetDamage(DamageClass.Summon) += 0.2f;
+					player.huntressAmmoCost90 = true;
+					break;
+				case 3805:
+					player.GetDamage(DamageClass.Summon) += 0.1f;
+					player.moveSpeed += 0.2f;
+					break;
+				case 3871:
+					player.maxTurrets += 2;
+					player.GetDamage(DamageClass.Melee) += 0.1f;
+					player.GetDamage(DamageClass.Summon) += 0.1f;
+					break;
+				case 3872:
+					player.GetDamage(DamageClass.Summon) += 0.3f;
+					player.lifeRegen += 8;
+					break;
+				case 3873:
+					player.GetDamage(DamageClass.Summon) += 0.2f;
+					player.GetCritChance(DamageClass.Melee) += 20;
+					player.moveSpeed += 0.2f;
+					break;
+				case 3874:
+					player.maxTurrets += 2;
+					player.GetDamage(DamageClass.Magic) += 0.15f;
+					player.GetDamage(DamageClass.Summon) += 0.15f;
+					break;
+				case 3875:
+					player.GetDamage(DamageClass.Summon) += 0.25f;
+					player.GetDamage(DamageClass.Magic) += 0.1f;
+					player.manaCost -= 0.15f;
+					break;
+				case 3876:
+					player.GetDamage(DamageClass.Summon) += 0.2f;
+					player.GetCritChance(DamageClass.Magic) += 25;
+					player.moveSpeed += 0.2f;
+					break;
+				case 3877:
+					player.maxTurrets += 2;
+					player.GetDamage(DamageClass.Summon) += 0.1f;
+					player.GetCritChance(DamageClass.Ranged) += 10;
+					break;
+				case 3878:
+					player.GetDamage(DamageClass.Summon) += 0.25f;
+					player.GetDamage(DamageClass.Ranged) += 0.25f;
+					player.ammoCost80 = true;
+					break;
+				case 3879:
+					player.GetDamage(DamageClass.Summon) += 0.25f;
+					player.GetCritChance(DamageClass.Ranged) += 10;
+					player.moveSpeed += 0.2f;
+					break;
+				case 3880:
+					player.maxTurrets += 2;
+					player.GetDamage(DamageClass.Summon) += 0.2f;
+					player.GetDamage(DamageClass.Melee) += 0.2f;
+					break;
+				case 3881:
+					player.GetAttackSpeed(DamageClass.Melee) += 0.2f;
+					player.GetCritChance(DamageClass.Melee) += 5;
+					player.GetDamage(DamageClass.Summon) += 0.2f;
+					break;
+				case 3882:
+					player.GetDamage(DamageClass.Summon) += 0.2f;
+					player.GetCritChance(DamageClass.Melee) += 20;
+					player.moveSpeed += 0.3f;
+					break;
+			}
+
+			if (armorPiece.type == 5100)
+				SpawnHallucination(player, armorPiece);
+
+			if (armorPiece.type == 268)
+				player.accDivingHelm = true;
+
+			if (armorPiece.type == 238)
+			{
+				player.GetDamage(DamageClass.Magic) += 0.05f;
+				if (Main.tenthAnniversaryWorld)
+					player.maxMinions++;
+			}
+
+			if (armorPiece.type == 3770)
+				player.slowFall = true;
+
+			if (armorPiece.type == 4404)
+				player.canFloatInWater = true;
+
+			if (armorPiece.type == 3776)
+			{
+				player.GetDamage(DamageClass.Magic) += 0.15f;
+				player.GetDamage(DamageClass.Summon) += 0.15f;
+			}
+
+			if (armorPiece.type == 3777)
+			{
+				player.statManaMax2 += 40;
+				player.GetDamage(DamageClass.Summon) += 0.1f;
+				player.maxMinions++;
+			}
+
+			if (armorPiece.type == 3778)
+			{
+				player.statManaMax2 += 40;
+				player.GetDamage(DamageClass.Magic) += 0.1f;
+				player.maxMinions++;
+			}
+
+			if (armorPiece.type == 3212)
+				player.GetArmorPenetration(DamageClass.Generic) += 5;
+
+			if (armorPiece.type == 2277)
+			{
+				player.GetDamage(DamageClass.Generic) += 0.05f;
+				player.GetCritChance(DamageClass.Generic) += 5;
+				/*
+				player.GetDamage(DamageClass.Magic) += 0.05f;
+				player.GetDamage(DamageClass.Melee) += 0.05f;
+				player.GetDamage(DamageClass.Ranged) += 0.05f;
+				player.GetDamage(DamageClass.Summon) += 0.05f;
+				player.GetCritChance(DamageClass.Magic) += 5;
+				player.GetCritChance(DamageClass.Ranged) += 5;
+				player.GetCritChance(DamageClass.Melee) += 5;
+				*/
+				player.GetAttackSpeed(DamageClass.Melee) += 0.1f;
+				player.moveSpeed += 0.1f;
+			}
+
+			if (armorPiece.type == 2279)
+			{
+				player.GetDamage(DamageClass.Magic) += 0.06f;
+				player.GetCritChance(DamageClass.Magic) += 6;
+				player.manaCost -= 0.1f;
+			}
+
+			if (armorPiece.type == 3109 || armorPiece.type == 4008)
+				player.nightVision = true;
+
+			if (armorPiece.type == 256 || armorPiece.type == 257 || armorPiece.type == 258)
+			{
+				player.GetCritChance(DamageClass.Generic) += 3;
+				/*
+				player.GetCritChance(DamageClass.Ranged) += 3;
+				player.GetCritChance(DamageClass.Melee) += 3;
+				player.GetCritChance(DamageClass.Magic) += 3;
+				*/
+			}
+
+			if (armorPiece.type == 3374)
+				player.GetCritChance(DamageClass.Ranged) += 4;
+
+			if (armorPiece.type == 3375)
+				player.GetDamage(DamageClass.Ranged) += 0.05f;
+
+			if (armorPiece.type == 3376)
+				player.GetCritChance(DamageClass.Ranged) += 4;
+
+			if (armorPiece.type == 151 || armorPiece.type == 959 || armorPiece.type == 152 || armorPiece.type == 153)
+				player.GetDamage(DamageClass.Ranged) += 0.05f;
+
+			if (armorPiece.type == 2275)
+			{
+				player.GetDamage(DamageClass.Magic) += 0.06f;
+				player.GetCritChance(DamageClass.Magic) += 6;
+			}
+
+			if (armorPiece.type == 123 || armorPiece.type == 124 || armorPiece.type == 125)
+				player.GetDamage(DamageClass.Magic) += 0.09f;
+
+			if (armorPiece.type == 228 || armorPiece.type == 960)
+			{
+				player.statManaMax2 += 40;
+				player.GetCritChance(DamageClass.Magic) += 6;
+			}
+
+			if (armorPiece.type == 229 || armorPiece.type == 961)
+			{
+				player.statManaMax2 += 20;
+				player.GetDamage(DamageClass.Magic) += 0.06f;
+			}
+
+			if (armorPiece.type == 230 || armorPiece.type == 962)
+			{
+				player.statManaMax2 += 20;
+				player.GetCritChance(DamageClass.Magic) += 6;
+			}
+
+			if (armorPiece.type == 100 || armorPiece.type == 101 || armorPiece.type == 102)
+			{
+				player.GetCritChance(DamageClass.Generic) += 5;
+				/*
+				player.GetCritChance(DamageClass.Magic) += 5;
+				player.GetCritChance(DamageClass.Melee) += 5;
+				player.GetCritChance(DamageClass.Ranged) += 5;
+				*/
+			}
+
+			if (armorPiece.type == 956 || armorPiece.type == 957 || armorPiece.type == 958)
+			{
+				player.GetCritChance(DamageClass.Generic) += 5;
+				/*
+				player.GetCritChance(DamageClass.Magic) += 5;
+				player.GetCritChance(DamageClass.Melee) += 5;
+				player.GetCritChance(DamageClass.Ranged) += 5;
+				*/
+			}
+
+			if (armorPiece.type == 792 || armorPiece.type == 793 || armorPiece.type == 794)
+			{
+				player.GetDamage(DamageClass.Generic) += 0.03f;
+				/*
+				player.GetDamage(DamageClass.Melee) += 0.03f;
+				player.GetDamage(DamageClass.Ranged) += 0.03f;
+				player.GetDamage(DamageClass.Magic) += 0.03f;
+				player.GetDamage(DamageClass.Summon) += 0.03f;
+				*/
+			}
+
+			if (armorPiece.type == 231)
+				player.GetCritChance(DamageClass.Melee) += 7;
+
+			if (armorPiece.type == 232)
+				player.GetDamage(DamageClass.Melee) += 0.07f;
+
+			if (armorPiece.type == 233)
+				player.GetAttackSpeed(DamageClass.Melee) += 0.07f;
+
+			if (armorPiece.type == 371)
+			{
+				player.GetCritChance(DamageClass.Magic) += 9;
+				player.GetDamage(DamageClass.Magic) += 0.1f;
+				player.statManaMax2 += 40;
+			}
+
+			if (armorPiece.type == 372)
+			{
+				player.moveSpeed += 0.1f;
+				player.GetDamage(DamageClass.Melee) += 0.15f;
+			}
+
+			if (armorPiece.type == 373)
+			{
+				player.GetDamage(DamageClass.Ranged) += 0.1f;
+				player.GetCritChance(DamageClass.Ranged) += 10;
+			}
+
+			if (armorPiece.type == 374)
+			{
+				player.GetCritChance(DamageClass.Generic) += 5;
+				/*
+				player.GetCritChance(DamageClass.Magic) += 5;
+				player.GetCritChance(DamageClass.Melee) += 5;
+				player.GetCritChance(DamageClass.Ranged) += 5;
+				*/
+			}
+
+			if (armorPiece.type == 375)
+			{
+				player.GetDamage(DamageClass.Generic) += 0.03f;
+				/*
+				player.GetDamage(DamageClass.Ranged) += 0.03f;
+				player.GetDamage(DamageClass.Melee) += 0.03f;
+				player.GetDamage(DamageClass.Magic) += 0.03f;
+				player.GetDamage(DamageClass.Summon) += 0.03f;
+				*/
+				player.moveSpeed += 0.1f;
+			}
+
+			if (armorPiece.type == 376)
+			{
+				player.GetDamage(DamageClass.Magic) += 0.15f;
+				player.statManaMax2 += 60;
+			}
+
+			if (armorPiece.type == 377)
+			{
+				player.GetCritChance(DamageClass.Melee) += 8;
+				player.GetDamage(DamageClass.Melee) += 0.1f;
+			}
+
+			if (armorPiece.type == 378)
+			{
+				player.GetDamage(DamageClass.Ranged) += 0.12f;
+				player.GetCritChance(DamageClass.Ranged) += 7;
+			}
+
+			if (armorPiece.type == 379)
+			{
+				player.GetDamage(DamageClass.Generic) += 0.07f;
+				/*
+				player.GetDamage(DamageClass.Ranged) += 0.07f;
+				player.GetDamage(DamageClass.Melee) += 0.07f;
+				player.GetDamage(DamageClass.Magic) += 0.07f;
+				player.GetDamage(DamageClass.Summon) += 0.07f;
+				*/
+			}
+
+			if (armorPiece.type == 380)
+			{
+				player.GetCritChance(DamageClass.Generic) += 10;
+				/*
+				player.GetCritChance(DamageClass.Magic) += 10;
+				player.GetCritChance(DamageClass.Melee) += 10;
+				player.GetCritChance(DamageClass.Ranged) += 10;
+				*/
+			}
+
+			if (armorPiece.type >= 2367 && armorPiece.type <= 2369)
+				player.fishingSkill += 5;
+
+			if (armorPiece.type == 400)
+			{
+				player.GetDamage(DamageClass.Magic) += 0.12f;
+				player.GetCritChance(DamageClass.Magic) += 12;
+				player.statManaMax2 += 80;
+			}
+
+			if (armorPiece.type == 401)
+			{
+				player.GetCritChance(DamageClass.Melee) += 7;
+				player.GetDamage(DamageClass.Melee) += 0.14f;
+			}
+
+			if (armorPiece.type == 402)
+			{
+				player.GetDamage(DamageClass.Ranged) += 0.14f;
+				player.GetCritChance(DamageClass.Ranged) += 10;
+			}
+
+			if (armorPiece.type == 403)
+			{
+				player.GetDamage(DamageClass.Generic) += 0.08f;
+				/*
+				player.GetDamage(DamageClass.Ranged) += 0.08f;
+				player.GetDamage(DamageClass.Melee) += 0.08f;
+				player.GetDamage(DamageClass.Magic) += 0.08f;
+				player.GetDamage(DamageClass.Summon) += 0.08f;
+				*/
+			}
+
+			if (armorPiece.type == 404)
+			{
+				player.GetCritChance(DamageClass.Generic) += 7;
+				/*
+				player.GetCritChance(DamageClass.Magic) += 7;
+				player.GetCritChance(DamageClass.Melee) += 7;
+				player.GetCritChance(DamageClass.Ranged) += 7;
+				*/
+				player.moveSpeed += 0.05f;
+			}
+
+			if (armorPiece.type == 1205)
+			{
+				player.GetDamage(DamageClass.Melee) += 0.12f;
+				player.GetAttackSpeed(DamageClass.Melee) += 0.12f;
+			}
+
+			if (armorPiece.type == 1206)
+			{
+				player.GetDamage(DamageClass.Ranged) += 0.09f;
+				player.GetCritChance(DamageClass.Ranged) += 9;
+			}
+
+			if (armorPiece.type == 1207)
+			{
+				player.GetDamage(DamageClass.Magic) += 0.09f;
+				player.GetCritChance(DamageClass.Magic) += 9;
+				player.statManaMax2 += 60;
+			}
+
+			if (armorPiece.type == 1208)
+			{
+				player.GetDamage(DamageClass.Generic) += 0.03f;
+				player.GetCritChance(DamageClass.Generic) += 2;
+				/*
+				player.GetDamage(DamageClass.Melee) += 0.03f;
+				player.GetDamage(DamageClass.Ranged) += 0.03f;
+				player.GetDamage(DamageClass.Magic) += 0.03f;
+				player.GetDamage(DamageClass.Summon) += 0.03f;
+				player.GetCritChance(DamageClass.Magic) += 2;
+				player.GetCritChance(DamageClass.Melee) += 2;
+				player.GetCritChance(DamageClass.Ranged) += 2;
+				*/
+			}
+
+			if (armorPiece.type == 1209)
+			{
+				player.GetDamage(DamageClass.Generic) += 0.02f;
+				player.GetCritChance(DamageClass.Generic) += 1;
+				/*
+				player.GetDamage(DamageClass.Melee) += 0.02f;
+				player.GetDamage(DamageClass.Ranged) += 0.02f;
+				player.GetDamage(DamageClass.Magic) += 0.02f;
+				player.GetDamage(DamageClass.Summon) += 0.02f;
+				player.GetCritChance(DamageClass.Magic)++;
+				player.GetCritChance(DamageClass.Melee)++;
+				player.GetCritChance(DamageClass.Ranged)++;
+				*/
+			}
+
+			if (armorPiece.type == 1210)
+			{
+				player.GetDamage(DamageClass.Melee) += 0.11f;
+				player.GetAttackSpeed(DamageClass.Melee) += 0.11f;
+				player.moveSpeed += 0.07f;
+			}
+
+			if (armorPiece.type == 1211)
+			{
+				player.GetCritChance(DamageClass.Ranged) += 15;
+				player.moveSpeed += 0.08f;
+			}
+
+			if (armorPiece.type == 1212)
+			{
+				player.GetCritChance(DamageClass.Magic) += 18;
+				player.statManaMax2 += 80;
+			}
+
+			if (armorPiece.type == 1213)
+			{
+				player.GetCritChance(DamageClass.Generic) += 6;
+				/*
+				player.GetCritChance(DamageClass.Magic) += 6;
+				player.GetCritChance(DamageClass.Melee) += 6;
+				player.GetCritChance(DamageClass.Ranged) += 6;
+				*/
+			}
+
+			if (armorPiece.type == 1214)
+			{
+				player.moveSpeed += 0.11f;
+				player.GetDamage(DamageClass.Generic) += 0.08f;
+				/*
+				player.GetDamage(DamageClass.Melee) += 0.08f;
+				player.GetDamage(DamageClass.Ranged) += 0.08f;
+				player.GetDamage(DamageClass.Magic) += 0.08f;
+				player.GetDamage(DamageClass.Summon) += 0.08f;
+				*/
+			}
+
+			if (armorPiece.type == 1215)
+			{
+				player.GetDamage(DamageClass.Melee) += 0.09f;
+				player.GetCritChance(DamageClass.Melee) += 9;
+				player.GetAttackSpeed(DamageClass.Melee) += 0.09f;
+			}
+
+			if (armorPiece.type == 1216)
+			{
+				player.GetDamage(DamageClass.Ranged) += 0.16f;
+				player.GetCritChance(DamageClass.Ranged) += 7;
+			}
+
+			if (armorPiece.type == 1217)
+			{
+				player.GetDamage(DamageClass.Magic) += 0.16f;
+				player.GetCritChance(DamageClass.Magic) += 7;
+				player.statManaMax2 += 100;
+			}
+
+			if (armorPiece.type == 1218)
+			{
+				player.GetDamage(DamageClass.Generic) += 0.04f;
+				player.GetCritChance(DamageClass.Generic) += 3;
+				/*
+				player.GetDamage(DamageClass.Melee) += 0.04f;
+				player.GetDamage(DamageClass.Ranged) += 0.04f;
+				player.GetDamage(DamageClass.Magic) += 0.04f;
+				player.GetDamage(DamageClass.Summon) += 0.04f;
+				player.GetCritChance(DamageClass.Magic) += 3;
+				player.GetCritChance(DamageClass.Melee) += 3;
+				player.GetCritChance(DamageClass.Ranged) += 3;
+				*/
+			}
+
+			if (armorPiece.type == 1219)
+			{
+				player.GetDamage(DamageClass.Generic) += 0.03f;
+				player.GetCritChance(DamageClass.Generic) += 3;
+				/*
+				player.GetDamage(DamageClass.Melee) += 0.03f;
+				player.GetDamage(DamageClass.Ranged) += 0.03f;
+				player.GetDamage(DamageClass.Magic) += 0.03f;
+				player.GetDamage(DamageClass.Summon) += 0.03f;
+				player.GetCritChance(DamageClass.Magic) += 3;
+				player.GetCritChance(DamageClass.Melee) += 3;
+				player.GetCritChance(DamageClass.Ranged) += 3;
+				*/
+				player.moveSpeed += 0.06f;
+			}
+
+			if (armorPiece.type == 558 || armorPiece.type == 4898)
+			{
+				player.GetDamage(DamageClass.Magic) += 0.12f;
+				player.GetCritChance(DamageClass.Magic) += 12;
+				player.statManaMax2 += 100;
+			}
+
+			if (armorPiece.type == 559 || armorPiece.type == 4896)
+			{
+				player.GetCritChance(DamageClass.Melee) += 10;
+				player.GetDamage(DamageClass.Melee) += 0.1f;
+				player.GetAttackSpeed(DamageClass.Melee) += 0.1f;
+			}
+
+			if (armorPiece.type == 553 || armorPiece.type == 4897)
+			{
+				player.GetDamage(DamageClass.Ranged) += 0.15f;
+				player.GetCritChance(DamageClass.Ranged) += 8;
+			}
+
+			if (armorPiece.type == 4873 || armorPiece.type == 4899)
+			{
+				player.GetDamage(DamageClass.Summon) += 0.1f;
+				player.maxMinions++;
+			}
+
+			if (armorPiece.type == 551 || armorPiece.type == 4900)
+			{
+				player.GetCritChance(DamageClass.Generic) += 7;
+				/*
+				player.GetCritChance(DamageClass.Magic) += 7;
+				player.GetCritChance(DamageClass.Melee) += 7;
+				player.GetCritChance(DamageClass.Ranged) += 7;
+				*/
+			}
+
+			if (armorPiece.type == 552 || armorPiece.type == 4901)
+			{
+				player.GetDamage(DamageClass.Generic) += 0.07f;
+				/*
+				player.GetDamage(DamageClass.Ranged) += 0.07f;
+				player.GetDamage(DamageClass.Melee) += 0.07f;
+				player.GetDamage(DamageClass.Magic) += 0.07f;
+				player.GetDamage(DamageClass.Summon) += 0.07f;
+				*/
+				player.moveSpeed += 0.08f;
+			}
+
+			if (armorPiece.type == 4982)
+			{
+				player.GetCritChance(DamageClass.Generic) += 5;
+				/*
+				player.GetCritChance(DamageClass.Ranged) += 5;
+				player.GetCritChance(DamageClass.Melee) += 5;
+				player.GetCritChance(DamageClass.Magic) += 5;
+				*/
+				player.manaCost -= 0.1f;
+			}
+
+			if (armorPiece.type == 4983)
+			{
+				player.GetDamage(DamageClass.Generic) += 0.05f;
+				/*
+				player.GetDamage(DamageClass.Ranged) += 0.05f;
+				player.GetDamage(DamageClass.Melee) += 0.05f;
+				player.GetDamage(DamageClass.Magic) += 0.05f;
+				player.GetDamage(DamageClass.Summon) += 0.05f;
+				*/
+				player.huntressAmmoCost90 = true;
+			}
+
+			if (armorPiece.type == 4984)
+			{
+				player.GetAttackSpeed(DamageClass.Melee) += 0.1f;
+				player.moveSpeed += 0.2f;
+			}
+
+			if (armorPiece.type == 1001)
+			{
+				player.GetDamage(DamageClass.Melee) += 0.16f;
+				player.GetCritChance(DamageClass.Melee) += 6;
+			}
+
+			if (armorPiece.type == 1002)
+			{
+				player.GetDamage(DamageClass.Ranged) += 0.16f;
+				player.chloroAmmoCost80 = true;
+			}
+
+			if (armorPiece.type == 1003)
+			{
+				player.statManaMax2 += 80;
+				player.manaCost -= 0.17f;
+				player.GetDamage(DamageClass.Magic) += 0.16f;
+			}
+
+			if (armorPiece.type == 1004)
+			{
+				player.GetDamage(DamageClass.Generic) += 0.05f;
+				player.GetCritChance(DamageClass.Generic) += 7;
+				/*
+				player.GetDamage(DamageClass.Melee) += 0.05f;
+				player.GetDamage(DamageClass.Magic) += 0.05f;
+				player.GetDamage(DamageClass.Ranged) += 0.05f;
+				player.GetDamage(DamageClass.Summon) += 0.05f;
+				player.GetCritChance(DamageClass.Magic) += 7;
+				player.GetCritChance(DamageClass.Melee) += 7;
+				player.GetCritChance(DamageClass.Ranged) += 7;
+				*/
+			}
+
+			if (armorPiece.type == 1005)
+			{
+				player.GetCritChance(DamageClass.Generic) += 8;
+				/*
+				player.GetCritChance(DamageClass.Magic) += 8;
+				player.GetCritChance(DamageClass.Melee) += 8;
+				player.GetCritChance(DamageClass.Ranged) += 8;
+				*/
+				player.moveSpeed += 0.05f;
+			}
+
+			if (armorPiece.type == 2189)
+			{
+				player.statManaMax2 += 60;
+				player.manaCost -= 0.13f;
+				player.GetDamage(DamageClass.Magic) += 0.1f;
+				player.GetCritChance(DamageClass.Magic) += 10;
+			}
+
+			if (armorPiece.type == 1504)
+			{
+				player.GetDamage(DamageClass.Magic) += 0.07f;
+				player.GetCritChance(DamageClass.Magic) += 7;
+			}
+
+			if (armorPiece.type == 1505)
+			{
+				player.GetDamage(DamageClass.Magic) += 0.08f;
+				player.moveSpeed += 0.08f;
+			}
+
+			if (armorPiece.type == 1546)
+			{
+				player.GetCritChance(DamageClass.Ranged) += 5;
+				player.arrowDamage *= 1.15f;
+			}
+
+			if (armorPiece.type == 1547)
+			{
+				player.GetCritChance(DamageClass.Ranged) += 5;
+				player.bulletDamage *= 1.15f;
+			}
+
+			if (armorPiece.type == 1548)
+			{
+				player.GetCritChance(DamageClass.Ranged) += 5;
+				player.specialistDamage *= 1.15f; // rocketDamage renamed.
+			}
+
+			if (armorPiece.type == 1549)
+			{
+				player.GetCritChance(DamageClass.Ranged) += 13;
+				player.GetDamage(DamageClass.Ranged) += 0.13f;
+				player.ammoCost80 = true;
+			}
+
+			if (armorPiece.type == 1550)
+			{
+				player.GetCritChance(DamageClass.Ranged) += 7;
+				player.moveSpeed += 0.12f;
+			}
+
+			if (armorPiece.type == 1282)
+			{
+				player.statManaMax2 += 20;
+				player.manaCost -= 0.05f;
+			}
+
+			if (armorPiece.type == 1283)
+			{
+				player.statManaMax2 += 40;
+				player.manaCost -= 0.07f;
+			}
+
+			if (armorPiece.type == 1284)
+			{
+				player.statManaMax2 += 40;
+				player.manaCost -= 0.09f;
+			}
+
+			if (armorPiece.type == 1285)
+			{
+				player.statManaMax2 += 60;
+				player.manaCost -= 0.11f;
+			}
+
+			if (armorPiece.type == 1286 || armorPiece.type == 4256)
+			{
+				player.statManaMax2 += 60;
+				player.manaCost -= 0.13f;
+			}
+
+			if (armorPiece.type == 1287)
+			{
+				player.statManaMax2 += 80;
+				player.manaCost -= 0.15f;
+			}
+
+			if (armorPiece.type == 1316 || armorPiece.type == 1317 || armorPiece.type == 1318)
+				player.aggro += 250;
+
+			if (armorPiece.type == 1316)
+				player.GetDamage(DamageClass.Melee) += 0.06f;
+
+			if (armorPiece.type == 1317)
+			{
+				player.GetDamage(DamageClass.Melee) += 0.08f;
+				player.GetCritChance(DamageClass.Melee) += 8;
+			}
+
+			if (armorPiece.type == 1318)
+				player.GetCritChance(DamageClass.Melee) += 4;
+
+			if (armorPiece.type == 2199 || armorPiece.type == 2202)
+				player.aggro += 250;
+
+			if (armorPiece.type == 2201)
+				player.aggro += 400;
+
+			if (armorPiece.type == 2199)
+				player.GetDamage(DamageClass.Melee) += 0.06f;
+
+			if (armorPiece.type == 2200)
+			{
+				player.GetDamage(DamageClass.Melee) += 0.08f;
+				player.GetCritChance(DamageClass.Melee) += 8;
+				player.GetAttackSpeed(DamageClass.Melee) += 0.06f;
+				player.moveSpeed += 0.06f;
+			}
+
+			if (armorPiece.type == 2201)
+			{
+				player.GetDamage(DamageClass.Melee) += 0.05f;
+				player.GetCritChance(DamageClass.Melee) += 5;
+			}
+
+			if (armorPiece.type == 2202)
+			{
+				player.GetAttackSpeed(DamageClass.Melee) += 0.06f;
+				player.moveSpeed += 0.06f;
+			}
+
+			if (armorPiece.type == 684)
+			{
+				player.GetDamage(DamageClass.Ranged) += 0.16f;
+				player.GetDamage(DamageClass.Melee) += 0.16f;
+			}
+
+			if (armorPiece.type == 685)
+			{
+				player.GetCritChance(DamageClass.Melee) += 11;
+				player.GetCritChance(DamageClass.Ranged) += 11;
+			}
+
+			if (armorPiece.type == 686)
+			{
+				player.moveSpeed += 0.08f;
+				player.GetAttackSpeed(DamageClass.Melee) += 0.1f;
+			}
+
+			if (armorPiece.type == 5068)
+			{
+				player.maxMinions++;
+				player.GetDamage(DamageClass.Summon) += 0.05f;
+			}
+
+			if (armorPiece.type == 2361)
+			{
+				player.maxMinions++;
+				player.GetDamage(DamageClass.Summon) += 0.04f;
+			}
+
+			if (armorPiece.type == 2362)
+			{
+				player.maxMinions++;
+				player.GetDamage(DamageClass.Summon) += 0.04f;
+			}
+
+			if (armorPiece.type == 2363)
+				player.GetDamage(DamageClass.Summon) += 0.05f;
+
+			if (armorPiece.type == 3266)
+				player.GetDamage(DamageClass.Summon) += 0.08f;
+
+			if (armorPiece.type == 3267)
+				player.maxMinions++;
+
+			if (armorPiece.type == 3268)
+				player.GetDamage(DamageClass.Summon) += 0.08f;
+
+			if (armorPiece.type == 410)
+				player.pickSpeed -= 0.1f;
+
+			if (armorPiece.type == 411)
+				player.pickSpeed -= 0.1f;
+
+			if (armorPiece.type >= 1158 && armorPiece.type <= 1161)
+				player.maxMinions++;
+
+			if (armorPiece.type == 1159)
+				player.whipRangeMultiplier += 0.1f;
+
+			if (armorPiece.type >= 1159 && armorPiece.type <= 1161)
+				player.GetDamage(DamageClass.Summon) += 0.1f;
+
+			if (armorPiece.type >= 2370 && armorPiece.type <= 2371)
+			{
+				player.GetDamage(DamageClass.Summon) += 0.05f;
+				player.maxMinions++;
+			}
+
+			if (armorPiece.type == 2372)
+			{
+				player.GetDamage(DamageClass.Summon) += 0.06f;
+				player.maxMinions++;
+			}
+
+			if (armorPiece.type == 3381)
+			{
+				player.maxMinions++;
+				player.maxTurrets++;
+				player.GetDamage(DamageClass.Summon) += 0.22f;
+			}
+
+			if (armorPiece.type == 3382 || armorPiece.type == 3383)
+			{
+				player.maxMinions += 2;
+				player.whipRangeMultiplier += 0.15f;
+				player.GetDamage(DamageClass.Summon) += 0.22f;
+			}
+
+			if (armorPiece.type == 2763)
+			{
+				player.aggro += 300;
+				player.GetCritChance(DamageClass.Melee) += 26;
+				player.lifeRegen += 2;
+			}
+
+			if (armorPiece.type == 2764)
+			{
+				player.aggro += 300;
+				player.GetDamage(DamageClass.Melee) += 0.29f;
+				player.lifeRegen += 2;
+			}
+
+			if (armorPiece.type == 2765)
+			{
+				player.aggro += 300;
+				player.GetAttackSpeed(DamageClass.Melee) += 0.15f;
+				player.moveSpeed += 0.15f;
+				player.lifeRegen += 2;
+			}
+
+			if (armorPiece.type == 2757)
+			{
+				player.GetCritChance(DamageClass.Ranged) += 7;
+				player.GetDamage(DamageClass.Ranged) += 0.16f;
+			}
+
+			if (armorPiece.type == 2758)
+			{
+				player.ammoCost75 = true;
+				player.GetCritChance(DamageClass.Ranged) += 12;
+				player.GetDamage(DamageClass.Ranged) += 0.12f;
+			}
+
+			if (armorPiece.type == 2759)
+			{
+				player.GetCritChance(DamageClass.Ranged) += 8;
+				player.GetDamage(DamageClass.Ranged) += 0.08f;
+				player.moveSpeed += 0.1f;
+			}
+
+			if (armorPiece.type == 2760)
+			{
+				player.statManaMax2 += 60;
+				player.manaCost -= 0.15f;
+				player.GetCritChance(DamageClass.Magic) += 7;
+				player.GetDamage(DamageClass.Magic) += 0.07f;
+			}
+
+			if (armorPiece.type == 2761)
+			{
+				player.GetDamage(DamageClass.Magic) += 0.09f;
+				player.GetCritChance(DamageClass.Magic) += 9;
+			}
+
+			if (armorPiece.type == 2762)
+			{
+				player.moveSpeed += 0.1f;
+				player.GetDamage(DamageClass.Magic) += 0.1f;
+			}
+
+			if (armorPiece.type == 1832)
+			{
+				player.maxMinions++;
+				player.GetDamage(DamageClass.Summon) += 0.11f;
+			}
+
+			if (armorPiece.type == 1833)
+			{
+				player.maxMinions += 2;
+				player.GetDamage(DamageClass.Summon) += 0.11f;
+			}
+
+			// Extra patch context.
+			if (armorPiece.type == 1834)
+			{
+				player.moveSpeed += 0.2f;
+				player.maxMinions++;
+				player.GetDamage(DamageClass.Summon) += 0.11f;
+			}
+
+			// Lifted from NPC.SpawnNPC for NewNPC(..., 45), which is NPCID.Tim. See usage of the flag
+			if (armorPiece.type == 4256 || (armorPiece.type >= 1282 && armorPiece.type <= 1287))
+				player.hasGemRobe = true;
+
+			ItemLoader.UpdateEquip(armorPiece, player);
+		}
+		private static void SpawnHallucination(Player player, Item item)
+		{
+			if (player.whoAmI != Main.myPlayer)
+				return;
+
+			player.insanityShadowCooldown = Utils.Clamp(player.insanityShadowCooldown - 1, 0, 100);
+			if (player.insanityShadowCooldown > 0)
+				return;
+
+			player.insanityShadowCooldown = Main.rand.Next(20, 101);
+			float num = 500f;
+			int damage = 18;
+			_hallucinationCandidates.Clear();
+			for (int i = 0; i < 200; i++)
+			{
+				NPC nPC = Main.npc[i];
+				if (nPC.CanBeChasedBy(player) && !(player.Distance(nPC.Center) > num) && Collision.CanHitLine(player.position, player.width, player.height, nPC.position, nPC.width, nPC.height))
+					_hallucinationCandidates.Add(nPC);
+			}
+
+			if (_hallucinationCandidates.Count != 0)
+			{
+				Projectile.RandomizeInsanityShadowFor(Main.rand.NextFromCollection(_hallucinationCandidates), isHostile: false, out Vector2 spawnposition, out Vector2 spawnvelocity, out float ai, out float ai2);
+				Projectile.NewProjectile(new EntitySource_ItemUse(player, item), spawnposition, spawnvelocity, ProjectileID.InsanityShadowFriendly, damage, 0f, player.whoAmI, ai, ai2);
+			}
+		}
+
 		public static void Detour_UpdateArmorSets(Player player)
 		{
 			player.setBonus = "";
@@ -31,7 +1061,6 @@ namespace V2.PlayerHandling
 
 			switch (player.armor[0].type, player.armor[1].type, player.armor[2].type)
 			{
-				case (ItemID.WoodHelmet, ItemID.WoodBreastplate, ItemID.WoodGreaves):
 				case (ItemID.BorealWoodHelmet, ItemID.BorealWoodBreastplate, ItemID.BorealWoodGreaves):
 				case (ItemID.PalmWoodHelmet, ItemID.PalmWoodBreastplate, ItemID.PalmWoodGreaves):
 				case (ItemID.RichMahoganyHelmet, ItemID.RichMahoganyBreastplate, ItemID.RichMahoganyGreaves):

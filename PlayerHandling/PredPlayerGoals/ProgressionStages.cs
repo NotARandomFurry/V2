@@ -17,6 +17,7 @@ namespace V2.PlayerHandling.PredPlayerGoals
 		public override string Description => Language.GetTextValue("Mods.V2.PredPlayerGoals.Starter.Description");
 		public override string FooterAdvice => Language.GetTextValue("Mods.V2.PredPlayerGoals.Starter.FooterAdvice");
 		public override bool Available(Player pred) => true;
+		public override string UnlockCondition => Language.GetTextValue("Mods.V2.PredPlayerGoals.Starter.UnlockCondition");
 		public override double Order => 0.0;
 	}
 	public class BeginnerStage : ProgressionStage
@@ -29,6 +30,7 @@ namespace V2.PlayerHandling.PredPlayerGoals
 			=> ModContent.GetInstance<FirstLivePrey>().Complete(pred)
 			&& ModContent.GetInstance<FirstItemEaten>().Complete(pred)
 			&& ModContent.GetInstance<FirstDrink>().Complete(pred);
+		public override string UnlockCondition => Language.GetTextValue("Mods.V2.PredPlayerGoals.Beginner.UnlockCondition");
 		public override double Order => 1.0;
 	}
 	public class AmateurStage : ProgressionStage
@@ -38,6 +40,7 @@ namespace V2.PlayerHandling.PredPlayerGoals
 		public override string Description => Language.GetTextValue("Mods.V2.PredPlayerGoals.Amateur.Description");
 		public override string FooterAdvice => Language.GetTextValue("Mods.V2.PredPlayerGoals.Amateur.FooterAdvice");
 		public override bool Available(Player pred) => NPC.downedSlimeKing || NPC.downedBoss1;
+		public override string UnlockCondition => Language.GetTextValue("Mods.V2.PredPlayerGoals.Amateur.UnlockCondition");
 		public override double Order => 2.0;
 	}
 	public class IntermediateStage : ProgressionStage
@@ -47,6 +50,7 @@ namespace V2.PlayerHandling.PredPlayerGoals
 		public override string Description => Language.GetTextValue("Mods.V2.PredPlayerGoals.Intermediate.Description");
 		public override string FooterAdvice => Language.GetTextValue("Mods.V2.PredPlayerGoals.Intermediate.FooterAdvice");
 		public override bool Available(Player pred) => NPC.downedBoss3;
+		public override string UnlockCondition => Language.GetTextValue("Mods.V2.PredPlayerGoals.Intermediate.UnlockCondition");
 		public override double Order => 3.0;
 	}
 }

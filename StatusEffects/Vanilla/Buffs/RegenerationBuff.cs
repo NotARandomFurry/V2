@@ -32,7 +32,7 @@ namespace V2.StatusEffects.Vanilla.Buffs
 
 			rare = ItemRarityID.LightRed;
 			tip = Language.GetTextValueWith(
-				"Mods.V2.StatusEffects.Vanilla.Buffs.RapidHealing.Description",
+				"Mods.V2.StatusEffects.Vanilla.Buffs.Regeneration.Description",
 				new
 				{
 					RegenPotionRegenFlat = HealthRegenFlat.CastToDecimalPlaces(2),

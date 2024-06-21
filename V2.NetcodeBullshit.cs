@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using Microsoft.Xna.Framework;
+using System.IO;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -17,10 +18,12 @@ namespace V2
 			SyncSwallowPrey,
 			RequestPlayerPredStatSync,
 			DeliverPlayerPredStatSync,
+			SyncDigestionCombatTextForPreyNPC,
+			SyncDigestionCombatTextForPreyPlayer,
 		}
 
 		/// <summary>
-		/// since I need to focus on continuin' to exist competently as a person, I've put Rose in charge of this instead<br/>
+		/// since I need to focus on continuin' to exist competently as a person, I've put Rose in charge of this for now<br/>
 		/// just...keep an eye on her, and feel free to feed her a good mountain range or two every once in a while as a treat<br/>
 		/// she'll have earned it if she does her new job well. I'll let her tell you more<br/>
 		/// -Thomas<br/>
@@ -71,6 +74,12 @@ namespace V2
 					break;
 				case MessageType.DeliverPlayerPredStatSync:
 					HandlePacket_DeliverPlayerPredStatSync(reader, whoAmI);
+					break;
+				case MessageType.SyncDigestionCombatTextForPreyNPC:
+					HandlePacket_SyncDigestionCombatTextForPreyNPC(reader, whoAmI);
+					break;
+				case MessageType.SyncDigestionCombatTextForPreyPlayer:
+					HandlePacket_SyncDigestionCombatTextForPreyPlayer(reader, whoAmI);
 					break;
 				default:
 					Logger.WarnFormat(
@@ -343,6 +352,60 @@ namespace V2
 			player.AsPred().TUM.Spent = reader.ReadInt32();
 			player.AsPred().ACI.Spent = reader.ReadInt32();
 			player.AsPred().ABS.Spent = reader.ReadInt32();
+
+			return;
+			Fail:
+			InformOfIncorrectPacketRecipe();
+		}
+
+		public void HandlePacket_SyncDigestionCombatTextForPreyNPC(BinaryReader reader, int whoAmI)
+		{
+			if (Main.netMode != NetmodeID.MultiplayerClient)
+				goto Fail;
+
+			int npcWhoAmI = reader.ReadInt32();
+			if (npcWhoAmI < 0 || npcWhoAmI > Main.maxNPCs)
+				goto Fail;
+
+			NPC npc = Main.npc[npcWhoAmI];
+			CombatText digestionDamageText = Main.combatText[CombatText.NewText(
+				npc.Hitbox,
+				npc.friendly ? Color.DarkGreen : Color.LimeGreen,
+				reader.ReadInt32(),
+				false,
+				true
+			)];
+			digestionDamageText.position.X = reader.ReadSingle();
+			digestionDamageText.position.Y = reader.ReadSingle();
+			digestionDamageText.velocity.X = reader.ReadSingle();
+			digestionDamageText.velocity.Y = reader.ReadSingle();
+
+			return;
+			Fail:
+			InformOfIncorrectPacketRecipe();
+		}
+
+		public void HandlePacket_SyncDigestionCombatTextForPreyPlayer(BinaryReader reader, int whoAmI)
+		{
+			if (Main.netMode != NetmodeID.MultiplayerClient)
+				goto Fail;
+
+			int playerWhoAmI = reader.ReadInt32();
+			if (playerWhoAmI < 0 || playerWhoAmI > Main.maxPlayers)
+				goto Fail;
+
+			Player player = Main.player[playerWhoAmI];
+			CombatText digestionDamageText = Main.combatText[CombatText.NewText(
+				player.Hitbox,
+				Color.DarkGreen,
+				reader.ReadInt32(),
+				false,
+				true
+			)];
+			digestionDamageText.position.X = reader.ReadSingle();
+			digestionDamageText.position.Y = reader.ReadSingle();
+			digestionDamageText.velocity.X = reader.ReadSingle();
+			digestionDamageText.velocity.Y = reader.ReadSingle();
 
 			return;
 			Fail:

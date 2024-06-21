@@ -22,6 +22,7 @@ namespace V2.PlayerHandling.PredPlayerGoals
 		public abstract string Description { get; }
 		public abstract string FooterAdvice { get; }
 		public abstract bool Available(Player pred);
+		public abstract string UnlockCondition { get; }
 		public abstract double Order { get; }
 	}
 }

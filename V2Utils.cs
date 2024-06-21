@@ -23,12 +23,34 @@ namespace V2
 		LateNightSnacking
 	}
 
+	public static class V2Colors
+	{
+		public static class Basic
+		{
+			public static Color LightGray => new Color(170, 170, 170);
+			public static Color LightRed => new Color(255, 85, 85);
+			public static Color Red => new Color(170, 0, 0);
+			public static Color Gold => new Color(255, 170, 0);
+			public static Color Aqua => new Color(0, 255, 255);
+		}
+
+		/// <summary>
+		/// Special, royal shade of green used exclusively by Avarsician royalty.
+		/// </summary>
+		public static Color RoyalAcidicGreen => new Color(22, 114, 0);
+
+		/// <summary>
+		/// Special shade of carmine used exclusively by yours truly.<br/>
+		/// </summary>
+		public static Color CarmineThread => new Color(150, 0, 24);
+	}
+
 	public static class V2Utils
 	{
 		public static class NPCIDSets
 		{
-			public static List<int> Slimes => new List<int>
-			{
+			public static List<int> Slimes =>
+			[
 				NPCID.GreenSlime,
 				NPCID.BlueSlime,
 				NPCID.PurpleSlime,
@@ -80,7 +102,25 @@ namespace V2
 				NPCID.IceSlime,
 				NPCID.SpikedIceSlime,
 				NPCID.SandSlime,
-			};
+			];
+
+			public static List<int> GemCritters =>
+			[
+				NPCID.GemBunnyAmber,
+				NPCID.GemBunnyAmethyst,
+				NPCID.GemBunnyDiamond,
+				NPCID.GemBunnyEmerald,
+				NPCID.GemBunnyRuby,
+				NPCID.GemBunnySapphire,
+				NPCID.GemBunnyTopaz,
+				NPCID.GemSquirrelAmber,
+				NPCID.GemSquirrelAmethyst,
+				NPCID.GemSquirrelDiamond,
+				NPCID.GemSquirrelEmerald,
+				NPCID.GemSquirrelRuby,
+				NPCID.GemSquirrelSapphire,
+				NPCID.GemSquirrelTopaz,
+			];
 		}
 		/// <summary>
 		/// Takes the given amount of readable time and converts it to a concrete frame count.<br/>

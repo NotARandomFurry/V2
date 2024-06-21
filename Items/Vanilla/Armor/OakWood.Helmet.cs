@@ -20,10 +20,18 @@ namespace V2.Items.Vanilla.Armor
 		{
 			item.SetNameOverride(Language.GetTextValue("Mods.V2.ItemName.Vanilla.Armor.OakWood.Head"));
 
+			item.AsV2Item().ArmorEffectCode = OakWoodHelmetEffect;
+
 			item.AsFood().MaxHealth = 120;
 			item.AsFood().Size = 0.30;
 
 			item.defense = 1;
+		}
+
+		public static void OakWoodHelmetEffect(Item item, Player player)
+		{
+			if (player.position.Y < Main.worldSurface && player.behindBackWall && Main.dayTime)
+				player.statDefense++;
 		}
 
 		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)

@@ -28,8 +28,11 @@ namespace V2.UI.PredStatsMenu
 	{
 		Default,
 		Alphabetical,
+		AlphabeticalBackwards,
 		PointValue,
+		PointValueBackwards,
 		Completion,
+		Incompletion,
 	}
 	public class PredStatsMenuUI : UIState
 	{
@@ -40,22 +43,24 @@ namespace V2.UI.PredStatsMenu
 		public static PredGoalsSortingOption SortStyle { get; set; }
 		public static int GoalsPage { get; set; }
 
-		private static Asset<Texture2D> _predStatsMenuBackground = ModContent.Request<Texture2D>("V2/UI/PredStatsMenu/PredStatsMenu_Background", AssetRequestMode.ImmediateLoad);
-		private static Asset<Texture2D> _predStatsPizzaSlice_GLP = ModContent.Request<Texture2D>("V2/UI/PredStatsMenu/PredStatsMenu_PredStatSlice_GLP", AssetRequestMode.ImmediateLoad);
-		private static Asset<Texture2D> _predStatsPizzaSlice_TUM = ModContent.Request<Texture2D>("V2/UI/PredStatsMenu/PredStatsMenu_PredStatSlice_TUM", AssetRequestMode.ImmediateLoad);
-		private static Asset<Texture2D> _predStatsPizzaSlice_ACI = ModContent.Request<Texture2D>("V2/UI/PredStatsMenu/PredStatsMenu_PredStatSlice_ACI", AssetRequestMode.ImmediateLoad);
-		private static Asset<Texture2D> _predStatsPizzaSlice_ABS = ModContent.Request<Texture2D>("V2/UI/PredStatsMenu/PredStatsMenu_PredStatSlice_ABS", AssetRequestMode.ImmediateLoad);
-		private static Asset<Texture2D> _predStatsOverviewPanel = ModContent.Request<Texture2D>("V2/UI/PredStatsMenu/PredStatsMenu_StatOverviewPanel", AssetRequestMode.ImmediateLoad);
-		private static Asset<Texture2D> _predStatsAvailablePointsPanel = ModContent.Request<Texture2D>("V2/UI/PredStatsMenu/PredStatsMenu_AvailableStatPointsPanel", AssetRequestMode.ImmediateLoad);
-		private static Asset<Texture2D> _predStatsGoalsMenuBook = ModContent.Request<Texture2D>("V2/UI/PredStatsMenu/PredStatsMenu_GoalsBook", AssetRequestMode.ImmediateLoad);
-		private static Asset<Texture2D> _predStatsGoalsStageDeselected = ModContent.Request<Texture2D>("V2/UI/PredStatsMenu/PredStatsMenu_Goals_SectionDeselected", AssetRequestMode.ImmediateLoad);
-		private static Asset<Texture2D> _predStatsGoalsStageSelected = ModContent.Request<Texture2D>("V2/UI/PredStatsMenu/PredStatsMenu_Goals_SectionSelected", AssetRequestMode.ImmediateLoad);
-		private static Asset<Texture2D> _predStatsGoalsMenuHeader = ModContent.Request<Texture2D>("V2/UI/PredStatsMenu/PredStatsMenu_Goals_Header", AssetRequestMode.ImmediateLoad);
-		private static Asset<Texture2D> _predStatsGoalsMenuFooter = ModContent.Request<Texture2D>("V2/UI/PredStatsMenu/PredStatsMenu_Goals_Footer", AssetRequestMode.ImmediateLoad);
-		private static Asset<Texture2D> _predStatsGoalsMenuExitButton = ModContent.Request<Texture2D>("V2/UI/PredStatsMenu/PredStatsMenu_Goals_ExitButton", AssetRequestMode.ImmediateLoad);
-		private static Asset<Texture2D> _predStatsExitButton = ModContent.Request<Texture2D>("V2/UI/PredStatsMenu/PredStatsMenu_Exit", AssetRequestMode.ImmediateLoad);
+		private static readonly Asset<Texture2D> _predStatsMenuBackground = ModContent.Request<Texture2D>("V2/UI/PredStatsMenu/PredStatsMenu_Background", AssetRequestMode.ImmediateLoad);
+		private static readonly Asset<Texture2D> _predStatsPizzaSlice_GLP = ModContent.Request<Texture2D>("V2/UI/PredStatsMenu/PredStatsMenu_PredStatSlice_GLP", AssetRequestMode.ImmediateLoad);
+		private static readonly Asset<Texture2D> _predStatsPizzaSlice_TUM = ModContent.Request<Texture2D>("V2/UI/PredStatsMenu/PredStatsMenu_PredStatSlice_TUM", AssetRequestMode.ImmediateLoad);
+		private static readonly Asset<Texture2D> _predStatsPizzaSlice_ACI = ModContent.Request<Texture2D>("V2/UI/PredStatsMenu/PredStatsMenu_PredStatSlice_ACI", AssetRequestMode.ImmediateLoad);
+		private static readonly Asset<Texture2D> _predStatsPizzaSlice_ABS = ModContent.Request<Texture2D>("V2/UI/PredStatsMenu/PredStatsMenu_PredStatSlice_ABS", AssetRequestMode.ImmediateLoad);
+		private static readonly Asset<Texture2D> _predStatsOverviewPanel = ModContent.Request<Texture2D>("V2/UI/PredStatsMenu/PredStatsMenu_StatOverviewPanel", AssetRequestMode.ImmediateLoad);
+		private static readonly Asset<Texture2D> _predStatsAvailablePointsPanel = ModContent.Request<Texture2D>("V2/UI/PredStatsMenu/PredStatsMenu_AvailableStatPointsPanel", AssetRequestMode.ImmediateLoad);
+		private static readonly Asset<Texture2D> _predStatsGoalsMenuBook = ModContent.Request<Texture2D>("V2/UI/PredStatsMenu/PredStatsMenu_GoalsBook", AssetRequestMode.ImmediateLoad);
+		private static readonly Asset<Texture2D> _predStatsGoalsStageDeselected = ModContent.Request<Texture2D>("V2/UI/PredStatsMenu/PredStatsMenu_Goals_SectionDeselected", AssetRequestMode.ImmediateLoad);
+		private static readonly Asset<Texture2D> _predStatsGoalsStageSelected = ModContent.Request<Texture2D>("V2/UI/PredStatsMenu/PredStatsMenu_Goals_SectionSelected", AssetRequestMode.ImmediateLoad);
+		private static readonly Asset<Texture2D> _predStatsGoalsMenuHeader = ModContent.Request<Texture2D>("V2/UI/PredStatsMenu/PredStatsMenu_Goals_Header", AssetRequestMode.ImmediateLoad);
+		private static readonly Asset<Texture2D> _predStatsGoalsMenuFooter = ModContent.Request<Texture2D>("V2/UI/PredStatsMenu/PredStatsMenu_Goals_Footer", AssetRequestMode.ImmediateLoad);
+		private static readonly Asset<Texture2D> _predStatsGoalsSortingClipboard = ModContent.Request<Texture2D>("V2/UI/PredStatsMenu/PredStatsMenu_Goals_SortingClipboard", AssetRequestMode.ImmediateLoad);
+		private static readonly Asset<Texture2D> _predStatsGoalsMenuExitButton = ModContent.Request<Texture2D>("V2/UI/PredStatsMenu/PredStatsMenu_Goals_ExitButton", AssetRequestMode.ImmediateLoad);
+		private static readonly Asset<Texture2D> _predStatsExitButton = ModContent.Request<Texture2D>("V2/UI/PredStatsMenu/PredStatsMenu_Exit", AssetRequestMode.ImmediateLoad);
 		private static readonly SoundStyle AllocateSuccess = new SoundStyle("V2/Sounds/PredStatsMenu/AllocateSuccess", SoundType.Sound) with { MaxInstances = 0, PitchVariance = 0f };
 		private static readonly SoundStyle AllocateFail = new SoundStyle("V2/Sounds/PredStatsMenu/AllocateFail", SoundType.Sound) with { MaxInstances = 0, PitchVariance = 0f };
+		private static readonly SoundStyle SortStyleChange = new SoundStyle("V2/Sounds/PredStatsMenu/SortStyleChange", SoundType.Sound) with { MaxInstances = 0, PitchVariance = 0f };
 
 		public override void OnInitialize()
 		{
@@ -115,7 +120,7 @@ namespace V2.UI.PredStatsMenu
 			if (GoalsMenuOpen)
 			{
 				List<PredPlayerGoal> selectedStageGoals = ModContent.GetContent<PredPlayerGoal>().ToList();
-				List<ProgressionStage> stagesOrdered = PredPlayerGoalLoader.ProgressionStages.OrderBy(x => x.Order).ToList();
+				List<ProgressionStage> stagesOrdered = [.. PredPlayerGoalLoader.ProgressionStages.OrderBy(x => x.Order)];
 
 				selectedStageGoals.RemoveAll(x => x.Stage != SelectedProgressionStage || !x.Available(Main.LocalPlayer));
 
@@ -124,13 +129,22 @@ namespace V2.UI.PredStatsMenu
 					default:
 						break;
 					case PredGoalsSortingOption.Alphabetical:
-						selectedStageGoals.Sort();
+						selectedStageGoals = [.. selectedStageGoals.OrderBy(x => Language.GetTextValue(x.DisplayName(Main.LocalPlayer)))];
+						break;
+					case PredGoalsSortingOption.AlphabeticalBackwards:
+						selectedStageGoals = [.. selectedStageGoals.OrderByDescending(x => Language.GetTextValue(x.DisplayName(Main.LocalPlayer)))];
 						break;
 					case PredGoalsSortingOption.PointValue:
-						selectedStageGoals = selectedStageGoals.OrderBy(x => x.StatPointsFromCompletion).ToList();
+						selectedStageGoals = [.. selectedStageGoals.OrderBy(x => x.StatPointsFromCompletion)];
+						break;
+					case PredGoalsSortingOption.PointValueBackwards:
+						selectedStageGoals = [.. selectedStageGoals.OrderByDescending(x => x.StatPointsFromCompletion)];
 						break;
 					case PredGoalsSortingOption.Completion:
-						selectedStageGoals = selectedStageGoals.OrderBy(x => x.Complete(Main.LocalPlayer)).ToList();
+						selectedStageGoals = [.. selectedStageGoals.OrderBy(x => !x.Complete(Main.LocalPlayer))];
+						break;
+					case PredGoalsSortingOption.Incompletion:
+						selectedStageGoals = [.. selectedStageGoals.OrderByDescending(x => !x.Complete(Main.LocalPlayer))];
 						break;
 				}
 
@@ -222,9 +236,6 @@ namespace V2.UI.PredStatsMenu
 				for (int i = 0; i < stagesOrdered.Count; i++)
 				{
 					ProgressionStage stageToDraw = stagesOrdered[i];
-					if (!stageToDraw.Available(Main.LocalPlayer))
-						break;
-
 					List<PredPlayerGoal> stageGoals = ModContent.GetContent<PredPlayerGoal>().ToList();
 					stageGoals.RemoveAll(x => x.Stage != stageToDraw);
 					List<PredPlayerGoal> stageGoalsCompleted = stageGoals.FindAll(x => x.Complete(Main.LocalPlayer));
@@ -284,15 +295,22 @@ namespace V2.UI.PredStatsMenu
 									stageFullHoverText += "\n";
 							}
 						}
+						if (!stageToDraw.Available(Main.LocalPlayer))
+						{
+							stageFullHoverText += "[c/" + (V2Colors.Basic.Red * mouseTextColorFactor).Hex3() + ":You haven't unlocked this progression stage yet!]\n";
+							stageFullHoverText += "[c/" + (V2Colors.Basic.Red * mouseTextColorFactor).Hex3() + ":You have to " + stageToDraw.UnlockCondition + " to unlock this progression stage!]\n";
+						}
+
 						Color completionRatiosBaseColor = new Color(145, 155, 215);
 						Color goalsCompleteColor = Color.Lerp(new Color(100, 20, 20), new Color(60, 220, 60), goalCompletionRatio.CastToDecimalPlaces(1));
 						Color pointsGainedColor = Color.Lerp(new Color(100, 20, 20), new Color(60, 220, 60), pointsCompletionRatio.CastToDecimalPlaces(1));
 						int currentHiddenGoalsInStage = stageGoals.FindAll(x => !x.Available(Main.LocalPlayer)).Count;
 						stageFullHoverText += "[c/" + (completionRatiosBaseColor * mouseTextColorFactor).Hex3() + ":Stage Goals Completed:] [c/" + (goalsCompleteColor * mouseTextColorFactor).Hex3() + ":" + stageGoalsCompleted.Count + " / " + stageGoals.Count + " (" + goalCompletionRatio.ToPercentage(1) + ")] [c/" + (subtitleColor * mouseTextColorFactor).Hex3() + ":(" + (currentHiddenGoalsInStage == 1 ? "1 goal is" : (currentHiddenGoalsInStage + " goals are")) + " currently hidden)]\n";
 						stageFullHoverText += "[c/" + (completionRatiosBaseColor * mouseTextColorFactor).Hex3() + ":Points Gained From Stage:] [c/" + (pointsGainedColor * mouseTextColorFactor).Hex3() + ":" + pointsGainedFromStage + " / " + pointsPossibleFromStage + " (" + pointsCompletionRatio.ToPercentage(1) + ")]";
+
 						UICommon.TooltipMouseText(stageFullHoverText);
 						Main.mouseText = true;
-						if (Main.mouseLeft && Main.mouseLeftRelease)
+						if (stageToDraw.Available(Main.LocalPlayer) && Main.mouseLeft && Main.mouseLeftRelease)
 						{
 							SoundEngine.PlaySound(SoundID.MenuTick);
 							SelectedProgressionStage = stageToDraw;
@@ -370,6 +388,56 @@ namespace V2.UI.PredStatsMenu
 					new Vector2(0.75f),
 					_predStatsGoalsMenuFooter.Value.Width - 16f
 				);
+
+				Rectangle sortingClipboardHoverRect = new Rectangle(
+					(int)backdropPos.X + 644,
+					(int)backdropPos.Y + 154,
+					_predStatsGoalsSortingClipboard.Value.Width,
+					_predStatsGoalsSortingClipboard.Value.Height
+				);
+				spriteBatch.Draw(
+					_predStatsGoalsSortingClipboard.Value,
+					backdropPos + new Vector2(644f, 154f),
+					sortingClipboardHoverRect.Contains(Main.MouseScreen.ToPoint())
+					? new Rectangle(32, 0, 30, 48)
+					: new Rectangle(0, 0, 30, 48),
+					Color.White,
+					0f,
+					Vector2.Zero,
+					1f,
+					SpriteEffects.None,
+					0f
+				);
+				if (sortingClipboardHoverRect.Contains(Main.MouseScreen.ToPoint()))
+				{
+					if (Main.mouseLeft && Main.mouseLeftRelease)
+					{
+						SortStyle = SortStyle.NextEnum();
+						SoundEngine.PlaySound(SortStyleChange);
+					}
+					if (Main.mouseRight && Main.mouseRightRelease)
+					{
+						SortStyle = SortStyle.PreviousEnum();
+						SoundEngine.PlaySound(SortStyleChange);
+					}
+					UICommon.TooltipMouseText(
+						Language.GetTextValueWith(
+							"Mods.V2.PredPlayerGoals.SortingText",
+							new
+							{
+								HeaderColor = (V2Colors.Basic.Gold * mouseTextColorFactor).Hex3(),
+								DefaultSortColor = ((SortStyle == PredGoalsSortingOption.Default ? V2Colors.Basic.Aqua : V2Colors.Basic.LightGray) * mouseTextColorFactor).Hex3(),
+								AlphabeticalSortColor = ((SortStyle == PredGoalsSortingOption.Alphabetical ? V2Colors.Basic.Aqua : V2Colors.Basic.LightGray) * mouseTextColorFactor).Hex3(),
+								AlphabeticalBackwardsSortColor = ((SortStyle == PredGoalsSortingOption.AlphabeticalBackwards ? V2Colors.Basic.Aqua : V2Colors.Basic.LightGray) * mouseTextColorFactor).Hex3(),
+								PointValueSortColor = ((SortStyle == PredGoalsSortingOption.PointValue ? V2Colors.Basic.Aqua : V2Colors.Basic.LightGray) * mouseTextColorFactor).Hex3(),
+								PointValueBackwardsSortColor = ((SortStyle == PredGoalsSortingOption.PointValueBackwards ? V2Colors.Basic.Aqua : V2Colors.Basic.LightGray) * mouseTextColorFactor).Hex3(),
+								CompletionSortColor = ((SortStyle == PredGoalsSortingOption.Completion ? V2Colors.Basic.Aqua : V2Colors.Basic.LightGray) * mouseTextColorFactor).Hex3(),
+								IncompletionSortColor = ((SortStyle == PredGoalsSortingOption.Incompletion ? V2Colors.Basic.Aqua : V2Colors.Basic.LightGray) * mouseTextColorFactor).Hex3(),
+								CycleColor = (V2Colors.Basic.Aqua * mouseTextColorFactor).Hex3(),
+							}
+						)
+					);
+				}
 
 				spriteBatch.Draw(
 					_predStatsGoalsMenuExitButton.Value,
@@ -489,13 +557,13 @@ namespace V2.UI.PredStatsMenu
 									stat.Spent--;
 									break;
 								case (true, false):
-									stat.Spent -= Math.Min(10, Main.LocalPlayer.AsPred().AvailableStatPoints);
+									stat.Spent -= Math.Min(10, stat.Spent);
 									break;
 								case (true, true):
-									stat.Spent -= Math.Min(100, Main.LocalPlayer.AsPred().AvailableStatPoints);
+									stat.Spent -= Math.Min(100, stat.Spent);
 									break;
 								case (false, true):
-									stat.Spent -= Main.LocalPlayer.AsPred().AvailableStatPoints;
+									stat.Spent -= stat.Spent;
 									break;
 							}
 							SoundEngine.PlaySound(AllocateSuccess with { Pitch = -0.15f });
@@ -662,12 +730,12 @@ namespace V2.UI.PredStatsMenu
 								ABSBase = Main.LocalPlayer.AsPred().ABS.Base,
 								ABSExtra = Main.LocalPlayer.AsPred().ABS.Extra,
 								AbsorptionRate = Main.LocalPlayer.AsPred().PreyAbsorptionRate.CastToDecimalPlaces(2),
-								BuffExtensionTime = Main.LocalPlayer.AsPred().BuffExtensionFactor.CastToDecimalPlaces(2),
-								DebuffDisextensionTime = Main.LocalPlayer.AsPred().DebuffDisextensionFactor.CastToDecimalPlaces(2),
-								BaseAbsorbRate = PredPlayer.BasePreyAbsorptionRate,
-								AbsorbRatePerLevel = PredPlayer.PreyAbsorptionRatePerLevel,
-								BuffExtendPer5Levels = PredPlayer.BuffExtensionTimePer5Levels,
-								DebuffLossPer5Levels = PredPlayer.DebuffDisextensionTimePer5Levels,
+								BuffExtensionTime = Main.LocalPlayer.AsPred().BuffExtensionFactor.ToPercentage(2),
+								DebuffDisextensionTime = (1.0 / Main.LocalPlayer.AsPred().DebuffDisextensionFactor).ToPercentage(2),
+								BaseAbsorbRate = PredPlayer.BasePreyAbsorptionRate.CastToDecimalPlaces(2),
+								AbsorbRatePerLevel = PredPlayer.PreyAbsorptionRatePerLevel.CastToDecimalPlaces(2),
+								BuffExtendPer5Levels = PredPlayer.BuffExtensionTimePer5Levels.CastToDecimalPlaces(2),
+								DebuffLossPer5Levels = PredPlayer.DebuffDisextensionTimePer5Levels.CastToDecimalPlaces(2),
 							}
 						),
 						backdropPos + new Vector2(30f, 30f),
@@ -679,6 +747,12 @@ namespace V2.UI.PredStatsMenu
 					);
 				}
 
+				Rectangle availablePointsRect = new Rectangle(
+					(int)backdropPos.X + 560,
+					(int)backdropPos.Y + 192,
+					_predStatsAvailablePointsPanel.Value.Width,
+					_predStatsAvailablePointsPanel.Value.Height
+				);
 				spriteBatch.Draw(
 					_predStatsAvailablePointsPanel.Value,
 					backdropPos + new Vector2(560f, 192f),
@@ -711,6 +785,83 @@ namespace V2.UI.PredStatsMenu
 					ChatManager.GetStringSize(FontAssets.DeathText.Value, Main.LocalPlayer.AsPred().AvailableStatPoints.ToString(), new Vector2(0.8f)) / 2f,
 					new Vector2(0.8f)
 				);
+				if (availablePointsRect.Contains(Main.MouseScreen.ToPoint()))
+				{
+					string mouseText = Language.GetTextValueWith(
+						"Mods.V2.PredStatsMenu.StatPointHover.Default",
+						new
+						{
+							StatPointCount = Main.LocalPlayer.AsPred().AvailableStatPoints,
+							StatPointTotal = Main.LocalPlayer.AsPred().TotalStatPoints,
+							GLPSpent = Main.LocalPlayer.AsPred().GLP.Spent,
+							TUMSpent = Main.LocalPlayer.AsPred().TUM.Spent,
+							ACISpent = Main.LocalPlayer.AsPred().ACI.Spent,
+							ABSSpent = Main.LocalPlayer.AsPred().ABS.Spent,
+							CycleColor = (V2Colors.Basic.Aqua * mouseTextColorFactor).Hex3(),
+						}
+					);
+					if (Main.LocalPlayer.AsPred().CheatedStatPointsWork)
+					{
+						mouseText += "\n\n" + Language.GetTextValueWith(
+							"Mods.V2.PredStatsMenu.StatPointHover.RoseAddon",
+							new
+							{
+								RoseFlowerColor = new Color((byte)(255f * mouseTextColorFactor), (byte)(Main.masterColor * 200f * mouseTextColorFactor), 0, Main.mouseTextColor).Hex3(),
+								CheatedPointAllocColor = (V2Colors.Basic.Aqua * mouseTextColorFactor).Hex3(),
+								CheatedPointModifier = Main.LocalPlayer.AsPred().CheatedStatPoints,
+							}
+						);
+					}
+					UICommon.TooltipMouseText(mouseText);
+					if (Main.LocalPlayer.AsPred().CheatedStatPointsWork && Main.mouseLeft && Main.mouseLeftRelease)
+					{
+						switch (Main.keyState.IsKeyDown(Keys.LeftShift), Main.keyState.IsKeyDown(Keys.LeftControl))
+						{
+							case (false, false):
+								Main.LocalPlayer.AsPred().CheatedStatPoints++;
+								break;
+							case (true, false):
+								Main.LocalPlayer.AsPred().CheatedStatPoints += 10;
+								break;
+							case (true, true):
+								Main.LocalPlayer.AsPred().CheatedStatPoints += 100;
+								break;
+							case (false, true):
+								Main.LocalPlayer.AsPred().CheatedStatPoints += Main.LocalPlayer.AsPred().LegitStatPoints;
+								break;
+						}
+						SoundEngine.PlaySound(AllocateSuccess);
+					}
+					else if (Main.LocalPlayer.AsPred().CheatedStatPointsWork && Main.mouseRight && Main.mouseRightRelease)
+					{
+						if (Main.LocalPlayer.AsPred().CheatedStatPoints <= 0)
+						{
+							SoundEngine.PlaySound(AllocateFail);
+						}
+						else
+						{
+							switch (Main.keyState.IsKeyDown(Keys.LeftShift), Main.keyState.IsKeyDown(Keys.LeftControl))
+							{
+								case (false, false):
+									Main.LocalPlayer.AsPred().CheatedStatPoints--;
+									break;
+								case (true, false):
+									Main.LocalPlayer.AsPred().CheatedStatPoints -= Math.Min(10, Main.LocalPlayer.AsPred().CheatedStatPoints);
+									break;
+								case (true, true):
+									Main.LocalPlayer.AsPred().CheatedStatPoints -= Math.Min(100, Main.LocalPlayer.AsPred().CheatedStatPoints);
+									break;
+								case (false, true):
+									Main.LocalPlayer.AsPred().CheatedStatPoints -= Math.Min(Main.LocalPlayer.AsPred().LegitStatPoints, Main.LocalPlayer.AsPred().CheatedStatPoints);
+									break;
+							}
+							if (Main.LocalPlayer.AsPred().CheatedStatPoints < 0)
+								Main.LocalPlayer.AsPred().CheatedStatPoints = 0;
+
+							SoundEngine.PlaySound(AllocateSuccess with { Pitch = -0.15f });
+						}
+					}
+				}
 
 				spriteBatch.Draw(
 					_predStatsGoalsMenuBook.Value,

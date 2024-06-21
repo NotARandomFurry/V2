@@ -145,7 +145,7 @@ namespace V2.PlayerHandling
 
 		public override void PostItemCheck()
 		{
-			if (V2.FeedHotkey.JustPressed && Player.whoAmI == Main.myPlayer)
+			if (Main.netMode != NetmodeID.Server && Player.whoAmI == Main.myPlayer && V2.FeedHotkey.JustPressed)
 			{
 				if (ModContent.GetInstance<V2ServerConfig>().DebugChatMessages)
 					Main.NewText("Attempting to force-feed " + Player.name + " to nearby predators...");
@@ -426,21 +426,36 @@ namespace V2.PlayerHandling
 			}
 			else
 			{
-				CombatText digestionText = Main.combatText[CombatText.NewText(
-					Player.Hitbox,
-					Color.DarkGreen,
-					trueDigestionDamage,
-					false,
-					true
-				)];
-				digestionText.position.X = pred.Center.X;
-				digestionText.position.X += pred.direction * 14;
-				if (pred.direction == -1)
-					digestionText.position.X -= ChatManager.GetStringSize(FontAssets.CombatText[0].Value, digestionText.text, new Vector2(digestionText.scale)).X;
-				digestionText.position.Y = Player.Center.Y;
-				digestionText.position.Y += Player.height / 5f;
-				digestionText.velocity.X = pred.direction * 2.5f;
-				digestionText.velocity.Y = -4f;
+				switch (Main.netMode)
+				{
+					case NetmodeID.SinglePlayer:
+						CombatText digestionDamageText = Main.combatText[CombatText.NewText(
+							Player.Hitbox,
+							Color.DarkGreen,
+							trueDigestionDamage,
+							false,
+							true
+						)];
+						digestionDamageText.position.X = pred.Center.X + (pred.direction * 28);
+						digestionDamageText.position.Y = Player.Center.Y + (Player.height / 5f);
+						digestionDamageText.velocity.X = pred.direction * 2.5f;
+						digestionDamageText.velocity.Y = -4f;
+						break;
+					case NetmodeID.Server:
+						ModPacket digestionDamageTextPacket = V2.Instance.GetPacket();
+						digestionDamageTextPacket.Write((byte)V2.MessageType.SyncDigestionCombatTextForPreyPlayer);
+						digestionDamageTextPacket.Write(Player.whoAmI);
+						digestionDamageTextPacket.Write(trueDigestionDamage);
+						digestionDamageTextPacket.Write(pred.Center.X + (pred.direction * 28));
+						digestionDamageTextPacket.Write(Player.Center.Y + (Player.height / 5f));
+						digestionDamageTextPacket.Write(pred.direction * 2.5f);
+						digestionDamageTextPacket.Write(-4f);
+						digestionDamageTextPacket.Send();
+						break;
+					case NetmodeID.MultiplayerClient:
+						// here we do nothing because the packet takes care of this
+						break;
+				}
 				SoundEngine.PlaySound(Player.Male ? PreyPlayerDigestionSounds.PlayerDigestingMale : PreyPlayerDigestionSounds.PlayerDigestingFemale, pred.position);
 				return false;
 			}

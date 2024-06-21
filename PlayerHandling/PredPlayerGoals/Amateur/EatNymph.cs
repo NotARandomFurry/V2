@@ -16,7 +16,7 @@ namespace V2.PlayerHandling.PredPlayerGoals.Amateur
 		public override string Description(Player pred) => "Mods.V2.PredPlayerGoals.Amateur.EatNymph.Description";
 		public override bool HasClearDescription(Player pred) => true;
 
-		public override int StatPointsFromCompletion => 3;
+		public override int StatPointsFromCompletion => 6;
 
 		public override ProgressionStage Stage => ModContent.GetInstance<AmateurStage>();
 	}
