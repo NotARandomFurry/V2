@@ -47,6 +47,20 @@ namespace V2
 
 	public static class V2Utils
 	{
+		public static class ItemIDSets
+		{
+			public static List<int> LargeGems =>
+			[
+				ItemID.LargeAmber,
+				ItemID.LargeAmethyst,
+				ItemID.LargeDiamond,
+				ItemID.LargeEmerald,
+				ItemID.LargeRuby,
+				ItemID.LargeSapphire,
+				ItemID.LargeTopaz,
+			];
+		}
+
 		public static class NPCIDSets
 		{
 			public static List<int> Slimes =>
@@ -120,6 +134,42 @@ namespace V2
 				NPCID.GemSquirrelRuby,
 				NPCID.GemSquirrelSapphire,
 				NPCID.GemSquirrelTopaz,
+			];
+
+			public static List<int> GoldCritters =>
+			[
+				NPCID.GoldBird,
+				NPCID.GoldBunny,
+				NPCID.GoldButterfly,
+				NPCID.GoldDragonfly,
+				NPCID.GoldenSlime,
+				NPCID.GoldFrog,
+				NPCID.GoldGoldfish,
+				NPCID.GoldGrasshopper,
+				NPCID.GoldLadyBug,
+				NPCID.GoldMouse,
+				NPCID.GoldSeahorse,
+				NPCID.GoldWaterStrider,
+				NPCID.GoldWorm,
+				NPCID.SquirrelGold,
+			];
+
+			public static List<int> Mimics =>
+			[
+				NPCID.Mimic,
+				NPCID.IceMimic,
+				NPCID.PresentMimic,
+				NPCID.BigMimicCorruption,
+				NPCID.BigMimicCrimson,
+				NPCID.BigMimicHallow,
+				NPCID.BigMimicJungle,
+			];
+
+			public static List<int> MiniFairies =>
+			[
+				NPCID.FairyCritterBlue,
+				NPCID.FairyCritterGreen,
+				NPCID.FairyCritterPink,
 			];
 		}
 		/// <summary>

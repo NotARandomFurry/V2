@@ -2298,7 +2298,7 @@ ItemTooltip: {
 						Once the bottle breaks, until fully digested, and for 1 minute thereafter:
 						> [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:+{FastDigestionPotionACIBonus} ACI]
 						> [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:+{FastDigestionPotionABSBonus} ABS]
-						> [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:+1 acid tier][c/7F7F7F:, but only if acid tier is 0]
+						> [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Raises acid tier to 2][c/7F7F7F:, if it is not at 2 already]
 						'''
 					Flavor:
 						'''

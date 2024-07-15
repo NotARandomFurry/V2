@@ -32,8 +32,8 @@ namespace V2.NPCs.Vanilla.Forest
 
 			npc.AsFood().DefinedBaseSize = 0.475;
 
-			npc.AsFood().OnKilledByDigestion = PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
-			npc.AsFood().OnKilledByDigestion += OnKilledByDigestion_GrantAngryDandelionGoal;
+			npc.AsFood().OnDigestedBy = PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
+			npc.AsFood().OnDigestedBy += OnKilledByDigestion_GrantAngryDandelionGoal;
 		}
 
 		public static void OnKilledByDigestion_GrantAngryDandelionGoal(NPC npc, Entity pred)

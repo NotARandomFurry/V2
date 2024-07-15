@@ -15,6 +15,8 @@ namespace V2.PlayerHandling
 	{
 		public List<DelegateGeneralItemDrawingUI> generalItemUIDrawMethods;
 
+		public int GuideHelpText = 0;
+
 		public override void Initialize()
 		{
 			ResetHealthRegenTime();

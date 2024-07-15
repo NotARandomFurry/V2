@@ -78,8 +78,8 @@ namespace V2.NPCs.Voraria.Meteorite
 
 			NPC.AsPred().GetVisualBellySize = GetVisualBellySize;
 
-			NPC.AsFood().OnKilledByDigestion = PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
-			NPC.AsFood().OnKilledByDigestion += PreyNPC.HandlePreyItemTheft;
+			NPC.AsFood().OnDigestedBy = PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
+			NPC.AsFood().OnDigestedBy += PreyNPC.HandlePreyItemTheft;
 		}
 
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)

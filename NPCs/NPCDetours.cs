@@ -172,7 +172,7 @@ namespace V2.NPCs
 				if (npc.CurrentCaptor().Predator is Player hungryPlayer)
 					PredPlayer.CountDigestionKillForBannersAndDropThem(hungryPlayer, npc);
 
-				npc.AsFood().OnKilledByDigestion.Invoke(npc, npc.CurrentCaptor().Predator);
+				npc.AsFood().OnDigestedBy.Invoke(npc, npc.CurrentCaptor().Predator);
 				npc.NPCLoot();
 			}
 			else

@@ -132,8 +132,8 @@ namespace V2.NPCs.Vanilla.TownNPCs.Mechanic
 
 			npc.AsPred().GetVisualBellySize = GetVisualBellySize;
 
-			npc.AsFood().OnKilledByDigestion = PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
-			npc.AsFood().OnKilledByDigestion += PreyNPC.HandlePreyItemTheft;
+			npc.AsFood().OnDigestedBy = PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
+			npc.AsFood().OnDigestedBy += PreyNPC.HandlePreyItemTheft;
 			npc.AsFood().ItemTheftRules = new List<ItemTheftRule>
 			{
 				MechanicStuff.ItemTheftRules.CombatWrench,

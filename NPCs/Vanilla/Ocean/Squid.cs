@@ -33,8 +33,8 @@ namespace V2.NPCs.Vanilla.Ocean
 
 			npc.AsFood().DefinedBaseSize = 1.15;
 
-			npc.AsFood().OnKilledByDigestion = PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
-			npc.AsFood().OnKilledByDigestion += OnKilledByDigestion_GrantSquidGoal;
+			npc.AsFood().OnDigestedBy = PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
+			npc.AsFood().OnDigestedBy += OnKilledByDigestion_GrantSquidGoal;
 		}
 
 		public static void OnKilledByDigestion_GrantSquidGoal(NPC npc, Entity pred)

@@ -237,10 +237,10 @@ namespace V2.PlayerHandling
 				if (PermanentUpgradesGained.TryGetValue("AcidTier2", out bool acidTier2Acquired) && acidTier2Acquired)
 					return 2;
 
-				if (PermanentUpgradesGained.TryGetValue("AcidTier1", out bool acidTier1Acquired) && acidTier1Acquired)
-					return 1;
-
 				if (Player.HasBuff(ModContent.BuffType<FastDigestionPotionBuff>()))
+					return 2;
+
+				if (PermanentUpgradesGained.TryGetValue("AcidTier1", out bool acidTier1Acquired) && acidTier1Acquired)
 					return 1;
 
 				return 0;

@@ -85,10 +85,10 @@ namespace V2.NPCs.Vanilla.Forest
 			npc.AsPred().GetAdditionalDigestedPlayerMessages = GetDigestedPlayerAdditionalDeathMessages;
 			npc.AsPred().GetPreyAbsorptionRate = GetPreyAbsorptionRate;
 
-			npc.AsFood().OnKilledByDigestion = PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
-			npc.AsFood().OnKilledByDigestion += PreyNPC.HandlePreyItemTheft;
-			npc.AsFood().OnKilledByDigestion += OnKilledByDigestion_GrantPinkyGoal;
-			npc.AsFood().OnKilledByDigestion += SlimeNPC.OnKilledByDigestion_GrantSlimeMultiPreyGoal;
+			npc.AsFood().OnDigestedBy = PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
+			npc.AsFood().OnDigestedBy += PreyNPC.HandlePreyItemTheft;
+			npc.AsFood().OnDigestedBy += OnKilledByDigestion_GrantPinkyGoal;
+			npc.AsFood().OnDigestedBy += SlimeNPC.OnKilledByDigestion_GrantSlimeMultiPreyGoal;
 		}
 
 		public override bool? CanBeCaughtBy(NPC npc, Item item, Player player) {

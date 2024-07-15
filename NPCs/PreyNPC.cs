@@ -74,7 +74,7 @@ namespace V2.NPCs
 		}
 
 		public delegate void DelegateOnKilledByDigestion(NPC npc, Entity pred);
-		public DelegateOnKilledByDigestion OnKilledByDigestion { get; set; }
+		public DelegateOnKilledByDigestion OnDigestedBy { get; set; }
 
 		public bool CanChatAsPrey { get; set; }
 
@@ -100,7 +100,7 @@ namespace V2.NPCs
 			STR = 0;
 			StruggleEffectiveness = 5;
 
-			OnKilledByDigestion = null;
+			OnDigestedBy = null;
 
 			CanChatAsPrey = false;
 			DigestingHitSound = null;
@@ -110,7 +110,7 @@ namespace V2.NPCs
 		public override void SetDefaults(NPC npc)
 		{
 			if (!NPCID.Sets.ProjectileNPC[npc.type])
-				npc.AsFood().OnKilledByDigestion = OnKilledByDigestion_GrantLivePreyGoal;
+				npc.AsFood().OnDigestedBy = OnKilledByDigestion_GrantLivePreyGoal;
 		}
 
 		public override void ResetEffects(NPC npc)
@@ -239,7 +239,7 @@ namespace V2.NPCs
 		/// <param name="pred">The pred currently digesting this NPC.</param>
 		/// <param name="digestionDamage">The total amount of digestion damage to be dealt, before damage variation calculations.</param>
 		/// <returns>Whether or not the resulting digestion tick kills the NPC.</returns>
-		public static bool TakeDigestionDamage(NPC npc, Entity pred, double digestionDamage)
+		public static bool TakeDigestionDamage(NPC npc, Entity pred, double digestionDamage, bool voodoo = true)
 		{
 			if (npc.life <= 0)
 				return true;
@@ -247,8 +247,8 @@ namespace V2.NPCs
 			if (npc.realLife != -1 && npc.realLife != npc.whoAmI)
 				return false;
 
-			int trueDigestionDamage = Main.DamageVar((float)digestionDamage, (pred is Player playerPred) ? -playerPred.luck : 0);
-			if (ModContent.GetInstance<V2ServerConfig>().DefenseInDigestionCalcs)
+			int trueDigestionDamage = voodoo ? (int)Math.Round(digestionDamage) : Main.DamageVar((float)digestionDamage, (pred is Player playerPred) ? -playerPred.luck : 0);
+			if (ModContent.GetInstance<V2ServerConfig>().DefenseInDigestionCalcs && !voodoo)
 			{
 				trueDigestionDamage -= npc.defense;
 				if (trueDigestionDamage < 0)
@@ -268,9 +268,9 @@ namespace V2.NPCs
 						false,
 						true
 					)];
-					digestionDamageText.position.X = pred.Center.X + (pred.direction * 28);
+					digestionDamageText.position.X = (voodoo ? npc : pred).Center.X + ((voodoo ? npc : pred).direction * 28);
 					digestionDamageText.position.Y = npc.Center.Y + (npc.height / 5f);
-					digestionDamageText.velocity.X = pred.direction * 2.5f;
+					digestionDamageText.velocity.X = (voodoo ? npc : pred).direction * 2.5f;
 					digestionDamageText.velocity.Y = -4f;
 					break;
 				case NetmodeID.Server:
@@ -278,9 +278,9 @@ namespace V2.NPCs
 					digestionDamageTextPacket.Write((byte)V2.MessageType.SyncDigestionCombatTextForPreyNPC);
 					digestionDamageTextPacket.Write(npc.whoAmI);
 					digestionDamageTextPacket.Write(trueDigestionDamage);
-					digestionDamageTextPacket.Write(pred.Center.X + (pred.direction * 28));
+					digestionDamageTextPacket.Write((voodoo ? npc : pred).Center.X + ((voodoo ? npc : pred).direction * 28));
 					digestionDamageTextPacket.Write(npc.Center.Y + (npc.height / 5f));
-					digestionDamageTextPacket.Write(pred.direction * 2.5f);
+					digestionDamageTextPacket.Write((voodoo ? npc : pred).direction * 2.5f);
 					digestionDamageTextPacket.Write(-4f);
 					digestionDamageTextPacket.Send();
 					break;

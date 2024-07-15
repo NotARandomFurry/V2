@@ -31,9 +31,9 @@ namespace V2.NPCs.Vanilla.Tundra
 
 			NPC.AsFood().DefinedBaseSize = 0.72;
 
-			NPC.AsFood().OnKilledByDigestion = PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
-			NPC.AsFood().OnKilledByDigestion += PreyNPC.HandlePreyItemTheft;
-			NPC.AsFood().OnKilledByDigestion += OnKilledByDigestion_GrantSnowFlinxGoal;
+			NPC.AsFood().OnDigestedBy = PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
+			NPC.AsFood().OnDigestedBy += PreyNPC.HandlePreyItemTheft;
+			NPC.AsFood().OnDigestedBy += OnKilledByDigestion_GrantSnowFlinxGoal;
 		}
 
 		public static void OnKilledByDigestion_GrantSnowFlinxGoal(NPC npc, Entity pred)

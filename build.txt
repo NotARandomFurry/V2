@@ -1,4 +1,4 @@
 displayName = [18+] Voraria: Second Course
 author = the pixelated Sign Painter
 modReferences = BetterDialogue
-version = 1.0
+version = 0.3.5

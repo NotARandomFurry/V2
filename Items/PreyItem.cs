@@ -53,6 +53,28 @@ namespace V2.Items
 					trueDigestionDamage = 0;
 			}
 			item.AsFood().Health -= trueDigestionDamage;
+			if (item.type == ItemID.GuideVoodooDoll)
+			{
+				foreach (NPC npc in Main.ActiveNPCs)
+				{
+					if (npc.type == NPCID.Guide)
+					{
+						PreyNPC.TakeDigestionDamage(npc, pred, digestionDamage, voodoo: true);
+						break;
+					}
+				}
+			}
+			if (item.type == ItemID.ClothierVoodooDoll)
+			{
+				foreach (NPC npc in Main.ActiveNPCs)
+				{
+					if (npc.type == NPCID.Clothier)
+					{
+						PreyNPC.TakeDigestionDamage(npc, pred, digestionDamage, voodoo: true);
+						break;
+					}
+				}
+			}
 			if (item.AsFood().Health <= 0)
 			{
 				item.AsFood().OnBreak?.Invoke(item, pred);

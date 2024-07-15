@@ -34,8 +34,8 @@ namespace V2.NPCs.Vanilla.Desert
 
 			npc.AsFood().DefinedBaseSize = 3.72;
 
-			npc.AsFood().OnKilledByDigestion = PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
-			npc.AsFood().OnKilledByDigestion += OnKilledByDigestion_GrantSandElementalGoal;
+			npc.AsFood().OnDigestedBy = PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
+			npc.AsFood().OnDigestedBy += OnKilledByDigestion_GrantSandElementalGoal;
 		}
 
 		public static void OnKilledByDigestion_GrantSandElementalGoal(NPC npc, Entity pred)

@@ -1,0 +1,50 @@
+﻿using Microsoft.Xna.Framework;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Terraria;
+using Terraria.ID;
+using Terraria.Localization;
+using Terraria.ModLoader;
+using V2.Core;
+using V2.PlayerHandling;
+using V2.PlayerHandling.PredPlayerGoals.Amateur;
+using V2.PlayerHandling.PredPlayerGoals.Beginner;
+
+namespace V2.Items.Vanilla.Accessories.VoodooDolls
+{
+	public class ClothierVoodooDoll : GlobalItem
+	{
+		public override bool AppliesToEntity(Item entity, bool lateInstantiation) => entity.type == ItemID.ClothierVoodooDoll;
+
+		public override void SetDefaults(Item item)
+		{
+			item.AsFood().MaxHealth = 250;
+			item.AsFood().Size = 0.25;
+
+			item.AsFood().OnBreak = OnBreak_GrantVoodooDigestionGoal;
+		}
+
+		public override void Update(Item item, ref float gravity, ref float maxFallSpeed)
+		{
+			foreach (NPC npc in Main.ActiveNPCs)
+			{
+				if (npc.type == NPCID.Clothier)
+				{
+					item.AsFood().Health = npc.life;
+					break;
+				}
+			}
+		}
+
+		public static void OnBreak_GrantVoodooDigestionGoal(Item item, Entity pred)
+		{
+			if (pred is Player predPlayer)
+			{
+				ModContent.GetInstance<DigestWithVoodoo>().TrySetCompletion(predPlayer);
+			}
+		}
+	}
+}

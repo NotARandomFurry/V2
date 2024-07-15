@@ -159,7 +159,7 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 
 			NPC.AsPred().GetVisualBellySize = GetVisualBellySize;
 
-			NPC.AsFood().OnKilledByDigestion = PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
+			NPC.AsFood().OnDigestedBy = PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
 
 			NPC.buffImmune[BuffID.OnFire] = true;
 			NPC.buffImmune[BuffID.OnFire3] = true;

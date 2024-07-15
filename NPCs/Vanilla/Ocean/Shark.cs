@@ -34,8 +34,8 @@ namespace V2.NPCs.Vanilla.Graveyard
 
 			npc.AsFood().DefinedBaseSize = 2.625;
 
-			npc.AsFood().OnKilledByDigestion = PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
-			npc.AsFood().OnKilledByDigestion += OnKilledByDigestion_GrantSharkGoal;
+			npc.AsFood().OnDigestedBy = PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
+			npc.AsFood().OnDigestedBy += OnKilledByDigestion_GrantSharkGoal;
 		}
 
 		public static void OnKilledByDigestion_GrantSharkGoal(NPC npc, Entity pred)

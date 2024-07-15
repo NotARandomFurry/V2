@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
+using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 
@@ -15,7 +16,12 @@ namespace V2.PlayerHandling.PredPlayerGoals.Amateur
 		public override string DisplayName(Player pred) => "Mods.V2.PredPlayerGoals.Amateur.DigestWithVoodoo.Name";
 		public override string Description(Player pred) => "Mods.V2.PredPlayerGoals.Amateur.DigestWithVoodoo.Description";
 		public override bool HasClearDescription(Player pred) => true;
-		public override bool Available(Player pred) => Complete(pred);
+		public override bool Available(Player pred) =>
+			pred.ZoneUnderworldHeight
+		 || pred.HasItemInInventoryOrOpenVoidBag(ItemID.GuideVoodooDoll)
+		 || pred.ZoneDungeon
+		 || pred.HasItemInInventoryOrOpenVoidBag(ItemID.ClothierVoodooDoll)
+		 || Complete(pred);
 
 		public override int StatPointsFromCompletion => 10;
 
