@@ -23,22 +23,22 @@ using V2.Sounds.Vore;
 
 namespace V2.NPCs
 {
-	public static class V2NPCStuff
+	public static class GeneralNPCStuff
 	{
-		public static V2NPC AsV2NPC(this NPC npc, bool risky = false)
+		public static GeneralNPC AsV2NPC(this NPC npc, bool risky = false)
 		{
-			if (!npc.TryGetGlobalNPC(out V2NPC V2NPC))
+			if (!npc.TryGetGlobalNPC(out GeneralNPC generalNPC))
 			{
 				if (risky)
 					return null;
 
 				throw new Exception("this NPC, somehow, has been (possibly) completely untouched by VSC. how?");
 			}
-			return V2NPC;
+			return generalNPC;
 		}
 	}
 
-	public partial class V2NPC : GlobalNPC
+	public partial class GeneralNPC : GlobalNPC
 	{
 		public EntityGender Gender;
 		public delegate bool DelegateNewAI(NPC npc);
@@ -79,7 +79,7 @@ namespace V2.NPCs
 
 		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => true;
 
-		public V2NPC()
+		public GeneralNPC()
 		{
 			Gender = EntityGender.Other;
 

@@ -20,7 +20,7 @@ namespace V2.Items.Vanilla.Armor
 		{
 			item.SetNameOverride(Language.GetTextValue("Mods.V2.ItemName.Vanilla.Armor.OakWood.Chest"));
 
-			item.AsV2Item().ArmorEffectCode = OakWoodBreastplateEffect;
+			item.AsAnItem().ArmorEffectCode = OakWoodBreastplateEffect;
 
 			item.AsFood().MaxHealth = 200;
 			item.AsFood().Size = 0.50;

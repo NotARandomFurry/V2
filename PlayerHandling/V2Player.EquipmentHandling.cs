@@ -48,9 +48,9 @@ namespace V2.PlayerHandling
 			if (armorPiece.shieldSlot > 0)
 				player.hasRaisableShield = true;
 
-			if (armorPiece.AsV2Item().ArmorEffectCode is not null)
+			if (armorPiece.AsAnItem().ArmorEffectCode is not null)
 			{
-				armorPiece.AsV2Item().ArmorEffectCode.Invoke(armorPiece, player);
+				armorPiece.AsAnItem().ArmorEffectCode.Invoke(armorPiece, player);
 				return;
 			}
 

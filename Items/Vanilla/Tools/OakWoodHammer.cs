@@ -12,8 +12,6 @@ namespace V2.Items.Vanilla.Tools
 
         public override void SetDefaults(Item item)
         {
-            item.SetNameOverride(Language.GetTextValue("Mods.V2.ItemName.Vanilla.Tools.OakWoodHammer"));
-
             item.AsFood().MaxHealth = 165;
             item.AsFood().Size = 0.45;
         }

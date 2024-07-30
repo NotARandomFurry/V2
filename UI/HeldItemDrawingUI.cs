@@ -18,7 +18,7 @@ namespace V2.UI
 		{
 			Player player = Main.LocalPlayer;
 			Visible = false;
-			if (!player.HeldItem.IsAir && player.HeldItem.AsV2Item().heldItemUIDrawMethod != null)
+			if (!player.HeldItem.IsAir && player.HeldItem.AsAnItem().heldItemUIDrawMethod != null)
 				Visible = true;
 			if (player.AsV2Player().generalItemUIDrawMethods is not null && player.AsV2Player().generalItemUIDrawMethods.Count > 0)
 				Visible = true;
@@ -30,8 +30,8 @@ namespace V2.UI
 				return;
 
 			Player player = Main.LocalPlayer;
-			if (!player.HeldItem.IsAir && player.HeldItem.AsV2Item().heldItemUIDrawMethod != null)
-				player.HeldItem.AsV2Item().heldItemUIDrawMethod.Invoke(player.HeldItem, player, spriteBatch);
+			if (!player.HeldItem.IsAir && player.HeldItem.AsAnItem().heldItemUIDrawMethod != null)
+				player.HeldItem.AsAnItem().heldItemUIDrawMethod.Invoke(player.HeldItem, player, spriteBatch);
 
 			if (player.AsV2Player().generalItemUIDrawMethods is not null && player.AsV2Player().generalItemUIDrawMethods.Count > 0)
 			{

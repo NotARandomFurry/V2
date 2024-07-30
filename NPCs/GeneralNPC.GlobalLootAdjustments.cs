@@ -23,7 +23,7 @@ using V2.Sounds.Vore;
 
 namespace V2.NPCs
 {
-	public partial class V2NPC : GlobalNPC
+	public partial class GeneralNPC : GlobalNPC
 	{
 		public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
 		{

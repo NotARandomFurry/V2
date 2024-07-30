@@ -71,6 +71,7 @@ namespace V2.Projectiles.Vanilla.Summons.Pets
 				(PreyType.NPC, NPCID.GoldLadyBug),
 				(PreyType.NPC, NPCID.GoldMouse),
 				(PreyType.NPC, NPCID.GoldSeahorse),
+				(PreyType.NPC, NPCID.SquirrelGold),
 				(PreyType.NPC, NPCID.GoldWaterStrider),
 				(PreyType.NPC, NPCID.GoldWorm),
 				(PreyType.NPC, NPCID.EnchantedNightcrawler),
@@ -99,28 +100,27 @@ namespace V2.Projectiles.Vanilla.Summons.Pets
 				(PreyType.NPC, NPCID.QueenSlimeMinionPurple),
 				(PreyType.NPC, NPCID.QueenSlimeMinionPink),
 				(PreyType.NPC, NPCID.EnchantedSword),
+				(PreyType.NPC, NPCID.BigMimicHallow),
+				(PreyType.NPC, NPCID.SandsharkHallow),
 				(PreyType.NPC, NPCID.EmpressButterfly),
+				(PreyType.NPC, NPCID.HallowBoss),
 				(PreyType.NPC, NPCID.IceQueen),
 				(PreyType.NPC, NPCID.VortexHornetQueen),
 				(PreyType.NPC, NPCID.ShimmerSlime),
 				(PreyType.NPC, NPCID.Shimmerfly),
+				(PreyType.Projectile, ProjectileID.KingSlimePet),
+				(PreyType.Projectile, ProjectileID.QueenSlimePet),
 				(PreyType.Projectile, ProjectileID.IceQueenPet),
 			};
 			if (!V2.BlacklistsActive)
 				diet.Add((PreyType.NPC, NPCID.Princess));
-			if (ModContent.GetInstance<V2ServerConfig>().EasilyEdibleEmpress)
-				diet.Add((PreyType.NPC, NPCID.HallowBoss));
 
 			PreyType targetPreyType = PreyType.Undefined;
 			int targetPreyIndex = -1;
 			double maxPreyDistanceFromFairy = V2Utils.TileCountAsPixelCount(25);
 			double maxPreyDistanceFromOwner = V2Utils.TileCountAsPixelCount(40);
-			for (int i = 0; i < Main.maxNPCs; i++)
+			foreach (NPC potentialPrey in Main.ActiveNPCs)
 			{
-				NPC potentialPrey = Main.npc[i];
-				if (!potentialPrey.active)
-					continue;
-
 				if (potentialPrey.CurrentCaptor() is not null)
 					continue;
 
@@ -138,7 +138,7 @@ namespace V2.Projectiles.Vanilla.Summons.Pets
 				if (distanceToPotentialPrey <= maxPreyDistanceFromFairy && distanceToPotentialPreyFromOwner <= maxPreyDistanceFromOwner)
 				{
 					targetPreyType = PreyType.NPC;
-					targetPreyIndex = i;
+					targetPreyIndex = potentialPrey.whoAmI;
 					maxPreyDistanceFromFairy = distanceToPotentialPrey;
 					maxPreyDistanceFromOwner = distanceToPotentialPreyFromOwner;
 				}

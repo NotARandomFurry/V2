@@ -12,8 +12,6 @@ namespace V2.Items.Vanilla.Placeables.NormalAssWood.Furniture
 
 		public override void SetDefaults(Item item)
 		{
-			item.SetNameOverride(Language.GetTextValue("Mods.V2.ItemName.Vanilla.Placeables.NormalAssWood.Furniture.Platform"));
-
 			item.AsFood().MaxHealth = 40;
 			item.AsFood().Size = 0.14;
 		}

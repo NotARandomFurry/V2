@@ -21,7 +21,7 @@ namespace V2.Items.Vanilla.Accessories
 
 		public override void SetDefaults(Item item)
 		{
-			item.AsV2Item().AccessoryEffectCode = UpdateHealthRegenAndPotionCooldownBand;
+			item.AsAnItem().AccessoryEffectCode = UpdateHealthRegenAndPotionCooldownBand;
 
 			item.lifeRegen = 0;
 

@@ -24,7 +24,7 @@ namespace V2.Items.Voraria.Consumables.Catchables
 		public override void SetDefaults()
 		{
 			Item.DefaultToCapturedCritter(NPCID.BlueSlime);
-			Item.AsV2Item().ReleasedNPCNetID = NPCID.Pinky;
+			Item.AsAnItem().ReleasedNPCNetID = NPCID.Pinky;
 
 			Item.width = 30;
 			Item.height = 30;

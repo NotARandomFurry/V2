@@ -78,6 +78,7 @@ namespace V2
 			StruggleSpecialHotkey = KeybindLoader.RegisterKeybind(this, "StruggleSpecial", "Space");
 
 			BetterDialogue.BetterDialogue.SupportedNPCs.Add(ModContent.NPCType<Lucinda>());
+			BetterDialogue.BetterDialogue.SupportedNPCs.Add(ModContent.NPCType<LucindaBound>());
 
 			BetterDialogue.BetterDialogue.RegisterShoppableNPC(NPCID.Nurse);
 			BetterDialogue.BetterDialogue.RegisterShoppableNPC(ModContent.NPCType<Lucinda>());

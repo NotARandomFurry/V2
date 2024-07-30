@@ -6,7 +6,7 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 using V2.Core;
-using V2.NPCs.NPCGroupUtils;
+using V2.NPCs.V2NPCGroupUtils;
 
 namespace V2.NPCs.Vanilla.Cavern
 {

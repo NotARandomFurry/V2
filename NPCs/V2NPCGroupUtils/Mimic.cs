@@ -12,40 +12,38 @@ using V2.PlayerHandling.PredPlayerGoals.Beginner;
 using V2.PlayerHandling.PredPlayerGoals.Intermediate;
 using V2.Sounds.Vore;
 
-namespace V2.NPCs.NPCGroupUtils
+namespace V2.NPCs.V2NPCGroupUtils
 {
-	public static class MiniFairyStuff
+	public static class MimicStuff
 	{
-		public static MiniFairy AsMiniFairy(this NPC npc)
+		public static Mimic AsMimic(this NPC npc)
 		{
-			if (!npc.TryGetGlobalNPC(out MiniFairy tastySparklySnack))
+			if (!npc.TryGetGlobalNPC(out Mimic tastySparklySnack))
 				throw new Exception("this instance of a gem critter, supposedly, doesn't exist");
 
 			return tastySparklySnack;
 		}
 	}
 
-	public class MiniFairy : GlobalNPC
+	public class Mimic : GlobalNPC
 	{
 		public override bool IsLoadingEnabled(Mod mod) => !V2.GetFooled;
 		public override bool InstancePerEntity => true;
 
-		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => V2Utils.NPCIDSets.MiniFairies.Contains(entity.type);
+		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => V2Utils.NPCIDSets.Mimics.Contains(entity.type);
 
 		public override void SetDefaults(NPC npc)
 		{
-			npc.AsV2NPC().Gender = Main.rand.NextBool() ? EntityGender.Male : EntityGender.Female;
+			npc.AsV2NPC().Gender = EntityGender.Other;
 
-			npc.AsFood().OnDigestedBy += OnDigestedBy_GrantMiniFairyGoal;
+			npc.AsFood().OnDigestedBy += OnDigestedBy_GrantMimicGoal;
 		}
 
-		public static void OnDigestedBy_GrantMiniFairyGoal(NPC npc, Entity pred)
+		public static void OnDigestedBy_GrantMimicGoal(NPC npc, Entity pred)
 		{
 			if (pred is Player predPlayer)
 			{
-				bool canCatchFairy = npc.ai[2] <= 1f;
-				if (canCatchFairy)
-					ModContent.GetInstance<EatHelpfulFairy>().TrySetCompletion(predPlayer);
+				ModContent.GetInstance<EatMimic>().TrySetCompletion(predPlayer);
 			}
 		}
 	}

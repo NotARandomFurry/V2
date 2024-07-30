@@ -13,8 +13,6 @@ namespace V2.Items.Vanilla
 
 		public override void SetDefaults(Item item)
 		{
-			item.SetNameOverride(Language.GetTextValue("Mods.V2.ItemName.Vanilla.Feather"));
-
 			item.AsFood().MaxHealth = 12;
 			item.AsFood().Size = 0.008;
 		}

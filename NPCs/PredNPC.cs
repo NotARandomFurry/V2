@@ -288,7 +288,7 @@ namespace V2.NPCs
 		/// </summary>
 		/// <param name="pred">The predator which will attempt to swallow the given prey.</param>
 		/// <param name="prey">The prey which will be attempt to be swallowed by the given predator.</param>
-		public static void Swallow(NPC pred, Entity prey, int MPstate = 0, int MPwhoAmI = -1)
+		public static void Swallow(NPC pred, Entity prey, int MPstate = 0, int MPwhoAmI = -1, bool playSound = true)
 		{
 			if (!CanSwallow(pred, prey))
 				return;
@@ -301,7 +301,8 @@ namespace V2.NPCs
 
 			PreyData food = PreyData.NewData(prey);
 			AddNewPrey(pred, food);
-			PlaySwallowGulp(pred, food);
+			if (playSound)
+				PlaySwallowGulp(pred, food);
 			switch (food.Type)
 			{
 				case PreyType.Player:

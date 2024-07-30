@@ -79,32 +79,5 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 			};
 			return Main.rand.NextFromCollection(possibleLines);
 		}
-
-		public override void SetChatButtons(ref string button, ref string button2)
-		{
-			button = "Free";
-			button2 = "Don't Free";
-		}
-
-		public override void OnChatButtonClicked(bool firstButton, ref string shopName)
-		{
-			if (firstButton)
-			{
-				ModContent.GetInstance<V2MasterSystem>().freedSucc = true;
-				NPC.AI_000_TransformBoundNPC(Main.CurrentPlayer.whoAmI, ModContent.NPCType<Lucinda>());
-				Main.npcChatText = "There ya go! Wasn't that hard. Now, c'mere so I can reward you with some time in my gut...or, y'know, just some old trinkets from your ol' pal Lucinda to help you be a great pred just like me.";
-			}
-			else
-			{
-				ModContent.GetInstance<V2MasterSystem>().freedSucc = true;
-				NPC.AI_000_TransformBoundNPC(Main.CurrentPlayer.whoAmI, ModContent.NPCType<Lucinda>());
-				PredNPC.SwallowWithTextIfApplicable(
-					NPC,
-					Main.CurrentPlayer,
-					"[c/7F7F7F:<As a scowl quickly crosses her face, the succubus whips her tail around your form and uses it to guide you headfirst into her mouth, soon letting her newly-filled stomach break the bindings for you.>]\n"
-				  + "Fine! If you're gonna be such a " + (Main.CurrentPlayer.Male ? "dick" : "bitch") + " about it, you can AT LEAST be helpful enough to fatten up my thighs! Haven't had some REAL good eats in a while..."
-				);
-			}
-		}
 	}
 }

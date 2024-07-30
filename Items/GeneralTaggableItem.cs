@@ -10,7 +10,7 @@ using V2.UI;
 
 namespace V2.Items
 {
-	public class TaggableItem : GlobalItem
+	public class GeneralTaggableItem : GlobalItem
 	{
 		public override bool InstancePerEntity => true;
 
@@ -23,7 +23,7 @@ namespace V2.Items
 		public bool NormalFood { get; set; }
 		public bool NormalDrink { get; set; }
 
-		public TaggableItem()
+		public GeneralTaggableItem()
 		{
 			Broadsword = false;
 			Shortsword = false;

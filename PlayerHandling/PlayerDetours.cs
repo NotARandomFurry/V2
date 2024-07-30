@@ -298,6 +298,9 @@ namespace V2.PlayerHandling
 				if (player.buffType[j] <= 0 || player.buffTime[j] <= 0)
 					continue;
 
+				if (player.whoAmI == Main.myPlayer && !BuffID.Sets.TimeLeftDoesNotDecrease[player.buffType[j]])
+					player.buffTime[j]--;
+
 				bool actuallyModifiedByVSC = V2.ModifiedStatusEffects.ContainsKey(player.buffType[j]);
 				if (actuallyModifiedByVSC)
 				{
@@ -305,9 +308,6 @@ namespace V2.PlayerHandling
 					buffReplacement.Update(player.buffType[j], player, ref j);
 					continue;
 				}
-
-				if (player.whoAmI == Main.myPlayer && !BuffID.Sets.TimeLeftDoesNotDecrease[player.buffType[j]])
-					player.buffTime[j]--;
 
 				//TML: this will be used at the very end of player scope.
 				int originalIndex = j;
@@ -2408,8 +2408,8 @@ namespace V2.PlayerHandling
 					player.ApplyItemTime(sItem);
 					int releasedCritterIndex = NPC.ReleaseNPC(num, num2, sItem.makeNPC, sItem.placeStyle, player.whoAmI);
 					NPC releasedCritter = Main.npc[releasedCritterIndex];
-					if (sItem.AsV2Item().ReleasedNPCNetID < 0)
-						releasedCritter.SetDefaults(sItem.AsV2Item().ReleasedNPCNetID);
+					if (sItem.AsAnItem().ReleasedNPCNetID < 0)
+						releasedCritter.SetDefaults(sItem.AsAnItem().ReleasedNPCNetID);
 					if (sItem.AsFood().MaxHealth != 0 && sItem.AsFood().MaxHealth == releasedCritter.lifeMax)
 						releasedCritter.life = sItem.AsFood().Health;
 					if (Main.myPlayer == player.whoAmI && V2.SwallowHotkey.Current && PredPlayer.CanSwallow(player, releasedCritter))

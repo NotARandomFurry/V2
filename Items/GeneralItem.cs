@@ -18,7 +18,7 @@ namespace V2.Items
 		InPlayerInventory,
 		BeingFood,
 	}
-	public class V2Item : GlobalItem
+	public class GeneralItem : GlobalItem
 	{
 		public DelegateHeldItemDrawingUI heldItemUIDrawMethod;
 
@@ -35,7 +35,7 @@ namespace V2.Items
 
 		public override bool InstancePerEntity => true;
 
-		public V2Item()
+		public GeneralItem()
 		{
 			heldItemUIDrawMethod = null;
 

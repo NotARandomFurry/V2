@@ -9,7 +9,7 @@ using V2.Core;
 using V2.PlayerHandling.PredPlayerGoals.Intermediate;
 using V2.PlayerHandling;
 
-namespace V2.Items.ItemGroupUtils
+namespace V2.Items.V2ItemGroupUtils
 {
 	public class LargeGem : GlobalItem
 	{
@@ -17,6 +17,10 @@ namespace V2.Items.ItemGroupUtils
 
 		public override void SetDefaults(Item item)
 		{
+			item.AsFood().Size = 0.925;
+			item.AsFood().MaxHealth = 5000;
+			item.AsFood().AcidResistTier = 1;
+
 			item.AsFood().OnBreak += OnBreak_GrantLargeGemMultiPreyGoal;
 		}
 

@@ -63,7 +63,7 @@ namespace V2
 			// and now, the rest of the detours
 			NPCLoader_NPCAI_Hook = new Hook(NPCLoader_NPCAI_MethodInfo, (orig_NPCAI orig, NPC npc) =>
 			{
-				V2NPC npcAsV2NPC = npc.AsV2NPC(risky: true);
+				GeneralNPC npcAsV2NPC = npc.AsV2NPC(risky: true);
 				PreyNPC npcAsPrey = npc.AsFood(risky: true);
 				if (npcAsV2NPC is null || npcAsPrey is null)
 					orig(npc);
@@ -171,8 +171,8 @@ namespace V2
 				if ((item.expertOnly && !Main.expertMode) || (item.masterOnly && !Main.masterMode))
 					return;
 
-				if (item.AsV2Item() is not null && item.AsV2Item().AccessoryEffectCode is not null)
-					item.AsV2Item().AccessoryEffectCode.Invoke(item, player, hideVisual);
+				if (item.AsAnItem() is not null && item.AsAnItem().AccessoryEffectCode is not null)
+					item.AsAnItem().AccessoryEffectCode.Invoke(item, player, hideVisual);
 				else
 					orig(player, item, hideVisual);
 			};
@@ -206,10 +206,16 @@ namespace V2
 
 		public static void DisengageVoraciousGameFuckery()
 		{
-			NPCLoader_NPCAI_Hook.Undo();
-			NPCLoader_NPCAI_Hook = null;
-			ProjectileLoader_ProjectileAI_Hook.Undo();
-			ProjectileLoader_ProjectileAI_Hook = null;
+			if (NPCLoader_NPCAI_Hook is not null)
+			{
+				NPCLoader_NPCAI_Hook.Undo();
+				NPCLoader_NPCAI_Hook = null;
+			}
+			if (ProjectileLoader_ProjectileAI_Hook is not null)
+			{
+				ProjectileLoader_ProjectileAI_Hook.Undo();
+				ProjectileLoader_ProjectileAI_Hook = null;
+			}
 		}
 
 		private static void NoPotionsOrHeartsIfDigested(On_NPC.orig_DoDeathEvents_DropBossPotionsAndHearts orig, NPC npc, ref string typeName)

@@ -175,7 +175,13 @@ namespace V2.Items
 			if (item.IsAir)
 				return;
 
-			if (item.AsFood().Digested)
+			if (MaxHealth != -1)
+			{
+				if (Health == -1 || Health > MaxHealth)
+					Health = MaxHealth;
+			}
+
+			if (Digested)
 			{
 				item.TurnToAir();
 				return;
@@ -199,10 +205,10 @@ namespace V2.Items
 			if (item.IsAir)
 				return;
 
-			if (item.AsFood().MaxHealth != -1)
+			if (MaxHealth != -1)
 			{
-				if (item.AsFood().Health == -1 || item.AsFood().Health > item.AsFood().MaxHealth)
-					item.AsFood().Health = item.AsFood().MaxHealth;
+				if (Health == -1 || Health > MaxHealth)
+					Health = MaxHealth;
 			}
 		}
 
@@ -244,7 +250,10 @@ namespace V2.Items
 		public override bool CanStack(Item destination, Item source)
 		{
 			if (destination.IsAir || source.IsAir)
-				return false;
+				return true;
+
+			if (destination.AsFood().MaxHealth == -1 || source.AsFood().MaxHealth == -1)
+				return true;
 
 			if (destination.AsFood().Health != source.AsFood().Health)
 				return false;
@@ -255,6 +264,12 @@ namespace V2.Items
 		public override bool CanStackInWorld(Item destination, Item source)
 		{
 			if (destination.IsAir || source.IsAir)
+				return true;
+
+			if (destination.AsFood().MaxHealth == -1 || source.AsFood().MaxHealth == -1)
+				return true;
+
+			if (destination.AsFood().Health != source.AsFood().Health)
 				return false;
 
 			return true;

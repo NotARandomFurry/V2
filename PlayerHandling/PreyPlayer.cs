@@ -143,6 +143,11 @@ namespace V2.PlayerHandling
 			return true;
 		}
 
+		public override bool PreItemCheck()
+		{
+			return base.PreItemCheck();
+		}
+
 		public override void PostItemCheck()
 		{
 			if (Main.netMode != NetmodeID.Server && Player.whoAmI == Main.myPlayer && V2.FeedHotkey.JustPressed)

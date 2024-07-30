@@ -133,6 +133,7 @@ namespace V2.UI.StomachacheMeter
 			Visible = true;
 		}
 
+		private bool _predHasStomachFull;
 		private int _stomachacheSegments;
 		private float _stomachachePercent;
 		private bool _stomachacheHovered;
@@ -150,10 +151,13 @@ namespace V2.UI.StomachacheMeter
 
 			void Draw(Entity pred)
 			{
+				if (pred.CurrentCaptor() is not null)
+					return;
+
 				if (pred is not Player && _stomachacheExactMax == -1)
 					return;
 
-				if (_stomachacheExactCurrent <= 0)
+				if (!_predHasStomachFull && _stomachacheExactCurrent <= 0)
 					return;
 
 				Vector2 topLeftCorner = new Vector2(
@@ -242,18 +246,27 @@ namespace V2.UI.StomachacheMeter
 
 			foreach (Player player in Main.ActivePlayers)
 			{
+				if (player.AsPred().StomachCapacity <= 0)
+					continue;
+
 				PrepareFields(player);
 				Draw(player);
 			}
 
 			foreach (NPC npc in Main.ActiveNPCs)
 			{
+				if (npc.AsPred().MaxStomachCapacity <= 0)
+					continue;
+
 				PrepareFields(npc);
 				Draw(npc);
 			}
 
 			foreach (Projectile projectile in Main.ActiveProjectiles)
 			{
+				if (projectile.AsPred().MaxStomachCapacity <= 0)
+					continue;
+
 				PrepareFields(projectile);
 				Draw(projectile);
 			}
@@ -263,6 +276,7 @@ namespace V2.UI.StomachacheMeter
 		{
 			PlayerPredStomachacheSnapshot PlayerPredStatsSnapshot = new PlayerPredStomachacheSnapshot(player);
 
+			_predHasStomachFull = player.AsPred().StomachTracker?.Prey.FindAll(x => !x.NoHealth)?.Count > 0;
 			_stomachacheSegments = PlayerPredStatsSnapshot.AmountOfStomachacheMeterSegments;
 			if (PlayerPredStatsSnapshot.StomachacheMax == -1)
 				_stomachachePercent = 0f;
@@ -277,6 +291,7 @@ namespace V2.UI.StomachacheMeter
 		{
 			NPCPredStomachacheSnapshot NPCPredStatsSnapshot = new NPCPredStomachacheSnapshot(npc);
 
+			_predHasStomachFull = PredNPC.GetStomachTracker(npc)?.Prey.FindAll(x => !x.NoHealth)?.Count > 0;
 			_stomachacheSegments = NPCPredStatsSnapshot.AmountOfStomachacheMeterSegments;
 			if (NPCPredStatsSnapshot.StomachacheMax == -1)
 				_stomachachePercent = 0f;
@@ -291,6 +306,7 @@ namespace V2.UI.StomachacheMeter
 		{
 			ProjectilePredStomachacheSnapshot NPCPredStatsSnapshot = new ProjectilePredStomachacheSnapshot(projectile);
 
+			_predHasStomachFull = PredProjectile.GetStomachTracker(projectile)?.Prey.FindAll(x => !x.NoHealth)?.Count > 0;
 			_stomachacheSegments = NPCPredStatsSnapshot.AmountOfStomachacheMeterSegments;
 			if (NPCPredStatsSnapshot.StomachacheMax == -1)
 				_stomachachePercent = 0f;
