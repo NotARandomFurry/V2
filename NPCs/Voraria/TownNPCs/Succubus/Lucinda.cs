@@ -141,6 +141,9 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 			NPC.AsPred().MaxStomachCapacity = 2.2;
 			NPC.AsPred().BaseStomachacheMeterCapacity = 155.0;
 
+			NPC.AsPred().SmallGulps = Gulps.Short;
+			NPC.AsPred().SmallGulpThreshold = 0.45;
+			NPC.AsPred().BigGulps = Gulps.Standard;
 			NPC.AsPred().CanBeForceFed = CanSuccubusBeForceFed;
 			NPC.AsPred().OnForceFed = OnSuccubusForceFed;
 

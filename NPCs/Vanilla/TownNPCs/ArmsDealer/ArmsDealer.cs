@@ -287,7 +287,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.ArmsDealer
 			if (PredNPC.GetStomachTracker(npc)?.Prey.FirstOrDefault(x => x.Type == PreyType.NPC && x.ExactType == NPCID.Nurse) is PreyData crushAsPrey)
 				return;
 
-			static void RollForRandomGulp(ref bool gulp) => gulp |= Main.rand.NextBool(2, 100);
+			static void RollForRandomGulp(ref bool gulp) => gulp |= Main.rand.NextBool(7, 200);
 
 			List<NPC> nearbyResidentNPCs = npc.GetNearbyResidentNPCs(out int npcsWithinHouse, out int npcsWithinVillage);
 			NPC helloNurse = nearbyResidentNPCs.FirstOrDefault(x => x.type == NPCID.Nurse);

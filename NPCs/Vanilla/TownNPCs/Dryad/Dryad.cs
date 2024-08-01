@@ -395,6 +395,12 @@ namespace V2.NPCs.Vanilla.TownNPCs.Dryad
 			if (FORE != null && FORE.Distance(npc.Center) <= npc.AsPred().MaxSwallowRange && shouldSnackOnGolfer)
 				PredNPC.Swallow(npc, FORE);
 
+			NPC pudgyPaintBoy = nearbyResidentNPCs.FirstOrDefault(x => x.type == NPCID.Painter);
+			bool shouldSnackOnPudgyPaintBoy = false;
+			RollForRandomGulp(ref shouldSnackOnPudgyPaintBoy);
+			if (FORE != null && FORE.Distance(npc.Center) <= npc.AsPred().MaxSwallowRange && shouldSnackOnPudgyPaintBoy)
+				PredNPC.Swallow(npc, pudgyPaintBoy);
+
 			NPC gadgetGal = nearbyResidentNPCs.FirstOrDefault(x => x.type == NPCID.Mechanic);
 			bool shouldSnackOnGadgetGal = false;
 			RollForRandomGulp(ref shouldSnackOnGadgetGal);

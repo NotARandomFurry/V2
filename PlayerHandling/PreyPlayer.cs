@@ -16,6 +16,7 @@ using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using Terraria.UI.Chat;
 using V2.Core;
+using V2.Items;
 using V2.NPCs;
 using V2.Projectiles;
 using V2.StatusEffects.Voraria.Debuffs;
@@ -133,19 +134,6 @@ namespace V2.PlayerHandling
 				if (Player.AsFood().SoftenedDigestionDamageTaken < 0)
 					Player.AsFood().SoftenedDigestionDamageTaken = 0;
 			}
-		}
-
-		public override bool CanUseItem(Item item)
-		{
-			if (Player.CurrentCaptor() is not null)
-				return false;
-
-			return true;
-		}
-
-		public override bool PreItemCheck()
-		{
-			return base.PreItemCheck();
 		}
 
 		public override void PostItemCheck()
@@ -378,13 +366,11 @@ namespace V2.PlayerHandling
 		{
 			int trueDigestionDamage = Main.DamageVar((float)digestionDamage, Player.luck);
 			if (ModContent.GetInstance<V2ServerConfig>().DefenseInDigestionCalcs)
-			{
 				trueDigestionDamage -= Player.statDefense;
-				if (trueDigestionDamage < 0)
-					trueDigestionDamage = 0;
-			}
 			trueDigestionDamage = (int)Math.Round((float)trueDigestionDamage * (1f - Player.endurance));
 			trueDigestionDamage = (int)Math.Round(Player.AsFood().TakenDigestionDamageModifier.ApplyTo(trueDigestionDamage));
+			if (trueDigestionDamage < 1)
+				trueDigestionDamage = 1;
 			Player.AsFood().SoftenedDigestionDamageTaken += Player.AsFood().SoftenedDigestionDamageModifier.ApplyTo(trueDigestionDamage);
 			Player.AsFood().SoftenedWearoffDelay = SoftenedWearoffMaxDelay;
 			Player.statLife -= trueDigestionDamage;

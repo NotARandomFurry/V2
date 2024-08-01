@@ -612,7 +612,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 				return;
 			}
 
-			static void RollForRandomGulp(ref bool gulp) => gulp |= Main.rand.NextBool(2, 100);
+			static void RollForRandomGulp(ref bool gulp) => gulp |= Main.rand.NextBool(7, 200);
 
 			List<NPC> nearbyResidentNPCs = npc.GetNearbyResidentNPCs(out int npcsWithinHouse, out int npcsWithinVillage);
 			NPC hopelessRomantic = nearbyResidentNPCs.FirstOrDefault(x => x.type == NPCID.ArmsDealer);

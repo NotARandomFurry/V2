@@ -163,7 +163,7 @@ namespace V2.Projectiles
 		public static void ResetEffects(Projectile projectile)
 		{
 			double stomachacheQuellPerTick = projectile.AsPred().StomachacheMeterCapacity * (0.05 / (double)V2Utils.SensibleTime(seconds: 1));
-			if (GetStomachTracker(projectile) is null || !AnyPreyStillAlive(projectile))
+			if (GetStomachTracker(projectile) is not null && AnyPreyStillAlive(projectile))
 				stomachacheQuellPerTick *= 0.1;
 			projectile.AsPred().Stomachache -= stomachacheQuellPerTick;
 

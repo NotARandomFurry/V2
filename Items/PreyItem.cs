@@ -217,6 +217,12 @@ namespace V2.Items
 			if (item.IsAir)
 				return false;
 
+			if (player.CurrentCaptor() is not null)
+			{
+				if (item.AsFood().CanUseInStomach.Invoke(item, player, player.CurrentCaptor().Predator))
+					item.AsFood().UseInStomach.Invoke(item, player, player.CurrentCaptor().Predator);
+				return false;
+			}
 			if (item.AsFood().EdibleOnUse && item != player.inventory[58] && player.whoAmI == Main.myPlayer && (V2.ItemGulpHotkey.Current || item.AsFood().AlwaysEatenByUse))
 			{
 				int origStack = item.stack;
