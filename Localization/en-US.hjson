@@ -3122,7 +3122,7 @@ Mods: {
 							4: "{Player} will look super stylish as a new layer of fat for {Pred}."
 							5: "{Pred} just couldn't resist {Player}'s delectable hair."
 							6: "{Player} helped {Pred} exercise her no-refunds policy."
-							BloodMoonHaircut: (Player) asked for a haircut at just the right time.
+							BloodMoonHaircut: "{Player} asked for a haircut at just the right time."
 							Hardcore:
 								'''
 								{Player} snackrificed their only life to its rightful holder: {Pred} the hair stylist.

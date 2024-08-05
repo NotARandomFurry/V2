@@ -172,17 +172,17 @@ namespace V2.NPCs.Vanilla.TownNPCs.Steampunker
 				{
 					steampunkerChatPool.AddRange(new List<string>
 					{
-						"You're getting in the way of my work. Quit it, or I'll just pack you away like the quaint little snack you are.",
-						"Keep it down, you bleeding ragamuffin. I don't CARE if you're in my tum or not; you're a disturbance either way.",
-						"Will you buzz off? I'm already peevish and peckish enough as it is WITHOUT you snooping around!",
+						"You're getting in the way of my work. [c/FF0000:Quit it], or I'll just pack you away like the [c/FF0000:quaint little snack] you are.",
+						"Keep it down, you bleeding ragamuffin. I don't CARE if you're in my tum or not; you're a [c/FF0000:disturbance] either way.",
+						"Will you [c/FF0000:buzz off]? I'm already peevish and peckish enough as it is WITHOUT you snooping around!",
 					});
 					if (wireWoman is not null)
 					{
 						steampunkerChatPool.AddRange(new List<string>
 						{
-							"If I have to tell off " + wireWoman.GivenName + " ONE MORE TIME, she'll be converted DIRECTLY into steam! How DARE she try to upstage me...",
-							"NO! I DO NOT WANT YOUR CRASS \"WIRING\" DOOHICKEYS!...oh, I thought you were that daft wire girl. I'm only the NORMAL amount of peeved with you.",
-							"For the last time, tell " + wireWoman.GivenName + " that I DON'T WANT HER SCRAP METAL! My steam, which I'll HAPPILY churn her into more of, is FAR superior!",
+							"If I have to tell off " + wireWoman.GivenName + " ONE MORE TIME, she'll be converted [c/FF0000:DIRECTLY into steam]! How DARE she try to upstage me...",
+							"NO! I [c/FF0000:DO NOT WANT YOUR CRASS \"WIRING\" DOOHICKEYS!]...oh, I thought you were that daft wire girl. I'm only the NORMAL amount of [c/FF0000:peeved] with you.",
+							"For the last time, tell " + wireWoman.GivenName + " that I DON'T WANT HER [c/FF0000:SCRAP METAL]! My steam, which I'll HAPPILY [c/FF0000:churn her into more of], is FAR superior!",
 						});
 					}
 					if (GetVisualBellySize(npc) > 0)
@@ -198,16 +198,16 @@ namespace V2.NPCs.Vanilla.TownNPCs.Steampunker
 					{
 						steampunkerChatPool.AddRange(new List<string>
 						{
-							"WHAT KIND OF BLUNDERSOME DUNCE MAKES IT RAIN ON A NIGHT LIKE THIS!? I have WORK to be doing, and this rain is AWFUL!",
-							"Horrible. Absolutely bloody horrible...are YOU the one responsible for this!? Did you make it rain tonight!? You've ruined ALL of the work I could've possibly done tonight!",
-							"I am THIS CLOSE to making a machine specifically to reach up and rope down each of those rain clouds individually. I'm STARVED, and they'd make a better MEAL for me than anything they could be up there!",
+							"WHAT KIND OF BLUNDERSOME [c/FF0000:DUNCE] MAKES IT RAIN ON A NIGHT LIKE THIS!? I have WORK to be doing, and this rain is AWFUL!",
+							"Horrible. Absolutely [c/FF0000:bloody] horrible...are YOU the one responsible for this!? Did you make it rain tonight!? You've [c/FF0000:ruined] ALL of the work I could've possibly done tonight!",
+							"I am THIS CLOSE to making a machine specifically to reach up and rope down each of those rain clouds individually. I'm STARVED, and they'd make a better MEAL for me than [c/FF0000:anything they could be up there!]",
 						});
 					}
 					if (Main.IsItStorming)
 					{
 						steampunkerChatPool.AddRange(new List<string>
 						{
-							"Lightning? Electricity!? You DARE to suggest I use it for my work?!? The ONLY use it will EVER HAVE will be as fuel for my engine, JUST LIKE THE CLOUDS IT COMES FROM!",
+							"Lightning? Electricity!? You [c/FF0000:DARE] to suggest I use it for my work?!? The ONLY use it will EVER HAVE will be as fuel for my engine, [c/FF0000:JUST LIKE THE CLOUDS IT COMES FROM!]",
 							"The sounds of this BLOODY THUNDER are throwing off my data! Tonight's already HORRIBLE enough; make it quit being worse!!",
 							"The storms above are NOTHING compared to the storms my stomach whips up on nights like these. ROPE DOWN THOSE DAMNABLE CLOUDS, AND I WON'T DARE WAIT TO DEMONSTRATE!",
 						});

@@ -293,6 +293,8 @@ namespace V2.NPCs.Vanilla.TownNPCs.ArmsDealer
 			NPC helloNurse = nearbyResidentNPCs.FirstOrDefault(x => x.type == NPCID.Nurse);
 			bool snackOnCrush = false;
 			RollForRandomGulp(ref snackOnCrush);
+			RollForRandomGulp(ref snackOnCrush);
+			RollForRandomGulp(ref snackOnCrush);
 			if (helloNurse != null && helloNurse.Distance(npc.Center) <= npc.AsPred().MaxSwallowRange && snackOnCrush)
 				PredNPC.Swallow(npc, helloNurse);
 

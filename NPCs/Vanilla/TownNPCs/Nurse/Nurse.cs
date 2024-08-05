@@ -265,7 +265,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 				{
 					switch (player.statLife)
 					{
-						case int i when i < player.statLifeMax2 && i > (int)((double)player.statLifeMax2 * 0.5):
+						case int i when i > (int)((double)player.statLifeMax2 * 0.5):
 							nurseChatPool.AddRange(new List<string>
 							{
 								"I don't think I like your tone. Better keep that tongue to yourself before I cram it into my ass with the rest of you.",
@@ -617,6 +617,8 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 			List<NPC> nearbyResidentNPCs = npc.GetNearbyResidentNPCs(out int npcsWithinHouse, out int npcsWithinVillage);
 			NPC hopelessRomantic = nearbyResidentNPCs.FirstOrDefault(x => x.type == NPCID.ArmsDealer);
 			bool gulpDownCrush = false;
+			RollForRandomGulp(ref gulpDownCrush);
+			RollForRandomGulp(ref gulpDownCrush);
 			RollForRandomGulp(ref gulpDownCrush);
 			if (hopelessRomantic != null && hopelessRomantic.Distance(npc.Center) <= npc.AsPred().MaxSwallowRange && PredNPC.GetStomachTracker(npc)?.Prey.Count == 0 && gulpDownCrush)
 				PredNPC.Swallow(npc, hopelessRomantic);
