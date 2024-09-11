@@ -18,8 +18,6 @@ namespace V2.Items.Vanilla.Armor
 
 		public override void SetDefaults(Item item)
 		{
-			item.SetNameOverride(Language.GetTextValue("Mods.V2.ItemName.Vanilla.Armor.OakWood.Head"));
-
 			item.AsAnItem().ArmorEffectCode = OakWoodHelmetEffect;
 
 			item.AsFood().MaxHealth = 120;

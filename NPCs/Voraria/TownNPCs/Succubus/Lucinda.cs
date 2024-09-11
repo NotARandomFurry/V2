@@ -138,6 +138,7 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 			NPC.AsV2NPC().GetNewDialogue = GetSuccubusChat;
 
 			NPC.AsFood().DefinedBaseSize = 1.15;
+			NPC.AsPred().WeightGainRatio = 0.125;
 			NPC.AsPred().MaxStomachCapacity = 2.2;
 			NPC.AsPred().BaseStomachacheMeterCapacity = 155.0;
 
@@ -475,14 +476,14 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 			succubusShop.Register();
 
 			NPCShop nurseShop = new NPCShop(NPCID.Nurse, "Shop");
-			nurseShop.Add(ItemID.LesserHealingPotion, new Condition[] { Condition.NotDownedEowOrBoc });
-			nurseShop.Add(ItemID.HealingPotion, new Condition[] { Condition.DownedEowOrBoc, Condition.NotDownedMechBossAny });
-			nurseShop.Add(ItemID.GreaterHealingPotion, new Condition[] { Condition.DownedMechBossAny, Condition.NotDownedCultist });
-			nurseShop.Add(ItemID.SuperHealingPotion, new Condition[] { Condition.DownedCultist });
+			nurseShop.Add(ItemID.LesserHealingPotion, [Condition.NotDownedEowOrBoc]);
+			nurseShop.Add(ItemID.HealingPotion, [Condition.DownedEowOrBoc, Condition.NotDownedMechBossAny]);
+			nurseShop.Add(ItemID.GreaterHealingPotion, [Condition.DownedMechBossAny, Condition.NotDownedCultist]);
+			nurseShop.Add(ItemID.SuperHealingPotion, [Condition.DownedCultist]);
 			nurseShop.Add(ItemID.AdhesiveBandage);
 			nurseShop.Add<FastDigestionPotion>();
-			nurseShop.Add<StomachacheMeterCapacityPotion>(new Condition[] { Condition.DownedEowOrBoc });
-			nurseShop.Add(new Item(ItemID.LifeCrystal) { shopCustomPrice = Item.buyPrice(gold: 20) }, new Condition[] { Condition.DownedSkeletron });
+			nurseShop.Add<StomachacheMeterCapacityPotion>([Condition.DownedEowOrBoc]);
+			nurseShop.Add(new Item(ItemID.LifeCrystal) { shopCustomPrice = Item.buyPrice(gold: 20) }, [Condition.DownedSkeletron]);
 			nurseShop.Register();
 		}
 
@@ -490,9 +491,6 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 		public override void PostAI()
 		{
 			if (NPC.CurrentCaptor() is not null)
-				return;
-
-			if (PredNPC.GetStomachTracker(NPC)?.Prey.Count > 1)
 				return;
 
 			if (Main.GameUpdateCount % 60 != 0)

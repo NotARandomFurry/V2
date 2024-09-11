@@ -6,9 +6,9 @@ using V2.PlayerHandling;
 
 namespace V2.Core
 {
-	public class ArmorSetHandler
+	public static class ArmorSetHandler
 	{
-		public static List<ArmorSetDefinition> ArmorSets { get; set; } = new List<ArmorSetDefinition>();
+		public static List<ArmorSetDefinition> ArmorSets { get; set; } = [];
 
 		public static void RegisterArmorSet(ArmorSetDefinition armorSet) => ArmorSets.Add(armorSet);
 

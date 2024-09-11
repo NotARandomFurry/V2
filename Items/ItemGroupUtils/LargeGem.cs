@@ -17,7 +17,7 @@ namespace V2.Items.V2ItemGroupUtils
 
 		public override void SetDefaults(Item item)
 		{
-			item.AsFood().Size = 0.925;
+			item.AsFood().Size = 0.875;
 			item.AsFood().MaxHealth = 5000;
 			item.AsFood().AcidResistTier = 1;
 

@@ -18,7 +18,7 @@ namespace V2.PlayerHandling.PredPlayerGoals.Beginner
 		public override bool HasClearDescription(Player pred) => true;
 		public override bool Available(Player pred) => Main.IsItAHappyWindyDay || Complete(pred);
 
-		public override int StatPointsFromCompletion => 2;
+		public override int StatPointsFromCompletion => 3;
 
 		public override ProgressionStage Stage => ModContent.GetInstance<BeginnerStage>();
 	}

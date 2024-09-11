@@ -171,6 +171,14 @@ namespace V2
 				NPCID.FairyCritterGreen,
 				NPCID.FairyCritterPink,
 			];
+
+			public static List<int> Butterflies =>
+			[
+				NPCID.Butterfly,
+				NPCID.GoldButterfly,
+				NPCID.HellButterfly,
+				NPCID.EmpressButterfly,
+			];
 		}
 		/// <summary>
 		/// Takes the given amount of readable time and converts it to a concrete frame count.<br/>

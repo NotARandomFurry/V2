@@ -15,7 +15,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using V2.Core;
 using V2.Items.Voraria.Consumables.Catchables;
-using V2.NPCs.V2NPCGroupUtils;
+using V2.NPCs.GroupDefinitions;
 using V2.NPCs.Vanilla.TownNPCs.PartyGirl;
 using V2.PlayerHandling;
 using V2.PlayerHandling.PredPlayerGoals.Beginner;

@@ -107,68 +107,42 @@ namespace V2.Items
 
 	public class PreyItem : GlobalItem
 	{
-		public bool Digested { get; set; }
-		public bool FullyDigested { get; set; }
+		public bool Digested { get; set; } = false;
 
-		public int MaxHealth { get; set; }
-		private int _health;
+		public int MaxHealth { get; set; } = -1;
+		private int _health = -1;
 		public int Health
 		{
 			get => _health;
 			set => _health = Math.Min(value, MaxHealth);
 		}
-		public double Size { get; set; }
+		public double Size { get; set; } = 0.0;
 		/// <summary>
 		/// The minimum acid tier required to digest (deal durability damage to) this item.<br/>
 		/// Defaults to 0, allowing all acids to churn and gurgle this item down into fat.<br/>
 		/// </summary>
-		public int AcidResistTier { get; set; }
-		public string MealSizeTextOverride { get; set; }
+		public int AcidResistTier { get; set; } = 0;
+		public string MealSizeTextOverride { get; set; } = null;
 
 		public delegate void DelegateOnSwallow(Item item, Entity pred);
-		public DelegateOnSwallow OnSwallow { get; set; }
-		public int OnSwallowDamage { get; set; }
-		public string OnSwallowDeathReason { get; set; }
-		public int OnSwallowSoreThroatTime { get; set; }
+		public DelegateOnSwallow OnSwallow { get; set; } = null;
+		public int OnSwallowDamage { get; set; } = 0;
+		public string OnSwallowDeathReason { get; set; } = null;
+		public int OnSwallowSoreThroatTime { get; set; } = 0;
 
 		public delegate bool DelegateCanUseInStomach(Item item, Player player, Entity pred);
-		public DelegateCanUseInStomach CanUseInStomach { get; set; }
+		public DelegateCanUseInStomach CanUseInStomach { get; set; } = null;
 		public delegate void DelegateUseInStomach(Item item, Player player, Entity pred);
-		public DelegateUseInStomach UseInStomach { get; set; }
+		public DelegateUseInStomach UseInStomach { get; set; } = null;
 
-		public PreyData.DelegateUpdateInStomach UpdateInStomach { get; set; }
+		public PreyData.DelegateUpdateInStomach UpdateInStomach { get; set; } = null;
 		public delegate void DelegateOnBreak(Item item, Entity pred);
-		public DelegateOnBreak OnBreak { get; set; }
+		public DelegateOnBreak OnBreak { get; set; } = null;
 
-		public bool EdibleOnUse { get; set; }
-		public bool AlwaysEatenByUse { get; set; }
+		public bool EdibleOnUse { get; set; } = false;
+		public bool AlwaysEatenByUse { get; set; } = false;
 
 		public override bool InstancePerEntity => true;
-
-		public PreyItem()
-		{
-			Digested = false;
-
-			MaxHealth = -1;
-			Health = -1;
-			Size = 0.0;
-			AcidResistTier = 0;
-			MealSizeTextOverride = null;
-
-			OnSwallow = null;
-			OnSwallowDamage = 0;
-			OnSwallowDeathReason = null;
-			OnSwallowSoreThroatTime = 0;
-
-			CanUseInStomach = (item, player, pred) => false;
-			UseInStomach = null;
-
-			UpdateInStomach = null;
-			OnBreak = null;
-
-			EdibleOnUse = false;
-			AlwaysEatenByUse = false;
-		}
 
 		public override void Update(Item item, ref float gravity, ref float maxFallSpeed)
 		{
@@ -185,18 +159,6 @@ namespace V2.Items
 			{
 				item.TurnToAir();
 				return;
-			}
-
-			if (item.CurrentCaptor() is not null)
-			{
-				item.position = new Vector2(-1, -1);
-				item.width = 0;
-				item.height = 0;
-			}
-			else
-			{
-				item.width = ContentSamples.ItemsByType[item.type].width;
-				item.height = ContentSamples.ItemsByType[item.type].height;
 			}
 		}
 
@@ -255,27 +217,27 @@ namespace V2.Items
 
 		public override bool CanStack(Item destination, Item source)
 		{
-			if (destination.IsAir || source.IsAir)
-				return true;
-
-			if (destination.AsFood().MaxHealth == -1 || source.AsFood().MaxHealth == -1)
-				return true;
-
-			if (destination.AsFood().Health != source.AsFood().Health)
-				return false;
-
-			return true;
+			switch (destination.AsFood().MaxHealth, source.AsFood().MaxHealth)
+			{
+				case (-1, -1):
+					return true;
+				case (int i, int j) when i == -1 && j != -1:
+					// This should never be the case, but just in case...
+					destination.AsFood().MaxHealth = source.AsFood().MaxHealth;
+					destination.AsFood().Health = source.AsFood().Health;
+					return true;
+				case (int i, int j) when i != -1 && j == -1:
+					source.AsFood().MaxHealth = destination.AsFood().MaxHealth;
+					source.AsFood().Health = destination.AsFood().Health;
+					return true;
+				default:
+					return destination.AsFood().Health == source.AsFood().Health;
+			}
 		}
 
 		public override bool CanStackInWorld(Item destination, Item source)
 		{
-			if (destination.IsAir || source.IsAir)
-				return true;
-
-			if (destination.AsFood().MaxHealth == -1 || source.AsFood().MaxHealth == -1)
-				return true;
-
-			if (destination.AsFood().Health != source.AsFood().Health)
+			if (destination.CurrentCaptor() is not null)
 				return false;
 
 			return true;
@@ -283,18 +245,12 @@ namespace V2.Items
 
 		public override void GrabRange(Item item, Player player, ref int grabRange)
 		{
-			if (item.IsAir)
-				return;
-
 			if (item.CurrentCaptor() is not null)
 				grabRange = 0;
 		}
 
 		public override bool PreDrawInWorld(Item item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
 		{
-			if (item.IsAir)
-				return true;
-
 			if (item.CurrentCaptor() is not null)
 				return false;
 
@@ -305,9 +261,6 @@ namespace V2.Items
 
 		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
 		{
-			if (item.IsAir)
-				return;
-
 			if (item.AsFood().MaxHealth == -1 || item.AsFood().Health == -1)
 				return;
 

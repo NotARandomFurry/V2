@@ -56,6 +56,7 @@ namespace V2.NPCs
 		public double MaxStomachCapacity { get; set; }
 		public float MaxSwallowRange { get; set; }
 		public double ExtraWeight { get; set; }
+		public double WeightGainRatio { get; set; }
 		/// <summary>
 		/// Allows this NPC to eat bosses regardless of whether or not they're a boss themselves.<br/>
 		/// Defaults to false.<br/>
@@ -154,6 +155,7 @@ namespace V2.NPCs
 			MaxStomachCapacity = 1.0;
 			MaxSwallowRange = 36f;
 			ExtraWeight = 0.0;
+			WeightGainRatio = 0.0;
 			CanSwallowBosses = false;
 			AteFriendly = false;
 			
@@ -283,6 +285,15 @@ namespace V2.NPCs
 			return true;
 		}
 
+		public static void SwallowWithTextIfApplicable(NPC pred, Player prey, string chatboxText)
+		{
+			if (!CanSwallow(pred, prey))
+				return;
+
+			Swallow(pred, prey);
+			SetChatboxText(pred, prey, chatboxText);
+		}
+
 		/// <summary>
 		/// Causes the given predator NPC to swallow the given prey entity, if the given prey entity can be swallowed.
 		/// </summary>
@@ -358,17 +369,93 @@ namespace V2.NPCs
 				syncSwallowPacket.Write((byte)food.Type);
 				syncSwallowPacket.Write(prey.whoAmI);
 				syncSwallowPacket.Write(MPwhoAmI);
-				syncSwallowPacket.Send(-1, ignoreClient: MPwhoAmI);
+				syncSwallowPacket.Send(ignoreClient: MPwhoAmI);
 			}
 		}
 
-		public static void SwallowWithTextIfApplicable(NPC pred, Player prey, string chatboxText)
+		public static void Regurgitate(NPC pred, int index = -1, int MPstate = 0, int MPwhoAmI = -1)
 		{
-			if (!CanSwallow(pred, prey))
-				return;
+			if (MPstate == 0 && Main.netMode == NetmodeID.MultiplayerClient)
+			{
+				MPstate = 1;
+				MPwhoAmI = Main.myPlayer;
+			}
 
-			Swallow(pred, prey);
-			SetChatboxText(pred, prey, chatboxText);
+			double totalRegurgiweight = 0.0;
+
+			void Regurgitate_Inner(NPC pred, PreyData prey)
+			{
+				Entity realPrey = prey.Type switch
+				{
+					PreyType.Player => prey.Instance as Player,
+					PreyType.NPC => prey.Instance as NPC,
+					PreyType.Projectile => prey.Instance as Projectile,
+					PreyType.Item => prey.Instance as Item,
+					PreyType.Custom => null,
+					_ => throw new NotImplementedException(),
+				};
+				realPrey.position = pred.TrueCenter() + new Vector2(pred.direction * 8f, -14f);
+				realPrey.velocity = new Vector2(pred.direction * 10f, -2.5f);
+				if (realPrey is NPC realPreyNPC)
+				{
+					realPreyNPC.AsFood().EatenSafetyFrames = 20;
+				}
+				else if (realPrey is Projectile realPreyProjectile)
+				{
+
+				}
+				else if (realPrey is Player realPreyPlayer)
+				{
+
+				}
+				else if (realPrey is Item realPreyItem)
+				{
+					realPreyItem.noGrabDelay = 60;
+				}
+				totalRegurgiweight += prey.WeightLeftToDigest;
+			}
+
+			if (index == -1)
+			{
+				foreach (PreyData prey in GetStomachTracker(pred).Prey)
+					Regurgitate_Inner(pred, prey);
+
+				GetStomachTracker(pred).Prey.Clear();
+				GetStomachTracker(pred).RefreshStruggleChartList();
+			}
+			else
+			{
+				PreyData prey = GetStomachTracker(pred).Prey[index];
+				Regurgitate_Inner(pred, prey);
+
+				GetStomachTracker(pred).Prey.Remove(prey);
+			}
+
+			SoundEngine.PlaySound(
+				totalRegurgiweight <= 0.3 ? pred.AsPred().SmallBurps : pred.AsPred().StandardBurps,
+				pred.TrueCenter() + new Vector2(pred.direction * 8f, -14f)
+			);
+
+			if (MPstate == 1)
+			{
+				ModPacket packet = V2.Instance.GetPacket();
+				packet.Write((byte)V2.MessageType.RequestRegurgitatePrey);
+				packet.Write((byte)1);
+				packet.Write(Main.myPlayer);
+				packet.Write(index);
+				packet.Write(Main.myPlayer);
+				packet.Send();
+			}
+			else if (MPstate == 2)
+			{
+				ModPacket packet = V2.Instance.GetPacket();
+				packet.Write((byte)V2.MessageType.SyncRegurgitatePrey);
+				packet.Write((byte)1);
+				packet.Write(Main.myPlayer);
+				packet.Write(index);
+				packet.Write(Main.myPlayer);
+				packet.Send(ignoreClient: MPwhoAmI);
+			}
 		}
 
 		public static void SetChatboxText(NPC pred, Player prey, string chatText)
@@ -395,38 +482,7 @@ namespace V2.NPCs
 		{
 			if (pred.AsPred().Stomachache >= pred.AsPred().StomachacheMeterCapacity)
 			{
-				foreach (PreyData prey in GetStomachTracker(pred).Prey)
-				{
-					Entity realPrey = prey.Type switch
-					{
-						PreyType.Player => prey.Instance as Player,
-						PreyType.NPC => prey.Instance as NPC,
-						PreyType.Projectile => prey.Instance as Projectile,
-						PreyType.Item => prey.Instance as Item,
-						PreyType.Custom => null,
-						_ => throw new NotImplementedException(),
-					};
-					realPrey.position = pred.TrueCenter() + new Vector2(pred.direction * 8f, -14f);
-					realPrey.velocity = new Vector2(pred.direction * 12.5f, -2.5f);
-					if (realPrey is NPC realPreyNPC)
-					{
-						realPreyNPC.AsFood().EatenSafetyFrames = 20;
-					}
-					else if (realPrey is Player realPreyPlayer)
-					{
-
-					}
-					else if (realPrey is Item realPreyItem)
-					{
-						realPreyItem.noGrabDelay = 60;
-					}
-				}
-				SoundEngine.PlaySound(
-					pred.AsPred().StandardBurps,
-					pred.TrueCenter() + new Vector2(pred.direction * 8f, -14f)
-				);
-				GetStomachTracker(pred).Prey.Clear();
-				GetStomachTracker(pred).RefreshStruggleChartList();
+				Regurgitate(pred, MPstate: Main.netMode == NetmodeID.SinglePlayer ? 0 : 2);
 				return;
 			}
 			foreach (PreyData prey in GetStomachTracker(pred).Prey)
@@ -438,24 +494,21 @@ namespace V2.NPCs
 					switch (prey.Type)
 					{
 						case PreyType.Player:
-							Player preyPlayer = prey.Instance as Player;
-							if (preyPlayer is null || !preyPlayer.active || preyPlayer.dead)
+							if (prey.Instance is not Player preyPlayer || !preyPlayer.active || preyPlayer.dead)
 								continue;
 
 							preyPlayer.velocity = Vector2.Zero;
 							preyPlayer.position = pred.position;
 							break;
 						case PreyType.NPC:
-							NPC preyNPC = prey.Instance as NPC;
-							if (preyNPC is null || !preyNPC.active)
+							if (prey.Instance is not NPC preyNPC || !preyNPC.active)
 								continue;
 
 							preyNPC.velocity = Vector2.Zero;
 							preyNPC.position = pred.position;
 							break;
 						case PreyType.Projectile:
-							Projectile preyProjectile = prey.Instance as Projectile;
-							if (preyProjectile is null || !preyProjectile.active)
+							if (prey.Instance is not Projectile preyProjectile || !preyProjectile.active)
 								continue;
 
 							preyProjectile.velocity = Vector2.Zero;
@@ -545,7 +598,7 @@ namespace V2.NPCs
 								if (shouldDigestNPC)
 								{
 									if (preyNPC.type == NPCID.HallowBoss && ModContent.GetInstance<V2ServerConfig>().EasilyEdibleEmpress)
-										digestionDamage *= 50.0;
+										digestionDamage *= 20.0;
 									prey.NoHealth = PreyNPC.TakeDigestionDamage(preyNPC, pred, digestionDamage);
 									preyNPC.netUpdate = true;
 									if (ModContent.GetInstance<V2ServerConfig>().DebugChatMessages)
@@ -594,12 +647,12 @@ namespace V2.NPCs
 					double digestedWeightPerTick = pred.AsPred().GetPreyAbsorptionRate.Invoke(pred) / (double)GetStomachTracker(pred).Prey.Count;
 					if (prey.WeightLeftToDigest <= digestedWeightPerTick)
 					{
-						pred.AsPred().ExtraWeight += prey.WeightLeftToDigest * 0.4;
+						pred.AsPred().ExtraWeight += prey.WeightLeftToDigest * pred.AsPred().WeightGainRatio;
 						prey.WeightLeftToDigest = 0;
 					}
 					else
 					{
-						pred.AsPred().ExtraWeight += digestedWeightPerTick * 0.4;
+						pred.AsPred().ExtraWeight += digestedWeightPerTick * pred.AsPred().WeightGainRatio;
 						prey.WeightLeftToDigest -= digestedWeightPerTick;
 					}
 				}

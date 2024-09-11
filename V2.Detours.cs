@@ -82,6 +82,9 @@ namespace V2
 							npcAsV2NPC.FirstFrame = false;
 							npcAsV2NPC.FirstFramePreAIMethod.Invoke(npc);
 						}
+
+						npcAsV2NPC.CustomSprite?.Advance();
+
 						if (npcAsV2NPC.NewAIMethod.Invoke(npc))
 							orig(npc);
 						else

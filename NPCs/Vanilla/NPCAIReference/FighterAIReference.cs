@@ -61,7 +61,7 @@ namespace V2.NPCs.Vanilla.NPCAIReference
 				}
 			}
 
-			if (npc.type == 466)
+			if (npc.type == NPCID.Psycho)
 			{
 				int num5 = 200;
 				if (npc.ai[2] == 0f)
@@ -99,7 +99,7 @@ namespace V2.NPCs.Vanilla.NPCAIReference
 				npc.alpha = 0;
 			}
 
-			if (npc.type == 166)
+			if (npc.type == NPCID.SwampThing)
 			{
 				if (Main.netMode != NetmodeID.MultiplayerClient && Main.rand.NextBool(240))
 				{
@@ -131,7 +131,7 @@ namespace V2.NPCs.Vanilla.NPCAIReference
 				}
 			}
 
-			if (npc.type == 461)
+			if (npc.type == NPCID.CreatureFromTheDeep)
 			{
 				if (npc.wet)
 				{
@@ -1156,7 +1156,26 @@ namespace V2.NPCs.Vanilla.NPCAIReference
 
 			bool flag7 = false;
 			bool flag8 = true;
-			if (npc.type == 343 || npc.type == 47 || npc.type == 67 || npc.type == 109 || npc.type == 110 || npc.type == 111 || npc.type == 120 || npc.type == 163 || npc.type == 164 || npc.type == 239 || npc.type == 168 || npc.type == 199 || npc.type == 206 || npc.type == 214 || npc.type == 215 || npc.type == 216 || npc.type == 217 || npc.type == 218 || npc.type == 219 || npc.type == 220 || npc.type == 226 || npc.type == 243 || npc.type == 251 || npc.type == 257 || npc.type == 258 || npc.type == 290 || npc.type == 291 || npc.type == 292 || npc.type == 293 || npc.type == 305 || npc.type == 306 || npc.type == 307 || npc.type == 308 || npc.type == 309 || npc.type == 348 || npc.type == 349 || npc.type == 350 || npc.type == 351 || npc.type == 379 || (npc.type >= 430 && npc.type <= 436) || npc.type == 591 || npc.type == 380 || npc.type == 381 || npc.type == 382 || npc.type == 383 || npc.type == 386 || npc.type == 391 || (npc.type >= 449 && npc.type <= 452) || npc.type == 466 || npc.type == 464 || npc.type == 166 || npc.type == 469 || npc.type == 468 || npc.type == 471 || npc.type == 470 || npc.type == 480 || npc.type == 481 || npc.type == 482 || npc.type == 411 || npc.type == 424 || npc.type == 409 || (npc.type >= 494 && npc.type <= 506) || npc.type == 425 || npc.type == 427 || npc.type == 426 || npc.type == 428 || npc.type == 580 || npc.type == 508 || npc.type == 415 || npc.type == 419 || npc.type == 520 || (npc.type >= 524 && npc.type <= 527) || npc.type == 528 || npc.type == 529 || npc.type == 530 || npc.type == 532 || npc.type == 582 || npc.type == 624 || npc.type == 631)
+			if (npc.type is NPCID.Yeti or NPCID.CorruptBunny or NPCID.Crab or NPCID.Clown or NPCID.SkeletonArcher
+						 or NPCID.GoblinArcher or NPCID.ChaosElemental or NPCID.BlackRecluse or NPCID.WallCreeper
+						 or NPCID.BloodCrawler or NPCID.CorruptPenguin or NPCID.LihzahrdCrawler or NPCID.IcyMerman
+						 or NPCID.PirateDeadeye or NPCID.PirateCrossbower or NPCID.PirateCaptain or NPCID.CochinealBeetle
+						 or NPCID.CyanBeetle or NPCID.LacBeetle or NPCID.SeaSnail or NPCID.FlyingSnake or NPCID.IceGolem
+						 or NPCID.Eyezor or NPCID.AnomuraFungus or NPCID.MushiLadybug or NPCID.Paladin or NPCID.SkeletonSniper
+						 or NPCID.TacticalSkeleton or NPCID.SkeletonCommando or NPCID.Scarecrow1 or NPCID.Scarecrow2
+						 or NPCID.Scarecrow3 or NPCID.Scarecrow4 or NPCID.Scarecrow5 or NPCID.Nutcracker
+						 or NPCID.NutcrackerSpinning or NPCID.ElfArcher or NPCID.Krampus or NPCID.CultistArcherBlue
+						 or (>= NPCID.ArmedZombie and <= NPCID.ArmedZombieCenx) or NPCID.ArmedTorchZombie
+						 or NPCID.CultistArcherWhite or NPCID.BrainScrambler or NPCID.RayGunner or NPCID.MartianOfficer
+						 or NPCID.MartianEngineer or NPCID.Scutlix or (>= NPCID.BoneThrowingSkeleton and <= NPCID.BoneThrowingSkeleton4)
+						 or NPCID.Psycho or NPCID.CrimsonBunny or NPCID.SwampThing or NPCID.ThePossessed or NPCID.DrManFly
+						 or NPCID.GoblinSummoner or NPCID.CrimsonPenguin or NPCID.Medusa or NPCID.GreekSkeleton or NPCID.GraniteGolem
+						 or NPCID.StardustSoldier or NPCID.NebulaSoldier or NPCID.StardustSpiderBig
+						 or (>= NPCID.Crawdad and <= NPCID.Salamander9) or NPCID.VortexRifleman or NPCID.VortexHornet
+						 or NPCID.VortexHornetQueen or NPCID.VortexLarva or NPCID.WalkingAntlion or NPCID.GiantWalkingAntlion
+						 or NPCID.SolarDrakomire or NPCID.SolarSolenian or NPCID.MartianWalker
+						 or (>= NPCID.DesertGhoul and <= NPCID.DesertGhoulHallow) or NPCID.DesertLamiaLight or NPCID.DesertLamiaDark
+						 or NPCID.DesertScorpionWalk or NPCID.DesertBeast or NPCID.LarvaeAntlion or NPCID.Gnome or NPCID.RockGolem)
 				flag8 = false;
 
 			bool flag9 = false;

@@ -90,6 +90,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Painter
 			npc.AsV2NPC().GetNewDialogue = GetPainterChat;
 
 			npc.AsFood().DefinedBaseSize = 0.988;
+			npc.AsPred().WeightGainRatio = 0.095;
 			npc.AsPred().MaxStomachCapacity = 2.94;
 			npc.AsPred().BaseStomachacheMeterCapacity = 240.0;
 

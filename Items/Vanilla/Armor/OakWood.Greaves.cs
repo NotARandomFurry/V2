@@ -18,8 +18,6 @@ namespace V2.Items.Vanilla.Armor
 
 		public override void SetDefaults(Item item)
 		{
-			item.SetNameOverride(Language.GetTextValue("Mods.V2.ItemName.Vanilla.Armor.OakWood.Legs"));
-
 			item.AsAnItem().ArmorEffectCode = OakWoodGreavesEffect;
 
 			item.AsFood().MaxHealth = 160;

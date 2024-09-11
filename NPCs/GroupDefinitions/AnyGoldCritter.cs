@@ -4,20 +4,20 @@ using Terraria.ModLoader;
 using V2.Core;
 using V2.PlayerHandling.PredPlayerGoals.Beginner;
 
-namespace V2.NPCs.V2NPCGroupUtils
+namespace V2.NPCs.GroupDefinitions
 {
-	public static class GoldCritterStuff
+	public static class AnyGoldCritterStuff
 	{
-		public static GoldCritter AsGoldCritter(this NPC npc)
+		public static AnyGoldCritter AsAGoldCritter(this NPC npc)
 		{
-			if (!npc.TryGetGlobalNPC(out GoldCritter tastySparklySnack))
-				throw new Exception("this instance of a gem critter, supposedly, doesn't exist");
+			if (!npc.TryGetGlobalNPC(out AnyGoldCritter tastySparklySnack))
+				throw new Exception("this instance of a gold critter, supposedly, doesn't exist");
 
 			return tastySparklySnack;
 		}
 	}
 
-	public class GoldCritter : GlobalNPC
+	public class AnyGoldCritter : GlobalNPC
 	{
 		public override bool IsLoadingEnabled(Mod mod) => !V2.GetFooled;
 		public override bool InstancePerEntity => true;

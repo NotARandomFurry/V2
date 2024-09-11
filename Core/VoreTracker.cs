@@ -849,6 +849,25 @@ namespace V2.Core
 			return data;
 		}
 
+		public static PreyData NewLiquidData(int liquidType, int liquidAmount)
+		{
+			PreyData data = new PreyData(liquidType, liquidAmount);
+			data.Type = PreyType.Liquid;
+			data.Instance = null;
+			data.NoHealth = true;
+			data.ExactType = liquidType;
+			data.Name = liquidType switch
+			{
+				LiquidID.Water => "Water",
+				LiquidID.Lava => "Lava",
+				LiquidID.Honey => "Honey",
+				LiquidID.Shimmer => "Shimmer",
+				_ => "Some Other Liquid",
+			};
+			data.WeightLeftToDigest = liquidAmount;
+			return data;
+		}
+
 		public static PreyData NewLiquidData(int liquidType, double liquidAmount)
 		{
 			PreyData data = new PreyData();
@@ -867,7 +886,7 @@ namespace V2.Core
 			data.WeightLeftToDigest = liquidAmount;
 			return data;
 		}
-		
+
 		/// <summary>
 		/// 
 		/// </summary>

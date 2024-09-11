@@ -17,7 +17,7 @@ namespace V2.PlayerHandling.PredPlayerGoals.Amateur
 		public override bool HasClearDescription(Player pred) => true;
 		public override bool Available(Player pred) => Main.bloodMoon || Complete(pred);
 
-		public override int StatPointsFromCompletion => 10;
+		public override int StatPointsFromCompletion => 13;
 
 		public override ProgressionStage Stage => ModContent.GetInstance<AmateurStage>();
 	}

@@ -318,33 +318,93 @@ namespace V2.Projectiles
 				packet.Write((byte)food.Type);
 				packet.Write(prey.whoAmI);
 				packet.Write(MPwhoAmI);
-				packet.Send(-1, ignoreClient: MPwhoAmI);
+				packet.Send(ignoreClient: MPwhoAmI);
 			}
 		}
 
-		public static void SwallowWithTextIfApplicable(Projectile pred, Player prey, string chatboxText)
+		public static void Regurgitate(Projectile pred, int index = -1, int MPstate = 0, int MPwhoAmI = -1)
 		{
-			if (!CanSwallow(pred, prey))
-				return;
+			if (MPstate == 0 && Main.netMode == NetmodeID.MultiplayerClient)
+			{
+				MPstate = 1;
+				MPwhoAmI = Main.myPlayer;
+			}
 
-			Swallow(pred, prey);
-			SetChatboxText(pred, prey, chatboxText);
-		}
+			double totalRegurgiweight = 0.0;
 
-		public static void SetChatboxText(Projectile pred, Player prey, string chatText)
-		{
-			Main.CancelHairWindow();
-			Main.SetNPCShopIndex(0);
-			Main.InGuideCraftMenu = false;
-			prey.dropItemCheck();
-			Main.npcChatCornerItem = 0;
-			prey.sign = -1;
-			Main.editSign = false;
-			prey.SetTalkNPC(pred.whoAmI);
-			Main.playerInventory = false;
-			prey.chest = -1;
-			Recipe.FindRecipes();
-			Main.npcChatText = chatText;
+			void Regurgitate_Inner(Projectile pred, PreyData prey)
+			{
+				Entity realPrey = prey.Type switch
+				{
+					PreyType.Player => prey.Instance as Player,
+					PreyType.NPC => prey.Instance as NPC,
+					PreyType.Projectile => prey.Instance as Projectile,
+					PreyType.Item => prey.Instance as Item,
+					PreyType.Custom => null,
+					_ => throw new NotImplementedException(),
+				};
+				realPrey.position = pred.TrueCenter() + new Vector2(pred.direction * 8f, -14f);
+				realPrey.velocity = new Vector2(pred.direction * 10f, -2.5f);
+				if (realPrey is NPC realPreyNPC)
+				{
+					realPreyNPC.AsFood().EatenSafetyFrames = 20;
+				}
+				else if (realPrey is Projectile realPreyProjectile)
+				{
+
+				}
+				else if (realPrey is Player realPreyPlayer)
+				{
+
+				}
+				else if (realPrey is Item realPreyItem)
+				{
+					realPreyItem.noGrabDelay = 60;
+				}
+				totalRegurgiweight += prey.WeightLeftToDigest;
+			}
+
+			if (index == -1)
+			{
+				foreach (PreyData prey in GetStomachTracker(pred).Prey)
+					Regurgitate_Inner(pred, prey);
+
+				GetStomachTracker(pred).Prey.Clear();
+				GetStomachTracker(pred).RefreshStruggleChartList();
+			}
+			else
+			{
+				PreyData prey = GetStomachTracker(pred).Prey[index];
+				Regurgitate_Inner(pred, prey);
+
+				GetStomachTracker(pred).Prey.Remove(prey);
+			}
+
+			SoundEngine.PlaySound(
+				totalRegurgiweight <= 0.3 ? pred.AsPred().SmallBurps : pred.AsPred().StandardBurps,
+				pred.TrueCenter() + new Vector2(pred.direction * 8f, -14f)
+			);
+
+			if (MPstate == 1)
+			{
+				ModPacket packet = V2.Instance.GetPacket();
+				packet.Write((byte)V2.MessageType.RequestRegurgitatePrey);
+				packet.Write((byte)2);
+				packet.Write(Main.myPlayer);
+				packet.Write(index);
+				packet.Write(Main.myPlayer);
+				packet.Send();
+			}
+			else if (MPstate == 2)
+			{
+				ModPacket packet = V2.Instance.GetPacket();
+				packet.Write((byte)V2.MessageType.SyncRegurgitatePrey);
+				packet.Write((byte)2);
+				packet.Write(Main.myPlayer);
+				packet.Write(index);
+				packet.Write(Main.myPlayer);
+				packet.Send(ignoreClient: MPwhoAmI);
+			}
 		}
 
 		/// <summary>
@@ -355,35 +415,7 @@ namespace V2.Projectiles
 		{
 			if (pred.AsPred().StomachacheMeterCapacity > 0 && pred.AsPred().Stomachache >= pred.AsPred().StomachacheMeterCapacity)
 			{
-				foreach (PreyData prey in GetStomachTracker(pred).Prey)
-				{
-					Entity realPrey = prey.Type switch
-					{
-						PreyType.Player => prey.Instance as Player,
-						PreyType.NPC => prey.Instance as NPC,
-						PreyType.Projectile => prey.Instance as Projectile,
-						PreyType.Item => prey.Instance as Item,
-						PreyType.Custom => null,
-						_ => throw new NotImplementedException(),
-					};
-					realPrey.position = pred.TrueCenter() + new Vector2(pred.direction * 8f, -14f);
-					realPrey.velocity = new Vector2(pred.direction * 12.5f, -2.5f);
-					if (realPrey is NPC realPreyNPC)
-					{
-						realPreyNPC.AsFood().EatenSafetyFrames = 20;
-					}
-					else if (realPrey is Player realPreyPlayer)
-					{
-
-					}
-					else if (realPrey is Item realPreyItem)
-					{
-						realPreyItem.noGrabDelay = 60;
-					}
-				}
-				PlayDigestionBelch(pred, null);
-				GetStomachTracker(pred).Prey.Clear();
-				GetStomachTracker(pred).RefreshStruggleChartList();
+				Regurgitate(pred, MPstate: Main.netMode == NetmodeID.SinglePlayer ? 0 : 2);
 				return;
 			}
 			foreach (PreyData prey in GetStomachTracker(pred).Prey)
@@ -465,7 +497,7 @@ namespace V2.Projectiles
 								if (shouldDigestNPC)
 								{
 									if (preyNPC.type == NPCID.HallowBoss && ModContent.GetInstance<V2ServerConfig>().EasilyEdibleEmpress)
-										digestionDamage *= 50.0;
+										digestionDamage *= 20.0;
 									prey.NoHealth = PreyNPC.TakeDigestionDamage(preyNPC, pred, digestionDamage);
 									preyNPC.netUpdate = true;
 									if (ModContent.GetInstance<V2ServerConfig>().DebugChatMessages)

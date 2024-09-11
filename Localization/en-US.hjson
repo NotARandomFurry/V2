@@ -771,7 +771,7 @@ Mods: {
 							'''
 					}
 				}
-
+				
 				SleepSpeedsDigestion: {
 					Name: Digestive Nap
 
@@ -782,6 +782,19 @@ Mods: {
 							'Everyone knows a good, long nap is the #1 way to turn friends and foes alike into a doughier tum after putting in all that hard work to eat them!'
 							'''
 						Clarification: Get into bed with a stomach weight of 0.75 or more, and sleep in it until your belly is empty.
+					}
+				}
+
+				StomachButterflies: {
+					Name: A Pang of Anxiety
+
+					Description: {
+						Default:
+							'''
+							Snack on some butterflies. Don't they tickle in there?
+							'How does the saying go again...?'
+							'''
+						Clarification: Have 3 or more Butterflies in your stomach at once.
 					}
 				}
 
@@ -901,8 +914,8 @@ Mods: {
 							'''
 						Clarification:
 							'''
-							Be digesting The Groom and The Bride simultaneously.
-							Both are rare mobs which will only come out to shamble towards their prey during Blood Moons.
+							Eat and digest The Groom and The Bride. You do not need to have both in your gut simultaneously.
+							Both are rare zombies which will only come out to shamble towards their prey during Blood Moons.
 							Be advised that, as both are zombies, they will give you food poisoning while eaten/digesting.
 							'''
 					}
@@ -1125,23 +1138,6 @@ Mods: {
 					}
 				}
 
-				HoardLargeGems: {
-					Name: Pristine Pudge
-
-					Description: {
-						Default:
-							'''
-							Churn a collection of massive gemstones into a massive new influx of ass fat.
-							'Gemstones are really the best sorts of meals...tough as a rock, sky-high in calories, and expensive as all hell! Just imagine, all that unadulterated pristine WEALTH, steadily turned into nothing but a slew of caloric sludge fattening up your frame...'
-							'''
-						Clarification:
-							'''
-							Eat and digest all 7 Large Gems simultaneously.
-							Be aware that gemstones and their large variants universally resist unimproved acids --- you'll need a potion or similar to increase your acid tier enough to digest them.
-							'''
-					}
-				}
-
 				GivePromethiaBellyBath: {
 					Name: Divine Belly Bath
 					Description:
@@ -1163,6 +1159,40 @@ Mods: {
 							[c/{Mods.V2.CommonColorCodes.ThomasCommentary}:this joke sounded a lot funnier in my head]
 							'''
 						Clarification: Eat and digest a rolling Boulder.
+					}
+				}
+			}
+
+			Skilled: {
+				Name: Skilled
+				Subtitle: Mid-Hardmode
+				Description:
+					'''
+					You're turning into a real glutton now, aren't you? A fitting case, given how many lives your gut's probably ended by now.
+					Be wary, though. Many of your most impressive meals will definitely be more than willing to make you into a swiftly-churned snack if you're not careful!
+					'''
+				FooterAdvice:
+					'''
+					[c/{$Mods.V2.CommonColorCodes.DoSomething}:Skilled Advice:]
+					[c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:You are not invincible.] You may believe you are at this stage, but you're not. If you want to TRULY be invincible...you'll need to start adding the biggest buffets to your greedy gut's list of accomplishments.
+					'''
+				UnlockCondition: defeat Skeletron
+				
+
+				HoardLargeGems: {
+					Name: Pristine Pudge
+
+					Description: {
+						Default:
+							'''
+							Churn a collection of massive gemstones into a massive new influx of ass fat.
+							'Gemstones are really the best sorts of meals...tough as a rock, sky-high in calories, and expensive as all hell! Just imagine, all that unadulterated pristine WEALTH, steadily turned into nothing but a slew of caloric sludge fattening up your frame...'
+							'''
+						Clarification:
+							'''
+							Eat and digest all 7 Large Gems simultaneously.
+							Be aware that gemstones and their large variants universally resist unimproved acids --- you'll need a potion or similar to increase your acid tier enough to digest them.
+							'''
 					}
 				}
 			}
@@ -2303,7 +2333,7 @@ Mods: {
 								Once the bottle breaks, until fully digested, and for 1 minute thereafter:
 								> [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:+{FastDigestionPotionACIBonus} ACI]
 								> [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:+{FastDigestionPotionABSBonus} ABS]
-								> [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Raises acid tier to 2][c/7F7F7F:, if it is not at 2 already]
+								> [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Raises acid tier to 3][c/7F7F7F:, if it is not at 3 already]
 								'''
 							Flavor:
 								'''

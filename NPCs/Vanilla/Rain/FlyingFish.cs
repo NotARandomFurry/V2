@@ -8,25 +8,25 @@ using V2.PlayerHandling.PredPlayerGoals.Amateur;
 using V2.PlayerHandling.PredPlayerGoals.Beginner;
 using V2.PlayerHandling.PredPlayerGoals.Intermediate;
 
-namespace V2.NPCs.Vanilla.Ocean
+namespace V2.NPCs.Vanilla.Rain
 {
-    public static class SharkStuff
+    public static class FlyingFishStuff
 	{
-		public static Shark AsShark(this NPC npc)
+		public static FlyingFish AsFlyingFish(this NPC npc)
 		{
-			if (!npc.TryGetGlobalNPC(out Shark shark))
-				throw new Exception("this instance of a Shark, supposedly, doesn't exist");
+			if (!npc.TryGetGlobalNPC(out FlyingFish flyingFish))
+				throw new Exception("this instance of a Flying Fish, supposedly, doesn't exist");
 
-			return shark;
+			return flyingFish;
 		}
 	}
 
-	public class Shark : GlobalNPC
+	public class FlyingFish : GlobalNPC
 	{
 		public override bool IsLoadingEnabled(Mod mod) => !V2.GetFooled;
 		public override bool InstancePerEntity => true;
 
-		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.type == NPCID.Shark;
+		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.type == NPCID.FlyingFish;
 
 		public override void SetDefaults(NPC npc)
 		{
@@ -35,14 +35,14 @@ namespace V2.NPCs.Vanilla.Ocean
 			npc.AsFood().DefinedBaseSize = 2.625;
 
 			npc.AsFood().OnDigestedBy = PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
-			npc.AsFood().OnDigestedBy += OnKilledByDigestion_GrantSharkGoal;
+			npc.AsFood().OnDigestedBy += OnKilledByDigestion_GrantFlyingFishGoal;
 		}
 
-		public static void OnKilledByDigestion_GrantSharkGoal(NPC npc, Entity pred)
+		public static void OnKilledByDigestion_GrantFlyingFishGoal(NPC npc, Entity pred)
 		{
 			if (pred is Player predPlayer)
 			{
-				ModContent.GetInstance<EatShark>().TrySetCompletion(predPlayer);
+				ModContent.GetInstance<EatFlyingFish>().TrySetCompletion(predPlayer);
 			}
 		}
 	}

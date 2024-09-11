@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using System;
+using System.Drawing.Drawing2D;
 using System.IO;
 using Terraria;
 using Terraria.ID;
@@ -6,6 +8,7 @@ using Terraria.ModLoader;
 using V2.Core;
 using V2.NPCs;
 using V2.PlayerHandling;
+using V2.Projectiles;
 
 namespace V2
 {
@@ -20,6 +23,8 @@ namespace V2
 			DeliverPlayerPredStatSync,
 			SyncDigestionCombatTextForPreyNPC,
 			SyncDigestionCombatTextForPreyPlayer,
+			RequestRegurgitatePrey,
+			SyncRegurgitatePrey,
 		}
 
 		/// <summary>
@@ -81,6 +86,12 @@ namespace V2
 				case MessageType.SyncDigestionCombatTextForPreyPlayer:
 					HandlePacket_SyncDigestionCombatTextForPreyPlayer(reader, whoAmI);
 					break;
+				case MessageType.RequestRegurgitatePrey:
+					HandlePacket_RequestRegurgitatePrey(reader, whoAmI);
+					break;
+				case MessageType.SyncRegurgitatePrey:
+					HandlePacket_SyncRegurgitatePrey(reader, whoAmI);
+					break;
 				default:
 					Logger.WarnFormat(
 						"hi !!\n"
@@ -103,7 +114,7 @@ namespace V2
 
 		/// <summary>
 		/// SHORT SUMMARY:<br/>
-		/// Packet type 1. <b>Can only be sent to server.</b><br/>
+		/// Packet type 1. <b>Can only be sent to Rose from a client.</b><br/>
 		/// Upon reception, Rose will tell the server to try to put something in something else's gut.<br/>
 		/// ----------------------------------------------------------<br/>
 		/// ARGUMENTS:<br/>
@@ -156,7 +167,8 @@ namespace V2
 			if (pred is null)
 				goto Fail;
 
-			PreyData newData = (PreyType)reader.ReadByte() switch
+			PreyType preyType = (PreyType)reader.ReadByte();
+			PreyData newData = preyType switch
 			{
 				PreyType.Player => PreyData.NewData(Main.player[reader.ReadInt32()]),
 				PreyType.NPC => PreyData.NewData(Main.npc[reader.ReadInt32()]),
@@ -172,10 +184,15 @@ namespace V2
 
 			int originalClientWhoAmI = reader.ReadInt32();
 			if (pred is Player predPlayer)
+			{
+				if (preyType == PreyType.Liquid)
+					PredPlayer.Drink(predPlayer, -1, -1, newData, 2, originalClientWhoAmI);
 				PredPlayer.Swallow(predPlayer, newData.Instance, 2, originalClientWhoAmI);
+			}
 			else if (pred is NPC predNPC)
 				PredNPC.Swallow(predNPC, newData.Instance, 2, originalClientWhoAmI);
-			// PredProjectile.Swallow(predProjectile, newData.Instance); // save for later since projectiles can't pred yet
+			else if (pred is Projectile predProjectile)
+				PredProjectile.Swallow(predProjectile, newData.Instance, 2, originalClientWhoAmI);
 
 			return;
 			Fail:
@@ -184,7 +201,7 @@ namespace V2
 
 		/// <summary>
 		/// SHORT SUMMARY:<br/>
-		/// Packet type 2. <b>Can only be sent to multiplayer clients.</b><br/>
+		/// Packet type 2. <b>Can only be sent to Rose by the server.</b><br/>
 		/// Upon reception, Rose will tell the given client(s) to try to put something in something else's gut.<br/>
 		/// ----------------------------------------------------------<br/>
 		/// ARGUMENTS:<br/>
@@ -237,7 +254,8 @@ namespace V2
 			if (pred is null)
 				goto Fail;
 
-			PreyData newData = (PreyType)reader.ReadByte() switch
+			PreyType preyType = (PreyType)reader.ReadByte();
+			PreyData newData = preyType switch
 			{
 				PreyType.Player => PreyData.NewData(Main.player[reader.ReadInt32()]),
 				PreyType.NPC => PreyData.NewData(Main.npc[reader.ReadInt32()]),
@@ -253,10 +271,15 @@ namespace V2
 
 			int originalClientWhoAmI = reader.ReadInt32();
 			if (pred is Player predPlayer)
+			{
+				if (preyType == PreyType.Liquid)
+					PredPlayer.Drink(predPlayer, -1, -1, newData, 3, originalClientWhoAmI);
 				PredPlayer.Swallow(predPlayer, newData.Instance, 3, originalClientWhoAmI);
+			}
 			else if (pred is NPC predNPC)
 				PredNPC.Swallow(predNPC, newData.Instance, 3, originalClientWhoAmI);
-			// PredProjectile.Swallow(predProjectile, newData.Instance); // save for later since projectiles can't pred yet
+			else if (pred is Projectile predProjectile)
+				PredProjectile.Swallow(predProjectile, newData.Instance, 3, originalClientWhoAmI);
 
 			return;
 			Fail:
@@ -265,7 +288,7 @@ namespace V2
 
 		/// <summary>
 		/// SHORT SUMMARY:<br/>
-		/// Packet type 3. <b>Can only be sent to server.</b><br/>
+		/// Packet type 3. <b>Can only be sent to Rose by a client.</b><br/>
 		/// Upon reception, Rose will tell the server to try to sync a player's pred stat point changes.<br/>
 		/// ----------------------------------------------------------<br/>
 		/// ARGUMENTS:<br/>
@@ -308,7 +331,7 @@ namespace V2
 			deliveryPacket.Write(player.AsPred().TUM.Spent);
 			deliveryPacket.Write(player.AsPred().ACI.Spent);
 			deliveryPacket.Write(player.AsPred().ABS.Spent);
-			deliveryPacket.Send(-1, originalPlayerWhoAmI);
+			deliveryPacket.Send(ignoreClient: originalPlayerWhoAmI);
 
 			return;
 			Fail:
@@ -317,7 +340,7 @@ namespace V2
 
 		/// <summary>
 		/// SHORT SUMMARY:<br/>
-		/// Packet type 4. <b>Can only be sent to multiplayer clients.</b><br/>
+		/// Packet type 4. <b>Can only be sent to Rose by the server.</b><br/>
 		/// Upon reception, Rose will tell the given client(s) to try to sync a player's pred stat point changes.<br/>
 		/// ----------------------------------------------------------<br/>
 		/// ARGUMENTS:<br/>
@@ -406,6 +429,66 @@ namespace V2
 			digestionDamageText.position.Y = reader.ReadSingle();
 			digestionDamageText.velocity.X = reader.ReadSingle();
 			digestionDamageText.velocity.Y = reader.ReadSingle();
+
+			return;
+			Fail:
+			InformOfIncorrectPacketRecipe();
+		}
+
+		public void HandlePacket_RequestRegurgitatePrey(BinaryReader reader, int whoAmI)
+		{
+			if (Main.netMode != NetmodeID.Server)
+				goto Fail;
+
+			Entity pred = reader.ReadByte() switch
+			{
+				0 => Main.player[reader.ReadInt32()],
+				1 => Main.npc[reader.ReadInt32()],
+				2 => Main.projectile[reader.ReadInt32()],
+				_ => null,
+			};
+			if (pred is null)
+				goto Fail;
+
+			int preyIndex = reader.ReadInt32();
+
+			int originalClientWhoAmI = reader.ReadInt32();
+			if (pred is Player predPlayer)
+				PredPlayer.Regurgitate(predPlayer, preyIndex, 2, originalClientWhoAmI);
+			else if (pred is NPC predNPC)
+				PredNPC.Regurgitate(predNPC, preyIndex, 2, originalClientWhoAmI);
+			else if (pred is Projectile predProjectile)
+				PredProjectile.Regurgitate(predProjectile, preyIndex, 2, originalClientWhoAmI);
+
+			return;
+			Fail:
+			InformOfIncorrectPacketRecipe();
+		}
+
+		public void HandlePacket_SyncRegurgitatePrey(BinaryReader reader, int whoAmI)
+		{
+			if (Main.netMode != NetmodeID.MultiplayerClient)
+				goto Fail;
+
+			Entity pred = reader.ReadByte() switch
+			{
+				0 => Main.player[reader.ReadInt32()],
+				1 => Main.npc[reader.ReadInt32()],
+				2 => Main.projectile[reader.ReadInt32()],
+				_ => null,
+			};
+			if (pred is null)
+				goto Fail;
+
+			int preyIndex = reader.ReadInt32();
+
+			int originalClientWhoAmI = reader.ReadInt32();
+			if (pred is Player predPlayer)
+				PredPlayer.Regurgitate(predPlayer, preyIndex, 3, originalClientWhoAmI);
+			else if (pred is NPC predNPC)
+				PredNPC.Regurgitate(predNPC, preyIndex, 3, originalClientWhoAmI);
+			else if (pred is Projectile predProjectile)
+				PredProjectile.Regurgitate(predProjectile, preyIndex, 3, originalClientWhoAmI);
 
 			return;
 			Fail:

@@ -39,6 +39,7 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 			NPC.HitSound = SoundID.NPCHit1;
 
 			NPC.AsFood().DefinedBaseSize = 1.15;
+			NPC.AsPred().WeightGainRatio = 0.125;
 			NPC.AsPred().MaxStomachCapacity = 2.2;
 			NPC.AsPred().BaseStomachacheMeterCapacity = 155.0;
 

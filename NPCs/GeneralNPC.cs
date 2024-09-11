@@ -1,5 +1,7 @@
 ﻿using Humanizer;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using ReLogic.Utilities;
 using System;
 using System.Collections.Generic;
@@ -18,6 +20,7 @@ using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using V2.Core;
 using V2.NPCs.Vanilla.TownNPCs.Nurse;
+using V2.NPCs.Vanilla.TownNPCs.PartyGirl;
 using V2.PlayerHandling;
 using V2.Sounds.Vore;
 
@@ -41,6 +44,9 @@ namespace V2.NPCs
 	public partial class GeneralNPC : GlobalNPC
 	{
 		public EntityGender Gender;
+
+		public SpriteAnimation CustomSprite { get; set; } = null;
+
 		public delegate bool DelegateNewAI(NPC npc);
 		/// <summary>
 		/// Used to define a new AI method for existing NPCs.<br/>
@@ -134,6 +140,37 @@ namespace V2.NPCs
 		public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
 		{
 
+		}
+
+		public override bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+		{
+			if (npc.CurrentCaptor() is not null)
+				return false;
+
+			if (npc.AsV2NPC().CustomSprite is not null)
+			{
+				SpriteEffects spriteEffects = npc.direction switch
+				{
+					-1 => SpriteEffects.None,
+					_ => SpriteEffects.FlipHorizontally,
+				};
+				Texture2D texture = ModContent.Request<Texture2D>(npc.AsV2NPC().CustomSprite.Texture, AssetRequestMode.ImmediateLoad).Value;
+				Rectangle sourceRect = npc.AsV2NPC().CustomSprite.DecideFrame() ?? texture.Bounds;
+				spriteBatch.Draw
+				(
+					texture,
+					npc.Center - screenPos + new Vector2(0f, npc.gfxOffY),
+					sourceRect,
+					drawColor,
+					npc.rotation,
+					sourceRect.Size() / 2f,
+					1,
+					spriteEffects,
+					0f
+				);
+				return false;
+			}
+			return true;
 		}
 	}
 }

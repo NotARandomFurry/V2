@@ -16,7 +16,7 @@ namespace V2.PlayerHandling.PredPlayerGoals.Intermediate
 		public override string Description(Player pred) => "Mods.V2.PredPlayerGoals.Intermediate.HoardLargeGems.Description";
 		public override bool HasClearDescription(Player pred) => true;
 
-		public override int StatPointsFromCompletion => 12;
+		public override int StatPointsFromCompletion => 24;
 
 		public override ProgressionStage Stage => ModContent.GetInstance<IntermediateStage>();
 	}

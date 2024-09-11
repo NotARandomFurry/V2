@@ -25,9 +25,11 @@ namespace V2.Items.Vanilla.Currency
 		public override bool InstancePerEntity => true;
 		public override bool AppliesToEntity(Item entity, bool lateInstantiation) => entity.type == ItemID.PlatinumCoin;
 
-		public override void SetDefaults(Item entity)
+		public override void SetDefaults(Item item)
 		{
-
+			item.AsFood().MaxHealth = 256;
+			item.AsFood().Size = 0.005;
+			item.AsFood().AcidResistTier = 1;
 		}
 
 		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)

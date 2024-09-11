@@ -27,7 +27,9 @@ namespace V2.Items.Vanilla.Currency
 
 		public override void SetDefaults(Item item)
 		{
-
+			item.AsFood().MaxHealth = 4;
+			item.AsFood().Size = 0.0025;
+			item.AsFood().AcidResistTier = 1;
 		}
 
 		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)

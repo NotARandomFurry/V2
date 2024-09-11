@@ -13,8 +13,6 @@ namespace V2.Items.Vanilla.Weapons.Ranged
 
 		public override void SetDefaults(Item item)
 		{
-			item.SetNameOverride(Language.GetTextValue("Mods.V2.ItemName.Vanilla.Weapons.Ranged.OakWoodBow"));
-
 			item.AsFood().MaxHealth = 65;
 			item.AsFood().Size = 0.25;
 

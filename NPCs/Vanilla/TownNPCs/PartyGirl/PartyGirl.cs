@@ -72,8 +72,6 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 	public partial class PartyGirl : GlobalNPC
 	{
 		public override bool IsLoadingEnabled(Mod mod) => !V2.GetFooled;
-		public int HungerForEmpress { get; set; }
-		public static int MaxHungerForEmpress => V2Utils.SensibleTime(seconds: 25);
 
 		public int SpecialGutFrameCounter;
 		public int SpecialGutFrame;
@@ -93,6 +91,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 			npc.AsV2NPC().GetNewDialogue = GetPartyGirlChat;
 
 			npc.AsFood().DefinedBaseSize = 1.0;
+			npc.AsPred().WeightGainRatio = 0.28;
 			npc.AsPred().MaxStomachCapacity = 999999.0;
 			npc.AsPred().BaseStomachacheMeterCapacity = 999999.0;
 
@@ -127,16 +126,21 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 				goto ResetFrame;
 
 			PreyData candyFairy = null;
-			if (tracker.Prey.FirstOrDefault(x => x.Type == PreyType.NPC && x.ExactType == NPCID.HallowBoss) is PreyData sprinkles && sprinkles.WeightLeftToDigest > 5.0)
+			if (tracker.Prey.FirstOrDefault(x => x.Type == PreyType.NPC && x.ExactType == NPCID.HallowBoss) is PreyData sprinkles && sprinkles.WeightLeftToDigest > 4.0)
 				candyFairy = sprinkles;
-			if (tracker.PreyQueue.FirstOrDefault(x => x.Type == PreyType.NPC && x.ExactType == NPCID.HallowBoss) is PreyData sprinklesQueue && sprinklesQueue.WeightLeftToDigest > 5.0)
+			if (tracker.PreyQueue.FirstOrDefault(x => x.Type == PreyType.NPC && x.ExactType == NPCID.HallowBoss) is PreyData sprinklesQueue && sprinklesQueue.WeightLeftToDigest > 4.0)
 				candyFairy = sprinklesQueue;
 			bool ateCandyFairy = tracker is not null;
 			ateCandyFairy &= candyFairy is not null;
 			if (ateCandyFairy)
 			{
-				npc.width = 110;
-				npc.height = 64;
+				if (npc.width == 18 && npc.height == 40)
+				{
+					npc.width = 110;
+					npc.height = 64;
+					npc.position.X -= 48;
+					npc.position.Y -= 18;
+				}
 				npc.velocity.X = 0;
 				npc.AsPartyGirl().SpecialGutFrames = 10;
 				npc.AsPartyGirl().SpecialGutFrameCounter += 1;
@@ -161,7 +165,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 			}
 
 			ResetFrame:
-			npc.width = 14;
+			npc.width = 18;
 			npc.height = 40;
 			npc.AsPartyGirl().SpecialGutFrames = 0;
 			npc.AsPartyGirl().SpecialGutFrame = 0;
@@ -196,11 +200,6 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 
 			if (Main.GameUpdateCount % 60 != 0)
 				return;
-
-			if (NPC.AnyNPCs(NPCID.HallowBoss))
-			{
-				npc.AsPartyGirl().HungerForEmpress += 1;
-			}
 
 			static void RollForRandomGulp(ref bool gulp) => gulp |= Main.rand.NextBool(4, 100);
 
@@ -275,10 +274,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 								or ProjectileID.FairyQueenLance
 								or ProjectileID.FairyQueenSunDance)
 			{
-				double mult = 1.0;
-				mult -= (double)npc.AsPartyGirl().HungerForEmpress / (double)MaxHungerForEmpress;
-				mult = 0.2 + (mult * 0.8);
-				modifiers.FinalDamage *= (float)mult;
+				modifiers.FinalDamage *= 0.25f;
 			}
 		}
 
@@ -329,24 +325,24 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 			if (PredNPC.GetStomachTracker(npc) is null)
 				return 0;
 
-			PreyData sprinkles = PredNPC.GetStomachTracker(npc).Prey.FirstOrDefault(x => x.Type == PreyType.NPC && x.ExactType == NPCID.HallowBoss);
-			if (sprinkles is null || sprinkles.WeightLeftToDigest < 5.0)
+			PreyData candyFairy = PredNPC.GetStomachTracker(npc).Prey.FirstOrDefault(x => x.Type == PreyType.NPC && x.ExactType == NPCID.HallowBoss);
+			if (candyFairy is null || candyFairy.WeightLeftToDigest < 5.0)
 				return 0;
 			else
 			{
-				if (!sprinkles.NoHealth)
+				if (!candyFairy.NoHealth)
 					return 1;
 				else
 				{
-					if (sprinkles.WeightLeftToDigest > 37.0)
+					if (candyFairy.WeightLeftToDigest > 37.0)
 						return 1;
-					else if (sprinkles.WeightLeftToDigest > 34.0 && sprinkles.WeightLeftToDigest <= 37.0)
+					else if (candyFairy.WeightLeftToDigest > 34.0 && candyFairy.WeightLeftToDigest <= 37.0)
 						return 2;
-					else if (sprinkles.WeightLeftToDigest > 31.5 && sprinkles.WeightLeftToDigest <= 34.0)
+					else if (candyFairy.WeightLeftToDigest > 31.5 && candyFairy.WeightLeftToDigest <= 34.0)
 						return 3;
-					else if (sprinkles.WeightLeftToDigest > 29.0 && sprinkles.WeightLeftToDigest <= 31.5)
+					else if (candyFairy.WeightLeftToDigest > 29.0 && candyFairy.WeightLeftToDigest <= 31.5)
 						return 4;
-					else if (sprinkles.WeightLeftToDigest > 4.0)
+					else if (candyFairy.WeightLeftToDigest > 4.0)
 						return 5;
 					else
 						return 0;

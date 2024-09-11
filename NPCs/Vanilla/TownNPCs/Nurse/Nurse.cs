@@ -110,6 +110,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 			npc.AsV2NPC().NewAIMethod = V2NurseAI;
 
 			npc.AsFood().DefinedBaseSize = 1.1625;
+			npc.AsPred().WeightGainRatio = 0.06;
 			npc.AsPred().MaxStomachCapacity = 1.8;
 			npc.AsPred().BaseStomachacheMeterCapacity = 180.0;
 

@@ -539,7 +539,7 @@ namespace V2.UI.PredStatsMenu
 								deliveryPacket.Write(Main.LocalPlayer.AsPred().TUM.Spent);
 								deliveryPacket.Write(Main.LocalPlayer.AsPred().ACI.Spent);
 								deliveryPacket.Write(Main.LocalPlayer.AsPred().ABS.Spent);
-								deliveryPacket.Send(-1, Main.myPlayer);
+								deliveryPacket.Send(ignoreClient: Main.myPlayer);
 							}
 						}
 					}
@@ -576,7 +576,7 @@ namespace V2.UI.PredStatsMenu
 								deliveryPacket.Write(Main.LocalPlayer.AsPred().TUM.Spent);
 								deliveryPacket.Write(Main.LocalPlayer.AsPred().ACI.Spent);
 								deliveryPacket.Write(Main.LocalPlayer.AsPred().ABS.Spent);
-								deliveryPacket.Send(-1, Main.myPlayer);
+								deliveryPacket.Send(ignoreClient: Main.myPlayer);
 							}
 						}
 					}

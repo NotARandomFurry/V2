@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI;
 using V2.Core;
@@ -18,6 +19,9 @@ namespace V2.UI.StruggleSystem
 		public override void Update(GameTime gameTime)
 		{
 			Visible = false;
+			if (Main.netMode != NetmodeID.SinglePlayer)
+				return;
+
 			Player player = Main.LocalPlayer;
 			if (player.AsPred().KickyStomachFullness > 0.0 && player.AsPred().StomachTracker.PredatorStruggleChart is not null)
 				Visible = true;

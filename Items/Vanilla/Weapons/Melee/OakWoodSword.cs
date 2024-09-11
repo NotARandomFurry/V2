@@ -13,8 +13,6 @@ namespace V2.Items.Vanilla.Weapons.Melee
 
 		public override void SetDefaults(Item item)
 		{
-			item.SetNameOverride(Language.GetTextValue("Mods.V2.ItemName.Vanilla.Weapons.Melee.OakWoodSword"));
-
 			item.AsFood().MaxHealth = 110;
 			item.AsFood().Size = 0.40;
 

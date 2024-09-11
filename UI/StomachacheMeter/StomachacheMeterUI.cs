@@ -258,6 +258,19 @@ namespace V2.UI.StomachacheMeter
 				if (npc.AsPred().MaxStomachCapacity <= 0)
 					continue;
 
+				bool anyPlayersEatenBy = false;
+				foreach (Player player in Main.ActivePlayers)
+				{
+					if (!player.IsFoodFor(npc, out bool pastTense) || pastTense)
+						continue;
+
+					anyPlayersEatenBy = true;
+					break;
+				}
+
+				if (!anyPlayersEatenBy)
+					continue;
+
 				PrepareFields(npc);
 				Draw(npc);
 			}
@@ -265,6 +278,19 @@ namespace V2.UI.StomachacheMeter
 			foreach (Projectile projectile in Main.ActiveProjectiles)
 			{
 				if (projectile.AsPred().MaxStomachCapacity <= 0)
+					continue;
+
+				bool anyPlayersEatenBy = false;
+				foreach (Player player in Main.ActivePlayers)
+				{
+					if (!player.IsFoodFor(projectile, out bool pastTense) || pastTense)
+						continue;
+
+					anyPlayersEatenBy = true;
+					break;
+				}
+
+				if (!anyPlayersEatenBy)
 					continue;
 
 				PrepareFields(projectile);

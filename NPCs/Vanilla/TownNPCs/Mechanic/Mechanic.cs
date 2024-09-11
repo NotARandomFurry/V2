@@ -109,6 +109,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Mechanic
 			npc.AsV2NPC().GetNewDialogue = GetMechanicChat;
 			
 			npc.AsFood().DefinedBaseSize = 0.96;
+			npc.AsPred().WeightGainRatio = 0.05;
 			npc.AsPred().MaxStomachCapacity = 1.75;
 			npc.AsPred().BaseStomachacheMeterCapacity = 300.0;
 
@@ -531,6 +532,9 @@ namespace V2.NPCs.Vanilla.TownNPCs.Mechanic
 		public override void PostAI(NPC npc)
 		{
 			if (npc.CurrentCaptor() is not null)
+				return;
+
+			if (Main.GameUpdateCount % 60 != 0)
 				return;
 
 			static void RollForRandomGulp(ref bool gulp) => gulp |= Main.rand.NextBool(3, 100);

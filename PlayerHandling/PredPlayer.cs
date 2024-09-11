@@ -18,6 +18,7 @@ using V2.Items;
 using V2.Items.Voraria.Consumables.PermanentUpgrades;
 using V2.NPCs;
 using V2.PlayerHandling.PredPlayerGoals;
+using V2.PlayerHandling.PredPlayerGoals.Amateur;
 using V2.PlayerHandling.PredPlayerGoals.Beginner;
 using V2.PlayerHandling.PredPlayerGoals.Starter;
 using V2.Projectiles;
@@ -68,8 +69,6 @@ namespace V2.PlayerHandling
 			get => _stomachache;
 			set => _stomachache = Math.Min(Math.Max(0, value), StomachacheMeterCapacity);
 		}
-
-		public int predLevel;
 
 		public bool InPredStatsMenu { get; set; }
 		public Dictionary<string, bool> GoalsCompleted { get; set; }
@@ -333,9 +332,6 @@ namespace V2.PlayerHandling
 		{
 			get
 			{
-				if (predLevel >= 10)
-					return 2;
-
 				return 1;
 			}
 		}
@@ -350,9 +346,20 @@ namespace V2.PlayerHandling
 		public bool charmStealPreyLoot;
 
 		public Dictionary<string, bool> PermanentUpgradesGained { get; set; }
-		public bool endoToggleUnlocked;
-		public bool endoToggle;
-		public bool SafeStomach => (charmNoDigest && charmNoAirDrain) || endoToggle;
+
+		public bool EndoToggleUnlocked { get; set; }
+		private bool endoToggle;
+		public bool SafeStomach
+		{
+			get => (charmNoDigest && charmNoAirDrain) || (EndoToggleUnlocked && endoToggle);
+			set
+			{
+				if (!EndoToggleUnlocked)
+					return;
+
+				endoToggle = value;
+			}         
+		}
 
 		public string lastEntitySwallowed;
 		public string lastEntitySwallowedMod;
@@ -382,6 +389,9 @@ namespace V2.PlayerHandling
 			get
 			{
 				if (Player.lavaImmune)
+					return true;
+
+				if (Player.lavaTime > 0)
 					return true;
 
 				return false;
@@ -629,7 +639,7 @@ namespace V2.PlayerHandling
 			charmNoAirDrain = false;
 			charmStealPreyLoot = false;
 
-			endoToggleUnlocked = false;
+			EndoToggleUnlocked = false;
 			endoToggle = false;
 
 			lastEntitySwallowed = null;
@@ -919,64 +929,7 @@ namespace V2.PlayerHandling
 					{
 						int liquidToDrink = (tile.LiquidAmount > Player.AsPred().LiquidSwallowSize) ? Player.AsPred().LiquidSwallowSize : tile.LiquidAmount;
 
-						Player.AsPred().lastLiquidDrank = tile.LiquidType switch
-						{
-							0 => "Water",
-							1 => "Lava",
-							2 => "Honey",
-							3 => "Shimmer",
-							_ => "Some other liquid",
-						};
-
-						PreyData newDrink = new PreyData(tile.LiquidType, liquidToDrink);
-						if (Player.AsPred().StomachTracker is not null && Player.AsPred().StomachTracker.Prey.FirstOrDefault(x => x.Type == PreyType.Liquid && x.ExactType == tile.LiquidType) is PreyData existingDrink)
-							existingDrink.WeightLeftToDigest += newDrink.WeightLeftToDigest;
-						else
-							AddNewPrey(Player, newDrink);
-
-						void AddVanillaDrinkCount()
-						{
-							Player.AsPred().lastLiquidDrankMod = "Terraria";
-							if (!Player.AsPred().drinkCount.ContainsKey(Player.AsPred().lastLiquidDrankMod + ": " + Player.AsPred().lastLiquidDrank))
-								Player.AsPred().drinkCount.Add(Player.AsPred().lastLiquidDrankMod + ": " + Player.AsPred().lastLiquidDrank, 0);
-							Player.AsPred().drinkCount[Player.AsPred().lastLiquidDrankMod + ": " + Player.AsPred().lastLiquidDrank] += liquidToDrink;
-							Player.AsPred().lastSwallowWasDrinking = true;
-						}
-						bool VanillaDrinkCountHas(int req) => Player.AsPred().drinkCount[Player.AsPred().lastLiquidDrankMod + ": " + Player.AsPred().lastLiquidDrank] >= req;
-						switch (tile.LiquidType)
-						{
-							case LiquidID.Water:
-								AddVanillaDrinkCount();
-								if (VanillaDrinkCountHas(255))
-									ModContent.GetInstance<FirstDrink>().TrySetCompletion(Player);
-								break;
-							case LiquidID.Lava:
-								if (Player.AsPred().CanDrinkLavaSafe)
-								{
-									AddVanillaDrinkCount();
-									//	if (VanillaDrinkCountHas(255))
-									//		ModContent.GetInstance<FirstDrink>().TrySetCompletion(Player);
-								}
-								break;
-							case LiquidID.Honey:
-								AddVanillaDrinkCount();
-								if (VanillaDrinkCountHas(255))
-									ModContent.GetInstance<DrinkHoney>().TrySetCompletion(Player);
-								break;
-							case LiquidID.Shimmer:
-								if (!Player.AsPred().CanDrinkShimmerSafe && !Player.AsPred().PrimedForShimmerStomachDeath)
-								{
-									Player.AddBuff(ModContent.BuffType<ShimmeringStomach>(), 300);
-									Player.AsPred().PrimedForShimmerStomachDeath = true;
-								}
-								else if (Player.AsPred().CanDrinkShimmerSafe)
-								{
-									AddVanillaDrinkCount();
-									//	if (VanillaDrinkCountHas(255))
-									//		ModContent.GetInstance<FirstDrink>().TrySetCompletion(Player);
-								}
-								break;
-						}
+						
 						if (tile.LiquidAmount <= (byte)Player.AsPred().LiquidSwallowSize)
 						{
 							tile.LiquidAmount = 0;
@@ -985,6 +938,8 @@ namespace V2.PlayerHandling
 						else
 							tile.LiquidAmount -= (byte)Player.AsPred().LiquidSwallowSize;
 						WorldGen.SquareTileFrame(playerTileLocation.X, playerTileLocation.Y);
+						if (Main.netMode == NetmodeID.MultiplayerClient)
+							NetMessage.SendTileSquare(-1, playerTileLocation.X, playerTileLocation.Y);
 
 						if (Main.GameUpdateCount % 60 == 0)
 						{
@@ -999,41 +954,9 @@ namespace V2.PlayerHandling
 				#region Regurgitating swallowed prey
 				if (V2.RegurgitateHotkey.JustPressed && Player.AsPred().StomachTracker?.Prey.Count > 0)
 				{
-					PreyData prey = Player.AsPred().StomachTracker?.Prey.FindLast(x => !x.NoHealth && x.Type != PreyType.Liquid);
+					PreyData prey = Player.AsPred().StomachTracker.Prey.FindLast(x => !x.NoHealth && x.Type != PreyType.Liquid);
 					if (prey is not null)
 					{
-						Entity realPrey = prey.Type switch
-						{
-							PreyType.Player => prey.Instance as Player,
-							PreyType.NPC => prey.Instance as NPC,
-							PreyType.Projectile => prey.Instance as Projectile,
-							PreyType.Item => prey.Instance as Item,
-							PreyType.Custom => null,
-							_ => throw new NotImplementedException(),
-						};
-						realPrey.position = Player.TrueCenter() + new Vector2(Player.direction * 8f, -14f);
-						realPrey.velocity = new Vector2(Player.direction * 10f, -2.5f);
-						if (realPrey is NPC realPreyNPC)
-						{
-							realPreyNPC.AsFood().EatenSafetyFrames = 20;
-						}
-						else if (realPrey is Projectile realPreyProjectile)
-						{
-
-						}
-						else if (realPrey is Player realPreyPlayer)
-						{
-
-						}
-						else if (realPrey is Item realPreyItem)
-						{
-							realPreyItem.noGrabDelay = 60;
-						}
-						Player.AsPred().StomachTracker?.Prey.Remove(prey);
-						SoundEngine.PlaySound(
-							prey.WeightLeftToDigest <= 0.3 ? Player.AsPred().SmallBurps : Player.AsPred().StandardBurps,
-							Player.TrueCenter() + new Vector2(Player.direction * 8f, -14f)
-						);
 					}
 				}
 				#endregion
@@ -1221,7 +1144,194 @@ namespace V2.PlayerHandling
 				packet.Write((byte)food.Type);
 				packet.Write(prey.whoAmI);
 				packet.Write(MPwhoAmI);
-				packet.Send(-1, ignoreClient: MPwhoAmI);
+				packet.Send(ignoreClient: MPwhoAmI);
+			}
+		}
+
+		public static void Drink(Player pred, int liquidType = -1, int liquidAmount = -1, PreyData newDrink = null, int MPstate = 0, int MPwhoAmI = -1)
+		{
+			pred.AsPred().lastLiquidDrank = liquidType switch
+			{
+				0 => "Water",
+				1 => "Lava",
+				2 => "Honey",
+				3 => "Shimmer",
+				_ => "Some other liquid",
+			};
+
+			if (liquidType == 0 && liquidAmount == 0 && newDrink is null)
+				throw new ArgumentException("you're supposed to make sure either the PreyData instance provided or the liquid type and amount provided are valid for PredPlayer.Drink. try again");
+
+			if (newDrink is null)
+				newDrink = new PreyData(liquidType, liquidAmount);
+			if (liquidType == -1 && liquidAmount == -1)
+			{
+				liquidType = newDrink.ExactType;
+				liquidAmount = (int)Math.Round(newDrink.WeightLeftToDigest / (liquidType switch
+				{
+					LiquidID.Lava => 4.0,
+					LiquidID.Honey => 1.5,
+					LiquidID.Shimmer => 0.75,
+					_ => 1.0,
+				}) * 256.0);
+			}
+			if (pred.AsPred().StomachTracker is not null && pred.AsPred().StomachTracker.Prey.FirstOrDefault(x => x.Type == PreyType.Liquid && x.ExactType == liquidType) is PreyData existingDrink)
+				existingDrink.WeightLeftToDigest += newDrink.WeightLeftToDigest;
+			else
+				AddNewPrey(pred, newDrink);
+
+			void AddVanillaDrinkCount()
+			{
+				pred.AsPred().lastLiquidDrankMod = "Terraria";
+				if (!pred.AsPred().drinkCount.ContainsKey(pred.AsPred().lastLiquidDrankMod + ": " + pred.AsPred().lastLiquidDrank))
+					pred.AsPred().drinkCount.Add(pred.AsPred().lastLiquidDrankMod + ": " + pred.AsPred().lastLiquidDrank, 0);
+				pred.AsPred().drinkCount[pred.AsPred().lastLiquidDrankMod + ": " + pred.AsPred().lastLiquidDrank] += liquidAmount;
+				pred.AsPred().lastSwallowWasDrinking = true;
+			}
+			bool VanillaDrinkCountHas(int req) => pred.AsPred().drinkCount[pred.AsPred().lastLiquidDrankMod + ": " + pred.AsPred().lastLiquidDrank] >= req;
+			switch (liquidType)
+			{
+				case LiquidID.Water:
+					AddVanillaDrinkCount();
+					if (VanillaDrinkCountHas(255))
+						ModContent.GetInstance<FirstDrink>().TrySetCompletion(pred);
+					break;
+				case LiquidID.Lava:
+					if (pred.AsPred().CanDrinkLavaSafe)
+					{
+						AddVanillaDrinkCount();
+						if (VanillaDrinkCountHas(255))
+							ModContent.GetInstance<DrinkLava>().TrySetCompletion(pred);
+					}
+					break;
+				case LiquidID.Honey:
+					AddVanillaDrinkCount();
+					if (VanillaDrinkCountHas(255))
+						ModContent.GetInstance<DrinkHoney>().TrySetCompletion(pred);
+					break;
+				case LiquidID.Shimmer:
+					if (!pred.AsPred().CanDrinkShimmerSafe && !pred.AsPred().PrimedForShimmerStomachDeath)
+					{
+						pred.AddBuff(ModContent.BuffType<ShimmeringStomach>(), 300);
+						pred.AsPred().PrimedForShimmerStomachDeath = true;
+					}
+					else if (pred.AsPred().CanDrinkShimmerSafe)
+					{
+						AddVanillaDrinkCount();
+						//	if (VanillaDrinkCountHas(255))
+						//		ModContent.GetInstance<FirstDrink>().TrySetCompletion(pred);
+					}
+					break;
+			}
+
+			if (MPstate == 1)
+			{
+				ModPacket packet = V2.Instance.GetPacket();
+				packet.Write((byte)V2.MessageType.RequestSwallowPrey);
+				packet.Write((byte)0);
+				packet.Write(pred.whoAmI);
+				packet.Write((byte)PreyType.Liquid);
+				packet.Write(liquidType);
+				packet.Write(liquidAmount);
+				packet.Write(MPwhoAmI);
+				packet.Send();
+			}
+			else if (MPstate == 2)
+			{
+				ModPacket packet = V2.Instance.GetPacket();
+				packet.Write((byte)V2.MessageType.SyncSwallowPrey);
+				packet.Write((byte)0);
+				packet.Write(pred.whoAmI);
+				packet.Write((byte)PreyType.Liquid);
+				packet.Write(liquidType);
+				packet.Write(liquidAmount);
+				packet.Write(MPwhoAmI);
+				packet.Send(ignoreClient: MPwhoAmI);
+			}
+		}
+
+		public static void Regurgitate(Player pred, int index = -1, int MPstate = 0, int MPwhoAmI = -1)
+		{
+			if (MPstate == 0 && Main.netMode == NetmodeID.MultiplayerClient)
+			{
+				MPstate = 1;
+				MPwhoAmI = Main.myPlayer;
+			}
+
+			double totalRegurgiweight = 0.0;
+
+			void Regurgitate_Inner(Player pred, PreyData prey)
+			{
+				Entity realPrey = prey.Type switch
+				{
+					PreyType.Player => prey.Instance as Player,
+					PreyType.NPC => prey.Instance as NPC,
+					PreyType.Projectile => prey.Instance as Projectile,
+					PreyType.Item => prey.Instance as Item,
+					PreyType.Custom => null,
+					_ => throw new NotImplementedException(),
+				};
+				realPrey.position = pred.TrueCenter() + new Vector2(pred.direction * 8f, -14f);
+				realPrey.velocity = new Vector2(pred.direction * 10f, -2.5f);
+				if (realPrey is NPC realPreyNPC)
+				{
+					realPreyNPC.AsFood().EatenSafetyFrames = 20;
+				}
+				else if (realPrey is Projectile realPreyProjectile)
+				{
+
+				}
+				else if (realPrey is Player realPreyPlayer)
+				{
+
+				}
+				else if (realPrey is Item realPreyItem)
+				{
+					realPreyItem.noGrabDelay = 60;
+				}
+				totalRegurgiweight += prey.WeightLeftToDigest;
+			}
+
+			if (index == -1)
+			{
+				foreach (PreyData prey in pred.AsPred().StomachTracker.Prey)
+					Regurgitate_Inner(pred, prey);
+
+				pred.AsPred().StomachTracker.Prey.Clear();
+				pred.AsPred().StomachTracker.RefreshStruggleChartList();
+			}
+			else
+			{
+				PreyData prey = pred.AsPred().StomachTracker.Prey[index];
+				Regurgitate_Inner(pred, prey);
+
+				pred.AsPred().StomachTracker.Prey.Remove(prey);
+			}
+
+			SoundEngine.PlaySound(
+				totalRegurgiweight <= 0.3 ? pred.AsPred().SmallBurps : pred.AsPred().StandardBurps,
+				pred.TrueCenter() + new Vector2(pred.direction * 8f, -14f)
+			);
+
+			if (MPstate == 1)
+			{
+				ModPacket packet = V2.Instance.GetPacket();
+				packet.Write((byte)V2.MessageType.RequestRegurgitatePrey);
+				packet.Write((byte)0);
+				packet.Write(Main.myPlayer);
+				packet.Write(index);
+				packet.Write(Main.myPlayer);
+				packet.Send();
+			}
+			else if (MPstate == 2)
+			{
+				ModPacket packet = V2.Instance.GetPacket();
+				packet.Write((byte)V2.MessageType.SyncRegurgitatePrey);
+				packet.Write((byte)0);
+				packet.Write(Main.myPlayer);
+				packet.Write(index);
+				packet.Write(Main.myPlayer);
+				packet.Send(ignoreClient: MPwhoAmI);
 			}
 		}
 
@@ -1240,43 +1350,7 @@ namespace V2.PlayerHandling
 		{
 			if (pred.AsPred().StomachacheMeterCapacity != -1 && pred.AsPred().Stomachache == pred.AsPred().StomachacheMeterCapacity && pred.AsPred().StomachTracker is not null && pred.AsPred().StomachTracker.Prey.Count > 0)
 			{
-				foreach (PreyData prey in pred.AsPred().StomachTracker.Prey)
-				{
-					Entity realPrey = prey.Type switch
-					{
-						PreyType.Player => prey.Instance as Player,
-						PreyType.NPC => prey.Instance as NPC,
-						PreyType.Projectile => prey.Instance as Projectile,
-						PreyType.Item => prey.Instance as Item,
-						PreyType.Liquid => null,
-						PreyType.Custom => null,
-						_ => throw new NotImplementedException(),
-					};
-
-					if (realPrey is null)
-						continue;
-
-					realPrey.position = pred.TrueCenter() + new Vector2(pred.direction * 8f, -14f);
-					realPrey.velocity = new Vector2(pred.direction * 12.5f, -2.5f);
-					if (realPrey is NPC realPreyNPC)
-					{
-						realPreyNPC.AsFood().EatenSafetyFrames = 20;
-					}
-					else if (realPrey is Player realPreyPlayer)
-					{
-
-					}
-					else if (realPrey is Item realPreyItem)
-					{
-						realPreyItem.noGrabDelay = 60;
-					}
-				}
-				SoundEngine.PlaySound(
-					pred.AsPred().StandardBurps,
-					pred.TrueCenter() + new Vector2(pred.direction * 8f, -14f)
-				);
-				pred.AsPred().StomachTracker.Prey.Clear();
-				pred.AsPred().StomachTracker.RefreshStruggleChartList();
+				Regurgitate(pred);
 				return;
 			}
 
@@ -1307,6 +1381,7 @@ namespace V2.PlayerHandling
 						case PreyType.Item:
 							Item preyItem = prey.Instance as Item;
 							preyItem.AsFood().UpdateInStomach?.Invoke(preyItem, pred, prey.NoHealth);
+							preyItem.position = pred.position;
 							break;
 					}
 					double digestionDamage = pred.AsPred().DigestionTickDamage;
@@ -1342,7 +1417,7 @@ namespace V2.PlayerHandling
 								if (shouldDigestNPC)
 								{
 									if (preyNPC.type == NPCID.HallowBoss && ModContent.GetInstance<V2ServerConfig>().EasilyEdibleEmpress)
-										digestionDamage *= 40.0;
+										digestionDamage *= 20.0;
 									prey.NoHealth = PreyNPC.TakeDigestionDamage(preyNPC, pred, digestionDamage);
 									if (prey.NoHealth)
 									{

@@ -14,7 +14,7 @@ using V2.NPCs.Vanilla.NPCAIReference;
 using V2.PlayerHandling;
 using V2.PlayerHandling.PredPlayerGoals.Beginner;
 
-namespace V2.NPCs.V2NPCGroupUtils
+namespace V2.NPCs.GroupDefinitions
 {
 	public class SlimeNPC : GlobalNPC
 	{

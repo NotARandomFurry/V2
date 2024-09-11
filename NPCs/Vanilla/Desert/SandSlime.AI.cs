@@ -1,6 +1,6 @@
 ﻿using Terraria;
 using Terraria.ModLoader;
-using V2.NPCs.V2NPCGroupUtils;
+using V2.NPCs.GroupDefinitions;
 
 namespace V2.NPCs.Vanilla.Desert
 {

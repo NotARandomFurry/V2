@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Terraria;
 using Terraria.ID;
+using Terraria.ModLoader;
 using V2.Core;
 using V2.Items;
 using V2.PlayerHandling;
@@ -302,7 +303,9 @@ namespace V2.NPCs
 
 					if (npc.Hitbox.Intersects(preyNPC.Hitbox) && PredNPC.CanSwallow(npc, preyNPC))
 					{
-						if (npc.type == NPCID.HallowBoss && preyNPC.type == NPCID.PartyGirl)
+						bool empressGetsGulped = preyNPC.type == NPCID.PartyGirl;
+						empressGetsGulped |= ModContent.GetInstance<V2ServerConfig>().EasilyEdibleEmpress && preyNPC.type == NPCID.Dryad;
+						if (npc.type == NPCID.HallowBoss && empressGetsGulped)
 							PredNPC.Swallow(preyNPC, npc);
 						else
 							PredNPC.Swallow(npc, preyNPC);
