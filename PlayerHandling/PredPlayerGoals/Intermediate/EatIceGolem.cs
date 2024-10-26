@@ -15,7 +15,7 @@ namespace V2.PlayerHandling.PredPlayerGoals.Intermediate
 		public override string DisplayName(Player pred) => "Mods.V2.PredPlayerGoals.Intermediate.EatIceGolem.Name";
 		public override string Description(Player pred) => "Mods.V2.PredPlayerGoals.Intermediate.EatIceGolem.Description";
 		public override bool HasClearDescription(Player pred) => true;
-		public override bool Available(Player pred) => (Main.hardMode && pred.ZoneSnow) || Complete(pred);
+		public override bool Available(Player pred) => (Main.hardMode && pred.AsV2Player().HasVisitedLocation("snowing")) || Complete(pred);
 
 		public override int StatPointsFromCompletion => 20;
 

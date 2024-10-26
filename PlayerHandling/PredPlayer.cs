@@ -956,8 +956,7 @@ namespace V2.PlayerHandling
 				{
 					PreyData prey = Player.AsPred().StomachTracker.Prey.FindLast(x => !x.NoHealth && x.Type != PreyType.Liquid);
 					if (prey is not null)
-					{
-					}
+						Regurgitate(Player, Player.AsPred().StomachTracker.Prey.IndexOf(prey));
 				}
 				#endregion
 			}
@@ -987,25 +986,26 @@ namespace V2.PlayerHandling
 					return false;
 			}
 
-			if (prey is Player preyPlayer)
-			{
-				if (preyPlayer.CurrentCaptor() is not null)
-					return false;
-			}
-			else if (prey is NPC preyNPC)
+			if (prey.CurrentCaptor() is not null)
+				return false;
+
+			if (pred.AsPred().SwallowCapacity != -1 && PreyData.GetPreySize(prey) > pred.AsPred().SwallowCapacity)
+				return false;
+
+			if (pred.AsPred().StomachCapacity != -1 && PreyData.GetPreySize(prey) > pred.AsPred().StomachCapacity - pred.AsPred().StomachFullness)
+				return false;
+
+			if (prey is NPC preyNPC)
 			{
 				if (V2.VoreNPCBlacklist is not null && V2.VoreNPCBlacklist.Count > 0 && V2.VoreNPCBlacklist.Contains(preyNPC.type))
 					return false;
 
 				bool tastesLikeSkittles = preyNPC.type == NPCID.HallowBoss && ModContent.GetInstance<V2ServerConfig>().EasilyEdibleEmpress;
 				if (tastesLikeSkittles)
-					return preyNPC.CurrentCaptor() is null;
+					return true;
 
 				bool isThisAFuckingBoss = preyNPC.boss || (preyNPC.type >= NPCID.EaterofWorldsHead && preyNPC.type <= NPCID.EaterofWorldsTail); // I hate EoW
 				if (isThisAFuckingBoss && !pred.AsPred().Rose)
-					return false;
-
-				if (preyNPC.CurrentCaptor() is not null)
 					return false;
 			}
 			else if (prey is Projectile preyProjectile)
@@ -1015,9 +1015,6 @@ namespace V2.PlayerHandling
 
 				if (preyProjectile.AsFood().MaxHealth == -1)
 					return false;
-
-				if (preyProjectile.CurrentCaptor() is not null)
-					return false;
 			}
 			else if (prey is Item preyItem)
 			{
@@ -1026,16 +1023,7 @@ namespace V2.PlayerHandling
 
 				if (preyItem.favorited)
 					return false;
-
-				if (preyItem.CurrentCaptor() is not null)
-					return false;
 			}
-
-			if (pred.AsPred().SwallowCapacity != -1 && PreyData.GetPreySize(prey) > pred.AsPred().SwallowCapacity)
-				return false;
-
-			if (pred.AsPred().StomachCapacity != -1 && PreyData.GetPreySize(prey) > pred.AsPred().StomachCapacity - pred.AsPred().StomachFullness)
-				return false;
 
 			return true;
 		}

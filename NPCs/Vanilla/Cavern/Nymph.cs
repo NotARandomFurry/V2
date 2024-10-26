@@ -10,7 +10,7 @@ using V2.Sounds.Vore;
 
 namespace V2.NPCs.Vanilla.Cavern
 {
-    public static class NymphStuff
+	public static class NymphStuff
 	{
 		public static class ItemTheftRules
 		{
@@ -26,6 +26,7 @@ namespace V2.NPCs.Vanilla.Cavern
 				},
 				chance: (npc, pred) => 1.0
 			);
+
 			public static ItemTheftRule MetalDetector => new ItemTheftRule(
 				type: (npc, pred) => ItemID.MetalDetector,
 				amount: (npc, pred) => 1,
@@ -84,11 +85,10 @@ namespace V2.NPCs.Vanilla.Cavern
 			npc.AsFood().OnDigestedBy = PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
 			npc.AsFood().OnDigestedBy += PreyNPC.HandlePreyItemTheft;
 			npc.AsFood().OnDigestedBy += OnKilledByDigestion_GrantNymphGoal;
-			npc.AsFood().ItemTheftRules = new List<ItemTheftRule>()
-			{
+			npc.AsFood().ItemTheftRules = [
 				NymphStuff.ItemTheftRules.NymphHairStrands,
 				NymphStuff.ItemTheftRules.MetalDetector,
-			};
+			];
 		}
 
 		public static bool CanNymphBeForceFed(NPC npc) => true;

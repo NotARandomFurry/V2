@@ -78,7 +78,7 @@ namespace V2.Items
 			if (item.AsFood().Health <= 0)
 			{
 				item.AsFood().OnBreak?.Invoke(item, pred);
-				item.AsFood().Digested = true;
+				item.TurnToAir();
 				return true;
 			}
 			else
@@ -107,8 +107,6 @@ namespace V2.Items
 
 	public class PreyItem : GlobalItem
 	{
-		public bool Digested { get; set; } = false;
-
 		public int MaxHealth { get; set; } = -1;
 		private int _health = -1;
 		public int Health
@@ -154,12 +152,6 @@ namespace V2.Items
 				if (Health == -1 || Health > MaxHealth)
 					Health = MaxHealth;
 			}
-
-			if (Digested)
-			{
-				item.TurnToAir();
-				return;
-			}
 		}
 
 		public override void UpdateInventory(Item item, Player player)
@@ -181,8 +173,8 @@ namespace V2.Items
 
 			if (player.CurrentCaptor() is not null)
 			{
-				if (item.AsFood().CanUseInStomach.Invoke(item, player, player.CurrentCaptor().Predator))
-					item.AsFood().UseInStomach.Invoke(item, player, player.CurrentCaptor().Predator);
+				if (item.AsFood().CanUseInStomach is not null && item.AsFood().CanUseInStomach.Invoke(item, player, player.CurrentCaptor().Predator))
+					item.AsFood().UseInStomach?.Invoke(item, player, player.CurrentCaptor().Predator);
 				return false;
 			}
 			if (item.AsFood().EdibleOnUse && item != player.inventory[58] && player.whoAmI == Main.myPlayer && (V2.ItemGulpHotkey.Current || item.AsFood().AlwaysEatenByUse))

@@ -9,9 +9,11 @@ using V2.Core;
 
 namespace V2.Projectiles
 {
-	public class V2Projectile : GlobalProjectile
+	public class GeneralProjectile : GlobalProjectile
 	{
 		public EntityGender Gender { get; set; }
+
+		public SpriteAnimation CustomSprite { get; set; } = null;
 
 		public delegate bool DelegateNewAI(Projectile projectile);
 		public DelegateNewAI NewAIMethod { get; set; }
@@ -25,7 +27,7 @@ namespace V2.Projectiles
 
 		public override bool AppliesToEntity(Projectile entity, bool lateInstantiation) => true;
 
-		public V2Projectile()
+		public GeneralProjectile()
 		{
 			Gender = EntityGender.Other;
 

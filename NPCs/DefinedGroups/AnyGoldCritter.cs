@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 using V2.Core;
 using V2.PlayerHandling.PredPlayerGoals.Beginner;
 
-namespace V2.NPCs.GroupDefinitions
+namespace V2.NPCs.Sets
 {
 	public static class AnyGoldCritterStuff
 	{

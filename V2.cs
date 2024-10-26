@@ -1,15 +1,13 @@
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using ReLogic.Content;
-using System;
 using System.Collections.Generic;
+using System.Linq;
+using Terraria;
 using Terraria.GameContent;
 using Terraria.ID;
+using Terraria.IO;
 using Terraria.ModLoader;
 using V2.Core.StruggleSystem;
-using V2.Items.Voraria.Consumables.Potions;
 using V2.NPCs.Voraria.TownNPCs.Succubus;
-using V2.PlayerHandling.PredPlayerGoals;
 
 namespace V2
 {
@@ -54,6 +52,8 @@ namespace V2
 		/// now get the fuck out of my house<br/>
 		/// </summary>
 		public static bool GetFooled { get; set; }
+
+		public static List<ResourcePack> EnabledResourcePacks => Main.AssetSourceController.ActiveResourcePackList.EnabledPacks.ToList();
 
 		public static Dictionary<int, GlobalBuff> ModifiedStatusEffects { get; set; }
 

@@ -1,6 +1,6 @@
 ﻿using Terraria;
 using Terraria.ModLoader;
-using V2.NPCs.GroupDefinitions;
+using V2.NPCs.Sets;
 
 namespace V2.NPCs.Vanilla.Forest
 {

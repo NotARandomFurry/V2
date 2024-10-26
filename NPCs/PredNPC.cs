@@ -1,22 +1,15 @@
-﻿using Humanizer;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using ReLogic.Utilities;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
-using Terraria.Chat;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using V2.Core;
-using V2.Core.StruggleSystem;
 using V2.Items;
 using V2.NPCs.Vanilla.TownNPCs.Nurse;
 using V2.PlayerHandling;
@@ -203,9 +196,6 @@ namespace V2.NPCs
 			if (V2.VoreNPCBlacklist is not null && V2.VoreNPCBlacklist.Count > 0 && V2.VoreNPCBlacklist.Contains(pred.type))
 				return false;
 
-			if (GetCurrentBellyWeight(pred) >= pred.AsPred().MaxStomachCapacity)
-				return false;
-
 			if (!pred.AsPred().NonPreferenceBypass)
 			{
 				switch (ModContent.GetInstance<V2ServerConfig>().GenderBlacklist)
@@ -228,15 +218,10 @@ namespace V2.NPCs
 				}
 			}
 
-			if (prey is Player preyPlayer)
-			{
-				if (PreyData.GetPreySize(preyPlayer) >= pred.AsPred().MaxStomachCapacity - GetCurrentBellyWeight(pred))
-					return false;
+			if (prey.CurrentCaptor() is not null)
+				return false;
 
-				if (preyPlayer.CurrentCaptor() is not null)
-					return false;
-			}
-			else if (prey is NPC preyNPC)
+			if (prey is NPC preyNPC)
 			{
 				if (V2.VoreNPCBlacklist is not null && V2.VoreNPCBlacklist.Count > 0 && V2.VoreNPCBlacklist.Contains(preyNPC.type))
 					return false;
@@ -249,12 +234,6 @@ namespace V2.NPCs
 				bool isThePredAFuckingBoss = pred.boss || (pred.type >= NPCID.EaterofWorldsHead && pred.type <= NPCID.EaterofWorldsTail);           // I hate EoW
 				if (!pred.AsPred().CanSwallowBosses && isThePreyAFuckingBoss && !isThePredAFuckingBoss)
 					return false;
-
-				if (PreyData.GetPreySize(preyNPC) >= pred.AsPred().MaxStomachCapacity - GetCurrentBellyWeight(pred))
-					return false;
-
-				if (preyNPC.CurrentCaptor() is not null)
-					return false;
 			}
 			else if (prey is Projectile preyProjectile)
 			{
@@ -262,12 +241,6 @@ namespace V2.NPCs
 					return false;
 
 				if (preyProjectile.AsFood().MaxHealth == -1)
-					return false;
-
-				if (PreyData.GetPreySize(preyProjectile) >= pred.AsPred().MaxStomachCapacity - GetCurrentBellyWeight(pred))
-					return false;
-
-				if (preyProjectile.CurrentCaptor() is not null)
 					return false;
 			}
 			else if (prey is Item preyItem)
@@ -277,10 +250,13 @@ namespace V2.NPCs
 
 				if (preyItem.favorited)
 					return false;
-
-				if (preyItem.CurrentCaptor() is not null)
-					return false;
 			}
+
+			if (GetCurrentBellyWeight(pred) >= pred.AsPred().MaxStomachCapacity)
+				return false;
+
+			if (pred.AsPred().MaxStomachCapacity != -1 && PreyData.GetPreySize(prey) > pred.AsPred().MaxStomachCapacity - GetCurrentBellyWeight(pred))
+				return false;
 
 			return true;
 		}
@@ -645,14 +621,18 @@ namespace V2.NPCs
 						break;
 
 					double digestedWeightPerTick = pred.AsPred().GetPreyAbsorptionRate.Invoke(pred) / (double)GetStomachTracker(pred).Prey.Count;
+					double effectiveSize = pred.AsFood().DefinedBaseSize + pred.AsPred().ExtraWeight;
+					if (pred.AsFood().DefinedEffectiveSize != 0)
+						effectiveSize = pred.AsFood().DefinedEffectiveSize;
+
 					if (prey.WeightLeftToDigest <= digestedWeightPerTick)
 					{
-						pred.AsPred().ExtraWeight += prey.WeightLeftToDigest * pred.AsPred().WeightGainRatio;
+						pred.AsPred().ExtraWeight += prey.WeightLeftToDigest * pred.AsPred().WeightGainRatio * (pred.AsFood().DefinedBaseSize / effectiveSize);
 						prey.WeightLeftToDigest = 0;
 					}
 					else
 					{
-						pred.AsPred().ExtraWeight += digestedWeightPerTick * pred.AsPred().WeightGainRatio;
+						pred.AsPred().ExtraWeight += digestedWeightPerTick * pred.AsPred().WeightGainRatio * (pred.AsFood().DefinedBaseSize / effectiveSize);
 						prey.WeightLeftToDigest -= digestedWeightPerTick;
 					}
 				}

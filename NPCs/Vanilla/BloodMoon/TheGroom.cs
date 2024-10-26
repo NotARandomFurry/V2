@@ -9,7 +9,6 @@ using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 using V2.Core;
-using V2.Items.Voraria;
 using V2.PlayerHandling;
 using V2.PlayerHandling.PredPlayerGoals.Amateur;
 using V2.Sounds.Vore;

@@ -786,6 +786,19 @@ Mods: {
 					}
 				}
 
+				StomachButterflies: {
+					// Name: A Pang of Anxiety
+
+					Description: {
+						/* Default:
+							'''
+							Snack on some butterflies. Don't they tickle in there?
+							'How does the saying go again...?'
+							''' */
+						// Clarification: Have 3 or more Butterflies in your stomach at once.
+					}
+				}
+
 				TooFull: {
 					Name: Переполненный
 
@@ -1022,6 +1035,24 @@ Mods: {
 							'''
 					}
 				}
+
+				EatLargeGem: {
+					// Name: Pristine Pudge
+
+					Description: {
+						/* Default:
+							'''
+							Churn a giant gemstone into some grade-A ass fat.
+							'Gemstones are really the best sorts of meals...tough as a rock, sky-high in calories, and expensive as all hell! Just imagine, all that unadulterated pristine WEALTH, steadily turned into nothing but a slew of caloric sludge fattening up your frame...'
+							''' */
+						/* Clarification:
+							'''
+							Eat and digest a Large Gem.
+							Large Gems can be created with a great number of their not-large counterparts.
+							Be aware that gemstones and their large variants universally resist unimproved acids --- you'll need a potion or similar to increase your acid tier enough to digest them.
+							''' */
+					}
+				}
 			}
 
 			Intermediate: {
@@ -1108,6 +1139,23 @@ Mods: {
 					}
 				}
 
+				EatFallenAngel: {
+					// Name: Sanctum of Gastric Grace
+
+					Description: {
+						/* Default:
+							'''
+							Gobble up an angel warped by the evils of the world, cleansing them of their ailment in the process.
+							'A massive meal from on high, seasoned with the aftertastes of sin...a delicious treat, aren't they?'
+							''' */
+						/* Clarification:
+							'''
+							Eat and digest a Fallen Angel.
+							Fallen Angels rarely appear in Corruption and Crimson biomes, a bit more commonly in the caves of these biomes, and will try to cram themselves into you if you have enough space to hold them; if not, they will cram you and themselves into the nearest predator, if possible.
+							''' */
+					}
+				}
+
 				HoardGemCritters: {
 					Name: Игристые искры
 
@@ -1122,23 +1170,6 @@ Mods: {
 							Съешьте 7 разных самоцветов одновременно. Нахождение в середине процесса переваривания считается, но не обязательно.
 							Самоцветные криттеры, состоящие из кроликов и белок, могут выходить на поверхность, где бы ни жили жители города под землей.
 							Имейте в виду, что самоцветные криттеры повсеместно сопротивляются неулучшенным кислотам - вам понадобится зелье или что-то подобное, чтобы повысить уровень кислоты настолько, чтобы переварить их.
-							'''
-					}
-				}
-
-				HoardLargeGems: {
-					Name: Девственный пудж
-
-					Description: {
-						Default:
-							'''
-							Превратите коллекцию массивных драгоценных камней в новый массивный приток жира на заднице.
-							'Драгоценные камни - это действительно лучший вид еды... твердые, как камень, высококалорийные и чертовски дорогие! Только представьте себе, что все это нетронутое первозданное богатство, неуклонно превращающееся в калорийный осадок, набивает вам оскомину...'
-							'''
-						Clarification:
-							'''
-							Съешьте и переварите все 7 больших драгоценных камней одновременно.
-							Имейте в виду, что драгоценные камни и их крупные разновидности повсеместно сопротивляются неулучшенным кислотам - вам понадобится зелье или что-то подобное, чтобы повысить уровень кислоты настолько, чтобы переварить их.
 							'''
 					}
 				}
@@ -1164,6 +1195,69 @@ Mods: {
 							[c/{Mods.V2.CommonColorCodes.ThomasCommentary}:В моей голове эта шутка звучала гораздо смешнее.]
 							'''
 						Clarification: Съешьте и переварите валун.
+					}
+				}
+
+				EatCouch: {
+					// Name: Couch Potato
+
+					Description: {
+						/* Default:
+							'''
+							Eat a couch. No, not figuratively, LITERALLY convert a whole-ass couch into stomach sludge.
+							'You're far from the first and, potentially, won't be the last.'
+							''' */
+						// Clarification: Eat and digest any Sofa.
+					}
+				}
+			}
+
+			Skilled: {
+				// Name: Skilled
+				// Subtitle: Mid-Hardmode
+				/* Description:
+					'''
+					You're turning into a real glutton now, aren't you? A fitting case, given how many lives your gut's probably ended by now.
+					Be wary, though. Many of your most impressive meals-to-be will definitely be more than willing to make you into a swiftly-churned snack yourself if you're not careful!
+					''' */
+				/* FooterAdvice:
+					'''
+					[c/{$Mods.V2.CommonColorCodes.DoSomething}:Skilled Advice:]
+					[c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:You are not invincible.] You may believe you are at this stage, but you're not. If you want to TRULY become invincible...you'll need to start adding the biggest buffets to your greedy gut's list of accomplishments.
+					''' */
+				// UnlockCondition: defeat a mechanical monstrosity
+
+				EatBigBoss: {
+					// Name: Behold The Boss Eater
+
+					Description: {
+						/* Default:
+							'''
+							Take down a particularly powerful foe with nothing but your greedy gullet and gut.
+							'You could say they entered the gutgeon.'
+							''' */
+						/* Clarification:
+							'''
+							Eat and digest a boss.
+							Bosses are extremely difficult to devour, usually requiring special items or abilities to get down and heavy investment in all non-ABS pred stats to keep down. That said, bosses are also extremely high in calories (very good news for your greedy tummy) and also typically grant access to special abilities upon their digestive demise.
+							''' */
+					}
+				}
+
+				HoardLargeGems: {
+					// Name: Plentiful Pristine Pudge
+
+					Description: {
+						/* Default:
+							'''
+							Churn a collection of massive gemstones into a massive new influx of ass fat.
+							'Gemstones are really the best sorts of meals...tough as a rock, sky-high in calories, and expensive as all hell! Just imagine, all that unadulterated pristine WEALTH, steadily turned into nothing but a slew of caloric sludge fattening up your frame...'
+							''' */
+						/* Clarification:
+							'''
+							Eat and digest 7 Large Gems simultaneously.
+							Be aware that gemstones and their large variants universally resist unimproved acids --- you'll need a potion or similar to increase your acid tier enough to digest them.
+							''' */
 					}
 				}
 			}
@@ -3224,6 +3318,20 @@ Mods: {
 								Никогда не будет найдено убедительных доказательств того, куда исчезла единственная жизнь {Player}.
 								Единственная оставшаяся зацепка? Плотность {Pred} выше, чем обычно, и он изрыгает здоровое количество пара.
 								'''
+						}
+					}
+
+					Hallow: {
+						EmpressButterfly: {
+							// 1: "{Player} was mesmerized too long by a butterfly."
+							// 2: How is a teensy little butterfly strong enough inside to make a meal of {Player}...?
+							// 3: Somehow, {Player}'s even lower on the food chain than the Empress' favorite dessert.
+							/* Hardcore:
+								'''
+								{Player} somehow crammed themselves into the ravenous belly of a tiny, twinkly butterfly.
+								A bit of an odd choice for how to end their only life, but we don't judge here.
+								It'll end up lining the Empress' fat thighs before long, anyway.
+								''' */
 						}
 					}
 

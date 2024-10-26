@@ -200,15 +200,13 @@ namespace V2.Projectiles
 				}
 			}
 
-			if (prey is Player preyPlayer)
-			{
-				if (PreyData.GetPreySize(preyPlayer) >= pred.AsPred().MaxStomachCapacity - GetCurrentBellyWeight(pred))
-					return false;
+			if (prey.CurrentCaptor() is not null)
+				return false;
 
-				if (preyPlayer.CurrentCaptor() is not null)
-					return false;
-			}
-			else if (prey is NPC preyNPC)
+			if (pred.AsPred().MaxStomachCapacity != -1 && PreyData.GetPreySize(prey) > pred.AsPred().MaxStomachCapacity - GetCurrentBellyWeight(pred))
+				return false;
+
+			if (prey is NPC preyNPC)
 			{
 				if (V2.VoreNPCBlacklist is not null && V2.VoreNPCBlacklist.Count > 0 && V2.VoreNPCBlacklist.Contains(preyNPC.type))
 					return false;
@@ -220,12 +218,6 @@ namespace V2.Projectiles
 				bool isThePreyAFuckingBoss = preyNPC.boss || (preyNPC.type >= NPCID.EaterofWorldsHead && preyNPC.type <= NPCID.EaterofWorldsTail);  // I hate EoW
 				if (!pred.AsPred().CanSwallowBosses && isThePreyAFuckingBoss)
 					return false;
-
-				if (PreyData.GetPreySize(preyNPC) >= pred.AsPred().MaxStomachCapacity - GetCurrentBellyWeight(pred))
-					return false;
-
-				if (preyNPC.CurrentCaptor() is not null)
-					return false;
 			}
 			else if (prey is Projectile preyProjectile)
 			{
@@ -234,12 +226,6 @@ namespace V2.Projectiles
 
 				if (preyProjectile.AsFood().MaxHealth == -1)
 					return false;
-
-				if (PreyData.GetPreySize(preyProjectile) >= pred.AsPred().MaxStomachCapacity - GetCurrentBellyWeight(pred))
-					return false;
-
-				if (preyProjectile.CurrentCaptor() is not null)
-					return false;
 			}
 			else if (prey is Item preyItem)
 			{
@@ -247,9 +233,6 @@ namespace V2.Projectiles
 					return false;
 
 				if (preyItem.favorited)
-					return false;
-
-				if (preyItem.CurrentCaptor() is not null)
 					return false;
 			}
 

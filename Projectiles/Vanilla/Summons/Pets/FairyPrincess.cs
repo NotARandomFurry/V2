@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Terraria;
 using Terraria.Chat;
 using Terraria.ID;
@@ -14,7 +15,7 @@ using V2.Sounds.Vore;
 
 namespace V2.Projectiles.Vanilla.Summons.Pets
 {
-	public static class FairyPrincessStuff
+	public static partial class FairyPrincessStuff
 	{
 		public static int MaxHealth => 3500;
 		public static double Size => 0.742;
@@ -22,8 +23,8 @@ namespace V2.Projectiles.Vanilla.Summons.Pets
 		public static double DigestDamage => 40.0;
 		public static double DigestRate => 2.0;
 		public static double AbsorbRate => 1.0 / (double)V2Utils.SensibleTime(
-			minutes: 3,
-			seconds: 0
+			minutes: 1,
+			seconds: 30
 		);
 	}
 
@@ -204,6 +205,34 @@ namespace V2.Projectiles.Vanilla.Summons.Pets
 			);
 		}
 
+		public static int GetEmpressDigestionStage(Projectile projectile)
+		{
+			if (PredProjectile.GetStomachTracker(projectile) is null)
+				return 0;
+
+			PreyData candyFairy = PredProjectile.GetStomachTracker(projectile).Prey.FirstOrDefault(x => x.Type == PreyType.NPC && x.ExactType == NPCID.HallowBoss);
+			if (candyFairy is null || candyFairy.WeightLeftToDigest < 6.0)
+				return 0;
+			else
+			{
+				if (!candyFairy.NoHealth)
+					return 1;
+				else
+				{
+					if (candyFairy.WeightLeftToDigest > 34.0)
+						return 1;
+					else if (candyFairy.WeightLeftToDigest > 28.0)
+						return 2;
+					else if (candyFairy.WeightLeftToDigest > 16.0)
+						return 3;
+					else if (candyFairy.WeightLeftToDigest > 6.0)
+						return 4;
+					else
+						return 0;
+				}
+			}
+		}
+
 		public static void OnKilledByDigestion(Projectile projectile, Entity pred)
 		{
 			Player ownerPlayer = Main.player[projectile.owner];
@@ -240,6 +269,9 @@ namespace V2.Projectiles.Vanilla.Summons.Pets
 		{
 			if (projectile.CurrentCaptor() is not null)
 				return false;
+
+			if (projectile.AsV2Proj().CustomSprite is not null)
+				return true;
 
 			SpriteEffects spriteEffects = projectile.direction switch
 			{

@@ -1,9 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Terraria.IO;
 using V2.Core;
 
 namespace V2.NPCs.Vanilla.TownNPCs.Dryad
@@ -14,9 +12,24 @@ namespace V2.NPCs.Vanilla.TownNPCs.Dryad
 		{
 			public static class AVEmpressOfLight
 			{
+				public static string AnimSetSheet
+				{
+					get {
+						foreach (ResourcePack pack in V2.EnabledResourcePacks)
+						{
+							switch (pack.Name)
+							{
+								case "True Dryad Fan":
+									return "V2/NPCs/Vanilla/TownNPCs/Dryad/AltSheetSets/True Dryad Fan/Dryad_WeightBase_BossBelly_EmpressOfLight";
+							}
+						}
+
+						return "V2/NPCs/Vanilla/TownNPCs/Dryad/Dryad_WeightBase_BossBelly_EmpressOfLight";
+					}
+				}
 				public class PhaseOne : SpriteAnimation
 				{
-					public override string Texture => "V2/NPCs/Vanilla/TownNPCs/Dryad/Dryad_WeightBase_BossBelly_EmpressOfLight";
+					public override string Texture => AnimSetSheet;
 
 					public override List<(int frame, int rawDelay)> Frames => [
 						( 0, 200 ),
@@ -46,7 +59,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Dryad
 
 				public class PhaseTransition : SpriteAnimation
 				{
-					public override string Texture => "V2/NPCs/Vanilla/TownNPCs/Dryad/Dryad_WeightBase_BossBelly_EmpressOfLight";
+					public override string Texture => AnimSetSheet;
 
 					public override List<(int frame, int rawDelay)> Frames => [
 						( 0, 200 ),
@@ -82,7 +95,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Dryad
 
 				public class PhaseTwo : SpriteAnimation
 				{
-					public override string Texture => "V2/NPCs/Vanilla/TownNPCs/Dryad/Dryad_WeightBase_BossBelly_EmpressOfLight";
+					public override string Texture => AnimSetSheet;
 
 					public override List<(int frame, int rawDelay)> Frames => [
 						( 20, 190 ),
@@ -115,7 +128,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Dryad
 
 				public class EmpressGetsChurned : SpriteAnimation
 				{
-					public override string Texture => "V2/NPCs/Vanilla/TownNPCs/Dryad/Dryad_WeightBase_BossBelly_EmpressOfLight";
+					public override string Texture => AnimSetSheet;
 
 					public override List<(int frame, int rawDelay)> Frames => [
 						( 20, 190 ),
@@ -139,7 +152,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Dryad
 
 				public class DigestStage1 : SpriteAnimation
 				{
-					public override string Texture => "V2/NPCs/Vanilla/TownNPCs/Dryad/Dryad_WeightBase_BossBelly_EmpressOfLight";
+					public override string Texture => AnimSetSheet;
 
 					public override List<(int frame, int rawDelay)> Frames => [
 						( 30, 190 ),
@@ -172,7 +185,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Dryad
 
 				public class DigestStage2 : SpriteAnimation
 				{
-					public override string Texture => "V2/NPCs/Vanilla/TownNPCs/Dryad/Dryad_WeightBase_BossBelly_EmpressOfLight";
+					public override string Texture => AnimSetSheet;
 
 					public override List<(int frame, int rawDelay)> Frames => [
 						( 32, 190 ),
@@ -205,7 +218,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Dryad
 
 				public class DigestStage3 : SpriteAnimation
 				{
-					public override string Texture => "V2/NPCs/Vanilla/TownNPCs/Dryad/Dryad_WeightBase_BossBelly_EmpressOfLight";
+					public override string Texture => AnimSetSheet;
 
 					public override List<(int frame, int rawDelay)> Frames => [
 						( 34, 190 ),
@@ -238,7 +251,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Dryad
 
 				public class DigestStage4 : SpriteAnimation
 				{
-					public override string Texture => "V2/NPCs/Vanilla/TownNPCs/Dryad/Dryad_WeightBase_BossBelly_EmpressOfLight";
+					public override string Texture => AnimSetSheet;
 
 					public override List<(int frame, int rawDelay)> Frames => [
 						( 36, 190 ),
@@ -271,7 +284,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Dryad
 
 				public class DigestStage5 : SpriteAnimation
 				{
-					public override string Texture => "V2/NPCs/Vanilla/TownNPCs/Dryad/Dryad_WeightBase_BossBelly_EmpressOfLight";
+					public override string Texture => AnimSetSheet;
 
 					public override List<(int frame, int rawDelay)> Frames => [
 						( 38, 190 ),

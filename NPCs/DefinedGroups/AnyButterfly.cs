@@ -12,11 +12,11 @@ using V2.PlayerHandling.PredPlayerGoals.Beginner;
 using V2.PlayerHandling.PredPlayerGoals.Intermediate;
 using V2.Sounds.Vore;
 
-namespace V2.NPCs.GroupDefinitions
+namespace V2.NPCs.Sets
 {
-	public static class AnyGemCritterStuff
+	public static class ButterflyGroupStuff
 	{
-		public static AnyButterfly AsGemCritter(this NPC npc)
+		public static AnyButterfly AsAButterfly(this NPC npc)
 		{
 			if (!npc.TryGetGlobalNPC(out AnyButterfly tastySparklySnack))
 				throw new Exception("this instance of a gem critter, supposedly, doesn't exist");
@@ -25,42 +25,39 @@ namespace V2.NPCs.GroupDefinitions
 		}
 	}
 
-	public class AnyGemCritter : GlobalNPC
+	public class AnyButterfly : GlobalNPC
 	{
 		public override bool IsLoadingEnabled(Mod mod) => !V2.GetFooled;
 		public override bool InstancePerEntity => true;
 
-		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => V2Utils.NPCIDSets.GemCritters.Contains(entity.type);
+		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => V2Utils.NPCIDSets.Butterflies.Contains(entity.type);
 
 		public override void SetDefaults(NPC npc)
 		{
 			npc.AsV2NPC().Gender = EntityGender.Other;
 
-			npc.AsFood().DefinedBaseSize = 0.42;
+			npc.AsFood().DefinedBaseSize = 0.055;
 
-			npc.AsFood().OnSwallowedBy += OnSwallowedBy_GrantGemCritterMultiPreyGoal;
+			npc.AsFood().OnSwallowedBy += OnSwallowedBy_GrantButterflyGroupMultiPreyGoal;
 		}
 
-		public static void OnSwallowedBy_GrantGemCritterMultiPreyGoal(NPC npc, Entity pred)
+		public static void OnSwallowedBy_GrantButterflyGroupMultiPreyGoal(NPC npc, Entity pred)
 		{
 			if (pred is Player predPlayer)
 			{
-				List<int> distinctGemCritters = V2Utils.NPCIDSets.GemCritters;
-				int distinctGemCrittersInTummy = 0;
+				List<int> possibleButterflies = V2Utils.NPCIDSets.Butterflies;
+				int butterfliesInTummy = 0;
 				foreach (PreyData prey in predPlayer.AsPred().StomachTracker.Prey)
 				{
 					if (prey.Type != PreyType.NPC)
 						continue;
 
 					int preyNPCID = prey.ExactType;
-					if (distinctGemCritters.Contains(preyNPCID))
-					{
-						distinctGemCrittersInTummy++;
-						distinctGemCritters.Remove(preyNPCID);
-					}
+					if (possibleButterflies.Contains(preyNPCID))
+						butterfliesInTummy++;
 				}
-				if (distinctGemCrittersInTummy >= 7)
-					ModContent.GetInstance<HoardGemCritters>().TrySetCompletion(predPlayer);
+				if (butterfliesInTummy >= 3)
+					ModContent.GetInstance<StomachButterflies>().TrySetCompletion(predPlayer);
 			}
 		}
 	}

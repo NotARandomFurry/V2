@@ -34,7 +34,22 @@ namespace V2.Core.WorldGeneration
 				return;
 
 			Item[] item = Main.chest[num3].item;
-			if (WorldGen.genRand.NextBool(3))
+			if (!WorldGen.genRand.NextBool(3))
+				goto tryGenItemTheftCharm;
+
+			for (int num4 = item.Length - 2; num4 > 0; num4--)
+			{
+				Item item2 = item[num4];
+				if (item2.stack != 0)
+					item[num4 + 1] = item2.Clone();
+			}
+
+			item[1] = new Item();
+			item[1].SetDefaults(ItemID.DeadMansSweater);
+			Main.chest[num3].item = item;
+
+			tryGenItemTheftCharm:
+			if (WorldGen.genRand.NextBool())
 				return;
 
 			for (int num4 = item.Length - 2; num4 > 0; num4--)
@@ -45,7 +60,7 @@ namespace V2.Core.WorldGeneration
 			}
 
 			item[1] = new Item();
-			item[1].SetDefaults(WorldGen.genRand.NextBool() ? ModContent.ItemType<CharmPreyItemTheft>() : ItemID.DeadMansSweater);
+			item[1].SetDefaults(ModContent.ItemType<CharmPreyItemTheft>());
 			Main.chest[num3].item = item;
 		}
 	}

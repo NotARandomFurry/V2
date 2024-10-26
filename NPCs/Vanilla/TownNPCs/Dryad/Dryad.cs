@@ -5,13 +5,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
-using Terraria.Audio;
 using Terraria.GameContent;
-using Terraria.GameContent.Events;
 using Terraria.ID;
+using Terraria.IO;
 using Terraria.ModLoader;
 using V2.Core;
-using V2.NPCs.Vanilla.TownNPCs.PartyGirl;
 using V2.NPCs.Voraria.TownNPCs.Succubus;
 using V2.PlayerHandling;
 using V2.Sounds.Vore;
@@ -64,7 +62,23 @@ namespace V2.NPCs.Vanilla.TownNPCs.Dryad
 			if (npc.IsABestiaryIconDummy && !npc.ForcePartyHatOn)
 				return _defaultNoAlt;
 
-			string exactTextureToUse = "V2/NPCs/Vanilla/TownNPCs/Dryad/Dryad";
+			string exactTextureToUse = "V2/NPCs/Vanilla/TownNPCs/Dryad/";
+
+			foreach (ResourcePack pack in V2.EnabledResourcePacks)
+			{
+				bool packOverrideFound = false;
+				switch (pack.Name)
+				{
+					case "True Dryad Fan":
+						exactTextureToUse += "AltSheetSets/True Dryad Fan/";
+						packOverrideFound = true;
+						break;
+				}
+
+				if (packOverrideFound)
+					break;
+			}
+			exactTextureToUse += "Dryad";
 			string weightString = "_WeightBase";
 			exactTextureToUse += weightString;
 			int bellySize = npc.AsPred().GetVisualBellySize.Invoke(npc);
@@ -127,8 +141,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Dryad
 
 			npc.AsFood().OnDigestedBy = PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
 			npc.AsFood().OnDigestedBy += PreyNPC.HandlePreyItemTheft;
-			npc.AsFood().ItemTheftRules =
-			[
+			npc.AsFood().ItemTheftRules = [
 				DryadStuff.ItemTheftRules.ClothingTop,
 				DryadStuff.ItemTheftRules.ClothingBottom,
 			];
@@ -154,7 +167,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Dryad
 				if (npc.width == 18 && npc.height == 40)
 				{
 					npc.width = 86;
-					npc.height = 148;
+					npc.height = 142;
 					npc.position.X -= 86 - 18;
 					npc.position.Y -= 148 - 40;
 				}
@@ -201,6 +214,8 @@ namespace V2.NPCs.Vanilla.TownNPCs.Dryad
 			}
 
 			ResetFrame:
+			if (npc.AsV2NPC().CustomSprite is not null)
+				npc.AsV2NPC().CustomSprite = null;
 			if (npc.width != 18)
 				npc.width = 18;
 			if (npc.height != 40)
@@ -619,7 +634,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Dryad
 		{
 			double baseAbsorptionRate = 1.0 / (double)V2Utils.SensibleTime(
 				minutes: 4,
-				seconds: 15
+				seconds: 10
 			);
 			return baseAbsorptionRate;
 		}
@@ -630,7 +645,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Dryad
 				return 0;
 
 			PreyData candyFairy = PredNPC.GetStomachTracker(npc).Prey.FirstOrDefault(x => x.Type == PreyType.NPC && x.ExactType == NPCID.HallowBoss);
-			if (candyFairy is null || candyFairy.WeightLeftToDigest < 5.0)
+			if (candyFairy is null || candyFairy.WeightLeftToDigest < 4.0)
 				return 0;
 			else
 			{
@@ -657,8 +672,8 @@ namespace V2.NPCs.Vanilla.TownNPCs.Dryad
 		public static int GetVisualBellySize(NPC npc)
 		{
 			return Math.Min(
-				(int)Math.Floor(4.8 * Math.Sqrt(PredNPC.GetCurrentBellyWeight(npc))),
-				4
+				(int)Math.Floor(4.75 * Math.Sqrt(PredNPC.GetCurrentBellyWeight(npc))),
+				6
 			);
 		}
 
@@ -668,6 +683,32 @@ namespace V2.NPCs.Vanilla.TownNPCs.Dryad
 		}
 		public override void ModifyHoverBoundingBox(NPC npc, ref Rectangle boundingBox)
 		{
+			foreach (ResourcePack pack in V2.EnabledResourcePacks)
+			{
+				switch (pack.Name)
+				{
+					case "True Dryad Fan":
+						if (GetEmpressDigestionStage(npc) > 0)
+						{
+							boundingBox = new Rectangle(
+								(int)npc.Left.X,
+								(int)npc.Bottom.X - 90,
+								80,
+								90
+							);
+						}
+						else
+						{
+							boundingBox = new Rectangle(
+								(int)npc.Center.X - 20,
+								(int)npc.Center.Y - 27,
+								40,
+								54
+							);
+						}
+						return;
+				}
+			}
 			if (GetEmpressDigestionStage(npc) > 0)
 			{
 				boundingBox = new Rectangle(

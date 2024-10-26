@@ -15,7 +15,7 @@ namespace V2.PlayerHandling.PredPlayerGoals.Beginner
 		public override string DisplayName(Player pred) => "Mods.V2.PredPlayerGoals.Beginner.EatSnowFlinx.Name";
 		public override string Description(Player pred) => "Mods.V2.PredPlayerGoals.Beginner.EatSnowFlinx.Description";
 		public override bool HasClearDescription(Player pred) => true;
-		public override bool Available(Player pred) => (pred.ZoneSnow && (pred.ZoneDirtLayerHeight || pred.ZoneRockLayerHeight)) || Complete(pred);
+		public override bool Available(Player pred) => pred.AsV2Player().HasVisitedLocation("underground_tundra") || Complete(pred);
 
 		public override int StatPointsFromCompletion => 2;
 

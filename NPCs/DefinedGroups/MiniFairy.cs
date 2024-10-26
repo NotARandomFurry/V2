@@ -12,7 +12,7 @@ using V2.PlayerHandling.PredPlayerGoals.Beginner;
 using V2.PlayerHandling.PredPlayerGoals.Intermediate;
 using V2.Sounds.Vore;
 
-namespace V2.NPCs.GroupDefinitions
+namespace V2.NPCs.Sets
 {
 	public static class MiniFairyStuff
 	{

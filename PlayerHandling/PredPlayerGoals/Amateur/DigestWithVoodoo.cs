@@ -17,9 +17,9 @@ namespace V2.PlayerHandling.PredPlayerGoals.Amateur
 		public override string Description(Player pred) => "Mods.V2.PredPlayerGoals.Amateur.DigestWithVoodoo.Description";
 		public override bool HasClearDescription(Player pred) => true;
 		public override bool Available(Player pred) =>
-			pred.ZoneUnderworldHeight
+			pred.AsV2Player().HasVisitedLocation("hell")
 		 || pred.HasItemInInventoryOrOpenVoidBag(ItemID.GuideVoodooDoll)
-		 || pred.ZoneDungeon
+		 || pred.AsV2Player().HasVisitedLocation("dungeon")
 		 || pred.HasItemInInventoryOrOpenVoidBag(ItemID.ClothierVoodooDoll)
 		 || Complete(pred);
 

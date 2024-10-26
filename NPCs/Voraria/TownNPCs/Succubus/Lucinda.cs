@@ -18,6 +18,7 @@ using Terraria.ModLoader;
 using Terraria.Utilities;
 using V2.Core;
 using V2.Items.Voraria.Charms;
+using V2.Items.Voraria.Consumables.PermanentUpgrades;
 using V2.Items.Voraria.Consumables.Potions;
 using V2.Items.Voraria.Weapons.Ranged.Throwables;
 using V2.NPCs.Voraria.TownNPCs.Succubus.ChatButtons;
@@ -478,12 +479,13 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 			NPCShop nurseShop = new NPCShop(NPCID.Nurse, "Shop");
 			nurseShop.Add(ItemID.LesserHealingPotion, [Condition.NotDownedEowOrBoc]);
 			nurseShop.Add(ItemID.HealingPotion, [Condition.DownedEowOrBoc, Condition.NotDownedMechBossAny]);
-			nurseShop.Add(ItemID.GreaterHealingPotion, [Condition.DownedMechBossAny, Condition.NotDownedCultist]);
-			nurseShop.Add(ItemID.SuperHealingPotion, [Condition.DownedCultist]);
+			nurseShop.Add(ItemID.GreaterHealingPotion, [Condition.DownedMechBossAny, Condition.NotDownedMoonLord]);
+			nurseShop.Add(ItemID.SuperHealingPotion, [Condition.DownedMoonLord]);
 			nurseShop.Add(ItemID.AdhesiveBandage);
 			nurseShop.Add<FastDigestionPotion>();
 			nurseShop.Add<StomachacheMeterCapacityPotion>([Condition.DownedEowOrBoc]);
 			nurseShop.Add(new Item(ItemID.LifeCrystal) { shopCustomPrice = Item.buyPrice(gold: 20) }, [Condition.DownedSkeletron]);
+			nurseShop.Add<PureSwallowBoost1>();
 			nurseShop.Register();
 		}
 

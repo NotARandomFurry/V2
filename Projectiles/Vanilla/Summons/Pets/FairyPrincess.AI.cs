@@ -15,6 +15,7 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using V2.Core;
 using V2.NPCs;
+using V2.NPCs.Vanilla.TownNPCs.Dryad;
 using V2.PlayerHandling;
 using V2.PlayerHandling.PredPlayerGoals.Amateur;
 using V2.Sounds.Vore;
@@ -54,8 +55,74 @@ namespace V2.Projectiles.Vanilla.Summons.Pets
 				projectile.timeLeft = 2;
 			}
 
-			List<(PreyType, int)> diet = new List<(PreyType, int)>
+
+			VoreTracker tracker = PredProjectile.GetStomachTracker(projectile);
+			if (tracker is null)
+				goto ResetFrame;
+
+			PreyData candyFairy = null;
+			if (tracker.Prey.FirstOrDefault(x => x.Type == PreyType.NPC && x.ExactType == NPCID.HallowBoss) is PreyData sprinkles && sprinkles.WeightLeftToDigest > 4.0)
+				candyFairy = sprinkles;
+			if (tracker.PreyQueue.FirstOrDefault(x => x.Type == PreyType.NPC && x.ExactType == NPCID.HallowBoss) is PreyData sprinklesQueue && sprinklesQueue.WeightLeftToDigest > 4.0)
+				candyFairy = sprinklesQueue;
+			bool ateCandyFairy = tracker is not null;
+			ateCandyFairy &= candyFairy is not null;
+			if (ateCandyFairy)
 			{
+				if (projectile.width == 18 && projectile.height == 40)
+				{
+					projectile.width = 86;
+					projectile.height = 148;
+					projectile.position.X -= 86 - 18;
+					projectile.position.Y -= 148 - 40;
+				}
+				projectile.velocity.X = 0;
+				if (!candyFairy.NoHealth)
+				{
+					NPC realCandyFairy = candyFairy.Instance as NPC;
+					if (projectile.AsV2Proj().CustomSprite is null)
+						projectile.AsV2Proj().CustomSprite = realCandyFairy.life < realCandyFairy.lifeMax / 2
+						? new DryadStuff.Animations.AVEmpressOfLight.PhaseTransition()
+						: new DryadStuff.Animations.AVEmpressOfLight.PhaseOne();
+					else if (projectile.AsV2Proj().CustomSprite is DryadStuff.Animations.AVEmpressOfLight.PhaseOne && projectile.AsV2Proj().CustomSprite.CanTransitionToNewAnim && realCandyFairy.life < realCandyFairy.lifeMax / 2)
+						projectile.AsV2Proj().CustomSprite = new DryadStuff.Animations.AVEmpressOfLight.PhaseTransition();
+					else if (projectile.AsV2Proj().CustomSprite is DryadStuff.Animations.AVEmpressOfLight.PhaseTransition && projectile.AsV2Proj().CustomSprite.CanTransitionToNewAnim)
+						projectile.AsV2Proj().CustomSprite = new DryadStuff.Animations.AVEmpressOfLight.PhaseTwo();
+					for (int y = (int)Math.Round(projectile.TrueCenter().Y) - 5; y < (int)Math.Round(projectile.TrueCenter().Y); y++)
+					{
+						for (int x = (int)Math.Round(projectile.TrueCenter().X) - 4; x < (int)Math.Round(projectile.TrueCenter().X) + 4; x++)
+						{
+							WorldGen.KillTile(x, y);
+						}
+					}
+				}
+				else
+				{
+					if (projectile.AsV2Proj().CustomSprite is null)
+						projectile.AsV2Proj().CustomSprite = new DryadStuff.Animations.AVEmpressOfLight.PhaseTransition();
+					else if (projectile.AsV2Proj().CustomSprite is DryadStuff.Animations.AVEmpressOfLight.PhaseTransition && projectile.AsV2Proj().CustomSprite.CanTransitionToNewAnim)
+						projectile.AsV2Proj().CustomSprite = new DryadStuff.Animations.AVEmpressOfLight.PhaseTwo();
+					else if (projectile.AsV2Proj().CustomSprite is DryadStuff.Animations.AVEmpressOfLight.PhaseTwo && projectile.AsV2Proj().CustomSprite.CanTransitionToNewAnim)
+						projectile.AsV2Proj().CustomSprite = new DryadStuff.Animations.AVEmpressOfLight.EmpressGetsChurned();
+					else if (projectile.AsV2Proj().CustomSprite is DryadStuff.Animations.AVEmpressOfLight.EmpressGetsChurned && projectile.AsV2Proj().CustomSprite.CanTransitionToNewAnim)
+						projectile.AsV2Proj().CustomSprite = new DryadStuff.Animations.AVEmpressOfLight.DigestStage1();
+					else if (projectile.AsV2Proj().CustomSprite is DryadStuff.Animations.AVEmpressOfLight.DigestStage1 && projectile.AsV2Proj().CustomSprite.CanTransitionToNewAnim && GetEmpressDigestionStage(projectile) >= 2)
+						projectile.AsV2Proj().CustomSprite = new DryadStuff.Animations.AVEmpressOfLight.DigestStage2();
+					else if (projectile.AsV2Proj().CustomSprite is DryadStuff.Animations.AVEmpressOfLight.DigestStage2 && projectile.AsV2Proj().CustomSprite.CanTransitionToNewAnim && GetEmpressDigestionStage(projectile) >= 3)
+						projectile.AsV2Proj().CustomSprite = new DryadStuff.Animations.AVEmpressOfLight.DigestStage3();
+					else if (projectile.AsV2Proj().CustomSprite is DryadStuff.Animations.AVEmpressOfLight.DigestStage3 && projectile.AsV2Proj().CustomSprite.CanTransitionToNewAnim && GetEmpressDigestionStage(projectile) >= 4)
+						projectile.AsV2Proj().CustomSprite = new DryadStuff.Animations.AVEmpressOfLight.DigestStage4();
+					else if (projectile.AsV2Proj().CustomSprite is DryadStuff.Animations.AVEmpressOfLight.DigestStage4 && projectile.AsV2Proj().CustomSprite.CanTransitionToNewAnim && GetEmpressDigestionStage(projectile) >= 5)
+						projectile.AsV2Proj().CustomSprite = new DryadStuff.Animations.AVEmpressOfLight.DigestStage5();
+				}
+				return false;
+			}
+
+			ResetFrame:
+			if (projectile.AsV2Proj().CustomSprite is not null)
+				projectile.AsV2Proj().CustomSprite = null;
+
+			List<(PreyType, int)> diet = [
 				(PreyType.NPC, NPCID.FairyCritterBlue),
 				(PreyType.NPC, NPCID.FairyCritterGreen),
 				(PreyType.NPC, NPCID.FairyCritterPink),
@@ -111,7 +178,7 @@ namespace V2.Projectiles.Vanilla.Summons.Pets
 				(PreyType.Projectile, ProjectileID.KingSlimePet),
 				(PreyType.Projectile, ProjectileID.QueenSlimePet),
 				(PreyType.Projectile, ProjectileID.IceQueenPet),
-			};
+			];
 			if (!V2.BlacklistsActive)
 				diet.Add((PreyType.NPC, NPCID.Princess));
 

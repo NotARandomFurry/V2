@@ -1,6 +1,5 @@
 using Microsoft.Xna.Framework;
 using MonoMod.RuntimeDetour;
-using System;
 using System.Reflection;
 using Terraria;
 using Terraria.GameContent.Biomes;
@@ -99,7 +98,7 @@ namespace V2
 
 			ProjectileLoader_ProjectileAI_Hook = new Hook(ProjectileLoader_ProjectileAI_MethodInfo, (orig_ProjectileAI orig, Projectile projectile) =>
 			{
-				V2Projectile projectileAsV2Projectile = projectile.AsV2Proj(risky: true);
+				GeneralProjectile projectileAsV2Projectile = projectile.AsV2Proj(risky: true);
 				PreyProjectile projectileAsPrey = projectile.AsFood(risky: true);
 				if (projectileAsV2Projectile is null || projectileAsPrey is null)
 					orig(projectile);

@@ -14,9 +14,9 @@ namespace V2.Projectiles
 {
 	public static class ProjectileExtensions
 	{
-		public static V2Projectile AsV2Proj(this Projectile projectile, bool risky = false)
+		public static GeneralProjectile AsV2Proj(this Projectile projectile, bool risky = false)
 		{
-			if (!projectile.TryGetGlobalProjectile(out V2Projectile V2Projectile))
+			if (!projectile.TryGetGlobalProjectile(out GeneralProjectile V2Projectile))
 			{
 				if (risky)
 					return null;

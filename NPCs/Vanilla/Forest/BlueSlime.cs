@@ -5,7 +5,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using V2.Core;
-using V2.NPCs.GroupDefinitions;
+using V2.NPCs.Sets;
 using V2.PlayerHandling;
 using V2.PlayerHandling.PredPlayerGoals.Beginner;
 
@@ -76,12 +76,11 @@ namespace V2.NPCs.Vanilla.Forest
 
 		public static void GetDigestedPlayerAdditionalDeathMessages(NPC npc, Player player, List<string> deathReasonKeyList)
 		{
-			deathReasonKeyList.AddRange(new List<string>
-			{
+			deathReasonKeyList.AddRange([
 				"Mods.V2.Death.DigestedPlayer.SlimePred.1",
 				"Mods.V2.Death.DigestedPlayer.SlimePred.2",
 				"Mods.V2.Death.DigestedPlayer.SlimePred.3",
-			});
+			]);
 		}
 
 		public static double GetDigestionTickRate(NPC npc, PreyData prey) => 0.65;
