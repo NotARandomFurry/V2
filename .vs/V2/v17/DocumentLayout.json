@@ -1,0 +1,126 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|c:\\users\\dolfi\\onedrive\\documents\\github\\v2\\playerhandling\\predplayer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:playerhandling\\predplayer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|c:\\users\\dolfi\\onedrive\\documents\\github\\v2\\playerhandling\\playerextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:playerhandling\\playerextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|c:\\users\\dolfi\\onedrive\\documents\\github\\v2\\playerhandling\\preyplayer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:playerhandling\\preyplayer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|c:\\users\\dolfi\\onedrive\\documents\\github\\v2\\playerhandling\\v2player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:playerhandling\\v2player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|c:\\users\\dolfi\\onedrive\\documents\\github\\v2\\projectiles\\vanilla\\summons\\pets\\fairyprincess.ai.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:projectiles\\vanilla\\summons\\pets\\fairyprincess.ai.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|c:\\users\\dolfi\\onedrive\\documents\\github\\v2\\v2.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:v2.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 4,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{e506b91c-c606-466a-90a9-123d1d1e12b3}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "PlayerExtensions.cs",
+              "DocumentMoniker": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\PlayerHandling\\PlayerExtensions.cs",
+              "RelativeDocumentMoniker": "PlayerHandling\\PlayerExtensions.cs",
+              "ToolTip": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\PlayerHandling\\PlayerExtensions.cs",
+              "RelativeToolTip": "PlayerHandling\\PlayerExtensions.cs",
+              "ViewState": "AQIAAAwAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-28T17:29:58.5Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "PreyPlayer.cs",
+              "DocumentMoniker": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\PlayerHandling\\PreyPlayer.cs",
+              "RelativeDocumentMoniker": "PlayerHandling\\PreyPlayer.cs",
+              "ToolTip": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\PlayerHandling\\PreyPlayer.cs",
+              "RelativeToolTip": "PlayerHandling\\PreyPlayer.cs",
+              "ViewState": "AQIAAA8AAAAAAAAAAAAEwAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-28T17:28:00.991Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "V2Player.cs",
+              "DocumentMoniker": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\PlayerHandling\\V2Player.cs",
+              "RelativeDocumentMoniker": "PlayerHandling\\V2Player.cs",
+              "ToolTip": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\PlayerHandling\\V2Player.cs",
+              "RelativeToolTip": "PlayerHandling\\V2Player.cs",
+              "ViewState": "AQIAAHYAAAAAAAAAAAAcwAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-28T17:27:57.268Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "PredPlayer.cs",
+              "DocumentMoniker": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\PlayerHandling\\PredPlayer.cs",
+              "RelativeDocumentMoniker": "PlayerHandling\\PredPlayer.cs",
+              "ToolTip": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\PlayerHandling\\PredPlayer.cs",
+              "RelativeToolTip": "PlayerHandling\\PredPlayer.cs",
+              "ViewState": "AQIAACMHAAAAAAAAAAAqwCUHAAAeAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-28T17:27:50.738Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "FairyPrincess.AI.cs",
+              "DocumentMoniker": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\Projectiles\\Vanilla\\Summons\\Pets\\FairyPrincess.AI.cs",
+              "RelativeDocumentMoniker": "Projectiles\\Vanilla\\Summons\\Pets\\FairyPrincess.AI.cs",
+              "ToolTip": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\Projectiles\\Vanilla\\Summons\\Pets\\FairyPrincess.AI.cs",
+              "RelativeToolTip": "Projectiles\\Vanilla\\Summons\\Pets\\FairyPrincess.AI.cs",
+              "ViewState": "AQIAAE8AAAAAAAAAAAAgwAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-28T17:26:25.975Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "V2.cs",
+              "DocumentMoniker": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\V2.cs",
+              "RelativeDocumentMoniker": "V2.cs",
+              "ToolTip": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\V2.cs",
+              "RelativeToolTip": "V2.cs",
+              "ViewState": "AQIAAGYAAAAAAAAAAAAgwAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-28T17:26:11.071Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

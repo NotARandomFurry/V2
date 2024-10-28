@@ -607,7 +607,7 @@ namespace V2.PlayerHandling
 				int tummySize = (int)Math.Floor(5.0 * Math.Sqrt(StomachFullness));
 				tummySize = (int)Math.Round((double)tummySize * PercentBellySizeModifier);
 				tummySize += FlatBellySizeModifier;
-				return Math.Min(tummySize, 7);
+				return Math.Min(tummySize, 8);
 			}
 		}
 
@@ -1810,8 +1810,36 @@ namespace V2.PlayerHandling
 		{
 			Player player = drawInfo.drawPlayer;
 			int tumSize = player.AsPred().StomachSize;
+            string folder = "V2/PlayerHandling/TumSprites/Tum";
+            int Frame = 0;
+            switch (player.legFrame.Y / 56)
+            {
+                case 0:
+                    Frame = 0;
+                    break;
+                case 5:
+                    Frame = 1;
+                    break;
+                case 7 or 14:
+                    Frame = 3;
+                    break;
+                case 8 or 9 or 15 or 16:
+                    Frame = 5;
+                    break;
+                case 10 or 17:
+                    Frame = 4;
+                    break;
+            }
 
-			void DrawHungryPlayerTummy(ref PlayerDrawSet drawInfo, int size, int offsetX = 0, int offsetY = 0)
+            if ((player.ItemAnimationActive || player.inventory[player.selectedItem].holdStyle != ItemHoldStyleID.None) && Frame != 1)
+            {
+                Frame = 0;
+            }
+
+            if (player.sitting.isSitting) Frame = 2;
+            else if (player.sleeping.isSleeping) Frame = 1;
+
+            /*void DrawHungryPlayerTummy(ref PlayerDrawSet drawInfo, int size, int offsetX = 0, int offsetY = 0)
 			{
 				Texture2D tum = ModContent.Request<Texture2D>("V2/PlayerHandling/TumSprites/Bare_" + size, AssetRequestMode.ImmediateLoad).Value;
 				if (player.IsAirborne() || player.sleeping.isSleeping)
@@ -1854,9 +1882,64 @@ namespace V2.PlayerHandling
 				);
 				tumDraw.shader = 0;
 				drawInfo.DrawDataCache.Add(tumDraw);
-			}
+			}*/
+            void DrawDaTum(ref PlayerDrawSet drawInfo, int size, int frame, int offsetX = 0, int offsetY = 0)
+            {
+                Vector2 tumLocation = new Vector2((float)(int)(drawInfo.Position.X - Main.screenPosition.X - 10), (float)(int)(drawInfo.Position.Y - Main.screenPosition.Y - 8));
+                tumLocation.Y += drawInfo.torsoOffset;
+                tumLocation.X += offsetX;
+                tumLocation.Y += offsetY;
 
-			if (V2.GetFooled)
+                Texture2D bareTum = ModContent.Request<Texture2D>(folder + size + "/Bare").Value;
+                if (frame == 3 || frame == 5) tumLocation.Y -= 2;
+                if (frame == 2) tumLocation.Y -= player.sitting.offsetForSeat.Y - 4;
+                if (player.mount.Active)
+                {
+                    tumLocation.Y += player.mount.HeightBoost;
+                    frame = 1;
+                }
+                Rectangle sourceRectBare = new Rectangle(0, frame * (bareTum.Height / 6), bareTum.Width, bareTum.Height / 6);
+                DrawData actualDrawBare = new DrawData(bareTum, tumLocation, sourceRectBare, drawInfo.colorBodySkin, player.bodyRotation, Vector2.Zero, 1f, drawInfo.playerEffect);
+                drawInfo.DrawDataCache.Add(actualDrawBare);
+
+                string? tumCover = null;
+
+                if (!player.armor[11].IsAir && player.armor[11].netID != ItemID.FamiliarShirt)
+                {
+                    tumCover = GetTummyCoverFromEquips(player.armor[11]);
+                }
+                else if (!player.armor[2].IsAir && player.armor[2].netID != ItemID.FamiliarShirt)
+                {
+                    tumCover = GetTummyCoverFromEquips(player.armor[2]);
+                }
+                else
+                {
+
+                }
+                if (tumCover == null || tumCover == "Bare") return;
+                string filePath = folder + size + "/" + tumCover;
+                Texture2D TumArmor = ModContent.Request<Texture2D>(filePath).Value;
+                DrawData actualDraw = new DrawData(TumArmor, tumLocation, sourceRectBare, drawInfo.colorArmorBody, player.bodyRotation, Vector2.Zero, 1f, drawInfo.playerEffect);
+                actualDraw.shader = drawInfo.cBody;
+                drawInfo.DrawDataCache.Add(actualDraw);
+            }
+            string GetTummyCoverFromEquips(Item item)
+            {
+                string ValidArmor = "Bare";
+
+                switch (item.netID)
+                {
+                    case ItemID.TheBrideDress:
+                        ValidArmor = "WeddingDress";
+                        break;
+                    case ItemID.FlinxFurCoat:
+                        ValidArmor = "FlinxFurCoat";
+                        break;
+                }
+
+                return ValidArmor;
+            }
+            if (V2.GetFooled)
 			{
 
 				SpriteEffects spriteEffects = player.direction switch
@@ -1885,7 +1968,34 @@ namespace V2.PlayerHandling
 			}
 			else
 			{
-				switch (tumSize)
+                switch (tumSize)
+                {
+                    case 1:
+                        DrawDaTum(ref drawInfo, 1, Frame, 0, 0);
+                        break;
+                    case 2:
+                        DrawDaTum(ref drawInfo, 2, Frame, 0, 0);
+                        break;
+                    case 3:
+                        DrawDaTum(ref drawInfo, 3, Frame, 0, 0);
+                        break;
+                    case 4:
+                        DrawDaTum(ref drawInfo, 4, Frame, -30, -22);
+                        break;
+                    case 5:
+                        DrawDaTum(ref drawInfo, 5, Frame, -30, -22);
+                        break;
+                    case 6:
+                        DrawDaTum(ref drawInfo, 6, Frame, -30, -22);
+                        break;
+                    case 7:
+                        DrawDaTum(ref drawInfo, 7, Frame, -30, -22);
+                        break;
+                    case 8:
+                        DrawDaTum(ref drawInfo, 8, Frame, -30, -22);
+                        break;
+                }
+                /*switch (tumSize)
 				{
 					default:
 						// do absolutely nothing lol
@@ -1902,7 +2012,7 @@ namespace V2.PlayerHandling
 						DrawHungryPlayerTummy(
 							ref drawInfo,
 							2,
-							player.IsAirborne() ? -2 : -2,
+                            player.IsAirborne() ? -2 : -2,
 							player.IsAirborne() ? 6 : 6
 						);
 						break;
@@ -1910,7 +2020,7 @@ namespace V2.PlayerHandling
 						DrawHungryPlayerTummy(
 							ref drawInfo,
 							3,
-							player.IsAirborne() ? -4 : -2,
+                            player.IsAirborne() ? -4 : -2,
 							player.IsAirborne() ? 6 : 6
 						);
 						break;
@@ -1918,7 +2028,7 @@ namespace V2.PlayerHandling
 						DrawHungryPlayerTummy(
 							ref drawInfo,
 							4,
-							player.IsAirborne() ? -4 : -4,
+                            player.IsAirborne() ? -4 : -4,
 							player.IsAirborne() ? 4 : 4
 						);
 						break;
@@ -1926,7 +2036,7 @@ namespace V2.PlayerHandling
 						DrawHungryPlayerTummy(
 							ref drawInfo,
 							5,
-							player.IsAirborne() ? -4 : -4,
+                            player.IsAirborne() ? -4 : -4,
 							player.IsAirborne() ? 4 : 2
 						);
 						break;
@@ -1934,17 +2044,17 @@ namespace V2.PlayerHandling
 						DrawHungryPlayerTummy(
 							ref drawInfo,
 							6,
-							player.IsAirborne() ? -2 : -2,
+                            player.IsAirborne() ? -2 : -2,
 							player.IsAirborne() ? 4 : -2);
 						break;
 					case 7:
 						DrawHungryPlayerTummy(
 							ref drawInfo,
 							7,
-							player.IsAirborne() ? -4 : -2,
+                            player.IsAirborne() ? -4 : -2,
 							player.IsAirborne() ? 0 : -4);
 						break;
-				}
+				}*/
 			}
 		}
 	}
