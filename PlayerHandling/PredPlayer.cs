@@ -1934,6 +1934,7 @@ namespace V2.PlayerHandling
                         break;
                     case ItemID.FlinxFurCoat:
                         ValidArmor = "FlinxFurCoat";
+                        if (size > 4) ValidArmor = "Bare";
                         break;
                 }
 
