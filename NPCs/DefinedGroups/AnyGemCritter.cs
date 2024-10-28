@@ -47,6 +47,26 @@ namespace V2.NPCs.Sets
 			{
 				List<int> distinctGemCritters = V2Utils.NPCIDSets.GemCritters;
 				int distinctGemCrittersInTummy = 0;
+				if (predPlayer.AsPred().StomachTracker.PreyQueue?.Count <= 0)
+					goto checkMainPreyList;
+
+				foreach (PreyData prey in predPlayer.AsPred().StomachTracker.PreyQueue)
+				{
+					if (prey.Type != PreyType.NPC)
+						continue;
+
+					int preyNPCID = prey.ExactType;
+					if (distinctGemCritters.Contains(preyNPCID))
+					{
+						distinctGemCrittersInTummy++;
+						distinctGemCritters.Remove(preyNPCID);
+					}
+				}
+
+				checkMainPreyList:
+				if (predPlayer.AsPred().StomachTracker.Prey?.Count <= 0)
+					goto validateGoal;
+
 				foreach (PreyData prey in predPlayer.AsPred().StomachTracker.Prey)
 				{
 					if (prey.Type != PreyType.NPC)
@@ -59,6 +79,8 @@ namespace V2.NPCs.Sets
 						distinctGemCritters.Remove(preyNPCID);
 					}
 				}
+
+				validateGoal:
 				if (distinctGemCrittersInTummy >= 7)
 					ModContent.GetInstance<HoardGemCritters>().TrySetCompletion(predPlayer);
 			}
