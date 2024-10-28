@@ -34,7 +34,8 @@ namespace V2.NPCs.Vanilla.Hallow
 			npc.AsV2NPC().Gender = EntityGender.Other;
 
 			npc.AsFood().DefinedBaseSize = 0.10;
-			npc.AsPred().MaxStomachCapacity = 100.0;
+			npc.AsPred().MaxStomachCapacity = 5.0;
+			npc.AsPred().BaseStomachacheMeterCapacity = 10000.0;
 
 			npc.AsPred().SmallGulpThreshold = 0.00;
 			npc.AsPred().BigGulps = null;
@@ -80,7 +81,7 @@ namespace V2.NPCs.Vanilla.Hallow
 		public static double GetPreyAbsorptionRate(NPC npc)
 		{
 			double baseAbsorptionRate = 1.0 / (double)V2Utils.SensibleTime(
-				minutes: 20
+				minutes: 30
 			);
 			return baseAbsorptionRate;
 		}
