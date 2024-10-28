@@ -33,7 +33,7 @@ namespace V2.NPCs.Vanilla.Hallow
 		{
 			npc.AsV2NPC().Gender = EntityGender.Other;
 
-			npc.AsFood().DefinedBaseSize = 0.10;
+			npc.AsFood().DefinedBaseSize = 0.035;
 			npc.AsPred().MaxStomachCapacity = 5.0;
 			npc.AsPred().BaseStomachacheMeterCapacity = 10000.0;
 
@@ -171,6 +171,9 @@ namespace V2.NPCs.Vanilla.Hallow
 
 		public override bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
 		{
+			if (npc.CurrentCaptor() is not null)
+				return false;
+
 			SpriteEffects spriteEffects = SpriteEffects.None;
 			if (npc.spriteDirection == 1)
 				spriteEffects = SpriteEffects.FlipHorizontally;

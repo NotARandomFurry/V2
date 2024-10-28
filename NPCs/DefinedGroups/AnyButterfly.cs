@@ -36,29 +36,50 @@ namespace V2.NPCs.Sets
 		{
 			npc.AsV2NPC().Gender = EntityGender.Other;
 
-			npc.AsFood().DefinedBaseSize = 0.055;
+			npc.AsFood().DefinedBaseSize = 0.035;
 
 			npc.AsFood().OnSwallowedBy += OnSwallowedBy_GrantButterflyGroupMultiPreyGoal;
 		}
 
 		public static void OnSwallowedBy_GrantButterflyGroupMultiPreyGoal(NPC npc, Entity pred)
 		{
-			if (pred is Player predPlayer)
-			{
-				List<int> possibleButterflies = V2Utils.NPCIDSets.Butterflies;
-				int butterfliesInTummy = 0;
-				foreach (PreyData prey in predPlayer.AsPred().StomachTracker.Prey)
-				{
-					if (prey.Type != PreyType.NPC)
-						continue;
+			if (pred is not Player predPlayer)
+				return;
+			if (predPlayer.AsPred().StomachTracker is null)
+				return;
 
-					int preyNPCID = prey.ExactType;
-					if (possibleButterflies.Contains(preyNPCID))
-						butterfliesInTummy++;
-				}
-				if (butterfliesInTummy >= 3)
-					ModContent.GetInstance<StomachButterflies>().TrySetCompletion(predPlayer);
+			List<int> butterflies = V2Utils.NPCIDSets.Butterflies;
+			int butterfliesInTummy = 0;
+			if (predPlayer.AsPred().StomachTracker.PreyQueue?.Count <= 0)
+				goto checkMainPreyList;
+
+			foreach (PreyData prey in predPlayer.AsPred().StomachTracker.PreyQueue)
+			{
+				if (prey.Type != PreyType.NPC)
+					continue;
+
+				int preyNPCID = prey.ExactType;
+				if (butterflies.Contains(preyNPCID))
+					butterfliesInTummy++;
 			}
+
+			checkMainPreyList:
+			if (predPlayer.AsPred().StomachTracker.Prey?.Count <= 0)
+				goto validateGoal;
+
+			foreach (PreyData prey in predPlayer.AsPred().StomachTracker.Prey)
+			{
+				if (prey.Type != PreyType.NPC)
+					continue;
+
+				int preyNPCID = prey.ExactType;
+				if (butterflies.Contains(preyNPCID))
+					butterfliesInTummy++;
+			}
+
+			validateGoal:
+			if (butterfliesInTummy >= 3)
+				ModContent.GetInstance<StomachButterflies>().TrySetCompletion(predPlayer);
 		}
 	}
 }
