@@ -40,6 +40,7 @@ namespace V2.NPCs.Vanilla.SolarEclipse
 
 			npc.AsFood().DefinedBaseSize = 1.10;
 			npc.AsPred().MaxStomachCapacity = 4.44;
+			npc.AsPred().BaseStomachacheMeterCapacity = 800.0;
 
 			npc.AsPred().SmallGulps = Gulps.Short;
 			npc.AsPred().SmallGulpThreshold = 0.40;

@@ -784,6 +784,10 @@ namespace V2.NPCs
 						NPC preyPredNPC = prey.Instance as NPC;
 						totalBellyWeight += GetCurrentBellyWeight(preyPredNPC);
 						break;
+					case PreyType.Projectile:
+						Projectile preyPredProjectile = prey.Instance as Projectile;
+						totalBellyWeight += PredProjectile.GetCurrentBellyWeight(preyPredProjectile);
+						break;
 				}
 			}
 			return totalBellyWeight;

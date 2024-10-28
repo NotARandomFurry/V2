@@ -35,9 +35,11 @@ ItemName: {
 Bestiary_FlavorText: {
 	# Bosses
 	npc_HallowBoss: The most gluttonous prismatic fairy to ever inhabit Terraria, rumored to have eaten a titaness whole and alive to gain her modern-day size and strength. She wishes to one day shine with the light of the digested sun.
-	# Solar Eclipse
+	# Caverns
 	npc_LostGirl: A lady of no clothes or cruel countenance (don't mind the ominous rumbling or that she's licking her lips), patiently awaiting a savior that can rescue her and return her to the surface.
 	npc_Nymph: Masterfully deceives the common fool by posing as a lost, scared lady, then lunges forward and gobbles up her prey before they can so much as touch her. Also enjoys certain card and board games.
+	# Hallow
+	npc_EmpressButterfly: "The collective foremothers and forefathers of all prismatic fairies, these beautiful little butterflies are one of the favorite foods of many fairies, including the hallowed "goddess" herself."
 	# Solar Eclipse
 	npc_ThePossessed: Oftentimes, under the Eclipse's blacklight glow, malevolent spirits will set out to possess once-meek peasants like this unfortunate girl and glut themselves on the unprepared.
 	# Town NPCs
