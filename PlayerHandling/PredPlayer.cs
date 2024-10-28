@@ -1906,11 +1906,11 @@ namespace V2.PlayerHandling
 
                 if (!player.armor[11].IsAir && player.armor[11].netID != ItemID.FamiliarShirt)
                 {
-                    tumCover = GetTummyCoverFromEquips(player.armor[11]);
+                    tumCover = GetTummyCoverFromEquips(player.armor[11], size);
                 }
                 else if (!player.armor[2].IsAir && player.armor[2].netID != ItemID.FamiliarShirt)
                 {
-                    tumCover = GetTummyCoverFromEquips(player.armor[2]);
+                    tumCover = GetTummyCoverFromEquips(player.armor[2], size);
                 }
                 else
                 {
@@ -1923,7 +1923,7 @@ namespace V2.PlayerHandling
                 actualDraw.shader = drawInfo.cBody;
                 drawInfo.DrawDataCache.Add(actualDraw);
             }
-            string GetTummyCoverFromEquips(Item item)
+            string GetTummyCoverFromEquips(Item item, int size)
             {
                 string ValidArmor = "Bare";
 
