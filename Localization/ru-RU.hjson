@@ -32,6 +32,20 @@ ItemName: {
 	Feather: Harpy Feather
 }
 
+Bestiary_FlavorText: {
+	# Bosses
+	// npc_HallowBoss: The most gluttonous prismatic fairy to ever inhabit Terraria, rumored to have eaten a titaness whole and alive to gain her modern-day size and strength. She wishes to one day shine with the light of the digested sun.
+	# Solar Eclipse
+	// npc_LostGirl: A lady of no clothes or cruel countenance (don't mind the ominous rumbling or that she's licking her lips), patiently awaiting a savior that can rescue her and return her to the surface.
+	// npc_Nymph: Masterfully deceives the common fool by posing as a lost, scared lady, then lunges forward and gobbles up her prey before they can so much as touch her. Also enjoys certain card and board games.
+	# Solar Eclipse
+	// npc_ThePossessed: Oftentimes, under the Eclipse's blacklight glow, malevolent spirits will set out to possess once-meek peasants like this unfortunate girl and glut themselves on the unprepared.
+	# Town NPCs
+	// npc_Dryad: While dryads are rarely found in civilized country, they are more plentiful than anyone would have you believe; this one in particular seems very hung up on the idea that the world is impure.
+	// npc_Stylist: Originally hailing from northwest Avarsici, Amber eventually found herself running away when her best gal pal was outcast from their hometown. She's still a stellar hair styler, though, and she and her gut will gladly whip your hair up nice!
+	// npc_Mechanic: A masterful robotics worker whose exact country of origin is unknown; only that she was held against her will by a mysterious group to make new parts for an unknown master.
+}
+
 Mods: {
 	V2: {
 		CommonColorCodes: {

@@ -170,8 +170,12 @@ namespace V2.NPCs
 					SoundEngine.PlaySound(npc.AsFood().DigestedDeathSound, npc.position);
 
 				if (npc.CurrentCaptor().Predator is Player hungryPlayer)
-					PredPlayer.CountDigestionKillForBannersAndDropThem(hungryPlayer, npc);
+				{
+					if (!npc.AnyInteractions() && npc.IsNPCValidForBestiaryKillCredit())
+						Main.BestiaryTracker.Kills.RegisterKill(npc);
 
+					PredPlayer.CountDigestionKillForBannersAndDropThem(hungryPlayer, npc);
+				}
 				npc.AsFood().OnDigestedBy.Invoke(npc, npc.CurrentCaptor().Predator);
 				npc.NPCLoot();
 			}

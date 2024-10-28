@@ -71,10 +71,10 @@ namespace V2.NPCs.Vanilla.Hallow
 			}
 		}
 
-		public static double GetDigestionTickRate(NPC npc, PreyData prey) => 2.0;
+		public static double GetDigestionTickRate(NPC npc, PreyData prey) => 1.0 / 3.0;
 		public static double GetDigestionTickDamage(NPC npc, PreyData prey)
 		{
-			double baseDigestionTickDamage = 20.0;
+			double baseDigestionTickDamage = 7.0;
 			return baseDigestionTickDamage;
 		}
 		public static double GetPreyAbsorptionRate(NPC npc)

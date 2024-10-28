@@ -844,7 +844,10 @@ namespace V2.Core
 			data.ExactType = exactType;
 			data.Name = name;
 			if (weightRemainingIfDead != -1)
+			{
 				data.WeightLeftToDigest = weightRemainingIfDead;
+				data.NoHealth = true;
+			}
 
 			return data;
 		}

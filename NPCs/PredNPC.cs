@@ -239,9 +239,6 @@ namespace V2.NPCs
 			{
 				if (V2.VoreNPCBlacklist is not null && V2.VoreProjectileBlacklist.Count > 0 && V2.VoreProjectileBlacklist.Contains(preyProjectile.type))
 					return false;
-
-				if (preyProjectile.AsFood().MaxHealth == -1)
-					return false;
 			}
 			else if (prey is Item preyItem)
 			{
@@ -302,7 +299,13 @@ namespace V2.NPCs
 					break;
 				case PreyType.Projectile:
 					Projectile projectile = prey as Projectile;
-					projectile.AsFood().OnSwallowedBy?.Invoke(projectile, pred);
+					if (projectile.AsFood().MaxHealth == -1)
+					{
+						food = PreyData.NewData(PreyType.Projectile, projectile.type, projectile.Name, PreyData.GetPreySize(projectile));
+						projectile.active = false;
+					}
+					else
+						projectile.AsFood().OnSwallowedBy?.Invoke(projectile, pred);
 					break;
 				case PreyType.Item:
 					Item item = prey as Item;

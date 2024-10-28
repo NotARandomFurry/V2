@@ -499,6 +499,7 @@ namespace V2.PlayerHandling
 							continue;
 
 						totalBellyWeight += prey.WeightLeftToDigest;
+
 						switch (prey.Type)
 						{
 							case PreyType.Player:
@@ -573,6 +574,7 @@ namespace V2.PlayerHandling
 							continue;
 
 						totalBellyWeight += prey.WeightLeftToDigest;
+
 						switch (prey.Type)
 						{
 							case PreyType.Player:
@@ -862,9 +864,6 @@ namespace V2.PlayerHandling
 						if (potentialMeal.CurrentCaptor() is not null)
 							continue;
 
-						if (potentialMeal.AsFood().MaxHealth == -1)
-							continue;
-
 						if (!Collision.CanHit(Player.TrueCenter(), 1, 1, potentialMeal.TrueCenter(), 1, 1))
 							continue;
 
@@ -1012,9 +1011,6 @@ namespace V2.PlayerHandling
 			{
 				if (V2.VoreNPCBlacklist is not null && V2.VoreProjectileBlacklist.Count > 0 && V2.VoreProjectileBlacklist.Contains(preyProjectile.type))
 					return false;
-
-				if (preyProjectile.AsFood().MaxHealth == -1)
-					return false;
 			}
 			else if (prey is Item preyItem)
 			{
@@ -1051,7 +1047,6 @@ namespace V2.PlayerHandling
 			}
 
 			PreyData food = PreyData.NewData(prey);
-			AddNewPrey(pred, food);
 			if (prey is not NPC preyNPC || preyNPC.realLife == -1)
 			{
 				SoundEngine.PlaySound(
@@ -1086,10 +1081,18 @@ namespace V2.PlayerHandling
 					break;
 				case PreyType.Projectile:
 					Projectile projectile = prey as Projectile;
-					projectile.AsFood().OnSwallowedBy?.Invoke(projectile, pred);
+					if (projectile.AsFood().MaxHealth == -1)
+					{
+						food = PreyData.NewData(PreyType.Projectile, projectile.type, projectile.Name, PreyData.GetPreySize(projectile));
+						projectile.active = false;
+					}
+					else
+					{
+						projectile.AsFood().OnSwallowedBy?.Invoke(projectile, pred);
 
-					pred.AsPred().lastEntitySwallowed = projectile.Name;
-					pred.AsPred().lastEntitySwallowedMod = projectile.ModProjectile != null ? projectile.ModProjectile.Mod.DisplayName : "Terraria";
+						pred.AsPred().lastEntitySwallowed = projectile.Name;
+						pred.AsPred().lastEntitySwallowedMod = projectile.ModProjectile != null ? projectile.ModProjectile.Mod.DisplayName : "Terraria";
+					}
 					break;
 				case PreyType.Item:
 					Item item = prey as Item;
@@ -1111,6 +1114,7 @@ namespace V2.PlayerHandling
 						pred.AddBuff(ModContent.BuffType<SoreThroat>(), item.AsFood().OnSwallowSoreThroatTime);
 					break;
 			}
+			AddNewPrey(pred, food);
 
 			if (MPstate == 1)
 			{

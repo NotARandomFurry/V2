@@ -337,8 +337,8 @@ namespace V2.NPCs.Vanilla.BloodMoon
 
 		public override void PostAI(NPC npc)
 		{
-			List<(TargetType, int)> diet = new List<(TargetType, int)>
-			{
+			List<(TargetType, int)> diet =
+			[
 				// Town NPCs
 				(TargetType.NPC, NPCID.Guide),
 				(TargetType.NPC, NPCID.Merchant),
@@ -385,7 +385,7 @@ namespace V2.NPCs.Vanilla.BloodMoon
 
 				// Players, of course
 				(TargetType.Player, -1),
-			};
+			];
 			if (!V2.BlacklistsActive)
 			{
 				diet.AddRange(new List<(TargetType, int)>

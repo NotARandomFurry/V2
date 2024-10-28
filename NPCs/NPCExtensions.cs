@@ -299,7 +299,7 @@ namespace V2.NPCs
 					if (!inSpecificWhitelist)
 						continue;
 
-					if (npc.Hitbox.Intersects(preyNPC.Hitbox) && PredNPC.CanSwallow(npc, preyNPC))
+					if (npc.Hitbox.Intersects(preyNPC.Hitbox))
 					{
 						bool empressGetsGulped = preyNPC.type == NPCID.PartyGirl;
 						if (ModContent.GetInstance<V2ServerConfig>().EasilyEdibleEmpress)
@@ -308,6 +308,8 @@ namespace V2.NPCs
 							{
 								NPCID.Dryad,
 								NPCID.Stylist,
+								NPCID.TheBride,
+								NPCID.EmpressButterfly,
 							}.Contains(preyNPC.type);
 						}
 						if (npc.type == NPCID.HallowBoss && empressGetsGulped)
@@ -340,7 +342,7 @@ namespace V2.NPCs
 					if (!inSpecificWhitelist)
 						continue;
 
-					if (npc.Hitbox.Intersects(preyPlayer.Hitbox) && PredNPC.CanSwallow(npc, preyPlayer))
+					if (npc.Hitbox.Intersects(preyPlayer.Hitbox))
 						PredNPC.Swallow(npc, preyPlayer);
 				}
 			}
@@ -367,7 +369,7 @@ namespace V2.NPCs
 					if (!inSpecificWhitelist)
 						continue;
 
-					if (npc.Hitbox.Intersects(preyProjectile.Hitbox) && PredNPC.CanSwallow(npc, preyProjectile))
+					if (npc.Hitbox.Intersects(preyProjectile.Hitbox))
 						PredNPC.Swallow(npc, preyProjectile);
 				}
 			}
