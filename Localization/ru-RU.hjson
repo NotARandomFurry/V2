@@ -35,12 +35,15 @@ ItemName: {
 Bestiary_FlavorText: {
 	# Bosses
 	// npc_HallowBoss: The most gluttonous prismatic fairy to ever inhabit Terraria, rumored to have eaten a titaness whole and alive to gain her modern-day size and strength. She wishes to one day shine with the light of the digested sun.
-	# Solar Eclipse
+	# Caverns
 	// npc_LostGirl: A lady of no clothes or cruel countenance (don't mind the ominous rumbling or that she's licking her lips), patiently awaiting a savior that can rescue her and return her to the surface.
 	// npc_Nymph: Masterfully deceives the common fool by posing as a lost, scared lady, then lunges forward and gobbles up her prey before they can so much as touch her. Also enjoys certain card and board games.
+	# Hallow
+	// npc_EmpressButterfly: The collective foremothers and forefathers of all prismatic fairies, these beautiful little butterflies are one of the favorite foods of many fairies, including the hallowed 'goddess' herself.
 	# Solar Eclipse
 	// npc_ThePossessed: Oftentimes, under the Eclipse's blacklight glow, malevolent spirits will set out to possess once-meek peasants like this unfortunate girl and glut themselves on the unprepared.
 	# Town NPCs
+	// npc_Nurse: A freelance nurse-enary, if you can call that a word, that earned her medical license basically entirely to have an excuse to try to pack some bums onto her bum. Much to her chagrin, everyone seems to stick around top-side for her...
 	// npc_Dryad: While dryads are rarely found in civilized country, they are more plentiful than anyone would have you believe; this one in particular seems very hung up on the idea that the world is impure.
 	// npc_Stylist: Originally hailing from northwest Avarsici, Amber eventually found herself running away when her best gal pal was outcast from their hometown. She's still a stellar hair styler, though, and she and her gut will gladly whip your hair up nice!
 	// npc_Mechanic: A masterful robotics worker whose exact country of origin is unknown; only that she was held against her will by a mysterious group to make new parts for an unknown master.
@@ -1328,7 +1331,10 @@ Mods: {
 						}
 					}
 
-					Summon.PaperMaidSummon: Заколдованный колокольчик оригами
+					Summon: {
+						PaperMaidSummon: Заколдованный колокольчик оригами
+						// ShroomFairySummon: Fungal Fairy Staff
+					}
 				}
 
 				NymphHairStrand: Голубая прядь
@@ -2726,6 +2732,27 @@ Mods: {
 								Она способна усмирять врагов самыми разными способами, но предпочитает, конечно, заглатывать цели целиком, чтобы свести к минимуму и эффективно устранить внешний беспорядок, живой или иной.
 								'''
 						}
+
+						ShroomFairySummon: {
+							/* Short:
+								'''
+								Summons fungal fairies to protect you from long-range attacks by swallowing them up
+								'A bunch of fun gals, really'
+								{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+								''' */
+							/* Long:
+								'''
+								[c/{$Mods.V2.CommonColorCodes.DoSomething}:Left-click] to summon a fungal fairy to your cursor position.
+								Each fungal fairy requires 1.5 minion slots available to be summoned.
+								While active, fungal fairies will [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:dash over to and devour hostile projectiles] that stray too close to you.
+								If they become too full of tasty enemy ranged attacks, they'll have to take a moment to rest and digest before they can actively gobble up more.
+								''' */
+							/* Flavor:
+								'''
+								Magical implements used by adventurers that have since lost their lives to the gluttony of the undergrowth are often twisted by wherever they happen to get got. This poor thing's owner must have perished in a cave full of mushrooms.
+								Notably, the fairies that stay around these preferred regions seemed to like implements like these a lot; if you were to shake this about, perhaps one would come to your aid and shield you from oncoming fire (with, of course, their greedy tummy).
+								''' */
+						}
 					}
 				}
 
@@ -2753,6 +2780,8 @@ Mods: {
 					}
 				}
 			}
+
+			// ShroomFairy.DisplayName: Shroom Fairy
 		}
 
 		InfoDisplayName.TallyCounterVore: Подсчет порций
@@ -2963,6 +2992,18 @@ Mods: {
 							Это может привлечь внимание и аппетит хищников, которые любят фруктовые ароматы.
 							'Просто следуйте за своим носом!'
 							'''
+					}
+				}
+
+				Summons: {
+					ShroomFairy: {
+						// Name: Fungal Fairy
+						/* Description:
+							'''
+							A hungry fungal fairy [c/{$Mods.V2.CommonColorCodes.DoSomething}:follows you around].
+							She will [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:swiftly fly to and devour nearby hostile projectiles] that stray too close to you.
+							'I'm tellin' you, she's a fun gal!'
+							''' */
 					}
 				}
 			}

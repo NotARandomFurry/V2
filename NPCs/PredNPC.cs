@@ -239,6 +239,9 @@ namespace V2.NPCs
 			{
 				if (V2.VoreNPCBlacklist is not null && V2.VoreProjectileBlacklist.Count > 0 && V2.VoreProjectileBlacklist.Contains(preyProjectile.type))
 					return false;
+
+				if (preyProjectile.AsFood().MaxHealth == -1)
+					return false;
 			}
 			else if (prey is Item preyItem)
 			{

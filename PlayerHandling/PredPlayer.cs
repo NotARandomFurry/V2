@@ -1011,6 +1011,9 @@ namespace V2.PlayerHandling
 			{
 				if (V2.VoreNPCBlacklist is not null && V2.VoreProjectileBlacklist.Count > 0 && V2.VoreProjectileBlacklist.Contains(preyProjectile.type))
 					return false;
+
+				if (preyProjectile.AsFood().MaxHealth == -1)
+					return false;
 			}
 			else if (prey is Item preyItem)
 			{
@@ -1154,8 +1157,7 @@ namespace V2.PlayerHandling
 			if (liquidType == 0 && liquidAmount == 0 && newDrink is null)
 				throw new ArgumentException("you're supposed to make sure either the PreyData instance provided or the liquid type and amount provided are valid for PredPlayer.Drink. try again");
 
-			if (newDrink is null)
-				newDrink = new PreyData(liquidType, liquidAmount);
+			newDrink ??= new PreyData(liquidType, liquidAmount);
 			if (liquidType == -1 && liquidAmount == -1)
 			{
 				liquidType = newDrink.ExactType;
@@ -1592,8 +1594,8 @@ namespace V2.PlayerHandling
 					new { Player = prey.name }
 				);
 			}
-			List<string> deathMessageKeyList = new List<string>
-			{
+			List<string> deathMessageKeyList =
+			[
 				"Mods.V2.Death.DigestedPlayer.Universal.1",
 				"Mods.V2.Death.DigestedPlayer.Universal.2",
 				"Mods.V2.Death.DigestedPlayer.Universal.3",
@@ -1616,16 +1618,16 @@ namespace V2.PlayerHandling
 				"Mods.V2.Death.DigestedPlayer.Universal.20",
 				"Mods.V2.Death.DigestedPlayer.Universal.21",
 				"Mods.V2.Death.DigestedPlayer.Universal.22",
-			};
+			];
 			if (player.difficulty == PlayerDifficultyID.Hardcore)
 			{
-				deathMessageKeyList.AddRange(new List<string>
-				{
+				deathMessageKeyList.AddRange(
+				[
 					"Mods.V2.Death.DigestedPlayer.Hardcore.1",
 					"Mods.V2.Death.DigestedPlayer.Hardcore.2",
 					"Mods.V2.Death.DigestedPlayer.Hardcore.3",
 					"Mods.V2.Death.DigestedPlayer.Hardcore.4",
-				});
+				]);
 			}
 			string finalDeathReasonKey = Main.rand.NextFromCollection(deathMessageKeyList);
 
@@ -1764,10 +1766,10 @@ namespace V2.PlayerHandling
 			TUM.Spent = tag.GetInt("TUMSpent");
 			ACI.Spent = tag.GetInt("ACISpent");
 			ABS.Spent = tag.GetInt("ABSSpent");
-			PermanentUpgradesGained = new Dictionary<string, bool>();
-			mealCount = new Dictionary<string, int>();
-			drinkCount = new Dictionary<string, int>();
-			GoalsCompleted = new Dictionary<string, bool>();
+			PermanentUpgradesGained = [];
+			mealCount = [];
+			drinkCount = [];
+			GoalsCompleted = [];
 			foreach (KeyValuePair<string, object> keyValuePair in tag)
 			{
 				if (keyValuePair.Key.StartsWith("[PERM UPGRADES] "))
@@ -1904,11 +1906,11 @@ namespace V2.PlayerHandling
 
                 string? tumCover = null;
 
-                if (!player.armor[11].IsAir && player.armor[11].netID != ItemID.FamiliarShirt)
+                if (!player.armor[11].IsAir && player.armor[11].type != ItemID.FamiliarShirt)
                 {
                     tumCover = GetTummyCoverFromEquips(player.armor[11], size);
                 }
-                else if (!player.armor[2].IsAir && player.armor[2].netID != ItemID.FamiliarShirt)
+                else if (!player.armor[2].IsAir && player.armor[2].type != ItemID.FamiliarShirt)
                 {
                     tumCover = GetTummyCoverFromEquips(player.armor[2], size);
                 }
@@ -1927,16 +1929,20 @@ namespace V2.PlayerHandling
             {
                 string ValidArmor = "Bare";
 
-                switch (item.netID)
+                switch (item.type)
                 {
                     case ItemID.TheBrideDress:
                         ValidArmor = "WeddingDress";
                         break;
-                    case ItemID.FlinxFurCoat:
-                        ValidArmor = "FlinxFurCoat";
-                        if (size > 4) ValidArmor = "Bare";
-                        break;
-                }
+					case ItemID.FlinxFurCoat:
+						ValidArmor = "FlinxFurCoat";
+						if (size > 4) ValidArmor = "Bare";
+						break;
+					case ItemID.PrinceUniform:
+						ValidArmor = "PrinceUniform";
+						if (size > 4) ValidArmor = "Bare";
+						break;
+				}
 
                 return ValidArmor;
             }

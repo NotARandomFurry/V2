@@ -31,7 +31,7 @@ namespace V2.PlayerHandling
 				List<PreyData> playerAsPreyList = PredNPC.GetStomachTracker(predNPC).Prey.FindAll(x => x.Type == PreyType.Player && x.Instance.whoAmI == player.whoAmI);
 				if (playerAsPreyList != null && playerAsPreyList.Count > 0)
 				{
-					if (playerAsPreyList.FirstOrDefault(x => !x.NoHealth) == null)
+					if (playerAsPreyList.FirstOrDefault(x => !x.NoHealth) is null)
 						pastTense = true;
 					return true;
 				}
@@ -41,7 +41,7 @@ namespace V2.PlayerHandling
 				List<PreyData> playerAsPreyList = predPlayer.AsPred().StomachTracker?.Prey.FindAll(x => x.Type == PreyType.Player && x.Instance.whoAmI == player.whoAmI);
 				if (playerAsPreyList != null && playerAsPreyList.Count > 0)
 				{
-					if (playerAsPreyList.FirstOrDefault(x => !x.NoHealth) == null)
+					if (playerAsPreyList.FirstOrDefault(x => !x.NoHealth) is null)
 						pastTense = true;
 					return true;
 				}
@@ -54,7 +54,7 @@ namespace V2.PlayerHandling
 				List<PreyData> playerAsPreyList = PredProjectile.GetStomachTracker(predProjectile)?.Prey.FindAll(x => x.Type == PreyType.Player && x.Instance.whoAmI == player.whoAmI);
 				if (playerAsPreyList != null && playerAsPreyList.Count > 0)
 				{
-					if (playerAsPreyList.FirstOrDefault(x => !x.NoHealth) == null)
+					if (playerAsPreyList.FirstOrDefault(x => !x.NoHealth) is null)
 						pastTense = true;
 					return true;
 				}
