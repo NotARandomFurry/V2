@@ -9,6 +9,7 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -84,4 +85,18 @@ namespace V2.Items.Voraria.Weapons.Summon
 			ItemID.Sets.ShimmerTransformToItem[ItemID.SlimeStaff] = ModContent.ItemType<ShroomStaff>();
 		}
 	}
+	public class ShroomStaffDrop : GlobalNPC
+	{
+        public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
+        {
+            if (npc.type == NPCID.SporeBat || npc.type == NPCID.ZombieMushroom || npc.type == NPCID.ZombieMushroomHat || npc.type == NPCID.SporeSkeleton)
+            {
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ShroomStaff>(), 90));
+            }
+            else if(npc.type == NPCID.AnomuraFungus || npc.type == NPCID.MushiLadybug || npc.type == NPCID.FungoFish || npc.type == NPCID.FungiBulb || npc.type == NPCID.GiantFungiBulb)
+            {
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ShroomStaff>(), 50));
+            }
+        }
+    }
 }

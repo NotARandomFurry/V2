@@ -2746,6 +2746,8 @@ Mods: {
 								Each fungal fairy requires 1.5 minion slots available to be summoned.
 								While active, fungal fairies will [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:dash over to and devour hostile projectiles] that stray too close to you.
 								If they become too full of tasty enemy ranged attacks, they'll have to take a moment to rest and digest before they can actively gobble up more.
+								As they gain weight, [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:they'll digest faster and be able to hold more in their tums], [c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:at the cost of moving slightly slower].
+								While digesting, fungal fairies [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:release healing spores] that [c/{$Mods.V2.CommonColorCodes.Heal}:heal for 5 health upon contact, or 10 if you swallow them].
 								''' */
 							/* Flavor:
 								'''
@@ -2781,7 +2783,8 @@ Mods: {
 				}
 			}
 
-			// ShroomFairy.DisplayName: Shroom Fairy
+			// ShroomFairy.DisplayName: Fungal Fairy
+			// ShroomFairySpore.DisplayName: Fairy Spore
 		}
 
 		InfoDisplayName.TallyCounterVore: Подсчет порций
