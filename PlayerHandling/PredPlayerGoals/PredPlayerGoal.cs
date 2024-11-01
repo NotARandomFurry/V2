@@ -20,7 +20,7 @@ namespace V2.PlayerHandling.PredPlayerGoals
 			PredPlayerGoalLoader.PredPlayerGoals.Add(this);
 		}
 
-		public static Rectangle TextureBounds => new Rectangle(0, 0, 36, 36);
+		public static Rectangle TextureBounds => new Rectangle(0, 0, 52, 52);
 
 		public virtual Texture2D IncompleteTexture => ModContent.Request<Texture2D>("V2/PlayerHandling/PredPlayerGoals/PlaceholderIncomplete").Value;
 		public virtual Texture2D CompleteTexture => ModContent.Request<Texture2D>("V2/PlayerHandling/PredPlayerGoals/PlaceholderComplete").Value;

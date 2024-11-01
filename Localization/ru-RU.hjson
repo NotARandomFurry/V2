@@ -3589,6 +3589,7 @@ Mods: {
 				MeteorMaiden: Завораживающая, почти женская конструкция, но без талии или чего-либо под ней. Верхняя и нижняя половины ее туловища могут отделяться друг от друга до бесконечности, открывая магически сформированный желудок, который сжигает все, что находится внутри. Пескоподобная жижа, которую она производит в процессе пищеварения, имеет широкий спектр применения.
 			}
 
+			// Sky.Observer: Some Demon Eyes had evol... actually? no, i cant justify the existence of these things. these quite literally exist just for the funny.
 			TownNPCs.Succubus: Прожив на окраине Десперая много лет, прежде чем решиться на отъезд, Люсинда - демон, который просто хочет, чтобы люди верили, что она сильный, независимый хищник, которому не нужны никакие глупые чары... хотя она едва может удержать добычу так же, как ее начальство.
 
 			Divine: {
@@ -3693,8 +3694,12 @@ Mods: {
 			}
 
 			MeteorMarble.DisplayName: Метеоритный мрамор
+			// ObserverRed.DisplayName: Observer
+			// ObserverGreen.DisplayName: Observer
+			// ObserverPurple.DisplayName: Observer
 		}
 
 		ItemObtainmentDetails.Voraria.Accessories.Vanity.BalloonBelly: Mods.V2.ItemObtainmentDetails.Voraria.Accessories.Vanity.BalloonBelly
+
 	}
 }

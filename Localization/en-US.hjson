@@ -3586,6 +3586,7 @@ Mods: {
 				MeteorMaiden: A fascinating, almost woman-like construct, though built without the waist or anything under. The top and bottom halves of her torso can separate seemingly-infinitely to reveal a magically-formed stomach which torches anything inside. The sand-like slurry her digestive process makes has a wide variety of uses.
 			}
 
+			Sky.Observer: Some Demon Eyes had evol... actually? no, i cant justify the existence of these things. these quite literally exist just for the funny.
 			TownNPCs.Succubus: Having lived on the outskirts of Desperai for many years before deciding to pack up and leave, Lucinda's a demon that just wants people to believe she's a strong, independent predator who doesn't NEED no stupid charms!...even though she can barely hold her prey the same way her superiors could.
 
 			Divine: {
@@ -3690,8 +3691,12 @@ Mods: {
 			}
 
 			MeteorMarble.DisplayName: Meteor Marble
+			ObserverRed.DisplayName: Observer
+			ObserverGreen.DisplayName: Observer
+			ObserverPurple.DisplayName: Observer
 		}
 
 		ItemObtainmentDetails.Voraria.Accessories.Vanity.BalloonBelly: Mods.V2.ItemObtainmentDetails.Voraria.Accessories.Vanity.BalloonBelly
+		
 	}
 }

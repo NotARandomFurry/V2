@@ -148,7 +148,7 @@ namespace V2.UI.PredStatsMenu
 						break;
 				}
 
-				int columnCountPerPage = 12;
+				int columnCountPerPage = 8;
 				int rowCountPerPage = 5;
 				int totalGoalsPerPage = columnCountPerPage * rowCountPerPage;
 				int goalPages = 1 + (int)Math.Floor((double)(selectedStageGoals.Count - 1) / (double)totalGoalsPerPage);
