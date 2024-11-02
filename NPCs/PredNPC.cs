@@ -104,7 +104,7 @@ namespace V2.NPCs
 		public double Stomachache
 		{
 			get => _stomachache;
-			set => _stomachache = Math.Min(Math.Max(0, value), StomachacheMeterCapacity);
+			set => _stomachache = Math.Max(0, value);
 		}
 		public double BaseStomachacheMeterCapacity { get; set; }
 		public StatModifier StomachacheMeterCapacityModifier;
