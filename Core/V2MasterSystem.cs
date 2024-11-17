@@ -11,22 +11,26 @@ namespace V2.Core
 	{
 		public bool freedSucc;
 		public bool freedAngel;
+        public bool freedEnigma;
 
-		public List<VoreTracker> VoreTrackers { get; set; } = new List<VoreTracker>();
+        public List<VoreTracker> VoreTrackers { get; set; } = new List<VoreTracker>();
 
 		public override void OnWorldLoad()
 		{
 			VoreTrackers = new List<VoreTracker>();
 			freedSucc = false;
 			freedAngel = false;
-		}
+			freedEnigma = false;
+        }
 
 		public override void OnWorldUnload()
 		{
 			VoreTrackers = new List<VoreTracker>();
 			freedSucc = false;
 			freedAngel = false;
-		}
+            freedEnigma = false;
+
+        }
 
 		public override void PreUpdateEntities()
 		{
@@ -47,20 +51,22 @@ namespace V2.Core
 		{
 			tag["freedSucc"] = freedSucc;
 			tag["freedAngel"] = freedAngel;
-		}
+            tag["freedEnigma"] = freedEnigma;
+        }
 
 		public override void LoadWorldData(TagCompound tag)
 		{
 			freedSucc = tag.ContainsKey("freedSucc") && tag.GetBool("freedSucc");
 			freedAngel = tag.ContainsKey("freedAngel") && tag.GetBool("freedAngel");
-		}
+            freedEnigma = tag.ContainsKey("freedEnigma") && tag.GetBool("freedEnigma");
+        }
 
 		public override void NetSend(BinaryWriter writer)
 		{
 			BitsByte flags = new BitsByte(
 				freedSucc,
 				freedAngel,
-				false,
+                freedEnigma,
 				false,
 				false,
 				false,
@@ -75,7 +81,8 @@ namespace V2.Core
 			BitsByte flags = reader.ReadByte();
 			freedSucc = flags[0];
 			freedAngel = flags[1];
-		}
+            freedEnigma = flags[2];
+        }
 
 	}
 }

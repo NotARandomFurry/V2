@@ -8,6 +8,7 @@ using Terraria.ModLoader;
 using V2.Core;
 using V2.NPCs;
 using V2.UI;
+using V2.Items.Voraria.Armor;
 
 namespace V2.PlayerHandling
 {
@@ -46,7 +47,14 @@ namespace V2.PlayerHandling
 			ResetHealthRegenEffectList();
 		}
 
-		public override void UpdateDead()
+        public override void ModifyLuck(ref float luck)
+        {
+            if (Player.armor[0].type == ModContent.ItemType<CloverHeadAccessories>()) luck += 0.3f;
+            if (Player.armor[1].type == ModContent.ItemType<CloverSweater>()) luck += 0.1f;
+            if (Player.armor[2].type == ModContent.ItemType<CloverStockings>()) luck += 0.1f;
+        }
+
+        public override void UpdateDead()
 		{
 			ResetHealthRegenTime();
 			ResetHealthRegenEffectList();

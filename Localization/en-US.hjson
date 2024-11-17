@@ -1226,6 +1226,19 @@ Mods: {
 						Clarification: Eat and digest any Sofa.
 					}
 				}
+
+				EatObserver: {
+					Name: '''"Stop starin' at me with that big ol' eye!"'''
+
+					Description: {
+						Default:
+							'''
+							Somehow swallow and digest one of the uncommon Observers.
+							'So much for being made to be un-swallowable.'
+							'''
+						Clarification: Eat and digest an Observer.
+					}
+				}
 			}
 
 			Skilled: {
@@ -1281,6 +1294,12 @@ Mods: {
 
 		ItemName: {
 			Voraria: {
+				Armor: {
+					CloverHeadAccessories: Clover's Snazzy Style
+					CloverSweater: Clover's Sweet Sweater
+					CloverStockings: Clover's Silly Stockings
+				}
+
 				CheatItems: {
 					RoseFlower: Rose's Flower Pin
 					ServerMessageRelay: A Page of the Author's Book
@@ -2099,6 +2118,92 @@ Mods: {
 			}
 
 			Voraria: {
+				Armor: {
+					CloverArmorSetBonus: 7 defense, drastically increased struggling strength
+
+					CloverHeadAccessories: {
+						Short:
+							'''
+							7% increased critical strike chance
+							Increased maximum prey swallowing size and struggling strength
+							Slightly increased luck
+							'Three head accessories in one slot? Is that even legal?'
+							{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+							'''
+						Long:
+							'''
+							[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Critical strike chance is increased by 7% for all weapons].
+							[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Luck is increased by 0.3].
+							[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:GLP is increased by 5].
+							[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Struggling strength is increased by 75%].
+							'''
+						Flavor:
+							'''
+							Clover's choice of headwear. It is an amalgamation of items stuffed into a single slot.
+							It consists of:
+							- A four-leaf clover hair... hatpin?
+							- An awfully bright tophat
+							- 'Felt Goggles', despite not actually being made of felt.
+							At first, Clover didn't actually like green that much, but eventually it grew on her.
+							'''
+					}
+
+					CloverSweater: {
+						Short:
+							'''
+							7% increased critical strike chance
+							Increased struggle strength
+							Increased stomach capacity, struggling strength and food absorption speed
+							Slightly increased luck
+							'It's awfully comfortable. You could probably fall asleep standing just by wearing this...'
+							{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+							'''
+						Long:
+							'''
+							[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Critical strike chance is increased by 7% for all weapons].
+							[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Luck is increased by 0.1].
+							[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:TUM is increased by 8].
+							[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:ABS is increased by 6].
+							[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Struggling strength is increased by 100%].
+							'''
+						Flavor:
+							'''
+							One of Clover's many sweaters. It is pretty large for both you and her.
+							It is RIDICULOUS how soft and comfortable this thing is.
+							You'd think it's like, enchanted or somethi- OH WAIT it is.
+							'''
+					}
+
+					CloverStockings: {
+						Short:
+							'''
+							7% increased critical strike chance
+							20% increased movement speed
+							Increased struggling strength
+							Lowers stomach weight
+							Slightly increased luck
+							'They're more like thigh high socks, honestly.'
+							{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+							'''
+						Long:
+							'''
+							[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Critical strike chance is increased by 7% for all weapons].
+							[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Luck is increased by 0.1].
+							[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Movement speed is increased by 20%].
+							[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Decreases stomach weight by 15%].
+							[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Struggling strength is increased by 75%].
+							'''
+						Flavor:
+							'''
+							It's a pair of Clover's stockings!
+							...uh, what do you want me to say about this
+							they're just enchanted socks
+							like
+							dude
+							'''
+					}
+				}
+
 				CheatItems: {
 					RoseFlower: {
 						Short:
@@ -2782,6 +2887,7 @@ Mods: {
 
 			ShroomFairy.DisplayName: Fungal Fairy
 			ShroomFairySpore.DisplayName: Fairy Spore
+			CLOVERPUNCH.DisplayName: C L O V E R P U N C H
 		}
 
 		InfoDisplayName.TallyCounterVore: Meal Count
@@ -3578,6 +3684,42 @@ Mods: {
 					}
 				}
 			}
+
+			Enigma: {
+				Content: Nothin' too crazy going on.
+				NoHome: I have two questions. 1. Where the fuck am i? 2. Do you... have some place i can stay at?
+				FarFromHome: I think... i got lost. Whoops!
+
+				Biomes: {
+					Mushroom: It's... beautiful. Sure, the mushrooms are somewhat inedible which is a shame but blue is such a nice color! I love it here!!!
+					Hallow: This place is pretty and everything tastes like candy! But those DAMN gastropods. I HATE THOSE!!! So, it kinda evens out, this place is nice.
+					Jungle: There's something about this place that just... makes my magic power thingymajigs... easier to do? Not complaining at all!
+					Desert: It is hot as hell in this fucky ass hot ass room im in! How is nobody else complaining about the heat???
+					Tundra: One time i slipped on ice. I now hold a grudge against ice for the rest of my life.
+					Corruption: This place, sucks. That's all there really is to say on the matter.
+					Crimson: This place, sucks. That's all there really is to say on the matter.
+					Underworld: Yeesh, i might just pass out from being in here. Unfortunately for me the underworld isn't a seperate biome according to happiness so im forced to be neutral about this. Ugh.
+					Dungeon: This place, sucks. That's all there really is to say on the matter.
+				}
+
+				Neighbors: {
+					CrowdLevel: {
+						Alone: Can't complain about isolation, i guess. I'm not that good at socializing...
+						GoodCompany: There's a few nice people around, it's great!
+						BadCompany: Few people around is... alright? Don't really appreciate the few that are here though...
+						GoodCrowd: Wow that's, quite the amount of people!
+						NeutralCrowd: Wow that's, quite the amount of people!.. eugh...
+						BadCrowd: Why them. Of all people. Why?
+					}
+
+					SpecificNPCs: {
+						LoveTruffle: "{NPCName} is such a silly guy, i love him!.. What, did you expect me to say fun guy? Nah."
+						LikePrincess: Ah, the princess. She's fun to hang out with, but i'm kinda running out on stuff to change the topic to everytime she asks about my 'magical items', since they aren't quite... For her age.
+						LikeAngler: Fish are so cool! And {NPCName} understands that! Most people seem to find him annoying though, but i think his attitude makes him funnier!
+						HateTaxCollector: "{NPCName}..? Fuck that guy, i need my money to buy sweets!"
+					}
+				}
+			}
 		}
 
 		Bestiary: {
@@ -3587,7 +3729,11 @@ Mods: {
 			}
 
 			Sky.Observer: Some Demon Eyes had evol... actually? no, i cant justify the existence of these things. these quite literally exist just for the funny.
-			TownNPCs.Succubus: Having lived on the outskirts of Desperai for many years before deciding to pack up and leave, Lucinda's a demon that just wants people to believe she's a strong, independent predator who doesn't NEED no stupid charms!...even though she can barely hold her prey the same way her superiors could.
+
+			TownNPCs: {
+				Succubus: Having lived on the outskirts of Desperai for many years before deciding to pack up and leave, Lucinda's a demon that just wants people to believe she's a strong, independent predator who doesn't NEED no stupid charms!...even though she can barely hold her prey the same way her superiors could.
+				Enigma: A silly girl with silly creation magic. She made her equipment herself, but at the time didn't know how to make a color other than green. Her favourite color is actually blue, but she thinks it'd be weird if she suddenly changed her whole color scheme.
+			}
 
 			Divine: {
 				Sinhunters: {
@@ -3694,9 +3840,38 @@ Mods: {
 			ObserverRed.DisplayName: Observer
 			ObserverGreen.DisplayName: Observer
 			ObserverPurple.DisplayName: Observer
+			CloverBound.DisplayName: Enigma
+
+			Clover: {
+				TownNPCMood: {
+					Princess_LovesNPC: "{NPCName} has cool powers and is fun to chat with! She keeps changing the topic when i ask her about it, though..."
+					LikeNPC_Princess: Ah, the princess. She's fun to hang out with, but i'm kinda running out on stuff to change the topic to everytime she asks about my 'magical items', since they aren't quite... For her age.
+					HateNPC: "{NPCName}..? Fuck that guy, i need my money to buy sweets!"
+					LikeNPC: I like {NPCName}.
+					LoveNPC: I love {NPCName}.
+					HateBiome: This place, sucks. That's all there really is to say on the matter.
+					DislikeBiome: I dislike {BiomeName}.
+					LikeBiome: I like {BiomeName}.
+					LoveBiome: It's... beautiful. Sure, the mushrooms are somewhat inedible which is a shame but blue is such a nice color! I love it here!!!
+					HateCrowded: Wow that's, quite the amount of people!.. eugh.
+					DislikeCrowded: Wow that's, quite the amount of people!
+					LoveSpace: Can't complain about isolation, i guess. I'm not that good at socializing...
+					FarFromHome: I think... i got lost. Whoops!
+					NoHome: I have two questions. 1. Where the fuck am i? 2. Do you... have some place i can stay at?
+					Content: Nothin' too crazy going on.
+				}
+
+				FreeButton.DisplayName: Free
+				DisplayName: Enigma
+			}
 		}
 
 		ItemObtainmentDetails.Voraria.Accessories.Vanity.BalloonBelly: Mods.V2.ItemObtainmentDetails.Voraria.Accessories.Vanity.BalloonBelly
-		
+
+		Items: {
+			CloverHeadAccessories.Tooltip: ""
+			CloverStockings.Tooltip: ""
+			CloverSweater.Tooltip: ""
+		}
 	}
 }

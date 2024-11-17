@@ -13,4 +13,7 @@
       <HintPath>..\BetterDialogue\bin\Debug\net6.0\BetterDialogue.dll</HintPath>
     </Reference>
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Gores\" />
+  </ItemGroup>
 </Project>

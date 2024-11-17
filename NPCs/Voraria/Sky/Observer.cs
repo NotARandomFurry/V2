@@ -17,9 +17,12 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using V2.Core;
+using V2.NPCs.Voraria.TownNPCs.Enigma;
+using V2.PlayerHandling.PredPlayerGoals.Intermediate;
 
 namespace V2.NPCs.Voraria.Sky
 {
+
     public class ObserverRed : ModNPC
     {
         public override void SetStaticDefaults()
@@ -45,6 +48,7 @@ namespace V2.NPCs.Voraria.Sky
             NPC.DeathSound = SoundID.NPCDeath63;
             NPC.value = 2500f;
             NPC.noGravity = true;
+            NPC.AsFood().OnDigestedBy += OnDigestedBy_GrantObserverGoal;
         }
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
@@ -57,6 +61,13 @@ namespace V2.NPCs.Voraria.Sky
 				// Sets the description of this NPC that is listed in the bestiary.
                 new FlavorTextBestiaryInfoElement("Mods.V2.Bestiary.Sky.Observer"),
             });
+        }
+        public override float SpawnChance(NPCSpawnInfo spawnInfo)
+        {
+            if (!spawnInfo.Sky)
+                return 0f;
+
+            return 0.02f;
         }
         public override bool CanHitPlayer(Player target, ref int cooldownSlot)
         {
@@ -108,7 +119,7 @@ namespace V2.NPCs.Voraria.Sky
         }
         public override void PostAI()
         {
-            NPC.rotation = NPC.velocity.X * 0.035f;
+            NPC.rotation = Math.Clamp(NPC.velocity.X * 0.035f, -0.5f, 0.5f);
         }
         public override void FindFrame(int frameHeight)
         {
@@ -134,10 +145,31 @@ namespace V2.NPCs.Voraria.Sky
             Vector2 EyeDirection = Vector2.Zero;
             if (NPC.HasValidTarget)
             {
-                EyeDirection = NPC.Center.DirectionTo(Main.player[NPC.target].Center) * 26;
+                EyeDirection = NPC.Center.DirectionTo(Main.player[NPC.target].Center) * 20;
             }
             spriteBatch.Draw(sprite2, NPC.Center - Main.screenPosition + EyeDirection, sourceRect2, drawColor, 0f, new Vector2(10, 10), 1f, SpriteEffects.None, 0f);
             return false;
+        }
+        public override void HitEffect(NPC.HitInfo hit)
+        {
+            if (Main.netMode != NetmodeID.Server && NPC.life <= 0)
+            {
+                int Gore1 = Mod.Find<ModGore>("Gore_Observer").Type;
+                int Gore2 = Mod.Find<ModGore>("Gore_ObserverRed").Type;
+                for (int i = 0; i < 10; i++)
+                {
+                    Gore.NewGore(NPC.GetSource_Death(), NPC.Center, new Vector2(Main.rand.Next(-60, 61) / 10f, Main.rand.Next(-70, 61) / 10f), Gore1, 1f);
+                }
+                Gore.NewGore(NPC.GetSource_Death(), NPC.Center + new Vector2(0, 30), new Vector2(0, 1.5f), Gore2);
+            }
+        }
+
+        public static void OnDigestedBy_GrantObserverGoal(NPC npc, Entity pred)
+        {
+            if (pred is Player predPlayer)
+            {
+                ModContent.GetInstance<EatMimic>().TrySetCompletion(predPlayer);
+            }
         }
     }
     public class ObserverGreen : ModNPC
@@ -165,6 +197,7 @@ namespace V2.NPCs.Voraria.Sky
             NPC.DeathSound = SoundID.NPCDeath63;
             NPC.value = 2500f;
             NPC.noGravity = true;
+            NPC.AsFood().OnDigestedBy += ObserverRed.OnDigestedBy_GrantObserverGoal;
         }
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
@@ -177,6 +210,13 @@ namespace V2.NPCs.Voraria.Sky
 				// Sets the description of this NPC that is listed in the bestiary.
                 new FlavorTextBestiaryInfoElement("Mods.V2.Bestiary.Sky.Observer"),
             });
+        }
+        public override float SpawnChance(NPCSpawnInfo spawnInfo)
+        {
+            if (!spawnInfo.Sky)
+                return 0f;
+
+            return 0.02f;
         }
         public override bool CanHitPlayer(Player target, ref int cooldownSlot)
         {
@@ -228,7 +268,7 @@ namespace V2.NPCs.Voraria.Sky
         }
         public override void PostAI()
         {
-            NPC.rotation = NPC.velocity.X * 0.035f;
+            NPC.rotation = Math.Clamp(NPC.velocity.X * 0.035f, -0.5f, 0.5f);
         }
         public override void FindFrame(int frameHeight)
         {
@@ -254,10 +294,23 @@ namespace V2.NPCs.Voraria.Sky
             Vector2 EyeDirection = Vector2.Zero;
             if (NPC.HasValidTarget)
             {
-                EyeDirection = NPC.Center.DirectionTo(Main.player[NPC.target].Center) * 26;
+                EyeDirection = NPC.Center.DirectionTo(Main.player[NPC.target].Center) * 20;
             }
             spriteBatch.Draw(sprite2, NPC.Center - Main.screenPosition + EyeDirection, sourceRect2, drawColor, 0f, new Vector2(10, 10), 1f, SpriteEffects.None, 0f);
             return false;
+        }
+        public override void HitEffect(NPC.HitInfo hit)
+        {
+            if (Main.netMode != NetmodeID.Server && NPC.life <= 0)
+            {
+                int Gore1 = Mod.Find<ModGore>("Gore_Observer").Type;
+                int Gore2 = Mod.Find<ModGore>("Gore_ObserverGreen").Type;
+                for (int i = 0; i < 10; i++)
+                {
+                    Gore.NewGore(NPC.GetSource_Death(), NPC.Center, new Vector2(Main.rand.Next(-60, 61) / 10f, Main.rand.Next(-70, 61) / 10f), Gore1, 1f);
+                }
+                Gore.NewGore(NPC.GetSource_Death(), NPC.Center + new Vector2(0, 30), new Vector2(0, 1.5f), Gore2);
+            }
         }
     }
     public class ObserverPurple : ModNPC
@@ -285,6 +338,7 @@ namespace V2.NPCs.Voraria.Sky
             NPC.DeathSound = SoundID.NPCDeath63;
             NPC.value = 2500f;
             NPC.noGravity = true;
+            NPC.AsFood().OnDigestedBy += ObserverRed.OnDigestedBy_GrantObserverGoal;
         }
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
@@ -297,6 +351,13 @@ namespace V2.NPCs.Voraria.Sky
 				// Sets the description of this NPC that is listed in the bestiary.
                 new FlavorTextBestiaryInfoElement("Mods.V2.Bestiary.Sky.Observer"),
             });
+        }
+        public override float SpawnChance(NPCSpawnInfo spawnInfo)
+        {
+            if (!spawnInfo.Sky)
+                return 0f;
+
+            return 0.02f;
         }
         public override bool CanHitPlayer(Player target, ref int cooldownSlot)
         {
@@ -348,7 +409,7 @@ namespace V2.NPCs.Voraria.Sky
         }
         public override void PostAI()
         {
-            NPC.rotation = NPC.velocity.X * 0.035f;
+            NPC.rotation = Math.Clamp(NPC.velocity.X * 0.035f, -0.5f, 0.5f);
         }
         public override void FindFrame(int frameHeight)
         {
@@ -374,10 +435,23 @@ namespace V2.NPCs.Voraria.Sky
             Vector2 EyeDirection = Vector2.Zero;
             if (NPC.HasValidTarget)
             {
-                EyeDirection = NPC.Center.DirectionTo(Main.player[NPC.target].Center) * 26;
+                EyeDirection = NPC.Center.DirectionTo(Main.player[NPC.target].Center) * 20;
             }
             spriteBatch.Draw(sprite2, NPC.Center - Main.screenPosition + EyeDirection, sourceRect2, drawColor, 0f, new Vector2(10, 10), 1f, SpriteEffects.None, 0f);
             return false;
+        }
+        public override void HitEffect(NPC.HitInfo hit)
+        {
+            if (Main.netMode != NetmodeID.Server && NPC.life <= 0)
+            {
+                int Gore1 = Mod.Find<ModGore>("Gore_Observer").Type;
+                int Gore2 = Mod.Find<ModGore>("Gore_ObserverPurple").Type;
+                for (int i = 0; i < 10; i++)
+                {
+                    Gore.NewGore(NPC.GetSource_Death(), NPC.Center, new Vector2(Main.rand.Next(-60, 61) / 10f, Main.rand.Next(-70, 61) / 10f), Gore1, 1f);
+                }
+                Gore.NewGore(NPC.GetSource_Death(), NPC.Center + new Vector2(0, 30), new Vector2(0,1.5f), Gore2);
+            }
         }
     }
 }

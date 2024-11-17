@@ -8,6 +8,7 @@ using Terraria.IO;
 using Terraria.ModLoader;
 using V2.Core.StruggleSystem;
 using V2.NPCs.Voraria.TownNPCs.Succubus;
+using V2.NPCs.Voraria.TownNPCs.Enigma;
 
 namespace V2
 {
@@ -80,10 +81,14 @@ namespace V2
 			BetterDialogue.BetterDialogue.SupportedNPCs.Add(ModContent.NPCType<Lucinda>());
 			BetterDialogue.BetterDialogue.SupportedNPCs.Add(ModContent.NPCType<LucindaBound>());
 
-			BetterDialogue.BetterDialogue.RegisterShoppableNPC(NPCID.Nurse);
-			BetterDialogue.BetterDialogue.RegisterShoppableNPC(ModContent.NPCType<Lucinda>());
+            BetterDialogue.BetterDialogue.SupportedNPCs.Add(ModContent.NPCType<Clover>());
+            BetterDialogue.BetterDialogue.SupportedNPCs.Add(ModContent.NPCType<CloverBound>());
 
-			StruggleChartLoader.Load();
+            BetterDialogue.BetterDialogue.RegisterShoppableNPC(NPCID.Nurse);
+			BetterDialogue.BetterDialogue.RegisterShoppableNPC(ModContent.NPCType<Lucinda>());
+            BetterDialogue.BetterDialogue.RegisterShoppableNPC(ModContent.NPCType<Clover>());
+
+            StruggleChartLoader.Load();
 
 			EngageVoraciousGameFuckery();
 		}
