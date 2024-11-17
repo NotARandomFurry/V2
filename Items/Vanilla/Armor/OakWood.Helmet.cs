@@ -24,6 +24,8 @@ namespace V2.Items.Vanilla.Armor
 			item.AsFood().Size = 0.30;
 
 			item.defense = 1;
+
+			item.AsFood().OnBreak += OnBreak;
 		}
 
 		public static void OakWoodHelmetEffect(Item item, Player player)
@@ -31,6 +33,8 @@ namespace V2.Items.Vanilla.Armor
 			if (player.position.Y < Main.worldSurface && player.behindBackWall && Main.dayTime)
 				player.statDefense++;
 		}
+
+		public static bool OnBreak(Item item, Entity pred, bool direct) => direct;
 
 		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
 		{

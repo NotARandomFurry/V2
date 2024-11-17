@@ -37,21 +37,18 @@ namespace V2.Items
 		}
 
 		/// <summary>
-		/// Deals the given amount of DIRECT digestion damage to the given item, respecting damage variation and luck.<br/>
-		/// Should not be used for items worn by eaten players; for them, use TakeIndirectDigestionDamage instead.
+		/// Deals the given amount of digestion damage to the given item, respecting damage variation and luck.<br/>
 		/// </summary>
-		/// <param name="pred">The pred currently digesting this player.</param>
+		/// <param name="pred">The pred currently digesting this item.</param>
 		/// <param name="digestionDamage">The total amount of digestion damage to be dealt, before damage variation calculations.</param>
 		/// <returns>Whether or not the resulting digestion tick "kills" (depletes the durability of) the item.</returns>
-		public static bool TakeDigestionDamage(this Item item, Entity pred, double digestionDamage)
+		public static bool TakeDigestionDamage(this Item item, Entity pred, double digestionDamage, bool direct = true, int indirectWhoAmI = -1)
 		{
 			int trueDigestionDamage = Main.DamageVar((float)digestionDamage);
 			if (ModContent.GetInstance<V2ServerConfig>().DefenseInDigestionCalcs)
-			{
 				trueDigestionDamage -= item.defense / 2;
-				if (trueDigestionDamage < 0)
-					trueDigestionDamage = 0;
-			}
+			if (trueDigestionDamage < 1)
+				trueDigestionDamage = 1;
 			item.AsFood().Health -= trueDigestionDamage;
 			if (item.type == ItemID.GuideVoodooDoll)
 			{
@@ -77,27 +74,46 @@ namespace V2.Items
 			}
 			if (item.AsFood().Health <= 0)
 			{
-				item.AsFood().OnBreak?.Invoke(item, pred);
+				item.AsFood().Health = 0;
+				bool? churnable = item.AsFood().OnBreak?.Invoke(item, pred, direct);
+				bool indirectValid = !direct && indirectWhoAmI != -1;
+				if (indirectValid)
+				{
+					Player player = Main.player[indirectWhoAmI];
+					if (player.difficulty is PlayerDifficultyID.MediumCore or PlayerDifficultyID.Hardcore || ModContent.GetInstance<V2ServerConfig>().PermaChurnableEquipment)
+					{
+						item.TurnToAir();
+						return true;
+					}
+					
+				}
+
+				if (churnable.HasValue && !churnable.Value)
+					return false;
+			
 				item.TurnToAir();
 				return true;
 			}
 			else
 			{
-				CombatText digestionText = Main.combatText[CombatText.NewText(
-					item.Hitbox,
-					Color.DarkGreen,
-					trueDigestionDamage,
-					false,
-					true
-				)];
-				digestionText.position.X = pred.Center.X;
-				digestionText.position.X += pred.direction * 14;
-				if (pred.direction == -1)
-					digestionText.position.X -= ChatManager.GetStringSize(FontAssets.CombatText[0].Value, digestionText.text, new Vector2(digestionText.scale)).X;
-				digestionText.position.Y = item.Center.Y;
-				digestionText.position.Y += item.height / 5f;
-				digestionText.velocity.X = pred.direction * 2.5f;
-				digestionText.velocity.Y = -4f;
+				if (Main.netMode == NetmodeID.SinglePlayer && ModContent.GetInstance<V2ClientConfig>().ShowChurnDamageNumbers)
+				{
+					CombatText digestionText = Main.combatText[CombatText.NewText(
+						item.Hitbox,
+						Color.DarkGreen,
+						trueDigestionDamage,
+						false,
+						true
+					)];
+					digestionText.position.X = pred.Center.X;
+					digestionText.position.X += pred.direction * 14;
+					if (pred.direction == -1)
+						digestionText.position.X -= ChatManager.GetStringSize(FontAssets.CombatText[0].Value, digestionText.text, new Vector2(digestionText.scale)).X;
+					digestionText.position.Y = item.Center.Y;
+					digestionText.position.Y += item.height / 5f;
+					digestionText.velocity.X = pred.direction * 2.5f;
+					digestionText.velocity.Y = -4f;
+				}
 				return false;
 			}
 		}
@@ -134,10 +150,36 @@ namespace V2.Items
 		public DelegateUseInStomach UseInStomach { get; set; } = null;
 
 		public PreyData.DelegateUpdateInStomach UpdateInStomach { get; set; } = null;
-		public delegate void DelegateOnBreak(Item item, Entity pred);
+		/// <summary>
+		/// Allows you to make an item do things when it runs out of durability from digestion damage.<br/>
+		/// </summary>
+		/// <param name="item">
+		/// The item which is being broken.<br/>
+		/// </param>
+		/// <param name="pred">
+		/// The pred making a snack of the item.<br/>
+		/// </param>
+		/// <param name="direct">
+		///	If <see langword="true"/>, this item broke from being directly churned up by a hungry tummy.<br/>
+		///	If <see langword="false"/>, this item broke as a result of someone that's wearing or wielding it being steadily melted down into sludge.<br/>
+		/// </param>
+		/// <returns>
+		/// <see langword="true"/> by default, which blanks the item on break; return <see langword="false"/> to prevent the item from being deleted and adding to its captor's belly's list of accomplishments when broken.<br/>
+		/// </returns>
+		public delegate bool DelegateOnBreak(Item item, Entity pred, bool direct);
+		/// <summary>
+		/// Allows you to make an item do things when it runs out of durability from digestion damage.<br/>
+		/// Please look at the documentation for <see cref="DelegateOnBreak"/> for more thorough information.<br/>
+		/// </summary>
 		public DelegateOnBreak OnBreak { get; set; } = null;
 
+		/// <summary>
+		/// Defaults to <see langword="false"/>; if set to <see langword="true"/>, this item can be gulped down on use by holding the Swallow Item keybind.
+		/// </summary>
 		public bool EdibleOnUse { get; set; } = false;
+		/// <summary>
+		/// Defaults to <see langword="false"/>; if set to <see langword="true"/>, this item is automatically gulped down on use.<br/>
+		/// </summary>
 		public bool AlwaysEatenByUse { get; set; } = false;
 
 		public override bool InstancePerEntity => true;
@@ -331,27 +373,45 @@ namespace V2.Items
 				)
 			);
 
-			if (item.AsFood().AlwaysEatenByUse)
+			int linePos = 4;
+			if (item.AsFood().EdibleOnUse)
 			{
-				tooltips.Insert(
-					tooltips.IndexOf(finalLine) + 4,
-					new TooltipLine(
-						V2.Instance,
-						"V2EatenByNormalUse",
-						Language.GetTextValue("Mods.V2.ItemTooltip.Generic.EatenByNormalUse")
-					)
-				);
+				if (item.AsFood().AlwaysEatenByUse)
+				{
+					tooltips.Insert(
+						tooltips.IndexOf(finalLine) + linePos,
+						new TooltipLine(
+							V2.Instance,
+							"V2EatenByNormalUse",
+							Language.GetTextValue("Mods.V2.ItemTooltip.Generic.EatenByNormalUse")
+						)
+					);
+				}
+				else
+				{
+					tooltips.Insert(
+						tooltips.IndexOf(finalLine) + linePos,
+						new TooltipLine(
+							V2.Instance,
+							"V2EdibleByNormalUse",
+							Language.GetTextValue("Mods.V2.ItemTooltip.Generic.EdibleFromNormalUse")
+						)
+					);
+				}
+				linePos++;
 			}
-			else if (item.AsFood().EdibleOnUse)
+
+			if (item.AsFood().Health == 0)
 			{
 				tooltips.Insert(
-					tooltips.IndexOf(finalLine) + 4,
+					tooltips.IndexOf(finalLine) + linePos,
 					new TooltipLine(
 						V2.Instance,
 						"V2EdibleByNormalUse",
-						Language.GetTextValue("Mods.V2.ItemTooltip.Generic.EdibleFromNormalUse")
+						Language.GetTextValue("Mods.V2.ItemTooltip.Generic.Broken")
 					)
 				);
+				linePos++;
 			}
 		}
 

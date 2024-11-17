@@ -49,7 +49,7 @@ namespace V2.Core.WorldGeneration
 			Main.chest[num3].item = item;
 
 			tryGenItemTheftCharm:
-			if (WorldGen.genRand.NextBool())
+			if (WorldGen.genRand.NextBool(4))
 				return;
 
 			for (int num4 = item.Length - 2; num4 > 0; num4--)

@@ -14,7 +14,7 @@ namespace V2.StatusEffects.Vanilla.Buffs
 {
 	public class RageBuff : GlobalBuff
 	{
-		public static double CritChanceBonus => 0.10;
+		public static float CritChanceBonus => 0.10f;
 		public static int GLPBonus => 5;
 		public static int ABSBonus => 5;
 		public override void SetStaticDefaults()
@@ -22,11 +22,14 @@ namespace V2.StatusEffects.Vanilla.Buffs
 			V2.ModifiedStatusEffects.Add(BuffID.Rage, this);
 		}
 
+		public override bool RightClick(int type, int buffIndex) => type != BuffID.Rage;
+
 		public override void Update(int type, Player player, ref int buffIndex)
 		{
 			if (type != BuffID.Rage)
 				return;
 
+			player.GetCritChance(DamageClass.Generic) += CritChanceBonus;
 			player.AsPred().GLP.Extra += GLPBonus;
 			player.AsPred().ABS.Extra += ABSBonus;
 		}

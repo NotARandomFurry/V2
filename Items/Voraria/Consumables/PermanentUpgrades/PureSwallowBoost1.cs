@@ -10,6 +10,7 @@ using Terraria.ModLoader;
 using V2.Core;
 using V2.PlayerHandling;
 using V2.Sounds.MuffledSounds;
+using V2.Sounds.Vore;
 
 namespace V2.Items.Voraria.Consumables.PermanentUpgrades
 {
@@ -53,7 +54,7 @@ namespace V2.Items.Voraria.Consumables.PermanentUpgrades
 			Item.AsFood().OnSwallowDamage = 15;
 			Item.AsFood().OnSwallowDeathReason = "{0} thought they were taking a shot, not getting one.";
 
-			Item.AsFood().OnBreak = OnBreak;
+			Item.AsFood().OnBreak += OnBreak;
 		}
 
 		public override bool? UseItem(Player player)
@@ -67,9 +68,10 @@ namespace V2.Items.Voraria.Consumables.PermanentUpgrades
 			return true;
 		}
 
-		public static void OnBreak(Item item, Entity pred)
+		public static bool OnBreak(Item item, Entity pred, bool direct)
 		{
 			SoundEngine.PlaySound(MuffledMiscSounds.Shatter, pred.TrueCenter());
+			SoundEngine.PlaySound(StomachNoises.Muffled, pred.Center);
 			if (pred is Player playerPred)
 			{
 				if (!playerPred.AsPred().PermanentUpgradesGained.ContainsKey("PureSwallow1"))
@@ -78,6 +80,7 @@ namespace V2.Items.Voraria.Consumables.PermanentUpgrades
 				if (!playerPred.AsPred().PermanentUpgradesGained["PureSwallow1"])
 					playerPred.AsPred().PermanentUpgradesGained["PureSwallow1"] = true;
 			}
+			return true;
 		}
 
 		public override void ModifyTooltips(List<TooltipLine> tooltips)

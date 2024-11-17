@@ -18,5 +18,7 @@ namespace V2.StatusEffects.Vanilla.Buffs
 		{
 			Main.debuff[BuffID.Sunflower] = false;
 		}
+
+		public override bool RightClick(int type, int buffIndex) => type != BuffID.Sunflower;
 	}
 }

@@ -82,6 +82,7 @@ Mods: {
 
 		Configs: {
 			V2ServerConfig.DisplayName: Параметры сервера
+			// V2ClientConfig.DisplayName: Client-Side Options
 
 			Server: {
 				Insight: {
@@ -161,6 +162,62 @@ Mods: {
 							По умолчанию значение false.
 							'Феи - это еда. Они могут быть друзьями или врагами, даже сытыми или откормленными другой едой, но они ВСЕГДА еда. Исключения очень редки'.
 							'''
+					}
+
+					PermaChurnableEquipment: {
+						// Label: Indirect Equipment Eradication
+						/* Tooltip:
+							'''
+							BALANCE BREAKAGE: Varies
+							When an item equipped by a Softcore or Journey character reaches 0 durability from indirect digestion damage:
+							- If set to false, it becomes non-functional and must be repaired.
+							- If set to true, it is properly churned into nothing just as its owner soon will be.
+							Defaults to false.
+							''' */
+					}
+				}
+			}
+
+			Client: {
+				Visual: {
+					/* Header:
+						'''
+						Visual Options
+						[c/7F7F7F:(these let you tinker with how exactly certain things look on your end)]
+						''' */
+
+					SkipPredStatMenuAnims: {
+						// Label: Skip Pred Stat Menu's Mouth Animations
+						/* Tooltip:
+							'''
+							Determines whether or not you see the short swallow/regurgitate animations upon attempting to open or close the pred stats menu.
+							Defaults to false.
+							// please at least give these animations a shot first
+							// I put a whole like 2-4 hours of work into them
+							''' */
+					}
+
+					ShowChurnDamageNumbers: {
+						// Label: Show Digestion Damage
+						/* Tooltip:
+							'''
+							Determines whether or not you see digestion damage numbers.
+							Defaults to true.
+							// this shit doin' numbers?
+							''' */
+					}
+
+					TheGutSlutVisionOMatic: {
+						// Label: Gaze of the Gutted
+						/* Tooltip:
+							'''
+							When a player is successfully digested by a pred, their death camera will not have a countdown before respawn.
+							Instead, their death camera will follow the pred indefinitely until either (1) the pred despawns or (b) the ESC key is pressed.
+							Defaults to false.
+							// probably should make this one default to true later for all the gut sluts in my audience
+
+							// because I know there are a ton of you
+							''' */
 					}
 				}
 			}
@@ -1269,7 +1326,7 @@ Mods: {
 						/* Clarification:
 							'''
 							Eat and digest a boss.
-							Bosses are extremely difficult to devour, usually requiring special items or abilities to get down and heavy investment in all non-ABS pred stats to keep down. That said, bosses are also extremely high in calories (very good news for your greedy tummy) and also typically grant access to special abilities upon their digestive demise.
+							Bosses are extremely difficult to devour, usually requiring special items or abilities to get down and heavy investment in all non-ABS pred stats to keep down. That said, bosses are also extremely high in calories (very good news for your greedy tummy) and also typically grant access to unique pred abilities once what's left of them settles down on your frame.
 							''' */
 					}
 				}
@@ -1303,6 +1360,7 @@ Mods: {
 
 				CheatItems: {
 					RoseFlower: Цветочная булавка Роза
+					// SecondBestAngelFeather: St. Promethia's Favorite Feather
 					ServerMessageRelay: Страница из книги автора
 				}
 
@@ -1377,6 +1435,11 @@ Mods: {
 					Использование этого элемента с горячей панели вообще заставляет вас проглотить его
 					Если это стопка из нескольких предметов, то она поглощает предметы только по одному, если не указано иное
 					'''
+				/* Broken:
+					'''
+					This item has been damaged too heavily for continued use and has become non-functional
+					Broken items can be repaired with the Scroll of Divine Indigestion or by visiting St. Promethia
+					''' */
 
 				AcidResistTier: {
 					0: Не поддается воздействию желудочных кислот
@@ -1457,6 +1520,24 @@ Mods: {
 									'''
 							}
 						}
+					}
+
+					AdhesiveBandage: {
+						/* Short:
+							'''
+							Grants immunity to Bleeding
+							Slightly slows Softened buildup
+							Won't hold up well to a gastric assault
+							{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+							''' */
+						/* Long:
+							'''
+							While worn by a player:
+							> [c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Grants immunity] to [c/{$Mods.V2.CommonColorCodes.DoSomething}:Bleeding].
+							> [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Slows Softened buildup by {AdhesiveBandageSoftenedBuildupReduction}].
+							If this item runs out of durability via indirect digestion damage, it is immediately removed from your inventory and added to the stomach contents of your predator.
+							''' */
+						// Flavor: A simple adhesive bandage, meant to halt the flow of blood from open wounds to make it easier for them to heal. Medical practitioners carry a nigh-endless number of these.
 					}
 
 					HealthRegenAndPotionCooldownBand: {
@@ -1648,6 +1729,78 @@ Mods: {
 								Очень распространенное лакомство в Свеетии, так как сахар часто используется в кулинарии и выпечке.
 								Обеспечивает много энергии, чтобы помочь пережить день в порциях или быстро подкрепиться в качестве одиночного перекуса.
 								'''
+						}
+					}
+
+					Potions: {
+						Regeneration: {
+							/* Short:
+								'''
+								Helps regenerate health while digesting
+								{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+								''' */
+							/* Long:
+								'''
+								Improves your body's ability to heal itself from injuries when drank.
+								Since you're just swallowing the whole potion, bottle and all, you'll need the bottle to break first from running out of durability.
+								You're awfully lucky that glass is really easy to digest, and low in calories to boot.
+
+								Once the bottle breaks, until fully digested, and for 6 minutes thereafter:
+								> [c/{$Mods.V2.CommonColorCodes.Heal}:Increases health regeneration] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{RegenPotionRegenFlat} HP/sec]. [c/7F7F7F:(Artificial)]
+								''' */
+							/* Flavor:
+								'''
+								Simple beginner-level potions like this one are as commonplace as any other tech these days, being meant to help adventurers keep on their feet and off their fellows' waistlines.
+								This one's in an easy-to-swallow bottle, and meant to help gradually patch up smaller injuries. Unfortunately for you, it probably won't save you from being churned up alive.
+								''' */
+						}
+
+						Wrath: {
+							/* Short:
+								'''
+								Boosts damage and your ability to quiet down your prey while digesting
+								{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+								''' */
+							/* Long:
+								'''
+								Improves the damage output of your swings, shots, and stomach alike when drank.
+								Since you're just swallowing the whole potion, bottle and all, you'll need the bottle to break first from running out of durability.
+								You're awfully lucky that glass is really easy to digest, and low in calories to boot.
+
+								Once the bottle breaks, until fully digested, and for 3 minutes thereafter:
+								> [c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases damage] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{WrathPotionDamageBoost}].
+								> [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases TUM] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{WrathPotionTUMBoost}].
+								> [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases ACI] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{WrathPotionACIBoost}].
+								''' */
+							/* Flavor:
+								'''
+								An amateur-level potion fashioned from the oils of a spiteful fish which makes its home in pitch-dark purple Corrupted waters.
+								While digesting, it makes the consumer rather angry, increasing their combat and predatory prowesses alike. An adventurer with this would-be curse could easily carve up and churn down their fellows into a healthy layer of fat just as easily as they could their foes.
+								''' */
+						}
+
+						Rage: {
+							/* Short:
+								'''
+								Boosts crit chance and your ability to swallow new prey and finish churning old ones while digesting
+								{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+								''' */
+							/* Long:
+								'''
+								Improves your precision with your attacks and makes you better at getting down live prey and sloshing dead ones into cellulite when drank.
+								Since you're just swallowing the whole potion, bottle and all, you'll need the bottle to break first from running out of durability.
+								You're awfully lucky that glass is really easy to digest, and low in calories to boot.
+
+								Once the bottle breaks, until fully digested, and for 3 minutes thereafter:
+								> [c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases critical strike chance] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{RagePotionCritChanceBoost}].
+								> [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases GLP] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{RagePotionGLPBoost}].
+								> [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases ABS] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{RagePotionABSBoost}].
+								''' */
+							/* Flavor:
+								'''
+								An amateur-level potion fashioned from a bloody subspecies of piranha which makes its home in the sanguine seas of the Crimson.
+								While digesting, it makes the consumer uncannily accurate with their shots and stomach, targeting weak points while shooting up, swallowing down, and sloshing all around (what's left of) their prey, regardless of whether that prey was once an ally or not.
+								''' */
 						}
 					}
 
@@ -2133,10 +2286,10 @@ Mods: {
 							''' */
 						/* Long:
 							'''
-							[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Critical strike chance is increased by 7% for all weapons].
-							[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Luck is increased by 0.3].
-							[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:GLP is increased by 5].
-							[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Struggling strength is increased by 75%].
+							[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases critical strike chance] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:7%].
+							[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases luck] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:0.3].
+							[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases GLP] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:5].
+							[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases struggle strength] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:75%].
 							''' */
 						/* Flavor:
 							'''
@@ -2161,11 +2314,11 @@ Mods: {
 							''' */
 						/* Long:
 							'''
-							[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Critical strike chance is increased by 7% for all weapons].
-							[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Luck is increased by 0.1].
-							[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:TUM is increased by 8].
-							[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:ABS is increased by 6].
-							[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Struggling strength is increased by 100%].
+							[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases critical strike chance] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:7%].
+							[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases luck] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:0.1].
+							[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases TUM] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:8].
+							[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases ABS] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:6].
+							[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases struggle strength] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:100%].
 							''' */
 						/* Flavor:
 							'''
@@ -2188,11 +2341,11 @@ Mods: {
 							''' */
 						/* Long:
 							'''
-							[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Critical strike chance is increased by 7% for all weapons].
-							[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Luck is increased by 0.1].
-							[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Movement speed is increased by 20%].
-							[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Decreases stomach weight by 15%].
-							[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Struggling strength is increased by 75%].
+							[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases critical strike chance] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:7%].
+							[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases luck] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:0.1].
+							[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases movement speed] by [c/{$Mods.V2.CommonColorCodes.DoSomething}20%].
+							[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Decreases stomach weight] by [c/{$Mods.V2.CommonColorCodes.DoSomething}15%].
+							[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases struggle strength] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:75%].
 							''' */
 						/* Flavor:
 							'''
@@ -2237,6 +2390,20 @@ Mods: {
 							[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:и она приготовит вам еду, независимо от того, насколько вы сильны.]
 							[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:в конце концов, ей действительно нравится вкус этих цветов]
 							'''
+					}
+
+					SecondBestAngelFeather: {
+						/* Short:
+							'''
+							Gives you St. Promethia's blessing to cram yourself into anyone you please
+							{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+							''' */
+						// Long: "[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Allows you to get eaten by (be it naturally or by climbing into) anything that is able to eat people, even if it couldn't fit you otherwise.]"
+						/* Flavor:
+							'''
+							A single feather from the one and only St. Promethia Hypate, an angelic gut slut who'd love nothing more than to see herself melted down into flab for every last predator on the planet and off of it --- even those that one would assume are unable to eat her.
+							This is one of her favorite feathers, churned down into padding endless times, yet still as fresh as the day she was born. Simply holding it makes you feel like you haven't seen nearly enough of the greediest predators of the world.
+							''' */
 					}
 
 					ServerMessageRelay: {
@@ -2953,6 +3120,18 @@ Mods: {
 
 			Voraria: {
 				Buffs: {
+					CharmofMythsChurnBuff: {
+						// Name: Healthy Snack: Charm of Myths
+						/* Description:
+							'''
+							You've opted to add a Charm of Myths to your waistline, conferring the following buffs until it's done setlling down on your hips:
+							> [c/{$Mods.V2.CommonColorCodes.Heal}:Increases health regeneration] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{CharmofMythsChurnRegen} HP/sec]. [c/7F7F7F:(Artificial)]
+							> [c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Reduces the initial duration of Potion Sickness] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:25%].
+							> [c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Potion Sickness wears off twice as fast].
+							'The only myth left to bust about it now is whether it'll add to your booty or belly. Place your bets!'
+							''' */
+					}
+
 					FastDigestionPotionBuff: {
 						Name: Пищеварительный урон
 						Description:
@@ -3129,6 +3308,7 @@ Mods: {
 
 			DigestedPlayer: {
 				YouWereEaten: Тебя съели...
+				// ManualRespawn: Press ESCAPE or SPACE to respawn
 				Paradox: Ужасно самодовольный сегодня, не так ли {Player}?
 				AprilFools: "{Player} был одурачен {Pred}."
 
@@ -3843,7 +4023,7 @@ Mods: {
 			// ObserverRed.DisplayName: Observer
 			// ObserverGreen.DisplayName: Observer
 			// ObserverPurple.DisplayName: Observer
-			// CloverBound.DisplayName: Clover
+			// CloverBound.DisplayName: Enigma
 
 			Clover: {
 				TownNPCMood: {
@@ -3866,17 +4046,13 @@ Mods: {
 
 				// FreeButton.DisplayName: Free
 				// DisplayName: Enigma
+				// Census.SpawnCondition: Conditions unknown
 			}
 		}
 
 		ItemObtainmentDetails.Voraria.Accessories.Vanity.BalloonBelly: Mods.V2.ItemObtainmentDetails.Voraria.Accessories.Vanity.BalloonBelly
 
 		Items: {
-			PosessedDummy: {
-				// Tooltip: ""
-				// DisplayName: Posessed Dummy
-			}
-
 			// CloverHeadAccessories.Tooltip: ""
 			// CloverStockings.Tooltip: ""
 			// CloverSweater.Tooltip: ""

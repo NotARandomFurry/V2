@@ -928,7 +928,8 @@ namespace V2.PlayerHandling
 					{
 						int liquidToDrink = (tile.LiquidAmount > Player.AsPred().LiquidSwallowSize) ? Player.AsPred().LiquidSwallowSize : tile.LiquidAmount;
 
-						
+						Drink(Player, tile.LiquidType, liquidToDrink);
+
 						if (tile.LiquidAmount <= (byte)Player.AsPred().LiquidSwallowSize)
 						{
 							tile.LiquidAmount = 0;
@@ -988,13 +989,12 @@ namespace V2.PlayerHandling
 			if (prey.CurrentCaptor() is not null)
 				return false;
 
-			if (pred.AsPred().SwallowCapacity != -1 && PreyData.GetPreySize(prey) > pred.AsPred().SwallowCapacity)
-				return false;
-
-			if (pred.AsPred().StomachCapacity != -1 && PreyData.GetPreySize(prey) > pred.AsPred().StomachCapacity - pred.AsPred().StomachFullness)
-				return false;
-
-			if (prey is NPC preyNPC)
+			if (prey is Player preyPlayer)
+			{
+				if (preyPlayer.AsFood().PerfectMeal)
+					return true;
+			}
+			else if (prey is NPC preyNPC)
 			{
 				if (V2.VoreNPCBlacklist is not null && V2.VoreNPCBlacklist.Count > 0 && V2.VoreNPCBlacklist.Contains(preyNPC.type))
 					return false;
@@ -1023,6 +1023,12 @@ namespace V2.PlayerHandling
 				if (preyItem.favorited)
 					return false;
 			}
+
+			if (pred.AsPred().SwallowCapacity != -1 && PreyData.GetPreySize(prey) > pred.AsPred().SwallowCapacity)
+				return false;
+
+			if (pred.AsPred().StomachCapacity != -1 && PreyData.GetPreySize(prey) > pred.AsPred().StomachCapacity - pred.AsPred().StomachFullness)
+				return false;
 
 			return true;
 		}

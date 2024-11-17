@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -74,65 +75,90 @@ namespace V2.PlayerHandling
 		public int SoftenedWearoffDelay { get; set; }
 		public static int SoftenedWearoffMaxDelay => V2Utils.SensibleTime(seconds: 2, frames: 30);
 		public StatModifier SoftenedWearoffRateModifier;
-		public int SoftenedStacks => Math.Min(Softened.MaxStacks, (int)Math.Floor((double)Player.AsFood().SoftenedDigestionDamageTaken / (Player.statLifeMax * Softened.MaxHealthDigestedForOneStack)));
+		public int SoftenedStacks => Math.Min(Softened.MaxStacks, (int)Math.Floor((double)SoftenedDigestionDamageTaken / (Player.statLifeMax * Softened.MaxHealthDigestedForOneStack)));
 
 		public bool PredScanner { get; set; }
+		public bool PerfectMeal { get; set; }
+
+		public bool GuttedGaze { get; set; }
+		public Entity GuttedGazePred { get; set; }
 
 		public override void Initialize()
 		{
-			Player.AsFood().STR = new PredStat();
+			STR = new PredStat();
 
-			Player.AsFood().Digested = false;
+			Digested = false;
 			// uncomment once achievements are available so the Ascended Acolyte race is...relatively fair for everyone
 			// Player.AsPrey().HasBeenDigestedByNPC = new int[NPCLoader.NPCCount];
 			// Player.AsPrey().HasBeenDigestedByNPCTotal = new int[NPCLoader.NPCCount];
 
-			Player.AsFood().SoftenedDigestionDamageTaken = 0;
-			Player.AsFood().SoftenedWearoffDelay = 0;
+			SoftenedDigestionDamageTaken = 0;
+			SoftenedWearoffDelay = 0;
 		}
 
 		public override void OnEnterWorld()
 		{
-			Player.AsFood().Digested = false;
+			Digested = false;
 
-			Player.AsFood().SoftenedDigestionDamageTaken = 0;
-			Player.AsFood().SoftenedWearoffDelay = 0;
+			SoftenedDigestionDamageTaken = 0;
+			SoftenedWearoffDelay = 0;
 		}
 
 		public override void ResetEffects()
 		{
-			Player.AsFood().Digested = false;
+			Digested = false;
 
-			Player.AsFood().StruggleStrengthModifier = StatModifier.Default;
+			StruggleStrengthModifier = StatModifier.Default;
 
-			Player.AsFood().TakenDigestionDamageModifier = StatModifier.Default;
+			TakenDigestionDamageModifier = StatModifier.Default;
 
 			if (!Player.HasBuff(ModContent.BuffType<Softened>()))
 				Player.AddBuff(ModContent.BuffType<Softened>(), 3);
-			Player.AsFood().SoftenedDigestionDamageModifier = StatModifier.Default;
-			Player.AsFood().SoftenedWearoffRateModifier = StatModifier.Default;
-			if (Player.AsFood().SoftenedWearoffDelay > 0)
-				Player.AsFood().SoftenedWearoffDelay--;
+			SoftenedDigestionDamageModifier = StatModifier.Default;
+			SoftenedWearoffRateModifier = StatModifier.Default;
+			if (SoftenedWearoffDelay > 0)
+				SoftenedWearoffDelay--;
 
 			PredScanner = false;
+
+			PerfectMeal = false;
+
+			GuttedGaze = false;
 		}
 
 		public override void UpdateDead()
 		{
-			Player.AsFood().SoftenedDigestionDamageTaken = 0;
-			Player.AsFood().SoftenedWearoffDelay = 0;
+			SoftenedDigestionDamageTaken = 0;
+			SoftenedWearoffDelay = 0;
+		}
+
+		public override void ModifyScreenPosition()
+		{
+			if (Main.netMode == NetmodeID.Server || Player.whoAmI != Main.myPlayer || !GuttedGaze)
+				return;
+
+			if (GuttedGazePred is null || !GuttedGazePred.active)
+				GuttedGaze = false;
+			else
+				Main.screenPosition = GuttedGazePred.Center - new Vector2(Main.screenWidth / 2, Main.screenHeight / 2);
+			bool spacePressed = Main.keyState.IsKeyDown(Keys.Space) && !Main.oldKeyState.IsKeyDown(Keys.Space);
+			bool escapePressed = Main.keyState.IsKeyDown(Keys.Escape) && !Main.oldKeyState.IsKeyDown(Keys.Escape);
+			if (spacePressed || escapePressed)
+				Player.respawnTimer = 0;
+			else
+				Player.respawnTimer = 888;
 		}
 
 		public override void PreUpdateMovement()
 		{
 			if (Player.wet)
-				Player.AsFood().SoftenedWearoffRateModifier *= 2.0f;
+				SoftenedWearoffRateModifier *= 2.0f;
 
-			if (Player.AsFood().SoftenedWearoffDelay <= 0 && Player.AsFood().SoftenedDigestionDamageTaken > 0)
+			if (SoftenedWearoffDelay <= 0 && SoftenedDigestionDamageTaken > 0)
 			{
-				Player.AsFood().SoftenedDigestionDamageTaken -= Player.AsFood().SoftenedWearoffRateModifier.ApplyTo((float)(25.0 / 60.0));
-				if (Player.AsFood().SoftenedDigestionDamageTaken < 0)
-					Player.AsFood().SoftenedDigestionDamageTaken = 0;
+				SoftenedDigestionDamageTaken -= SoftenedWearoffRateModifier.ApplyTo((float)(25.0 / 60.0));
+				if (SoftenedDigestionDamageTaken < 0)
+					SoftenedDigestionDamageTaken = 0;
 			}
 		}
 
@@ -365,19 +391,65 @@ namespace V2.PlayerHandling
 		public bool TakeDigestionDamage(Entity pred, double digestionDamage)
 		{
 			int trueDigestionDamage = Main.DamageVar((float)digestionDamage, Player.luck);
+
+			for (int i = 0; i < 10; i++)
+			{
+				Item churnableEquip = Player.armor[i];
+				if (churnableEquip.IsAir)
+					continue;
+
+				if (churnableEquip.AsFood().MaxHealth == -1 || churnableEquip.AsFood().Health <= 0)
+					continue;
+
+				churnableEquip.TakeDigestionDamage(pred, trueDigestionDamage, false, Player.whoAmI);
+			}
 			if (ModContent.GetInstance<V2ServerConfig>().DefenseInDigestionCalcs)
 				trueDigestionDamage -= Player.statDefense;
 			trueDigestionDamage = (int)Math.Round((float)trueDigestionDamage * (1f - Player.endurance));
-			trueDigestionDamage = (int)Math.Round(Player.AsFood().TakenDigestionDamageModifier.ApplyTo(trueDigestionDamage));
+			trueDigestionDamage = (int)Math.Round(TakenDigestionDamageModifier.ApplyTo(trueDigestionDamage));
 			if (trueDigestionDamage < 1)
 				trueDigestionDamage = 1;
-			Player.AsFood().SoftenedDigestionDamageTaken += Player.AsFood().SoftenedDigestionDamageModifier.ApplyTo(trueDigestionDamage);
-			Player.AsFood().SoftenedWearoffDelay = SoftenedWearoffMaxDelay;
+			SoftenedDigestionDamageTaken += SoftenedDigestionDamageModifier.ApplyTo(trueDigestionDamage);
+			SoftenedWearoffDelay = SoftenedWearoffMaxDelay;
 			Player.statLife -= trueDigestionDamage;
+			switch (Main.netMode)
+			{
+				case NetmodeID.SinglePlayer:
+					if (!ModContent.GetInstance<V2ClientConfig>().ShowChurnDamageNumbers)
+						break;
+
+					CombatText digestionDamageText = Main.combatText[CombatText.NewText(
+						Player.Hitbox,
+						Color.DarkGreen,
+						trueDigestionDamage,
+						false,
+						true
+					)];
+					digestionDamageText.position.X = pred.Center.X + (pred.direction * 28);
+					digestionDamageText.position.Y = Player.Center.Y + (Player.height / 5f);
+					digestionDamageText.velocity.X = pred.direction * 2.5f;
+					digestionDamageText.velocity.Y = -4f;
+					break;
+				case NetmodeID.Server:
+					ModPacket digestionDamageTextPacket = V2.Instance.GetPacket();
+					digestionDamageTextPacket.Write((byte)V2.MessageType.SyncDigestionCombatTextForPreyPlayer);
+					digestionDamageTextPacket.Write(Player.whoAmI);
+					digestionDamageTextPacket.Write(trueDigestionDamage);
+					digestionDamageTextPacket.Write(pred.Center.X + (pred.direction * 28));
+					digestionDamageTextPacket.Write(Player.Center.Y + (Player.height / 5f));
+					digestionDamageTextPacket.Write(pred.direction * 2.5f);
+					digestionDamageTextPacket.Write(-4f);
+					digestionDamageTextPacket.Send();
+					break;
+				case NetmodeID.MultiplayerClient:
+					// here we do nothing because the packet takes care of this
+					break;
+			}
+			SoundEngine.PlaySound(Player.Male ? PreyPlayerDigestionSounds.PlayerDigestingMale : PreyPlayerDigestionSounds.PlayerDigestingFemale, pred.position);
 			if (Player.statLife <= 0)
 			{
-				Player.AsFood().Digested = true;
-				Player.AsFood().TotalTimesDigested += 1;
+				Digested = true;
+				TotalTimesDigested += 1;
 				if (pred is NPC predNPC)
 				{
 					// uncomment once achievements are available so the Ascended Acolyte race is...relatively fair for everyone
@@ -413,43 +485,14 @@ namespace V2.PlayerHandling
 						0
 					);
 				}
+				if (Main.netMode != NetmodeID.Server && Player.whoAmI == Main.myPlayer && ModContent.GetInstance<V2ClientConfig>().TheGutSlutVisionOMatic)
+				{
+					GuttedGaze = true;
+					GuttedGazePred = pred;
+				}
 				return true;
 			}
-			else
-			{
-				switch (Main.netMode)
-				{
-					case NetmodeID.SinglePlayer:
-						CombatText digestionDamageText = Main.combatText[CombatText.NewText(
-							Player.Hitbox,
-							Color.DarkGreen,
-							trueDigestionDamage,
-							false,
-							true
-						)];
-						digestionDamageText.position.X = pred.Center.X + (pred.direction * 28);
-						digestionDamageText.position.Y = Player.Center.Y + (Player.height / 5f);
-						digestionDamageText.velocity.X = pred.direction * 2.5f;
-						digestionDamageText.velocity.Y = -4f;
-						break;
-					case NetmodeID.Server:
-						ModPacket digestionDamageTextPacket = V2.Instance.GetPacket();
-						digestionDamageTextPacket.Write((byte)V2.MessageType.SyncDigestionCombatTextForPreyPlayer);
-						digestionDamageTextPacket.Write(Player.whoAmI);
-						digestionDamageTextPacket.Write(trueDigestionDamage);
-						digestionDamageTextPacket.Write(pred.Center.X + (pred.direction * 28));
-						digestionDamageTextPacket.Write(Player.Center.Y + (Player.height / 5f));
-						digestionDamageTextPacket.Write(pred.direction * 2.5f);
-						digestionDamageTextPacket.Write(-4f);
-						digestionDamageTextPacket.Send();
-						break;
-					case NetmodeID.MultiplayerClient:
-						// here we do nothing because the packet takes care of this
-						break;
-				}
-				SoundEngine.PlaySound(Player.Male ? PreyPlayerDigestionSounds.PlayerDigestingMale : PreyPlayerDigestionSounds.PlayerDigestingFemale, pred.position);
-				return false;
-			}
+			return false;
 		}
 
 		public override bool PreKill(
@@ -461,14 +504,14 @@ namespace V2.PlayerHandling
 			ref PlayerDeathReason damageSource
 		)
 		{
-			if (Player.AsFood().Digested)
+			if (Digested)
 			{
 				playSound = false;
 				genGore = false;
 			}
 			if (damageSource.SourceOtherIndex == 1)
 			{
-				if (Player.AsFood().TotalTimesDigested >= 20)
+				if (TotalTimesDigested >= 20)
 				{
 					damageSource.SourceCustomReason = Language.GetTextValueWith(
 						Main.rand.NextFromList(
@@ -490,7 +533,7 @@ namespace V2.PlayerHandling
 		{
 			foreach (PlayerDrawLayer drawLayer in PlayerDrawLayerLoader.Layers)
 			{
-				if (!Main.gameMenu && (Player.CurrentCaptor() is not null || Player.AsFood().Digested))
+				if (!Main.gameMenu && (Player.CurrentCaptor() is not null || Digested))
 					drawLayer.Hide();
 			}
 		}

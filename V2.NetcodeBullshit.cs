@@ -23,6 +23,7 @@ namespace V2
 			DeliverPlayerPredStatSync,
 			SyncDigestionCombatTextForPreyNPC,
 			SyncDigestionCombatTextForPreyPlayer,
+			SyncDigestionCombatTextForPreyProjectile,
 			RequestRegurgitatePrey,
 			SyncRegurgitatePrey,
 		}
@@ -85,6 +86,9 @@ namespace V2
 					break;
 				case MessageType.SyncDigestionCombatTextForPreyPlayer:
 					HandlePacket_SyncDigestionCombatTextForPreyPlayer(reader, whoAmI);
+					break;
+				case MessageType.SyncDigestionCombatTextForPreyProjectile:
+					HandlePacket_SyncDigestionCombatTextForPreyProjectile(reader, whoAmI);
 					break;
 				case MessageType.RequestRegurgitatePrey:
 					HandlePacket_RequestRegurgitatePrey(reader, whoAmI);
@@ -390,6 +394,9 @@ namespace V2
 			if (npcWhoAmI < 0 || npcWhoAmI > Main.maxNPCs)
 				goto Fail;
 
+			if (!ModContent.GetInstance<V2ClientConfig>().ShowChurnDamageNumbers)
+				return;
+
 			NPC npc = Main.npc[npcWhoAmI];
 			CombatText digestionDamageText = Main.combatText[CombatText.NewText(
 				npc.Hitbox,
@@ -417,9 +424,42 @@ namespace V2
 			if (playerWhoAmI < 0 || playerWhoAmI > Main.maxPlayers)
 				goto Fail;
 
+			if (!ModContent.GetInstance<V2ClientConfig>().ShowChurnDamageNumbers)
+				return;
+
 			Player player = Main.player[playerWhoAmI];
 			CombatText digestionDamageText = Main.combatText[CombatText.NewText(
 				player.Hitbox,
+				Color.DarkGreen,
+				reader.ReadInt32(),
+				false,
+				true
+			)];
+			digestionDamageText.position.X = reader.ReadSingle();
+			digestionDamageText.position.Y = reader.ReadSingle();
+			digestionDamageText.velocity.X = reader.ReadSingle();
+			digestionDamageText.velocity.Y = reader.ReadSingle();
+
+			return;
+			Fail:
+			InformOfIncorrectPacketRecipe();
+		}
+
+		public void HandlePacket_SyncDigestionCombatTextForPreyProjectile(BinaryReader reader, int whoAmI)
+		{
+			if (Main.netMode != NetmodeID.MultiplayerClient)
+				goto Fail;
+
+			int projectileWhoAmI = reader.ReadInt32();
+			if (projectileWhoAmI < 0 || projectileWhoAmI > Main.maxProjectiles)
+				goto Fail;
+
+			if (!ModContent.GetInstance<V2ClientConfig>().ShowChurnDamageNumbers)
+				return;
+
+			Projectile projectile = Main.projectile[projectileWhoAmI];
+			CombatText digestionDamageText = Main.combatText[CombatText.NewText(
+				projectile.Hitbox,
 				Color.DarkGreen,
 				reader.ReadInt32(),
 				false,

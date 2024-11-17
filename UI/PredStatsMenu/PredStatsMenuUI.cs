@@ -461,6 +461,7 @@ namespace V2.UI.PredStatsMenu
 					{
 						SoundEngine.PlaySound(SoundID.MenuClose);
 						GoalsMenuOpen = false;
+						return;
 					}
 				}
 
@@ -499,7 +500,8 @@ namespace V2.UI.PredStatsMenu
 					UICommon.TooltipMouseText(
 						Language.GetTextValueWith(
 							pointsAllocationText,
-							new {
+							new
+							{
 								PredStatName = statFullName,
 								PredStatShorthand = statShorthand,
 								SpentPoints = stat.Spent,
@@ -914,11 +916,17 @@ namespace V2.UI.PredStatsMenu
 					  + "(Are you sure your cursor can't stay a little longer?)"
 					);
 					if (Main.mouseLeft && Main.mouseLeftRelease)
+					{
 						PredStatsMenuMouthUI.MouthState = PredStatsMenuMouthState.RegurgitatingCursor;
+						PredStatsMenuMouthUI.CanSkipThisFrame = false;
+					}
 				}
 
 				if (PredStatsMenuMouthUI.MouthState == PredStatsMenuMouthState.YourCursorGotFuckingGulpedIdiot && Main.keyState.IsKeyDown(Keys.Escape) && !Main.oldKeyState.IsKeyDown(Keys.Escape))
+				{
 					PredStatsMenuMouthUI.MouthState = PredStatsMenuMouthState.RegurgitatingCursor;
+					PredStatsMenuMouthUI.CanSkipThisFrame = false;
+				}
 			}
 		}
 	}

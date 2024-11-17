@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent.Dyes;
 using Terraria.Graphics.Shaders;
@@ -8,6 +9,8 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using V2.Core;
+using V2.Sounds.MuffledSounds;
+using V2.Sounds.Vore;
 using V2.StatusEffects.Voraria.Buffs;
 
 namespace V2.Items.Voraria.Consumables.Potions
@@ -62,6 +65,8 @@ namespace V2.Items.Voraria.Consumables.Potions
 			Item.AsFood().OnSwallow += OnSwallow;
 
 			Item.AsFood().UpdateInStomach += UpdateInStomach;
+
+			Item.AsFood().OnBreak += OnBreak;
 		}
 
 		public static void OnSwallow(Item item, Entity pred)
@@ -79,6 +84,13 @@ namespace V2.Items.Voraria.Consumables.Potions
 					true
 				);
 			}
+		}
+
+		public static bool OnBreak(Item item, Entity pred, bool direct)
+		{
+			SoundEngine.PlaySound(MuffledMiscSounds.Shatter, pred.Center);
+			SoundEngine.PlaySound(StomachNoises.Muffled, pred.Center);
+			return true;
 		}
 
 		public override void ModifyTooltips(List<TooltipLine> tooltips)

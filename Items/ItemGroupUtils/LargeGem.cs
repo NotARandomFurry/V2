@@ -24,7 +24,7 @@ namespace V2.Items.V2ItemGroupUtils
 			item.AsFood().OnBreak += OnBreak_GrantLargeGemMultiPreyGoal;
 		}
 
-		public static void OnBreak_GrantLargeGemMultiPreyGoal(Item item, Entity pred)
+		public static bool OnBreak_GrantLargeGemMultiPreyGoal(Item item, Entity pred, bool direct)
 		{
 			if (pred is Player predPlayer)
 			{
@@ -48,6 +48,7 @@ namespace V2.Items.V2ItemGroupUtils
 				if (distinctLargeGemsInTummy >= 7)
 					ModContent.GetInstance<HoardLargeGems>().TrySetCompletion(predPlayer);
 			}
+			return true;
 		}
 	}
 }

@@ -18,6 +18,12 @@ namespace V2.StatusEffects.Voraria.Debuffs
 		public override LocalizedText DisplayName => Language.GetText("Mods.V2.StatusEffects.Voraria.Debuffs.TastySpicy.Name");
 		public override LocalizedText Description => Language.GetText("Mods.V2.StatusEffects.Voraria.Debuffs.TastySpicy.Description");
 
+		public override void SetStaticDefaults()
+		{
+			Main.debuff[Type] = true;
+			BuffID.Sets.NurseCannotRemoveDebuff[Type] = true;
+		}
+
 		public override void ModifyBuffText(ref string buffName, ref string tip, ref int rare)
 		{
 			rare = ItemRarityID.Master;

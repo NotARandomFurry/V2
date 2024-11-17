@@ -20,6 +20,10 @@ namespace V2.Items.Vanilla.Armor
 		{
 			item.AsFood().MaxHealth = 200;
 			item.AsFood().Size = 0.50;
+
+			item.AsFood().OnBreak += OnBreak;
 		}
+
+		public static bool OnBreak(Item item, Entity pred, bool direct) => direct;
 	}
 }

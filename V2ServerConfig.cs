@@ -48,5 +48,10 @@ namespace V2
 		[TooltipKey("$Mods.V2.Configs.Server.JustForFun.EasilyEdibleEmpress.Tooltip")]
 		[DefaultValue(false)]
 		public bool EasilyEdibleEmpress { get; set; }
+
+		[LabelKey("$Mods.V2.Configs.Server.JustForFun.PermaChurnableEquipment.Label")]
+		[TooltipKey("$Mods.V2.Configs.Server.JustForFun.PermaChurnableEquipment.Tooltip")]
+		[DefaultValue(false)]
+		public bool PermaChurnableEquipment { get; set; }
 	}
 }

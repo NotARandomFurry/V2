@@ -17,6 +17,12 @@ namespace V2.StatusEffects.Voraria.Debuffs
 		public override string Texture => "V2/StatusEffects/Voraria/Debuffs/DebuffPlaceholder";
 		public override LocalizedText DisplayName => Language.GetText("Mods.V2.StatusEffects.Voraria.Debuffs.TastySweet.Name");
 		public override LocalizedText Description => Language.GetText("Mods.V2.StatusEffects.Voraria.Debuffs.TastySweet.Description");
+		
+		public override void SetStaticDefaults()
+		{
+			Main.debuff[Type] = true;
+			BuffID.Sets.NurseCannotRemoveDebuff[Type] = true;
+		}
 
 		public override void ModifyBuffText(ref string buffName, ref string tip, ref int rare)
 		{

@@ -46,7 +46,7 @@ namespace V2.Items.Vanilla.Consumables
 			pred.AddStatus(BuffID.ManaRegeneration, DigestedManaRegenTime, true);
 		}
 
-		public static void OnBreak(Item item, Entity pred)
+		public static bool OnBreak(Item item, Entity pred, bool direct)
 		{
 			SoundEngine.PlaySound(MuffledMiscSounds.Shatter, pred.Center);
 			SoundEngine.PlaySound(StomachNoises.Muffled, pred.Center);
@@ -68,6 +68,7 @@ namespace V2.Items.Vanilla.Consumables
 				if (playerPred.ConsumedLifeCrystals == Player.LifeCrystalMax && playerPred.ConsumedManaCrystals == Player.ManaCrystalMax)
 					ModContent.GetInstance<EatMaxLifeAndManaCrystals>().TrySetCompletion(playerPred);
 			}
+			return true;
 		}
 
 		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)

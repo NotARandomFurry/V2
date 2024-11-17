@@ -82,6 +82,7 @@ Mods: {
 
 		Configs: {
 			V2ServerConfig.DisplayName: Server-Side Options
+			V2ClientConfig.DisplayName: Client-Side Options
 
 			Server: {
 				Insight: {
@@ -160,6 +161,62 @@ Mods: {
 							Makes it possible for the Empress of Light to fit down throats of any strength, into stomachs of any capacity, and massively increases digestion damage against her.
 							Defaults to false.
 							'Fairies are food. They can also be friends or foes, even full with or fattened up from other food, but they are ALWAYS food. Exceptions are very sparse.'
+							'''
+					}
+
+					PermaChurnableEquipment: {
+						Label: Indirect Equipment Eradication
+						Tooltip:
+							'''
+							BALANCE BREAKAGE: Varies
+							When an item equipped by a Softcore or Journey character reaches 0 durability from indirect digestion damage:
+							- If set to false, it becomes non-functional and must be repaired.
+							- If set to true, it is properly churned into nothing just as its owner soon will be.
+							Defaults to false.
+							'''
+					}
+				}
+			}
+
+			Client: {
+				Visual: {
+					Header:
+						'''
+						Visual Options
+						[c/7F7F7F:(these let you tinker with how exactly certain things look on your end)]
+						'''
+
+					SkipPredStatMenuAnims: {
+						Label: Skip Pred Stat Menu's Mouth Animations
+						Tooltip:
+							'''
+							Determines whether or not you see the short swallow/regurgitate animations upon attempting to open or close the pred stats menu.
+							Defaults to false.
+							// please at least give these animations a shot first
+							// I put a whole like 2-4 hours of work into them
+							'''
+					}
+
+					ShowChurnDamageNumbers: {
+						Label: Show Digestion Damage
+						Tooltip:
+							'''
+							Determines whether or not you see digestion damage numbers.
+							Defaults to true.
+							// this shit doin' numbers?
+							'''
+					}
+
+					TheGutSlutVisionOMatic: {
+						Label: Gaze of the Gutted
+						Tooltip:
+							'''
+							When a player is successfully digested by a pred, their death camera will not have a countdown before respawn.
+							Instead, their death camera will follow the pred indefinitely until either (1) the pred despawns or (b) the ESC key is pressed.
+							Defaults to false.
+							// probably should make this one default to true later for all the gut sluts in my audience
+
+							// because I know there are a ton of you
 							'''
 					}
 				}
@@ -1268,7 +1325,7 @@ Mods: {
 						Clarification:
 							'''
 							Eat and digest a boss.
-							Bosses are extremely difficult to devour, usually requiring special items or abilities to get down and heavy investment in all non-ABS pred stats to keep down. That said, bosses are also extremely high in calories (very good news for your greedy tummy) and also typically grant access to special abilities upon their digestive demise.
+							Bosses are extremely difficult to devour, usually requiring special items or abilities to get down and heavy investment in all non-ABS pred stats to keep down. That said, bosses are also extremely high in calories (very good news for your greedy tummy) and also typically grant access to unique pred abilities once what's left of them settles down on your frame.
 							'''
 					}
 				}
@@ -1302,7 +1359,8 @@ Mods: {
 
 				CheatItems: {
 					RoseFlower: Rose's Flower Pin
-					ServerMessageRelay: A Page of the Author's Book
+					SecondBestAngelFeather: St. Promethia's Favorite Feather
+					ServerMessageRelay: A Page of Thomas' Journal
 				}
 
 				Accessories: {
@@ -1376,6 +1434,11 @@ Mods: {
 					Using this item from the hotbar at all causes you to swallow it
 					If this is a stack of multiple items, this only swallows items one at a time unless otherwise stated
 					'''
+				Broken:
+					'''
+					This item has been damaged too heavily for continued use and has become non-functional
+					Broken items can be repaired with the Scroll of Divine Indigestion or by visiting St. Promethia
+					'''
 
 				AcidResistTier: {
 					0: Does not resist any stomach acids
@@ -1392,11 +1455,7 @@ Mods: {
 
 				Food: {
 					Short: The satisfaction of a good meal lingers longer after digesting this item
-					Long:
-						'''
-						While digesting this item:
-						- You [c/{ImportantInfoColor}:build up the Well Fed buff] for [c/{ImportantInfoColor}:as long as it takes you to digest] this item; the buff then [c/{NormalBuffColor}:lingers for the same amount of time].
-						'''
+					Long: This item counts twice as much towards Well Fed tiers while digesting.
 				}
 
 				LongTooltipHelpers.SunlightExposureRules:
@@ -1458,26 +1517,45 @@ Mods: {
 						}
 					}
 
-					HealthRegenAndPotionCooldownBand: {
+					AdhesiveBandage: {
 						Short:
 							'''
-							Slightly boosts health regeneration and passive reduces potion cooldown while worn
-							Boosts health regeneration more and actively reduces potion cooldown while digesting
+							Grants immunity to Bleeding
+							Slightly slows Softened buildup
+							Won't hold up well to a gastric assault
 							{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
 							'''
 						Long:
 							'''
 							While worn by a player:
-							- [c/{$Mods.V2.CommonColorCodes.Heal}:Increases health regeneration] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{HealthRegenBandIIWornHealthRegen} HP/sec].
-							- [c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Reduces the initial duration of Potion Sickness] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:25%].
-							When eaten by a player:
-							- [c/{$Mods.V2.CommonColorCodes.Heal}:Increases health regeneration] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{HealthRegenBandIIEatenHealthRegen} HP/sec] while digesting; this lingers for [c/FFFF00:{HealthRegenerationBandIIEatenHealthRegenLength} seconds]
-							- [c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Potion Sickness wears off twice as quickly] while digesting. This effect does not linger.
+							> [c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Grants immunity] to [c/{$Mods.V2.CommonColorCodes.DoSomething}:Bleeding].
+							> [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Slows Softened buildup by {AdhesiveBandageSoftenedBuildupReduction}].
+							If this item runs out of durability via indirect digestion damage, it is immediately removed from your inventory and added to the stomach contents of your predator.
+							'''
+						Flavor: A simple adhesive bandage, meant to halt the flow of blood from open wounds to make it easier for them to heal. Medical practitioners carry a nigh-endless number of these.
+					}
+
+					HealthRegenAndPotionCooldownBand: {
+						Short:
+							'''
+							Slightly boosts health regeneration and lowers max potion cooldown while worn
+							Boosts health regeneration more, lowers max potion cooldown, and hastens potion cooldown while digesting
+							{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+							'''
+						Long:
+							'''
+							While worn by a player:
+							> [c/{$Mods.V2.CommonColorCodes.Heal}:Increases health regeneration] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{HealthRegenBandIIWornHealthRegen} HP/sec]. [c/7F7F7F:(Artificial)]
+							> [c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Reduces the initial duration of Potion Sickness] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:25%].
+							Upon running out of durability inside a player, until fully digested, and for 10 minutes thereafter:
+							> [c/{$Mods.V2.CommonColorCodes.Heal}:Increases health regeneration] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{HealthRegenBandIIEatenHealthRegen} HP/sec]. [c/7F7F7F:(Artificial)]
+							> [c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Reduces the initial duration of Potion Sickness] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:25%].
+							> [c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Potion Sickness wears off twice as fast].
 							'''
 						Flavor:
 							'''
 							By combining a simple rejuvenating wristband and a magical stone imbued with life essence, you've managed to make: another wristband. That does the exact same thing.
-							That said, it tastes better than either of its parts! Which is always a good reason to upgrade anything, frankly.
+							That said, it tastes better than either of its parts! Which is always a good reason to upgrade anything, frankly. Any upgrade that makes your gear a better snack for emergencies is a good upgrade.
 							'''
 					}
 
@@ -1646,6 +1724,78 @@ Mods: {
 								'''
 								A very common treat in Sveetia due to the commonplace nature of sugar as a cooking and baking ingredient.
 								Provides plenty of energy to help get through the day in batches, or a quick pick-me-up as a lone snack.
+								'''
+						}
+					}
+
+					Potions: {
+						Regeneration: {
+							Short:
+								'''
+								Helps regenerate health while digesting
+								{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+								'''
+							Long:
+								'''
+								Improves your body's ability to heal itself from injuries when drank.
+								Since you're just swallowing the whole potion, bottle and all, you'll need the bottle to break first from running out of durability.
+								You're awfully lucky that glass is really easy to digest, and low in calories to boot.
+
+								Once the bottle breaks, until fully digested, and for 6 minutes thereafter:
+								> [c/{$Mods.V2.CommonColorCodes.Heal}:Increases health regeneration] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{RegenPotionRegenFlat} HP/sec]. [c/7F7F7F:(Artificial)]
+								'''
+							Flavor:
+								'''
+								Simple beginner-level potions like this one are as commonplace as any other tech these days, being meant to help adventurers keep on their feet and off their fellows' waistlines.
+								This one's in an easy-to-swallow bottle, and meant to help gradually patch up smaller injuries. Unfortunately for you, it probably won't save you from being churned up alive.
+								'''
+						}
+
+						Wrath: {
+							Short:
+								'''
+								Boosts damage and your ability to quiet down your prey while digesting
+								{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+								'''
+							Long:
+								'''
+								Improves the damage output of your swings, shots, and stomach alike when drank.
+								Since you're just swallowing the whole potion, bottle and all, you'll need the bottle to break first from running out of durability.
+								You're awfully lucky that glass is really easy to digest, and low in calories to boot.
+
+								Once the bottle breaks, until fully digested, and for 3 minutes thereafter:
+								> [c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases damage] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{WrathPotionDamageBoost}].
+								> [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases TUM] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{WrathPotionTUMBoost}].
+								> [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases ACI] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{WrathPotionACIBoost}].
+								'''
+							Flavor:
+								'''
+								An amateur-level potion fashioned from the oils of a spiteful fish which makes its home in pitch-dark purple Corrupted waters.
+								While digesting, it makes the consumer rather angry, increasing their combat and predatory prowesses alike. An adventurer with this would-be curse could easily carve up and churn down their fellows into a healthy layer of fat just as easily as they could their foes.
+								'''
+						}
+
+						Rage: {
+							Short:
+								'''
+								Boosts crit chance and your ability to swallow new prey and finish churning old ones while digesting
+								{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+								'''
+							Long:
+								'''
+								Improves your precision with your attacks and makes you better at getting down live prey and sloshing dead ones into cellulite when drank.
+								Since you're just swallowing the whole potion, bottle and all, you'll need the bottle to break first from running out of durability.
+								You're awfully lucky that glass is really easy to digest, and low in calories to boot.
+
+								Once the bottle breaks, until fully digested, and for 3 minutes thereafter:
+								> [c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases critical strike chance] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{RagePotionCritChanceBoost}].
+								> [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases GLP] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{RagePotionGLPBoost}].
+								> [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases ABS] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{RagePotionABSBoost}].
+								'''
+							Flavor:
+								'''
+								An amateur-level potion fashioned from a bloody subspecies of piranha which makes its home in the sanguine seas of the Crimson.
+								While digesting, it makes the consumer uncannily accurate with their shots and stomach, targeting weak points while shooting up, swallowing down, and sloshing all around (what's left of) their prey, regardless of whether that prey was once an ally or not.
 								'''
 						}
 					}
@@ -2132,10 +2282,10 @@ Mods: {
 							'''
 						Long:
 							'''
-							[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Critical strike chance is increased by 7% for all weapons].
-							[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Luck is increased by 0.3].
-							[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:GLP is increased by 5].
-							[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Struggling strength is increased by 75%].
+							[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases critical strike chance] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:7%].
+							[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases luck] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:0.3].
+							[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases GLP] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:5].
+							[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases struggle strength] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:75%].
 							'''
 						Flavor:
 							'''
@@ -2160,11 +2310,11 @@ Mods: {
 							'''
 						Long:
 							'''
-							[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Critical strike chance is increased by 7% for all weapons].
-							[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Luck is increased by 0.1].
-							[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:TUM is increased by 8].
-							[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:ABS is increased by 6].
-							[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Struggling strength is increased by 100%].
+							[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases critical strike chance] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:7%].
+							[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases luck] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:0.1].
+							[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases TUM] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:8].
+							[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases ABS] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:6].
+							[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases struggle strength] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:100%].
 							'''
 						Flavor:
 							'''
@@ -2187,11 +2337,11 @@ Mods: {
 							'''
 						Long:
 							'''
-							[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Critical strike chance is increased by 7% for all weapons].
-							[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Luck is increased by 0.1].
-							[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Movement speed is increased by 20%].
-							[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Decreases stomach weight by 15%].
-							[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Struggling strength is increased by 75%].
+							[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases critical strike chance] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:7%].
+							[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases luck] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:0.1].
+							[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases movement speed] by [c/{$Mods.V2.CommonColorCodes.DoSomething}20%].
+							[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Decreases stomach weight] by [c/{$Mods.V2.CommonColorCodes.DoSomething}15%].
+							[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases struggle strength] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:75%].
 							'''
 						Flavor:
 							'''
@@ -2233,15 +2383,29 @@ Mods: {
 							[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:then again, she thinks everything's delicious, so maybe take her word with a grain of salt]
 							[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:don't try to eat it]
 							[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:she'll know]
-							[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:and she'll make you a meal, no matter how strong you are]
+							[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:and she'll make you a meal, no matter how strong you are or how invincible you think you are]
 							[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:after all, she REALLY likes the taste of these flowers]
+							'''
+					}
+
+					SecondBestAngelFeather: {
+						Short:
+							'''
+							Gives you St. Promethia's blessing to cram yourself into anyone you please
+							{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+							'''
+						Long: "[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Allows you to get eaten by (be it naturally or by climbing into) anything that is able to eat people, even if it couldn't fit you otherwise.]"
+						Flavor:
+							'''
+							A single feather from the one and only St. Promethia Hypate, an angelic gut slut who'd love nothing more than to see herself melted down into flab for every last predator on the planet and off of it --- even those that one would assume are unable to eat her.
+							This is one of her favorite feathers, churned down into padding endless times, yet still as fresh as the day she was born. Simply holding it makes you feel like you haven't seen nearly enough of the greediest predators of the world.
 							'''
 					}
 
 					ServerMessageRelay: {
 						Short:
 							'''
-							Allows the Author to speak directly into your world
+							Allows a certain someone to speak directly into your world
 							{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
 							'''
 						Long: When kept in Rose's inventory, allows the [c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:/authormessage] command to work.
@@ -2356,8 +2520,8 @@ Mods: {
 							'''
 						Long:
 							'''
-							[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases movement speed by {NymphScarfMoveSpeedBuff}].
-							[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Decreases stomach weight by {NymphScarfWeightReduction}].
+							[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases movement speed] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{NymphScarfMoveSpeedBuff}].
+							[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Decreases stomach weight] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{NymphScarfWeightReduction}].
 							'''
 						Flavor:
 							'''
@@ -2374,8 +2538,8 @@ Mods: {
 							'''
 						Long:
 							'''
-							[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Decreases taken digestion damage by {PromethiaAntiDigestionSashDigestionDefenseBonus}].
-							[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Slows Softened buildup by {PromethiaAntiDigestionSashSoftenedBuildupReduction}].
+							[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Decreases taken digestion damage] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{PromethiaAntiDigestionSashDigestionDefenseBonus}].
+							[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Slows Softened buildup] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{PromethiaAntiDigestionSashSoftenedBuildupReduction}].
 							'''
 						Flavor:
 							'''
@@ -2393,7 +2557,7 @@ Mods: {
 							Makes your acids a little bit stronger
 							{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
 							'''
-						Long: "[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases your acid strength (ACI) by {AcidStrengthBonus}]."
+						Long: "[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases ACI] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{AcidStrengthBonus}]."
 						Flavor: A beginner-level charm designed to make the bearer's stomach acids substantially more potent than if they were to go without it. Very useful for first-time predators who could really use that extra kick to their digestive juices to secure their first few big meals, though sadly not particularly worthwhile past those starting stages.
 					}
 
@@ -2405,7 +2569,7 @@ Mods: {
 							'''
 						Long:
 							'''
-							[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Decreases stomach weight by {WeightReduction}.]
+							[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Decreases stomach weight] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{WeightReduction}].
 							If your stomach is at {FullnessEffectivenessLossThreshold} fullness or more, [c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:this effect becomes less effective the less capacity you have to spare.]
 							'''
 						Flavor:
@@ -2423,8 +2587,8 @@ Mods: {
 							'''
 						Long:
 							'''
-							Upon dying to digestion, prey eaten by you [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:have a chance to drop certain items].
-							Some items dropped this way will be unique to these tables, while others will be existing important drops from the prey (with lower/limited drop rates).
+							[c/{$Mods.V2.CommonColorCodes.DoSomething}:Upon dying to digestion,] prey you eat [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:have a chance to drop certain items].
+							Some items dropped this way will be [c/{$Mods.V2.CommonColorCodes.DoSomething}:unique] to these tables, while others will be [c/{$Mods.V2.CommonColorCodes.DoSomething}:existing drops] from the prey (with [c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:lower/limited drop rates]).
 							'''
 						Flavor:
 							'''
@@ -2448,7 +2612,7 @@ Mods: {
 							- [c/{$Mods.V2.CommonColorCodes.ManaHeal}:Increases mana regeneration] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{ManaRegenerationRatio} of absorption rate in MP/sec].
 							[c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:Effectiveness decreases if there are prey in your stomach still alive.]
 
-							Current Regeneration ({RegenEffectiveness} effectiveness with {LivePreyRemaining} out of {PreyRemaining} prey still alive):
+							Current regeneration ({RegenEffectiveness} effectiveness with {LivePreyRemaining} out of {PreyRemaining} prey still alive):
 							- [c/{$Mods.V2.CommonColorCodes.Heal}:{CurrentHealthRegen} HP/sec]
 							- [c/{$Mods.V2.CommonColorCodes.ManaHeal}:{CurrentManaRegen} mana/sec]
 							'''
@@ -2489,13 +2653,13 @@ Mods: {
 							Short:
 								'''
 								Permanently increases the strength of your throat when used or eaten
-								Can only be used once; further uses and/or consumptions do nothing
+								Can only be used once; further uses and/or consumptions do nothing sppecial
 								{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
 								'''
 							Long:
 								'''
 								[c/{$Mods.V2.CommonColorCodes.DoSomething}:Using or eating this item] will permanently grant you the following bonus:
-								> [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:+{PureSwallow1GLPBonus} GLP]
+								> [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases GLP] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{PureSwallow1GLPBonus}].
 								This bonus only applies once. Using or eating this item after you have already done so [c/{$Mods.V2.CommonColorCodes.NegativeEffect}:will have no further effect.]
 								'''
 							Flavor:
@@ -2510,7 +2674,7 @@ Mods: {
 						FastDigestionPotion: {
 							Short:
 								'''
-								Speeds up digestion
+								Speeds up digestion while digesting
 								{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
 								'''
 							Long:
@@ -2536,7 +2700,7 @@ Mods: {
 						StomachCapacityPotion: {
 							Short:
 								'''
-								Allows your stomach to hold a bit more than usual
+								Allows your stomach to hold a bit more than usual while digesting
 								'For when you're craving an extra snack or two for dessert'
 								{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
 								'''
@@ -2559,7 +2723,7 @@ Mods: {
 						StomachacheMeterCapacityPotion: {
 							Short:
 								'''
-								Improves your stomach's resistance to the struggles of your prey
+								Improves your stomach's resistance to the struggles of your prey while digesting
 								{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
 								'''
 							Long:
@@ -2569,15 +2733,13 @@ Mods: {
 								You're awfully lucky that glass is really easy to digest, and low in calories to boot.
 
 								Once the bottle breaks, until fully digested, and for 3 minutes thereafter:
-								> [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:+{StomachacheMeterCapacityPotionMeterCapacityBonus} stomachache meter capacity]
-								> [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:-{StomachacheMeterCapacityPotionUneaseDefenseBonus} stomach unease caused from prey struggles]
+								> [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases stomachache meter capacity] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{StomachacheMeterCapacityPotionMeterCapacityBonus}].
+								> The struggles of your prey will deal [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:-{StomachacheMeterCapacityPotionUneaseDefenseBonus} less struggle damage].
 								'''
 							Flavor:
 								'''
-								Digestive aids are commonplace in medical establishments across Terraria to help with particularly rowdy or troublesome prey, with just about every option that entails available for use. This one in particular aims to make sure your system doesn't get backed up with all the parts of your prey you can't quite melt down...yet...and is a commonly-used variant carried by medical practitioners at all times. Whether they are predominantly carried for your use or their own is another matter entirely, and varies wildly between cases.
-								Dropping something small into the bottle seems to cause it to be swiftly dissolved by the mysterious substance within...not that it's much of a surprise, really. Even inanimate objects can be ravenously hungry --- enough to eat a person, in the right circumstance. People just always seem to make great meals...
-
-								...well, that snack in your stomach won't wait much longer. Bon appetit!
+								One of a number of common brews made for predatory types, this potion is often sold by medical practitioners to those who need that one particularly feisty femme or burly breakfast they had to settle down and digest, ideally without hacking them back up.
+								It makes use of several well-known gastric relaxants to ease the stomach and throat, lowering the amount that unruly prey can kick up a stomachache and heightening the amount they'd need to do so in order to induce vomiting.
 								'''
 						}
 					}
@@ -2950,6 +3112,18 @@ Mods: {
 
 			Voraria: {
 				Buffs: {
+					CharmofMythsChurnBuff: {
+						Name: Healthy Snack: Charm of Myths
+						Description:
+							'''
+							You've opted to add a Charm of Myths to your waistline, conferring the following buffs until it's done setlling down on your hips:
+							> [c/{$Mods.V2.CommonColorCodes.Heal}:Increases health regeneration] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{CharmofMythsChurnRegen} HP/sec]. [c/7F7F7F:(Artificial)]
+							> [c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Reduces the initial duration of Potion Sickness] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:25%].
+							> [c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Potion Sickness wears off twice as fast].
+							'The only myth left to bust about it now is whether it'll add to your booty or belly. Place your bets!'
+							'''
+					}
+
 					FastDigestionPotionBuff: {
 						Name: Digestive Aid
 						Description:
@@ -3126,6 +3300,7 @@ Mods: {
 
 			DigestedPlayer: {
 				YouWereEaten: You were eaten...
+				ManualRespawn: Press ESCAPE or SPACE to respawn
 				Paradox: Awfully full of yourself today, aren't you, {Player}?
 				AprilFools: "{Player} was fooled by {Pred}."
 
@@ -3737,7 +3912,7 @@ Mods: {
 
 			Divine: {
 				Sinhunters: {
-					StPromethia: If ever there was a word for a Sinhunter who was everything many others aspire not to be, that word would be "Promethia". St. Promethia is a turbo-masochist gutslut who'd love nothing more than to be a heaping helping of fat on any predator she finds...and, of course, her job ends up letting her do this very often. Word on the street is she even gets to fatten up her employer's rear end every once in a while as a reward for good performance.
+					StPromethia: If ever there was a word for a Sinhunter who was everything many others aspire not to be, that word would be "Promethia". St. Promethia is a turbo-masochist gut slut who'd love nothing more than to be a heaping helping of fat on any predator she finds...and, of course, her job ends up letting her do this very often. Word on the street is she even gets to fatten up her employer's rear end every once in a while as a reward for good performance.
 					StJerne: A fearsome Sinhunter with over a millenium of experience under her belt, St. Jerne is the bane of any being that thinks they can threaten Her Twinkling Majesty. Even the most stoic of Sinhunters can have lofty aspirations, though, and very occasionally, a select few have noticed her looking longingly, almost hungrily, at Aurora's titanic form...
 				}
 
@@ -3863,6 +4038,7 @@ Mods: {
 
 				FreeButton.DisplayName: Free
 				DisplayName: Enigma
+				Census.SpawnCondition: Conditions unknown
 			}
 		}
 

@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Terraria;
 using Terraria.GameContent;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI.Chat;
 using V2.Core;
@@ -39,16 +40,48 @@ namespace V2.Projectiles
 		}
 
 		/// <summary>
-		/// Deals the given amount of DIRECT digestion damage to the given item, respecting damage variation and luck.<br/>
-		/// Should not be used for items worn by eaten players; for them, use TakeIndirectDigestionDamage instead.
+		/// Deals the given amount of DIRECT digestion damage to the given projectile, respecting damage variation and luck.<br/>
 		/// </summary>
 		/// <param name="pred">The pred currently digesting this player.</param>
 		/// <param name="digestionDamage">The total amount of digestion damage to be dealt, before damage variation calculations.</param>
-		/// <returns>Whether or not the resulting digestion tick "kills" (depletes the durability of) the item.</returns>
+		/// <returns>Whether or not the resulting digestion tick kills the projectile.</returns>
 		public static bool TakeDigestionDamage(this Projectile projectile, Entity pred, double digestionDamage)
 		{
 			int trueDigestionDamage = Main.DamageVar((float)digestionDamage);
 			projectile.AsFood().Health -= trueDigestionDamage;
+			switch (Main.netMode)
+			{
+				case NetmodeID.SinglePlayer:
+					if (!ModContent.GetInstance<V2ClientConfig>().ShowChurnDamageNumbers)
+						break;
+
+					CombatText digestionDamageText = Main.combatText[CombatText.NewText(
+						projectile.Hitbox,
+						Color.DarkGreen,
+						trueDigestionDamage,
+						false,
+						true
+					)];
+					digestionDamageText.position.X = pred.Center.X + (pred.direction * 28);
+					digestionDamageText.position.Y = projectile.Center.Y + (projectile.height / 5f);
+					digestionDamageText.velocity.X = pred.direction * 2.5f;
+					digestionDamageText.velocity.Y = -4f;
+					break;
+				case NetmodeID.Server:
+					ModPacket digestionDamageTextPacket = V2.Instance.GetPacket();
+					digestionDamageTextPacket.Write((byte)V2.MessageType.SyncDigestionCombatTextForPreyProjectile);
+					digestionDamageTextPacket.Write(projectile.whoAmI);
+					digestionDamageTextPacket.Write(trueDigestionDamage);
+					digestionDamageTextPacket.Write(pred.Center.X + (pred.direction * 28));
+					digestionDamageTextPacket.Write(projectile.Center.Y + (projectile.height / 5f));
+					digestionDamageTextPacket.Write(pred.direction * 2.5f);
+					digestionDamageTextPacket.Write(-4f);
+					digestionDamageTextPacket.Send();
+					break;
+				case NetmodeID.MultiplayerClient:
+					// here we do nothing because the packet takes care of this
+					break;
+			}
 			if (projectile.AsFood().Health <= 0)
 			{
 				projectile.AsFood().OnKilledByDigestion?.Invoke(projectile, pred);
@@ -56,25 +89,7 @@ namespace V2.Projectiles
 				projectile.Kill();
 				return true;
 			}
-			else
-			{
-				CombatText digestionText = Main.combatText[CombatText.NewText(
-					projectile.Hitbox,
-					Color.DarkGreen,
-					trueDigestionDamage,
-					false,
-					true
-				)];
-				digestionText.position.X = pred.Center.X;
-				digestionText.position.X += pred.direction * 14;
-				if (pred.direction == -1)
-					digestionText.position.X -= ChatManager.GetStringSize(FontAssets.CombatText[0].Value, digestionText.text, new Vector2(digestionText.scale)).X;
-				digestionText.position.Y = projectile.Center.Y;
-				digestionText.position.Y += projectile.height / 5f;
-				digestionText.velocity.X = pred.direction * 2.5f;
-				digestionText.velocity.Y = -4f;
-				return false;
-			}
+			return false;
 		}
 
 		public static void DoContactGulpage(this Projectile projectile, List<(PreyType, int)> specificWhitelist = null)

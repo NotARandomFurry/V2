@@ -44,7 +44,7 @@ namespace V2.Items.Vanilla.Consumables
 				pred.AddStatus(BuffID.Regeneration, DigestedRegenTime, true);
 		}
 
-		public static void OnBreak(Item item, Entity pred)
+		public static bool OnBreak(Item item, Entity pred, bool direct)
 		{
 			SoundEngine.PlaySound(MuffledMiscSounds.Shatter, pred.Center);
 			SoundEngine.PlaySound(StomachNoises.Muffled, pred.Center);
@@ -69,6 +69,7 @@ namespace V2.Items.Vanilla.Consumables
 				if (NPCPred.life > NPCPred.lifeMax)
 					NPCPred.life = NPCPred.lifeMax;
 			}
+			return true;
 		}
 
 		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)

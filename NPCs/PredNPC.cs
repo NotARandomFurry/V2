@@ -221,7 +221,12 @@ namespace V2.NPCs
 			if (prey.CurrentCaptor() is not null)
 				return false;
 
-			if (prey is NPC preyNPC)
+			if (prey is Player preyPlayer)
+			{
+				if (preyPlayer.AsFood().PerfectMeal)
+					return true;
+			}
+			else if (prey is NPC preyNPC)
 			{
 				if (V2.VoreNPCBlacklist is not null && V2.VoreNPCBlacklist.Count > 0 && V2.VoreNPCBlacklist.Contains(preyNPC.type))
 					return false;

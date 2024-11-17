@@ -32,6 +32,8 @@ namespace V2.StatusEffects.Voraria.Debuffs
 		public override void SetStaticDefaults()
 		{
 			Main.buffNoTimeDisplay[Type] = true;
+			Main.debuff[Type] = true;
+			BuffID.Sets.NurseCannotRemoveDebuff[Type] = true;
 		}
 
 		public override void ModifyBuffText(ref string buffName, ref string tip, ref int rare)
@@ -45,7 +47,7 @@ namespace V2.StatusEffects.Voraria.Debuffs
 				{
 					SoftenedMaxHealthThreshold = MaxHealthDigestedForOneStack.ToPercentage(1),
 					SoftenedMaxStacks = MaxStacks,
-					SoftenedStacks = Main.LocalPlayer.AsFood().SoftenedStacks,
+					Main.LocalPlayer.AsFood().SoftenedStacks,
 					SoftenedDefReduction = DefenseReductionPerStack.ToPercentage(1),
 					SoftenedCurrentDefReduction = (Main.LocalPlayer.AsFood().SoftenedStacks * DefenseReductionPerStack).ToPercentage(1),
 					SoftenedDigestiveAid = DigestionDamageIncreasePerStack.ToPercentage(1),

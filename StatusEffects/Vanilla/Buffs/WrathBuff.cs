@@ -14,7 +14,7 @@ namespace V2.StatusEffects.Vanilla.Buffs
 {
 	public class WrathBuff : GlobalBuff
 	{
-		public static double DamageBonus => 0.10;
+		public static float DamageBonus => 0.10f;
 		public static int TUMBonus => 5;
 		public static int ACIBonus => 5;
 		public override void SetStaticDefaults()
@@ -22,11 +22,14 @@ namespace V2.StatusEffects.Vanilla.Buffs
 			V2.ModifiedStatusEffects.Add(BuffID.Wrath, this);
 		}
 
+		public override bool RightClick(int type, int buffIndex) => type != BuffID.Wrath;
+
 		public override void Update(int type, Player player, ref int buffIndex)
 		{
 			if (type != BuffID.Wrath)
 				return;
 
+			player.GetDamage(DamageClass.Generic) += DamageBonus;
 			player.AsPred().TUM.Extra += TUMBonus;
 			player.AsPred().ACI.Extra += ACIBonus;
 		}

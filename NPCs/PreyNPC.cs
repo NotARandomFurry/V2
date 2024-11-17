@@ -249,11 +249,9 @@ namespace V2.NPCs
 
 			int trueDigestionDamage = voodoo ? (int)Math.Round(digestionDamage) : Main.DamageVar((float)digestionDamage, (pred is Player playerPred) ? -playerPred.luck : 0);
 			if (ModContent.GetInstance<V2ServerConfig>().DefenseInDigestionCalcs && !voodoo)
-			{
 				trueDigestionDamage -= npc.defense;
-				if (trueDigestionDamage < 0)
-					trueDigestionDamage = 0;
-			}
+			if (trueDigestionDamage < 1)
+				trueDigestionDamage = 1;
 			trueDigestionDamage = (int)Math.Floor(npc.AsFood().TakenDigestionDamageModifier.ApplyTo(trueDigestionDamage));
 			npc.AsFood().SoftenedDigestionDamageTaken += npc.AsFood().SoftenedDigestionDamageModifier.ApplyTo(trueDigestionDamage);
 			npc.AsFood().SoftenedWearoffDelay = SoftenedWearoffMaxDelay;
@@ -261,6 +259,9 @@ namespace V2.NPCs
 			switch (Main.netMode)
 			{
 				case NetmodeID.SinglePlayer:
+					if (!ModContent.GetInstance<V2ClientConfig>().ShowChurnDamageNumbers)
+						break;
+
 					CombatText digestionDamageText = Main.combatText[CombatText.NewText(
 						npc.Hitbox,
 						npc.friendly ? Color.DarkGreen : Color.LimeGreen,

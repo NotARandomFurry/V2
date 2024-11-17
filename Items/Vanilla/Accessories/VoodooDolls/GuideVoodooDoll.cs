@@ -24,7 +24,7 @@ namespace V2.Items.Vanilla.Accessories.VoodooDolls
 			item.AsFood().MaxHealth = 250;
 			item.AsFood().Size = 0.25;
 
-			item.AsFood().OnBreak = OnBreak_GrantVoodooDigestionGoal;
+			item.AsFood().OnBreak += OnBreak_GrantVoodooDigestionGoal;
 		}
 
 		public override void Update(Item item, ref float gravity, ref float maxFallSpeed)
@@ -39,12 +39,11 @@ namespace V2.Items.Vanilla.Accessories.VoodooDolls
 			}
 		}
 
-		public static void OnBreak_GrantVoodooDigestionGoal(Item item, Entity pred)
+		public static bool OnBreak_GrantVoodooDigestionGoal(Item item, Entity pred, bool direct)
 		{
 			if (pred is Player predPlayer)
-			{
 				ModContent.GetInstance<DigestWithVoodoo>().TrySetCompletion(predPlayer);
-			}
+			return true;
 		}
 	}
 }

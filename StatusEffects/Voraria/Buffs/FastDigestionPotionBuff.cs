@@ -17,6 +17,8 @@ namespace V2.StatusEffects.Voraria.Buffs
 		public override LocalizedText DisplayName => Language.GetText("Mods.V2.StatusEffects.Voraria.Buffs.FastDigestionPotionBuff.Name");
 		public override LocalizedText Description => Language.GetText("Mods.V2.StatusEffects.Voraria.Buffs.FastDigestionPotionBuff.Description");
 
+		public override bool RightClick(int buffIndex) => false;
+
 		public override void ModifyBuffText(ref string buffName, ref string tip, ref int rare)
 		{
 			rare = ItemRarityID.Green;

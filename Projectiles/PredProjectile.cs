@@ -203,10 +203,12 @@ namespace V2.Projectiles
 			if (prey.CurrentCaptor() is not null)
 				return false;
 
-			if (pred.AsPred().MaxStomachCapacity != -1 && PreyData.GetPreySize(prey) > pred.AsPred().MaxStomachCapacity - GetCurrentBellyWeight(pred))
-				return false;
-
-			if (prey is NPC preyNPC)
+			if (prey is Player preyPlayer)
+			{
+				if (preyPlayer.AsFood().PerfectMeal)
+					return true;
+			}
+			else if (prey is NPC preyNPC)
 			{
 				if (V2.VoreNPCBlacklist is not null && V2.VoreNPCBlacklist.Count > 0 && V2.VoreNPCBlacklist.Contains(preyNPC.type))
 					return false;
@@ -232,6 +234,12 @@ namespace V2.Projectiles
 				if (preyItem.favorited)
 					return false;
 			}
+
+			if (GetCurrentBellyWeight(pred) >= pred.AsPred().MaxStomachCapacity)
+				return false;
+
+			if (pred.AsPred().MaxStomachCapacity != -1 && PreyData.GetPreySize(prey) > pred.AsPred().MaxStomachCapacity - GetCurrentBellyWeight(pred))
+				return false;
 
 			return true;
 		}

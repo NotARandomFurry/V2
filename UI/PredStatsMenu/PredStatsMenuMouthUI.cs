@@ -30,6 +30,7 @@ namespace V2.UI.PredStatsMenu
 	public class PredStatsMenuMouthUI : UIState
 	{
 		public static bool Visible { get; set; }
+		public static bool CanSkipThisFrame { get; set; }
 
 		public static Vector2 MouthPosition
 		{
@@ -167,8 +168,21 @@ namespace V2.UI.PredStatsMenu
 					if (Main.mouseLeft && Main.mouseLeftRelease)
 					{
 						Main.LocalPlayer.AsPred().InPredStatsMenu = true;
-						MouthState = PredStatsMenuMouthState.EatingCursor;
-						goto case PredStatsMenuMouthState.EatingCursor;
+						if (ModContent.GetInstance<V2ClientConfig>().SkipPredStatMenuAnims)
+						{
+							SoundEngine.PlaySound(
+								Gulps.Short with { Volume = 1f },
+								Main.screenPosition + MouthPosition
+							);
+							MouthState = PredStatsMenuMouthState.YourCursorGotFuckingGulpedIdiot;
+							goto case PredStatsMenuMouthState.YourCursorGotFuckingGulpedIdiot;
+						}
+						else
+						{
+							MouthState = PredStatsMenuMouthState.EatingCursor;
+							CanSkipThisFrame = false;
+							goto case PredStatsMenuMouthState.EatingCursor;
+						}
 					}
 					if (!hoverBox.Contains(Main.MouseScreen.ToPoint()))
 					{
@@ -190,10 +204,11 @@ namespace V2.UI.PredStatsMenu
 					break;
 				case PredStatsMenuMouthState.EatingCursor:
 					Main.LocalPlayer.mouseInterface = true;
-					if (_mawSwallowTime >= 105)
+					if (_mawSwallowTime >= 105 || (Main.mouseLeft && Main.mouseLeftRelease && CanSkipThisFrame) || ModContent.GetInstance<V2ClientConfig>().SkipPredStatMenuAnims)
 					{
+						_mawSwallowTime = 105;
 						if (Main.hasFocus)
-							Mouse.SetPosition((int)backdropPos.X + 350, (int)backdropPos.Y + 40);
+							Mouse.SetPosition((int)backdropPos.X + (_predStatsMenuBackground.Value.Width / 2), (int)backdropPos.Y + 40);
 						MouthState = PredStatsMenuMouthState.YourCursorGotFuckingGulpedIdiot;
 						goto case PredStatsMenuMouthState.YourCursorGotFuckingGulpedIdiot;
 					}
@@ -216,7 +231,7 @@ namespace V2.UI.PredStatsMenu
 						}
 						_mawSwallowTime += 1;
 						if (Main.hasFocus)
-							Mouse.SetPosition((int)backdropPos.X + 350, (int)backdropPos.Y + 40);
+							Mouse.SetPosition((int)backdropPos.X + (_predStatsMenuBackground.Value.Width / 2), (int)backdropPos.Y + 40);
 					}
 					DecideCursorGettingGulpedFrame(true);
 					break;
@@ -225,8 +240,9 @@ namespace V2.UI.PredStatsMenu
 					break;
 				case PredStatsMenuMouthState.RegurgitatingCursor:
 					Main.LocalPlayer.mouseInterface = true;
-					if (_mawSwallowTime <= 0)
+					if (_mawSwallowTime <= 0 || (Main.keyState.IsKeyDown(Keys.Escape) && !Main.oldKeyState.IsKeyDown(Keys.Escape) && CanSkipThisFrame) || ModContent.GetInstance<V2ClientConfig>().SkipPredStatMenuAnims)
 					{
+						_mawSwallowTime = 0;
 						SoundEngine.PlaySound(
 							Burps.Humanoid.Small with { Volume = 0.9f },
 							Main.screenPosition + MouthPosition
@@ -240,12 +256,14 @@ namespace V2.UI.PredStatsMenu
 					else
 					{
 						if (Main.hasFocus)
-							Mouse.SetPosition((int)backdropPos.X + 350, (int)backdropPos.Y + 40);
+							Mouse.SetPosition((int)backdropPos.X + +(_predStatsMenuBackground.Value.Width / 2), (int)backdropPos.Y + 40);
 						_mawSwallowTime -= 1;
 					}
 					DecideCursorGettingGulpedFrame(true);
 					break;
 			}
+
+			CanSkipThisFrame = true;
 
 			spriteBatch.Draw(
 				_predStatsMenuEntryMaw.Value,

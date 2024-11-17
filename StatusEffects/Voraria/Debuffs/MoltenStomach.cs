@@ -19,6 +19,8 @@ namespace V2.StatusEffects.Voraria.Debuffs
 		public override void SetStaticDefaults()
 		{
 			Main.buffNoTimeDisplay[Type] = true;
+			Main.debuff[Type] = true;
+			BuffID.Sets.NurseCannotRemoveDebuff[Type] = true;
 		}
 
 		public override void ModifyBuffText(ref string buffName, ref string tip, ref int rare)
