@@ -12,6 +12,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using V2.Core;
 using V2.Items.Voraria.Armor;
+using V2.Items.Voraria.Placeables;
 using V2.PlayerHandling;
 using V2.Projectiles.Voraria;
 using V2.Sounds.Vore;
@@ -301,7 +302,8 @@ namespace V2.NPCs.Voraria.TownNPCs.Enigma
 			EnigmaShop.Add<CloverHeadAccessories>();
 			EnigmaShop.Add<CloverSweater>();
 			EnigmaShop.Add<CloverStockings>();
-			EnigmaShop.Register();
+			EnigmaShop.Add<MyFairy>([Condition.InGlowshroom]);
+            EnigmaShop.Register();
 		}
 
 		public static bool CanEnigmaBeForceFed(NPC npc) => true;

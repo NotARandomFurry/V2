@@ -4169,6 +4169,11 @@ Mods: {
 			CloverHeadAccessories.Tooltip: ""
 			CloverStockings.Tooltip: ""
 			CloverSweater.Tooltip: ""
+
+			MyFairy: {
+				DisplayName: my fairy
+				Tooltip: "'do you like her'"
+			}
 		}
 	}
 }
