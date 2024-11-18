@@ -84,7 +84,7 @@ namespace V2.NPCs.Voraria.TownNPCs.Enigma
 			if (NPC.ai[0] >= 1f)
 			{
 				NPC.ai[0] = 1f;
-				Vector2 tilePos = new Vector2(NPC.position.X + 4, NPC.position.Y - 1);
+				Vector2 tilePos = new Vector2(NPC.Center.X, NPC.position.Y - 4);
 				tilePos.ToTileCoordinates();
 				if (!Collision.IsWorldPointSolid(tilePos, true))
 				{
@@ -109,7 +109,7 @@ namespace V2.NPCs.Voraria.TownNPCs.Enigma
 		{
 			boundingBox = new Rectangle(
 				(int)NPC.Center.X - 16,
-				(int)NPC.Center.Y + 44,
+				(int)NPC.Center.Y,
 				32,
 				40
 			);
