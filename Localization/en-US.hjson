@@ -3249,9 +3249,9 @@ Mods: {
 						Name: Digestive Aid
 						Description:
 							'''
-							[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases acid strength (ACI) by {FastDigestionPotionACIBonus}.]
-							[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases absorption strength (ABS) by {FastDigestionPotionABSBonus}.]
-							[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases your acid tier by 1 if it is 0.]
+							> [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases acid strength (ACI)] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{FastDigestionPotionACIBonus}].
+							> [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases absorption strength (ABS)] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{FastDigestionPotionABSBonus}].
+							> [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases your acid tier] to 3 if it is not there already.
 							'Maybe now your stomach can solve that little blockage for you...'
 							'''
 					}
@@ -3260,7 +3260,7 @@ Mods: {
 						Name: Elasticity
 						Description:
 							'''
-							[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases your maximum stomach capacity by {StomachCapacityPotionCapacityBonus}.]
+							> [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases your maximum stomach capacity] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{StomachCapacityPotionCapacityBonus}].
 							'Now go and have a little dessert! You've earned it.'
 							'''
 					}

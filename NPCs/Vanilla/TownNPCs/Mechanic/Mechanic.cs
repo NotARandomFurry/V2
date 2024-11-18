@@ -373,9 +373,9 @@ namespace V2.NPCs.Vanilla.TownNPCs.Mechanic
 					{
 						mechanicChatPool.AddRange(new List<string>
 						{
-							"...do you think it's possible to swallow and digesting lightning? I'm tired of it overloading my devices. So much time, having to be wasted on increasingly-annoying repairs...",
+							"...do you think it's possible to swallow and digest lightning? I'm tired of it overloading my devices. So much time, having to be wasted on increasingly-annoying repairs...",
 							"...would you mind helping me out? I need to eat one of those stormclouds. The many books and manuals I've read in my time suggest it can turn my stomach into a portable battery.",
-							"...so many different things to bolt down in this weather. I have half a mind to start storing pieces of the power grid in my stomach...even if I know by now that it never ends well.",
+							"...so many different things to bolt down and cover in this weather. I have half a mind to start storing pieces of the power grid in my stomach...even if I know by now that it never ends well.",
 						});
 					}
 					if (LanternNight.LanternsUp)
