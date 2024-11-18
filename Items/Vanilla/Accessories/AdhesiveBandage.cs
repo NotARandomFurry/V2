@@ -26,6 +26,8 @@ namespace V2.Items.Vanilla.Accessories
 			item.AsFood().AcidResistTier = 0;
 
 			item.AsAnItem().AccessoryEffectCode += UpdateAdhesiveBandage;
+
+			item.AsFood().OnBreak += OnBreak;
 		}
 
 		public static void UpdateAdhesiveBandage(Item item, Player player, bool hideVisual)
@@ -33,6 +35,8 @@ namespace V2.Items.Vanilla.Accessories
 			player.buffImmune[BuffID.Bleeding] = true;
 			player.AsFood().SoftenedDigestionDamageModifier *= 1f - SoftenedBuildupReduction;
 		}
+
+		public static bool OnBreak(Item item, Entity pred, bool direct) => true;
 
 		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
 		{
