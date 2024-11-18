@@ -72,6 +72,26 @@ namespace V2.Items
 					}
 				}
 			}
+
+			if (Main.netMode == NetmodeID.SinglePlayer && ModContent.GetInstance<V2ClientConfig>().ShowChurnDamageNumbers)
+			{
+				CombatText digestionText = Main.combatText[CombatText.NewText(
+					item.Hitbox,
+					Color.DarkGreen,
+					trueDigestionDamage,
+					false,
+					true
+				)];
+				digestionText.position.X = pred.Center.X;
+				digestionText.position.X += pred.direction * 14;
+				if (pred.direction == -1)
+					digestionText.position.X -= ChatManager.GetStringSize(FontAssets.CombatText[0].Value, digestionText.text, new Vector2(digestionText.scale)).X;
+				digestionText.position.Y = item.Center.Y;
+				digestionText.position.Y += item.height / 5f;
+				digestionText.velocity.X = pred.direction * 2.5f;
+				digestionText.velocity.Y = -4f;
+			}
+
 			if (item.AsFood().Health <= 0)
 			{
 				item.AsFood().Health = 0;
@@ -82,40 +102,22 @@ namespace V2.Items
 					Player player = Main.player[indirectWhoAmI];
 					if (player.difficulty is PlayerDifficultyID.MediumCore or PlayerDifficultyID.Hardcore || ModContent.GetInstance<V2ServerConfig>().PermaChurnableEquipment)
 					{
+						player.CurrentCaptor().QueueNewPrey(PreyData.NewData(PreyType.Item, item.type, item.AffixName(), item.CalculateSnackSize()));
 						item.TurnToAir();
 						return true;
 					}
-					
+
+					return false;
 				}
 
 				if (churnable.HasValue && !churnable.Value)
 					return false;
-			
+
 				item.TurnToAir();
 				return true;
 			}
-			else
-			{
-				if (Main.netMode == NetmodeID.SinglePlayer && ModContent.GetInstance<V2ClientConfig>().ShowChurnDamageNumbers)
-				{
-					CombatText digestionText = Main.combatText[CombatText.NewText(
-						item.Hitbox,
-						Color.DarkGreen,
-						trueDigestionDamage,
-						false,
-						true
-					)];
-					digestionText.position.X = pred.Center.X;
-					digestionText.position.X += pred.direction * 14;
-					if (pred.direction == -1)
-						digestionText.position.X -= ChatManager.GetStringSize(FontAssets.CombatText[0].Value, digestionText.text, new Vector2(digestionText.scale)).X;
-					digestionText.position.Y = item.Center.Y;
-					digestionText.position.Y += item.height / 5f;
-					digestionText.velocity.X = pred.direction * 2.5f;
-					digestionText.velocity.Y = -4f;
-				}
-				return false;
-			}
+				
+			return false;
 		}
 
 		public static double CalculateSnackSize(this Item item) => item.AsFood().Size * item.stack;
