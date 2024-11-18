@@ -2743,7 +2743,7 @@ Mods: {
 							Short:
 								'''
 								Permanently increases the strength of your throat when used or eaten
-								Can only be used once; further uses and/or consumptions do nothing sppecial
+								Can only be used once; further uses and/or consumptions do nothing special
 								{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
 								'''
 							Long:
