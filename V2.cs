@@ -31,7 +31,7 @@ namespace V2
 		/// Defaults to <see langword="true"/>. If set to <see langword="false"/> instead, the blacklists remain empty.<br/>
 		/// This allows several entities which otherwise would not be included in vore mechanics, namely as predators, to instead be given full reign.<br/>
 		/// </summary>
-		public static bool BlacklistsActive { get; set; } 
+		public static bool BlacklistsActive { get; set; }
 		public static List<int> VoreNPCBlacklist { get; set; }
 		public static List<int> VoreProjectileBlacklist { get; set; }
 
@@ -81,14 +81,14 @@ namespace V2
 			BetterDialogue.BetterDialogue.SupportedNPCs.Add(ModContent.NPCType<Lucinda>());
 			BetterDialogue.BetterDialogue.SupportedNPCs.Add(ModContent.NPCType<LucindaBound>());
 
-            BetterDialogue.BetterDialogue.SupportedNPCs.Add(ModContent.NPCType<Clover>());
-            BetterDialogue.BetterDialogue.SupportedNPCs.Add(ModContent.NPCType<CloverBound>());
+			BetterDialogue.BetterDialogue.SupportedNPCs.Add(ModContent.NPCType<Clover>());
+			BetterDialogue.BetterDialogue.SupportedNPCs.Add(ModContent.NPCType<CloverBound>());
 
-            BetterDialogue.BetterDialogue.RegisterShoppableNPC(NPCID.Nurse);
+			BetterDialogue.BetterDialogue.RegisterShoppableNPC(NPCID.Nurse);
 			BetterDialogue.BetterDialogue.RegisterShoppableNPC(ModContent.NPCType<Lucinda>());
-            BetterDialogue.BetterDialogue.RegisterShoppableNPC(ModContent.NPCType<Clover>());
+			BetterDialogue.BetterDialogue.RegisterShoppableNPC(ModContent.NPCType<Clover>());
 
-            StruggleChartLoader.Load();
+			StruggleChartLoader.Load();
 
 			EngageVoraciousGameFuckery();
 		}

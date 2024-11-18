@@ -11,12 +11,14 @@ namespace V2.Projectiles.Voraria
 	{
 		public float CollisionWidth => 36f * Projectile.scale;
 
-		public int Timer {
+		public int Timer
+		{
 			get => (int)Projectile.ai[0];
 			set => Projectile.ai[0] = value;
 		}
 
-		public override void SetDefaults() {
+		public override void SetDefaults()
+		{
 			Projectile.Size = new Vector2(18);
 			Projectile.friendly = true;
 			Projectile.penetrate = -1;
@@ -26,8 +28,8 @@ namespace V2.Projectiles.Voraria
 			Projectile.ownerHitCheck = true;
 			Projectile.timeLeft = 8;
 			Projectile.hide = true;
-            AIType = ProjectileID.Bullet;
-        }
+			AIType = ProjectileID.Bullet;
+		}
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
 			SoundEngine.PlaySound(SoundID.Item175, target.position);

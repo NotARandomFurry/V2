@@ -1,19 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using Terraria;
-using Terraria.Audio;
-using Terraria.GameContent;
-using Terraria.GameContent.Personalities;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
-using Terraria.Utilities;
 using V2.Core;
-using V2.PlayerHandling;
 
 namespace V2.NPCs.Voraria.TownNPCs.Enigma
 {
@@ -23,8 +13,8 @@ namespace V2.NPCs.Voraria.TownNPCs.Enigma
 		public override void SetStaticDefaults()
 		{
 			NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, new NPCID.Sets.NPCBestiaryDrawModifiers() { Hide = true });
-            NPCID.Sets.ImmuneToRegularBuffs[NPC.type] = true;
-        }
+			NPCID.Sets.ImmuneToRegularBuffs[NPC.type] = true;
+		}
 
 		public override void SetDefaults()
 		{
@@ -35,22 +25,22 @@ namespace V2.NPCs.Voraria.TownNPCs.Enigma
 			NPC.aiStyle = 0;
 			NPC.lifeMax = 500;
 			NPC.damage = 35;
-            NPC.defense = 38;
-            NPC.rarity = 4;
+			NPC.defense = 38;
+			NPC.rarity = 4;
 			NPC.knockBackResist = 0f;
 			NPC.HitSound = SoundID.NPCHit1;
 			NPC.noGravity = true;
 
-            NPC.AsFood().DefinedBaseSize = 1.15;
-            NPC.AsPred().WeightGainRatio = 0.125;
-            NPC.AsPred().MaxStomachCapacity = 2.2;
-            NPC.AsPred().BaseStomachacheMeterCapacity = 90.0;
-            NPC.AsFood().StruggleEffectiveness = 1; //have fun
+			NPC.AsFood().DefinedBaseSize = 1.15;
+			NPC.AsPred().WeightGainRatio = 0.125;
+			NPC.AsPred().MaxStomachCapacity = 2.2;
+			NPC.AsPred().BaseStomachacheMeterCapacity = 90.0;
+			NPC.AsFood().StruggleEffectiveness = 1; //have fun
 
-            NPC.AsPred().DigestionType = EntityDigestionType.Acidic;
+			NPC.AsPred().DigestionType = EntityDigestionType.Acidic;
 		}
-        public override void ModifyTypeName(ref string typeName) => typeName = "Stuck Enigma";
-		
+		public override void ModifyTypeName(ref string typeName) => typeName = "Stuck Enigma";
+
 		public override float SpawnChance(NPCSpawnInfo spawnInfo)
 		{
 			if (ModContent.GetInstance<V2MasterSystem>().freedEnigma)
@@ -59,13 +49,13 @@ namespace V2.NPCs.Voraria.TownNPCs.Enigma
 			if (!spawnInfo.Player.ZoneRockLayerHeight)
 				return 0f;
 
-            if (!spawnInfo.Player.ZoneJungle)
-                return 0f;
+			if (!spawnInfo.Player.ZoneJungle)
+				return 0f;
 
-            if (!Main.hardMode)
-                return 0f;
+			if (!Main.hardMode)
+				return 0f;
 
-            if (NPC.AnyNPCs(ModContent.NPCType<CloverBound>()))
+			if (NPC.AnyNPCs(ModContent.NPCType<CloverBound>()))
 				return 0f;
 
 			return 0.18f;
@@ -101,9 +91,9 @@ namespace V2.NPCs.Voraria.TownNPCs.Enigma
 					ModContent.GetInstance<V2MasterSystem>().freedEnigma = true;
 					NPC.AI_000_TransformBoundNPC(Main.CurrentPlayer.whoAmI, ModContent.NPCType<Clover>());
 				}
-            }
-        }
-        public override bool CanChat() => true;
+			}
+		}
+		public override bool CanChat() => true;
 
 		public override string GetChat()
 		{
@@ -115,14 +105,14 @@ namespace V2.NPCs.Voraria.TownNPCs.Enigma
 			};
 			return Main.rand.NextFromCollection(possibleLines);
 		}
-        public override void ModifyHoverBoundingBox(ref Rectangle boundingBox)
-        {
-            boundingBox = new Rectangle(
-                (int)NPC.Center.X - 16,
-                (int)NPC.Center.Y + 44,
-                32,
-                40
-            );
-        }
-    }
+		public override void ModifyHoverBoundingBox(ref Rectangle boundingBox)
+		{
+			boundingBox = new Rectangle(
+				(int)NPC.Center.X - 16,
+				(int)NPC.Center.Y + 44,
+				32,
+				40
+			);
+		}
+	}
 }

@@ -1,30 +1,20 @@
-﻿using BetterDialogue;
-using Humanizer;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
-using Terraria.Audio;
-using Terraria.Enums;
 using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.Personalities;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
-using Terraria.Utilities;
 using V2.Core;
-using V2.Items.Voraria.Charms;
-using V2.Items.Voraria.Consumables.PermanentUpgrades;
-using V2.Items.Voraria.Consumables.Potions;
-using V2.Items.Voraria.Weapons.Ranged.Throwables;
-using V2.PlayerHandling;
-using V2.Sounds.Vore;
-using V2.Projectiles.Voraria;
 using V2.Items.Voraria.Armor;
+using V2.PlayerHandling;
+using V2.Projectiles.Voraria;
+using V2.Sounds.Vore;
 
 namespace V2.NPCs.Voraria.TownNPCs.Enigma
 {
@@ -101,15 +91,15 @@ namespace V2.NPCs.Voraria.TownNPCs.Enigma
 
 			NPC.Happiness
 				.SetNPCAffection(NPCID.Truffle, AffectionLevel.Love)
-                .SetNPCAffection(NPCID.Princess, AffectionLevel.Like)
-                .SetNPCAffection(NPCID.Angler, AffectionLevel.Like)
+				.SetNPCAffection(NPCID.Princess, AffectionLevel.Like)
+				.SetNPCAffection(NPCID.Angler, AffectionLevel.Like)
 				.SetNPCAffection(NPCID.TaxCollector, AffectionLevel.Hate)
 				.SetBiomeAffection<MushroomBiome>(AffectionLevel.Love)
 				.SetBiomeAffection<HallowBiome>(AffectionLevel.Like)
 				.SetBiomeAffection<JungleBiome>(AffectionLevel.Like)
-                .SetBiomeAffection<DesertBiome>(AffectionLevel.Dislike)
-                .SetBiomeAffection<SnowBiome>(AffectionLevel.Dislike)
-                .SetBiomeAffection<CorruptionBiome>(AffectionLevel.Hate)
+				.SetBiomeAffection<DesertBiome>(AffectionLevel.Dislike)
+				.SetBiomeAffection<SnowBiome>(AffectionLevel.Dislike)
+				.SetBiomeAffection<CorruptionBiome>(AffectionLevel.Hate)
 				.SetBiomeAffection<CrimsonBiome>(AffectionLevel.Hate)
 				.SetBiomeAffection<DungeonBiome>(AffectionLevel.Hate);
 		}
@@ -138,13 +128,13 @@ namespace V2.NPCs.Voraria.TownNPCs.Enigma
 
 			NPC.AsV2NPC().GetNewDialogue = GetEnigmaChat;
 
-            NPC.AsFood().DefinedBaseSize = 1.15;
+			NPC.AsFood().DefinedBaseSize = 1.15;
 			NPC.AsPred().WeightGainRatio = 0.125;
 			NPC.AsPred().MaxStomachCapacity = 2.2;
 			NPC.AsPred().BaseStomachacheMeterCapacity = 90.0;
 			NPC.AsFood().StruggleEffectiveness = 1; //have fun
 
-            NPC.AsPred().SmallGulps = Gulps.Short;
+			NPC.AsPred().SmallGulps = Gulps.Short;
 			NPC.AsPred().SmallGulpThreshold = 0.45;
 			NPC.AsPred().BigGulps = Gulps.Standard;
 			NPC.AsPred().CanBeForceFed = CanEnigmaBeForceFed;
@@ -167,7 +157,7 @@ namespace V2.NPCs.Voraria.TownNPCs.Enigma
 
 			NPC.AsFood().OnDigestedBy = PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
 		}
-        public override void ModifyTypeName(ref string typeName) => typeName = "Enigma";
+		public override void ModifyTypeName(ref string typeName) => typeName = "Enigma";
 
 		public override bool CanTownNPCSpawn(int numTownNPCs) => ModContent.GetInstance<V2MasterSystem>().freedEnigma;
 
@@ -257,10 +247,10 @@ namespace V2.NPCs.Voraria.TownNPCs.Enigma
 						EnigmaChatPool.AddRange(new List<string>
 						{
 							"Sup.",
-                            "Hey!",
-                            "Hello!",
-                            "AH! Hi, I didn't notice you!",
-                        });
+							"Hey!",
+							"Hello!",
+							"AH! Hi, I didn't notice you!",
+						});
 
 						if (Main.dayTime)
 						{
@@ -348,43 +338,43 @@ namespace V2.NPCs.Voraria.TownNPCs.Enigma
 				deathReasonKeyList.Add("Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Enigma.Hardcore");
 			}*/
 		}
-        public override bool UsesPartyHat()
-        {
-            return false;
-        }
-        public override bool CanGoToStatue(bool toKingStatue) => !toKingStatue;
+		public override bool UsesPartyHat()
+		{
+			return false;
+		}
+		public override bool CanGoToStatue(bool toKingStatue) => !toKingStatue;
 
-        public override void TownNPCAttackStrength(ref int damage, ref float knockback)
-        {
-            damage = 47;
-            knockback = 28f;
-        }
+		public override void TownNPCAttackStrength(ref int damage, ref float knockback)
+		{
+			damage = 47;
+			knockback = 28f;
+		}
 
-        public override void TownNPCAttackCooldown(ref int cooldown, ref int randExtraCooldown)
-        {
-            cooldown = 2;
-            randExtraCooldown = 1;
-        }
+		public override void TownNPCAttackCooldown(ref int cooldown, ref int randExtraCooldown)
+		{
+			cooldown = 2;
+			randExtraCooldown = 1;
+		}
 
-        public override void TownNPCAttackProj(ref int projType, ref int attackDelay)
-        {
-            projType = ModContent.ProjectileType<CLOVERPUNCH>();
-            attackDelay = 4;
-        }
+		public override void TownNPCAttackProj(ref int projType, ref int attackDelay)
+		{
+			projType = ModContent.ProjectileType<CLOVERPUNCH>();
+			attackDelay = 4;
+		}
 
-        public override void TownNPCAttackProjSpeed(ref float multiplier, ref float gravityCorrection, ref float randomOffset)
-        {
-            multiplier = 5f;
-            randomOffset = 0f;
-        }
+		public override void TownNPCAttackProjSpeed(ref float multiplier, ref float gravityCorrection, ref float randomOffset)
+		{
+			multiplier = 5f;
+			randomOffset = 0f;
+		}
 
-        public static double GetDigestionTickRate(NPC npc, PreyData prey) => 1.8;
+		public static double GetDigestionTickRate(NPC npc, PreyData prey) => 1.8;
 
 		public static double GetDigestionTickDamage(NPC npc, PreyData prey) => 6;
 
 		public static void OnDigestionKill(NPC npc, PreyData digestedPrey)
 		{
-			
+
 		}
 
 		public static double GetPreyAbsorptionRate(NPC npc)
@@ -407,7 +397,7 @@ namespace V2.NPCs.Voraria.TownNPCs.Enigma
 		public override void FindFrame(int frameHeight)
 		{
 			NPC.frame.Width = 194;
-        }
+		}
 
 		public override void ModifyHoverBoundingBox(ref Rectangle boundingBox)
 		{
