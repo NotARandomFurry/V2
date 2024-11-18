@@ -292,7 +292,7 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 								{
 									"[c/00BB00:*BWOOOURRP!*]\nNow THAT's a good meal. Almost makes me not wanna eatcha...almost. You free to be food?",
 									"Huh? Yeah, I could go for more! Just...takin' a minute before I do. Don't wanna eat too fast and get hiccups.",
-									"You know, if you're lookin' for a way to do this sorta thing yourself, the dragonfruit vine tells me there's a heavenly little treat who'd just LOVE to cram herself down your throat...unless you'd rather I get to her first.",
+									"You know, if you're lookin' for a way to do this sorta thing yourself, the dragonfruit vine tells me there's a heavenly little treat that frequents our planet who'd just LOVE to cram herself down your throat...unless you'd rather I get to her first.",
 									"What's the matter, hotshot? Jealous of my big, food-filled belly? You should be, because I'm just- [c/00FF00:*hic!*] -...er...j- just gettin' started.",
 								});
 								break;
