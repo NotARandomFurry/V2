@@ -214,7 +214,7 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 						"Getting cozy in there? I know I'm loving having you in there; hope you don't mind being demon fat.",
 						"I wonder how much you'll bulk up my breasts...maybe they'll finally burst this old shirt. I know a few people who'd love that.",
 						"I can't wait to see how much better my thighs look with a few dozen pounds of you draped over them, gutmeat.",
-						"Comfy in there, lunch? I'd hope so...'cause the only place you're goin' from where you are right now is right down to my ass and my thighs. Maybe a little for the rack, too...",
+						"Comfy in there, lunch? I'd hope so...'cause the only place you're goin' from where you are right now is right downstairs to my ass and my thighs. Maybe a little for the rack, too...",
 					});
 				}
 			}

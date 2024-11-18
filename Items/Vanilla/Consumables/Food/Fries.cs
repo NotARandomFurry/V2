@@ -7,6 +7,7 @@ namespace V2.Items.Vanilla.Consumables.Food
 {
 	public class Fries : GlobalItem
 	{
+		public override bool IsLoadingEnabled(Mod mod) => false;
 		public override bool InstancePerEntity => true;
 		public override bool AppliesToEntity(Item entity, bool lateInstantiation) => entity.type == ItemID.Fries;
 

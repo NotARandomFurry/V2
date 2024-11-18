@@ -2574,12 +2574,12 @@ Mods: {
 							'''
 						Long:
 							'''
-							[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Decreases taken digestion damage by {AntiDigestionSashDigestionDefenseBonus}].
-							[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Slows Softened buildup by {AntiDigestionSashSoftenedBuildupReduction}].
+							[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Decreases taken digestion damage] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{AntiDigestionSashDigestionDefenseBonus}].
+							[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Slows Softened buildup] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{AntiDigestionSashSoftenedBuildupReduction}].
 							'''
 						Flavor:
 							'''
-							A simple sash made out of leathers and feathers, often hastily put together and worn by less confident adventurers.
+							A simple sash made out of leathers, feathers, and silk, often hastily put together and worn by less confident adventurers.
 							While it won't hold up to a continued gastric assault, it can help stave off the acids of a hungry tummy in a pinch.
 							'''
 					}
@@ -2617,7 +2617,7 @@ Mods: {
 							'''
 							A sparkly, tasty-looking sash made of a material similar to gold, yet possessing the consistency of silk...as well as some actual divine-looking silk, this sash is standard-issue equipment for lower-ranking Sinhunters from the heavens beyond.
 							It holds up against greedier gastric assaults much better than its mortally-designed counterpart, and is designed to grant eaten angels some time to properly teach their predator just how low said predator still is on the greater food chain.
-							Promethia, of course, keeps hers with her not because she wants to get out of the predators that snack on her, but rather, because she wants just a little more time to...enjoy herself, for lack of a better term, inside those hungry tummies.
+							St. Promethia, of course, keeps hers with her not because she wants to get out of the predators that snack on her, but rather, because she wants just a little more time to...enjoy herself, for lack of a better term, inside those hungry tummies.
 							'''
 					}
 				}

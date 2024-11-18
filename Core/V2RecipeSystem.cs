@@ -200,6 +200,15 @@ namespace V2.Core
 			RemoveExistingRecipesForItem(ModContent.ItemType<BalloonBelly>());
 			#endregion
 			#endregion
+			#region Assurance Sash
+			RemoveExistingRecipesForItem(ModContent.ItemType<AntiDigestionSash>());
+			Recipe.Create(ModContent.ItemType<AntiDigestionSash>())
+				.AddIngredient(ItemID.Leather, 12)
+				.AddIngredient(ItemID.Feather, 12)
+				.AddIngredient(ItemID.Silk, 12)
+				.AddTile(TileID.Loom)
+				.Register();
+			#endregion
 			#region Sly Huntress' Scarf
 			RemoveExistingRecipesForItem(ModContent.ItemType<NymphHairScarf>());
 			Recipe.Create(ModContent.ItemType<NymphHairScarf>())
