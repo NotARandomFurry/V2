@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 using Terraria;
 using Terraria.ModLoader;
 using V2.Core;
-using V2.PlayerHandling.PredPlayerGoals.Intermediate;
 using V2.PlayerHandling;
+using V2.PlayerHandling.PredPlayerGoals.Skilled;
 
-namespace V2.Items.V2ItemGroupUtils
+namespace V2.Items.ItemGroupUtils
 {
 	public class LargeGem : GlobalItem
 	{

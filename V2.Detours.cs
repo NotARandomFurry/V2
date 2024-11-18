@@ -174,6 +174,9 @@ namespace V2
 				if ((item.expertOnly && !Main.expertMode) || (item.masterOnly && !Main.masterMode))
 					return;
 
+				if (item.AsFood().MaxHealth != -1 && item.AsFood().Health <= 0)
+					return;
+
 				if (item.AsAnItem() is not null && item.AsAnItem().AccessoryEffectCode is not null)
 					item.AsAnItem().AccessoryEffectCode.Invoke(item, player, hideVisual);
 				else

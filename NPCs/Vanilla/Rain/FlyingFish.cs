@@ -32,7 +32,7 @@ namespace V2.NPCs.Vanilla.Rain
 		{
 			npc.AsV2NPC().Gender = EntityGender.Other;
 
-			npc.AsFood().DefinedBaseSize = 2.625;
+			npc.AsFood().DefinedBaseSize = 0.6;
 
 			npc.AsFood().OnDigestedBy = PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
 			npc.AsFood().OnDigestedBy += OnKilledByDigestion_GrantFlyingFishGoal;
@@ -41,9 +41,7 @@ namespace V2.NPCs.Vanilla.Rain
 		public static void OnKilledByDigestion_GrantFlyingFishGoal(NPC npc, Entity pred)
 		{
 			if (pred is Player predPlayer)
-			{
 				ModContent.GetInstance<EatFlyingFish>().TrySetCompletion(predPlayer);
-			}
 		}
 	}
 }

@@ -98,9 +98,7 @@ namespace V2.Projectiles
 		public static void OnKilledByDigestion_GrantLivePreyGoal(Projectile projectile, Entity pred)
 		{
 			if (pred is Player predPlayer)
-			{
 				ModContent.GetInstance<FirstLivePrey>().TrySetCompletion(predPlayer);
-			}
 		}
 	}
 }

@@ -27,7 +27,7 @@ namespace V2.Items.Vanilla.Accessories
 			item.AsFood().Size = 0.08;
 			item.AsFood().AcidResistTier = 1;
 
-			item.AsAnItem().AccessoryEffectCode = UpdateHealthRegenAndPotionCooldownBand;
+			item.AsAnItem().AccessoryEffectCode += UpdateHealthRegenAndPotionCooldownBand;
 
 			item.lifeRegen = 0;
 

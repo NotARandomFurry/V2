@@ -15,7 +15,6 @@ namespace V2.PlayerHandling.PredPlayerGoals.Amateur
 		public override string InternalName => "DrinkLava";
 		public override string DisplayName(Player pred) => "Mods.V2.PredPlayerGoals.Amateur.DrinkLava.Name";
 		public override string Description(Player pred) => "Mods.V2.PredPlayerGoals.Amateur.DrinkLava.Description";
-		public override bool HasClearDescription(Player pred) => true;
 		public override bool Available(Player pred) =>
 			pred.AsV2Player().HasVisitedLocation("hell")
 		 || pred.HasItemInInventoryOrOpenVoidBag(ItemID.LavaBucket)

@@ -14,7 +14,6 @@ namespace V2.PlayerHandling.PredPlayerGoals.Starter
 		public override string InternalName => "FirstDrink";
 		public override string DisplayName(Player pred) => "Mods.V2.PredPlayerGoals.Starter.FirstDrink.Name";
 		public override string Description(Player pred) => "Mods.V2.PredPlayerGoals.Starter.FirstDrink.Description";
-		public override bool HasClearDescription(Player pred) => true;
 
 		public override int StatPointsFromCompletion => 1;
 

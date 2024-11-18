@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -19,6 +20,13 @@ namespace V2.Items.Voraria.CheatItems
 		public override LocalizedText DisplayName => Language.GetText("Mods.V2.ItemName.Voraria.CheatItems.SecondBestAngelFeather");
 		public override LocalizedText Tooltip => Language.GetText("Mods.V2.ItemTooltip.Voraria.CheatItems.SecondBestAngelFeather.Short");
 		public override string Texture => "V2/Items/UnspritedItem";
+		public override void SetStaticDefaults()
+		{
+			DrawAnimationVertical anim = new DrawAnimationVertical(6, 12);
+			Main.RegisterItemAnimation(Type, anim);
+			ItemID.Sets.AnimatesAsSoul[Type] = true;
+		}
+
 		public override void SetDefaults()
 		{
 			Item.accessory = true;

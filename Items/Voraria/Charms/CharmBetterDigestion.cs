@@ -1,9 +1,4 @@
-﻿using Microsoft.Xna.Framework.Input;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
@@ -23,8 +18,8 @@ namespace V2.Items.Voraria.Charms
 		{
 			Item.accessory = true;
 
-			Item.AsCharm().IsValidCharm = true;
-			Item.AsCharm().CharmEffects = CharmEffects;
+			Item.AsCharm().IsCharm = true;
+			Item.AsAnItem().AccessoryEffectCode += UpdateCharmBetterDigestion;
 
 			Item.width = 30;
 			Item.height = 30;
@@ -34,7 +29,7 @@ namespace V2.Items.Voraria.Charms
 			);
 		}
 
-		public static void CharmEffects(Player player)
+		public static void UpdateCharmBetterDigestion(Item item, Player player, bool hideVisual)
 		{
 			player.AsPred().ACI.Extra += AcidStrengthBonus;
 		}

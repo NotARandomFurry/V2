@@ -15,7 +15,6 @@ namespace V2.PlayerHandling.PredPlayerGoals.Amateur
 		public override string InternalName => "Cheapskate";
 		public override string DisplayName(Player pred) => "Mods.V2.PredPlayerGoals.Amateur.Cheapskate.Name";
 		public override string Description(Player pred) => "Mods.V2.PredPlayerGoals.Amateur.Cheapskate.Description";
-		public override bool HasClearDescription(Player pred) => true;
 		public override bool Available(Player pred) => NPC.AnyNPCs(NPCID.Nurse) || Complete(pred);
 
 		public override int StatPointsFromCompletion => 3;

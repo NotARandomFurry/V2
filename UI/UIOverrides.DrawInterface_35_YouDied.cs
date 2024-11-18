@@ -16,6 +16,7 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.UI;
+using Terraria.UI.Chat;
 using Terraria.UI.Gamepad;
 using V2.NPCs;
 using V2.NPCs.Vanilla.TownNPCs.Stylist;
@@ -92,7 +93,7 @@ namespace V2.UI
 					),
 					player.GetDeathAlpha(Color.Transparent),
 					0f,
-					FontAssets.MouseText.Value.MeasureString(textValue2) * respawnCountdownScale / 2f,
+					ChatManager.GetStringSize(FontAssets.MouseText.Value, textValue2, new Vector2(respawnCountdownScale)) / 2f,
 					respawnCountdownScale,
 					SpriteEffects.None,
 					0f

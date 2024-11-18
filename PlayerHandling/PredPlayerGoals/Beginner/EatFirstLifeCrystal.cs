@@ -14,7 +14,6 @@ namespace V2.PlayerHandling.PredPlayerGoals.Beginner
 		public override string InternalName => "EatFirstLifeCrystal";
 		public override string DisplayName(Player pred) => "Mods.V2.PredPlayerGoals.Beginner.EatFirstLifeCrystal.Name";
 		public override string Description(Player pred) => "Mods.V2.PredPlayerGoals.Beginner.EatFirstLifeCrystal.Description";
-		public override bool HasClearDescription(Player pred) => true;
 
 		public override int StatPointsFromCompletion => 1;
 

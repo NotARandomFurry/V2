@@ -14,7 +14,6 @@ namespace V2.PlayerHandling.PredPlayerGoals.Intermediate
 		public override string InternalName => "EatMimic";
 		public override string DisplayName(Player pred) => "Mods.V2.PredPlayerGoals.Intermediate.EatMimic.Name";
 		public override string Description(Player pred) => "Mods.V2.PredPlayerGoals.Intermediate.EatMimic.Description";
-		public override bool HasClearDescription(Player pred) => true;
 		public override bool Available(Player pred) => Main.hardMode || Complete(pred);
 
 		public override int StatPointsFromCompletion => 12;

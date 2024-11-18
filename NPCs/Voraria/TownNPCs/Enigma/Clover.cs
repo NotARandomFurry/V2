@@ -194,9 +194,9 @@ namespace V2.NPCs.Voraria.TownNPCs.Enigma
 				{
 					EnigmaChatPool.AddRange(new List<string>
 					{
-						"So... Uh... How long are you going to stay there?",
-						"Hmm... I mean, i don't /dislike/ this, i suppose.",
-						"Well, i hope you're having fun doing your... thing?",
+						"So...uh...how long are you going to stay there?",
+						"Hmm... I mean, I don't dislike this, I suppose.",
+						"Well, I hope you're having fun doing your...thing?",
 					});
 				}
 			}
@@ -259,7 +259,7 @@ namespace V2.NPCs.Voraria.TownNPCs.Enigma
 							"Sup.",
                             "Hey!",
                             "Hello!",
-                            "AH! Hi, i didn't notice you!",
+                            "AH! Hi, I didn't notice you!",
                         });
 
 						if (Main.dayTime)
@@ -281,7 +281,7 @@ namespace V2.NPCs.Voraria.TownNPCs.Enigma
 						{
 							EnigmaChatPool.AddRange(new List<string>
 							{
-								"Ah, the cool breeze during nights feels so nice. Oh, sup.",
+								"Ah, the cool breeze during nights feels so nice. Oh, 'sup.",
 							});
 						}
 
@@ -289,14 +289,14 @@ namespace V2.NPCs.Voraria.TownNPCs.Enigma
 						{
 							EnigmaChatPool.AddRange(new List<string>
 							{
-								"Do you ever think about what a raincloud would taste like?",
+								"Do you ever think about what a rain cloud would taste like?",
 							});
 						}
 						if (Main.IsItStorming)
 						{
 							EnigmaChatPool.AddRange(new List<string>
 							{
-								"Augh, the damn lightning!.. Wait, do you think if i got struck by lightning my magic would become stronger? Nevermind, that's stupid.",
+								"Augh, the damn lightning! ...wait, do you think if i got struck by lightning my magic would become stronger? Never mind, that's stupid.",
 							});
 						}
 					}
@@ -321,12 +321,12 @@ namespace V2.NPCs.Voraria.TownNPCs.Enigma
 			PredNPC.SwallowWithTextIfApplicable(
 				npc,
 				player,
-				"[c/7F7F7F:<Oh my god you just jump into her mouth.>]\n"
+				"[c/7F7F7F:<After a quick glance at Clover, you jump into her mouth without warning, rocketing almost cartoonishly down her throat as she's left hacking and coughing for a moment in an attempt to recover some air (and general throat control) forced out of her by the sudden snack.>]\n"
 			  + Main.rand.NextFromCollection(new List<string>
 				{
-					"*cough* What!? Uh, wait, i... Well, i guess i don't have to make dinner for myself now? If you do plan on staying there, that is??",
-					"Oh. Well, i hope this won't have any consequences on m*HIC* ...me.",
-					"...What? On purpose? Jeez, the people here can be so weird sometimes...",
+					"[c/7F7F8F:*cough*] What!? Uh, wait, I... Well, I guess I don't have to make dinner for myself now? If you do plan on staying there, that is??",
+					"Oh. Well, I hope this won't have any consequences on m- [c/00BF00:*hic!*] -...me.",
+					"...what? On purpose? Jeez, the people here can be so weird sometimes...",
 				})
 			);
 		}

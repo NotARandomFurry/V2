@@ -96,22 +96,22 @@ namespace V2.NPCs.Vanilla.Sky
 					itemId: ModContent.ItemType<FeatherDuster>(),
 					chanceNumerator: 1,
 					chanceDenominator: 10,
-					amountDroppedMinimum: 1,
-					amountDroppedMaximum: 1
+					amountDroppedMinimum: 3,
+					amountDroppedMaximum: 6
 				),
 				new CommonDrop(
 					itemId: ModContent.ItemType<FeatherDuster>(),
 					chanceNumerator: 1,
 					chanceDenominator: 8,
-					amountDroppedMinimum: 1,
-					amountDroppedMaximum: 1
+					amountDroppedMinimum: 4,
+					amountDroppedMaximum: 8
 				),
 				new CommonDrop(
 					itemId: ModContent.ItemType<FeatherDuster>(),
 					chanceNumerator: 1,
 					chanceDenominator: 6,
-					amountDroppedMinimum: 1,
-					amountDroppedMaximum: 1
+					amountDroppedMinimum: 5,
+					amountDroppedMaximum: 10
 				)
 			));
 		}

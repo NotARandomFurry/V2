@@ -163,8 +163,8 @@ namespace V2.NPCs.Vanilla.BloodMoon
 		{
 			if (pred is Player predPlayer)
 			{
-				PreyData groom = predPlayer.AsPred().StomachTracker?.Prey.FirstOrDefault(x => x.Type == PreyType.NPC && x.ExactType == NPCID.TheGroom);
-				if (groom is not null)
+				bool eatenGroom = predPlayer.AsPred().mealCount.ContainsKey("Terraria: The Groom") && predPlayer.AsPred().mealCount["Terraria: The Groom"] > 0;
+				if (eatenGroom)
 					ModContent.GetInstance<EatBrideAndGroom>().TrySetCompletion(predPlayer);
 			}
 		}

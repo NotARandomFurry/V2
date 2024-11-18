@@ -92,7 +92,7 @@ namespace V2.PlayerHandling
 		public int AllocatedStatPoints => GLP.Spent + TUM.Spent + ACI.Spent + ABS.Spent;
 		public int AvailableStatPoints => TotalStatPoints - AllocatedStatPoints;
 		public PredStat GLP { get; set; }
-		public StatModifier SwallowSizeModifier;
+		public StatModifier SwallowCapacityModifier;
 		public static double BaseSwallowSize => 0.75;
 		public static double SwallowSizePerLevel => 0.05;
 		public double SwallowCapacity
@@ -107,7 +107,7 @@ namespace V2.PlayerHandling
 
 				double baseSwallowSize = BaseSwallowSize;
 				baseSwallowSize += SwallowSizePerLevel * GLP.Total;
-				return SwallowSizeModifier.ApplyTo((float)baseSwallowSize);
+				return SwallowCapacityModifier.ApplyTo((float)baseSwallowSize);
 			}
 		}
 		public static int BaseLiquidSwallowSize => 5;
@@ -686,7 +686,7 @@ namespace V2.PlayerHandling
 
 			GLP.Base = 0;
 			GLP.Extra = 0;
-			SwallowSizeModifier = StatModifier.Default;
+			SwallowCapacityModifier = StatModifier.Default;
 			LiquidSwallowSizeModifier = StatModifier.Default;
 			StruggleGraceTimeModifier = StatModifier.Default;
 			TUM.Base = 0;

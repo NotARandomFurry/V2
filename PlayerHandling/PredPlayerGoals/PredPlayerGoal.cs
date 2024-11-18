@@ -58,15 +58,6 @@ namespace V2.PlayerHandling.PredPlayerGoals
 		public abstract string Description(Player pred);
 
 		/// <summary>
-		/// Whether or not this goal has a "clear description" which can be seen by holding LEFT SHIFT.<br/>
-		/// Useful for goals with really specific requirements (Lady-Sized Lollipop, Long-Distance Dinner).<br/>
-		/// </summary>
-		/// <param name="pred">
-		/// The predatory player that has the player pred goals menu open.<br/>
-		/// </param>
-		public virtual bool HasClearDescription(Player pred) => false;
-
-		/// <summary>
 		/// The number of stat points granted by the completion of this pred goal.<br/>
 		/// </summary>
 		public abstract int StatPointsFromCompletion { get; }

@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 using V2.Core;
 using V2.Items.Voraria;
+using V2.Items.Voraria.Charms;
 using V2.PlayerHandling.PredPlayerGoals.Amateur;
 using V2.Sounds.Vore;
 
@@ -36,6 +38,19 @@ namespace V2.NPCs.Vanilla.Cavern
 						GameModeID.Master => 0.175,
 						GameModeID.Expert => 0.15,
 						_ => 0.10,
+					};
+				}
+			);
+
+			public static ItemTheftRule FatassCharm => new ItemTheftRule(
+				type: (npc, pred) => ModContent.ItemType<CharmFatass>(),
+				amount: (npc, pred) => 1,
+				chance: (npc, pred) => {
+					return Main.GameMode switch
+					{
+						GameModeID.Master => 1.0,
+						GameModeID.Expert => 0.875,
+						_ => 0.75,
 					};
 				}
 			);
@@ -88,6 +103,7 @@ namespace V2.NPCs.Vanilla.Cavern
 			npc.AsFood().ItemTheftRules = [
 				NymphStuff.ItemTheftRules.NymphHairStrands,
 				NymphStuff.ItemTheftRules.MetalDetector,
+				NymphStuff.ItemTheftRules.FatassCharm,
 			];
 		}
 
@@ -134,6 +150,29 @@ namespace V2.NPCs.Vanilla.Cavern
 		{
 			if (pred is Player predPlayer)
 				ModContent.GetInstance<EatNymph>().TrySetCompletion(predPlayer);
+		}
+
+		public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
+		{
+			npcLoot.Add(
+				new V2CommonDropRules.DifficultyScalingDrop(
+					new CommonDrop(
+						itemId: ModContent.ItemType<CharmFatass>(),
+						chanceNumerator: 1,
+						chanceDenominator: 10
+					),
+					new CommonDrop(
+						itemId: ModContent.ItemType<CharmFatass>(),
+						chanceNumerator: 3,
+						chanceDenominator: 20
+					),
+					new CommonDrop(
+						itemId: ModContent.ItemType<CharmFatass>(),
+						chanceNumerator: 1,
+						chanceDenominator: 5
+					)
+				)
+			);
 		}
 	}
 }

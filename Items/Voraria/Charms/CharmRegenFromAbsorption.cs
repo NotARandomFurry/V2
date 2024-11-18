@@ -26,8 +26,8 @@ namespace V2.Items.Voraria.Charms
 		{
 			Item.accessory = true;
 
-			Item.AsCharm().IsValidCharm = true;
-			Item.AsCharm().CharmEffects = CharmEffects;
+			Item.AsCharm().IsCharm = true;
+			Item.AsAnItem().AccessoryEffectCode += UpdateCharmRegenFromAbsorption;
 
 			Item.width = 30;
 			Item.height = 30;
@@ -37,7 +37,7 @@ namespace V2.Items.Voraria.Charms
 			);
 		}
 
-		public static void CharmEffects(Player player)
+		public static void UpdateCharmRegenFromAbsorption(Item item, Player player, bool hideVisual)
 		{
 			if (player.AsPred().StomachTracker?.Prey.Count > 0)
 			{

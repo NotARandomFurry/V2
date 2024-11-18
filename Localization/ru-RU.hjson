@@ -34,7 +34,7 @@ ItemName: {
 
 Bestiary_FlavorText: {
 	# Bosses
-	// npc_HallowBoss: The most gluttonous prismatic fairy to ever inhabit Terraria, rumored to have eaten a titaness whole and alive to gain her modern-day size and strength. She wishes to one day shine with the light of the digested sun.
+	// npc_HallowBoss: The most gluttonous prismatic fairy to ever inhabit Terraria, rumored to have eaten a titaness whole and alive to gain her modern-day size and strength. She wishes to one day shine with the feast-worthy, fattening light of the digested sun.
 	# Caverns
 	// npc_LostGirl: A lady of no clothes or cruel countenance (don't mind the ominous rumbling or that she's licking her lips), patiently awaiting a savior that can rescue her and return her to the surface.
 	// npc_Nymph: Masterfully deceives the common fool by posing as a lost, scared lady, then lunges forward and gobbles up her prey before they can so much as touch her. Also enjoys certain card and board games.
@@ -44,7 +44,7 @@ Bestiary_FlavorText: {
 	// npc_ThePossessed: Oftentimes, under the Eclipse's blacklight glow, malevolent spirits will set out to possess once-meek peasants like this unfortunate girl and glut themselves on the unprepared.
 	# Town NPCs
 	// npc_Nurse: A freelance nurse-enary, if you can call that a word, that earned her medical license basically entirely to have an excuse to try to pack some bums onto her bum. Much to her chagrin, everyone seems to stick around top-side for her...
-	// npc_Dryad: While dryads are rarely found in civilized country, they are more plentiful than anyone would have you believe; this one in particular seems very hung up on the idea that the world is impure.
+	// npc_Dryad: While dryads are rarely found in civilized country, they are more plentiful than anyone would have you believe; this one in particular seems very hung up on the idea that the world is impure. Given how often her people and ancestors alike get glorped by vegans and vegetarians, this isn't a surprise.
 	// npc_Stylist: Originally hailing from northwest Avarsici, Amber eventually found herself running away when her best gal pal was outcast from their hometown. She's still a stellar hair styler, though, and she and her gut will gladly whip your hair up nice!
 	// npc_Mechanic: A masterful robotics worker whose exact country of origin is unknown; only that she was held against her will by a mysterious group to make new parts for an unknown master.
 }
@@ -724,6 +724,23 @@ Mods: {
 					}
 				}
 
+				EatFlyingFish: {
+					// Name: Simple Sky Fishing
+
+					Description: {
+						/* Default:
+							'''
+							Hook a flying fish and reel it in(to your gut) to learn the basics of sky fishing.
+							'It's a really fun sport once you get past the fact that fish can fly at all. How, you ask? Better not to think about it.'
+							''' */
+						/* Clarification:
+							'''
+							Eat and digest a Flying Fish.
+							Flying Fish are fairly common, but only come swimming through the air to see your hook when it's raining.
+							''' */
+					}
+				}
+
 				EatSnowFlinx: {
 					Name: Он был таким пушистым!
 
@@ -844,6 +861,24 @@ Mods: {
 							Съешьте и переварите кристалл маны.
 							Кристаллы маны иногда встречаются в пещерах, их можно использовать или съесть, чтобы увеличить максимальный запас маны.
 							'''
+					}
+				}
+
+				FindCharm: {
+					// Name: Lunchy Charm
+
+					Description: {
+						/* Default:
+							'''
+							Get a hold of a charm that can help you alleviate your tummy's troubles.
+							'Even the greediest preds need some help now and again! That's what charms are for!'
+							''' */
+						/* Clarification:
+							'''
+							Find and equip a Charm for the first time.
+							Charms are the primary predatory accessory you'll find in your travels, with many of them having powerful effects that help with a specific aspect of gorging yourself on the world.
+							They can be equipped in your normal accessory slots, just as with anything else. Be careful, though; you may only have up to 3 Charms equipped at once.
+							''' */
 					}
 				}
 
@@ -1284,19 +1319,6 @@ Mods: {
 						// Clarification: Eat and digest any Sofa.
 					}
 				}
-
-				EatObserver: {
-					// Name: '''"Stop starin' at me with that big ol' eye!"'''
-
-					Description: {
-						/* Default:
-							'''
-							Somehow swallow and digest one of the uncommon Observers.
-							'So much for being made to be un-swallowable.'
-							''' */
-						// Clarification: Eat and digest an Observer.
-					}
-				}
 			}
 
 			Skilled: {
@@ -1328,6 +1350,19 @@ Mods: {
 							Eat and digest a boss.
 							Bosses are extremely difficult to devour, usually requiring special items or abilities to get down and heavy investment in all non-ABS pred stats to keep down. That said, bosses are also extremely high in calories (very good news for your greedy tummy) and also typically grant access to unique pred abilities once what's left of them settles down on your frame.
 							''' */
+					}
+				}
+
+				EatObserver: {
+					// Name: '''"Stop starin' at me with that big ol' eye!"'''
+
+					Description: {
+						/* Default:
+							'''
+							Somehow swallow up one of the biggest eyes in the sky.
+							'So much for incidentally evolving to be nigh-unswallowable.'
+							''' */
+						// Clarification: Eat and digest an Observer.
 					}
 				}
 
@@ -1389,10 +1424,12 @@ Mods: {
 					DigestionRepairScroll: Свиток божественного несварения
 					FeatherDuster: Пыльник из перьев
 					HairDyeCapacity: Голодная краска для волос
+					// SteampunkerGutFastTravel: Steam-Powered Tumspace Translator
 				}
 
 				Charms: {
 					BetterDigestion: Меньшие кислотные чары
+					// Fatass: Charm of Greed
 					PreyItemTheft: Очарование вора
 					LessStomachWeight: Обаяние освобождения
 					RegenFromAbsorption: Очарование возрождения
@@ -1733,6 +1770,42 @@ Mods: {
 					}
 
 					Potions: {
+						Ale: {
+							/* Short:
+								'''
+								Makes you tipsy while, and for a minute or two after, digesting
+								While tipsy, you're better with melee combat and eating people; not as good with digesting them, though
+								{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+								''' */
+							/* Long:
+								'''
+								It's alcohol in a mug. What do you want me to say?
+								Lucky you, not only are glass mugs super easy to digest, but the booze will spill over the top as it goes down your throat, too, so you'll feel the effects right away.
+
+								While in a stomach, until fully digested, and for 1 minute and 30 seconds thereafter, [c/{$Mods.V2.CommonColorCodes.DoSomething}:inflicts the Tipsy debuff].
+								This buff improves your melee capabilities and internal capacities, at the cost of some defense and some digestion rates.
+								''' */
+							// Flavor: A simple glass of ale. Most drunkands would swallow mugs like these by the pound with ale still in them, or even drink the kegs dry directly. Sometimes, they'd even swallow down the kegs themselves!
+						}
+
+						Sake: {
+							/* Short:
+								'''
+								Makes you tipsy while, and for a short while after, digesting
+								{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+								''' */
+							/* Long:
+								'''
+								It's alcohol, but fancy! And in a fancy bottle!
+								Since you're just swallowing the whole bottle, with the cap still on, you'll need the bottle to break first from running out of durability.
+								As such, it may take a moment before you really start to feel the good vibes you're drinking this stuff for.
+
+								Once the bottle breaks, until fully digested, and for 3 minutes thereafter, [c/{$Mods.V2.CommonColorCodes.DoSomething}:inflicts the Tipsy debuff].
+								This buff improves your melee capabilities and internal capacities, at the cost of some defense and some digestion rates.
+								''' */
+							// Flavor: A well-made beverage from the heart of Turea, made predominantly for its endless lineages of princes and princesses...yet still marketed as a drink for the wealthy of other countries, and an exotic booze for those with a few currencies to spare.
+						}
+
 						Regeneration: {
 							/* Short:
 								'''
@@ -2343,8 +2416,8 @@ Mods: {
 							'''
 							[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases critical strike chance] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:7%].
 							[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases luck] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:0.1].
-							[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases movement speed] by [c/{$Mods.V2.CommonColorCodes.DoSomething}20%].
-							[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Decreases stomach weight] by [c/{$Mods.V2.CommonColorCodes.DoSomething}15%].
+							[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases movement speed] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:20%].
+							[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Decreases stomach weight] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:15%].
 							[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases struggle strength] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:75%].
 							''' */
 						/* Flavor:
@@ -2563,6 +2636,24 @@ Mods: {
 							'''
 						Long: "[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Повышает кислотную прочность (ACI) на {AcidStrengthBonus}]."
 						Flavor: Амулет начального уровня, призванный сделать желудочные кислоты его носителя значительно более мощными, чем если бы он обходился без него. Очень полезен для начинающих хищников, которым не помешает дополнительный толчок пищеварительным сокам, чтобы обеспечить себе несколько первых крупных трапез, но, к сожалению, не имеет особого смысла после начальной стадии.
+					}
+
+					Fatass: {
+						/* Short:
+							'''
+							Lets you take on much bigger prey...but at what cost?
+							{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+							''' */
+						/* Long:
+							'''
+							[c/{$Mods.V2.CommonColorCodes.DoSomething}:Doubles] [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:swallow and stomach capacities].
+							[c/{$Mods.V2.CommonColorCodes.DoSomething}:Halves] [c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:digestion damage and tick rate].
+							''' */
+						/* Flavor:
+							'''
+							A high-risk, high-reward charm typically only offered to skilled adventurers with a greedy enough tummy to negate its downside; it is often plucked from these adventurers by nymphs as one of the few things that can survive the gastric torment of such deceitful ladies' gluttonous tummies.
+							While worn, it redirects a part of the muscle and nerve firings from actively digesting swallowed prey, instead putting that bodily power towards stretching the throat and stomach to gobbling up and gorge oneself ever-larger prey. It's not hard to see why nymphs see them as a valuable trinket, as would anyone else.
+							''' */
 					}
 
 					LessStomachWeight: {
@@ -2905,6 +2996,28 @@ Mods: {
 							ОБРАТИТЕ ВНИМАНИЕ: Избыток калорий, получаемых при переваривании пищи, не может привести к увеличению длины волос.
 							'''
 					}
+
+					SteampunkerGutFastTravel: {
+						/* Short:
+							'''
+							Can only be used in a hungry tummy?
+							Can be used to save yourself from impending digestion into ass fat, probably?
+							'The latest and greatest in instantaneous transportation!...or so she says.'
+							{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+							''' */
+						/* Long:
+							'''
+							Can only be used while the Steampunker is alive.
+							When used, instantly [c/{$Mods.V2.CommonColorCodes.DoSomething}:teleports you] [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:out of your current predator's stomach], if applicable...[c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:and into the Steampunker's].
+							[c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:Does not work] while in the Steampunker's stomach.
+							''' */
+						/* Flavor:
+							'''
+							A peculiar little trinket fashioned together by the Steampunker, the great lass she is, for a measly sum.
+							It can be used anywhere as a one-way teleport, even workable in the most gluttonous guts to instantly get you out of digestive jeopardy...but to what catch?
+							Much to the Steampunker's frustration, though, it doesn't yet work across planes of reality, nor from excessively long distances. She's still working on that functionality.
+							''' */
+					}
 				}
 
 				Weapons: {
@@ -3110,6 +3223,16 @@ Mods: {
 						'''
 				}
 
+				/* Debuffs.Tipsy.Description:
+					'''
+					[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases melee damage] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{TipsyMeleeDamageBonus}].
+					[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases melee critical strike chance] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{TipsyMeleeCritChanceBonus}].
+					[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases melee attack speed] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{TipsyMeleeAttackSpeedBonus}].
+					[c/{$Mods.V2.CommonColorCodes.NegativeEffect}:Decreases defense] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{TipsyDefenseCut}].
+					[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases fishing power] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{TipsyFishPowerBonus}].
+					[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases swallow and stomach capacities] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{TipsyCapacityBonus}].
+					[c/{$Mods.V2.CommonColorCodes.NegativeEffect}:Decreases digestion tick rate and absorption rate] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{TipsyChurnRateCut}].
+					''' */
 				Summons.Pets.FairyPrincess.Description:
 					'''
 					Маленькая, но очень голодная призматическая фея [c/{$Mods.V2.CommonColorCodes.DoSomething}:следует за вами по пятам].
@@ -3870,24 +3993,24 @@ Mods: {
 
 			Enigma: {
 				// Content: Nothin' too crazy going on.
-				// NoHome: I have two questions. 1. Where the fuck am i? 2. Do you... have some place i can stay at?
-				// FarFromHome: I think... i got lost. Whoops!
+				// NoHome: I have two questions. 1. Where the fuck am I? 2. Do you... have some place I can stay at?
+				// FarFromHome: I think... I got lost. Whoops!
 
 				Biomes: {
 					// Mushroom: It's... beautiful. Sure, the mushrooms are somewhat inedible which is a shame but blue is such a nice color! I love it here!!!
 					// Hallow: This place is pretty and everything tastes like candy! But those DAMN gastropods. I HATE THOSE!!! So, it kinda evens out, this place is nice.
 					// Jungle: There's something about this place that just... makes my magic power thingymajigs... easier to do? Not complaining at all!
 					// Desert: It is hot as hell in this fucky ass hot ass room im in! How is nobody else complaining about the heat???
-					// Tundra: One time i slipped on ice. I now hold a grudge against ice for the rest of my life.
+					// Tundra: One time I slipped on ice. I now hold a grudge against ice for the rest of my life.
 					// Corruption: This place, sucks. That's all there really is to say on the matter.
 					// Crimson: This place, sucks. That's all there really is to say on the matter.
-					// Underworld: Yeesh, i might just pass out from being in here. Unfortunately for me the underworld isn't a seperate biome according to happiness so im forced to be neutral about this. Ugh.
+					// Underworld: Yeesh, I might just pass out from being in here. Unfortunately for me the underworld isn't a seperate biome according to happiness so im forced to be neutral about this. Ugh.
 					// Dungeon: This place, sucks. That's all there really is to say on the matter.
 				}
 
 				Neighbors: {
 					CrowdLevel: {
-						// Alone: Can't complain about isolation, i guess. I'm not that good at socializing...
+						// Alone: Can't complain about isolation, I guess. I'm not that good at socializing...
 						// GoodCompany: There's a few nice people around, it's great!
 						// BadCompany: Few people around is... alright? Don't really appreciate the few that are here though...
 						// GoodCrowd: Wow that's, quite the amount of people!
@@ -3896,10 +4019,10 @@ Mods: {
 					}
 
 					SpecificNPCs: {
-						// LoveTruffle: "{NPCName} is such a silly guy, i love him!.. What, did you expect me to say fun guy? Nah."
-						// LikePrincess: Ah, the princess. She's fun to hang out with, but i'm kinda running out on stuff to change the topic to everytime she asks about my 'magical items', since they aren't quite... For her age.
-						// LikeAngler: Fish are so cool! And {NPCName} understands that! Most people seem to find him annoying though, but i think his attitude makes him funnier!
-						// HateTaxCollector: "{NPCName}..? Fuck that guy, i need my money to buy sweets!"
+						// LoveTruffle: "{NPCName} is such a silly guy, I love him!.. What, did you expect me to say fun guy? Nah."
+						// LikePrincess: Ah, the princess. She's fun to hang out with, but I'm kinda running out on stuff to change the topic to everytime she asks about my 'magical items', since they aren't quite... For her age.
+						// LikeAngler: Fish are so cool! And {NPCName} understands that! Most people seem to find him annoying though, but I think his attitude makes him funnier!
+						// HateTaxCollector: "{NPCName}..? Fuck that guy, I need my money to buy sweets!"
 					}
 				}
 			}
@@ -3911,7 +4034,7 @@ Mods: {
 				MeteorMaiden: Завораживающая, почти женская конструкция, но без талии или чего-либо под ней. Верхняя и нижняя половины ее туловища могут отделяться друг от друга до бесконечности, открывая магически сформированный желудок, который сжигает все, что находится внутри. Пескоподобная жижа, которую она производит в процессе пищеварения, имеет широкий спектр применения.
 			}
 
-			// Sky.Observer: Some Demon Eyes had evol... actually? no, i cant justify the existence of these things. these quite literally exist just for the funny.
+			// Sky.Observer: Every so often, a Demon Eye sees much more than it is meant to see in its life as a result of a defect. This, of course, leads to the eye becoming far too large to move freely about the skies. While functionally harmless, their sheer size makes them hard to swallow without good practice.
 
 			TownNPCs: {
 				Succubus: Прожив на окраине Десперая много лет, прежде чем решиться на отъезд, Люсинда - демон, который просто хочет, чтобы люди верили, что она сильный, независимый хищник, которому не нужны никакие глупые чары... хотя она едва может удержать добычу так же, как ее начальство.
@@ -4027,26 +4150,26 @@ Mods: {
 
 			Clover: {
 				TownNPCMood: {
-					// Princess_LovesNPC: "{NPCName} has cool powers and is fun to chat with! She keeps changing the topic when i ask her about it, though..."
-					// LikeNPC_Princess: Ah, the princess. She's fun to hang out with, but i'm kinda running out on stuff to change the topic to everytime she asks about my 'magical items', since they aren't quite... For her age.
-					// HateNPC: "{NPCName}..? Fuck that guy, i need my money to buy sweets!"
+					// Princess_LovesNPC: "{NPCName} has cool powers and is fun to chat with! She keeps changing the topic when I ask her about it, though..."
+					// LikeNPC_Princess: Ah, the princess. She's fun to hang out with, but I'm kinda running out on stuff to change the topic to everytime she asks about my 'magical items', since they aren't quite... For her age.
+					// HateNPC: "{NPCName}..? Fuck that guy, I need my money to buy sweets!"
 					// LikeNPC: I like {NPCName}.
 					// LoveNPC: I love {NPCName}.
 					// HateBiome: This place, sucks. That's all there really is to say on the matter.
 					// DislikeBiome: I dislike {BiomeName}.
 					// LikeBiome: I like {BiomeName}.
-					// LoveBiome: It's... beautiful. Sure, the mushrooms are somewhat inedible which is a shame but blue is such a nice color! I love it here!!!
-					// HateCrowded: Wow that's, quite the amount of people!.. eugh.
-					// DislikeCrowded: Wow that's, quite the amount of people!
-					// LoveSpace: Can't complain about isolation, i guess. I'm not that good at socializing...
-					// FarFromHome: I think... i got lost. Whoops!
-					// NoHome: I have two questions. 1. Where the fuck am i? 2. Do you... have some place i can stay at?
+					// LoveBiome: It's... beautiful. Sure, the mushrooms are somewhat inedible, which is a shame, but blue is such a nice color! I love it here!!!
+					// HateCrowded: Wow, that's. Quite the amount of people! ...eugh.
+					// DislikeCrowded: Wow, that's. Quite the amount of people!
+					// LoveSpace: Can't complain about isolation, I guess. I'm not that good at socializing...
+					// FarFromHome: I think... I got lost. Whoops!
+					// NoHome: I have two questions. 1. Where the fuck am I? 2. Do you... have some place I can stay at?
 					// Content: Nothin' too crazy going on.
 				}
 
 				// FreeButton.DisplayName: Free
 				// DisplayName: Enigma
-				// Census.SpawnCondition: Conditions unknown
+				// Census.SpawnCondition: Find and free her from the Jungle's deeper caverns in Hardmode
 			}
 		}
 

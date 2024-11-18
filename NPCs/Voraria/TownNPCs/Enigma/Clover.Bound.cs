@@ -109,9 +109,9 @@ namespace V2.NPCs.Voraria.TownNPCs.Enigma
 		{
 			List<string> possibleLines = new List<string>
 			{
-				"Oh, hey! I'm uh, stuck up here somehow. Don't ask how i did it, just get me down!",
-				"So, how's it... hanging? Get it?... Okay i won't do anymore awful jokes if you get me down!",
-				"...no chat, i'm not going to- OH IM NOT ALONE HERE Hi! Can you, help a gal out here?",
+				"Oh, hey! I'm, uh, stuck up here somehow. Don't ask how I did it, just get me down!",
+				"So, how's it... hanging? Get it? ...okay, I won't do any more awful jokes if you get me down!",
+				"...no chat, I'm not going to- OH IM NOT ALONE HERE Hi! Can you... help a gal out here?",
 			};
 			return Main.rand.NextFromCollection(possibleLines);
 		}

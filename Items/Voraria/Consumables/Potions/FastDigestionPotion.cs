@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using System.Collections.Generic;
+using System.Linq;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -104,6 +105,7 @@ namespace V2.Items.Voraria.Consumables.Potions
 					FastDigestionPotionABSBonus = ABSBonus,
 				}
 			);
+			tooltips.FirstOrDefault(x => x.Name == "BuffTime").Hide();
 		}
 	}
 }

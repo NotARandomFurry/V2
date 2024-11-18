@@ -39,9 +39,7 @@ namespace V2.NPCs.Vanilla.Forest
 		public static void OnKilledByDigestion_GrantAngryDandelionGoal(NPC npc, Entity pred)
 		{
 			if (pred is Player predPlayer)
-			{
 				ModContent.GetInstance<EatAngyFlower>().TrySetCompletion(predPlayer);
-			}
 		}
 	}
 }

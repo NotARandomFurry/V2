@@ -110,7 +110,7 @@ namespace V2.NPCs
 		public override void SetDefaults(NPC npc)
 		{
 			if (!NPCID.Sets.ProjectileNPC[npc.type])
-				npc.AsFood().OnDigestedBy = OnKilledByDigestion_GrantLivePreyGoal;
+				npc.AsFood().OnDigestedBy += OnKilledByDigestion_GrantLivePreyGoal;
 		}
 
 		public override void ResetEffects(NPC npc)
@@ -329,9 +329,7 @@ namespace V2.NPCs
 		public static void OnKilledByDigestion_GrantLivePreyGoal(NPC npc, Entity pred)
 		{
 			if (pred is Player predPlayer)
-			{
 				ModContent.GetInstance<FirstLivePrey>().TrySetCompletion(predPlayer);
-			}
 		}
 	}
 }

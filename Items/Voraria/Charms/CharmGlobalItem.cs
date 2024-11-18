@@ -5,37 +5,48 @@ using System.Text;
 using System.Threading.Tasks;
 using Terraria;
 using Terraria.ModLoader;
+using Terraria.ModLoader.Default;
+using V2.PlayerHandling.PredPlayerGoals.Beginner;
 
 namespace V2.Items.Voraria.Charms
 {
 	public static class CharmHelpers
 	{
 		public static CharmGlobalItem AsCharm(this Item item) => item.GetGlobalItem<CharmGlobalItem>();
+
+		public static List<int> ImplementedCharms =>
+		[
+			ModContent.ItemType<CharmBetterDigestion>(),
+			ModContent.ItemType<CharmFatass>(),
+			ModContent.ItemType<CharmLessStomachWeight>(),
+			ModContent.ItemType<CharmPreyItemTheft>(),
+			ModContent.ItemType<CharmRegenFromAbsorption>(),
+		];
+
+		public static int MaxCharms => 3;
 	}
 
 	public class CharmGlobalItem : GlobalItem
 	{
 		public override bool IsLoadingEnabled(Mod mod) => !V2.GetFooled;
+		public override bool AppliesToEntity(Item entity, bool lateInstantiation) => CharmHelpers.ImplementedCharms.Contains(entity.type);
 		/// <summary>
-		/// Whether or not this item is valid for use in charm slots.<br/>
+		/// Whether or not this item is a charm and thus able to grant the charm goal on equip.<br/>
 		/// Defaults to <see langword="false"/>.
 		/// </summary>
-		public bool IsValidCharm { get; set; } = false;
-
-		public delegate void DelegateCharmEffects(Player player);
-		/// <summary>
-		/// What this item should do when placed in a charm slot.<br/>
-		/// If <see cref="IsValidCharm"/> is set to <see langword="true"/>, this is assumed to NOT be <see langword="null"/>.<br/>
-		/// As such, ALWAYS ensure this is filled with a delegate when <see cref="IsValidCharm"/> is <see langword="true"/>!<br/>
-		/// </summary>
-		public DelegateCharmEffects CharmEffects { get; set; } = null;
+		public bool IsCharm { get; set; } = false;
 
 		public override bool InstancePerEntity => true;
 
-		public override void UpdateAccessory(Item item, Player player, bool hideVisual)
+		public override void SetDefaults(Item item)
 		{
-			if (item.AsCharm().IsValidCharm)
-				item.AsCharm().CharmEffects.Invoke(player);
+			item.AsCharm().IsCharm = true;
+			item.AsAnItem().AccessoryEffectCode += UpdateCharm;
+		}
+
+		public static void UpdateCharm(Item item, Player player, bool visual)
+		{
+			ModContent.GetInstance<EquipCharm>().TrySetCompletion(player);
 		}
 	}
 }

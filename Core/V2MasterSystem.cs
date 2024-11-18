@@ -17,7 +17,7 @@ namespace V2.Core
 
 		public override void OnWorldLoad()
 		{
-			VoreTrackers = new List<VoreTracker>();
+			VoreTrackers = [];
 			freedSucc = false;
 			freedAngel = false;
 			freedEnigma = false;
@@ -25,7 +25,7 @@ namespace V2.Core
 
 		public override void OnWorldUnload()
 		{
-			VoreTrackers = new List<VoreTracker>();
+			VoreTrackers = [];
 			freedSucc = false;
 			freedAngel = false;
             freedEnigma = false;

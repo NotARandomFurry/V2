@@ -34,9 +34,7 @@ namespace V2.NPCs.Sets
 		public static void OnDigestedBy_GrantGoldCritterGoal(NPC npc, Entity pred)
 		{
 			if (pred is Player predPlayer)
-			{
 				ModContent.GetInstance<EatGoldCritter>().TrySetCompletion(predPlayer);
-			}
 		}
 	}
 }

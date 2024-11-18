@@ -41,9 +41,7 @@ namespace V2.NPCs.Vanilla.Ocean
 		public static void OnKilledByDigestion_GrantSharkGoal(NPC npc, Entity pred)
 		{
 			if (pred is Player predPlayer)
-			{
 				ModContent.GetInstance<EatShark>().TrySetCompletion(predPlayer);
-			}
 		}
 	}
 }

@@ -42,9 +42,7 @@ namespace V2.NPCs.Sets
 		public static void OnDigestedBy_GrantMimicGoal(NPC npc, Entity pred)
 		{
 			if (pred is Player predPlayer)
-			{
 				ModContent.GetInstance<EatMimic>().TrySetCompletion(predPlayer);
-			}
 		}
 	}
 }

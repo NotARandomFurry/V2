@@ -40,9 +40,7 @@ namespace V2.NPCs.Vanilla.Ocean
 		public static void OnKilledByDigestion_GrantSquidGoal(NPC npc, Entity pred)
 		{
 			if (pred is Player predPlayer)
-			{
 				ModContent.GetInstance<EatSquid>().TrySetCompletion(predPlayer);
-			}
 		}
 	}
 }

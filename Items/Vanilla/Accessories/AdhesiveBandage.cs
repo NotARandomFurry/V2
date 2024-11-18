@@ -25,7 +25,7 @@ namespace V2.Items.Vanilla.Accessories
 			item.AsFood().Size = 0.07;
 			item.AsFood().AcidResistTier = 0;
 
-			item.AsAnItem().AccessoryEffectCode = UpdateAdhesiveBandage;
+			item.AsAnItem().AccessoryEffectCode += UpdateAdhesiveBandage;
 		}
 
 		public static void UpdateAdhesiveBandage(Item item, Player player, bool hideVisual)

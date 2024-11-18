@@ -23,18 +23,18 @@ namespace V2.Items.Voraria.Charms
 		{
 			Item.accessory = true;
 
-			Item.AsCharm().IsValidCharm = true;
-			Item.AsCharm().CharmEffects = CharmEffects;
+			Item.AsCharm().IsCharm = true;
+			Item.AsAnItem().AccessoryEffectCode += UpdateCharmPreyItemTheft;
 
 			Item.width = 30;
 			Item.height = 30;
-			Item.rare = ItemRarityID.Blue;
+			Item.rare = ItemRarityID.LightRed;
 			Item.value = Item.buyPrice(
 				gold: 5
 			);
 		}
 
-		public static void CharmEffects(Player player)
+		public static void UpdateCharmPreyItemTheft(Item item, Player player, bool hideVisual)
 		{
 			player.AsPred().charmStealPreyLoot = true;
 		}

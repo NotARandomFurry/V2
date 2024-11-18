@@ -148,8 +148,8 @@ namespace V2.UI.PredStatsMenu
 						break;
 				}
 
-				int columnCountPerPage = 8;
-				int rowCountPerPage = 5;
+				int columnCountPerPage = 10;
+				int rowCountPerPage = 4;
 				int totalGoalsPerPage = columnCountPerPage * rowCountPerPage;
 				int goalPages = 1 + (int)Math.Floor((double)(selectedStageGoals.Count - 1) / (double)totalGoalsPerPage);
 				int firstIndexForThisPage = (GoalsPage - 1) * totalGoalsPerPage;
@@ -200,13 +200,10 @@ namespace V2.UI.PredStatsMenu
 						  + " stat point"
 						  + (goalToDraw.StatPointsFromCompletion == 1 ? "" : "s") + "]\n";
 						string descriptionKey = goalToDraw.Description(Main.LocalPlayer);
-						if (goalToDraw.HasClearDescription(Main.LocalPlayer))
-						{
-							if (Main.keyState.IsKeyDown(Keys.LeftShift))
-								descriptionKey += ".Clarification";
-							else
-								descriptionKey += ".Default";
-						}
+						if (Main.keyState.IsKeyDown(Keys.LeftShift))
+							descriptionKey += ".Clarification";
+						else
+							descriptionKey += ".Default";
 						string[] goalFullHoverTextLines = Utils.WordwrapString(
 							Language.GetTextValue(descriptionKey),
 							FontAssets.MouseText.Value,
@@ -224,7 +221,7 @@ namespace V2.UI.PredStatsMenu
 							}
 						}
 
-						if (goalToDraw.HasClearDescription(Main.LocalPlayer) && !Main.keyState.IsKeyDown(Keys.LeftShift))
+						if (!Main.keyState.IsKeyDown(Keys.LeftShift))
 							goalFullHoverText += "[c/7F7F7F:" + Language.GetTextValue("Mods.V2.PredPlayerGoals.GenericText.HoldToLearnMore." + (goalToDraw.Complete(Main.LocalPlayer) ? "Complete" : "Incomplete")) + "]";
 
 						UICommon.TooltipMouseText(goalFullHoverText);
@@ -302,8 +299,8 @@ namespace V2.UI.PredStatsMenu
 						}
 
 						Color completionRatiosBaseColor = new Color(145, 155, 215);
-						Color goalsCompleteColor = Color.Lerp(new Color(100, 20, 20), new Color(60, 220, 60), goalCompletionRatio.CastToDecimalPlaces(1));
-						Color pointsGainedColor = Color.Lerp(new Color(100, 20, 20), new Color(60, 220, 60), pointsCompletionRatio.CastToDecimalPlaces(1));
+						Color goalsCompleteColor = Color.Lerp(new Color(150, 50, 50), new Color(70, 210, 70), goalCompletionRatio.CastToDecimalPlaces(1));
+						Color pointsGainedColor = Color.Lerp(new Color(150, 50, 50), new Color(70, 210, 70), pointsCompletionRatio.CastToDecimalPlaces(1));
 						int currentHiddenGoalsInStage = stageGoals.FindAll(x => !x.Available(Main.LocalPlayer)).Count;
 						stageFullHoverText += "[c/" + (completionRatiosBaseColor * mouseTextColorFactor).Hex3() + ":Stage Goals Completed:] [c/" + (goalsCompleteColor * mouseTextColorFactor).Hex3() + ":" + stageGoalsCompleted.Count + " / " + stageGoals.Count + " (" + goalCompletionRatio.ToPercentage(1) + ")] [c/" + (subtitleColor * mouseTextColorFactor).Hex3() + ":(" + (currentHiddenGoalsInStage == 1 ? "1 goal is" : (currentHiddenGoalsInStage + " goals are")) + " currently hidden)]\n";
 						stageFullHoverText += "[c/" + (completionRatiosBaseColor * mouseTextColorFactor).Hex3() + ":Points Gained From Stage:] [c/" + (pointsGainedColor * mouseTextColorFactor).Hex3() + ":" + pointsGainedFromStage + " / " + pointsPossibleFromStage + " (" + pointsCompletionRatio.ToPercentage(1) + ")]";

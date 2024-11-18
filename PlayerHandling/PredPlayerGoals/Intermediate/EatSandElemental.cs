@@ -14,7 +14,6 @@ namespace V2.PlayerHandling.PredPlayerGoals.Intermediate
 		public override string InternalName => "EatSandElemental";
 		public override string DisplayName(Player pred) => "Mods.V2.PredPlayerGoals.Intermediate.EatSandElemental.Name";
 		public override string Description(Player pred) => "Mods.V2.PredPlayerGoals.Intermediate.EatSandElemental.Description";
-		public override bool HasClearDescription(Player pred) => true;
 		public override bool Available(Player pred) => (Main.hardMode && pred.AsV2Player().HasVisitedLocation("sandstorm")) || Complete(pred);
 
 		public override int StatPointsFromCompletion => 20;
