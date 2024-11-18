@@ -9,6 +9,6 @@ namespace V2.NPCs.Vanilla.Cavern
 		public static void V2YellowSlimeFirstFrameAI(NPC npc) => GeneralizedAIOverrides.SimpleSlimeFirstFrameAI(npc, (int)((float)18 * 1.2f));
 		public static bool V2YellowSlimeAI(NPC npc) => GeneralizedAIOverrides.SimpleSlimeAI(npc, 1.2f, (int)((float)24 * 1.2f), (int)((float)18 * 1.2f));
 
-		public override void PostAI(NPC npc) => npc.DoContactGulpage();
+		// public override void PostAI(NPC npc) => npc.DoContactGulpage();
 	}
 }

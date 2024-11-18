@@ -165,7 +165,7 @@ Mods: {
 					}
 
 					PermaChurnableEquipment: {
-						// Label: Indirect Equipment Eradication
+						// Label: Perma-Gurgled Possessions
 						/* Tooltip:
 							'''
 							BALANCE BREAKAGE: Varies
@@ -864,7 +864,7 @@ Mods: {
 					}
 				}
 
-				FindCharm: {
+				EquipCharm: {
 					// Name: Lunchy Charm
 
 					Description: {
@@ -875,9 +875,8 @@ Mods: {
 							''' */
 						/* Clarification:
 							'''
-							Find and equip a Charm for the first time.
-							Charms are the primary predatory accessory you'll find in your travels, with many of them having powerful effects that help with a specific aspect of gorging yourself on the world.
-							They can be equipped in your normal accessory slots, just as with anything else. Be careful, though; you may only have up to 3 Charms equipped at once.
+							Find and equip a charm for the first time.
+							Charms are the primary predatory accessory you'll find in your travels, with many of them having powerful effects that help with a specific aspect of gorging yourself on the world. They can be equipped in your normal accessory slots, just as with anything else.
 							''' */
 					}
 				}
@@ -1260,7 +1259,7 @@ Mods: {
 						/* Clarification:
 							'''
 							Eat and digest a Fallen Angel.
-							Fallen Angels rarely appear in Corruption and Crimson biomes, a bit more commonly in the caves of these biomes, and will try to cram themselves into you if you have enough space to hold them; if not, they will cram you and themselves into the nearest predator, if possible.
+							Fallen Angels rarely appear in the Corruption and Crimson, a bit more commonly in the caves of these accursed places, and will try to cram themselves into you if you have enough space to hold them; if not, they will cram you and themselves into the nearest predator, if possible.
 							''' */
 					}
 				}

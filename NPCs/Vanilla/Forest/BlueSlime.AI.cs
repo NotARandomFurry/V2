@@ -15,6 +15,6 @@ namespace V2.NPCs.Vanilla.Forest
 		public static void V2BlueSlimeFirstFrameAI(NPC npc) => GeneralizedAIOverrides.SimpleSlimeFirstFrameAI(npc, 18);
 		public static bool V2BlueSlimeAI(NPC npc) => GeneralizedAIOverrides.SimpleSlimeAI(npc, 1.0f, 24, 18);
 
-		public override void PostAI(NPC npc) => npc.DoContactGulpage();
+		// public override void PostAI(NPC npc) => npc.DoContactGulpage();
 	}
 }

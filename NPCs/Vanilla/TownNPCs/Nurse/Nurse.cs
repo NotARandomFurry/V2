@@ -842,7 +842,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 
 			PlayerLoader.ModifyNursePrice(predPlayer, npc, health, removeDebuffs, ref originalHealPrice);
 
-			if (originalHealPrice >= 12000 && !predPlayer.CanAfford(originalHealPrice))
+			if (originalHealPrice >= 20000)
 				ModContent.GetInstance<Cheapskate>().TrySetCompletion(predPlayer);
 		}
 	}
