@@ -81,19 +81,19 @@ namespace V2.UI
 			string textValue2 = Language.GetTextValue("Game.RespawnInSuffix", ((float)(int)(1f + (float)player.respawnTimer / 60f)).ToString());
 			if (player.AsFood().Digested && ModContent.GetInstance<V2ClientConfig>().TheGutSlutVisionOMatic)
 			{
-				yOffsetFromScreenCenter += Main.screenHeight * 0.6f;
+				yOffsetFromScreenCenter += Main.screenHeight * 0.50f;
 				respawnCountdownScale = 0.5f;
 				textValue2 = Language.GetTextValue("Mods.V2.Death.DigestedPlayer.ManualRespawn");
 				Main.spriteBatch.DrawString(
 					FontAssets.DeathText.Value,
 					textValue2,
 					new Vector2(
-						Main.screenWidth / 2,
-						(Main.screenHeight / 2) + yOffsetFromScreenCenter
+						(float)(Main.screenWidth / 2) - (FontAssets.MouseText.Value.MeasureString(textValue2).X * respawnCountdownScale * 1.3333f),
+						(float)(Main.screenHeight / 2) + yOffsetFromScreenCenter
 					),
 					player.GetDeathAlpha(Color.Transparent),
 					0f,
-					ChatManager.GetStringSize(FontAssets.MouseText.Value, textValue2, new Vector2(respawnCountdownScale)) / 2f,
+					default,
 					respawnCountdownScale,
 					SpriteEffects.None,
 					0f

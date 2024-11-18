@@ -212,7 +212,7 @@ Mods: {
 						Tooltip:
 							'''
 							When a player is successfully digested by a pred, their death camera will not have a countdown before respawn.
-							Instead, their death camera will follow the pred indefinitely until either (1) the pred despawns or (b) the ESC key is pressed.
+							Instead, their death camera will follow the pred indefinitely (remaining in place if/when the pred despawns or is killed) until the B key is pressed.
 							Defaults to false.
 							// probably should make this one default to true later for all the gut sluts in my audience
 
@@ -3421,7 +3421,7 @@ Mods: {
 
 			DigestedPlayer: {
 				YouWereEaten: You were eaten...
-				ManualRespawn: Press ESCAPE or SPACE to respawn
+				ManualRespawn: Press B to respawn
 				Paradox: Awfully full of yourself today, aren't you, {Player}?
 				AprilFools: "{Player} was fooled by {Pred}."
 

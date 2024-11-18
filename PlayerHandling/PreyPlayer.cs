@@ -137,13 +137,11 @@ namespace V2.PlayerHandling
 			if (Main.netMode == NetmodeID.Server || Player.whoAmI != Main.myPlayer || !GuttedGaze)
 				return;
 
-			if (GuttedGazePred is null || !GuttedGazePred.active)
-				GuttedGaze = false;
-			else
+			if (GuttedGazePred is not null && GuttedGazePred.active)
 				Main.screenPosition = GuttedGazePred.Center - new Vector2(Main.screenWidth / 2, Main.screenHeight / 2);
-			bool spacePressed = Main.keyState.IsKeyDown(Keys.Space) && !Main.oldKeyState.IsKeyDown(Keys.Space);
-			bool escapePressed = Main.keyState.IsKeyDown(Keys.Escape) && !Main.oldKeyState.IsKeyDown(Keys.Escape);
-			if (spacePressed || escapePressed)
+
+			bool bPressed = Main.keyState.IsKeyDown(Keys.B) && !Main.oldKeyState.IsKeyDown(Keys.B);
+			if (bPressed)
 				Player.respawnTimer = 0;
 			else
 				Player.respawnTimer = 888;

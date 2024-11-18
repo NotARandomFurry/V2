@@ -10,7 +10,7 @@ namespace V2.StatusEffects.Vanilla.Debuffs
 	public class TipsyDebuff : GlobalBuff
 	{
 		public static float MeleeDamageBoost => 0.10f;
-		public static float MeleeCritChanceBoost => 0.10f;
+		public static float MeleeCritChanceBoost => 0.02f;
 		public static float MeleeAttackSpeedBoost => 0.10f;
 		public static int DefensePenalty => 5;
 		public static int FishPowerBoost => 5;
@@ -28,7 +28,7 @@ namespace V2.StatusEffects.Vanilla.Debuffs
 
 			player.tipsy = true;
 			player.GetDamage(DamageClass.Melee) += MeleeDamageBoost;
-			player.GetCritChance(DamageClass.Melee) += MeleeCritChanceBoost;
+			player.GetCritChance(DamageClass.Melee) += MeleeCritChanceBoost * 100f;
 			player.GetAttackSpeed(DamageClass.Melee) += MeleeAttackSpeedBoost;
 			player.statDefense -= DefensePenalty;
 			player.fishingSkill += FishPowerBoost;
