@@ -16,6 +16,7 @@ using Terraria.ModLoader.IO;
 using V2.Core;
 using V2.Items;
 using V2.Items.Voraria.Consumables.PermanentUpgrades;
+using V2.Items.Voraria.Consumables.PermanentUpgrades.Jujus;
 using V2.NPCs;
 using V2.PlayerHandling.PredPlayerGoals;
 using V2.PlayerHandling.PredPlayerGoals.Amateur;
@@ -731,7 +732,24 @@ namespace V2.PlayerHandling
 		{
 			if (PermanentUpgradesGained.TryGetValue("PureSwallow1", out bool swallowStimsEaten) && swallowStimsEaten)
 				GLP.Base += PureSwallowBoost1.GLPBonus;
-		}
+			if (PermanentUpgradesGained.TryGetValue("BiomeJujuForest", out bool eatenForestJuju) && eatenForestJuju)
+			{
+				TUM.Base += BiomeJujuForest.PermTUMBonus;
+				ABS.Base += BiomeJujuForest.PermABSBonus;
+			}
+            if (PermanentUpgradesGained.TryGetValue("ShimmerJuju", out bool eatenShimmerJuju) && eatenShimmerJuju)
+            {
+                GLP.Base += ShimmerJuju.PermAllBonus;
+                TUM.Base += ShimmerJuju.PermAllBonus;
+                ACI.Base += ShimmerJuju.PermAllBonus;
+                ABS.Base += ShimmerJuju.PermAllBonus;
+            }
+            if (PermanentUpgradesGained.TryGetValue("BiomeJujuDesert", out bool eatenDesertJuju) && eatenDesertJuju)
+            {
+                ACI.Base += BiomeJujuDesert.PermACIBonus;
+                Player.AsFood().StruggleStrengthModifier += BiomeJujuDesert.PermStruggleBonus;
+            }
+        }
 
 		public override bool HoverSlot(Item[] inventory, int context, int slot)
 		{

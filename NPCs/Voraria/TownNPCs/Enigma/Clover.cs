@@ -12,6 +12,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using V2.Core;
 using V2.Items.Voraria.Armor;
+using V2.Items.Voraria.Consumables.PermanentUpgrades.Jujus;
 using V2.Items.Voraria.Placeables;
 using V2.PlayerHandling;
 using V2.Projectiles.Voraria;
@@ -302,7 +303,8 @@ namespace V2.NPCs.Voraria.TownNPCs.Enigma
 			EnigmaShop.Add<CloverHeadAccessories>();
 			EnigmaShop.Add<CloverSweater>();
 			EnigmaShop.Add<CloverStockings>();
-			EnigmaShop.Add<MyFairy>([Condition.InGlowshroom]);
+            EnigmaShop.Add<BlankJuju>();
+            EnigmaShop.Add<MyFairy>([Condition.InGlowshroom]);
             EnigmaShop.Register();
 		}
 
