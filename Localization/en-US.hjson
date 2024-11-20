@@ -1436,6 +1436,7 @@ Mods: {
 					FeatherDuster: Feather Duster
 					HairDyeCapacity: Hunger Hair Dye
 					SteampunkerGutFastTravel: Steam-Powered Tumspace Translator
+					DemonCandy: Demon Candy
 				}
 
 				Charms: {
@@ -3133,6 +3134,26 @@ Mods: {
 							Much to the Steampunker's frustration, though, it doesn't yet work across planes of reality, nor from excessively long distances. She's still working on that functionality.
 							'''
 					}
+
+					DemonCandy: {
+						Short:
+							'''
+							Provides regeneration when digested
+							'Isn't this just a jawbreaker covered in chocolate?'
+							{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+							'''
+						Long:
+							'''
+							When eaten:
+							- [c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Grants the Regeneration buff] after running out of durability; this lingers for [c/{$Mods.V2.CommonColorCodes.DoSomething}:{Regen} minutes].
+							If dropped onto the ground in the Underworld, it might bait out certain types of monsters.
+							'''
+						Flavor:
+							'''
+							It is, infact, a jawbreaker covered in chocolate.
+							Appears to be the favourite food of a certain type of monster in the lava-filled depths of the Underworld.
+							'''
+					}
 				}
 
 				Weapons: {
@@ -4151,6 +4172,7 @@ Mods: {
 			}
 
 			Sky.Observer: Every so often, a Demon Eye sees much more than it is meant to see in its life as a result of a defect. This, of course, leads to the eye becoming far too large to move freely about the skies. While functionally harmless, their sheer size makes them hard to swallow without good practice.
+			Underworld.HellHarpy: holy shit big tiddy harpy (im sure sign will come up with a bestiary entry eventually because writing is NOT my thing)
 
 			TownNPCs: {
 				Succubus: Having lived on the outskirts of Desperai for many years before deciding to pack up and leave, Lucinda's a demon that just wants people to believe she's a strong, independent predator who doesn't NEED no stupid charms!...even though she can barely hold her prey the same way her superiors could.
@@ -4263,6 +4285,7 @@ Mods: {
 			ObserverGreen.DisplayName: Observer
 			ObserverPurple.DisplayName: Observer
 			CloverBound.DisplayName: Enigma
+			HellHarpy.DisplayName: Fallen Harpy
 
 			Clover: {
 				TownNPCMood: {
