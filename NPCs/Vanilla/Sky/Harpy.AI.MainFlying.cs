@@ -28,7 +28,7 @@ namespace V2.NPCs.Vanilla.Sky
 					npc.direction *= -1;
 				}
 				float horizontalWeightMovementModifier = 1f + (0.4f * weightMovementModifier);
-				npc.velocity.X += 0.12f / horizontalWeightMovementModifier * npc.direction;
+				npc.velocity.X += 0.20f / horizontalWeightMovementModifier * npc.direction;
 				float maxHorizSpeed = HarpyStuff.Statistics.MaxMoveSpeed / horizontalWeightMovementModifier;
 				if (npc.velocity.X > maxHorizSpeed)
 					npc.velocity.X = maxHorizSpeed;
@@ -36,7 +36,7 @@ namespace V2.NPCs.Vanilla.Sky
 					npc.velocity.X = -maxHorizSpeed;
 
 				float verticalWeightMovementModifier = 1f + (0.75f * weightMovementModifier);
-				npc.velocity.Y += 0.04f * verticalWeightMovementModifier;
+				npc.velocity.Y += 0.06f * verticalWeightMovementModifier;
 				if (npc.velocity.Y > 0.55f * verticalWeightMovementModifier)
 					npc.velocity.Y = 0.55f * verticalWeightMovementModifier;
 
@@ -44,15 +44,15 @@ namespace V2.NPCs.Vanilla.Sky
 				npc.AsHarpy().WingFlapTimer++;
 				int minDelay = npc.AsPred().GetVisualWeightStage.Invoke(npc) switch
 				{
-					0 => 80,
-					1 => 65,
-					2 => 50,
+					0 => 60,
+					1 => 50,
+					2 => 40,
 				};
 				int flapChance = npc.AsPred().GetVisualWeightStage.Invoke(npc) switch
 				{
-					0 => 80,
-					1 => 70,
-					2 => 60,
+					0 => 60,
+					1 => 50,
+					2 => 40,
 				};
 				if (npc.AsHarpy().WingFlapTimer >= minDelay && Main.rand.NextBool(flapChance))
 					npc.AsHarpy().WingFlapTimer = -4;

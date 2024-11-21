@@ -64,6 +64,7 @@ namespace V2.Items.Voraria.Weapons.Summon
 				.AddIngredient(ItemID.ShroomiteBar, 2)
 				.AddIngredient(ItemID.GlowingMushroom, 35)
 				.AddIngredient(ItemID.PixieDust, 25)
+				.AddTile(TileID.Autohammer)
 				.Register();
 		}
 		public override void ModifyTooltips(List<TooltipLine> tooltips)

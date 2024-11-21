@@ -31,7 +31,6 @@ namespace V2.StatusEffects.Vanilla.Debuffs
 			player.GetCritChance(DamageClass.Melee) += MeleeCritChanceBoost * 100f;
 			player.GetAttackSpeed(DamageClass.Melee) += MeleeAttackSpeedBoost;
 			player.statDefense -= DefensePenalty;
-			player.fishingSkill += FishPowerBoost;
 			player.AsPred().SwallowCapacityModifier += CollectiveCapacityBoost;
 			player.AsPred().StomachCapacityModifier += CollectiveCapacityBoost;
 			player.AsPred().DigestionTickRateModifier *= 1f - CollectiveChurnRatePenalty;

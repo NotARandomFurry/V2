@@ -61,6 +61,7 @@ Mods: {
 			PositiveVoreEffect: 00BF00
 			NegativeVoreEffect: BF5F00
 			ThomasCommentary: "960024"
+			// CloverQuote: 55FF7D
 		}
 
 		Keybinds: {
@@ -1412,7 +1413,19 @@ Mods: {
 
 				Consumables: {
 					Catchables.Pinky: Пинки
-					PermanentUpgrades.PureSwallowBoost1: Стимулятор глотания
+
+					PermanentUpgrades: {
+						Jujus: {
+							// BlankJuju: Blank Juju
+							// ShimmerJuju: Shimmering Juju
+							// BiomeJujuForest: Biome Juju - Forest
+							// BiomeJujuDesert: Biome Juju - Desert
+							// BiomeJujuSnow: Biome Juju - Snow
+							// BiomeJujuJungle: Biome Juju - Jungle
+						}
+
+						PureSwallowBoost1: Стимулятор глотания
+					}
 
 					Potions: {
 						FastDigestionPotion: Настойка для облегчения пищеварения
@@ -1424,6 +1437,7 @@ Mods: {
 					FeatherDuster: Пыльник из перьев
 					HairDyeCapacity: Голодная краска для волос
 					// SteampunkerGutFastTravel: Steam-Powered Tumspace Translator
+					// DemonCandy: Demon Candy
 				}
 
 				Charms: {
@@ -2379,7 +2393,7 @@ Mods: {
 							'''
 							7% increased critical strike chance
 							Increased struggle strength
-							Increased stomach capacity, struggling strength and food absorption speed
+							Increased stomach capacity, struggling strength and food absorption rate
 							Slightly increased luck
 							'It's awfully comfortable. You could probably fall asleep standing just by wearing this...'
 							{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
@@ -2651,7 +2665,7 @@ Mods: {
 						/* Flavor:
 							'''
 							A high-risk, high-reward charm typically only offered to skilled adventurers with a greedy enough tummy to negate its downside; it is often plucked from these adventurers by nymphs as one of the few things that can survive the gastric torment of such deceitful ladies' gluttonous tummies.
-							While worn, it redirects a part of the muscle and nerve firings from actively digesting swallowed prey, instead putting that bodily power towards stretching the throat and stomach to gobbling up and gorge oneself ever-larger prey. It's not hard to see why nymphs see them as a valuable trinket, as would anyone else.
+							While worn, it redirects a part of the muscle and nerve firings from actively digesting swallowed prey, instead putting that bodily power towards stretching the throat and stomach to gobble up and gorge oneself on ever-larger prey. It's not hard to see why nymphs see them as a valuable trinket, as would anyone else.
 							''' */
 					}
 
@@ -2743,6 +2757,119 @@ Mods: {
 					}
 
 					PermanentUpgrades: {
+						Jujus: {
+							BlankJuju: {
+								/* Short:
+									'''
+									Can be crafted into juju accessories that can provide stat boosts
+									{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+									''' */
+								// Long: This item does nothing on its own; instead it is used to craft a variety of stat boosting accessories, that can additionally be digested for a minor permanent boost.
+								/* Flavor:
+									'''
+									One of Clover's strange creations.
+									It is a fragment of magical energy, waiting for the right conditions to be awakened.
+									''' */
+							}
+
+							ShimmerJuju: {
+								/* Short:
+									'''
+									Increases maximum prey swallowing size, stomach capacity, acid strength and food absorption rate
+									If eaten for the first time, permanently gain slight buffs, related to this juju's effects.
+									{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+									''' */
+								/* Long:
+									'''
+									[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases GLP, TUM, ACI & ABS] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{All}].
+									When eaten:
+									- [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Permanently increases GLP, TUM, ACI & ABS] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{PermAll}].
+									This bonus only applies once. Eating this item after you have already done so [c/{$Mods.V2.CommonColorCodes.NegativeEffect}:will have no further effect.]
+									''' */
+								// Flavor: '''[c/{$Mods.V2.CommonColorCodes.CloverQuote}:"The Aether? The shimmer lake is sooo cooool! I bet it tastes like candy!" -Clover]'''
+							}
+
+							BiomeJujuForest: {
+								/* Short:
+									'''
+									Increases stomach capacity and food absorption rate
+									If eaten for the first time, permanently gain slight buffs, related to this juju's effects.
+									{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+									''' */
+								/* Long:
+									'''
+									[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases TUM] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{TUM}].
+									[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases ABS] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{ABS}].
+									When eaten:
+									- [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Permanently increases TUM] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{PermTUM}].
+									- [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Permanently increases ABS] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{PermABS}].
+									This bonus only applies once. Eating this item after you have already done so [c/{$Mods.V2.CommonColorCodes.NegativeEffect}:will have no further effect.]
+									''' */
+								// Flavor: '''[c/{$Mods.V2.CommonColorCodes.CloverQuote}:"The Forest? Hmm, layin' around in the grass with a tum full of candy is always fun!" -Clover]'''
+							}
+
+							BiomeJujuDesert: {
+								/* Short:
+									'''
+									Increases acid strength and struggling strength
+									If eaten for the first time, permanently gain slight buffs, related to this juju's effects.
+									{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+									''' */
+								/* Long:
+									'''
+									[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases ACI] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{ACI}].
+									[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases struggle strength] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{STR}%].
+									When eaten:
+									- [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Permanently increases ACI] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{PermACI}].
+									- [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Permanently increases struggle strength] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{PermSTR}%].
+									This bonus only applies once. Eating this item after you have already done so [c/{$Mods.V2.CommonColorCodes.NegativeEffect}:will have no further effect.]
+									''' */
+								// Flavor: '''[c/{$Mods.V2.CommonColorCodes.CloverQuote}:"The Desert? Ugh, it feels awful with the constant heat! Never going there!" -Clover]'''
+							}
+
+							BiomeJujuSnow: {
+								/* Short:
+									'''
+									Increases maximum prey swallowing size and food absorption rate
+									If eaten for the first time, permanently gain slight buffs, related to this juju's effects.
+									{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+									''' */
+								/* Long:
+									'''
+									[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases GLP] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{GLP}].
+									[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases ABS] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{ABS}].
+									When eaten:
+									- [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Permanently increases GLP] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{PermGLP}].
+									- [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Permanently increases ABS] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{PermABS}].
+									This bonus only applies once. Eating this item after you have already done so [c/{$Mods.V2.CommonColorCodes.NegativeEffect}:will have no further effect.]
+									''' */
+								// Flavor: '''[c/{$Mods.V2.CommonColorCodes.CloverQuote}:"The Snow? Not a fan of ice, but the snow makes me think of ice cream!" -Clover]'''
+							}
+
+							BiomeJujuJungle: {
+								/* Short:
+									'''
+									Increases stomach capacity
+									Decreases movement speed
+									If eaten for the first time, permanently gain slight buffs, related to this juju's effects.
+									{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+									''' */
+								/* Long:
+									'''
+									[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases TUM] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{TUM}].
+									[c/{$Mods.V2.CommonColorCodes.NegativeEffect}:Decreases movement speed] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{SPD}%].
+									When eaten:
+									- [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Permanently increases TUM] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{PermTUM}].
+									This bonus only applies once. Eating this item after you have already done so [c/{$Mods.V2.CommonColorCodes.NegativeEffect}:will have no further effect.]
+									''' */
+								/* Flavor:
+									'''
+									[c/{$Mods.V2.CommonColorCodes.CloverQuote}:"The Jungle? Reminds me of the time where i drank like three gallons]
+									[c/{$Mods.V2.CommonColorCodes.CloverQuote}:of honey and then got all sticky... Took a while to crawl out of the hive." -Clover]
+									''' */
+							}
+						}
+
 						PureSwallowBoost1: {
 							Short:
 								'''
@@ -3017,6 +3144,26 @@ Mods: {
 							Much to the Steampunker's frustration, though, it doesn't yet work across planes of reality, nor from excessively long distances. She's still working on that functionality.
 							''' */
 					}
+
+					DemonCandy: {
+						/* Short:
+							'''
+							Provides regeneration when digested
+							'Isn't this just a jawbreaker covered in chocolate?'
+							{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+							''' */
+						/* Long:
+							'''
+							When eaten:
+							- [c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Grants the Regeneration buff] after running out of durability; this lingers for [c/{$Mods.V2.CommonColorCodes.DoSomething}:{Regen} minutes].
+							If dropped onto the ground in the Underworld, it might bait out certain types of monsters.
+							''' */
+						/* Flavor:
+							'''
+							It is, infact, a jawbreaker covered in chocolate.
+							Appears to be the favourite food of a certain type of monster in the lava-filled depths of the Underworld.
+							''' */
+					}
 				}
 
 				Weapons: {
@@ -3228,7 +3375,7 @@ Mods: {
 					[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases melee critical strike chance] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{TipsyMeleeCritChanceBonus}].
 					[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases melee attack speed] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{TipsyMeleeAttackSpeedBonus}].
 					[c/{$Mods.V2.CommonColorCodes.NegativeEffect}:Decreases defense] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{TipsyDefenseCut}].
-					[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases fishing power] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{TipsyFishPowerBonus}].
+					[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases fishing skill] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{TipsyFishPowerBonus}].
 					[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases swallow and stomach capacities] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{TipsyCapacityBonus}].
 					[c/{$Mods.V2.CommonColorCodes.NegativeEffect}:Decreases digestion tick rate and absorption rate] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{TipsyChurnRateCut}].
 					''' */
@@ -4034,6 +4181,7 @@ Mods: {
 			}
 
 			// Sky.Observer: Every so often, a Demon Eye sees much more than it is meant to see in its life as a result of a defect. This, of course, leads to the eye becoming far too large to move freely about the skies. While functionally harmless, their sheer size makes them hard to swallow without good practice.
+			// Underworld.HellHarpy: holy shit big tiddy harpy (im sure sign will come up with a bestiary entry eventually because writing is NOT my thing)
 
 			TownNPCs: {
 				Succubus: Прожив на окраине Десперая много лет, прежде чем решиться на отъезд, Люсинда - демон, который просто хочет, чтобы люди верили, что она сильный, независимый хищник, которому не нужны никакие глупые чары... хотя она едва может удержать добычу так же, как ее начальство.
@@ -4146,6 +4294,7 @@ Mods: {
 			// ObserverGreen.DisplayName: Observer
 			// ObserverPurple.DisplayName: Observer
 			// CloverBound.DisplayName: Enigma
+			// HellHarpy.DisplayName: Fallen Harpy
 
 			Clover: {
 				TownNPCMood: {
@@ -4178,6 +4327,11 @@ Mods: {
 			// CloverHeadAccessories.Tooltip: ""
 			// CloverStockings.Tooltip: ""
 			// CloverSweater.Tooltip: ""
+
+			MyFairy: {
+				// DisplayName: my fairy
+				// Tooltip: "'do you like her'"
+			}
 		}
 	}
 }

@@ -114,6 +114,8 @@ namespace V2
 					}
 					else if (projectileAsV2Projectile.NewAIMethod is not null)
 					{
+						projectileAsV2Projectile.CustomSprite?.Advance();
+
 						if (projectileAsV2Projectile.NewAIMethod.Invoke(projectile))
 							orig(projectile);
 						else

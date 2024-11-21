@@ -124,7 +124,7 @@ namespace V2.Projectiles
 
 		public PredProjectile()
 		{
-			MaxStomachCapacity = 1.0;
+			MaxStomachCapacity = 0.0;
 			MaxSwallowRange = 36f;
 			ExtraWeight = 0.0;
 			CanSwallowBosses = false;
@@ -173,6 +173,9 @@ namespace V2.Projectiles
 		public static bool CanSwallow(Projectile pred, Entity prey)
 		{
 			if (V2.VoreNPCBlacklist is not null && V2.VoreProjectileBlacklist.Count > 0 && V2.VoreProjectileBlacklist.Contains(pred.type))
+				return false;
+
+			if (pred.AsPred().MaxStomachCapacity == 0.0)
 				return false;
 
 			if (GetCurrentBellyWeight(pred) >= pred.AsPred().MaxStomachCapacity)

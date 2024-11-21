@@ -26,9 +26,9 @@ namespace V2.NPCs.Vanilla.Sky
 				{
 					float baseMaxMoveSpeed = Main.GameMode switch
 					{
-						GameModeID.Master => 2.60f,
-						GameModeID.Expert => 2.20f,
-						GameModeID.Normal => 2.00f,
+						GameModeID.Master => 3.90f,
+						GameModeID.Expert => 3.30f,
+						GameModeID.Normal => 3.00f,
 						_ => 2.00f
 					};
 					if (Main.zenithWorld)

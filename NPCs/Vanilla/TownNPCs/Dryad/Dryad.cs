@@ -448,7 +448,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Dryad
 					"If you are that certain that eating you will rid your body of evil, then I am happy to add you to my pure form.",
 					"Offering yourself to me to aid in the cleansing of the world? Well...I suppose it would be rude to reject free food.",
 				})
-			  + "\n[c/7F7F7F:<" + npc.GivenName + " smiles slyly and opens her mouth wide as you start to force your way inside, guiding you into her waiting stomach as it groans happily at its newest target to purify.>]"
+			  + "\n[c/7F7F7F:<As you attempt to get into her mouth, " + npc.GivenName + " shakes her head; instead, she smiles slyly and hops on top of you, sitting atop your head...only for it, shortly followed by the rest of you, to vanish through the back door and into her waiting gut. As she stands on the ground again, gently pushing your feet into her booty to join the rest of you, she fixes her thong and pats her gut before walking off as if you were never there.>]"
 			);
 		}
 
@@ -542,7 +542,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Dryad
 						PredNPC.SwallowWithTextIfApplicable(
 							npc,
 							Main.CurrentPlayer,
-							"[c/7F7F7F:<A calm, patient smile crosses " + npc.GivenName + "'s face as she very slowly guides you down her throat headfirst. Her stomach seems completely inert.>]\n"
+							"[c/7F7F7F:<A calm, patient smile crosses " + npc.GivenName + "'s face as she very slowly guides you down her throat headfirst rather than shoving you into her ass. Her stomach seems completely inert, possibly for this exact reason.>]\n"
 						  + "To think...you have managed to cleanse this patch of all evils...you have done a great service to this land, indeed. Allow me to provide you with a comfortable place to rest after all your hard work. Let me know if you'd like to get out...or to NOT get out, of course. If you were to want to be purified badly enough, I would not dare to refuse the request of a valued hero like yourself..."
 						);
 						break;
@@ -550,7 +550,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Dryad
 						PredNPC.SwallowWithTextIfApplicable(
 							npc,
 							Main.CurrentPlayer,
-							"[c/7F7F7F:<A calm, patient look crosses " + npc.GivenName + "'s facce as she picks you up and rather slowly guides you down her throat headfirst, letting out a rather plain, though satisfied, belch once your feet pass her lips.>]\n"
+							"[c/7F7F7F:<A calm, patient look crosses " + npc.GivenName + "'s facce as she picks you up and gently pushes your head into her behind, pleasantly sitting atop you and letting your body slide into her little by little. She lets out a rather plain, though satisfied, belch once your feet pass into her ass.>]\n"
 						  + "To think that the world has been almost entirely cleansed of evils. A shame that, as one of the last remaining vestiges of corruption...you, too, must be cleansed by my pure system.\n"
 						  + "\n"
 						  + "...or, more accurately, I must make sure there isn't any stowing away on your body. My stomach will ensure your cleanliness as you enter the final stretch of your effort."
@@ -560,7 +560,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Dryad
 						PredNPC.SwallowWithTextIfApplicable(
 							npc,
 							Main.CurrentPlayer,
-							"[c/7F7F7F:<As a mostly-calm, though faintly upset look crosses her face, " + npc.GivenName + " picks you up and slightly-slowly guides you down her throat headfirst, letting out a rather plain, though somewhat satisfied, belch once your feet pass her lips.>]\n"
+							"[c/7F7F7F:<As a mostly-calm, though faintly upset look crosses her face, " + npc.GivenName + " picks you up and slightly-slowly guides you into her backside headfirst, letting out a rather plain, though somewhat satisfied, belch from the internal activity of getting your body into her gut once your feet have well past entered her rear.>]\n"
 						  + "The world has certainly become a more hospitable place in the sense that the evils that plague it have been pushed back so far...yet there still lies a substantial amount. That said, you are making tangible progress. When you are done digesting, continue making such progress."
 						);
 						break;
@@ -568,7 +568,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Dryad
 						PredNPC.SwallowWithTextIfApplicable(
 							npc,
 							Main.CurrentPlayer,
-							"[c/7F7F7F:<As a mildly-frustrated frown crosses her face, " + npc.GivenName + " picks you up and nigh-effortlessly guides you down her throat headfirst, letting out a rather plain belch once your feet pass her lips.>]\n"
+							"[c/7F7F7F:<As a mildly-frustrated frown crosses her face, " + npc.GivenName + " picks you up and nigh-effortlessly pushes you into her ass headfirst, letting out a rather plain belch once your feet disappear into her booty as her belly fills out with her latest buttsnack.>]\n"
 						  + "You have, perhaps, done a decent deal in pushing back the encroachment of the poisons of our world...yet you have still failed to cleanse so much. Perform better."
 						);
 						break;
@@ -576,15 +576,15 @@ namespace V2.NPCs.Vanilla.TownNPCs.Dryad
 						PredNPC.SwallowWithTextIfApplicable(
 							npc,
 							Main.CurrentPlayer,
-							"[c/7F7F7F:<As a frustrated scowl crosses her face, " + npc.GivenName + " picks you up and effortlessly guides you down her throat headfirst, letting out a rather plain belch once your feet pass her lips.>]\n"
-						  + "Our stretch of this world has become so tainted...I fail to see this as the fault of anyone other than yourself. I'm beginning to believe you will do a greater service on my hips than by healing the planet..."
+							"[c/7F7F7F:<As a frustrated scowl crosses her face, " + npc.GivenName + " picks you up and effortlessly guides you into her backside headfirst, letting out a lightly bassy belch once your feet pass into her.>]\n"
+						  + "Our stretch of this world has become so tainted...I fail to see this as the fault of anyone other than yourself. I'm beginning to believe you will do a greater service on my hips and hind end than by healing the planet..."
 						);
 						break;
 					case int i when i > 50 && i <= 80:
 						PredNPC.SwallowWithTextIfApplicable(
 							npc,
 							Main.CurrentPlayer,
-							"[c/7F7F7F:<As an angered scowl crosses her face, " + npc.GivenName + " picks you up and rather roughly forces you down her throat headfirst, letting out a rather plain belch once your feet pass her lips.>]\n"
+							"[c/7F7F7F:<As an angered scowl crosses her face, " + npc.GivenName + " picks you up and rather roughly forces you up her ass headfirst, letting out a rather rough and bassy belch once your feet vanish into her.>]\n"
 						  + "You are nearing the point of no return, both from the onset of evils and from the onset of my appetite. If, and [c/FF0000:ONLY] if, that is your goal, continue as you are. Otherwise...I'd recommend learning to purify the world more effectively, lest you end up fertilizer, PERMANENTLY."
 						);
 						break;
@@ -592,8 +592,8 @@ namespace V2.NPCs.Vanilla.TownNPCs.Dryad
 						PredNPC.SwallowWithTextIfApplicable(
 							npc,
 							Main.CurrentPlayer,
-							"[c/7F7F7F:<As an infuriated scowl crosses her face, " + npc.GivenName + " picks you up, forcefully curls you into a ball, and stuffs you down her throat almost like a cheesesteak, letting out a thunderous belch as you're mercilessly forced into her stomach.>]\n"
-						  + "You have [c/FF0000:FAILED]. Any semblance of use you had will be far surpassed by your new purpose as fertilizer for a woman stronger and more capable than yourself...I've no care to let you bother with your failed mockery of a cleansing. [c/FF0000:Melt, food.]"
+							"[c/7F7F7F:<As an infuriated scowl crosses her face, " + npc.GivenName + " picks you up, forcefully curls you into a ball, and unceremoniously shoves you face-first into her ass all at once, mercilessly sending you rocketing through her intestinal tract and forcing you into an uncomfortable ball in her stomach as she adjusts her planty attire. A mighty belch is forced up from the activity in her stomach, but she seems to care none as it erupts from her maw.>]\n"
+						  + "You have [c/FF0000:FAILED]. Any semblance of use you had will be far surpassed by your new purpose as fertilizer for a woman stronger and more capable than yourself...I've no care to let you bother with your failed mockery of a cleansing. [c/FF0000:Melt, food, and become a part of the buttocks that swallowed you whole and showed you your place on the pecking order.]"
 						);
 						break;
 				}

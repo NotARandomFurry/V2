@@ -27,6 +27,10 @@ namespace V2.Items.Voraria.Consumables
 			Item.consumable = true;
 			Item.maxStack = Item.CommonMaxStack;
 
+			Item.useAnimation = 12;
+			Item.useTime = 12;
+			Item.useStyle = ItemUseStyleID.Swing;
+
 			Item.AsFood().Size = 0.15;
 			Item.AsFood().MaxHealth = 115;
 			Item.AsFood().AcidResistTier = 0;
@@ -42,7 +46,7 @@ namespace V2.Items.Voraria.Consumables
 			);
 		}
 
-		public override bool CanUseItem(Player player) => false;
+		public override bool CanUseItem(Player player) => player.CurrentCaptor() is not null;
 
 		public override void UseAnimation(Player player)
 		{

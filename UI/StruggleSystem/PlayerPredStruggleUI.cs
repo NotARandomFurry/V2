@@ -44,8 +44,8 @@ namespace V2.UI.StruggleSystem
 				Main.screenHeight / 2
 			);
 			bottomCenter.X += 16;
-			bottomCenter.X += 60;
-			bottomCenter.Y -= 52;
+			bottomCenter.X += 80;
+			bottomCenter.Y -= 82;
 			bottomCenter += Main.LocalPlayer.Center - (Main.screenPosition + new Vector2(Main.screenWidth / 2, Main.screenHeight / 2));
 
 			spriteBatch.Draw(

@@ -9,7 +9,7 @@ namespace V2.NPCs.Vanilla.Sky
 	{
 		public class ChargingDiveBomb : NPCBehaviorPattern
 		{
-			public override int PatternLength => 3;
+			public override int PatternLength => 2;
 
 			public override void AI(NPC npc, Entity target)
 			{
@@ -34,7 +34,7 @@ namespace V2.NPCs.Vanilla.Sky
 				targetPos.Y -= V2Utils.TileCountAsPixelCount(12.5);
 
 				float horizontalWeightMovementModifier = 1f + (0.4f * weightMovementModifier);
-				npc.velocity.X += 0.16f / horizontalWeightMovementModifier * (targetPos.X >= npc.TrueCenter().X).ToDirectionInt();
+				npc.velocity.X += 0.25f / horizontalWeightMovementModifier * (targetPos.X >= npc.TrueCenter().X).ToDirectionInt();
 				float maxHorizSpeed = HarpyStuff.Statistics.MaxMoveSpeed / horizontalWeightMovementModifier;
 				if (npc.velocity.X > maxHorizSpeed)
 					npc.velocity.X = maxHorizSpeed;
@@ -42,7 +42,7 @@ namespace V2.NPCs.Vanilla.Sky
 					npc.velocity.X = -maxHorizSpeed;
 
 				float verticalWeightMovementModifier = 1f + (0.75f * weightMovementModifier);
-				npc.velocity.Y += 0.04f * verticalWeightMovementModifier;
+				npc.velocity.Y += 0.06f * verticalWeightMovementModifier;
 				if (npc.velocity.Y > 0.55f * verticalWeightMovementModifier)
 					npc.velocity.Y = 0.55f * verticalWeightMovementModifier;
 
@@ -51,15 +51,15 @@ namespace V2.NPCs.Vanilla.Sky
 				npc.AsHarpy().WingFlapTimer++;
 				int minDelay = npc.AsPred().GetVisualWeightStage.Invoke(npc) switch
 				{
-					0 => 60,
-					1 => 50,
-					2 => 40,
+					0 => 50,
+					1 => 40,
+					2 => 30,
 				};
 				int flapChanceDenominator = npc.AsPred().GetVisualWeightStage.Invoke(npc) switch
 				{
-					0 => 70,
-					1 => 60,
-					2 => 50,
+					0 => 60,
+					1 => 50,
+					2 => 40,
 				};
 				if (npc.TrueCenter().Distance(targetPos) < V2Utils.TileCountAsPixelCount(6.0))
 				{

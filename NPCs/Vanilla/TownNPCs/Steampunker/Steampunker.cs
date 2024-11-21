@@ -13,6 +13,7 @@ using Terraria.GameContent.Events;
 using Terraria.ID;
 using Terraria.ModLoader;
 using V2.Core;
+using V2.Items.Voraria.Consumables;
 using V2.NPCs.Voraria.TownNPCs.Succubus;
 using V2.PlayerHandling;
 using V2.Sounds.Vore;
@@ -321,6 +322,10 @@ namespace V2.NPCs.Vanilla.TownNPCs.Steampunker
 			);
 		}
 
+		public override void ModifyShop(NPCShop shop)
+		{
+			shop.Add(new NPCShop.Entry(ModContent.ItemType<SteampunkerGutFastTravel>()));
+		}
 
 		public static void GetDigestedPlayerAdditionalDeathMessages(NPC npc, Player player, List<string> deathReasonKeyList)
 		{

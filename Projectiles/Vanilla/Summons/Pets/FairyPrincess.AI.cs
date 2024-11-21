@@ -35,7 +35,6 @@ namespace V2.Projectiles.Vanilla.Summons.Pets
 			Vector2 intendedLocation = ownerPlayer.MountedCenter + offsetFromOwner;
 			float distanceToIntendedLocation = Vector2.Distance(projectile.Center, intendedLocation);
 
-
 			if (!ateOwner)
 			{
 				if (ownerPlayer.dead)
@@ -51,10 +50,7 @@ namespace V2.Projectiles.Vanilla.Summons.Pets
 					projectile.Center = ownerPlayer.Center + offsetFromOwner;
 			}
 			else 
-			{
 				projectile.timeLeft = 2;
-			}
-
 
 			VoreTracker tracker = PredProjectile.GetStomachTracker(projectile);
 			if (tracker is null)
@@ -81,47 +77,27 @@ namespace V2.Projectiles.Vanilla.Summons.Pets
 				{
 					NPC realCandyFairy = candyFairy.Instance as NPC;
 					if (projectile.AsV2Proj().CustomSprite is null)
-						projectile.AsV2Proj().CustomSprite = realCandyFairy.life < realCandyFairy.lifeMax / 2
-						? new DryadStuff.Animations.AVEmpressOfLight.PhaseTransition()
-						: new DryadStuff.Animations.AVEmpressOfLight.PhaseOne();
-					else if (projectile.AsV2Proj().CustomSprite is DryadStuff.Animations.AVEmpressOfLight.PhaseOne && projectile.AsV2Proj().CustomSprite.CanTransitionToNewAnim && realCandyFairy.life < realCandyFairy.lifeMax / 2)
-						projectile.AsV2Proj().CustomSprite = new DryadStuff.Animations.AVEmpressOfLight.PhaseTransition();
-					else if (projectile.AsV2Proj().CustomSprite is DryadStuff.Animations.AVEmpressOfLight.PhaseTransition && projectile.AsV2Proj().CustomSprite.CanTransitionToNewAnim)
-						projectile.AsV2Proj().CustomSprite = new DryadStuff.Animations.AVEmpressOfLight.PhaseTwo();
-					for (int y = (int)Math.Round(projectile.TrueCenter().Y) - 5; y < (int)Math.Round(projectile.TrueCenter().Y); y++)
-					{
-						for (int x = (int)Math.Round(projectile.TrueCenter().X) - 4; x < (int)Math.Round(projectile.TrueCenter().X) + 4; x++)
-						{
-							WorldGen.KillTile(x, y);
-						}
-					}
+						projectile.AsV2Proj().CustomSprite = new FairyPrincessStuff.Animations.BaseWeight.OVHerOwnFuckingMother.Alive();
 				}
 				else
 				{
 					if (projectile.AsV2Proj().CustomSprite is null)
-						projectile.AsV2Proj().CustomSprite = new DryadStuff.Animations.AVEmpressOfLight.PhaseTransition();
-					else if (projectile.AsV2Proj().CustomSprite is DryadStuff.Animations.AVEmpressOfLight.PhaseTransition && projectile.AsV2Proj().CustomSprite.CanTransitionToNewAnim)
-						projectile.AsV2Proj().CustomSprite = new DryadStuff.Animations.AVEmpressOfLight.PhaseTwo();
-					else if (projectile.AsV2Proj().CustomSprite is DryadStuff.Animations.AVEmpressOfLight.PhaseTwo && projectile.AsV2Proj().CustomSprite.CanTransitionToNewAnim)
-						projectile.AsV2Proj().CustomSprite = new DryadStuff.Animations.AVEmpressOfLight.EmpressGetsChurned();
-					else if (projectile.AsV2Proj().CustomSprite is DryadStuff.Animations.AVEmpressOfLight.EmpressGetsChurned && projectile.AsV2Proj().CustomSprite.CanTransitionToNewAnim)
-						projectile.AsV2Proj().CustomSprite = new DryadStuff.Animations.AVEmpressOfLight.DigestStage1();
-					else if (projectile.AsV2Proj().CustomSprite is DryadStuff.Animations.AVEmpressOfLight.DigestStage1 && projectile.AsV2Proj().CustomSprite.CanTransitionToNewAnim && GetEmpressDigestionStage(projectile) >= 2)
-						projectile.AsV2Proj().CustomSprite = new DryadStuff.Animations.AVEmpressOfLight.DigestStage2();
-					else if (projectile.AsV2Proj().CustomSprite is DryadStuff.Animations.AVEmpressOfLight.DigestStage2 && projectile.AsV2Proj().CustomSprite.CanTransitionToNewAnim && GetEmpressDigestionStage(projectile) >= 3)
-						projectile.AsV2Proj().CustomSprite = new DryadStuff.Animations.AVEmpressOfLight.DigestStage3();
-					else if (projectile.AsV2Proj().CustomSprite is DryadStuff.Animations.AVEmpressOfLight.DigestStage3 && projectile.AsV2Proj().CustomSprite.CanTransitionToNewAnim && GetEmpressDigestionStage(projectile) >= 4)
-						projectile.AsV2Proj().CustomSprite = new DryadStuff.Animations.AVEmpressOfLight.DigestStage4();
-					else if (projectile.AsV2Proj().CustomSprite is DryadStuff.Animations.AVEmpressOfLight.DigestStage4 && projectile.AsV2Proj().CustomSprite.CanTransitionToNewAnim && GetEmpressDigestionStage(projectile) >= 5)
-						projectile.AsV2Proj().CustomSprite = new DryadStuff.Animations.AVEmpressOfLight.DigestStage5();
+						projectile.AsV2Proj().CustomSprite = new FairyPrincessStuff.Animations.BaseWeight.OVHerOwnFuckingMother.Alive();
+					else if (projectile.AsV2Proj().CustomSprite is FairyPrincessStuff.Animations.BaseWeight.OVHerOwnFuckingMother.Alive && projectile.AsV2Proj().CustomSprite.CanTransitionToNewAnim && GetEmpressDigestionStage(projectile) >= 2)
+						projectile.AsV2Proj().CustomSprite = new FairyPrincessStuff.Animations.BaseWeight.OVHerOwnFuckingMother.DigestStage1();
+					else if (projectile.AsV2Proj().CustomSprite is FairyPrincessStuff.Animations.BaseWeight.OVHerOwnFuckingMother.DigestStage1 && projectile.AsV2Proj().CustomSprite.CanTransitionToNewAnim && GetEmpressDigestionStage(projectile) >= 3)
+						projectile.AsV2Proj().CustomSprite = new FairyPrincessStuff.Animations.BaseWeight.OVHerOwnFuckingMother.DigestStage2();
+					else if (projectile.AsV2Proj().CustomSprite is FairyPrincessStuff.Animations.BaseWeight.OVHerOwnFuckingMother.DigestStage2 && projectile.AsV2Proj().CustomSprite.CanTransitionToNewAnim && GetEmpressDigestionStage(projectile) >= 4)
+						projectile.AsV2Proj().CustomSprite = new FairyPrincessStuff.Animations.BaseWeight.OVHerOwnFuckingMother.DigestStage3();
 				}
-				return false;
+				goto SkipResetFrame;
 			}
 
 			ResetFrame:
 			if (projectile.AsV2Proj().CustomSprite is not null)
 				projectile.AsV2Proj().CustomSprite = null;
 
+			SkipResetFrame:
 			List<(PreyType, int)> diet = [
 				(PreyType.NPC, NPCID.FairyCritterBlue),
 				(PreyType.NPC, NPCID.FairyCritterGreen),

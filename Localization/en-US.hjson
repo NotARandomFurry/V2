@@ -814,7 +814,7 @@ Mods: {
 				}
 
 				EatHelpfulFairy: {
-					Name: The Second Rule of Predation
+					Name: The Second Law of Predation
 
 					Description: {
 						Default:
@@ -859,7 +859,7 @@ Mods: {
 						Clarification:
 							'''
 							Eat and digest a Mana Crystal.
-							Mana Crystals can occasionally be found in caves and can be used or eaten to increase your maximum mana pool.
+							Mana Crystals can be crafted with Fallen Stars and can be used or eaten to increase your maximum mana pool.
 							'''
 					}
 				}
@@ -2661,7 +2661,7 @@ Mods: {
 						Flavor:
 							'''
 							A high-risk, high-reward charm typically only offered to skilled adventurers with a greedy enough tummy to negate its downside; it is often plucked from these adventurers by nymphs as one of the few things that can survive the gastric torment of such deceitful ladies' gluttonous tummies.
-							While worn, it redirects a part of the muscle and nerve firings from actively digesting swallowed prey, instead putting that bodily power towards stretching the throat and stomach to gobbling up and gorge oneself ever-larger prey. It's not hard to see why nymphs see them as a valuable trinket, as would anyone else.
+							While worn, it redirects a part of the muscle and nerve firings from actively digesting swallowed prey, instead putting that bodily power towards stretching the throat and stomach to gobble up and gorge oneself on ever-larger prey. It's not hard to see why nymphs see them as a valuable trinket, as would anyone else.
 							'''
 					}
 
@@ -3366,7 +3366,7 @@ Mods: {
 					[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases melee critical strike chance] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{TipsyMeleeCritChanceBonus}].
 					[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases melee attack speed] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{TipsyMeleeAttackSpeedBonus}].
 					[c/{$Mods.V2.CommonColorCodes.NegativeEffect}:Decreases defense] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{TipsyDefenseCut}].
-					[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases fishing power] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{TipsyFishPowerBonus}].
+					[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases fishing skill] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{TipsyFishPowerBonus}].
 					[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases swallow and stomach capacities] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{TipsyCapacityBonus}].
 					[c/{$Mods.V2.CommonColorCodes.NegativeEffect}:Decreases digestion tick rate and absorption rate] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{TipsyChurnRateCut}].
 					'''

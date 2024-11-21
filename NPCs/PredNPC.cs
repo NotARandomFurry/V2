@@ -182,11 +182,10 @@ namespace V2.NPCs
 
 		public override void ResetEffects(NPC npc)
 		{
-			double stomachacheQuellPerTick = npc.AsPred().StomachacheMeterCapacity * (0.05 / (double)V2Utils.SensibleTime(seconds: 1));
+			double stomachacheQuellPerTick = StomachacheMeterCapacity * (0.05 / (double)V2Utils.SensibleTime(seconds: 1));
 			if (GetStomachTracker(npc) is not null && AnyPreyStillAlive(npc))
 				stomachacheQuellPerTick *= 0.1;
 			Stomachache -= stomachacheQuellPerTick;
-				npc.AsPred().Stomachache -= stomachacheQuellPerTick;
 
 			StomachacheMeterCapacityModifier = StatModifier.Default;
 		}

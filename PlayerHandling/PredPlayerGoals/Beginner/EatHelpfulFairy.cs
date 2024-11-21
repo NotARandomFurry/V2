@@ -17,6 +17,6 @@ namespace V2.PlayerHandling.PredPlayerGoals.Beginner
 
         public override int StatPointsFromCompletion => 7;
 
-        public override ProgressionStage Stage => ModContent.GetInstance<AmateurStage>();
+        public override ProgressionStage Stage => ModContent.GetInstance<BeginnerStage>();
     }
 }

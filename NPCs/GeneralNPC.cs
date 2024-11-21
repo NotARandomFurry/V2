@@ -136,8 +136,8 @@ namespace V2.NPCs
 			{
 				SpriteEffects spriteEffects = npc.direction switch
 				{
-					-1 => SpriteEffects.None,
-					_ => SpriteEffects.FlipHorizontally,
+					-1 => SpriteEffects.FlipVertically,
+					_ => SpriteEffects.None,
 				};
 				Texture2D texture = ModContent.Request<Texture2D>(npc.AsV2NPC().CustomSprite.Texture, AssetRequestMode.ImmediateLoad).Value;
 				Rectangle sourceRect = npc.AsV2NPC().CustomSprite.DecideFrame() ?? texture.Bounds;

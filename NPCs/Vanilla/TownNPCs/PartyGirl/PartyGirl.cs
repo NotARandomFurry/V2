@@ -181,12 +181,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 
 			shop.Add(
 				ModContent.ItemType<BalloonBelly>(),
-				new Condition("Mods.V2.ItemObtainmentDetails.Voraria.Accessories.Vanity.BalloonBelly", () => {
-					if (Main.LocalPlayer.AsPred().TotalStatPoints >= 10)
-						return true;
-
-					return false;
-				})
+				V2ShopConditions.BeginnerStatPoints
 			);
 		}
 
