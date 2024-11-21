@@ -148,6 +148,8 @@ namespace V2.Core
 
 		public void UpdatePrey()
 		{
+			if (!Predator.active)
+				return;
 			if (PreyQueue.Count > 0)
 			{
 				Prey = Prey.Concat(PreyQueue).ToList();

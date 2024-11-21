@@ -60,6 +60,16 @@ namespace V2.PlayerHandling
 			ResetHealthRegenEffectList();
 		}
 
+		public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo)
+		{
+			ResetHealthRegenTime();
+		}
+
+		public override void OnHitByProjectile(Projectile proj, Player.HurtInfo hurtInfo)
+		{
+			ResetHealthRegenTime();
+		}
+
 		public override void PostUpdateMiscEffects()
 		{
 			HandleSittingAndSleepingHealthRegenEffect();

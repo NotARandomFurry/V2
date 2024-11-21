@@ -726,6 +726,18 @@ namespace V2.PlayerHandling
 			UpdatePredStatPointsFromPermUpgrades();
 
 			Rose = false;
+
+			if (Player.sleeping.FullyFallenAsleep)
+			{
+				Player.AsPred().DigestionTickRateModifier += 0.25f;
+				Player.AsPred().PreyAbsorptionRateModifier += 0.25f;
+				bool isEveryoneAsleep = Main.CurrentFrameFlags.SleepingPlayersCount == Main.CurrentFrameFlags.ActivePlayersCount && Main.CurrentFrameFlags.SleepingPlayersCount > 0;
+				if (isEveryoneAsleep)
+				{
+					Player.AsPred().DigestionTickRateModifier *= (float)Main.dayRate;
+					Player.AsPred().PreyAbsorptionRateModifier *= (float)Main.dayRate;
+				}
+			}
 		}
 
 		public void UpdatePredStatPointsFromPermUpgrades()
@@ -800,17 +812,6 @@ namespace V2.PlayerHandling
 
 		public override void PostUpdateMiscEffects()
 		{
-			if (Player.sleeping.FullyFallenAsleep)
-			{
-				Player.AsPred().DigestionTickRateModifier += 0.25f;
-				Player.AsPred().PreyAbsorptionRateModifier += 0.25f;
-				bool isEveryoneAsleep = Main.CurrentFrameFlags.SleepingPlayersCount == Main.CurrentFrameFlags.ActivePlayersCount && Main.CurrentFrameFlags.SleepingPlayersCount > 0;
-				if (isEveryoneAsleep)
-				{
-					Player.AsPred().DigestionTickRateModifier *= (float)Main.dayRate;
-					Player.AsPred().PreyAbsorptionRateModifier *= (float)Main.dayRate;
-				}
-			}
 			while (specialManaRegenCount >= 60.0)
 			{
 				specialManaRegenCount -= 60.0;
@@ -1366,7 +1367,7 @@ namespace V2.PlayerHandling
 		/// </summary>
 		public static void UpdatePrey(Player pred)
 		{
-			if (pred.AsPred().StomachacheMeterCapacity != -1 && pred.AsPred().Stomachache == pred.AsPred().StomachacheMeterCapacity && pred.AsPred().StomachTracker is not null && pred.AsPred().StomachTracker.Prey.Count > 0)
+			if (pred.AsPred().StomachacheMeterCapacity > 0 && pred.AsPred().Stomachache == pred.AsPred().StomachacheMeterCapacity && pred.AsPred().StomachTracker is not null && pred.AsPred().StomachTracker.Prey.Count > 0)
 			{
 				Regurgitate(pred);
 				return;
@@ -1696,15 +1697,19 @@ namespace V2.PlayerHandling
 
 		public override void Kill(double damage, int hitDirection, bool pvp, PlayerDeathReason damageSource)
 		{
-			if (Player.CurrentCaptor() is not null && Player.AsPred().StomachTracker is not null)
+			if (StomachTracker is not null)
 			{
-				foreach (PreyData prey in Player.AsPred().StomachTracker.Prey)
+				if (Player.CurrentCaptor() is not null)
 				{
-					Player.CurrentCaptor().QueueNewPrey(prey);
+					foreach (PreyData prey in StomachTracker.Prey)
+					{
+						Player.CurrentCaptor().QueueNewPrey(prey);
+					}
 				}
+				StomachTracker.Prey.Clear();
 			}
 
-			Player.AsPred().InPredStatsMenu = false;
+			InPredStatsMenu = false;
 		}
 
 		public override void UpdateDead()

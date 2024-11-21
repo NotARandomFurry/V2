@@ -191,6 +191,7 @@ namespace V2
 				else
 					orig(player, i);
 			};
+			On_Player.UpdateLifeRegen += (orig, player) => PlayerDetours.Detour_UpdateLifeRegen(player);
 			On_Player.UpdateBuffs += (orig, player, i) => PlayerDetours.Detour_UpdateBuffs(player);
 			On_Player.DashMovement += (orig, player) =>
 			{

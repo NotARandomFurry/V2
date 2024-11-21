@@ -466,7 +466,7 @@ namespace V2.NPCs
 		/// <param name="pred">The NPC to update all food in the stomach of.</param>
 		public static void UpdatePrey(NPC pred)
 		{
-			if (pred.AsPred().Stomachache >= pred.AsPred().StomachacheMeterCapacity)
+			if (pred.AsPred().StomachacheMeterCapacity > 0 && pred.AsPred().Stomachache >= pred.AsPred().StomachacheMeterCapacity)
 			{
 				Regurgitate(pred, MPstate: Main.netMode == NetmodeID.SinglePlayer ? 0 : 2);
 				return;
@@ -754,12 +754,16 @@ namespace V2.NPCs
 
 		public override void OnKill(NPC npc)
 		{
-			if (npc.CurrentCaptor() is not null && GetStomachTracker(npc) is not null)
+			if (GetStomachTracker(npc) is not null)
 			{
-				foreach (PreyData prey in GetStomachTracker(npc).Prey)
+				if (npc.CurrentCaptor() is not null)
 				{
-					npc.CurrentCaptor().QueueNewPrey(prey);
+					foreach (PreyData prey in GetStomachTracker(npc).Prey)
+					{
+						npc.CurrentCaptor().QueueNewPrey(prey);
+					}
 				}
+				GetStomachTracker(npc).Prey.Clear();
 			}
 		}
 

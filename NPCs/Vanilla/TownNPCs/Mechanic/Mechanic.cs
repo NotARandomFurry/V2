@@ -619,7 +619,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Mechanic
 		public static int GetVisualBellySize(NPC npc)
 		{
 			return Math.Min(
-				(int)Math.Floor(3.5 * Math.Sqrt(PredNPC.GetCurrentBellyWeight(npc))),
+				(int)Math.Floor(4.0 * Math.Sqrt(PredNPC.GetCurrentBellyWeight(npc))),
 				3
 			);
 		}

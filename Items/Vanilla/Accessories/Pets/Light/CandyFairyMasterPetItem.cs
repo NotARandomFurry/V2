@@ -24,8 +24,8 @@ namespace V2.Items.Vanilla.Accessories.Pets.Light
 				{
 					MiniCandyFairyMaxHealth = FairyPrincessStuff.MaxHealth,
 					MiniCandyFairyStomachCapacity = FairyPrincessStuff.MaxStomachCapacity,
-					MiniCandyFairyDigestDamage = FairyPrincessStuff.MaxHealth,
-					MiniCandyFairyDigestRate = FairyPrincessStuff.MaxHealth,
+					MiniCandyFairyDigestDamage = FairyPrincessStuff.DigestDamage,
+					MiniCandyFairyDigestRate = FairyPrincessStuff.DigestRate,
 					MiniCandyFairyAbsorbRate = (FairyPrincessStuff.AbsorbRate * 60 * 60).CastToDecimalPlaces(2),
 				}
 			);

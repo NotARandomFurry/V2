@@ -44,7 +44,7 @@ namespace V2.NPCs.Sets
 			if (pred is Player predPlayer)
 			{
 				bool canCatchFairy = npc.ai[2] <= 1f;
-				if (canCatchFairy)
+				if (!canCatchFairy)
 					ModContent.GetInstance<EatHelpfulFairy>().TrySetCompletion(predPlayer);
 			}
 		}

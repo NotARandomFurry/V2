@@ -11,14 +11,22 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using V2.Core;
 using V2.NPCs;
+using V2.NPCs.Vanilla.TownNPCs.Stylist;
 using V2.Sounds.Vore;
 
 namespace V2.Projectiles.Vanilla.Summons.Pets
 {
 	public static partial class FairyPrincessStuff
 	{
+		public static FairyPrincess AsFairyPrincess(this Projectile projectile)
+		{
+			if (!projectile.TryGetGlobalProjectile(out FairyPrincess predFairyPrincess))
+				throw new Exception("this instance of the Heiress of Light can't be pred or prey");
+
+			return predFairyPrincess;
+		}
 		public static int MaxHealth => 3500;
-		public static double Size => 0.742;
+		public static double Size => 0.70;
 		public static double MaxStomachCapacity => 30.0;
 		public static double DigestDamage => 40.0;
 		public static double DigestRate => 2.0;
@@ -30,6 +38,7 @@ namespace V2.Projectiles.Vanilla.Summons.Pets
 
 	public partial class FairyPrincess : GlobalProjectile
 	{
+		public bool WaitingForChurnedOwner { get; set; }
 		public override bool IsLoadingEnabled(Mod mod) => !V2.GetFooled;
 		public override bool InstancePerEntity => true;
 

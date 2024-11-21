@@ -73,11 +73,13 @@ namespace V2.PlayerHandling
 
 		public void ResetHealthRegenEffectList()
 		{
-			HealthRegenEffects = new List<HealthRegenEffect>();
-			HealthRegenEffects.Add(new HealthRegenEffect(
-				healthPerSecond: NaturalHealthRegen,
-				natural: true
-			));
+			HealthRegenEffects =
+			[
+				new HealthRegenEffect(
+					healthPerSecond: NaturalHealthRegen,
+					natural: true
+				),
+			];
 		}
 
 		public static double NaturalHealthRegen(Player player)

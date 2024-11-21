@@ -658,13 +658,18 @@ namespace V2.Projectiles
 
 		public override bool PreKill(Projectile projectile, int timeLeft)
 		{
-			if (projectile.CurrentCaptor() is not null && GetStomachTracker(projectile) is not null)
+			if (GetStomachTracker(projectile) is not null)
 			{
-				foreach (PreyData prey in GetStomachTracker(projectile).Prey)
+				if (projectile.CurrentCaptor() is not null)
 				{
-					projectile.CurrentCaptor().QueueNewPrey(prey);
+					foreach (PreyData prey in GetStomachTracker(projectile).Prey)
+					{
+						projectile.CurrentCaptor().QueueNewPrey(prey);
+					}
 				}
+				GetStomachTracker(projectile).Prey.Clear();
 			}
+			
 			return true;
 		}
 

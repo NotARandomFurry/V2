@@ -28,12 +28,39 @@ namespace V2.Projectiles.Vanilla.Summons.Pets
 		{
 			Player ownerPlayer = Main.player[projectile.owner];
 			bool ateOwner = ownerPlayer.IsFoodFor(projectile, out bool churnedOwner);
+			if (PredProjectile.GetStomachTracker(projectile) is VoreTracker fairyPrincessTummy)
+			{
+				foreach (PreyData newFood in fairyPrincessTummy.PreyQueue)
+				{
+					if (newFood.NoHealth)
+						continue;
+
+					ateOwner |= ownerPlayer.IsFoodFor(newFood.Instance, out bool foodChurnedOwner);
+					churnedOwner |= foodChurnedOwner;
+				}
+				foreach (PreyData food in fairyPrincessTummy.Prey)
+				{
+					if (food.NoHealth)
+						continue;
+
+					ateOwner |= ownerPlayer.IsFoodFor(food.Instance, out bool foodChurnedOwner);
+					churnedOwner |= foodChurnedOwner;
+				}
+			}
+			if (!projectile.AsFairyPrincess().WaitingForChurnedOwner)
+				projectile.AsFairyPrincess().WaitingForChurnedOwner = ateOwner;
 			float xOffset = V2Utils.TileCountAsPixelCount(2);
 			float yOffset = -V2Utils.TileCountAsPixelCount(4.5);
 
 			Vector2 offsetFromOwner = new Vector2((float)ownerPlayer.direction * xOffset, yOffset);
 			Vector2 intendedLocation = ownerPlayer.MountedCenter + offsetFromOwner;
 			float distanceToIntendedLocation = Vector2.Distance(projectile.Center, intendedLocation);
+
+			if (projectile.AsFairyPrincess().WaitingForChurnedOwner)
+			{
+				projectile.timeLeft = 2;
+				goto SkipOwnerDeadCheck;
+			}
 
 			if (!ateOwner)
 			{
@@ -49,9 +76,13 @@ namespace V2.Projectiles.Vanilla.Summons.Pets
 				if (distanceToIntendedLocation > 1000f)
 					projectile.Center = ownerPlayer.Center + offsetFromOwner;
 			}
-			else 
+			else
+			{
+				projectile.AsFairyPrincess().WaitingForChurnedOwner = true;
 				projectile.timeLeft = 2;
+			}
 
+			SkipOwnerDeadCheck:
 			VoreTracker tracker = PredProjectile.GetStomachTracker(projectile);
 			if (tracker is null)
 				goto ResetFrame;
@@ -98,6 +129,127 @@ namespace V2.Projectiles.Vanilla.Summons.Pets
 				projectile.AsV2Proj().CustomSprite = null;
 
 			SkipResetFrame:
+
+			if (!MiniCandyFairyAI_TryFindNewFood(projectile))
+			{
+				if (projectile.AsFairyPrincess().WaitingForChurnedOwner)
+				{
+					projectile.velocity *= 0.925f;
+					if (ownerPlayer.active && !ownerPlayer.dead && ownerPlayer.CurrentCaptor() is null && distanceToIntendedLocation <= V2Utils.TileCountAsPixelCount(20))
+					{
+						projectile.AsFairyPrincess().WaitingForChurnedOwner = false;
+						MiniCandyFairyAI_HandleOwnerFollowing(projectile, ownerPlayer, intendedLocation);
+					}
+				}
+				else if ((!(ateOwner && !churnedOwner)) && distanceToIntendedLocation <= V2Utils.TileCountAsPixelCount(20))
+					MiniCandyFairyAI_HandleOwnerFollowing(projectile, ownerPlayer, intendedLocation);
+				else
+					projectile.velocity *= 0.925f;
+			}
+
+			if (projectile.velocity.Length() > 6f)
+			{
+				float rotationSpeed = projectile.velocity.X * 0.1f;
+				if (Math.Abs(projectile.rotation - rotationSpeed) >= (float)Math.PI)
+				{
+					if (rotationSpeed < projectile.rotation)
+						projectile.rotation -= (float)Math.PI * 2f;
+					else
+						projectile.rotation += (float)Math.PI * 2f;
+				}
+
+				float rotationInertia = 12f;
+				projectile.rotation = (projectile.rotation * (rotationInertia - 1f) + rotationSpeed) / rotationInertia;
+				if (++projectile.frameCounter >= 3)
+				{
+					projectile.frameCounter = 0;
+					projectile.frame++;
+					if (projectile.frame >= Main.projFrames[projectile.type])
+						projectile.frame = 0;
+				}
+
+				if (projectile.frameCounter == 0 || Main.rand.NextBool(15))
+				{
+					int num974 = Dust.NewDust(
+						projectile.position,
+						projectile.width,
+						projectile.height,
+						Main.rand.NextFromCollection(new List<int> {
+								DustID.PinkTorch,
+								DustID.PinkTorch,
+								DustID.BlueTorch,
+								DustID.YellowTorch,
+						}),
+						0f,
+						0f,
+						50,
+						default,
+						2f
+					);
+					Main.dust[num974].noGravity = true;
+				}
+			}
+			else
+			{
+				if (projectile.rotation > (float)Math.PI)
+					projectile.rotation -= (float)Math.PI * 2f;
+
+				if (projectile.rotation > -0.005f && projectile.rotation < 0.005f)
+					projectile.rotation = 0f;
+				else
+					projectile.rotation *= 0.96f;
+
+				if (++projectile.frameCounter >= 5)
+				{
+					projectile.frameCounter = 0;
+					projectile.frame++;
+					if (projectile.frame >= Main.projFrames[projectile.type])
+						projectile.frame = 0;
+				}
+			}
+			return false;
+		}
+
+		public static void MiniCandyFairyAI_HandleOwnerFollowing(Projectile projectile, Player ownerPlayer, Vector2 intendedLocation)
+		{
+			projectile.direction = projectile.spriteDirection = ownerPlayer.direction;
+
+			float distanceToIntendedLocation = Vector2.Distance(projectile.Center, intendedLocation);
+
+			Vector3 vector156 = new Vector3(1f, 0.6f, 1f) * 1.5f;
+			DelegateMethods.v3_1 = vector156 * 0.75f;
+			Utils.PlotTileLine(ownerPlayer.Center, ownerPlayer.Center + ownerPlayer.velocity * 6f, 40f, DelegateMethods.CastLightOpen);
+			Utils.PlotTileLine(ownerPlayer.Left, ownerPlayer.Right, 40f, DelegateMethods.CastLightOpen);
+			DelegateMethods.v3_1 = vector156 * 1.5f;
+			Utils.PlotTileLine(projectile.Center, projectile.Center + projectile.velocity * 6f, 30f, DelegateMethods.CastLightOpen);
+			Utils.PlotTileLine(projectile.Left, projectile.Right, 20f, DelegateMethods.CastLightOpen);
+
+			Vector2 distanceFromIntendedLocation = intendedLocation - projectile.Center;
+			float lockInDistance = 10f;
+			if (distanceToIntendedLocation < lockInDistance)
+				projectile.velocity *= 0.85f;
+
+			if (distanceFromIntendedLocation != Vector2.Zero)
+			{
+				float maxSpeed = 15f;
+				projectile.velocity = distanceFromIntendedLocation * 0.1f;
+				if (projectile.velocity.Length() > maxSpeed)
+				{
+					projectile.velocity.Normalize();
+					projectile.velocity *= maxSpeed;
+				}
+			}
+
+			if (distanceToIntendedLocation > 50f)
+			{
+				projectile.direction = projectile.spriteDirection = 1;
+				if (projectile.velocity.X < 0f)
+					projectile.direction = projectile.spriteDirection = -1;
+			}
+		}
+		public static bool MiniCandyFairyAI_TryFindNewFood(Projectile projectile)
+		{
+			Player ownerPlayer = Main.player[projectile.owner];
 			List<(PreyType, int)> diet = [
 				(PreyType.NPC, NPCID.FairyCritterBlue),
 				(PreyType.NPC, NPCID.FairyCritterGreen),
@@ -164,6 +316,9 @@ namespace V2.Projectiles.Vanilla.Summons.Pets
 			double maxPreyDistanceFromOwner = V2Utils.TileCountAsPixelCount(40);
 			foreach (NPC potentialPrey in Main.ActiveNPCs)
 			{
+				if (potentialPrey.life <= 0)
+					continue;
+
 				if (potentialPrey.CurrentCaptor() is not null)
 					continue;
 
@@ -181,6 +336,33 @@ namespace V2.Projectiles.Vanilla.Summons.Pets
 				if (distanceToPotentialPrey <= maxPreyDistanceFromFairy && distanceToPotentialPreyFromOwner <= maxPreyDistanceFromOwner)
 				{
 					targetPreyType = PreyType.NPC;
+					targetPreyIndex = potentialPrey.whoAmI;
+					maxPreyDistanceFromFairy = distanceToPotentialPrey;
+					maxPreyDistanceFromOwner = distanceToPotentialPreyFromOwner;
+				}
+			}
+			foreach (Projectile potentialPrey in Main.ActiveProjectiles)
+			{
+				if (potentialPrey.AsFood().Health <= 0)
+					continue;
+
+				if (potentialPrey.CurrentCaptor() is not null)
+					continue;
+
+				bool partOfDiet = false;
+				foreach ((PreyType type, int ID) in diet)
+				{
+					if (type == PreyType.Projectile && ID == potentialPrey.type)
+						partOfDiet = true;
+				}
+				if (!partOfDiet)
+					continue;
+
+				float distanceToPotentialPrey = projectile.Distance(potentialPrey.TrueCenter());
+				float distanceToPotentialPreyFromOwner = ownerPlayer.Distance(potentialPrey.TrueCenter());
+				if (distanceToPotentialPrey <= maxPreyDistanceFromFairy && distanceToPotentialPreyFromOwner <= maxPreyDistanceFromOwner)
+				{
+					targetPreyType = PreyType.Projectile;
 					targetPreyIndex = potentialPrey.whoAmI;
 					maxPreyDistanceFromFairy = distanceToPotentialPrey;
 					maxPreyDistanceFromOwner = distanceToPotentialPreyFromOwner;
@@ -210,104 +392,7 @@ namespace V2.Projectiles.Vanilla.Summons.Pets
 				if (projectile.velocity.X < 0f)
 					projectile.direction = projectile.spriteDirection = -1;
 				projectile.DoContactGulpage(diet);
-			}
-			else if (!(ateOwner && !churnedOwner) && distanceToIntendedLocation <= V2Utils.TileCountAsPixelCount(20))
-			{
-				projectile.direction = projectile.spriteDirection = ownerPlayer.direction;
-
-				Vector3 vector156 = new Vector3(1f, 0.6f, 1f) * 1.5f;
-				DelegateMethods.v3_1 = vector156 * 0.75f;
-				Utils.PlotTileLine(ownerPlayer.Center, ownerPlayer.Center + ownerPlayer.velocity * 6f, 40f, DelegateMethods.CastLightOpen);
-				Utils.PlotTileLine(ownerPlayer.Left, ownerPlayer.Right, 40f, DelegateMethods.CastLightOpen);
-				DelegateMethods.v3_1 = vector156 * 1.5f;
-				Utils.PlotTileLine(projectile.Center, projectile.Center + projectile.velocity * 6f, 30f, DelegateMethods.CastLightOpen);
-				Utils.PlotTileLine(projectile.Left, projectile.Right, 20f, DelegateMethods.CastLightOpen);
-
-				Vector2 distanceFromIntendedLocation = intendedLocation - projectile.Center;
-				float lockInDistance = 10f;
-				if (distanceToIntendedLocation < lockInDistance)
-					projectile.velocity *= 0.85f;
-
-				if (distanceFromIntendedLocation != Vector2.Zero)
-				{
-					float maxSpeed = 15f;
-					projectile.velocity = distanceFromIntendedLocation * 0.1f;
-					if (projectile.velocity.Length() > maxSpeed)
-					{
-						projectile.velocity.Normalize();
-						projectile.velocity *= maxSpeed;
-					}
-				}
-
-				if (distanceToIntendedLocation > 50f)
-				{
-					projectile.direction = projectile.spriteDirection = 1;
-					if (projectile.velocity.X < 0f)
-						projectile.direction = projectile.spriteDirection = -1;
-				}
-			}
-			else
-				projectile.velocity *= 0.925f;
-
-			if (projectile.velocity.Length() > 6f)
-			{
-				float rotationSpeed = projectile.velocity.X * 0.1f;
-				if (Math.Abs(projectile.rotation - rotationSpeed) >= (float)Math.PI)
-				{
-					if (rotationSpeed < projectile.rotation)
-						projectile.rotation -= (float)Math.PI * 2f;
-					else
-						projectile.rotation += (float)Math.PI * 2f;
-				}
-
-				float rotationInertia = 12f;
-				projectile.rotation = (projectile.rotation * (rotationInertia - 1f) + rotationSpeed) / rotationInertia;
-				if (++projectile.frameCounter >= 3)
-				{
-					projectile.frameCounter = 0;
-					projectile.frame++;
-					if (projectile.frame >= Main.projFrames[projectile.type])
-						projectile.frame = 0;
-				}
-
-				if (projectile.frameCounter == 0 || Main.rand.NextBool(15))
-				{
-					int num974 = Dust.NewDust(
-						projectile.position,
-						projectile.width,
-						projectile.height,
-						Main.rand.NextFromCollection(new List<int> {
-								DustID.PinkTorch,
-								DustID.PinkTorch,
-								DustID.BlueTorch,
-								DustID.YellowTorch,
-						}),
-						0f,
-						0f,
-						50,
-						default,
-						2f
-					);
-					Main.dust[num974].noGravity = true;
-				}
-			}
-			else
-			{
-				if (projectile.rotation > (float)Math.PI)
-					projectile.rotation -= (float)Math.PI * 2f;
-
-				if (projectile.rotation > -0.005f && projectile.rotation < 0.005f)
-					projectile.rotation = 0f;
-				else
-					projectile.rotation *= 0.96f;
-
-				if (++projectile.frameCounter >= 5)
-				{
-					projectile.frameCounter = 0;
-					projectile.frame++;
-					if (projectile.frame >= Main.projFrames[projectile.type])
-						projectile.frame = 0;
-				}
+				return true;
 			}
 			return false;
 		}

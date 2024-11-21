@@ -43,7 +43,7 @@ namespace V2.Items.Voraria.Charms
 			{
 				double effectiveness = (double)player.AsPred().StomachTracker?.Prey.FindAll(x => x.NoHealth).Count / (double)player.AsPred().StomachTracker?.Prey.Count;
 				player.AddHealthRegenEffect(
-					healthPerSecond: HealthRegenerationRatio * player.AsPred().PreyAbsorptionRate * effectiveness,
+					healthPerSecond: HealthRegenerationRatio * player.AsPred().PreyAbsorptionRatePerSecond * effectiveness,
 					natural: true
 				);
 				player.AsPred().specialManaRegenCount += ManaRegenerationRatio * player.AsPred().PreyAbsorptionRatePerSecond * effectiveness;
