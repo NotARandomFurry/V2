@@ -1152,7 +1152,7 @@ Mods: {
 						/* Default:
 							'''
 							Churn a giant gemstone into some grade-A ass fat.
-							'Gemstones are really the best sorts of meals...tough as a rock, sky-high in calories, and expensive as all hell! Just imagine, all that unadulterated pristine WEALTH, steadily turned into nothing but a slew of caloric sludge fattening up your frame...'
+							'Gemstones are really the best sorts of meals...tough as a rock, sky-high in calories, and expensive as all hell! Just imagine, all that unadulterated pristine WEALTH, steadily turned into nothing but a slew of caloric sludge ready to fatten up your frame...~'
 							''' */
 						/* Clarification:
 							'''
@@ -1373,7 +1373,7 @@ Mods: {
 						/* Default:
 							'''
 							Churn a collection of massive gemstones into a massive new influx of ass fat.
-							'Gemstones are really the best sorts of meals...tough as a rock, sky-high in calories, and expensive as all hell! Just imagine, all that unadulterated pristine WEALTH, steadily turned into nothing but a slew of caloric sludge fattening up your frame...'
+							'See? What did I tell you? Giant gems make for a WEALTH of premium tummy pudge, and they're just as much of a flex to gobble up, too! Imagine how much people would've paid you for all that premier belly fodder, now nothing more than dozens of pounds hanging off your belly and elsewhere...~'
 							''' */
 						/* Clarification:
 							'''
@@ -2778,7 +2778,7 @@ Mods: {
 								/* Short:
 									'''
 									Increases maximum prey swallowing size, stomach capacity, acid strength and food absorption rate
-									If eaten for the first time, permanently gain slight buffs, related to this juju's effects.
+									If eaten for the first time, permanently gain slight buffs related to this juju's effects
 									{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
 									''' */
 								/* Long:
@@ -2786,7 +2786,7 @@ Mods: {
 									[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases GLP, TUM, ACI & ABS] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{All}].
 									When eaten:
 									- [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Permanently increases GLP, TUM, ACI & ABS] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{PermAll}].
-									This bonus only applies once. Eating this item after you have already done so [c/{$Mods.V2.CommonColorCodes.NegativeEffect}:will have no further effect.]
+									This bonus only applies once. Eating this item after you have already done so [c/{$Mods.V2.CommonColorCodes.NegativeEffect}:will have no further effect].
 									''' */
 								// Flavor: '''[c/{$Mods.V2.CommonColorCodes.CloverQuote}:"The Aether? The shimmer lake is sooo cooool! I bet it tastes like candy!" -Clover]'''
 							}
@@ -2795,7 +2795,7 @@ Mods: {
 								/* Short:
 									'''
 									Increases stomach capacity and food absorption rate
-									If eaten for the first time, permanently gain slight buffs, related to this juju's effects.
+									If eaten for the first time, permanently gain slight buffs related to this juju's effects
 									{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
 									''' */
 								/* Long:
@@ -2805,16 +2805,16 @@ Mods: {
 									When eaten:
 									- [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Permanently increases TUM] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{PermTUM}].
 									- [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Permanently increases ABS] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{PermABS}].
-									This bonus only applies once. Eating this item after you have already done so [c/{$Mods.V2.CommonColorCodes.NegativeEffect}:will have no further effect.]
+									This bonus only applies once. Eating this item after you have already done so [c/{$Mods.V2.CommonColorCodes.NegativeEffect}:will have no further effect].
 									''' */
-								// Flavor: '''[c/{$Mods.V2.CommonColorCodes.CloverQuote}:"The Forest? Hmm, layin' around in the grass with a tum full of candy is always fun!" -Clover]'''
+								// Flavor: '''[c/{$Mods.V2.CommonColorCodes.CloverQuote}:"The forest? Hmm, layin' around in the grass with a tum full of candy is always fun!" -Clover]'''
 							}
 
 							BiomeJujuDesert: {
 								/* Short:
 									'''
 									Increases acid strength and struggling strength
-									If eaten for the first time, permanently gain slight buffs, related to this juju's effects.
+									If eaten for the first time, permanently gain slight buffs related to this juju's effects
 									{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
 									''' */
 								/* Long:
@@ -2824,16 +2824,16 @@ Mods: {
 									When eaten:
 									- [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Permanently increases ACI] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{PermACI}].
 									- [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Permanently increases struggle strength] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{PermSTR}%].
-									This bonus only applies once. Eating this item after you have already done so [c/{$Mods.V2.CommonColorCodes.NegativeEffect}:will have no further effect.]
+									This bonus only applies once. Eating this item after you have already done so [c/{$Mods.V2.CommonColorCodes.NegativeEffect}:will have no further effect].
 									''' */
-								// Flavor: '''[c/{$Mods.V2.CommonColorCodes.CloverQuote}:"The Desert? Ugh, it feels awful with the constant heat! Never going there!" -Clover]'''
+								// Flavor: '''[c/{$Mods.V2.CommonColorCodes.CloverQuote}:"The desert? Ugh, it feels awful with the constant heat! Never going there!" -Clover]'''
 							}
 
 							BiomeJujuSnow: {
 								/* Short:
 									'''
 									Increases maximum prey swallowing size and food absorption rate
-									If eaten for the first time, permanently gain slight buffs, related to this juju's effects.
+									If eaten for the first time, permanently gain slight buffs related to this juju's effects
 									{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
 									''' */
 								/* Long:
@@ -2843,9 +2843,9 @@ Mods: {
 									When eaten:
 									- [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Permanently increases GLP] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{PermGLP}].
 									- [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Permanently increases ABS] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{PermABS}].
-									This bonus only applies once. Eating this item after you have already done so [c/{$Mods.V2.CommonColorCodes.NegativeEffect}:will have no further effect.]
+									This bonus only applies once. Eating this item after you have already done so [c/{$Mods.V2.CommonColorCodes.NegativeEffect}:will have no further effect].
 									''' */
-								// Flavor: '''[c/{$Mods.V2.CommonColorCodes.CloverQuote}:"The Snow? Not a fan of ice, but the snow makes me think of ice cream!" -Clover]'''
+								// Flavor: '''[c/{$Mods.V2.CommonColorCodes.CloverQuote}:"The tundra? Not a fan of ice, but the snow makes me think of ice cream!" -Clover]'''
 							}
 
 							BiomeJujuJungle: {
@@ -2853,7 +2853,7 @@ Mods: {
 									'''
 									Increases stomach capacity
 									Decreases movement speed
-									If eaten for the first time, permanently gain slight buffs, related to this juju's effects.
+									If eaten for the first time, permanently gain slight buffs related to this juju's effects
 									{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
 									''' */
 								/* Long:
@@ -2862,11 +2862,11 @@ Mods: {
 									[c/{$Mods.V2.CommonColorCodes.NegativeEffect}:Decreases movement speed] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{SPD}%].
 									When eaten:
 									- [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Permanently increases TUM] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{PermTUM}].
-									This bonus only applies once. Eating this item after you have already done so [c/{$Mods.V2.CommonColorCodes.NegativeEffect}:will have no further effect.]
+									This bonus only applies once. Eating this item after you have already done so [c/{$Mods.V2.CommonColorCodes.NegativeEffect}:will have no further effect].
 									''' */
 								/* Flavor:
 									'''
-									[c/{$Mods.V2.CommonColorCodes.CloverQuote}:"The Jungle? Reminds me of the time where i drank like three gallons]
+									[c/{$Mods.V2.CommonColorCodes.CloverQuote}:"The jungle? Reminds me of the time where I drank like three gallons]
 									[c/{$Mods.V2.CommonColorCodes.CloverQuote}:of honey and then got all sticky... Took a while to crawl out of the hive." -Clover]
 									''' */
 							}
@@ -2876,7 +2876,7 @@ Mods: {
 									'''
 									Decreases stomach weight
 									Increases movement speed & jump height
-									If eaten for the first time, permanently gain slight buffs, related to this juju's effects.
+									If eaten for the first time, permanently gain slight buffs related to this juju's effects
 									{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
 									''' */
 								/* Long:
@@ -2886,9 +2886,9 @@ Mods: {
 									[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases jump speed] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{Jump}%].
 									When eaten:
 									- [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Permanently decreases stomach weight] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{PermWeightReduce}%].
-									This bonus only applies once. Eating this item after you have already done so [c/{$Mods.V2.CommonColorCodes.NegativeEffect}:will have no further effect.]
+									This bonus only applies once. Eating this item after you have already done so [c/{$Mods.V2.CommonColorCodes.NegativeEffect}:will have no further effect].
 									''' */
-								// Flavor: '''[c/{$Mods.V2.CommonColorCodes.CloverQuote}:"The Sky? The lower gravity up there makes my tum feel all kinds of funny..." -Clover]'''
+								// Flavor: '''[c/{$Mods.V2.CommonColorCodes.CloverQuote}:"The sky? The lower gravity up there makes my tum feel all kinds of funny..." -Clover]'''
 							}
 						}
 

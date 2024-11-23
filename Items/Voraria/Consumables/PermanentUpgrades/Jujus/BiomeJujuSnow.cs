@@ -25,7 +25,7 @@ namespace V2.Items.Voraria.Consumables.PermanentUpgrades.Jujus
         public static int GLPBonus => 8;
         public static int ABSBonus => 3;
         public static int PermGLPBonus => 2;
-        public static float PermABSBonus => 1;
+        public static int PermABSBonus => 1;
 
         public override void SetStaticDefaults()
         {

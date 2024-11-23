@@ -3,12 +3,12 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 
-namespace V2.Items.Vanilla.Placeables.BorealWood
+namespace V2.Items.Vanilla.Placeables.Woods
 {
-	public class BorealWood : GlobalItem
+	public class PalmWood : GlobalItem
 	{
 		public override bool InstancePerEntity => true;
-		public override bool AppliesToEntity(Item entity, bool lateInstantiation) => entity.type == ItemID.BorealWood;
+		public override bool AppliesToEntity(Item entity, bool lateInstantiation) => entity.type == ItemID.PalmWood;
 
 		public override void SetDefaults(Item item)
 		{

@@ -17,7 +17,7 @@ namespace V2.PlayerHandling.PredPlayerGoals.Amateur
 		public override string Description(Player pred) => "Mods.V2.PredPlayerGoals.Amateur.Cheapskate.Description";
 		public override bool Available(Player pred) => NPC.AnyNPCs(NPCID.Nurse) || Complete(pred);
 
-		public override int StatPointsFromCompletion => 3;
+		public override int StatPointsFromCompletion => 4;
 
 		public override ProgressionStage Stage => ModContent.GetInstance<AmateurStage>();
 	}

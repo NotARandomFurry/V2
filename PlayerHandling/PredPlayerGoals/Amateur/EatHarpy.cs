@@ -15,7 +15,7 @@ namespace V2.PlayerHandling.PredPlayerGoals.Amateur
 		public override string DisplayName(Player pred) => "Mods.V2.PredPlayerGoals.Amateur.EatHarpy.Name";
 		public override string Description(Player pred) => "Mods.V2.PredPlayerGoals.Amateur.EatHarpy.Description";
 
-		public override int StatPointsFromCompletion => 3;
+		public override int StatPointsFromCompletion => 6;
 
 		public override ProgressionStage Stage => ModContent.GetInstance<AmateurStage>();
 	}

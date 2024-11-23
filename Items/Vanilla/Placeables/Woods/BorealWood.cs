@@ -3,17 +3,17 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 
-namespace V2.Items.Vanilla.Placeables.BorealWood.Furniture
+namespace V2.Items.Vanilla.Placeables.Woods
 {
-	public class BorealWoodDoor : GlobalItem
+	public class BorealWood : GlobalItem
 	{
 		public override bool InstancePerEntity => true;
 		public override bool AppliesToEntity(Item entity, bool lateInstantiation) => entity.type == ItemID.BorealWood;
 
 		public override void SetDefaults(Item item)
 		{
-			item.AsFood().MaxHealth = 250;
-			item.AsFood().Size = 1.00;
+			item.AsFood().MaxHealth = 14;
+			item.AsFood().Size = 0.08;
 		}
 	}
 }

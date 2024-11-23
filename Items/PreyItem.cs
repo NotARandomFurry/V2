@@ -15,6 +15,7 @@ using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using Terraria.UI.Chat;
 using V2.Core;
+using V2.Items.ItemGroupUtils;
 using V2.NPCs;
 using V2.PlayerHandling;
 using V2.PlayerHandling.PredPlayerGoals.Starter;

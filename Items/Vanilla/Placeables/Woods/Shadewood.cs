@@ -3,12 +3,12 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 
-namespace V2.Items.Vanilla.Placeables.NormalAssWood
+namespace V2.Items.Vanilla.Placeables.Woods
 {
-	public class OakWood : GlobalItem
+	public class Shadewood : GlobalItem
 	{
 		public override bool InstancePerEntity => true;
-		public override bool AppliesToEntity(Item entity, bool lateInstantiation) => entity.type == ItemID.Wood;
+		public override bool AppliesToEntity(Item entity, bool lateInstantiation) => entity.type == ItemID.Shadewood;
 
 		public override void SetDefaults(Item item)
 		{
