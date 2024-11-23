@@ -749,19 +749,28 @@ namespace V2.PlayerHandling
 				TUM.Base += BiomeJujuForest.PermTUMBonus;
 				ABS.Base += BiomeJujuForest.PermABSBonus;
 			}
-            if (PermanentUpgradesGained.TryGetValue("ShimmerJuju", out bool eatenShimmerJuju) && eatenShimmerJuju)
-            {
-                GLP.Base += ShimmerJuju.PermAllBonus;
-                TUM.Base += ShimmerJuju.PermAllBonus;
-                ACI.Base += ShimmerJuju.PermAllBonus;
-                ABS.Base += ShimmerJuju.PermAllBonus;
-            }
-            if (PermanentUpgradesGained.TryGetValue("BiomeJujuDesert", out bool eatenDesertJuju) && eatenDesertJuju)
-            {
-                ACI.Base += BiomeJujuDesert.PermACIBonus;
-                Player.AsFood().StruggleStrengthModifier += BiomeJujuDesert.PermStruggleBonus;
-            }
-        }
+			if (PermanentUpgradesGained.TryGetValue("BiomeJujuDesert", out bool eatenDesertJuju) && eatenDesertJuju)
+			{
+				ACI.Base += BiomeJujuDesert.PermACIBonus;
+				Player.AsFood().StruggleStrengthModifier += BiomeJujuDesert.PermStruggleBonus;
+			}
+			if (PermanentUpgradesGained.TryGetValue("BiomeJujuSnow", out bool eatenSnowJuju) && eatenSnowJuju)
+			{
+				GLP.Base += BiomeJujuSnow.PermGLPBonus;
+				ABS.Base += BiomeJujuSnow.PermABSBonus;
+			}
+			if (PermanentUpgradesGained.TryGetValue("BiomeJujuJungle", out bool eatenJungleJuju) && eatenJungleJuju)
+				TUM.Base += BiomeJujuJungle.PermTUMBonus;
+			if (PermanentUpgradesGained.TryGetValue("BiomeJujuSky", out bool eatenSkyJuju) && eatenSkyJuju)
+				StomachWeightModifier *= 1f - BiomeJujuSky.PermStomachWeight;
+			if (PermanentUpgradesGained.TryGetValue("ShimmerJuju", out bool eatenShimmerJuju) && eatenShimmerJuju)
+			{
+				GLP.Base += ShimmerJuju.PermAllBonus;
+				TUM.Base += ShimmerJuju.PermAllBonus;
+				ACI.Base += ShimmerJuju.PermAllBonus;
+				ABS.Base += ShimmerJuju.PermAllBonus;
+			}
+		}
 
 		public override bool HoverSlot(Item[] inventory, int context, int slot)
 		{

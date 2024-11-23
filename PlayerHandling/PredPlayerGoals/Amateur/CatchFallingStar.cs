@@ -16,7 +16,7 @@ namespace V2.PlayerHandling.PredPlayerGoals.Amateur
 		public override string Description(Player pred) => "Mods.V2.PredPlayerGoals.Amateur.CatchFallingStar.Description";
 		public override bool Available(Player pred) => pred.AsV2Player().HasVisitedLocation("nighttime") || Complete(pred);
 
-		public override int StatPointsFromCompletion => 5;
+		public override int StatPointsFromCompletion => 7;
 
 		public override ProgressionStage Stage => ModContent.GetInstance<AmateurStage>();
 	}

@@ -21,7 +21,7 @@ namespace V2.PlayerHandling.PredPlayerGoals.Amateur
 		 || pred.HasItemInInventoryOrOpenVoidBag(ItemID.LavaCharm)
 		 || Complete(pred);
 
-		public override int StatPointsFromCompletion => 7;
+		public override int StatPointsFromCompletion => 9;
 
 		public override ProgressionStage Stage => ModContent.GetInstance<AmateurStage>();
 	}

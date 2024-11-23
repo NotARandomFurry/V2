@@ -7,6 +7,7 @@ using Terraria;
 using Terraria.ModLoader;
 using V2.Core;
 using V2.PlayerHandling;
+using V2.PlayerHandling.PredPlayerGoals.Amateur;
 using V2.PlayerHandling.PredPlayerGoals.Skilled;
 
 namespace V2.Items.ItemGroupUtils
@@ -28,6 +29,7 @@ namespace V2.Items.ItemGroupUtils
 		{
 			if (pred is Player predPlayer)
 			{
+				ModContent.GetInstance<EatLargeGem>().TrySetCompletion(predPlayer);
 				List<int> distinctLargeGems = V2Utils.ItemIDSets.LargeGems;
 				int distinctLargeGemsInTummy = 0;
 				foreach (PreyData prey in predPlayer.AsPred().StomachTracker.Prey)

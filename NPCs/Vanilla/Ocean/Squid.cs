@@ -31,7 +31,7 @@ namespace V2.NPCs.Vanilla.Ocean
 		{
 			npc.AsV2NPC().Gender = EntityGender.Other;
 
-			npc.AsFood().DefinedBaseSize = 1.15;
+			npc.AsFood().DefinedBaseSize = 0.45;
 
 			npc.AsFood().OnDigestedBy = PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
 			npc.AsFood().OnDigestedBy += OnKilledByDigestion_GrantSquidGoal;
