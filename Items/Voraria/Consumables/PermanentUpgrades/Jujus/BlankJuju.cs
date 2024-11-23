@@ -21,21 +21,23 @@ namespace V2.Items.Voraria.Consumables.PermanentUpgrades.Jujus
 		public override bool IsLoadingEnabled(Mod mod) => !V2.GetFooled;
 		public override LocalizedText DisplayName => Language.GetText("Mods.V2.ItemName.Voraria.Consumables.PermanentUpgrades.Jujus.BlankJuju");
 		public override LocalizedText Tooltip => Language.GetText("Mods.V2.ItemTooltip.Voraria.Consumables.PermanentUpgrades.Jujus.BlankJuju");
-        public override string Texture => "V2/Items/UnspritedItem";
 
         public override void SetStaticDefaults()
         {
-            DrawAnimationVertical anim = new DrawAnimationVertical(6, 12);
+            DrawAnimationVertical anim = new DrawAnimationVertical(8, 2);
             Main.RegisterItemAnimation(Type, anim);
             ItemID.Sets.AnimatesAsSoul[Type] = true;
 
             ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<ShimmerJuju>();
         }
-
-		public override void SetDefaults()
+        public override void PostUpdate()
+        {
+            Lighting.AddLight(Item.Center, new Vector3(255,255,255) * 0.005f);
+        }
+        public override void SetDefaults()
 		{
-			Item.width = 20;
-			Item.height = 26;
+			Item.width = 32;
+			Item.height = 32;
 			Item.maxStack = Item.CommonMaxStack;
 
 			Item.value = Item.buyPrice(0, 2, 50);

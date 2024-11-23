@@ -3,9 +3,12 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria;
 using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 using V2.Core;
+using V2.Items.Voraria;
+using V2.Items.Voraria.Charms;
 using V2.PlayerHandling.PredPlayerGoals.Intermediate;
 using V2.PlayerHandling.PredPlayerGoals.Skilled;
 
@@ -56,7 +59,7 @@ namespace V2.NPCs.Voraria.Sky
 			if (!spawnInfo.Sky)
 				return 0f;
 
-			return 0.02f;
+			return 0.03f;
 		}
 		public override bool CanHitPlayer(Player target, ref int cooldownSlot)
 		{
@@ -152,13 +155,34 @@ namespace V2.NPCs.Voraria.Sky
 				Gore.NewGore(NPC.GetSource_Death(), NPC.Center + new Vector2(0, 30), new Vector2(0, 1.5f), Gore2);
 			}
 		}
-
 		public static void OnDigestedBy_GrantObserverGoal(NPC npc, Entity pred)
 		{
 			if (pred is Player predPlayer)
 				ModContent.GetInstance<EatObserver>().TrySetCompletion(predPlayer);
 		}
-	}
+        public override void ModifyNPCLoot(NPCLoot npcLoot)
+        {
+            npcLoot.Add(
+                new V2CommonDropRules.DifficultyScalingDrop(
+                    new CommonDrop(
+                        itemId: ModContent.ItemType<ObserverPupil>(),
+                        chanceNumerator: 1,
+                        chanceDenominator: 1
+                    ),
+                    new CommonDrop(
+                        itemId: ModContent.ItemType<ObserverPupil>(),
+                        chanceNumerator: 1,
+                        chanceDenominator: 1
+                    ),
+                    new CommonDrop(
+                        itemId: ModContent.ItemType<ObserverPupil>(),
+                        chanceNumerator: 1,
+                        chanceDenominator: 1
+                    )
+                )
+            );
+        }
+    }
 
 	public class ObserverGreen : ModNPC
 	{
@@ -205,7 +229,7 @@ namespace V2.NPCs.Voraria.Sky
 			if (!spawnInfo.Sky)
 				return 0f;
 
-			return 0.02f;
+			return 0.03f;
 		}
 		public override bool CanHitPlayer(Player target, ref int cooldownSlot)
 		{
@@ -301,7 +325,29 @@ namespace V2.NPCs.Voraria.Sky
 				Gore.NewGore(NPC.GetSource_Death(), NPC.Center + new Vector2(0, 30), new Vector2(0, 1.5f), Gore2);
 			}
 		}
-	}
+        public override void ModifyNPCLoot(NPCLoot npcLoot)
+        {
+            npcLoot.Add(
+                new V2CommonDropRules.DifficultyScalingDrop(
+                    new CommonDrop(
+                        itemId: ModContent.ItemType<ObserverPupil>(),
+                        chanceNumerator: 1,
+                        chanceDenominator: 1
+                    ),
+                    new CommonDrop(
+                        itemId: ModContent.ItemType<ObserverPupil>(),
+                        chanceNumerator: 1,
+                        chanceDenominator: 1
+                    ),
+                    new CommonDrop(
+                        itemId: ModContent.ItemType<ObserverPupil>(),
+                        chanceNumerator: 1,
+                        chanceDenominator: 1
+                    )
+                )
+            );
+        }
+    }
 
 	public class ObserverPurple : ModNPC
 	{
@@ -348,7 +394,7 @@ namespace V2.NPCs.Voraria.Sky
 			if (!spawnInfo.Sky)
 				return 0f;
 
-			return 0.02f;
+			return 0.03f;
 		}
 		public override bool CanHitPlayer(Player target, ref int cooldownSlot)
 		{
@@ -444,5 +490,27 @@ namespace V2.NPCs.Voraria.Sky
 				Gore.NewGore(NPC.GetSource_Death(), NPC.Center + new Vector2(0, 30), new Vector2(0, 1.5f), Gore2);
 			}
 		}
-	}
+        public override void ModifyNPCLoot(NPCLoot npcLoot)
+        {
+            npcLoot.Add(
+                new V2CommonDropRules.DifficultyScalingDrop(
+                    new CommonDrop(
+                        itemId: ModContent.ItemType<ObserverPupil>(),
+                        chanceNumerator: 1,
+                        chanceDenominator: 1
+                    ),
+                    new CommonDrop(
+                        itemId: ModContent.ItemType<ObserverPupil>(),
+                        chanceNumerator: 1,
+                        chanceDenominator: 1
+                    ),
+                    new CommonDrop(
+                        itemId: ModContent.ItemType<ObserverPupil>(),
+                        chanceNumerator: 1,
+                        chanceDenominator: 1
+                    )
+                )
+            );
+        }
+    }
 }

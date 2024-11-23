@@ -21,7 +21,6 @@ namespace V2.Items.Voraria.Consumables.PermanentUpgrades.Jujus
 		public override bool IsLoadingEnabled(Mod mod) => !V2.GetFooled;
 		public override LocalizedText DisplayName => Language.GetText("Mods.V2.ItemName.Voraria.Consumables.PermanentUpgrades.Jujus.BiomeJujuDesert");
 		public override LocalizedText Tooltip => Language.GetText("Mods.V2.ItemTooltip.Voraria.Consumables.PermanentUpgrades.Jujus.BiomeJujuDesert");
-        public override string Texture => "V2/Items/UnspritedItem";
 
         public static int ACIBonus => 8;
         public static float StruggleBonus => 1f;
@@ -30,7 +29,7 @@ namespace V2.Items.Voraria.Consumables.PermanentUpgrades.Jujus
 
         public override void SetStaticDefaults()
         {
-            DrawAnimationVertical anim = new DrawAnimationVertical(6, 12);
+            DrawAnimationVertical anim = new DrawAnimationVertical(8, 2);
             Main.RegisterItemAnimation(Type, anim);
             ItemID.Sets.AnimatesAsSoul[Type] = true;
         }
@@ -39,8 +38,8 @@ namespace V2.Items.Voraria.Consumables.PermanentUpgrades.Jujus
 		{
             Item.accessory = true;
 
-            Item.width = 20;
-			Item.height = 26;
+            Item.width = 32;
+			Item.height = 32;
 			Item.maxStack = 1;
 
 			Item.value = Item.sellPrice(0, 3);
@@ -53,7 +52,10 @@ namespace V2.Items.Voraria.Consumables.PermanentUpgrades.Jujus
 
             Item.AsFood().OnBreak += OnBreak;
         }
-
+        public override void PostUpdate()
+        {
+            Lighting.AddLight(Item.Center, new Vector3(255, 255, 80) * 0.005f);
+        }
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             player.AsPred().ACI.Extra += ACIBonus;

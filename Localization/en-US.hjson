@@ -1421,6 +1421,7 @@ Mods: {
 							BiomeJujuDesert: Biome Juju - Desert
 							BiomeJujuSnow: Biome Juju - Snow
 							BiomeJujuJungle: Biome Juju - Jungle
+							BiomeJujuSky: Biome Juju - Sky
 						}
 
 						PureSwallowBoost1: Swallowing Stimulant
@@ -1464,6 +1465,7 @@ Mods: {
 				}
 
 				NymphHairStrand: Sky Blue Strand
+				ObserverPupil: Oversized Pupil
 			}
 		}
 
@@ -2864,6 +2866,26 @@ Mods: {
 									[c/{$Mods.V2.CommonColorCodes.CloverQuote}:of honey and then got all sticky... Took a while to crawl out of the hive." -Clover]
 									'''
 							}
+
+							BiomeJujuSky: {
+								Short:
+									'''
+									Decreases stomach weight
+									Increases movement speed & jump height
+									If eaten for the first time, permanently gain slight buffs, related to this juju's effects.
+									{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+									'''
+								Long:
+									'''
+									[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Decreases stomach weight] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{WeightReduce}%].
+									[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases movement speed] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{SPD}%].
+									[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases jump speed] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{Jump}%].
+									When eaten:
+									- [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Permanently decreases stomach weight] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{PermWeightReduce}%].
+									This bonus only applies once. Eating this item after you have already done so [c/{$Mods.V2.CommonColorCodes.NegativeEffect}:will have no further effect.]
+									'''
+								Flavor: '''[c/{$Mods.V2.CommonColorCodes.CloverQuote}:"The Sky? The lower gravity up there makes my tum feel all kinds of funny..." -Clover]'''
+							}
 						}
 
 						PureSwallowBoost1: {
@@ -3289,6 +3311,16 @@ Mods: {
 						'''
 					Long: Can only be obtained by [c/{$Mods.V2.CommonColorCodes.DoSomething}:eating and digesting a Nymph with the Charm of the Thief equipped].
 					Flavor: A lock of a nymph's succulent silvery-blue hair, somehow spared from the gastric gauntlet of a gut such as yours. One could make a potent dye or a comfortable scarf out of this. A hair stylist would also quite like something as unique as this...
+				}
+
+				ObserverPupil: {
+					Short:
+						'''
+						'Now i've seen everything.'
+						{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+						'''
+					Long: Obtained by killing an Observer. They can be found in the sky.
+					Flavor: A large pupil. That's all there really is to say on the matter.
 				}
 			}
 		}

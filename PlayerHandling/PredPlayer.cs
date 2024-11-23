@@ -1929,6 +1929,15 @@ namespace V2.PlayerHandling
                     tumLocation.Y += player.mount.HeightBoost;
                     frame = 1;
                 }
+				else if (player.portableStoolInfo.IsInUse)
+				{
+                    tumLocation.Y += 28f;
+                    frame = 1;
+                }
+                if (player.gravDir == -1)
+                {
+                    tumLocation.Y += 6;
+                }
                 Rectangle sourceRectBare = new Rectangle(0, frame * (bareTum.Height / 6), bareTum.Width, bareTum.Height / 6);
                 DrawData actualDrawBare = new DrawData(bareTum, tumLocation, sourceRectBare, drawInfo.colorBodySkin, player.bodyRotation, Vector2.Zero, 1f, drawInfo.playerEffect);
                 drawInfo.DrawDataCache.Add(actualDrawBare);
@@ -2031,66 +2040,6 @@ namespace V2.PlayerHandling
                         DrawDaTum(ref drawInfo, 8, Frame, -30, -22);
                         break;
                 }
-                /*switch (tumSize)
-				{
-					default:
-						// do absolutely nothing lol
-						break;
-					case 1:
-						DrawHungryPlayerTummy(
-							ref drawInfo,
-							1,
-							player.IsAirborne() ? 0 : 0,
-							player.IsAirborne() ? 6 : 6
-						);
-						break;
-					case 2:
-						DrawHungryPlayerTummy(
-							ref drawInfo,
-							2,
-                            player.IsAirborne() ? -2 : -2,
-							player.IsAirborne() ? 6 : 6
-						);
-						break;
-					case 3:
-						DrawHungryPlayerTummy(
-							ref drawInfo,
-							3,
-                            player.IsAirborne() ? -4 : -2,
-							player.IsAirborne() ? 6 : 6
-						);
-						break;
-					case 4:
-						DrawHungryPlayerTummy(
-							ref drawInfo,
-							4,
-                            player.IsAirborne() ? -4 : -4,
-							player.IsAirborne() ? 4 : 4
-						);
-						break;
-					case 5:
-						DrawHungryPlayerTummy(
-							ref drawInfo,
-							5,
-                            player.IsAirborne() ? -4 : -4,
-							player.IsAirborne() ? 4 : 2
-						);
-						break;
-					case 6:
-						DrawHungryPlayerTummy(
-							ref drawInfo,
-							6,
-                            player.IsAirborne() ? -2 : -2,
-							player.IsAirborne() ? 4 : -2);
-						break;
-					case 7:
-						DrawHungryPlayerTummy(
-							ref drawInfo,
-							7,
-                            player.IsAirborne() ? -4 : -2,
-							player.IsAirborne() ? 0 : -4);
-						break;
-				}*/
 			}
 		}
 	}

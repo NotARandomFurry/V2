@@ -1422,6 +1422,7 @@ Mods: {
 							// BiomeJujuDesert: Biome Juju - Desert
 							// BiomeJujuSnow: Biome Juju - Snow
 							// BiomeJujuJungle: Biome Juju - Jungle
+							// BiomeJujuSky: Biome Juju - Sky
 						}
 
 						PureSwallowBoost1: Стимулятор глотания
@@ -1465,6 +1466,7 @@ Mods: {
 				}
 
 				NymphHairStrand: Голубая прядь
+				// ObserverPupil: Oversized Pupil
 			}
 		}
 
@@ -2868,6 +2870,26 @@ Mods: {
 									[c/{$Mods.V2.CommonColorCodes.CloverQuote}:of honey and then got all sticky... Took a while to crawl out of the hive." -Clover]
 									''' */
 							}
+
+							BiomeJujuSky: {
+								/* Short:
+									'''
+									Decreases stomach weight
+									Increases movement speed & jump height
+									If eaten for the first time, permanently gain slight buffs, related to this juju's effects.
+									{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+									''' */
+								/* Long:
+									'''
+									[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Decreases stomach weight] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{WeightReduce}%].
+									[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases movement speed] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{SPD}%].
+									[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases jump speed] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{Jump}%].
+									When eaten:
+									- [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Permanently decreases stomach weight] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{PermWeightReduce}%].
+									This bonus only applies once. Eating this item after you have already done so [c/{$Mods.V2.CommonColorCodes.NegativeEffect}:will have no further effect.]
+									''' */
+								// Flavor: '''[c/{$Mods.V2.CommonColorCodes.CloverQuote}:"The Sky? The lower gravity up there makes my tum feel all kinds of funny..." -Clover]'''
+							}
 						}
 
 						PureSwallowBoost1: {
@@ -3298,6 +3320,16 @@ Mods: {
 						'''
 					Long: Можно получить, только если [c/{$Mods.V2.CommonColorCodes.DoSomething}:съесть и переварить нимфу с экипированными чарами вора].
 					Flavor: Локон сочных серебристо-голубых волос нимфы, каким-то образом избавленный от желудочной перчатки такого кишечника, как ваш. Из него можно сделать мощную краску или удобный шарф. Парикмахер тоже не отказался бы от такой уникальной вещи...
+				}
+
+				ObserverPupil: {
+					/* Short:
+						'''
+						'Now i've seen everything.'
+						{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+						''' */
+					// Long: Obtained by killing an Observer. They can be found in the sky.
+					// Flavor: A large pupil. That's all there really is to say on the matter.
 				}
 			}
 		}

@@ -16,14 +16,16 @@ using V2.Sounds.Vore;
 
 namespace V2.Items.Voraria.Consumables.PermanentUpgrades.Jujus
 {
-	public class ShimmerJuju : ModItem
+	public class BiomeJujuSky : ModItem
 	{
 		public override bool IsLoadingEnabled(Mod mod) => !V2.GetFooled;
-		public override LocalizedText DisplayName => Language.GetText("Mods.V2.ItemName.Voraria.Consumables.PermanentUpgrades.Jujus.ShimmerJuju");
-		public override LocalizedText Tooltip => Language.GetText("Mods.V2.ItemTooltip.Voraria.Consumables.PermanentUpgrades.Jujus.ShimmerJuju");
+		public override LocalizedText DisplayName => Language.GetText("Mods.V2.ItemName.Voraria.Consumables.PermanentUpgrades.Jujus.BiomeJujuSky");
+		public override LocalizedText Tooltip => Language.GetText("Mods.V2.ItemTooltip.Voraria.Consumables.PermanentUpgrades.Jujus.BiomeJujuSky");
 
-        public static int AllBonus => 4;
-        public static int PermAllBonus => 1;
+        public static float MoveSpeedBonus => 0.20f;
+        public static float JumpSpeedBonus => 2.505f;
+        public static float StomachWeight => 0.35f;
+        public static float PermStomachWeight => 0.1f;
 
         public override void SetStaticDefaults()
         {
@@ -41,7 +43,7 @@ namespace V2.Items.Voraria.Consumables.PermanentUpgrades.Jujus
 			Item.maxStack = 1;
 
 			Item.value = Item.sellPrice(0, 3);
-            Item.rare = ItemRarityID.Lime;
+			Item.rare = ItemRarityID.Lime;
 
             Item.AsFood().Size = 0.5;
             Item.AsFood().MaxHealth = 150;
@@ -52,14 +54,13 @@ namespace V2.Items.Voraria.Consumables.PermanentUpgrades.Jujus
         }
         public override void PostUpdate()
         {
-            Lighting.AddLight(Item.Center, new Vector3(200, 80, 255) * 0.005f);
+            Lighting.AddLight(Item.Center, new Vector3(255, 255, 80) * 0.005f);
         }
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            player.AsPred().GLP.Extra += AllBonus;
-            player.AsPred().TUM.Extra += AllBonus;
-            player.AsPred().ACI.Extra += AllBonus;
-            player.AsPred().ABS.Extra += AllBonus;
+            player.AsPred().StomachWeightModifier *= 1f - StomachWeight;
+            player.moveSpeed += MoveSpeedBonus;
+            player.jumpSpeedBoost += JumpSpeedBonus;
         }
 
         public static bool OnBreak(Item item, Entity pred, bool direct)
@@ -67,11 +68,11 @@ namespace V2.Items.Voraria.Consumables.PermanentUpgrades.Jujus
             SoundEngine.PlaySound(StomachNoises.Muffled, pred.Center);
             if (pred is Player playerPred)
             {
-                if (!playerPred.AsPred().PermanentUpgradesGained.ContainsKey("ShimmerJuju"))
-                    playerPred.AsPred().PermanentUpgradesGained.Add("ShimmerJuju", false);
+                if (!playerPred.AsPred().PermanentUpgradesGained.ContainsKey("BiomeJujuSky"))
+                    playerPred.AsPred().PermanentUpgradesGained.Add("BiomeJujuSky", false);
 
-                if (!playerPred.AsPred().PermanentUpgradesGained["ShimmerJuju"])
-                    playerPred.AsPred().PermanentUpgradesGained["ShimmerJuju"] = true;
+                if (!playerPred.AsPred().PermanentUpgradesGained["BiomeJujuSky"])
+                    playerPred.AsPred().PermanentUpgradesGained["BiomeJujuSky"] = true;
             }
             return true;
         }
@@ -80,13 +81,25 @@ namespace V2.Items.Voraria.Consumables.PermanentUpgrades.Jujus
 		{
 			Player player = Main.LocalPlayer;
 			tooltips.AddVorariaDynamicItemTooltip(
-                "Voraria.Consumables.PermanentUpgrades.Jujus.ShimmerJuju",
+                "Voraria.Consumables.PermanentUpgrades.Jujus.BiomeJujuSky",
 				new
 				{
-                    All = AllBonus,
-                    PermAll = PermAllBonus,
+                    SPD = 20,
+                    Jump = 100,
+                    WeightReduce = 35,
+                    PermWeightReduce = 10,
                 }
 			);
 		}
-	}
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient<BlankJuju>()
+                .AddIngredient(ItemID.Cloud, 25)
+                .AddIngredient(ItemID.GiantHarpyFeather, 1)
+                .AddIngredient(ItemID.SoulofFlight, 25)
+                .AddIngredient<ObserverPupil>(3)
+                .Register();
+        }
+    }
 }
