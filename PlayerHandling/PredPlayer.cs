@@ -180,8 +180,8 @@ namespace V2.PlayerHandling
 		}
 		public PredStat TUM { get; set; }
 		public StatModifier StomachCapacityModifier;
-		public static double BaseStomachCapacity => 0.80;
-		public static double StomachCapacityPerLevel => 0.05;
+		public static double BaseStomachCapacity => 1.20;
+		public static double StomachCapacityPerLevel => 0.08;
 		public double StomachCapacity
 		{
 			get
@@ -247,8 +247,8 @@ namespace V2.PlayerHandling
 			}
 		}
 		public StatModifier DigestionTickDamageModifier;
-		public static double BaseDigestionTickDamage => 8.0;
-		public static double DigestionTickDamagePerLevel => 0.8;
+		public static double BaseDigestionTickDamage => 10.0;
+		public static double DigestionTickDamagePerLevel => 1.0;
 		public double DigestionTickDamage
 		{
 			get
@@ -262,8 +262,8 @@ namespace V2.PlayerHandling
 			}
 		}
 		public StatModifier DigestionTickRateModifier;
-		public static double BaseDigestionTickRate => 0.80;
-		public static double DigestionTickRatePer5Levels => 0.04;
+		public static double BaseDigestionTickRate => 1.0;
+		public static double DigestionTickRatePer5Levels => 0.005;
 		public double DigestionTickRate
 		{
 			get
@@ -278,8 +278,8 @@ namespace V2.PlayerHandling
 		}
 		public PredStat ABS { get; set; }
 		public StatModifier PreyAbsorptionRateModifier;
-		public static double BasePreyAbsorptionRate => 0.3;
-		public static double PreyAbsorptionRatePerLevel => 0.01;
+		public static double BasePreyAbsorptionRate => 0.4;
+		public static double PreyAbsorptionRatePerLevel => 0.03;
 		public double PreyAbsorptionRate
 		{
 			get

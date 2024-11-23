@@ -166,8 +166,13 @@ namespace V2
 			On_NPC.DoDeathEvents_DropBossPotionsAndHearts += NoPotionsOrHeartsIfDigested;
 			On_NPC.DoDeathEvents_CelebrateBossDeath += (orig, npc, typeName) => NPCDetours.DoDeathEvents_CelebrateBossDeath(npc, typeName);
 
+			On_Player.CheckDrowning += (orig, player) =>
+			{
+				if (player.CurrentCaptor() is null)
+					orig(player);
+			};
 			On_Player.KillMe += (orig, player, damageSource, dmg, hitDirection, pvp) => PlayerDetours.KillMe(player, damageSource, dmg, hitDirection, pvp);
-			On_Player.GrantArmorBenefits += (orig, self, armorPiece) => V2Player.GrantArmorBenefits(self, armorPiece);
+			On_Player.GrantArmorBenefits += (orig, player, armorPiece) => V2Player.GrantArmorBenefits(player, armorPiece);
 			On_Player.ApplyEquipFunctional += (orig, player, item, hideVisual) =>
 			{
 				if (item.IsAir)

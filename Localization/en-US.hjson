@@ -1901,9 +1901,10 @@ Mods: {
 							- [c/{$Mods.V2.CommonColorCodes.Heal}:Heals for {LifeCrystalEatHeal} health] instantly upon running out of durability.
 							- [c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Grants the Regeneration buff] while digesting; this lingers for [c/FFFF00:{LifeCrystalEatRegenLength} seconds] once fully digested.
 							When used normally by a player OR upon running out of durability when eaten by a player:
-							- Permanently [c/{$Mods.V2.CommonColorCodes.Heal}:increases maximum health by 20].
-							- Permanently [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:increase the TUM stat by 1].
+							- Permanently [c/{$Mods.V2.CommonColorCodes.Heal}:increases maximum health] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:20].
+							- Permanently [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:increase TUM] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:1].
 							  - The above two bonuses can stack for up to {LifeCrystalsMax} crystals used/eaten.
+							- If you have reached 15 Life Crystals used/eaten, permanently [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:mitigates the impact of stomach weight] by {MaxLifeCrystalsPermaWeightReduction}x.
 							Life Crystals used/eaten by this character (max. {LifeCrystalsMax}): [c/{LifeCrystalsUsedColor}:{LifeCrystalsUsed}].
 							'''
 						Flavor:
@@ -1926,8 +1927,8 @@ Mods: {
 							- [c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Grants the Regeneration buff] while digesting; this lingers for [c/FFFF00:{LifeFruitEatRegenLength} seconds] once fully digested.
 							When eaten by a player who has eaten at least 15 Life Crystals, upon running out of durability:
 							- Permanently [c/{LifeFruitHealthBonusColor}:increases maximum health by 5].
-							- Permanently [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:increases stomach strength (TUM) by {LifeFruitStomachStrengthBonus}].
-							- Permanently [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:increases acid strength (ACI) by {LifeFruitAcidStrengthBonus}].
+							- Permanently [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:increases TUM] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{LifeFruitStomachStrengthBonus}].
+							- Permanently [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:increases ACI] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{LifeFruitAcidStrengthBonus}].
 							  - The above three bonuses can stack up to {LifeFruitMax} times.
 							Life Fruit eaten by this character (max. {LifeFruitMax}): [c/{LifeFruitUsedColor}:{LifeFruitUsed}].
 							'''
@@ -1951,8 +1952,8 @@ Mods: {
 							- [c/{$Mods.V2.CommonColorCodes.ManaHeal}:Restores 100 mana] instantly upon running out of durability.
 							- [c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Grants the Mana Regeneration buff] while digesting; this lingers for [c/FFFF00:{ManaCrystalEatManaRegenLength} seconds] once fully digested.
 							When used normally by a player OR upon running out of durability when eaten by a player:
-							- Permanently [c/{$Mods.V2.CommonColorCodes.ManaHeal}:increases maximum mana by 20].
-							- Permanently [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:increases the ABS stat by 1].
+							- Permanently [c/{$Mods.V2.CommonColorCodes.ManaHeal}:increases maximum mana] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:20].
+							- Permanently [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:increases the ABS stat] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:1].
 							  - The above two bonuses can stack for up to {ManaCrystalsMax} crystals used/eaten.
 							Mana Crystals used/eaten by this character (max. {ManaCrystalsMax}): [c/{ManaCrystalsUsedColor}:{ManaCrystalsUsed}].
 							'''

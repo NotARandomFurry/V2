@@ -23,7 +23,7 @@ namespace V2.Items.Vanilla.Consumables
 		public static int DigestedHeal => 50;
 		public static int DigestedRegenTime => V2Utils.SensibleTime(minutes: 1, seconds: 30);
 		public static int StomachStrengthBonus => 2;
-		public static int AcidStrengthBonus => 1;
+		public static int AcidStrengthBonus => 2;
 		public override bool InstancePerEntity => true;
 		public override bool AppliesToEntity(Item entity, bool lateInstantiation) => entity.type == ItemID.LifeFruit;
 
