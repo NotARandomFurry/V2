@@ -1868,7 +1868,7 @@ namespace V2.PlayerHandling
 			{ 7, new TumEntry("Tum7", -30, -22) },
 			{ 8, new TumEntry("Tum8", -30, -22) },
             { 9, new TumEntry("Tum9", -30, -22) },
-            {10, new TumEntry("Tum10", -30, -22) }
+            {10, new TumEntry("Tum10", -30, -22)}
         };
 		public override Position GetDefaultPosition() => new AfterParent(PlayerDrawLayers.Torso);
 
