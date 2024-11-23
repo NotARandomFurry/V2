@@ -1,30 +1,76 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\",
+  "WorkspaceRootPath": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|c:\\users\\dolfi\\onedrive\\documents\\github\\v2\\playerhandling\\predplayer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|e:\\documents\\my games\\terraria\\tmodloader\\modsources\\v2\\playerhandling\\predplayer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:playerhandling\\predplayer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|c:\\users\\dolfi\\onedrive\\documents\\github\\v2\\playerhandling\\playerextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:playerhandling\\playerextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|e:\\documents\\my games\\terraria\\tmodloader\\modsources\\v2\\playerhandling\\tumsprites\\tum9\\bare.png||{58961B49-13E0-48C0-9258-13CBC4D40279}",
+      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:playerhandling\\tumsprites\\tum9\\bare.png||{58961B49-13E0-48C0-9258-13CBC4D40279}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|c:\\users\\dolfi\\onedrive\\documents\\github\\v2\\playerhandling\\preyplayer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:playerhandling\\preyplayer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|c:\\users\\dolfi\\onedrive\\documents\\github\\v2\\playerhandling\\v2player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:playerhandling\\v2player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|c:\\users\\dolfi\\onedrive\\documents\\github\\v2\\projectiles\\vanilla\\summons\\pets\\fairyprincess.ai.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:projectiles\\vanilla\\summons\\pets\\fairyprincess.ai.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|c:\\users\\dolfi\\onedrive\\documents\\github\\v2\\v2.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|e:\\documents\\my games\\terraria\\tmodloader\\modsources\\v2\\v2.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:v2.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|e:\\documents\\my games\\terraria\\tmodloader\\modsources\\v2\\v2.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|",
+      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:v2.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|e:\\documents\\my games\\terraria\\tmodloader\\modsources\\v2\\items\\voraria\\consumables\\permanentupgrades\\pureswallowboost1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:items\\voraria\\consumables\\permanentupgrades\\pureswallowboost1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\craft\\AppData\\Local\\SourceServer\\45ed701871fd4b45c68a2937f3d0f85f379ee0ba3f18ba32903c8a5269a0e071\\Munchies.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\craft\\AppData\\Local\\SourceServer\\3fb7d74bd5dafb4bb87379da089e034f274e392a76accb48b44baee1c288b920\\Models\\Consumable.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|e:\\documents\\my games\\terraria\\tmodloader\\modsources\\v2\\compat\\v2munchiescompat.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:compat\\v2munchiescompat.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|e:\\documents\\my games\\terraria\\tmodloader\\modsources\\v2\\items\\voraria\\accessories\\informational\\mealsizescanner.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:items\\voraria\\accessories\\informational\\mealsizescanner.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|e:\\documents\\my games\\terraria\\tmodloader\\modsources\\v2\\build.txt||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:build.txt||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|e:\\documents\\my games\\terraria\\tmodloader\\modsources\\v2\\localization\\en-us.hjson||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:localization\\en-us.hjson||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|e:\\documents\\my games\\terraria\\tmodloader\\modsources\\v2\\items\\itemgrouputils\\furniture.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:items\\itemgrouputils\\furniture.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|e:\\documents\\my games\\terraria\\tmodloader\\modsources\\v2\\playerhandling\\predplayergoals\\amateur\\catchfallingstar.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:playerhandling\\predplayergoals\\amateur\\catchfallingstar.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|e:\\documents\\my games\\terraria\\tmodloader\\modsources\\v2\\items\\vanilla\\placeables\\woods\\borealwood.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:items\\vanilla\\placeables\\woods\\borealwood.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|e:\\documents\\my games\\terraria\\tmodloader\\modsources\\v2\\playerhandling\\predplayergoals\\beginner\\swallowanyfurniture.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:playerhandling\\predplayergoals\\beginner\\swallowanyfurniture.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|e:\\documents\\my games\\terraria\\tmodloader\\modsources\\v2\\items\\voraria\\consumables\\hairdyecapacity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:items\\voraria\\consumables\\hairdyecapacity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|e:\\documents\\my games\\terraria\\tmodloader\\modsources\\v2\\npcs\\vanilla\\townnpcs\\guide\\chatbuttons\\helpbuttonmodification.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:npcs\\vanilla\\townnpcs\\guide\\chatbuttons\\helpbuttonmodification.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|e:\\documents\\my games\\terraria\\tmodloader\\modsources\\v2\\projectiles\\vanilla\\environment\\fallingstar.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:projectiles\\vanilla\\environment\\fallingstar.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -34,88 +80,247 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 6,
           "Children": [
             {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "V2.cs",
+              "DocumentMoniker": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\V2.cs",
+              "RelativeDocumentMoniker": "V2.cs",
+              "ToolTip": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\V2.cs",
+              "RelativeToolTip": "V2.cs",
+              "ViewState": "AgIAAHUAAAAAAAAAAAAcwHoAAAAEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-23T19:56:17.101Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
               "$type": "Bookmark",
-              "Name": "ST:0:0:{e506b91c-c606-466a-90a9-123d1d1e12b3}"
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:129:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "PlayerExtensions.cs",
-              "DocumentMoniker": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\PlayerHandling\\PlayerExtensions.cs",
-              "RelativeDocumentMoniker": "PlayerHandling\\PlayerExtensions.cs",
-              "ToolTip": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\PlayerHandling\\PlayerExtensions.cs",
-              "RelativeToolTip": "PlayerHandling\\PlayerExtensions.cs",
-              "ViewState": "AQIAAAwAAAAAAAAAAAAAAAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-28T17:29:58.5Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "PreyPlayer.cs",
-              "DocumentMoniker": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\PlayerHandling\\PreyPlayer.cs",
-              "RelativeDocumentMoniker": "PlayerHandling\\PreyPlayer.cs",
-              "ToolTip": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\PlayerHandling\\PreyPlayer.cs",
-              "RelativeToolTip": "PlayerHandling\\PreyPlayer.cs",
-              "ViewState": "AQIAAA8AAAAAAAAAAAAEwAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-28T17:28:00.991Z",
+              "Title": "Bare.png",
+              "DocumentMoniker": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\PlayerHandling\\TumSprites\\Tum9\\Bare.png",
+              "RelativeDocumentMoniker": "PlayerHandling\\TumSprites\\Tum9\\Bare.png",
+              "ToolTip": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\PlayerHandling\\TumSprites\\Tum9\\Bare.png",
+              "RelativeToolTip": "PlayerHandling\\TumSprites\\Tum9\\Bare.png",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001533|",
+              "WhenOpened": "2024-11-23T21:21:00.326Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 3,
-              "Title": "V2Player.cs",
-              "DocumentMoniker": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\PlayerHandling\\V2Player.cs",
-              "RelativeDocumentMoniker": "PlayerHandling\\V2Player.cs",
-              "ToolTip": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\PlayerHandling\\V2Player.cs",
-              "RelativeToolTip": "PlayerHandling\\V2Player.cs",
-              "ViewState": "AQIAAHYAAAAAAAAAAAAcwAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-28T17:27:57.268Z",
+              "Title": "V2",
+              "DocumentMoniker": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\V2.csproj",
+              "RelativeDocumentMoniker": "V2.csproj",
+              "ToolTip": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\V2.csproj",
+              "RelativeToolTip": "V2.csproj",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2024-11-23T21:16:07.612Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "PredPlayer.cs",
-              "DocumentMoniker": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\PlayerHandling\\PredPlayer.cs",
+              "DocumentMoniker": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\PlayerHandling\\PredPlayer.cs",
               "RelativeDocumentMoniker": "PlayerHandling\\PredPlayer.cs",
-              "ToolTip": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\PlayerHandling\\PredPlayer.cs",
-              "RelativeToolTip": "PlayerHandling\\PredPlayer.cs",
-              "ViewState": "AQIAACMHAAAAAAAAAAAqwCUHAAAeAAAA",
+              "ToolTip": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\PlayerHandling\\PredPlayer.cs*",
+              "RelativeToolTip": "PlayerHandling\\PredPlayer.cs*",
+              "ViewState": "AgIAADwHAAAAAAAAAAA5wE4HAAAkAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-28T17:27:50.738Z",
+              "WhenOpened": "2024-11-23T21:06:49.068Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "FairyPrincess.AI.cs",
-              "DocumentMoniker": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\Projectiles\\Vanilla\\Summons\\Pets\\FairyPrincess.AI.cs",
-              "RelativeDocumentMoniker": "Projectiles\\Vanilla\\Summons\\Pets\\FairyPrincess.AI.cs",
-              "ToolTip": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\Projectiles\\Vanilla\\Summons\\Pets\\FairyPrincess.AI.cs",
-              "RelativeToolTip": "Projectiles\\Vanilla\\Summons\\Pets\\FairyPrincess.AI.cs",
-              "ViewState": "AQIAAE8AAAAAAAAAAAAgwAAAAAAAAAAA",
+              "DocumentIndex": 6,
+              "Title": "Consumable.cs",
+              "DocumentMoniker": "C:\\Users\\craft\\AppData\\Local\\SourceServer\\3fb7d74bd5dafb4bb87379da089e034f274e392a76accb48b44baee1c288b920\\Models\\Consumable.cs",
+              "ToolTip": "C:\\Users\\craft\\AppData\\Local\\SourceServer\\3fb7d74bd5dafb4bb87379da089e034f274e392a76accb48b44baee1c288b920\\Models\\Consumable.cs",
+              "ViewState": "AgIAAAEAAAAAAAAAAAAAACAAAAADAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-28T17:26:25.975Z",
+              "WhenOpened": "2024-11-23T20:33:26.823Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 5,
-              "Title": "V2.cs",
-              "DocumentMoniker": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\V2.cs",
-              "RelativeDocumentMoniker": "V2.cs",
-              "ToolTip": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\V2.cs",
-              "RelativeToolTip": "V2.cs",
-              "ViewState": "AQIAAGYAAAAAAAAAAAAgwAAAAAAAAAAA",
+              "Title": "Munchies.cs",
+              "DocumentMoniker": "C:\\Users\\craft\\AppData\\Local\\SourceServer\\45ed701871fd4b45c68a2937f3d0f85f379ee0ba3f18ba32903c8a5269a0e071\\Munchies.cs",
+              "ToolTip": "C:\\Users\\craft\\AppData\\Local\\SourceServer\\45ed701871fd4b45c68a2937f3d0f85f379ee0ba3f18ba32903c8a5269a0e071\\Munchies.cs [Read Only]",
+              "ViewState": "AgIAAFkAAAAAAAAAAAAIwGgAAAAAAAAAAQAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-28T17:26:11.071Z",
+              "WhenOpened": "2024-11-23T20:31:39.159Z",
+              "EditorCaption": " [Read Only]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "V2MunchiesCompat.cs",
+              "DocumentMoniker": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\Compat\\V2MunchiesCompat.cs",
+              "RelativeDocumentMoniker": "Compat\\V2MunchiesCompat.cs",
+              "ToolTip": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\Compat\\V2MunchiesCompat.cs",
+              "RelativeToolTip": "Compat\\V2MunchiesCompat.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-23T20:22:58.106Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "PureSwallowBoost1.cs",
+              "DocumentMoniker": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\Items\\Voraria\\Consumables\\PermanentUpgrades\\PureSwallowBoost1.cs",
+              "RelativeDocumentMoniker": "Items\\Voraria\\Consumables\\PermanentUpgrades\\PureSwallowBoost1.cs",
+              "ToolTip": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\Items\\Voraria\\Consumables\\PermanentUpgrades\\PureSwallowBoost1.cs",
+              "RelativeToolTip": "Items\\Voraria\\Consumables\\PermanentUpgrades\\PureSwallowBoost1.cs",
+              "ViewState": "AgIAAEQAAAAAAAAAAAAuwE8AAABCAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-23T20:20:53.208Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "en-US.hjson",
+              "DocumentMoniker": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\Localization\\en-US.hjson",
+              "RelativeDocumentMoniker": "Localization\\en-US.hjson",
+              "ToolTip": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\Localization\\en-US.hjson",
+              "RelativeToolTip": "Localization\\en-US.hjson",
+              "ViewState": "AgIAALECAAAAAAAAAAAgwKACAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2024-11-23T20:14:42.728Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "Furniture.cs",
+              "DocumentMoniker": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\Items\\ItemGroupUtils\\Furniture.cs",
+              "RelativeDocumentMoniker": "Items\\ItemGroupUtils\\Furniture.cs",
+              "ToolTip": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\Items\\ItemGroupUtils\\Furniture.cs",
+              "RelativeToolTip": "Items\\ItemGroupUtils\\Furniture.cs",
+              "ViewState": "AgIAAA0AAAAAAAAAAAAAAB8AAABbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-23T20:08:14.833Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "BorealWood.cs",
+              "DocumentMoniker": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\Items\\Vanilla\\Placeables\\Woods\\BorealWood.cs",
+              "RelativeDocumentMoniker": "Items\\Vanilla\\Placeables\\Woods\\BorealWood.cs",
+              "ToolTip": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\Items\\Vanilla\\Placeables\\Woods\\BorealWood.cs",
+              "RelativeToolTip": "Items\\Vanilla\\Placeables\\Woods\\BorealWood.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-23T19:50:31.896Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "build.txt",
+              "DocumentMoniker": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\build.txt",
+              "RelativeDocumentMoniker": "build.txt",
+              "ToolTip": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\build.txt",
+              "RelativeToolTip": "build.txt",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003109|",
+              "WhenOpened": "2024-11-23T19:47:45.007Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "HairDyeCapacity.cs",
+              "DocumentMoniker": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\Items\\Voraria\\Consumables\\HairDyeCapacity.cs",
+              "RelativeDocumentMoniker": "Items\\Voraria\\Consumables\\HairDyeCapacity.cs",
+              "ToolTip": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\Items\\Voraria\\Consumables\\HairDyeCapacity.cs",
+              "RelativeToolTip": "Items\\Voraria\\Consumables\\HairDyeCapacity.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAIAwwBYAAAAeAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-23T19:21:55.518Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "MealSizeScanner.cs",
+              "DocumentMoniker": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\Items\\Voraria\\Accessories\\Informational\\MealSizeScanner.cs",
+              "RelativeDocumentMoniker": "Items\\Voraria\\Accessories\\Informational\\MealSizeScanner.cs",
+              "ToolTip": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\Items\\Voraria\\Accessories\\Informational\\MealSizeScanner.cs",
+              "RelativeToolTip": "Items\\Voraria\\Accessories\\Informational\\MealSizeScanner.cs",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAAACgAAAAeAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-23T18:49:06.229Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "HelpButtonModification.cs",
+              "DocumentMoniker": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\NPCs\\Vanilla\\TownNPCs\\Guide\\ChatButtons\\HelpButtonModification.cs",
+              "RelativeDocumentMoniker": "NPCs\\Vanilla\\TownNPCs\\Guide\\ChatButtons\\HelpButtonModification.cs",
+              "ToolTip": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\NPCs\\Vanilla\\TownNPCs\\Guide\\ChatButtons\\HelpButtonModification.cs",
+              "RelativeToolTip": "NPCs\\Vanilla\\TownNPCs\\Guide\\ChatButtons\\HelpButtonModification.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAqwBYAAAAQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-23T18:50:26.631Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "FallingStar.cs",
+              "DocumentMoniker": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\Projectiles\\Vanilla\\Environment\\FallingStar.cs",
+              "RelativeDocumentMoniker": "Projectiles\\Vanilla\\Environment\\FallingStar.cs",
+              "ToolTip": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\Projectiles\\Vanilla\\Environment\\FallingStar.cs",
+              "RelativeToolTip": "Projectiles\\Vanilla\\Environment\\FallingStar.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAABMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-23T17:35:58.242Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "CatchFallingStar.cs",
+              "DocumentMoniker": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\PlayerHandling\\PredPlayerGoals\\Amateur\\CatchFallingStar.cs",
+              "RelativeDocumentMoniker": "PlayerHandling\\PredPlayerGoals\\Amateur\\CatchFallingStar.cs",
+              "ToolTip": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\PlayerHandling\\PredPlayerGoals\\Amateur\\CatchFallingStar.cs",
+              "RelativeToolTip": "PlayerHandling\\PredPlayerGoals\\Amateur\\CatchFallingStar.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-23T17:35:53.462Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "SwallowAnyFurniture.cs",
+              "DocumentMoniker": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\PlayerHandling\\PredPlayerGoals\\Beginner\\SwallowAnyFurniture.cs",
+              "RelativeDocumentMoniker": "PlayerHandling\\PredPlayerGoals\\Beginner\\SwallowAnyFurniture.cs",
+              "ToolTip": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\PlayerHandling\\PredPlayerGoals\\Beginner\\SwallowAnyFurniture.cs",
+              "RelativeToolTip": "PlayerHandling\\PredPlayerGoals\\Beginner\\SwallowAnyFurniture.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAABFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-23T17:32:26.745Z",
               "EditorCaption": ""
             }
           ]

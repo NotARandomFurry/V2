@@ -608,7 +608,8 @@ namespace V2.PlayerHandling
 				int tummySize = (int)Math.Floor(5.0 * Math.Sqrt(StomachFullness));
 				tummySize = (int)Math.Round((double)tummySize * PercentBellySizeModifier);
 				tummySize += FlatBellySizeModifier;
-				return Math.Min(tummySize, 8);
+
+				return Math.Min(tummySize, VoreTum.Tums.Count);
 			}
 		}
 
@@ -1844,6 +1845,31 @@ namespace V2.PlayerHandling
 
 	public class VoreTum : PlayerDrawLayer
 	{
+		public struct TumEntry
+		{
+			public readonly string tumName;
+			public readonly int xOffset;
+			public readonly int yOffset;
+			public TumEntry(string tum, int x, int y)
+			{
+				this.tumName = tum;
+				this.xOffset = x;
+				this.yOffset = y;
+			}
+		}
+		public static IDictionary<int, TumEntry> Tums = new Dictionary<int, TumEntry>()
+		{
+			{ 1, new TumEntry("Tum1",     0, 0) },
+			{ 2, new TumEntry("Tum2",     0, 0) },
+			{ 3, new TumEntry("Tum3",     0, 0) },
+			{ 4, new TumEntry("Tum4", -30, -22) },
+			{ 5, new TumEntry("Tum5", -30, -22) },
+			{ 6, new TumEntry("Tum6", -30, -22) },
+			{ 7, new TumEntry("Tum7", -30, -22) },
+			{ 8, new TumEntry("Tum8", -30, -22) },
+            { 9, new TumEntry("Tum9", -30, -22) },
+            {10, new TumEntry("Tum10", -30, -22) }
+        };
 		public override Position GetDefaultPosition() => new AfterParent(PlayerDrawLayers.Torso);
 
 		protected override void Draw(ref PlayerDrawSet drawInfo)
@@ -2022,6 +2048,10 @@ namespace V2.PlayerHandling
 			}
 			else
 			{
+				if(Tums.TryGetValue(tumSize, out TumEntry tumData)) {
+					DrawDaTum(ref drawInfo, tumSize, Frame, tumData.xOffset, tumData.yOffset);
+				}
+				/*
                 switch (tumSize)
                 {
                     case 1:
@@ -2048,7 +2078,11 @@ namespace V2.PlayerHandling
                     case 8:
                         DrawDaTum(ref drawInfo, 8, Frame, -30, -22);
                         break;
+					case 9:
+                        DrawDaTum(ref drawInfo, 9, Frame, -30, -22);
+                        break;
                 }
+				*/
 			}
 		}
 	}

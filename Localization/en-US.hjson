@@ -688,6 +688,15 @@ Mods: {
 					'''
 				UnlockCondition: complete all 3 of the Starter stage's goals
 
+				SwallowAnyFurniture: {
+					Name: Interior Decorator I
+
+					Description: {
+						Default: A very touchy job, and one liable to get you glorped at any point, but the pay's really nice if you can do it well.
+						Clarification: Decorate your tummy's insides with a piece of furniture!
+					}
+				}
+
 				EatGoldCritter: {
 					Name: Gilded Gut Fodder
 

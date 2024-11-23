@@ -9,11 +9,11 @@
     <None Remove="Items\Voraria\Weapons\Ranged\Throwables\ThrowableHoneyBottle.png" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="BetterDialogue">
-      <HintPath>..\BetterDialogue\bin\Debug\net6.0\BetterDialogue.dll</HintPath>
-    </Reference>
+    <Folder Include="Gores\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Gores\" />
+    <Reference Include="BetterDialogue">
+      <HintPath>D:\Tools\TML.Patcher\BetterDialogue\BetterDialogue.dll</HintPath>
+    </Reference>
   </ItemGroup>
 </Project>

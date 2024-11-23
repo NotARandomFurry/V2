@@ -9,6 +9,9 @@ using Terraria.ModLoader;
 using V2.Core.StruggleSystem;
 using V2.NPCs.Voraria.TownNPCs.Succubus;
 using V2.NPCs.Voraria.TownNPCs.Enigma;
+using V2.Items.Voraria.Consumables.PermanentUpgrades;
+using System;
+using V2.PlayerHandling;
 
 namespace V2
 {
@@ -114,7 +117,22 @@ namespace V2
 				VoreNPCBlacklist.Clear();
 				VoreProjectileBlacklist.Clear();
 			}
-		}
+
+			// Munchies handling
+			if(ModLoader.TryGetMod("munchies", out Mod munchies))
+			{
+				munchies.Call("AddSingleConsumable", this, "1.4.2", ModContent.GetInstance<PureSwallowBoost1>(), "player", new Func<bool>(() => 
+				{
+					if(Main.player[Main.myPlayer].AsPred().PermanentUpgradesGained.TryGetValue("PureSwallow1", out bool pureswallowUpgrade)) {
+						return pureswallowUpgrade;
+					}
+					else
+					{
+						return false;
+					}
+				}), null, null);
+			}
+        }
 
 		public override void Unload()
 		{

@@ -8,6 +8,7 @@ using Terraria.ModLoader;
 using V2.Core;
 using V2.PlayerHandling;
 using V2.PlayerHandling.PredPlayerGoals.Amateur;
+using V2.PlayerHandling.PredPlayerGoals.Beginner;
 using V2.PlayerHandling.PredPlayerGoals.Skilled;
 
 namespace V2.Items.ItemGroupUtils
@@ -27,10 +28,8 @@ namespace V2.Items.ItemGroupUtils
 
 		public static void OnSwallow_GrantFurnitureGoals(Item item, Entity pred)
 		{
-			if (pred is not Player predPlayer)
-				return;
-
-			// furniture goal handlin' here
+			if (pred is Player predPlayer)
+                ModContent.GetInstance<SwallowAnyFurniture>().TrySetCompletion(predPlayer);
 		}
 	}
 }

@@ -691,6 +691,15 @@ Mods: {
 					'''
 				UnlockCondition: выполнить все 3 цели начального этапа
 
+				SwallowAnyFurniture: {
+					// Name: Interior Decorator I
+
+					Description: {
+						// Default: A very touchy job, and one liable to get you glorped at any point, but the pay's really nice if you can do it well.
+						// Clarification: Decorate your tummy's insides with a piece of furniture!
+					}
+				}
+
 				EatGoldCritter: {
 					Name: Позолоченные кишки
 

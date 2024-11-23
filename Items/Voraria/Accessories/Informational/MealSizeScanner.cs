@@ -25,27 +25,38 @@ namespace V2.Items.Voraria.Accessories.Informational
 		public override bool IsLoadingEnabled(Mod mod) => !V2.GetFooled;
 		public override LocalizedText DisplayName => Language.GetText("Mods.V2.ItemName.Voraria.Accessories.Informational.MealSizeScanner");
 		public override LocalizedText Tooltip => Language.GetText("Mods.V2.ItemTooltip.Voraria.Accessories.Informational.MealSizeScanner.Short");
-		public override string Texture => "V2/Items/UnspritedItem";
+		// public override string Texture => "V2/Items/UnspritedItem";
 
 		public override void SetStaticDefaults()
 		{
-			DrawAnimationVertical anim = new DrawAnimationVertical(6, 12);
+			/*DrawAnimationVertical anim = new DrawAnimationVertical(6, 12);
 			Main.RegisterItemAnimation(Type, anim);
-			ItemID.Sets.AnimatesAsSoul[Type] = true;
+			ItemID.Sets.AnimatesAsSoul[Type] = true;*/
 
 			ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<PredCapacityScanner>();
 		}
-
-		public override void SetDefaults()
+        public override void HoldStyle(Player player, Rectangle heldItemFrame)
+		{
+			player.itemLocation.X -= 24 * 0.75f * player.direction;
+			player.itemLocation.Y += 14;
+		}
+        public override void SetDefaults()
 		{
 			Item.accessory = true;
 
-			Item.width = 30;
-			Item.height = 30;
+			Item.width = 16;
+			Item.height = 16;
+			Item.scale = 0.75f;
 			Item.rare = ItemRarityID.Orange;
 			Item.value = Item.buyPrice(
 				gold: 5
 			);
+
+			Item.holdStyle = ItemUseStyleID.Swing;
+
+
+			Item.AsFood().Size = 0.26;
+			Item.AsFood().MaxHealth = 120;
 		}
 
 		public override void UpdateInventory(Player player)
