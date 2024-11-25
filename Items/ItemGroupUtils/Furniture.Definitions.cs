@@ -121,7 +121,16 @@ namespace V2.Items.ItemGroupUtils
 			{ ItemID.CrystalClock,                   (FurnitureType.Clock,        FurnitureMaterial.Crystal) },
 			{ ItemID.CrystalDoor,                    (FurnitureType.Door,         FurnitureMaterial.Crystal) },
 			{ ItemID.CrystalDresser,                 (FurnitureType.Dresser,      FurnitureMaterial.Crystal) },
+			{ ItemID.CrystalLamp,                    (FurnitureType.Lamp,         FurnitureMaterial.Crystal) },
+			{ ItemID.CrystalLantern,                 (FurnitureType.Lantern,      FurnitureMaterial.Crystal) },
+			{ ItemID.CrystalPiano,                   (FurnitureType.Piano,        FurnitureMaterial.Crystal) },
+			{ ItemID.CrystalPlatform,                (FurnitureType.Platform,     FurnitureMaterial.Crystal) },
+			{ ItemID.CrystalSink,                    (FurnitureType.Sink,         FurnitureMaterial.Crystal) },
 			{ ItemID.CrystalSofaHowDoesThatEvenWork, (FurnitureType.Sofa,         FurnitureMaterial.Crystal) },
+			{ ItemID.CrystalTable,                   (FurnitureType.Table,        FurnitureMaterial.Crystal) },
+			{ ItemID.ToiletCrystal,                  (FurnitureType.Toilet,       FurnitureMaterial.Crystal) },
+			{ ItemID.CrystalBlockWall,               (FurnitureType.Wall,         FurnitureMaterial.Crystal) },
+			{ ItemID.CrystalWorkbench,               (FurnitureType.WorkBench,    FurnitureMaterial.Crystal) },
 		};
 	}
 }

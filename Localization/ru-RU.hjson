@@ -695,8 +695,12 @@ Mods: {
 					// Name: Interior Decorator I
 
 					Description: {
-						// Default: A very touchy job, and one liable to get you glorped at any point, but the pay's really nice if you can do it well.
-						// Clarification: Decorate your tummy's insides with a piece of furniture!
+						/* Default:
+							'''
+							Decorate your tummy's insides with a piece of furniture!
+							'A very touchy job, and one liable to get you glorped at any point, but the pay's really nice if you can do it well.'
+							''' */
+						// Clarification: Swallow any piece of furniture.
 					}
 				}
 
