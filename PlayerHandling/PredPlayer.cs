@@ -231,6 +231,9 @@ namespace V2.PlayerHandling
 		{
 			get
 			{
+				if (this.Venomizeous)
+					return int.MaxValue;
+
 				if (V2.GetFooled)
 					return 100;
 
@@ -616,6 +619,7 @@ namespace V2.PlayerHandling
 		public bool SizeScanner { get; set; }
 
 		public bool Rose { get; set; }
+		public bool Venomizeous { get; set; }
 
 		public override void Initialize()
 		{
@@ -727,6 +731,7 @@ namespace V2.PlayerHandling
 			UpdatePredStatPointsFromPermUpgrades();
 
 			Rose = false;
+			Venomizeous = false;
 
 			if (Player.sleeping.FullyFallenAsleep)
 			{
@@ -1841,7 +1846,21 @@ namespace V2.PlayerHandling
 				}
 			}
 		}
-	}
+        public override void ModifyDrawInfo(ref PlayerDrawSet drawInfo) 
+		{
+			/*
+			if (this.Venomizeous)
+			{
+				Texture2D eyes = ModContent.Request<Texture2D>("V2/PlayerHandling/Venomizeous_eye").Value;
+				//Main.spriteBatch.End();
+				Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive);
+				drawInfo.DrawDataCache.Add(new DrawData(eyes, drawInfo.headVect, null, Color.Purple, 0f, Vector2.Zero, 1f, drawInfo.playerEffect, 2));
+				// Main.EntitySpriteDraw(eyes, drawInfo.headVect, null, Color.Purple, 0f, Vector2.Zero, 1f, drawInfo.playerEffect, 2);
+				//Main.spriteBatch.End();
+				// drawInfo.DrawDataCache.Add(new DrawData();
+			}*/
+		}
+    }
 
 	public class VoreTum : PlayerDrawLayer
 	{
@@ -1859,16 +1878,21 @@ namespace V2.PlayerHandling
 		}
 		public static IDictionary<int, TumEntry> Tums = new Dictionary<int, TumEntry>()
 		{
-			{ 1, new TumEntry("Tum1",     0, 0) },
-			{ 2, new TumEntry("Tum2",     0, 0) },
-			{ 3, new TumEntry("Tum3",     0, 0) },
-			{ 4, new TumEntry("Tum4", -30, -22) },
-			{ 5, new TumEntry("Tum5", -30, -22) },
-			{ 6, new TumEntry("Tum6", -30, -22) },
-			{ 7, new TumEntry("Tum7", -30, -22) },
-			{ 8, new TumEntry("Tum8", -30, -22) },
-            { 9, new TumEntry("Tum9", -30, -22) },
-            {10, new TumEntry("Tum10", -30, -22)}
+			{  1, new TumEntry("Tum1",     0, 20) },
+			{  2, new TumEntry("Tum2",     0, 20) },
+			{  3, new TumEntry("Tum3",     0, 20) },
+			{  4, new TumEntry("Tum4",     0, 0) },
+			{  5, new TumEntry("Tum5",     0, 0) },
+			{  6, new TumEntry("Tum6",     0, 0) },
+			{  7, new TumEntry("Tum7",     0, 0) },
+			{  8, new TumEntry("Tum8",     0, 0) },
+            {  9, new TumEntry("Tum9",     0, 0) },
+            { 10, new TumEntry("Tum10",    0, 0) },
+			{ 11, new TumEntry("Tum11",    -2, 0) },
+            { 12, new TumEntry("Tum12",    -2, 0) },
+            { 13, new TumEntry("Tum13",    -2, 4) },
+			{ 14, new TumEntry("Tum14",    -2, 4) }
+
         };
 		public override Position GetDefaultPosition() => new AfterParent(PlayerDrawLayers.Torso);
 
@@ -1951,9 +1975,10 @@ namespace V2.PlayerHandling
 			}*/
             void DrawDaTum(ref PlayerDrawSet drawInfo, int size, int frame, int offsetX = 0, int offsetY = 0)
             {
-                Vector2 tumLocation = new Vector2((float)(int)(drawInfo.Position.X - Main.screenPosition.X - 10), (float)(int)(drawInfo.Position.Y - Main.screenPosition.Y - 8));
-                tumLocation.Y += drawInfo.torsoOffset;
-                tumLocation.X += offsetX;
+				//Vector2 tumLocation = new Vector2((float)(int)(drawInfo.Position.X - Main.screenPosition.X - 10), (float)(int)(drawInfo.Position.Y - Main.screenPosition.Y - 8));
+				Vector2 tumLocation = drawInfo.Position.Floor() - Main.screenPosition.Floor() - Vector2.UnitY * 30f + Vector2.UnitX * (player.width/2);
+				//tumLocation.Y += drawInfo.torsoOffset;
+                tumLocation.X += offsetX * player.direction;
                 tumLocation.Y += offsetY;
 
                 Texture2D bareTum = ModContent.Request<Texture2D>(folder + size + "/Bare").Value;
@@ -1973,6 +1998,9 @@ namespace V2.PlayerHandling
                 {
                     tumLocation.Y += 6;
                 }
+
+				tumLocation.X -= bareTum.Width * (player.direction == -1 ? 1 : 0);
+
                 Rectangle sourceRectBare = new Rectangle(0, frame * (bareTum.Height / 6), bareTum.Width, bareTum.Height / 6);
                 DrawData actualDrawBare = new DrawData(bareTum, tumLocation, sourceRectBare, drawInfo.colorBodySkin, player.bodyRotation, Vector2.Zero, 1f, drawInfo.playerEffect);
                 drawInfo.DrawDataCache.Add(actualDrawBare);
@@ -1992,6 +2020,8 @@ namespace V2.PlayerHandling
 
                 }
                 if (tumCover == null || tumCover == "Bare") return;
+
+
                 string filePath = folder + size + "/" + tumCover;
                 Texture2D TumArmor = ModContent.Request<Texture2D>(filePath).Value;
                 DrawData actualDraw = new DrawData(TumArmor, tumLocation, sourceRectBare, drawInfo.colorArmorBody, player.bodyRotation, Vector2.Zero, 1f, drawInfo.playerEffect);

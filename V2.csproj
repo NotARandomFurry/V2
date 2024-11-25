@@ -6,14 +6,26 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <AdditionalFiles Remove="externallibs\**" />
+    <Compile Remove="externallibs\**" />
+    <EmbeddedResource Remove="externallibs\**" />
+    <None Remove="externallibs\**" />
+  </ItemGroup>
+  <ItemGroup>
     <None Remove="Items\Voraria\Weapons\Ranged\Throwables\ThrowableHoneyBottle.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Gores\" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="0Harmony">
+      <HintPath>lib\0Harmony.dll</HintPath>
+    </Reference>
     <Reference Include="BetterDialogue">
       <HintPath>D:\Tools\TML.Patcher\BetterDialogue\BetterDialogue.dll</HintPath>
+    </Reference>
+    <Reference Include="WeaponDisplay">
+      <HintPath>externallibs\WeaponDisplay.dll</HintPath>
     </Reference>
   </ItemGroup>
 </Project>

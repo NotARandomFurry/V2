@@ -1,5 +1,6 @@
 displayName = [18+] Voraria: Second Course
 author = the pixelated Sign Painter
+dllReferences = 0Harmony
 modReferences = BetterDialogue
-weakReferences = Munchies
+weakReferences = Munchies, WeaponDisplay
 version = 0.4

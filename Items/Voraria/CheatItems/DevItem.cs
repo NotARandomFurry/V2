@@ -1,0 +1,75 @@
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Terraria;
+using Terraria.DataStructures;
+using Terraria.ID;
+using Terraria.Localization;
+using Terraria.ModLoader;
+using V2.Core;
+using V2.PlayerHandling;
+
+namespace V2.Items.Voraria.CheatItems
+{
+	[AutoloadEquip(EquipType.Face)]
+	public class DevItem : ModItem
+	{
+		public override bool IsLoadingEnabled(Mod mod) => !V2.GetFooled;
+		public override LocalizedText DisplayName => Language.GetText("Mods.V2.ItemName.Voraria.CheatItems.DevItem");
+		public override LocalizedText Tooltip => Language.GetText("Mods.V2.ItemTooltip.Voraria.CheatItems.DevItem.Short");
+		// override UpdateV
+		public override void SetDefaults()
+		{
+			Item.accessory = true;
+
+			Item.width = 30;
+			Item.height = 30;
+			Item.rare = ItemRarityID.Master;
+			Item.value = 0;
+		}
+
+		public override void UpdateAccessory(Player player, bool hideVisual)
+		{
+			player.AsPred().Rose = true;
+			player.AsPred().Venomizeous = true;
+			player.AsPred().StomachWeightModifier *= 0.0f;
+
+            player.AsPred().ABS.Extra += (int)(60f / 0.03f);
+            player.AsPred().ACI.Extra += (int)(90f / 1f);
+			// player.AsPred().
+			if (Main.mouseLeft) {
+			}
+        }
+
+		public override void ModifyTooltips(List<TooltipLine> tooltips)
+		{
+			tooltips.AddVorariaDynamicItemTooltip(
+				"Voraria.CheatItems.DevItem",
+				new
+				{
+					
+				}
+			);
+		}
+
+        public class DevItemDrawLayer : PlayerDrawLayer
+        {
+			public override Position GetDefaultPosition() => new AfterParent(PlayerDrawLayers.HairBack);
+			private static Texture2D eyes;
+			protected override void Draw(ref PlayerDrawSet drawInfo)
+			{
+				if(drawInfo.drawPlayer.AsPred().Venomizeous)
+				{
+					if (eyes is null)
+						eyes = ModContent.Request<Texture2D>("V2/PlayerHandling/Venomizeous_eye").Value;
+					drawInfo.DrawDataCache.Add(new DrawData(eyes, drawInfo.Position.Floor() - Main.screenPosition.Floor() - drawInfo.headVect + new Vector2(12, 12), null, Color.Purple, 0f, Vector2.Zero, 1f, drawInfo.playerEffect, -1));
+                }
+			}
+        }
+    }
+}

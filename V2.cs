@@ -123,8 +123,14 @@ namespace V2
 			if(ModLoader.TryGetMod("munchies", out Mod munchies))
 			{
 				V2MunchiesCompat MunchiesCompat = new V2MunchiesCompat(munchies);
-				MunchiesCompat.DoCompatibility();
+				MunchiesCompat.ApplyCompatibility();
 
+			}
+
+			if(ModLoader.TryGetMod("WeaponDisplay", out Mod armamentdisplay))
+			{
+				V2WeaponDisplay ArmamentDisplayCompat = new V2WeaponDisplay(armamentdisplay);
+				ArmamentDisplayCompat.ApplyCompatibility();
 			}
         }
 

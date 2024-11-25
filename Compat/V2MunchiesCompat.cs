@@ -16,12 +16,11 @@ namespace V2.Compat
         public V2MunchiesCompat(Mod compatMod) : base(compatMod)
         { 
         }
-        public void DoCompatibility()
+        public override void ApplyCompatibility()
         {
             compatMod.Call("AddSingleConsumable", V2.Instance, "1.4.2", ModContent.GetInstance<PureSwallowBoost1>(), "player", hasMyPlayerPermanentUpgradeFunc("PureSwallow1"), null, null);
         }
-
-
+        public override void UnapplyCompatibility() => throw new NotImplementedException();
 
         private static Func<bool> hasMyPlayerPermanentUpgradeFunc(string upgrade)
         {
@@ -37,5 +36,6 @@ namespace V2.Compat
                 }
             });
         }
+
     }
 }

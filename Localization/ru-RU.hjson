@@ -1404,6 +1404,7 @@ Mods: {
 
 				CheatItems: {
 					RoseFlower: Цветочная булавка Роза
+					// DevItem: New Dev Item
 					// SecondBestAngelFeather: St. Promethia's Favorite Feather
 					ServerMessageRelay: Страница из книги автора
 				}
@@ -2487,6 +2488,22 @@ Mods: {
 							[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:и она приготовит вам еду, независимо от того, насколько вы сильны.]
 							[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:в конце концов, ей действительно нравится вкус этих цветов]
 							'''
+					}
+
+					DevItem: {
+						/* Short:
+							'''
+							Gives you the same predatory digestive prowess that Venomizeous has.
+							{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+							''' */
+						/* Long:
+							'''
+							While worn, provides a number of extremely- and outright unfairly-beneficial predatorily-centric effects:
+							[c/7F7F7F:> ][c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Inherits properties from the Rose Pin Item.]
+							[c/7F7F7F:> ][c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Grants highly increased acidic damage.]
+							[c/7F7F7F:> ][c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Grants ability to rapidly absorb anyone or anything.]
+							''' */
+						// Flavor: ...
 					}
 
 					SecondBestAngelFeather: {

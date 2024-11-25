@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace V2.Compat
 {
-    public class V2CompatModule
+    public abstract class V2CompatModule
     {
         public Mod compatMod;
         public V2CompatModule(Mod mod)
@@ -15,5 +15,9 @@ namespace V2.Compat
             V2.Instance.Logger.Info($"Loading compat: {mod.Name} - {mod.Version}");
             compatMod = mod;
         }
+
+        public abstract void ApplyCompatibility();
+
+        public abstract void UnapplyCompatibility();
     }
 }
