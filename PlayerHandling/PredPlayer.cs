@@ -667,12 +667,7 @@ namespace V2.PlayerHandling
 			PercentBellySizeModifier = 1.0;
 			FlatBellySizeModifier = 0;
 
-			PermanentUpgradesGained = new Dictionary<string, bool>
-			{
-				{ "PureSwallow1", false },
-				{ "AcidTier1", false },
-				{ "AcidTier2", false }
-			};
+			PermanentUpgradesGained = new Dictionary<string, bool>();
 
 			GoalsCompleted = [];
 			foreach (PredPlayerGoal goal in PredPlayerGoalLoader.PredPlayerGoals)
@@ -844,14 +839,15 @@ namespace V2.PlayerHandling
 		{
 			if (!Player.mount.Active)
 			{
-				float weightMovementMult = (float)Math.Min(1.0, 1.0 / (Player.AsPred().StomachWeight + 1.0));
-				Player.maxRunSpeed *= weightMovementMult;
-				Player.accRunSpeed *= weightMovementMult;
+				float weightMovementMult = 1.0f / (float)Math.Max(1.0, Player.AsPred().StomachWeight + 1.0);
 				Player.runAcceleration *= weightMovementMult;
 				Player.jumpSpeed *= weightMovementMult;
 				Player.jumpHeight = (int)Math.Round((float)Player.jumpHeight * weightMovementMult);
 				Player.gravity /= (2f + weightMovementMult) / 3f;
 				Player.maxFallSpeed /= weightMovementMult;
+				float weightSpeedMult = 1.0f / (float)Math.Max(1.0, ((Player.AsPred().StomachWeight - 0.5) / 2.0) + 1.0);
+				Player.maxRunSpeed *= weightSpeedMult;
+				Player.accRunSpeed *= weightSpeedMult;
 			}
 		}
 

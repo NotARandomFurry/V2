@@ -1,6 +1,6 @@
-﻿using HarmonyLib;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoMod.RuntimeDetour;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,41 +19,40 @@ namespace V2.Compat
 {
     // Before you murder me sign
     // Harmony is a great library and at least give it a try. 
-    [JITWhenModsEnabled("WeaponDisplay")]
-    internal class V2WeaponDisplay : V2CompatModule
-    {
-        Harmony h;
+	// -VenomiZeD
 
-        MethodInfo drawPatch;
+	// no, if I wanna learn Harmony I'll go work on Lunch Break of Ruina
+	// -Thomas
+    [JITWhenModsEnabled("WeaponDisplay")]
+    public class V2WeaponDisplay : V2CompatModule
+    {
+		private delegate void orig_PreDrawInWorld(Item item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI);
+		internal static Hook WeaponDisplay_ItemInWorld_ItemLightHook;
+		private static readonly MethodInfo WeaponDisplay_ItemInWorld_ItemLight_MethodInfo =
+			typeof(WeaponDisplay.ItemInWorld.ItemLight).GetMethod("PreDrawInWorld");
         public V2WeaponDisplay(Mod mod) : base(mod)
         {
-            h = new Harmony("V2");
-#if DEBUG
-            Harmony.DEBUG = true;
-#endif
+
         }
 
         public override void ApplyCompatibility()
         {
             V2.Instance.Logger.Info("Applying patch: WeaponDisplay.ItemInWorld.ItemLight::PreDrawInWorld");
-            MethodInfo m = typeof(WeaponDisplay.ItemInWorld.ItemLight).GetMethod("PreDrawInWorld");
-            drawPatch = h.Patch(m, prefix: new HarmonyMethod(Prefix));
-        }
+			WeaponDisplay_ItemInWorld_ItemLightHook = new Hook(WeaponDisplay_ItemInWorld_ItemLight_MethodInfo, (orig_PreDrawInWorld orig, Item item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI) =>
+			{
+				if (item.CurrentCaptor() is null)
+					orig(item, spriteBatch, lightColor, alphaColor, ref rotation, ref scale, whoAmI);
+			});
+			WeaponDisplay_ItemInWorld_ItemLightHook.Apply();
+		}
 
-        public override void UnapplyCompatibility() 
-        {
-            h.UnpatchAll();
-        }
-
-        public static bool Prefix(Item item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
-        {
-            return !SkipDrawIfItemInTum(item);
-        }
-
-        public static bool SkipDrawIfItemInTum(Item i)
-        {
-            return i.CurrentCaptor() != null;
-        }
-
+		public override void UnapplyCompatibility()
+		{
+			if (WeaponDisplay_ItemInWorld_ItemLightHook is not null)
+			{
+				WeaponDisplay_ItemInWorld_ItemLightHook.Undo();
+				WeaponDisplay_ItemInWorld_ItemLightHook = null;
+			}
+		}
     }
 }
