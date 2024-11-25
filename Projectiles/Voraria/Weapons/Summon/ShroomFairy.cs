@@ -358,7 +358,7 @@ namespace V2.Projectiles.Voraria.Weapons.Summon
             foreach (var proj in Main.ActiveProjectiles)
             {
                 if (proj.CurrentCaptor() is not null) continue;
-                if ((!proj.friendly || proj.hostile) && proj.damage > 0)
+                if ((!proj.friendly || proj.hostile) && proj.damage > 0 && !proj.IsMinionOrSentryRelated)
                 {
                     float distance = proj.position.Distance(owner.position);
                     if (distance < projDistance)

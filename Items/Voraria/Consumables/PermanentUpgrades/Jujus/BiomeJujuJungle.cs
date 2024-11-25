@@ -20,7 +20,7 @@ namespace V2.Items.Voraria.Consumables.PermanentUpgrades.Jujus
 	{
 		public override bool IsLoadingEnabled(Mod mod) => !V2.GetFooled;
 		public override LocalizedText DisplayName => Language.GetText("Mods.V2.ItemName.Voraria.Consumables.PermanentUpgrades.Jujus.BiomeJujuJungle");
-		public override LocalizedText Tooltip => Language.GetText("Mods.V2.ItemTooltip.Voraria.Consumables.PermanentUpgrades.Jujus.BiomeJujuJungle");
+		public override LocalizedText Tooltip => Language.GetText("Mods.V2.ItemTooltip.Voraria.Consumables.PermanentUpgrades.Jujus.BiomeJujuJungle.Short");
 
         public static int TUMBonus => 17;
         public static float SpeedDecrease => 0.1f;

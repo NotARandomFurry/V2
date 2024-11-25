@@ -109,7 +109,19 @@ namespace V2.Items.ItemGroupUtils
 			{ ItemID.ShadewoodWorkBench,             (FurnitureType.WorkBench,    FurnitureMaterial.Shadewood) },
 
 			// Crystal furniture (how does that even work?)
-			{ ItemID.CrystalSofaHowDoesThatEvenWork, (FurnitureType.Sofa, FurnitureMaterial.Crystal) },
+			{ ItemID.CrystalBathtub,                 (FurnitureType.Bathtub,      FurnitureMaterial.Crystal) },
+			{ ItemID.CrystalBed,                     (FurnitureType.Bed,          FurnitureMaterial.Crystal) },
+			{ ItemID.CrystalBookCase,                (FurnitureType.Bookcase,     FurnitureMaterial.Crystal) },
+			{ ItemID.CrystalCandelabra,              (FurnitureType.Candelabra,   FurnitureMaterial.Crystal) },
+			{ ItemID.CrystalCandle,                  (FurnitureType.Candle,       FurnitureMaterial.Crystal) },
+			{ ItemID.CrystalChair,                   (FurnitureType.Chair,        FurnitureMaterial.Crystal) },
+			{ ItemID.CrystalChandelier,              (FurnitureType.Chandelier,   FurnitureMaterial.Crystal) },
+			{ ItemID.CrystalChest,                   (FurnitureType.Chest,        FurnitureMaterial.Crystal) },
+			{ ItemID.Fake_CrystalChest,              (FurnitureType.ChestTrapped, FurnitureMaterial.Crystal) },
+			{ ItemID.CrystalClock,                   (FurnitureType.Clock,        FurnitureMaterial.Crystal) },
+			{ ItemID.CrystalDoor,                    (FurnitureType.Door,         FurnitureMaterial.Crystal) },
+			{ ItemID.CrystalDresser,                 (FurnitureType.Dresser,      FurnitureMaterial.Crystal) },
+			{ ItemID.CrystalSofaHowDoesThatEvenWork, (FurnitureType.Sofa,         FurnitureMaterial.Crystal) },
 		};
 	}
 }

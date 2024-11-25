@@ -1428,11 +1428,11 @@ Mods: {
 						Jujus: {
 							// BlankJuju: Blank Juju
 							// ShimmerJuju: Shimmering Juju
-							// BiomeJujuForest: Biome Juju - Forest
-							// BiomeJujuDesert: Biome Juju - Desert
-							// BiomeJujuSnow: Biome Juju - Snow
-							// BiomeJujuJungle: Biome Juju - Jungle
-							// BiomeJujuSky: Biome Juju - Sky
+							// BiomeJujuForest: Forest Juju
+							// BiomeJujuDesert: Sandy Juju
+							// BiomeJujuSnow: Snowy Juju
+							// BiomeJujuJungle: Jungle Juju
+							// BiomeJujuSky: Cloudy Juju
 						}
 
 						PureSwallowBoost1: Стимулятор глотания
