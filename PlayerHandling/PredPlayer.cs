@@ -1593,8 +1593,6 @@ namespace V2.PlayerHandling
                     // SoundEngine.PlaySound(pred.AsPred().BellySloshes with { Volume = pred.AsPred().StomachSize }, pred.TrueCenter());
                 }
 
-				MonoModHooks.
-
 				bool stomachNoisesPlaying = SoundEngine.TryGetActiveSound(pred.AsPred().ActiveStomachNoises, out ActiveSound stomachNoises);
 				if (!stomachNoisesPlaying)
 				{
