@@ -95,10 +95,10 @@ namespace V2.Core
 			{
 				if (ModContent.GetInstance<V2MasterSystem>().VoreTrackers.FirstOrDefault(
 						x => x.Prey.FirstOrDefault(
-							y => !y.NoHealth && y.Instance is Item preyItem && preyItem.type == item.type && preyItem.stack == item.stack
+							y => !y.NoHealth && y.Instance is Item preyItem && preyItem.type == item.type && preyItem.stack == item.stack && preyItem == item
 						) is not null
 						  || x.PreyQueue.FirstOrDefault(
-							y => !y.NoHealth && y.Instance is Item preyItem && preyItem.type == item.type && preyItem.stack == item.stack
+							y => !y.NoHealth && y.Instance is Item preyItem && preyItem.type == item.type && preyItem.stack == item.stack && preyItem == item
 						) is not null
 					) is VoreTracker tracker)
 					return tracker;
