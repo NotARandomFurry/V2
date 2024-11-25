@@ -61,9 +61,6 @@ namespace V2.NPCs.Vanilla.Bosses.KingSlime
 
 			npc.AsPred().GetPreyAbsorptionRate = GetPreyAbsorptionRate;
 
-			npc.AsFood().OnDigestedBy = PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
-			npc.AsFood().OnDigestedBy += PreyNPC.HandlePreyItemTheft;
-
 			npc.AsFood().ItemTheftRules = [];
 		}
 

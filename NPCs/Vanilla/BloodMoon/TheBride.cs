@@ -75,8 +75,6 @@ namespace V2.NPCs.Vanilla.BloodMoon
 
 			npc.AsPred().GetPreyAbsorptionRate = GetPreyAbsorptionRate;
 
-			npc.AsFood().OnDigestedBy = PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
-			npc.AsFood().OnDigestedBy += PreyNPC.HandlePreyItemTheft;
 			npc.AsFood().OnDigestedBy += OnKilledByDigestion_GrantBrideAndGroomGoal;
 			npc.AsFood().ItemTheftRules = new List<ItemTheftRule>()
 			{

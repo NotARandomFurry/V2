@@ -32,8 +32,6 @@ namespace V2.NPCs.Vanilla.Tundra
 
 			NPC.AsFood().DefinedBaseSize = 4.18;
 
-			NPC.AsFood().OnDigestedBy = PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
-			NPC.AsFood().OnDigestedBy += PreyNPC.HandlePreyItemTheft;
 			NPC.AsFood().OnDigestedBy += OnKilledByDigestion_GrantIceGolemGoal;
 		}
 

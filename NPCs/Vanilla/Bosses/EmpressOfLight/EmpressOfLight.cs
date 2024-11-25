@@ -208,8 +208,6 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 
 			npc.AsCandyFairy().MuffledScreechDelay = 0;
 
-			npc.AsFood().OnDigestedBy = PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
-			npc.AsFood().OnDigestedBy += PreyNPC.HandlePreyItemTheft;
 			npc.AsFood().DigestedDeathSound = CandyFairyStuff.MuffledCandyFairyDeathScreech;
 
 			npc.AsFood().ItemTheftRules = [

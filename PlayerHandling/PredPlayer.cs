@@ -2005,7 +2005,7 @@ namespace V2.PlayerHandling
                 DrawData actualDrawBare = new DrawData(bareTum, tumLocation, sourceRectBare, drawInfo.colorBodySkin, player.bodyRotation, Vector2.Zero, 1f, drawInfo.playerEffect);
                 drawInfo.DrawDataCache.Add(actualDrawBare);
 
-                string? tumCover = null;
+                string tumCover = null;
 
                 if (!player.armor[11].IsAir && player.armor[11].type != ItemID.FamiliarShirt)
                 {
