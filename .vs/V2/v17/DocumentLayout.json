@@ -3,10 +3,6 @@
   "WorkspaceRootPath": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|e:\\documents\\my games\\terraria\\tmodloader\\modsources\\v2\\npcs\\vanilla\\townnpcs\\guide\\chatbuttons\\helpbuttonmodification.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:npcs\\vanilla\\townnpcs\\guide\\chatbuttons\\helpbuttonmodification.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|e:\\documents\\my games\\terraria\\tmodloader\\modsources\\v2\\playerhandling\\predplayer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:playerhandling\\predplayer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -17,6 +13,10 @@
     {
       "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|e:\\documents\\my games\\terraria\\tmodloader\\modsources\\v2\\core\\v2mastersystem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:core\\v2mastersystem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|e:\\documents\\my games\\terraria\\tmodloader\\modsources\\v2\\sounds\\vore\\sloshes.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:sounds\\vore\\sloshes.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|e:\\documents\\my games\\terraria\\tmodloader\\modsources\\v2\\sounds\\vore\\burps.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -33,6 +33,10 @@
     {
       "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|e:\\documents\\my games\\terraria\\tmodloader\\modsources\\v2\\items\\voraria\\cheatitems\\roseflower.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:items\\voraria\\cheatitems\\roseflower.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|e:\\documents\\my games\\terraria\\tmodloader\\modsources\\v2\\items\\vanilla\\vanillagel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:items\\vanilla\\vanillagel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|e:\\documents\\my games\\terraria\\tmodloader\\modsources\\v2\\items\\vanilla\\vanillaharpyfeather.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -69,7 +73,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 12,
           "Children": [
             {
               "$type": "Bookmark",
@@ -85,20 +89,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "HelpButtonModification.cs",
-              "DocumentMoniker": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\NPCs\\Vanilla\\TownNPCs\\Guide\\ChatButtons\\HelpButtonModification.cs",
-              "RelativeDocumentMoniker": "NPCs\\Vanilla\\TownNPCs\\Guide\\ChatButtons\\HelpButtonModification.cs",
-              "ToolTip": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\NPCs\\Vanilla\\TownNPCs\\Guide\\ChatButtons\\HelpButtonModification.cs",
-              "RelativeToolTip": "NPCs\\Vanilla\\TownNPCs\\Guide\\ChatButtons\\HelpButtonModification.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAYwCAAAAACAAAAAAAAAA==",
+              "DocumentIndex": 2,
+              "Title": "V2MasterSystem.cs",
+              "DocumentMoniker": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\Core\\V2MasterSystem.cs",
+              "RelativeDocumentMoniker": "Core\\V2MasterSystem.cs",
+              "ToolTip": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\Core\\V2MasterSystem.cs",
+              "RelativeToolTip": "Core\\V2MasterSystem.cs",
+              "ViewState": "AgIAABUAAAAAAAAAAAAIwCYAAAAMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-25T13:20:33.948Z",
+              "WhenOpened": "2024-11-25T13:03:16.517Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
               "Title": "VoreTracker.cs",
               "DocumentMoniker": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\Core\\VoreTracker.cs",
               "RelativeDocumentMoniker": "Core\\VoreTracker.cs",
@@ -136,6 +140,19 @@
               "EditorCaption": ""
             },
             {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Sloshes.cs",
+              "DocumentMoniker": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\Sounds\\Vore\\Sloshes.cs",
+              "RelativeDocumentMoniker": "Sounds\\Vore\\Sloshes.cs",
+              "ToolTip": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\Sounds\\Vore\\Sloshes.cs",
+              "RelativeToolTip": "Sounds\\Vore\\Sloshes.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAABSAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-25T12:48:10.421Z",
+              "EditorCaption": ""
+            },
+            {
               "$type": "Bookmark",
               "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
             },
@@ -154,7 +171,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 10,
               "Title": "DevItem.cs",
               "DocumentMoniker": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\Items\\Voraria\\CheatItems\\DevItem.cs",
               "RelativeDocumentMoniker": "Items\\Voraria\\CheatItems\\DevItem.cs",
@@ -180,46 +197,33 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "PredPlayer.cs",
               "DocumentMoniker": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\PlayerHandling\\PredPlayer.cs",
               "RelativeDocumentMoniker": "PlayerHandling\\PredPlayer.cs",
-              "ToolTip": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\PlayerHandling\\PredPlayer.cs",
-              "RelativeToolTip": "PlayerHandling\\PredPlayer.cs",
-              "ViewState": "AgIAAFsFAAAAAAAAAIA3wC0GAAAEAAAAAAAAAA==",
+              "ToolTip": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\PlayerHandling\\PredPlayer.cs*",
+              "RelativeToolTip": "PlayerHandling\\PredPlayer.cs*",
+              "ViewState": "AgIAAGEFAAAAAAAAAAAlwDcGAAAlAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-11-24T21:44:51.407Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "V2MasterSystem.cs",
-              "DocumentMoniker": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\Core\\V2MasterSystem.cs",
-              "RelativeDocumentMoniker": "Core\\V2MasterSystem.cs",
-              "ToolTip": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\Core\\V2MasterSystem.cs",
-              "RelativeToolTip": "Core\\V2MasterSystem.cs",
-              "ViewState": "AgIAABUAAAAAAAAAAAAIwCYAAAAMAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-25T13:03:16.517Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 11,
               "Title": "V2MunchiesCompat.cs",
               "DocumentMoniker": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\Compat\\V2MunchiesCompat.cs",
               "RelativeDocumentMoniker": "Compat\\V2MunchiesCompat.cs",
               "ToolTip": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\Compat\\V2MunchiesCompat.cs",
               "RelativeToolTip": "Compat\\V2MunchiesCompat.cs",
-              "ViewState": "AgIAAAkAAAAAAAAAAAAAABQAAAA+AAAAAAAAAA==",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAAABkAAABSAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-11-25T05:28:45.913Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 9,
               "Title": "VanillaHarpyFeather.cs",
               "DocumentMoniker": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\Items\\Vanilla\\VanillaHarpyFeather.cs",
               "RelativeDocumentMoniker": "Items\\Vanilla\\VanillaHarpyFeather.cs",
@@ -232,7 +236,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 15,
               "Title": "Observer.cs",
               "DocumentMoniker": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\NPCs\\Voraria\\Sky\\Observer.cs",
               "RelativeDocumentMoniker": "NPCs\\Voraria\\Sky\\Observer.cs",
@@ -244,7 +248,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 8,
+              "Title": "VanillaGel.cs",
+              "DocumentMoniker": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\Items\\Vanilla\\VanillaGel.cs",
+              "RelativeDocumentMoniker": "Items\\Vanilla\\VanillaGel.cs",
+              "ToolTip": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\Items\\Vanilla\\VanillaGel.cs",
+              "RelativeToolTip": "Items\\Vanilla\\VanillaGel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAwAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-25T12:05:30.265Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
               "Title": "DigestingBossHealthBar.cs",
               "DocumentMoniker": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\UI\\DigestingBossHealthBar.cs",
               "RelativeDocumentMoniker": "UI\\DigestingBossHealthBar.cs",
@@ -256,7 +273,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 14,
               "Title": "V2WeaponDisplay.cs",
               "DocumentMoniker": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\Compat\\V2WeaponDisplay.cs",
               "RelativeDocumentMoniker": "Compat\\V2WeaponDisplay.cs",
@@ -268,7 +285,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 12,
               "Title": "Consumable.cs",
               "DocumentMoniker": "C:\\Users\\craft\\AppData\\Local\\SourceServer\\3fb7d74bd5dafb4bb87379da089e034f274e392a76accb48b44baee1c288b920\\Models\\Consumable.cs",
               "ToolTip": "C:\\Users\\craft\\AppData\\Local\\SourceServer\\3fb7d74bd5dafb4bb87379da089e034f274e392a76accb48b44baee1c288b920\\Models\\Consumable.cs",
