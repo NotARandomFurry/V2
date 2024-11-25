@@ -608,7 +608,7 @@ namespace V2.Projectiles.Voraria.Weapons.Summon
 		}
         public override void AI()
         {
-			Player? target = FindClosestPlayer();
+			Player target = FindClosestPlayer();
 			if (target != null)
 			{
                 Vector2 direction = Projectile.position.DirectionTo(target.position);
