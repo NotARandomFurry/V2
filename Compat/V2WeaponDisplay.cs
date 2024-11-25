@@ -26,7 +26,7 @@ namespace V2.Compat
     [JITWhenModsEnabled("WeaponDisplay")]
     public class V2WeaponDisplay : V2CompatModule
     {
-		private delegate void orig_PreDrawInWorld(Item item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI);
+		private delegate bool orig_PreDrawInWorld(WeaponDisplay.ItemInWorld.ItemLight self, Item item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI);
 		internal static Hook WeaponDisplay_ItemInWorld_ItemLightHook;
 		private static readonly MethodInfo WeaponDisplay_ItemInWorld_ItemLight_MethodInfo =
 			typeof(WeaponDisplay.ItemInWorld.ItemLight).GetMethod("PreDrawInWorld");
@@ -38,10 +38,12 @@ namespace V2.Compat
         public override void ApplyCompatibility()
         {
             V2.Instance.Logger.Info("Applying patch: WeaponDisplay.ItemInWorld.ItemLight::PreDrawInWorld");
-			WeaponDisplay_ItemInWorld_ItemLightHook = new Hook(WeaponDisplay_ItemInWorld_ItemLight_MethodInfo, (orig_PreDrawInWorld orig, Item item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI) =>
+			WeaponDisplay_ItemInWorld_ItemLightHook = new Hook(WeaponDisplay_ItemInWorld_ItemLight_MethodInfo, (orig_PreDrawInWorld orig, WeaponDisplay.ItemInWorld.ItemLight self, Item item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI) =>
 			{
 				if (item.CurrentCaptor() is null)
-					orig(item, spriteBatch, lightColor, alphaColor, ref rotation, ref scale, whoAmI);
+					return orig(self, item, spriteBatch, lightColor, alphaColor, ref rotation, ref scale, whoAmI);
+
+				return false;
 			});
 			WeaponDisplay_ItemInWorld_ItemLightHook.Apply();
 		}
