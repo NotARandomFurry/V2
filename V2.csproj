@@ -22,7 +22,7 @@
       <HintPath>lib\0Harmony.dll</HintPath>
     </Reference>
     <Reference Include="BetterDialogue">
-      <HintPath>D:\Tools\TML.Patcher\BetterDialogue\BetterDialogue.dll</HintPath>
+      <HintPath>..\..\ModReader\BetterDialogue\BetterDialogue.dll</HintPath>
     </Reference>
     <Reference Include="WeaponDisplay">
       <HintPath>externallibs\WeaponDisplay.dll</HintPath>

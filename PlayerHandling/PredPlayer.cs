@@ -331,6 +331,8 @@ namespace V2.PlayerHandling
 		public SoundStyle SmallGulps { get; set; }
 		public SoundStyle BigGulps { get; set; }
 
+		public SlotId BellySlosh { get; set; }
+
 		public bool charmBracelet;
 		public int CharmBraceletSlots
 		{
@@ -627,8 +629,10 @@ namespace V2.PlayerHandling
 			BigGulps = Gulps.Standard;
 			SmallBurps = Burps.Humanoid.Small;
 			StandardBurps = Burps.Humanoid.Standard;
+			// BellySloshes = Sloshes.Humanoid.Standard;
 
-			if (V2.GetFooled)
+
+            if (V2.GetFooled)
 			{
 				SmallGulps = Gulps.AprilFools;
 				BigGulps = Gulps.AprilFools;
@@ -1580,6 +1584,21 @@ namespace V2.PlayerHandling
 
 			if (pred.CurrentCaptor() is null)
 			{
+				if (pred.velocity.LengthSquared() > 0)
+				{
+					if(!SoundEngine.TryGetActiveSound(pred.AsPred().BellySlosh, out ActiveSound slosh))
+					{
+						pred.AsPred().BellySlosh = SoundEngine.PlaySound(Sloshes.Humanoid.Standard with { Volume = pred.AsPred().StomachSize * 0.75f }, pred.TrueCenter());
+						SoundEngine.TryGetActiveSound(pred.AsPred().BellySlosh, out slosh);	
+					}
+
+					slosh.Position = pred.TrueCenter();
+					slosh.Volume = (float)pred.AsPred().StomachFullness * 0.5f;
+                    // SoundEngine.PlaySound(pred.AsPred().BellySloshes with { Volume = pred.AsPred().StomachSize }, pred.TrueCenter());
+                }
+
+				MonoModHooks.
+
 				bool stomachNoisesPlaying = SoundEngine.TryGetActiveSound(pred.AsPred().ActiveStomachNoises, out ActiveSound stomachNoises);
 				if (!stomachNoisesPlaying)
 				{

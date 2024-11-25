@@ -2367,6 +2367,20 @@ Mods: {
 						These feathers are often arranged in fashions that promote easy targeted flight, allowing the greedy birds in the sky to swoop down and scoop up their kicky, shouty prey with ease.
 						''' */
 				}
+
+				Gel: {
+					/* Short:
+						'''
+						Was a part of a gelatinous creature. It's bouncy!
+						{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+						''' */
+					/* Long:
+						'''
+						Gel is used by the gelatinous creatures in the Terrarian world. 
+						If this piece of gel is alive or not is not easy to determine, but you can swallow it with ease. Quite tasty too.
+						''' */
+					// Flavor: Tastes similar to sweet jelly, and closer to a berry - similar to Blueberries!
+				}
 			}
 
 			Voraria: {

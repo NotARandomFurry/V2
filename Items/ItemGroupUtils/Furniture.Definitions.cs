@@ -109,7 +109,28 @@ namespace V2.Items.ItemGroupUtils
 			{ ItemID.ShadewoodWorkBench,             (FurnitureType.WorkBench,    FurnitureMaterial.Shadewood) },
 
 			// Crystal furniture (how does that even work?)
-			{ ItemID.CrystalSofaHowDoesThatEvenWork, (FurnitureType.Sofa, FurnitureMaterial.Crystal) },
-		};
+			{ ItemID.CrystalBathtub,                 (FurnitureType.Bathtub,      FurnitureMaterial.Crystal) },
+            { ItemID.CrystalBed,                     (FurnitureType.Bed,		  FurnitureMaterial.Crystal) },
+            { ItemID.CrystalBookCase,                (FurnitureType.Bookcase,     FurnitureMaterial.Crystal) },
+            { ItemID.CrystalCandelabra,              (FurnitureType.Candelabra,   FurnitureMaterial.Crystal) },
+            { ItemID.CrystalCandle,                  (FurnitureType.Candle,       FurnitureMaterial.Crystal) },
+            { ItemID.CrystalChair,                   (FurnitureType.Chair,        FurnitureMaterial.Crystal) },
+            { ItemID.CrystalChest,                   (FurnitureType.Chest,        FurnitureMaterial.Crystal) },
+            { ItemID.Fake_CrystalChest,              (FurnitureType.ChestTrapped, FurnitureMaterial.Crystal) },
+            { ItemID.CrystalClock,                   (FurnitureType.Clock,	      FurnitureMaterial.Crystal) },
+            { ItemID.CrystalDoor,                    (FurnitureType.Door,		  FurnitureMaterial.Crystal) },
+            { ItemID.CrystalDresser,                 (FurnitureType.Dresser,      FurnitureMaterial.Crystal) },
+            // { ItemID.CrystalFence,                (FurnitureType.Fence,        FurnitureMaterial.Crystal) },
+            { ItemID.CrystalLamp,                    (FurnitureType.Lamp,         FurnitureMaterial.Crystal) },
+            { ItemID.CrystalLantern,                 (FurnitureType.Lantern,      FurnitureMaterial.Crystal) },
+            { ItemID.CrystalPiano,                   (FurnitureType.Piano,        FurnitureMaterial.Crystal) },
+            { ItemID.CrystalPlatform,                (FurnitureType.Platform,     FurnitureMaterial.Crystal) },
+            { ItemID.CrystalSink,                    (FurnitureType.Sink,         FurnitureMaterial.Crystal) },
+            { ItemID.CrystalSofaHowDoesThatEvenWork, (FurnitureType.Sofa,         FurnitureMaterial.Crystal) },
+            { ItemID.CrystalTable,                   (FurnitureType.Table,        FurnitureMaterial.Crystal) },
+            { ItemID.ToiletCrystal,                  (FurnitureType.Toilet,       FurnitureMaterial.Crystal) },
+            { ItemID.CrystalBlockWall,               (FurnitureType.Wall,         FurnitureMaterial.Crystal) },
+            { ItemID.CrystalWorkbench,               (FurnitureType.WorkBench,    FurnitureMaterial.Crystal) }
+        };
 	}
 }

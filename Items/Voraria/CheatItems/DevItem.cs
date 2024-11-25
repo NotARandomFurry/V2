@@ -16,7 +16,6 @@ using V2.PlayerHandling;
 
 namespace V2.Items.Voraria.CheatItems
 {
-	[AutoloadEquip(EquipType.Face)]
 	public class DevItem : ModItem
 	{
 		public override bool IsLoadingEnabled(Mod mod) => !V2.GetFooled;
@@ -56,7 +55,7 @@ namespace V2.Items.Voraria.CheatItems
 				}
 			);
 		}
-
+		/*
         public class DevItemDrawLayer : PlayerDrawLayer
         {
 			public override Position GetDefaultPosition() => new AfterParent(PlayerDrawLayers.HairBack);
@@ -70,6 +69,6 @@ namespace V2.Items.Voraria.CheatItems
 					drawInfo.DrawDataCache.Add(new DrawData(eyes, drawInfo.Position.Floor() - Main.screenPosition.Floor() - drawInfo.headVect + new Vector2(12, 12), null, Color.Purple, 0f, Vector2.Zero, 1f, drawInfo.playerEffect, -1));
                 }
 			}
-        }
+        }*/
     }
 }
