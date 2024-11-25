@@ -97,8 +97,6 @@ namespace V2.NPCs.Vanilla.Cavern
 			npc.AsPred().GetAdditionalDigestedPlayerMessages = GetDigestedPlayerAdditionalDeathMessages;
 			npc.AsPred().GetPreyAbsorptionRate = GetPreyAbsorptionRate;
 
-			npc.AsFood().OnDigestedBy = PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
-			npc.AsFood().OnDigestedBy += PreyNPC.HandlePreyItemTheft;
 			npc.AsFood().OnDigestedBy += OnKilledByDigestion_GrantNymphGoal;
 			npc.AsFood().ItemTheftRules = [
 				NymphStuff.ItemTheftRules.NymphHairStrands,

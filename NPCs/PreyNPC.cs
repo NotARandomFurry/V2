@@ -111,6 +111,8 @@ namespace V2.NPCs
 		{
 			if (!NPCID.Sets.ProjectileNPC[npc.type])
 				npc.AsFood().OnDigestedBy += OnKilledByDigestion_GrantLivePreyGoal;
+
+			npc.AsFood().OnDigestedBy += HandlePreyItemTheft;
 		}
 
 		public override void ResetEffects(NPC npc)

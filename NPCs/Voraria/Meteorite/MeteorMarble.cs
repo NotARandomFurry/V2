@@ -77,9 +77,6 @@ namespace V2.NPCs.Voraria.Meteorite
 			NPC.AsPred().GetPreyAbsorptionRate = GetPreyAbsorptionRate;
 
 			NPC.AsPred().GetVisualBellySize = GetVisualBellySize;
-
-			NPC.AsFood().OnDigestedBy = PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
-			NPC.AsFood().OnDigestedBy += PreyNPC.HandlePreyItemTheft;
 		}
 
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)

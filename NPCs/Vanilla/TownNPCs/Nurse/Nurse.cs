@@ -141,9 +141,8 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 			npc.AsNurse().healPlayerIndex = -1;
 			npc.AsNurse().armsDealerHealTime = 0;
 
-			npc.AsFood().OnDigestedBy = PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
-			npc.AsFood().OnDigestedBy += PreyNPC.HandlePreyItemTheft;
 			npc.AsFood().OnDigestedBy += OnKilledByDigestion_GrantCheapskateGoal;
+
 			npc.AsFood().ItemTheftRules = new List<ItemTheftRule>
 			{
 				NurseStuff.ItemTheftRules.ClothingHat,

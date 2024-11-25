@@ -20,9 +20,6 @@ namespace V2.NPCs.Vanilla.TownNPCs.TravellingMerchant
 		public override void SetDefaults(NPC npc)
 		{
 			npc.AsV2NPC().Gender = EntityGender.Male;
-
-			npc.AsFood().OnDigestedBy = PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
-			npc.AsFood().OnDigestedBy += PreyNPC.HandlePreyItemTheft;
 		}
 
 		public static void SetupTravelShop_GetItem(Player playerWithHighestLuck, int[] rarity, ref int it, int minimumRarity = 0)

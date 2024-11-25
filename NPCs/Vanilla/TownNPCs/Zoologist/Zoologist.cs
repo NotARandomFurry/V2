@@ -19,9 +19,6 @@ namespace V2.NPCs.Vanilla.TownNPCs.Zoologist
 		public override void SetDefaults(NPC npc)
 		{
 			npc.AsV2NPC().Gender = EntityGender.Female;
-
-			npc.AsFood().OnDigestedBy = PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
-			npc.AsFood().OnDigestedBy += PreyNPC.HandlePreyItemTheft;
 		}
 	}
 }

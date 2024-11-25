@@ -583,9 +583,9 @@ namespace V2.Projectiles.Voraria.Weapons.Summon
         {
 			return false;
         }
-		public Player? FindClosestPlayer()
+		public Player FindClosestPlayer()
 		{
-			Player? plr = null;
+			Player plr = null;
 			float Distance = 99999f;
             foreach (var player in Main.ActivePlayers)
             {

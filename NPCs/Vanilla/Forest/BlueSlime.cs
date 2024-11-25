@@ -67,8 +67,6 @@ namespace V2.NPCs.Vanilla.Forest
 
 			npc.AsPred().GetPreyAbsorptionRate = GetPreyAbsorptionRate;
 
-			npc.AsFood().OnDigestedBy = PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
-			npc.AsFood().OnDigestedBy += PreyNPC.HandlePreyItemTheft;
 			npc.AsFood().OnDigestedBy += SlimeNPC.OnKilledByDigestion_GrantSlimeMultiPreyGoal;
 		}
 

@@ -145,9 +145,8 @@ namespace V2.NPCs.Vanilla.Sky
 
 			npc.AsPred().GetPreyAbsorptionRate = GetPreyAbsorptionRate;
 
-			npc.AsFood().OnDigestedBy = PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
-			npc.AsFood().OnDigestedBy += PreyNPC.HandlePreyItemTheft;
 			npc.AsFood().OnDigestedBy += OnKilledByDigestion_GrantHarpyGoal;
+
 			npc.AsFood().ItemTheftRules = [
 				HarpyStuff.ItemTheftRules.GiantHarpyFeather,
 			];

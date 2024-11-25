@@ -112,9 +112,6 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 			npc.AsPred().GetPreyAbsorptionRate = GetPreyAbsorptionRate;
 
 			npc.AsPred().GetVisualBellySize = GetVisualBellySize;
-
-			npc.AsFood().OnDigestedBy = PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
-			npc.AsFood().OnDigestedBy += PreyNPC.HandlePreyItemTheft;
 		}
 
 		public override ITownNPCProfile ModifyTownNPCProfile(NPC npc) => PartyGirlStuff.PartyGirlPredProfile;
