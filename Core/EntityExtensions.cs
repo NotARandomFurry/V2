@@ -93,15 +93,13 @@ namespace V2.Core
 			}
 			else if (entity is Item item)
 			{
-				// preyItem == item works because only items in the gut will have their own reference to themselves. This fixes the issue not being able to swallow multiple items of the same type.
-				// But functionality remains the same.
 				if (ModContent.GetInstance<V2MasterSystem>().VoreTrackers.FirstOrDefault(
 						x => x.Prey.FirstOrDefault(
 							y => !y.NoHealth && y.Instance is Item preyItem && preyItem.type == item.type && preyItem.stack == item.stack && preyItem == item
 						) is not null
 						  || x.PreyQueue.FirstOrDefault(
 							y => !y.NoHealth && y.Instance is Item preyItem && preyItem.type == item.type && preyItem.stack == item.stack && preyItem == item
-                        ) is not null
+						) is not null
 					) is VoreTracker tracker)
 					return tracker;
 

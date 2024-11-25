@@ -289,7 +289,7 @@ namespace V2.NPCs.Voraria.TownNPCs.Enigma
 						{
 							EnigmaChatPool.AddRange(new List<string>
 							{
-								"Augh, the damn lightning! ...wait, do you think if i got struck by lightning my magic would become stronger? Never mind, that's stupid.",
+								"Augh, the damn lightning! ...wait, do you think, if I got struck by lightning, my magic would become stronger? Never mind, that's stupid.",
 							});
 						}
 					}
