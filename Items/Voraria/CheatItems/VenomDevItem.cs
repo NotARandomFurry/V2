@@ -16,11 +16,11 @@ using V2.PlayerHandling;
 
 namespace V2.Items.Voraria.CheatItems
 {
-	public class DevItem : ModItem
+	public class VenomDevItem : ModItem
 	{
 		public override bool IsLoadingEnabled(Mod mod) => !V2.GetFooled;
-		public override LocalizedText DisplayName => Language.GetText("Mods.V2.ItemName.Voraria.CheatItems.DevItem");
-		public override LocalizedText Tooltip => Language.GetText("Mods.V2.ItemTooltip.Voraria.CheatItems.DevItem.Short");
+		public override LocalizedText DisplayName => Language.GetText("Mods.V2.ItemName.Voraria.CheatItems.VenomDevItem");
+		public override LocalizedText Tooltip => Language.GetText("Mods.V2.ItemTooltip.Voraria.CheatItems.VenomDevItem.Short");
 		// override UpdateV
 		public override void SetDefaults()
 		{
@@ -37,18 +37,12 @@ namespace V2.Items.Voraria.CheatItems
 			player.AsPred().Rose = true;
 			player.AsPred().Venomizeous = true;
 			player.AsPred().StomachWeightModifier *= 0.0f;
-
-            player.AsPred().ABS.Extra += (int)(60f / 0.03f);
-            player.AsPred().ACI.Extra += (int)(90f / 1f);
-			// player.AsPred().
-			if (Main.mouseLeft) {
-			}
         }
 
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
 			tooltips.AddVorariaDynamicItemTooltip(
-				"Voraria.CheatItems.DevItem",
+				"Voraria.CheatItems.VenomDevItem",
 				new
 				{
 					
