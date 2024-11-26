@@ -3,16 +3,24 @@
   "WorkspaceRootPath": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|e:\\documents\\my games\\terraria\\tmodloader\\modsources\\v2\\core\\entityextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:core\\entityextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|e:\\documents\\my games\\terraria\\tmodloader\\modsources\\v2\\playerhandling\\playerdetours.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:playerhandling\\playerdetours.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|e:\\documents\\my games\\terraria\\tmodloader\\modsources\\v2\\playerhandling\\predplayer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:playerhandling\\predplayer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|e:\\documents\\my games\\terraria\\tmodloader\\modsources\\v2\\playerhandling\\playerdetours.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:playerhandling\\playerdetours.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|e:\\documents\\my games\\terraria\\tmodloader\\modsources\\v2\\v2.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:v2.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|e:\\documents\\my games\\terraria\\tmodloader\\modsources\\v2\\aprilfools\\pred.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:aprilfools\\pred.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|e:\\documents\\my games\\terraria\\tmodloader\\modsources\\v2\\core\\entityextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:core\\entityextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|e:\\documents\\my games\\terraria\\tmodloader\\modsources\\v2\\items\\generalitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -29,10 +37,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|e:\\documents\\my games\\terraria\\tmodloader\\modsources\\v2\\items\\preyitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:items\\preyitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|e:\\documents\\my games\\terraria\\tmodloader\\modsources\\v2\\v2.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:v2.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|e:\\documents\\my games\\terraria\\tmodloader\\modsources\\v2\\ui\\helditemdrawingui.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -54,7 +58,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 8,
           "Children": [
             {
               "$type": "Bookmark",
@@ -73,47 +77,55 @@
               "Name": "ST:138:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
             },
             {
+              "$type": "Bookmark",
+              "Name": "ST:139:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:140:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "EntityExtensions.cs",
-              "DocumentMoniker": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\Core\\EntityExtensions.cs",
-              "RelativeDocumentMoniker": "Core\\EntityExtensions.cs",
-              "ToolTip": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\Core\\EntityExtensions.cs*",
-              "RelativeToolTip": "Core\\EntityExtensions.cs*",
-              "ViewState": "AgIAAE8AAAAAAAAAAAAiwF8AAAAHAAAAAAAAAA==",
+              "DocumentIndex": 3,
+              "Title": "Pred.cs",
+              "DocumentMoniker": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\AprilFools\\Pred.cs",
+              "RelativeDocumentMoniker": "AprilFools\\Pred.cs",
+              "ToolTip": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\AprilFools\\Pred.cs",
+              "RelativeToolTip": "AprilFools\\Pred.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-25T22:05:12.906Z",
+              "WhenOpened": "2024-11-25T23:31:28.49Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 2,
               "Title": "V2.cs",
               "DocumentMoniker": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\V2.cs",
               "RelativeDocumentMoniker": "V2.cs",
               "ToolTip": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\V2.cs",
               "RelativeToolTip": "V2.cs",
-              "ViewState": "AgIAAAwAAAAAAAAAAAAAABkAAAApAAAAAAAAAA==",
+              "ViewState": "AgIAAHIAAAAAAAAAAAAgwI8AAAAVAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-11-25T21:53:13.969Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 0,
               "Title": "PlayerDetours.cs",
               "DocumentMoniker": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\PlayerHandling\\PlayerDetours.cs",
               "RelativeDocumentMoniker": "PlayerHandling\\PlayerDetours.cs",
               "ToolTip": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\PlayerHandling\\PlayerDetours.cs",
               "RelativeToolTip": "PlayerHandling\\PlayerDetours.cs",
-              "ViewState": "AgIAABIKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAOgJAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-11-25T21:52:43.438Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 5,
               "Title": "GeneralItem.cs",
               "DocumentMoniker": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\Items\\GeneralItem.cs",
               "RelativeDocumentMoniker": "Items\\GeneralItem.cs",
@@ -126,7 +138,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 9,
               "Title": "HeldItemDrawingUI.cs",
               "DocumentMoniker": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\UI\\HeldItemDrawingUI.cs",
               "RelativeDocumentMoniker": "UI\\HeldItemDrawingUI.cs",
@@ -139,7 +151,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 10,
               "Title": "UIElements.cs",
               "DocumentMoniker": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\UI\\UIElements.cs",
               "RelativeDocumentMoniker": "UI\\UIElements.cs",
@@ -152,7 +164,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 6,
               "Title": "UISystem.cs",
               "DocumentMoniker": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\UI\\UISystem.cs",
               "RelativeDocumentMoniker": "UI\\UISystem.cs",
@@ -165,7 +177,33 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 1,
+              "Title": "PredPlayer.cs",
+              "DocumentMoniker": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\PlayerHandling\\PredPlayer.cs",
+              "RelativeDocumentMoniker": "PlayerHandling\\PredPlayer.cs",
+              "ToolTip": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\PlayerHandling\\PredPlayer.cs*",
+              "RelativeToolTip": "PlayerHandling\\PredPlayer.cs*",
+              "ViewState": "AgIAAFEHAAAAAAAAAAAiwBwHAAADAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-25T21:38:02.17Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "EntityExtensions.cs",
+              "DocumentMoniker": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\Core\\EntityExtensions.cs",
+              "RelativeDocumentMoniker": "Core\\EntityExtensions.cs",
+              "ToolTip": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\Core\\EntityExtensions.cs",
+              "RelativeToolTip": "Core\\EntityExtensions.cs",
+              "ViewState": "AgIAAE8AAAAAAAAAAAAiwF8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-25T22:05:12.906Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
               "Title": "V2Player.EquipmentHandling.cs",
               "DocumentMoniker": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\PlayerHandling\\V2Player.EquipmentHandling.cs",
               "RelativeDocumentMoniker": "PlayerHandling\\V2Player.EquipmentHandling.cs",
@@ -178,20 +216,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "PredPlayer.cs",
-              "DocumentMoniker": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\PlayerHandling\\PredPlayer.cs",
-              "RelativeDocumentMoniker": "PlayerHandling\\PredPlayer.cs",
-              "ToolTip": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\PlayerHandling\\PredPlayer.cs",
-              "RelativeToolTip": "PlayerHandling\\PredPlayer.cs",
-              "ViewState": "AgIAAAMDAAAAAAAAAAAvwBcDAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-25T21:38:02.17Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 8,
               "Title": "PreyItem.cs",
               "DocumentMoniker": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\Items\\PreyItem.cs",
               "RelativeDocumentMoniker": "Items\\PreyItem.cs",
@@ -204,7 +229,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 11,
               "Title": "VoreTracker.cs",
               "DocumentMoniker": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\Core\\VoreTracker.cs",
               "RelativeDocumentMoniker": "Core\\VoreTracker.cs",

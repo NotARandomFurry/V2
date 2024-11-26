@@ -1904,7 +1904,11 @@ namespace V2.PlayerHandling
 			{ 11, new TumEntry("Tum11",    -2, 0) },
             { 12, new TumEntry("Tum12",    -2, 0) },
             { 13, new TumEntry("Tum13",    -2, 4) },
-			{ 14, new TumEntry("Tum14",    -2, 4) }
+            { 14, new TumEntry("Tum14",    -2, 4) },
+            { 15, new TumEntry("Tum15",    -2, 4) },
+            { 16, new TumEntry("Tum16",    -2, 4) },
+            { 17, new TumEntry("Tum17",    -2, 4) }
+
 
         };
 		public override Position GetDefaultPosition() => new AfterParent(PlayerDrawLayers.Torso);
