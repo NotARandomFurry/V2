@@ -12,15 +12,9 @@
     <None Remove="externallibs\**" />
   </ItemGroup>
   <ItemGroup>
-    <None Remove="Items\Voraria\Weapons\Ranged\Throwables\ThrowableHoneyBottle.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="Gores\" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="0Harmony">
-      <HintPath>lib\0Harmony.dll</HintPath>
-    </Reference>
     <Reference Include="BetterDialogue">
       <HintPath>..\..\ModReader\BetterDialogue\BetterDialogue.dll</HintPath>
     </Reference>
