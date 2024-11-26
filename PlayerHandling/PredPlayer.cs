@@ -226,13 +226,14 @@ namespace V2.PlayerHandling
 		/// 2 - Royal<br/>
 		/// 99 - Divine<br/>
 		/// 100 - Chronological<br/>
+		/// 888 - Rose (and friends!)<br/>
 		/// </summary>
 		public int AcidTier
 		{
 			get
 			{
-				if (this.Venomizeous)
-					return int.MaxValue;
+				if (Rose)
+					return 888;
 
 				if (V2.GetFooled)
 					return 100;
@@ -276,6 +277,8 @@ namespace V2.PlayerHandling
 
 				double baseDigestionRate = BaseDigestionTickRate;
 				baseDigestionRate += DigestionTickRatePer5Levels * Math.Floor(ACI.Total / 5.0);
+				if (Rose)
+					baseDigestionRate *= 4.0;
 				return DigestionTickRateModifier.ApplyTo((float)baseDigestionRate);
 			}
 		}
@@ -292,6 +295,8 @@ namespace V2.PlayerHandling
 
 				double basePreyAbsorptionRate = BasePreyAbsorptionRate;
 				basePreyAbsorptionRate += PreyAbsorptionRatePerLevel * ABS.Total;
+				if (Rose)
+					basePreyAbsorptionRate *= 8.0;
 				return PreyAbsorptionRateModifier.ApplyTo((float)basePreyAbsorptionRate);
 			}
 		}

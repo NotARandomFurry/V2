@@ -1404,7 +1404,7 @@ Mods: {
 
 				CheatItems: {
 					RoseFlower: Rose's Flower Pin
-					DevItem: New Dev Item
+					VenomDevItem: Venomizeous' Gaze
 					SecondBestAngelFeather: St. Promethia's Favorite Feather
 					ServerMessageRelay: A Page of Thomas' Journal
 				}
@@ -2481,7 +2481,10 @@ Mods: {
 							[c/7F7F7F:> ][c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Makes your stomach weightless, no matter what or who is in it.]
 							[c/7F7F7F:> ][c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Grants infinite swallow and stomach capacity, and makes it impossible for prey to escape your stomach unless you regurgitate them.]
 							[c/7F7F7F:> ][c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Grants the ability to eat bosses regardless of whether your currently-selected gear and abilities would allow you to.]
-							Several item effects and UI elements will be modified while this item is equipped.
+							[c/7F7F7F:> ][c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Raises your acid tier to MILES beyond the maximum.]
+							[c/7F7F7F:> ][c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases digestion tick rate by a factor of 4.]
+							[c/7F7F7F:> ][c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases absorption rate by a factor of 8.]
+							Several item effects and UI elements will be modified while this item or any of its counterparts are equipped.
 							'''
 						Flavor:
 							'''
@@ -2502,18 +2505,22 @@ Mods: {
 							'''
 					}
 
-					DevItem: {
+					VenomDevItem: {
 						Short:
 							'''
-							Gives you the same predatory digestive prowess that Venomizeous has.
+							Gives you the same predatory digestive prowess that Venomizeous has, at no cost whatsoever
 							{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
 							'''
 						Long:
 							'''
 							While worn, provides a number of extremely- and outright unfairly-beneficial predatorily-centric effects:
-							[c/7F7F7F:> ][c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Inherits properties from the Rose Pin Item.]
-							[c/7F7F7F:> ][c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Grants highly increased acidic damage.]
-							[c/7F7F7F:> ][c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Grants ability to rapidly absorb anyone or anything.]
+							[c/7F7F7F:> ][c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Makes your stomach weightless, no matter what or who is in it.]
+							[c/7F7F7F:> ][c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Grants infinite swallow and stomach capacity, and makes it impossible for prey to escape your stomach unless you regurgitate them.]
+							[c/7F7F7F:> ][c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Grants the ability to eat bosses regardless of whether your currently-selected gear and abilities would allow you to.]
+							[c/7F7F7F:> ][c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Raises your acid tier to MILES beyond the maximum.]
+							[c/7F7F7F:> ][c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases digestion tick rate by a factor of 4.]
+							[c/7F7F7F:> ][c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases absorption rate by a factor of 8.]
+							Several item effects and UI elements will be modified while this item or any of its counterparts are equipped.
 							'''
 						Flavor: ...
 					}
