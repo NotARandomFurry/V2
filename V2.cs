@@ -65,7 +65,7 @@ namespace V2
 		public V2()
 		{
 			Instance = this;
-			BlacklistsActive = false;
+			BlacklistsActive = true;
 			GetFooled = false;
 			ModifiedStatusEffects = [];
 		}
