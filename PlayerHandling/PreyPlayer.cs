@@ -524,7 +524,7 @@ namespace V2.PlayerHandling
 					);
 				}
 			}
-			if (Player.CurrentCaptor() is not null)
+			if (Player.CurrentCaptor() is not null && !Digested)
 				Player.CurrentCaptor().Prey.RemoveAll(x => x.Type == PreyType.Player && x.Instance.whoAmI == Player.whoAmI);
 
 			return true;
