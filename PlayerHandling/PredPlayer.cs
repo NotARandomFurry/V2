@@ -5,6 +5,7 @@ using ReLogic.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Xna.Framework.Input;
 using Terraria;
 using Terraria.Audio;
 using Terraria.Chat;
@@ -385,7 +386,7 @@ namespace V2.PlayerHandling
 			{
 				if (mealCount.Count <= 0)
 					return 0;
-
+				
 				int meals = 0;
 				foreach (KeyValuePair<string, int> keyValuePair in mealCount)
 				{
@@ -786,7 +787,7 @@ namespace V2.PlayerHandling
 		{
 			if (inventory.Length == 59)
 			{
-				if (V2.ItemGulpHotkey.JustPressed && Player.whoAmI == Main.myPlayer)
+				if (Player.whoAmI == Main.myPlayer && (V2.ItemGulpHotkey.JustPressed || (Main.keyState.IsKeyDown(Keys.LeftShift) && V2.ItemGulpHotkey.Current && Main.GameUpdateCount % 20 == 0)))
 				{
 					if (inventory[slot].IsAir)
 						return true;
@@ -1594,7 +1595,7 @@ namespace V2.PlayerHandling
 					}
 
 					slosh.Position = pred.TrueCenter();
-					slosh.Volume = (float)pred.AsPred().StomachFullness * 0.5f;
+					slosh.Volume = (float)pred.AsPred().StomachFullness * 0.75f;
                     // SoundEngine.PlaySound(pred.AsPred().BellySloshes with { Volume = pred.AsPred().StomachSize }, pred.TrueCenter());
                 }
 
@@ -1605,7 +1606,7 @@ namespace V2.PlayerHandling
 						(V2.GetFooled
 							? StomachNoises.AprilFools
 							: StomachNoises.Muffled) with
-						{ Volume = 0.25f + (0.15f * pred.AsPred().StomachSize) },
+						{ Volume = 0.25f + (0.2f * pred.AsPred().StomachSize) },
 						pred.TrueCenter()
 					);
 					SoundEngine.TryGetActiveSound(pred.AsPred().ActiveStomachNoises, out stomachNoises);
@@ -1613,10 +1614,10 @@ namespace V2.PlayerHandling
 
 				if (stomachNoises is null)
 					return;
-
+				
 				stomachNoises.Position = pred.TrueCenter();
 				stomachNoises.Volume = 0.25f;
-				stomachNoises.Volume += 0.15f * pred.AsPred().StomachSize;
+				stomachNoises.Volume += 0.2f * pred.AsPred().StomachSize;
 			}
 		}
 
@@ -1894,26 +1895,31 @@ namespace V2.PlayerHandling
 				this.yOffset = y;
 			}
 		}
+		
+		// FRAME 4, 6 NEEDS TO BE OFFSET BY A SINGLE PIXEL BECAUSE THE PLAYER BOUNCES UP GENTLY
+		// FRAME 3 NEEDS TO BE OFFSET BY 2 PIXELS
+		
 		public static IDictionary<int, TumEntry> Tums = new Dictionary<int, TumEntry>()
 		{
-			{  1, new TumEntry("Tum1",     0, 20) },
-			{  2, new TumEntry("Tum2",     0, 20) },
-			{  3, new TumEntry("Tum3",     0, 20) },
-			{  4, new TumEntry("Tum4",     0, 0) },
-			{  5, new TumEntry("Tum5",     0, 0) },
-			{  6, new TumEntry("Tum6",     0, 0) },
-			{  7, new TumEntry("Tum7",     0, 0) },
-			{  8, new TumEntry("Tum8",     0, 0) },
-            {  9, new TumEntry("Tum9",     0, 0) },
-            { 10, new TumEntry("Tum10",    0, 0) },
-			{ 11, new TumEntry("Tum11",    -2, 0) },
-            { 12, new TumEntry("Tum12",    -2, 0) },
-            { 13, new TumEntry("Tum13",    -2, 4) },
-            { 14, new TumEntry("Tum14",    -2, 4) },
-            { 15, new TumEntry("Tum15",    -2, 4) },
-            { 16, new TumEntry("Tum16",    -2, 4) },
-            { 17, new TumEntry("Tum17",    -2, 4) },
-            { 18, new TumEntry("Tum18",    -2, 24) }
+			{  1, new TumEntry("Tum1",     0, 27) },
+			{  2, new TumEntry("Tum2",     0, 27) },
+			{  3, new TumEntry("Tum3",     0, 27) },
+			{  4, new TumEntry("Tum4",     0, 37) },
+			{  5, new TumEntry("Tum5",     0, 37) },
+			{  7, new TumEntry("Tum7",     0, 37) },
+			{  8, new TumEntry("Tum8",     0, 37) },
+			{  6, new TumEntry("Tum6",     0, 37) },
+            {  9, new TumEntry("Tum9",     0, 37) },
+            { 10, new TumEntry("Tum10",    0, 37) },
+			{ 11, new TumEntry("Tum11",    -2, 37) },
+            { 12, new TumEntry("Tum12",    -2, 37) },
+            { 13, new TumEntry("Tum13",    -2, 35) },
+            { 14, new TumEntry("Tum14",    -2, 35) },
+            { 15, new TumEntry("Tum15",    -2, 35) },
+            { 16, new TumEntry("Tum16",    -2, 35) },
+            { 17, new TumEntry("Tum17",    -2, 35) },
+            { 18, new TumEntry("Tum18",    -2, 25) },
+            { 19, new TumEntry("Tum19",    -2, 25) }
 
         };
 		public override Position GetDefaultPosition() => new AfterParent(PlayerDrawLayers.Torso);
@@ -1998,10 +2004,11 @@ namespace V2.PlayerHandling
             void DrawDaTum(ref PlayerDrawSet drawInfo, int size, int frame, int offsetX = 0, int offsetY = 0)
             {
 				//Vector2 tumLocation = new Vector2((float)(int)(drawInfo.Position.X - Main.screenPosition.X - 10), (float)(int)(drawInfo.Position.Y - Main.screenPosition.Y - 8));
-				Vector2 tumLocation = drawInfo.Position.Floor() - Main.screenPosition.Floor() - Vector2.UnitY * 30f + Vector2.UnitX * (player.width/2);
+				Vector2 tumLocation = drawInfo.Position.Floor() - Main.screenPosition.Floor() + Vector2.UnitX * (player.width/2);
 				//tumLocation.Y += drawInfo.torsoOffset;
                 tumLocation.X += offsetX * player.direction;
-                tumLocation.Y += offsetY;
+                tumLocation.Y += player.height;
+                tumLocation.Y -= (offsetY * 2) - 2;
 
                 Texture2D bareTum = ModContent.Request<Texture2D>(folder + size + "/Bare").Value;
                 if (frame == 3 || frame == 5) tumLocation.Y -= 2;

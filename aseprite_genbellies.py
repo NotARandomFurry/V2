@@ -1,6 +1,10 @@
-﻿import os
+﻿# Automatic processing of belly sprites using Aseprite CLI. Requires ASEPRITE in the %PATH% variable
+# Requires a Python Interpeter
+# This process is automated by Rider/VS if you use "RiderTerraria" configuration
+
+import os
 import subprocess
-from threading import Thread
+# from threading import Thread
 
 # Path to the Aseprite executable
 ASEPRITE_EXE = "aseprite.exe"
@@ -29,12 +33,12 @@ def process_folders_in_parallel(base_folder):
     threads = []
     
     # Remove all bare png
-    for root, _, files in os.walk(base_folder):
-        for file in files:
-            if file.endswith("bare.png") or file.endswith("Bare.png"):
-                bareFilePath = os.path.join(root, file)
-                print("deleted " + bareFilePath)
-                os.remove(bareFilePath)
+    #   for root, _, files in os.walk(base_folder):
+    #       for file in files:
+    #           if file.endswith("bare.png") or file.endswith("Bare.png"):
+    #               bareFilePath = os.path.join(root, file)
+    #               print("deleted " + bareFilePath)
+    #               os.remove(bareFilePath)
         
     for root, _, files in os.walk(base_folder):
         for file in files:

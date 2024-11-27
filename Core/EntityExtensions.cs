@@ -52,12 +52,12 @@ namespace V2.Core
 			if (entity is Player player)
 			{
 				if (ModContent.GetInstance<V2MasterSystem>().VoreTrackers.FirstOrDefault(
-						x => x.Prey.FirstOrDefault(
+						x => x.Prey.Any(
 							y => !y.NoHealth && y.Instance is Player preyPlayer && preyPlayer.whoAmI == player.whoAmI
-						) is not null
-						  || x.PreyQueue.FirstOrDefault(
+						)
+						  || x.PreyQueue.Any(
 							y => !y.NoHealth && y.Instance is Player preyPlayer && preyPlayer.whoAmI == player.whoAmI
-						) is not null
+						)
 					) is VoreTracker tracker)
 					return tracker;
 
@@ -66,12 +66,12 @@ namespace V2.Core
 			else if (entity is NPC npc)
 			{
 				if (ModContent.GetInstance<V2MasterSystem>().VoreTrackers.FirstOrDefault(
-						x => x.Prey.FirstOrDefault(
+						x => x.Prey.Any(
 							y => !y.NoHealth && y.Instance is NPC preyNPC && preyNPC.whoAmI == npc.whoAmI
-						) is not null
-						  || x.PreyQueue.FirstOrDefault(
+						)
+						  || x.PreyQueue.Any(
 							y => !y.NoHealth && y.Instance is NPC preyNPC && preyNPC.whoAmI == npc.whoAmI
-						) is not null
+						)
 					) is VoreTracker tracker)
 					return tracker;
 
@@ -80,12 +80,12 @@ namespace V2.Core
 			else if (entity is Projectile projectile)
 			{
 				if (ModContent.GetInstance<V2MasterSystem>().VoreTrackers.FirstOrDefault(
-						x => x.Prey.FirstOrDefault(
+						x => x.Prey.Any(
 							y => !y.NoHealth && y.Instance is Projectile preyProjectile && preyProjectile.whoAmI == projectile.whoAmI
-						) is not null
-						  || x.PreyQueue.FirstOrDefault(
+						)
+						  || x.PreyQueue.Any(
 							y => !y.NoHealth && y.Instance is Projectile preyProjectile && preyProjectile.whoAmI == projectile.whoAmI
-						) is not null
+						)
 					) is VoreTracker tracker)
 					return tracker;
 
@@ -94,12 +94,12 @@ namespace V2.Core
 			else if (entity is Item item)
 			{
 				if (ModContent.GetInstance<V2MasterSystem>().VoreTrackers.FirstOrDefault(
-						x => x.Prey.FirstOrDefault(
+						x => x.Prey.Any(
 							y => !y.NoHealth && y.Instance is Item preyItem && preyItem.type == item.type && preyItem.stack == item.stack && preyItem == item
-						) is not null
-						  || x.PreyQueue.FirstOrDefault(
+						)
+						  || x.PreyQueue.Any(
 							y => !y.NoHealth && y.Instance is Item preyItem && preyItem.type == item.type && preyItem.stack == item.stack && preyItem == item
-						) is not null
+						)
 					) is VoreTracker tracker)
 					return tracker;
 

@@ -178,7 +178,7 @@ namespace V2.UI.StomachCapacityMeter
 					string bottomlessText =
 						"Stomach Fullness: "
 					  + localPlayer.AsPred().StomachFullness.CastToDecimalPlaces(2)
-					  + " (Infinite Capacity)";
+					  + " (Infinite Capacity)" + (localPlayer.AsPred().Venomizeous ? ", Size: " : "") + (localPlayer.AsPred().Venomizeous ? localPlayer.AsPred().StomachSize : "");
 					Main.instance.MouseTextHackZoom(bottomlessText);
 				}
 				else

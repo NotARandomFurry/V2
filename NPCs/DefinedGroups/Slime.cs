@@ -77,7 +77,7 @@ namespace V2.NPCs.Sets
 		{
 			if (pred is Player predPlayer)
 			{
-				List<int> distinctSlimes = V2Utils.NPCIDSets.Slimes;
+				List<int> distinctSlimes = new List<int>(V2Utils.NPCIDSets.Slimes);
 				int distinctSlimesInTummy = 0;
 				foreach (PreyData prey in predPlayer.AsPred().StomachTracker.Prey)
 				{

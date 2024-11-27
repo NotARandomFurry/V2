@@ -126,7 +126,7 @@ namespace V2.Items
 
 	public class PreyItem : GlobalItem
 	{
-		public int MaxHealth { get; set; } = -1;
+		public int MaxHealth { get; set; }
 		private int _health = -1;
 		public int Health
 		{

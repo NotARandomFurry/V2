@@ -30,7 +30,7 @@ namespace V2.Items.ItemGroupUtils
 			if (pred is Player predPlayer)
 			{
 				ModContent.GetInstance<EatLargeGem>().TrySetCompletion(predPlayer);
-				List<int> distinctLargeGems = V2Utils.ItemIDSets.LargeGems;
+				List<int> distinctLargeGems = new List<int>(V2Utils.ItemIDSets.LargeGems);
 				int distinctLargeGemsInTummy = 0;
 				foreach (PreyData prey in predPlayer.AsPred().StomachTracker.Prey)
 				{
@@ -47,7 +47,7 @@ namespace V2.Items.ItemGroupUtils
 						distinctLargeGems.Remove(preyItemID);
 					}
 				}
-				if (distinctLargeGemsInTummy >= 7)
+				if (distinctLargeGemsInTummy >= 6) // -1 because the last gem digested will count 6 currently digesting gems
 					ModContent.GetInstance<HoardLargeGems>().TrySetCompletion(predPlayer);
 			}
 			return true;

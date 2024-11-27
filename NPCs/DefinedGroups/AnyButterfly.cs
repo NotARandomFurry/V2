@@ -48,7 +48,7 @@ namespace V2.NPCs.Sets
 			if (predPlayer.AsPred().StomachTracker is null)
 				return;
 
-			List<int> butterflies = V2Utils.NPCIDSets.Butterflies;
+			List<int> butterflies = new List<int>(V2Utils.NPCIDSets.Butterflies);
 			int butterfliesInTummy = 0;
 			if (predPlayer.AsPred().StomachTracker.PreyQueue?.Count <= 0)
 				goto checkMainPreyList;

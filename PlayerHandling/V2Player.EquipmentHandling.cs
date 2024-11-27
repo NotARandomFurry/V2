@@ -27,7 +27,7 @@ namespace V2.PlayerHandling
 
 		public static void GrantArmorBenefits(Player player, Item armorPiece)
 		{
-			if (armorPiece.AsFood().MaxHealth != -1 && armorPiece.AsFood().Health <= 0)
+			if (armorPiece.AsFood()?.MaxHealth != -1 && armorPiece.AsFood().Health <= 0)
 				return;
 
 			int type = armorPiece.type;
