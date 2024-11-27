@@ -3,3 +3,4 @@ author = the pixelated Sign Painter and friends
 modReferences = BetterDialogue
 weakReferences = Munchies, WeaponDisplay
 version = 0.4.1
+buildIgnore=*.aseprite

@@ -61,6 +61,7 @@ Mods: {
 			PositiveVoreEffect: 00BF00
 			NegativeVoreEffect: BF5F00
 			ThomasCommentary: "960024"
+			// VenomCommentary: 6D319E
 			// CloverQuote: 55FF7D
 		}
 
@@ -2525,7 +2526,7 @@ Mods: {
 							[c/7F7F7F:> ][c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases absorption rate by a factor of 8.]
 							Several item effects and UI elements will be modified while this item or any of its counterparts are equipped.
 							''' */
-						// Flavor: ...
+						// Flavor: "[c/{$Mods.V2.CommonColorCodes.VenomCommentary}:Test]"
 					}
 
 					SecondBestAngelFeather: {

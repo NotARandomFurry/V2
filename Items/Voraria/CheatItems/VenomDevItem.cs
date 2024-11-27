@@ -31,9 +31,8 @@ namespace V2.Items.Voraria.CheatItems
 			Item.rare = ItemRarityID.Master;
 			Item.value = 0;
 		}
-
-		public override void UpdateAccessory(Player player, bool hideVisual)
-		{
+        public override void UpdateAccessory(Player player, bool hideVisual)
+        {
 			player.AsPred().Rose = true;
 			player.AsPred().Venomizeous = true;
 			player.AsPred().StomachWeightModifier *= 0.0f;
