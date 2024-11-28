@@ -78,8 +78,8 @@ Mods: {
 		}
 
 		Conditions: {
-			FullNPC: If the shop NPC's stomach fullness is 0.75 or higher
-			BeginnerStatPoints: If you have earned 10 or more stat points from pred goals
+			FullNPC: Sold if the shop NPC's stomach fullness is 0.75 or higher
+			BeginnerStatPoints: Sold if you have earned 10 or more stat points from pred goals
 		}
 
 		Configs: {
@@ -2489,19 +2489,19 @@ Mods: {
 							'''
 						Flavor:
 							'''
-							[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:this is a prefabricated copy of Rose's personal hairpin]
+							[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:this is a prefabricated copy of Rose's personal flower hairpin]
 							[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:it's not where any of her more                egregious predatory abilities come from]
-							[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:she is naturally just that much a glutton. ate an entire mountain range once]
+							[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:she is naturally just that much a glutton. ate an entire mountain range as a snack once]
 							[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:she tells people that this flower was the very last thing left from the last world she ate]
 							[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:she doesn't tell them that I made it for her when I made her]
 							[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:I made a virtually-infinite number of 'em so that if she accidentally ate it]
-							[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:(and she has, multiple times)]
+							[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:(and she has, more times than I care to count)]
 							[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:she'd have another rarin' to go shortly thereafter to keep her happy]
 							[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:she tells me these flowers are delicious]
 							[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:then again, she thinks everything's delicious, so maybe take her word with a grain of salt]
-							[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:don't try to eat it]
-							[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:she'll know]
-							[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:and she'll make you a meal, no matter how strong you are or how invincible you think you are]
+							[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:don't try to eat it. she'll know, and she'll make you a meal]
+							[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:no matter how strong you are or how invincible you think you are]
+
 							[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:after all, she REALLY likes the taste of these flowers]
 							'''
 					}
@@ -2509,7 +2509,7 @@ Mods: {
 					VenomDevItem: {
 						Short:
 							'''
-							Gives you the same predatory digestive prowess that Venomizeous has, at no cost whatsoever
+							Gives you the same predatory prowess that Venomizeous has, at no cost whatsoever
 							{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
 							'''
 						Long:
