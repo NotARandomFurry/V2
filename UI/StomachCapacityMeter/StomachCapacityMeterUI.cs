@@ -178,7 +178,10 @@ namespace V2.UI.StomachCapacityMeter
 					string bottomlessText =
 						"Stomach Fullness: "
 					  + localPlayer.AsPred().StomachFullness.CastToDecimalPlaces(2)
-					  + " (Infinite Capacity)" + (localPlayer.AsPred().Venomizeous ? ", Size: " : "") + (localPlayer.AsPred().Venomizeous ? localPlayer.AsPred().StomachSize : "");
+					  + " (Infinite Capacity)"
+					  + "\n"
+					  + "Stomach Size: "
+					  + localPlayer.AsPred().StomachSize;
 					Main.instance.MouseTextHackZoom(bottomlessText);
 				}
 				else
@@ -190,7 +193,10 @@ namespace V2.UI.StomachCapacityMeter
 					  + localPlayer.AsPred().StomachCapacity.CastToDecimalPlaces(2)
 					  + " ("
 					  + (localPlayer.AsPred().StomachFullness / localPlayer.AsPred().StomachCapacity).ToPercentage(2)
-					  + ")";
+					  + ")"
+					  + "\n"
+					  + "Stomach Size: "
+					  + localPlayer.AsPred().StomachSize;
 					Main.instance.MouseTextHackZoom(normalText);
 				}
 				Main.mouseText = true;
