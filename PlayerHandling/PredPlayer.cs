@@ -1119,7 +1119,7 @@ namespace V2.PlayerHandling
 					npc.AsFood().OnSwallowedBy?.Invoke(npc, pred);
 					for (int i = 0; i < Main.maxNPCs; i++)
 					{
-						if (Main.npc[i].whoAmI != npc.whoAmI && Main.npc[i].realLife == npc.whoAmI)
+						if (Main.npc[i].whoAmI != npc.whoAmI && Main.npc[i].realLife != -1 && Main.npc[i].realLife == npc.whoAmI)
 						{
 							Swallow(pred, Main.npc[i]);
 						}
