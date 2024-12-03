@@ -75,6 +75,7 @@ Mods: {
 			StruggleRight.DisplayName: Struggle Right
 			StruggleDown.DisplayName: Struggle Down
 			StruggleSpecial.DisplayName: Special Struggle
+			LayOnBelly.DisplayName: Lay On Belly
 		}
 
 		Conditions: {
@@ -699,6 +700,19 @@ Mods: {
 							'A very touchy job, and one liable to get you glorped at any point, but the pay's really nice if you can do it well.'
 							'''
 						Clarification: Swallow any piece of furniture.
+					}
+				}
+
+				EatTheManEater: {
+					Name: Man Eating
+
+					Description: {
+						Default:
+							'''
+							Enter the Jungle and show the Man Eater who's got the "Eating" role now!
+							'"Man Eater" huh? Just reverse the roles. Now you're eating the Man Eater. Man Eater Eater?'
+							'''
+						Clarification: Eat and digest a Man eater.
 					}
 				}
 

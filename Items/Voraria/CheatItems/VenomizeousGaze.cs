@@ -16,7 +16,8 @@ using V2.PlayerHandling;
 
 namespace V2.Items.Voraria.CheatItems
 {
-	public class VenomDevItem : ModItem
+	// [AutoloadEquip(EquipType.Neck)]
+	public class VenomizeousGaze : ModItem
 	{
 		public override bool IsLoadingEnabled(Mod mod) => !V2.GetFooled;
 		public override LocalizedText DisplayName => Language.GetText("Mods.V2.ItemName.Voraria.CheatItems.VenomDevItem");

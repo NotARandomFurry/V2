@@ -5,11 +5,13 @@ using ReLogic.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Input;
 using Terraria;
 using Terraria.Audio;
 using Terraria.Chat;
 using Terraria.DataStructures;
+using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -65,6 +67,8 @@ namespace V2.PlayerHandling
 			}
 		}
 
+		public bool IsLayingOnTum { get; set; }
+		
 		private double _stomachache;
 		public double Stomachache
 		{
@@ -620,7 +624,7 @@ namespace V2.PlayerHandling
 				tummySize = (int)Math.Round((double)tummySize * PercentBellySizeModifier);
 				tummySize += FlatBellySizeModifier;
 
-				return Math.Min(tummySize, VoreTum.Tums.Count);
+				return Math.Min(tummySize, BellyDrawLayer.RegularBelly.StandardBellies.Count);
 			}
 		}
 
@@ -841,6 +845,16 @@ namespace V2.PlayerHandling
 			}
 		}
 
+		public override void ProcessTriggers(TriggersSet triggersSet)
+		{
+			// Venomizeous flag as it's unfinished.
+			if (V2.LayOnBellyHotkey.JustPressed && this.Venomizeous)
+			{
+				this.IsLayingOnTum = !this.IsLayingOnTum;
+			}
+		}
+
+		
 		public override void PostUpdateRunSpeeds()
 		{
 			if (!Player.mount.Active)
@@ -855,7 +869,15 @@ namespace V2.PlayerHandling
 				Player.maxRunSpeed *= weightSpeedMult;
 				Player.accRunSpeed *= weightSpeedMult;
 			}
+
+			if (this.IsLayingOnTum)
+			{
+				Player.maxRunSpeed *= 0;
+				Player.runAcceleration *= 0;
+			}
 		}
+		
+		
 
 		public override void PostItemCheck()
 		{
@@ -1865,284 +1887,7 @@ namespace V2.PlayerHandling
 				}
 			}
 		}
-        public override void ModifyDrawInfo(ref PlayerDrawSet drawInfo) 
-		{
-			/*
-			if (this.Venomizeous)
-			{
-				Texture2D eyes = ModContent.Request<Texture2D>("V2/PlayerHandling/Venomizeous_eye").Value;
-				//Main.spriteBatch.End();
-				Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive);
-				drawInfo.DrawDataCache.Add(new DrawData(eyes, drawInfo.headVect, null, Color.Purple, 0f, Vector2.Zero, 1f, drawInfo.playerEffect, 2));
-				// Main.EntitySpriteDraw(eyes, drawInfo.headVect, null, Color.Purple, 0f, Vector2.Zero, 1f, drawInfo.playerEffect, 2);
-				//Main.spriteBatch.End();
-				// drawInfo.DrawDataCache.Add(new DrawData();
-			}*/
-		}
     }
 
-	public class VoreTum : PlayerDrawLayer
-	{
-		public struct TumEntry
-		{
-			public readonly string tumName;
-			public readonly int xOffset;
-			public readonly int yOffset;
-			public TumEntry(string tum, int x, int y)
-			{
-				this.tumName = tum;
-				this.xOffset = x;
-				this.yOffset = y;
-			}
-		}
-		
-		// FRAME 4, 6 NEEDS TO BE OFFSET BY A SINGLE PIXEL BECAUSE THE PLAYER BOUNCES UP GENTLY
-		// FRAME 3 NEEDS TO BE OFFSET BY 2 PIXELS
-		
-		public static IDictionary<int, TumEntry> Tums = new Dictionary<int, TumEntry>()
-		{
-			{  1, new TumEntry("Tum1",     0, 27) },
-			{  2, new TumEntry("Tum2",     0, 27) },
-			{  3, new TumEntry("Tum3",     0, 27) },
-			{  4, new TumEntry("Tum4",     0, 37) },
-			{  5, new TumEntry("Tum5",     0, 37) },
-			{  7, new TumEntry("Tum7",     0, 37) },
-			{  8, new TumEntry("Tum8",     0, 37) },
-			{  6, new TumEntry("Tum6",     0, 37) },
-            {  9, new TumEntry("Tum9",     0, 37) },
-            { 10, new TumEntry("Tum10",    0, 37) },
-			{ 11, new TumEntry("Tum11",    -2, 37) },
-            { 12, new TumEntry("Tum12",    -2, 37) },
-            { 13, new TumEntry("Tum13",    -2, 35) },
-            { 14, new TumEntry("Tum14",    -2, 35) },
-            { 15, new TumEntry("Tum15",    -2, 35) },
-            { 16, new TumEntry("Tum16",    -2, 35) },
-            { 17, new TumEntry("Tum17",    -2, 35) },
-            { 18, new TumEntry("Tum18",    -2, 25) },
-            { 19, new TumEntry("Tum19",    -2, 25) }
-
-        };
-		public override Position GetDefaultPosition() => new AfterParent(PlayerDrawLayers.Torso);
-
-		protected override void Draw(ref PlayerDrawSet drawInfo)
-		{
-			Player player = drawInfo.drawPlayer;
-			int tumSize = player.AsPred().StomachSize;
-            string folder = "V2/PlayerHandling/TumSprites/Tum";
-            int Frame = 0;
-            switch (player.legFrame.Y / 56)
-            {
-                case 0:
-                    Frame = 0;
-                    break;
-                case 5:
-                    Frame = 1;
-                    break;
-                case 7 or 14:
-                    Frame = 3;
-                    break;
-                case 8 or 9 or 15 or 16:
-                    Frame = 5;
-                    break;
-                case 10 or 17:
-                    Frame = 4;
-                    break;
-            }
-
-            if ((player.ItemAnimationActive || player.inventory[player.selectedItem].holdStyle != ItemHoldStyleID.None) && Frame != 1)
-            {
-                Frame = 0;
-            }
-
-            if (player.sitting.isSitting) Frame = 2;
-            else if (player.sleeping.isSleeping) Frame = 1;
-
-            /*void DrawHungryPlayerTummy(ref PlayerDrawSet drawInfo, int size, int offsetX = 0, int offsetY = 0)
-			{
-				Texture2D tum = ModContent.Request<Texture2D>("V2/PlayerHandling/TumSprites/Bare_" + size, AssetRequestMode.ImmediateLoad).Value;
-				if (player.IsAirborne() || player.sleeping.isSleeping)
-					tum = ModContent.Request<Texture2D>("V2/PlayerHandling/TumSprites/Bare_" + size + "_Airborne", AssetRequestMode.ImmediateLoad).Value;
-				Vector2 tumLocation =
-					new Vector2(
-					(int)(
-						drawInfo.Position.X
-					  - Main.screenPosition.X
-					  - (float)(drawInfo.drawPlayer.bodyFrame.Width / 2)
-					  + (float)(drawInfo.drawPlayer.width / 2)
-					),
-						(int)(
-							drawInfo.Position.Y
-						  - Main.screenPosition.Y
-						  + (float)drawInfo.drawPlayer.height
-						  - (float)drawInfo.drawPlayer.bodyFrame.Height + 4f
-						)
-					)
-				  + drawInfo.drawPlayer.bodyPosition
-				  + new Vector2(
-					drawInfo.drawPlayer.bodyFrame.Width / 2,
-					drawInfo.drawPlayer.bodyFrame.Height / 2
-				);
-				tumLocation.Y += drawInfo.torsoOffset;
-				tumLocation.X += offsetX;
-				tumLocation.Y += offsetY;
-				if (player.direction == -1)
-					tumLocation.X -= (float)tum.Width + (offsetX * 2);
-				DrawData tumDraw = new DrawData(
-					tum,
-					tumLocation,
-					tum.Bounds,
-					drawInfo.colorBodySkin,
-					player.bodyRotation,
-					Vector2.Zero,
-					1f,
-					drawInfo.playerEffect,
-					0
-				);
-				tumDraw.shader = 0;
-				drawInfo.DrawDataCache.Add(tumDraw);
-			}*/
-            void DrawDaTum(ref PlayerDrawSet drawInfo, int size, int frame, int offsetX = 0, int offsetY = 0)
-            {
-				//Vector2 tumLocation = new Vector2((float)(int)(drawInfo.Position.X - Main.screenPosition.X - 10), (float)(int)(drawInfo.Position.Y - Main.screenPosition.Y - 8));
-				Vector2 tumLocation = drawInfo.Position.Floor() - Main.screenPosition.Floor() + Vector2.UnitX * (player.width/2);
-				//tumLocation.Y += drawInfo.torsoOffset;
-                tumLocation.X += offsetX * player.direction;
-                tumLocation.Y += player.height;
-                tumLocation.Y -= (offsetY * 2) - 2;
-
-                Texture2D bareTum = ModContent.Request<Texture2D>(folder + size + "/Bare").Value;
-                if (frame == 3 || frame == 5) tumLocation.Y -= 2;
-                if (frame == 2) tumLocation.Y -= player.sitting.offsetForSeat.Y - 4;
-                if (player.mount.Active)
-                {
-                    tumLocation.Y += player.mount.HeightBoost;
-                    frame = 1;
-                }
-				else if (player.portableStoolInfo.IsInUse)
-				{
-                    tumLocation.Y += 28f;
-                    frame = 1;
-                }
-                if (player.gravDir == -1)
-                {
-                    tumLocation.Y += 6;
-                }
-
-				tumLocation.X -= bareTum.Width * (player.direction == -1 ? 1 : 0);
-
-                Rectangle sourceRectBare = new Rectangle(0, frame * (bareTum.Height / 6), bareTum.Width, bareTum.Height / 6);
-                DrawData actualDrawBare = new DrawData(bareTum, tumLocation, sourceRectBare, drawInfo.colorBodySkin, player.bodyRotation, Vector2.Zero, 1f, drawInfo.playerEffect);
-                drawInfo.DrawDataCache.Add(actualDrawBare);
-
-                string tumCover = null;
-
-                if (!player.armor[11].IsAir && player.armor[11].type != ItemID.FamiliarShirt)
-                {
-                    tumCover = GetTummyCoverFromEquips(player.armor[11], size);
-                }
-                else if (!player.armor[2].IsAir && player.armor[2].type != ItemID.FamiliarShirt)
-                {
-                    tumCover = GetTummyCoverFromEquips(player.armor[2], size);
-                }
-                else
-                {
-
-                }
-                if (tumCover == null || tumCover == "Bare") return;
-
-
-                string filePath = folder + size + "/" + tumCover;
-                Texture2D TumArmor = ModContent.Request<Texture2D>(filePath).Value;
-                DrawData actualDraw = new DrawData(TumArmor, tumLocation, sourceRectBare, drawInfo.colorArmorBody, player.bodyRotation, Vector2.Zero, 1f, drawInfo.playerEffect);
-                actualDraw.shader = drawInfo.cBody;
-                drawInfo.DrawDataCache.Add(actualDraw);
-            }
-            string GetTummyCoverFromEquips(Item item, int size)
-            {
-                string ValidArmor = "Bare";
-
-                switch (item.type)
-                {
-                    case ItemID.TheBrideDress:
-                        ValidArmor = "WeddingDress";
-                        break;
-					case ItemID.FlinxFurCoat:
-						ValidArmor = "FlinxFurCoat";
-						if (size > 4) ValidArmor = "Bare";
-						break;
-					case ItemID.PrinceUniform:
-						ValidArmor = "PrinceUniform";
-						if (size > 4) ValidArmor = "Bare";
-						break;
-				}
-
-                return ValidArmor;
-            }
-            if (V2.GetFooled)
-			{
-
-				SpriteEffects spriteEffects = player.direction switch
-				{
-					-1 => SpriteEffects.FlipHorizontally,
-					_ => SpriteEffects.None,
-				};
-				string exactTextureToUse = "V2/AprilFools/BellyColorless";
-				double bellySize = player.AsPred().StomachFullness;
-				bellySize /= PreyData.NewData(player).InitialSize;
-
-				Texture2D texture = ModContent.Request<Texture2D>(exactTextureToUse, AssetRequestMode.ImmediateLoad).Value;
-				DrawData tumDraw = new DrawData
-				(
-					texture,
-					player.Center - Main.screenPosition + new Vector2(0f, player.gfxOffY) + (new Vector2(player.direction == 1 ? 6f : -26f, 2f) * (float)bellySize) + new Vector2(0f, 8f),
-					texture.Bounds,
-					drawInfo.colorBodySkin,
-					player.bodyRotation,
-					new Vector2(32f, 32f),
-					(float)bellySize * 0.33f,
-					spriteEffects,
-					0f
-				);
-				drawInfo.DrawDataCache.Add(tumDraw);
-			}
-			else
-			{
-				if(Tums.TryGetValue(tumSize, out TumEntry tumData)) {
-					DrawDaTum(ref drawInfo, tumSize, Frame, tumData.xOffset, tumData.yOffset);
-				}
-				/*
-                switch (tumSize)
-                {
-                    case 1:
-                        DrawDaTum(ref drawInfo, 1, Frame, 0, 0);
-                        break;
-                    case 2:
-                        DrawDaTum(ref drawInfo, 2, Frame, 0, 0);
-                        break;
-                    case 3:
-                        DrawDaTum(ref drawInfo, 3, Frame, 0, 0);
-                        break;
-                    case 4:
-                        DrawDaTum(ref drawInfo, 4, Frame, -30, -22);
-                        break;
-                    case 5:
-                        DrawDaTum(ref drawInfo, 5, Frame, -30, -22);
-                        break;
-                    case 6:
-                        DrawDaTum(ref drawInfo, 6, Frame, -30, -22);
-                        break;
-                    case 7:
-                        DrawDaTum(ref drawInfo, 7, Frame, -30, -22);
-                        break;
-                    case 8:
-                        DrawDaTum(ref drawInfo, 8, Frame, -30, -22);
-                        break;
-					case 9:
-                        DrawDaTum(ref drawInfo, 9, Frame, -30, -22);
-                        break;
-                }
-				*/
-			}
-		}
-	}
+	
 }

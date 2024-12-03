@@ -75,6 +75,7 @@ Mods: {
 			StruggleRight.DisplayName: Борьба право
 			StruggleDown.DisplayName: Борьба вниз
 			StruggleSpecial.DisplayName: Специальная борьба
+			// LayOnBelly.DisplayName: Lay On Belly
 		}
 
 		Conditions: {
@@ -702,6 +703,19 @@ Mods: {
 							'A very touchy job, and one liable to get you glorped at any point, but the pay's really nice if you can do it well.'
 							''' */
 						// Clarification: Swallow any piece of furniture.
+					}
+				}
+
+				EatTheManEater: {
+					// Name: Man Eating
+
+					Description: {
+						/* Default:
+							'''
+							Enter the Jungle and show the Man Eater who's got the "Eating" role now!
+							'"Man Eater" huh? Just reverse the roles. Now you're eating the Man Eater. Man Eater Eater?'
+							''' */
+						// Clarification: Eat and digest a Man eater.
 					}
 				}
 
@@ -2512,7 +2526,7 @@ Mods: {
 					VenomDevItem: {
 						/* Short:
 							'''
-							Gives you the same predatory digestive prowess that Venomizeous has, at no cost whatsoever
+							Gives you the same predatory prowess that Venomizeous has, at no cost whatsoever
 							{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
 							''' */
 						/* Long:

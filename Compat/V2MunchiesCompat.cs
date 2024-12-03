@@ -15,18 +15,22 @@ namespace V2.Compat
 	[JITWhenModsEnabled("munchies")]
 	public class V2MunchiesCompat : V2CompatModule
 	{
+		private void AddSingleConsumablePlayer<TItem>(string upgradeName = null) where TItem : class
+		{
+			compatMod.Call("AddSingleConsumable", V2.Instance, "1.4.2", ModContent.GetInstance<TItem>(), "player", hasMyPlayerPermanentUpgradeFunc(upgradeName ?? typeof(TItem).Name), null, null);
+		}
 		public V2MunchiesCompat(Mod compatMod) : base(compatMod)
 		{
 		}
 		public override void ApplyCompatibility()
 		{
-			compatMod.Call("AddSingleConsumable", V2.Instance, "1.4.2", ModContent.GetInstance<PureSwallowBoost1>(), "player", hasMyPlayerPermanentUpgradeFunc("PureSwallow1"), null, null);
-			compatMod.Call("AddSingleConsumable", V2.Instance, "1.4.2", ModContent.GetInstance<BiomeJujuForest>(), "player", hasMyPlayerPermanentUpgradeFunc("BiomeJujuForest"), null, null);
-			compatMod.Call("AddSingleConsumable", V2.Instance, "1.4.2", ModContent.GetInstance<BiomeJujuDesert>(), "player", hasMyPlayerPermanentUpgradeFunc("BiomeJujuDesert"), null, null);
-			compatMod.Call("AddSingleConsumable", V2.Instance, "1.4.2", ModContent.GetInstance<BiomeJujuSnow>(), "player", hasMyPlayerPermanentUpgradeFunc("BiomeJujuSnow"), null, null);
-			compatMod.Call("AddSingleConsumable", V2.Instance, "1.4.2", ModContent.GetInstance<BiomeJujuJungle>(), "player", hasMyPlayerPermanentUpgradeFunc("BiomeJujuJungle"), null, null);
-			compatMod.Call("AddSingleConsumable", V2.Instance, "1.4.2", ModContent.GetInstance<BiomeJujuSky>(), "player", hasMyPlayerPermanentUpgradeFunc("BiomeJujuSky"), null, null);
-			compatMod.Call("AddSingleConsumable", V2.Instance, "1.4.2", ModContent.GetInstance<ShimmerJuju>(), "player", hasMyPlayerPermanentUpgradeFunc("ShimmerJuju"), null, null);
+			AddSingleConsumablePlayer<PureSwallowBoost1>("PureSwallow1");
+			AddSingleConsumablePlayer<BiomeJujuForest>();
+			AddSingleConsumablePlayer<BiomeJujuDesert>();
+			AddSingleConsumablePlayer<BiomeJujuSnow>();
+			AddSingleConsumablePlayer<BiomeJujuJungle>();
+			AddSingleConsumablePlayer<BiomeJujuSky>();
+			AddSingleConsumablePlayer<ShimmerJuju>();
 		}
 		public override void UnapplyCompatibility()
 		{
@@ -35,13 +39,13 @@ namespace V2.Compat
 
 		private static Func<bool> hasMyPlayerPermanentUpgradeFunc(string upgrade)
 		{
-			return new Func<bool>(() =>
+			return () =>
 			{
 				if (Main.player[Main.myPlayer].AsPred().PermanentUpgradesGained.TryGetValue(upgrade, out bool hasUpgrade))
 					return hasUpgrade;
 				else
 					return false;
-			});
+			};
 		}
 
 	}

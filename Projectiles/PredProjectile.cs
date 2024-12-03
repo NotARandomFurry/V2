@@ -286,7 +286,7 @@ namespace V2.Projectiles
 					break;
 				case PreyType.Item:
 					Item item = prey as Item;
-					item.AsFood().OnSwallow?.Invoke(item, pred);
+					item.AsFood().OnSwallow(item, pred);
 					if (item.AsFood().OnSwallowDamage > 0)
 						pred.AsFood().Health -= item.AsFood().OnSwallowDamage;
 					break;

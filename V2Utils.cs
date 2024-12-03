@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.ID;
@@ -47,6 +48,12 @@ namespace V2
 
 	public static class V2Utils
 	{
+		public static void DebugPointMarker(Vector2 position)
+		{
+			Texture2D p = ModContent.Request<Texture2D>("V2/DebugPoint").Value;
+
+			Main.spriteBatch.Draw(p, position - p.Size()/2, Color.White);
+		}
 		public static class ItemIDSets
 		{
 			public static List<int> LargeGems =>
