@@ -91,30 +91,22 @@ public class LayFlatDrawLayer : PlayerDrawLayer
 
 public class BellyDrawLayer : PlayerDrawLayer
 {
+    // Internal cache
     private static readonly IDictionary<string, Texture2D> TumSpritesCache = new Dictionary<string, Texture2D>();
 
-    public static IDictionary<int, TextureOffset> LayingTums = new Dictionary<int, TextureOffset>
+    private static Texture2D RequestTexture(string path)
     {
-        { 1, new TextureOffset("V2/PlayerHandling/TumSprites/Tum1/BareLaying", 0, 27) },
-        { 2, new TextureOffset("V2/PlayerHandling/TumSprites/Tum2/BareLaying", 0, 27) },
-        { 3, new TextureOffset("V2/PlayerHandling/TumSprites/Tum3/BareLaying", 0, 27) },
-        { 4, new TextureOffset("V2/PlayerHandling/TumSprites/Tum4/BareLaying", 0, 37) },
-        { 5, new TextureOffset("V2/PlayerHandling/TumSprites/Tum5/BareLaying", 0, 37) },
-        { 7, new TextureOffset("V2/PlayerHandling/TumSprites/Tum7/BareLaying", 0, 37) },
-        { 8, new TextureOffset("V2/PlayerHandling/TumSprites/Tum8/BareLaying", 0, 37) },
-        { 6, new TextureOffset("V2/PlayerHandling/TumSprites/Tum6/BareLaying", 0, 37) },
-        { 9, new TextureOffset("V2/PlayerHandling/TumSprites/Tum9/BareLaying", 0, 37) },
-        { 10, new TextureOffset("V2/PlayerHandling/TumSprites/Tum10/BareLaying", 0, 37) },
-        { 11, new TextureOffset("V2/PlayerHandling/TumSprites/Tum11/BareLaying", -2, 37) },
-        { 12, new TextureOffset("V2/PlayerHandling/TumSprites/Tum12/BareLaying", -2, 37) },
-        { 13, new TextureOffset("V2/PlayerHandling/TumSprites/Tum13/BareLaying", -2, 35) },
-        { 14, new TextureOffset("V2/PlayerHandling/TumSprites/Tum14/BareLaying", -2, 35) },
-        { 15, new TextureOffset("V2/PlayerHandling/TumSprites/Tum15/BareLaying", -2, 35) },
-        { 16, new TextureOffset("V2/PlayerHandling/TumSprites/Tum16/BareLaying", -2, 35) },
-        { 17, new TextureOffset("V2/PlayerHandling/TumSprites/Tum17/BareLaying", -2, 35) },
-        { 18, new TextureOffset("V2/PlayerHandling/TumSprites/Tum18/BareLaying", -2, 25) },
-        { 19, new TextureOffset("V2/PlayerHandling/TumSprites/Tum19/BareLaying", -28, 23) }
-    };
+        if (TumSpritesCache.TryGetValue(path, out Texture2D result))
+        {
+            return result;
+        }
+        
+        result = ModContent.Request<Texture2D>(path, AssetRequestMode.ImmediateLoad).Value;
+        TumSpritesCache[path] = result;
+        
+
+        return result;
+    }
 
     public override Position GetDefaultPosition() => new AfterParent(PlayerDrawLayers.Torso);
 
@@ -251,29 +243,15 @@ public class BellyDrawLayer : PlayerDrawLayer
 
     public class RegularBelly : BellyDrawer
     {
-        public static Vector2 BellyPosition = new Vector2();
-
-        public static Rectangle SourceBare = new Rectangle();
+        public static Vector2 BellyPosition;
+        public static Rectangle SourceBare;
+        
         // FRAME 4, 6 NEEDS TO BE OFFSET BY A SINGLE PIXEL BECAUSE THE PLAYER BOUNCES UP GENTLY
         // FRAME 3 NEEDS TO BE OFFSET BY 2 PIXELS
 
-        public static Vector2 getPositionAtFeetOfPlayer(ref PlayerDrawSet drawInfo, bool dofloor = true)
+        public static Vector2 getPositionAtFeetOfPlayer(ref PlayerDrawSet drawInfo)
         {
-            Vector2 p;/*
-            if (dofloor)
-            {
-                p = drawInfo.Position.Floor() - Main.screenPosition.Floor() + Vector2.UnitX * (drawInfo.drawPlayer.width / 2);
-            }
-            else
-            {            
-                p = drawInfo.Position - Main.screenPosition + Vector2.UnitX * (drawInfo.drawPlayer.width / 2f);
-            }
-            
-            p.Y += drawInfo.drawPlayer.height;
-*/
-            
-            p = drawInfo.Center + Vector2.UnitY * drawInfo.drawPlayer.height / 2f;
-            
+            Vector2 p = drawInfo.Center + Vector2.UnitY * drawInfo.drawPlayer.height / 2f;
             return p.Floor() - Main.screenPosition.Floor();
         }
 
@@ -282,7 +260,7 @@ public class BellyDrawLayer : PlayerDrawLayer
         {
             // Offset belly accordingly
             feetPosition.X += offsetX * drawInfo.drawPlayer.direction;
-            feetPosition.Y -= offsetY * 2 - 2;
+            feetPosition.Y -= offsetY - 2;
 
             feetPosition.X -= sprite.Width * (drawInfo.drawPlayer.direction == -1 ? 1 : 0);
 
@@ -301,24 +279,23 @@ public class BellyDrawLayer : PlayerDrawLayer
             new (0,  37),   // 8
             new (0,  37),   // 9
             new (0,  37),   // 10
-            new (-2, 37),  // 11
-            new (-2, 37),  // 12
-            new (-2, 35),  // 13
-            new (-2, 35),  // 14
-            new (-2, 35),  // 15
-            new (-2, 35),  // 16
-            new (-2, 35),  // 17
-            new (-2, 25),  // 18
-            new (-2, 25),  // 19
-            new (-2, 25),  // 20
+            new (-1, 37),  // 11
+            new (-1, 37),  // 12
+            new (-1, 35),  // 13
+            new (-1, 35),  // 14
+            new (-1, 35),  // 15
+            new (-1, 35),  // 16
+            new (-1, 35),  // 17
+            new (-1, 25),  // 18
+            new (-1, 25),  // 19
+            new (-1, 25),  // 20
         ];
 
         private const int MAX_FRAMES = 6;
 
         public override bool ShouldDraw(ref PlayerDrawSet drawInfo, int size, int frame)
         {
-            
-            return size > 0 && size <= (StandardBellies.Count);
+            return size > 0 && size <= StandardBellies.Count;
         }
 
         public override DrawData BuildDrawData(ref PlayerDrawSet drawInfo, int size, int frame)
@@ -329,20 +306,15 @@ public class BellyDrawLayer : PlayerDrawLayer
 
             if (size >= 1 && size <= StandardBellies.Count)
             {
-
                 TextureOffset tum = StandardBellies[size - 1];
 
-                var offsetX = tum.xOffset;
-                var offsetY = tum.yOffset;
+                var offsetX = tum.xOffset * 2;
+                var offsetY = tum.yOffset * 2;
 
                 Vector2 tumLocation = getPositionAtFeetOfPlayer(ref drawInfo);
 
                 string bellySpritePath = V2TumSpritesRoot + $"Tum{size}/Bare";
-                if (!TumSpritesCache.TryGetValue(bellySpritePath, out var bareTum))
-                {
-                    bareTum = ModContent.Request<Texture2D>(bellySpritePath, AssetRequestMode.ImmediateLoad).Value;
-                    TumSpritesCache[bellySpritePath] = bareTum;
-                }
+                Texture2D bareTum = RequestTexture(bellySpritePath);
 
                 tumLocation = getPositionForTumRender(tumLocation, ref drawInfo, offsetX, offsetY, bareTum);
 
@@ -417,14 +389,19 @@ public class BellyDrawLayer : PlayerDrawLayer
 
 
             var filePath = V2TumSpritesRoot + $"Tum{size}/{tumCover}";
-            var TumArmor = ModContent.Request<Texture2D>(filePath).Value;
+            if (ModContent.HasAsset(filePath))
+            {
+                var TumArmor = RequestTexture(filePath);
 
-            var clothingDraw = new DrawData(TumArmor, RegularBelly.BellyPosition, RegularBelly.SourceBare,
-                drawInfo.colorArmorBody,
-                player.bodyRotation, Vector2.Zero, 1f, drawInfo.playerEffect);
-            clothingDraw.shader = drawInfo.cBody;
+                var clothingDraw = new DrawData(TumArmor, RegularBelly.BellyPosition, RegularBelly.SourceBare,
+                    drawInfo.colorArmorBody,
+                    player.bodyRotation, Vector2.Zero, 1f, drawInfo.playerEffect);
+                clothingDraw.shader = drawInfo.cBody;
+                
+                return clothingDraw;
+            }
 
-            return clothingDraw;
+            return default;
         }
 
         public override bool ShouldDraw(ref PlayerDrawSet drawInfo, int size, int frame)
