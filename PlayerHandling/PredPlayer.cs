@@ -847,11 +847,13 @@ namespace V2.PlayerHandling
 
 		public override void ProcessTriggers(TriggersSet triggersSet)
 		{
-			// Venomizeous flag as it's unfinished.
+			// Only available in debug - not finished
+#if DEBUG
 			if (V2.LayOnBellyHotkey.JustPressed && this.Venomizeous)
 			{
 				this.IsLayingOnTum = !this.IsLayingOnTum;
 			}
+#endif
 		}
 
 		
