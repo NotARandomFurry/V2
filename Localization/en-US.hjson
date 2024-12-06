@@ -1492,6 +1492,8 @@ Mods: {
 
 				NymphHairStrand: Sky Blue Strand
 				ObserverPupil: Oversized Pupil
+				AstralFairyController: Astral Remote
+				DinnerBlaster: Astral Remote
 			}
 		}
 
@@ -3408,6 +3410,48 @@ Mods: {
 					Long: Obtained by killing an Observer. They can be found in the sky.
 					Flavor: A large pupil. That's all there really is to say on the matter.
 				}
+
+				AstralFairyController: {
+					Short:
+						'''
+						Allows you to command your Astral Fairy to consume anything you click on
+						{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+						'''
+					Long:
+						'''
+						You must have the Astral Fairy pet active for this item to function.
+						Clicking on an NPC, projectile or dropped item teleports it straight into your fairy's gut.
+						'''
+					Flavor:
+						'''
+						Hold on, this isn't what you crafted...
+						The Astral Fairy appears to react to it, in some way.
+						'''
+				}
+
+				DinnerBlaster: {
+					Short:
+						'''
+						Shoots burgers that conveniently slip down predators' throats
+						'I wonder what's for dinner'
+						{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+						'''
+					Long:
+						'''
+						Shoots floating burgers that get automatically eaten by predators.
+						The burgers have a size of [c/{$Mods.V2.CommonColorCodes.DoSomething}:0.2].
+						Unfortunately, you cannot eat the burgers yourself. Get a friend to do that instead.
+						'''
+					Flavor:
+						'''
+						My boy!
+						I'm not gonna fight you, I'm gonna kick your ass!
+						(Screaming)
+						Spaghetti!
+						NO-
+						(Explosion)
+						'''
+				}
 			}
 		}
 
@@ -3426,6 +3470,8 @@ Mods: {
 			ShroomFairy.DisplayName: Fungal Fairy
 			ShroomFairySpore.DisplayName: Fairy Spore
 			CLOVERPUNCH.DisplayName: C L O V E R P U N C H
+			AstralFairy.DisplayName: Astral Fairy
+			Burger.DisplayName: Burger
 		}
 
 		InfoDisplayName.TallyCounterVore: Meal Count
@@ -3669,6 +3715,15 @@ Mods: {
 							A hungry fungal fairy [c/{$Mods.V2.CommonColorCodes.DoSomething}:follows you around].
 							She will [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:swiftly fly to and devour nearby hostile projectiles] that stray too close to you.
 							'I'm tellin' you, she's a fun gal!'
+							'''
+					}
+
+					AstralFairy: {
+						Name: Astral Fairy
+						Description:
+							'''
+							An Astral Fairy hovers above you.
+							Perhaps, with a certain object, you could motivate her to do things.
 							'''
 					}
 				}
@@ -4440,6 +4495,21 @@ Mods: {
 			MyFairy: {
 				DisplayName: my fairy
 				Tooltip: "'do you like her'"
+			}
+
+			AstralFairySummon: {
+				DisplayName: Astral Flower
+				Tooltip: ""
+			}
+
+			AstralFairyController: {
+				DisplayName: Astral Remote
+				Tooltip: ""
+			}
+
+			DinnerBlaster: {
+				DisplayName: Dinner Blaster
+				Tooltip: ""
 			}
 		}
 	}

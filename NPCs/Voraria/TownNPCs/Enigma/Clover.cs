@@ -15,6 +15,7 @@ using V2.Items.Voraria.Armor;
 using V2.Items.Voraria.Consumables;
 using V2.Items.Voraria.Consumables.PermanentUpgrades.Jujus;
 using V2.Items.Voraria.Placeables;
+using V2.Items.Voraria.Weapons.Ranged;
 using V2.PlayerHandling;
 using V2.Projectiles.Voraria;
 using V2.Sounds.Vore;
@@ -307,6 +308,7 @@ namespace V2.NPCs.Voraria.TownNPCs.Enigma
             EnigmaShop.Add<BlankJuju>();
             EnigmaShop.Add<DemonCandy>();
             EnigmaShop.Add<MyFairy>([Condition.InGlowshroom]);
+            EnigmaShop.Add<DinnerBlaster>([Condition.NpcIsPresent(NPCID.Cyborg)]);
             EnigmaShop.Register();
 		}
 
