@@ -1814,6 +1814,28 @@ Mods: {
 					}
 
 					Potions: {
+						IronSkinPotion: {
+							/* Short:
+								'''
+								Provides increased defense thanks to this potion generating an iron-like barrier on your skin.
+								{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+								   
+								''' */
+							/* Long:
+								'''
+								It's a piece of iron, mixed with some herbs and then thrown in to a vial. The body needs iron - so more is better?
+								Since you're just swallowing the whole bottle, with the cap still on, you'll need the bottle to break first from running out of durability.
+
+								Once the bottle breaks, until fully digested, and for 8 minutes thereafter:
+								> [c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases defense] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{DefenseValue}]. [c/7F7F7F:(Artificial)]
+								''' */
+							/* Flavor:
+								'''
+								While consuming iron ore directly does not provide any benefits really. This one does it by adding some additional ingredients and blending it together.
+								Providing an increase to your natural defense!
+								''' */
+						}
+
 						Ale: {
 							/* Short:
 								'''
