@@ -261,6 +261,8 @@ namespace V2.NPCs
 
 			if (pred.AsPred().MaxStomachCapacity != -1 && PreyData.GetPreySize(prey) > pred.AsPred().MaxStomachCapacity - GetCurrentBellyWeight(pred))
 				return false;
+			if (pred.AsPred().Stomachache >= pred.AsPred().StomachacheMeterCapacity)
+				return false;
 
 			return true;
 		}

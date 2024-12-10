@@ -9,6 +9,8 @@ using V2.Core;
 using V2.NPCs;
 using V2.UI;
 using V2.Items.Voraria.Armor;
+using Terraria.DataStructures;
+using V2.Mounts;
 
 namespace V2.PlayerHandling
 {
@@ -17,8 +19,8 @@ namespace V2.PlayerHandling
 		public List<DelegateGeneralItemDrawingUI> generalItemUIDrawMethods;
 
 		public int GuideHelpText = 0;
-
-		public Dictionary<string, bool> LocationsVisited { get; set; }
+        public bool ShroomNecklace { get; set; }
+        public Dictionary<string, bool> LocationsVisited { get; set; }
 
 		public override void Initialize()
 		{
@@ -33,6 +35,7 @@ namespace V2.PlayerHandling
 			generalItemUIDrawMethods = [];
 			setBonusActive = false;
 			setBonusShouldBeDisplayed = false;
+			ShroomNecklace = false;
 
 			if (Player.whoAmI != Main.myPlayer)
 				return;
@@ -44,7 +47,10 @@ namespace V2.PlayerHandling
 					Main.CloseNPCChatOrSign();
 			}
 
-			ResetHealthRegenEffectList();
+			//test
+			if (Player.mount.Active && Player.mount.Type == ModContent.MountType<BeeTransformation>()) Player.width = 12;
+            else Player.width = 20;
+            ResetHealthRegenEffectList();
 		}
 
         public override void ModifyLuck(ref float luck)
@@ -144,8 +150,16 @@ namespace V2.PlayerHandling
 			if (Main.eclipse)
 				AddLocationVisitMark("eclipse");
 		}
-
-		public bool HasVisitedLocation(string place)
+        public override void HideDrawLayers(PlayerDrawSet drawInfo)
+        {
+            foreach (PlayerDrawLayer drawLayer in PlayerDrawLayerLoader.Layers)
+            {
+				if (Player.mount.Active && Player.mount.Type == ModContent.MountType<BeeTransformation>())
+					if (drawLayer != PlayerDrawLayers.HeldItem && drawLayer.Mod == null)
+						drawLayer.Hide();
+            }
+        }
+        public bool HasVisitedLocation(string place)
 		{
 			if (LocationsVisited.ContainsKey(place))
 				return LocationsVisited[place];

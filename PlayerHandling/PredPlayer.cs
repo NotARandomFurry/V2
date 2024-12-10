@@ -29,6 +29,7 @@ using V2.Projectiles;
 using V2.Sounds.Vore;
 using V2.StatusEffects.Voraria.Buffs;
 using V2.StatusEffects.Voraria.Debuffs;
+using V2.Mounts;
 
 namespace V2.PlayerHandling
 {
@@ -633,7 +634,9 @@ namespace V2.PlayerHandling
 		public bool Rose { get; set; }
 		public bool Venomizeous { get; set; }
 
-		public override void Initialize()
+        public double BeeTransformation_ExtraWeight { get; set; }
+
+        public override void Initialize()
 		{
 			SmallGulps = Gulps.Short;
 			BigGulps = Gulps.Standard;
@@ -689,7 +692,8 @@ namespace V2.PlayerHandling
 
 			StomachWeightAtSleepStart = 0.0;
 			OverfullTime = 0;
-		}
+            BeeTransformation_ExtraWeight = 0;
+        }
 
 		public override void ResetEffects()
 		{
@@ -1094,7 +1098,10 @@ namespace V2.PlayerHandling
 			if (pred.AsPred().StomachCapacity != -1 && PreyData.GetPreySize(prey) > pred.AsPred().StomachCapacity - pred.AsPred().StomachFullness)
 				return false;
 
-			return true;
+            if (pred.AsPred().Stomachache >= pred.AsPred().StomachacheMeterCapacity)
+                return false;
+
+            return true;
 		}
 
 		/// <summary>
@@ -1412,7 +1419,7 @@ namespace V2.PlayerHandling
 		/// </summary>
 		public static void UpdatePrey(Player pred)
 		{
-			if (pred.AsPred().StomachacheMeterCapacity > 0 && pred.AsPred().Stomachache == pred.AsPred().StomachacheMeterCapacity && pred.AsPred().StomachTracker is not null && pred.AsPred().StomachTracker.Prey.Count > 0)
+			if (pred.AsPred().StomachacheMeterCapacity > 0 && pred.AsPred().Stomachache >= pred.AsPred().StomachacheMeterCapacity && pred.AsPred().StomachTracker is not null && pred.AsPred().StomachTracker.Prey.Count > 0)
 			{
 				Regurgitate(pred);
 				return;
@@ -1551,9 +1558,27 @@ namespace V2.PlayerHandling
 					prey.UpdateInStomach?.Invoke(null, pred, true);
 
 					double absorptionRate = pred.AsPred().PreyAbsorptionRatePerTick / (double)pred.AsPred().StomachTracker?.Prey.Count;
-					prey.WeightLeftToDigest -= absorptionRate;
+                    if (prey.WeightLeftToDigest <= absorptionRate)
+                    {
+						if (pred.mount.Active && pred.mount.Type == ModContent.MountType<BeeTransformation>())
+						{
+                            double effectiveSize = 1 + pred.AsPred().BeeTransformation_ExtraWeight;
+                            pred.AsPred().BeeTransformation_ExtraWeight += prey.WeightLeftToDigest * BeeTransformation.WeightGainRatio * (1 / effectiveSize);
+						}
+                        prey.WeightLeftToDigest = 0;
+                    }
+                    else
+                    {
+                        if (pred.mount.Active && pred.mount.Type == ModContent.MountType<BeeTransformation>())
+                        {
+                            double effectiveSize = 1 + pred.AsPred().BeeTransformation_ExtraWeight;
+                            pred.AsPred().BeeTransformation_ExtraWeight += prey.WeightLeftToDigest * BeeTransformation.WeightGainRatio * (1 / effectiveSize);
+                        }
+                        prey.WeightLeftToDigest -= absorptionRate;
+                    }
+                    /*prey.WeightLeftToDigest -= absorptionRate;
 					if (prey.WeightLeftToDigest < 0)
-						prey.WeightLeftToDigest = 0;
+						prey.WeightLeftToDigest = 0;*/
 
 					switch (prey.Type)
 					{

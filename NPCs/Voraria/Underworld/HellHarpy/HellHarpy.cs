@@ -45,7 +45,7 @@ namespace V2.NPCs.Voraria.Underworld.HellHarpy
             NPC.knockBackResist = 0f;
             NPC.behindTiles = true;
 
-            NPC.AsFood().DefinedBaseSize = 15.0;
+            NPC.AsFood().DefinedBaseSize = 19.5;
             NPC.AsPred().WeightGainRatio = 0.111;
             NPC.AsPred().MaxStomachCapacity = 11.0;
             NPC.AsPred().BaseStomachacheMeterCapacity = 475.0;

@@ -20,6 +20,7 @@ using V2.Items.Voraria.Consumables.Potions;
 using V2.PlayerHandling;
 using V2.Projectiles.Vanilla.Summons.Pets;
 using V2.Sounds.Vore;
+using V2.StatusEffects.Voraria.Buffs;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace V2.Projectiles.Voraria.Weapons.Summon
@@ -98,7 +99,8 @@ namespace V2.Projectiles.Voraria.Weapons.Summon
 		{
 			Main.buffNoSave[Type] = true;
 			Main.buffNoTimeDisplay[Type] = true;
-		}
+            Main.persistentBuff[Type] = true;
+        }
 
 
 		public override void ModifyBuffText(ref string buffName, ref string tip, ref int rare)
@@ -131,12 +133,14 @@ namespace V2.Projectiles.Voraria.Weapons.Summon
 		public static int MaxHealth => 500;
 		public static double Size => 0.88;
 		public static double MaxStomachCapacity => 666.0; //she stops moving on her own after enough capacity so whatever?
-		public static double DigestDamage => 11.0;
+        public static double Stomachache => 475.0;
+        public static double DigestDamage => 11.0;
 		public static double DigestRate => 1;
 		public static double AbsorbRate => 1.0 / (double)V2Utils.SensibleTime(
 			minutes: 1,
 			seconds: 30
 		);
+
 	}
 
 	public class ShroomFairy : ModProjectile
@@ -153,8 +157,8 @@ namespace V2.Projectiles.Voraria.Weapons.Summon
 
 		public sealed override void SetDefaults()
 		{
-			Projectile.width = 20;
-			Projectile.height = 28;
+			Projectile.width = 32;
+			Projectile.height = 52;
 			Projectile.tileCollide = false;
 			Projectile.friendly = true;
 			Projectile.minion = true;
@@ -165,7 +169,7 @@ namespace V2.Projectiles.Voraria.Weapons.Summon
 			Projectile.AsV2Proj().Gender = EntityGender.Female;
 
 			Projectile.AsPred().MaxStomachCapacity = ShroomFairyStuff.MaxStomachCapacity;
-			Projectile.AsPred().BaseStomachacheMeterCapacity = -1;
+			Projectile.AsPred().BaseStomachacheMeterCapacity = ShroomFairyStuff.Stomachache;
 			Projectile.AsPred().CanSwallowBosses = false;
 
 			Projectile.AsFood().DefinedSize = ShroomFairyStuff.Size;
@@ -218,7 +222,7 @@ namespace V2.Projectiles.Voraria.Weapons.Summon
 		{
 			return Math.Min(
 				(int)Math.Floor(1.4 * Math.Sqrt(projectile.AsPred().ExtraWeight)),
-				4
+				7
 			);
 		}
 
@@ -247,16 +251,20 @@ namespace V2.Projectiles.Voraria.Weapons.Summon
 
 		public static double GetPreyAbsorptionRate(Projectile projectile)
 		{
-			double absorbRate = ShroomFairyStuff.AbsorbRate * (1 + GetVisualWeightStage(projectile) / (double)2);
+			double absorbRate = ShroomFairyStuff.AbsorbRate * (1 + GetVisualWeightStage(projectile) / (double)1.5);
 			Player ownerPlayer = Main.player[projectile.owner];
 			if (projectile.ai[0] == 1) absorbRate *= 2;
 			if (!ownerPlayer.dead && ownerPlayer.sleeping.FullyFallenAsleep)
 			{
-				absorbRate *= 1.25f;
+				absorbRate *= 1.75f;
 				bool isEveryoneAsleep = Main.CurrentFrameFlags.SleepingPlayersCount == Main.CurrentFrameFlags.ActivePlayersCount && Main.CurrentFrameFlags.SleepingPlayersCount > 0;
 				if (isEveryoneAsleep)
 					absorbRate *= (float)Main.dayRate;
 			}
+			if (ownerPlayer.AsV2Player().ShroomNecklace)
+			{
+                absorbRate *= 1.5f;
+            }
 			return absorbRate;
 		}
 
@@ -294,12 +302,12 @@ namespace V2.Projectiles.Voraria.Weapons.Summon
 				Projectile.timeLeft = 2;
 			if (!CheckActive(owner))
 			{
-				WaitOut(owner);
+				WaitOut(owner, SetSpeedMulti());
 				return;
 			}
 			if (GetVisualBellySize(Projectile) >= 3 + GetVisualWeightStage(Projectile))
 			{
-				WaitOut(owner);
+				WaitOut(owner, SetSpeedMulti());
 				return;
 			}
 			Projectile.ai[0] = 0f;
@@ -334,7 +342,12 @@ namespace V2.Projectiles.Voraria.Weapons.Summon
 		}
 		public float SetSpeedMulti()
 		{
-			return 1f * Math.Max(1 - GetVisualWeightStage(Projectile) / 10f, 0.15f) * Math.Max(1 - GetVisualBellySize(Projectile) / 10f, 0.15f);
+			float num = 1;
+			if (Main.player[Projectile.owner].AsV2Player().ShroomNecklace)
+				num = 1f * Math.Max(1 - GetVisualWeightStage(Projectile) / 24f, 0.05f) * Math.Max(1 - GetVisualBellySize(Projectile) / 24f, 0.05f);
+            else
+				num = 1f * Math.Max(1 - GetVisualWeightStage(Projectile) / 12f, 0.05f) * Math.Max(1 - GetVisualBellySize(Projectile) / 12f, 0.05f);
+			return num;
 		}
 		public void FindTarget(Player owner)
 		{
@@ -342,7 +355,38 @@ namespace V2.Projectiles.Voraria.Weapons.Summon
 			NPC closestNPC = null;
 			float projDistance = 99999f;
 			float npcDistance = 99999f;
-			foreach (var npc in Main.ActiveNPCs)
+
+			List<(PreyType, int)> IgnoreThese = [
+                (PreyType.Projectile, ProjectileID.LastPrismLaser),
+                (PreyType.Projectile, ProjectileID.RainCloudRaining),
+                (PreyType.Projectile, ProjectileID.RainCloudMoving),
+                (PreyType.Projectile, ProjectileID.BloodCloudRaining),
+                (PreyType.Projectile, ProjectileID.BloodCloudMoving),
+                (PreyType.Projectile, ProjectileID.RainbowFront),
+                (PreyType.Projectile, ProjectileID.SpectreWrath),
+                (PreyType.Projectile, ProjectileID.SpiritHeal),
+                (PreyType.Projectile, ProjectileID.TerrarianBeam),
+                (PreyType.Projectile, ProjectileID.MagnetSphereBall),
+                (PreyType.Projectile, ProjectileID.TinyEater),
+                ];
+
+            List<(PreyType, int)> EdibleNPCs = [
+                (PreyType.NPC, NPCID.WaterSphere),
+                (PreyType.NPC, NPCID.ChaosBall),
+                (PreyType.NPC, NPCID.ChaosBallTim),
+                (PreyType.NPC, NPCID.BurningSphere),
+                (PreyType.NPC, NPCID.VileSpit),
+                (PreyType.NPC, NPCID.VileSpitEaterOfWorlds),
+                (PreyType.NPC, NPCID.MartianDrone),
+                (PreyType.NPC, NPCID.Spore),
+                (PreyType.NPC, NPCID.FungiSpore),
+                (PreyType.NPC, NPCID.BlazingWheel),
+                (PreyType.NPC, NPCID.SpikeBall),
+                (PreyType.NPC, NPCID.ChatteringTeethBomb),
+                ];
+
+
+            foreach (var npc in Main.ActiveNPCs)
 			{
                 if (npc.CurrentCaptor() is not null) continue;
                 if (npc.type == NPCID.WaterSphere || npc.type == NPCID.ChaosBall || npc.type == NPCID.ChaosBallTim || npc.type == NPCID.BurningSphere || npc.type == NPCID.VileSpit || npc.type == NPCID.VileSpitEaterOfWorlds)
@@ -360,6 +404,14 @@ namespace V2.Projectiles.Voraria.Weapons.Summon
                 if (proj.CurrentCaptor() is not null) continue;
                 if ((!proj.friendly || proj.hostile) && proj.damage > 0 && !proj.IsMinionOrSentryRelated)
                 {
+                    bool shouldIgnore = false;
+                    foreach ((PreyType type, int ID) in IgnoreThese)
+                    {
+                        if (ID == proj.type)
+                            shouldIgnore = true;
+                    }
+                    if (shouldIgnore)
+                        continue;
                     float distance = proj.position.Distance(owner.position);
                     if (distance < projDistance)
                     {
@@ -388,8 +440,9 @@ namespace V2.Projectiles.Voraria.Weapons.Summon
 			return true;
 		}
 		public void Chill(Player owner, float SpeedMulti)
-		{
-			Vector2 vectorToIdlePosition;
+        {
+            bool ateOwner = owner.IsFoodFor(Projectile, out bool churnedOwner);
+            Vector2 vectorToIdlePosition;
 			float distanceToIdlePosition;
 			Vector2 idlePosition = owner.Center;
 			idlePosition.Y -= 80f;
@@ -408,6 +461,7 @@ namespace V2.Projectiles.Voraria.Weapons.Summon
             idlePosition.X += minionPositionOffsetX;
 			vectorToIdlePosition = idlePosition - Projectile.Center;
 			distanceToIdlePosition = vectorToIdlePosition.Length();
+			bool atPos = false;
 
 			if (Main.myPlayer == owner.whoAmI && distanceToIdlePosition > 2000f)
 			{
@@ -419,57 +473,73 @@ namespace V2.Projectiles.Voraria.Weapons.Summon
 
 			float overlapVelocity = 0.04f;
 
-			for (int i = 0; i < Main.maxProjectiles; i++)
+			foreach (var proj in Main.ActiveProjectiles)
 			{
-				Projectile other = Main.projectile[i];
+                if (proj != Projectile && proj.active && proj.type != ModContent.ProjectileType<ShroomFairySpore>() && proj.CurrentCaptor() is null && proj.owner == Projectile.owner && Math.Abs(Projectile.position.X - proj.position.X) + Math.Abs(Projectile.position.Y - proj.position.Y) < Projectile.width)
+                {
+                    if (Projectile.position.X < proj.position.X)
+                        Projectile.velocity.X -= overlapVelocity;
+                    else
+                        Projectile.velocity.X += overlapVelocity;
 
-				if (i != Projectile.whoAmI && other.active && other.owner == Projectile.owner && Math.Abs(Projectile.position.X - other.position.X) + Math.Abs(Projectile.position.Y - other.position.Y) < Projectile.width)
+                    if (Projectile.position.Y < proj.position.Y)
+                        Projectile.velocity.Y -= overlapVelocity;
+                    else
+                        Projectile.velocity.Y += overlapVelocity;
+                }
+            }
+
+			if (!ateOwner)
+			{
+
+				float speed = 10f;
+				float inertia = 20f;
+				if (distanceToIdlePosition > 600f)
 				{
-					if (Projectile.position.X < other.position.X)
-						Projectile.velocity.X -= overlapVelocity;
-					else
-						Projectile.velocity.X += overlapVelocity;
+					speed = 18f;
+					inertia = 60f;
+				}
+				else if (distanceToIdlePosition < 80f)
+				{
+					speed = 4f;
+					inertia = 80f;
+                    atPos = true;
+                }
 
-					if (Projectile.position.Y < other.position.Y)
-						Projectile.velocity.Y -= overlapVelocity;
-					else
-						Projectile.velocity.Y += overlapVelocity;
+				if (distanceToIdlePosition > 20f)
+				{
+					vectorToIdlePosition.Normalize();
+					vectorToIdlePosition *= speed;
+					if (!atPos)
+					{
+						vectorToIdlePosition.X *= SpeedMulti;
+						if (vectorToIdlePosition.Y < 0)
+						{
+							vectorToIdlePosition.Y *= SpeedMulti;
+							vectorToIdlePosition.Y *= (SpeedMulti + 2) / 3;
+						}
+					}
+                    Projectile.velocity = (Projectile.velocity * (inertia - 1) + vectorToIdlePosition) / inertia;
+					Projectile.velocity.Y -= 0.1667f + -SpeedMulti / 6f;
+
+                }
+				else if (Projectile.velocity == Vector2.Zero)
+				{
+					Projectile.velocity.X = -0.15f;
+					Projectile.velocity.Y = -0.05f;
 				}
 			}
+			else Projectile.velocity *= 0.9f;
+            Projectile.velocity.X = Math.Clamp(Projectile.velocity.X, -12, 12);
+            Projectile.velocity.Y = Math.Clamp(Projectile.velocity.Y, -12, 12) + (0.2f + -SpeedMulti / 5f);
 
-			float speed = 10f * SpeedMulti;
-			float inertia = 20f;
-			if (distanceToIdlePosition > 600f)
-			{
-				speed = 18f * SpeedMulti;
-				inertia = 60f;
-			}
-			else if (distanceToIdlePosition < 80f)
-			{
-				speed = 4f * SpeedMulti;
-				inertia = 80f;
-			}
-
-			if (distanceToIdlePosition > 20f)
-			{
-				vectorToIdlePosition.Normalize();
-				vectorToIdlePosition *= speed;
-				Projectile.velocity = (Projectile.velocity * (inertia - 1) + vectorToIdlePosition) / inertia;
-			}
-			else if (Projectile.velocity == Vector2.Zero)
-			{
-				Projectile.velocity.X = -0.15f;
-				Projectile.velocity.Y = -0.05f;
-			}
-			Projectile.velocity.X = Math.Clamp(Projectile.velocity.X, -10, 10);
-			Projectile.velocity.Y = Math.Clamp(Projectile.velocity.Y, -10, 10);
-		}
+        }
 		public void CHARGE(Player owner, Entity target, float SpeedMulti)
 		{
 			if (!target.active)
 				return;
 
-			float speed = 25f * SpeedMulti;
+			float speed = 25f;
 			float inertia = 25f;
 			Vector2 direction = Projectile.position.DirectionTo(target.position);
 			direction.Normalize();
@@ -485,24 +555,46 @@ namespace V2.Projectiles.Voraria.Weapons.Summon
                 Dust.NewDustDirect(Projectile.Center - new Vector2(8, 8), 32, 32, ModContent.DustType<ShroomFairyDust>(), direction2.X, direction2.Y, 0, default, 1.75f);
                 Dust.NewDustDirect(Projectile.Center - new Vector2(8, 8), 32, 32, ModContent.DustType<ShroomFairyDust>(), direction2.X, direction2.Y, 0, default, 2f);
 
-                Projectile.ai[1] = 8f / (SpeedMulti / 2);
+                Projectile.ai[1] = 8f / SpeedMulti;
                 Projectile.position = target.position;
 				PredProjectile.Swallow(Projectile, target);
 
                 DustEffect(Projectile);
             }
 			else
-			{
-				direction *= speed;
-				Projectile.velocity = (Projectile.velocity * (inertia - 1) + direction) / inertia;
+            {
+                direction *= speed;
+                direction.X *= SpeedMulti;
+                if (direction.Y < 0)
+                {
+                    direction.Y *= SpeedMulti;
+                    direction.Y *= (SpeedMulti + 2) / 3;
+                }
+                Projectile.velocity = (Projectile.velocity * (inertia - 1) + direction) / inertia;
 				Projectile.velocity.X = Math.Clamp(Projectile.velocity.X, -18, 18);
-				Projectile.velocity.Y = Math.Clamp(Projectile.velocity.Y, -18, 18);
-			}
+				Projectile.velocity.Y = Math.Clamp(Projectile.velocity.Y, -18, 18) + (0.2f + -SpeedMulti / 5f);
+            }
 		}
-		public void WaitOut(Player owner)
+		public void WaitOut(Player owner, float SpeedMulti)
 		{
 			Projectile.ai[0] = (owner.IsFoodFor(Projectile, out bool pastTense) && !pastTense) ? 2f : 1f;
-            Projectile.velocity *= 0.9f;
+			if (CheckForSolidFloor())
+			{
+				Projectile.velocity.X *= 0.9f;
+                Projectile.velocity.Y *= 0.8f;
+            }
+			else
+			{
+				Projectile.velocity.X *= 0.9f;
+				if (Projectile.velocity.Y < 0) Projectile.velocity.Y *= 0.9f;
+                Projectile.velocity.X = Math.Clamp(Projectile.velocity.X, -12, 12);
+				Projectile.velocity.Y = Math.Clamp(Projectile.velocity.Y, -12, 12) + (0.05f + -SpeedMulti / 50f);
+			}
+        }
+		public bool CheckForSolidFloor()
+		{
+			if (Collision.SolidTiles(Projectile.position, Projectile.width, Projectile.height * 2, true)) return true;
+			return false;
 		}
 		public void CheckForSpore(Player owner)
 		{
@@ -534,16 +626,20 @@ namespace V2.Projectiles.Voraria.Weapons.Summon
                     text += "_" + FairySize;
                     frameSize = 108;
                     break;
+                case 5 or 6 or 7:
+                    text += "_" + FairySize;
+                    frameSize = 148;
+                    break;
             }
-			int ExtraOffset = 0;
-			if (Projectile.direction == -1) ExtraOffset = frameSize / 2;
+            Vector2 Offset = new Vector2(-10, 0);
+            if (Projectile.direction == -1) Offset = new Vector2(-10 - (frameSize - 50), 0);
             Texture2D sprite = ModContent.Request<Texture2D>(text).Value;
 			SpriteEffects val = Projectile.direction != -1 ? 0 : (SpriteEffects)1;
 			SpriteEffects spriteEffects = val;
 			Rectangle sourceRect = new Rectangle(frameSize * TumSize, frameSize * Projectile.frame, frameSize, frameSize);
-			Main.EntitySpriteDraw(sprite, Projectile.Center - Main.screenPosition + new Vector2(-frameSize / 2 - ExtraOffset, -8 + Projectile.gfxOffY), (Rectangle)sourceRect, lightColor, Projectile.rotation, Vector2.Zero, 1f, spriteEffects, 0f);
+			Main.EntitySpriteDraw(sprite, Projectile.position - Main.screenPosition + new Vector2(Offset.X, Offset.Y), (Rectangle)sourceRect, lightColor, Projectile.rotation, Vector2.Zero, 1f, spriteEffects, 0f);
             Texture2D sprite2 = ModContent.Request<Texture2D>(text + "_Fullbright").Value;
-            Main.EntitySpriteDraw(sprite2, Projectile.Center - Main.screenPosition + new Vector2(-frameSize / 2 - ExtraOffset, -8 + Projectile.gfxOffY), (Rectangle)sourceRect, new Color(255,255,255), Projectile.rotation, Vector2.Zero, 1f, spriteEffects, 0f);
+            Main.EntitySpriteDraw(sprite2, Projectile.position - Main.screenPosition + new Vector2(Offset.X, Offset.Y), (Rectangle)sourceRect, new Color(255,255,255), Projectile.rotation, Vector2.Zero, 1f, spriteEffects, 0f);
             return false;
 		}
 	}
@@ -577,6 +673,7 @@ namespace V2.Projectiles.Voraria.Weapons.Summon
 			{
 				Player player = (Player)pred;
                 player.Heal(10);
+				if (Main.player[projectile.owner].AsV2Player().ShroomNecklace) player.AddBuff(ModContent.BuffType<SporeRegen>(), V2Utils.SensibleTime(seconds: 15));
             }
         }
         public override bool? CanDamage()
@@ -616,10 +713,15 @@ namespace V2.Projectiles.Voraria.Weapons.Summon
 				Projectile.velocity += direction / 8f;
                 Projectile.velocity.X = Math.Clamp(Projectile.velocity.X, -5, 5);
                 Projectile.velocity.Y = Math.Clamp(Projectile.velocity.Y, -5, 5);
+				if (Projectile.Center.Distance(target.Center) <= 125)
+				{
+					Projectile.velocity *= 0.93f;
+				}
                 if (Projectile.Hitbox.Intersects(target.Hitbox))
 				{
 					target.Heal(5);
-					ShroomFairy.DustEffect(Projectile);
+                    if (Main.player[Projectile.owner].AsV2Player().ShroomNecklace) target.AddBuff(ModContent.BuffType<SporeRegen>(), V2Utils.SensibleTime(seconds: 5));
+                    ShroomFairy.DustEffect(Projectile);
 					Projectile.Kill();
 				}
 			}
@@ -652,9 +754,9 @@ namespace V2.Projectiles.Voraria.Weapons.Summon
             SpriteEffects val = Projectile.direction != -1 ? 0 : (SpriteEffects)1;
             SpriteEffects spriteEffects = val;
             Texture2D sprite = ModContent.Request<Texture2D>("V2/Projectiles/Voraria/Weapons/Summon/ShroomFairySpore").Value;
-            Main.EntitySpriteDraw(sprite, Projectile.Center - Main.screenPosition, (Rectangle)sourceRect, lightColor, Projectile.rotation, Vector2.Zero, 1f, spriteEffects, 0f);
+            Main.EntitySpriteDraw(sprite, Projectile.position - Main.screenPosition, (Rectangle)sourceRect, lightColor, Projectile.rotation, Vector2.Zero, 1f, spriteEffects, 0f);
             Texture2D sprite2 = ModContent.Request<Texture2D>("V2/Projectiles/Voraria/Weapons/Summon/ShroomFairySpore_Fullbright").Value;
-            Main.EntitySpriteDraw(sprite2, Projectile.Center - Main.screenPosition, (Rectangle)sourceRect, new Color(255, 255, 255), Projectile.rotation, Vector2.Zero, 1f, spriteEffects, 0f);
+            Main.EntitySpriteDraw(sprite2, Projectile.position - Main.screenPosition, (Rectangle)sourceRect, new Color(255, 255, 255), Projectile.rotation, Vector2.Zero, 1f, spriteEffects, 0f);
             return false;
         }
     }
