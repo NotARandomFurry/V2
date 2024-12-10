@@ -198,7 +198,7 @@ namespace V2.Projectiles.Voraria.Pets
 			CheckActive(owner);
 			Projectile.direction = owner.direction;
 			if ((ateOwner && !churnedOwner) || owner.dead) Projectile.velocity *= 0.9f;
-            else 
+            		else 
 			{
 				Vector2 sitPosition = owner.Center + new Vector2(0, -160);
 				Projectile.velocity = Projectile.Center.DirectionTo(sitPosition) * (Projectile.position.Distance(sitPosition) / 32f);
@@ -213,7 +213,6 @@ namespace V2.Projectiles.Voraria.Pets
 				else if (Projectile.Center.Distance(sitPosition) < 45) Projectile.velocity *= 0.7f;
 				else if (Projectile.Center.Distance(sitPosition) < 55) Projectile.velocity *= 0.85f;
 			}
-			else Projectile.velocity *= 0.9f;
         }
 		public static Rectangle TumBounds(int size, out int YOffset)
 		{
