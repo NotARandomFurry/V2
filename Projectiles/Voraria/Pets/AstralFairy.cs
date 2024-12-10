@@ -62,7 +62,7 @@ namespace V2.Projectiles.Voraria.Pets
 		public static double Size => 29;
 		public static double MaxStomachCapacity => 42000.0;
         public static double Stomachache => 250000.0;
-        public static double DigestDamage => 70.0;
+		public static double DigestDamage => 70.0;
 		public static double DigestRate => 2;
 		public static double AbsorbRate => 1.0 / (double)V2Utils.SensibleTime(
 			seconds: 10
@@ -194,25 +194,26 @@ namespace V2.Projectiles.Voraria.Pets
 		{
 			Player owner = Main.player[Projectile.owner];
             bool ateOwner = owner.IsFoodFor(Projectile, out bool churnedOwner);
-            VoreTracker tracker = PredProjectile.GetStomachTracker(Projectile);
+			VoreTracker tracker = PredProjectile.GetStomachTracker(Projectile);
 			CheckActive(owner);
 			Projectile.direction = owner.direction;
 			if ((ateOwner && !churnedOwner) || owner.dead) Projectile.velocity *= 0.9f;
             else 
-            {
-                Vector2 sitPosition = owner.Center + new Vector2(0, -160);
-                Projectile.velocity = Projectile.Center.DirectionTo(sitPosition) * (Projectile.position.Distance(sitPosition) / 32f);
-                if (Projectile.Center.Distance(sitPosition) < 1)
-                {
-                    Projectile.velocity *= 0;
-                }
-                else if (Projectile.Center.Distance(sitPosition) < 5) Projectile.velocity *= 0.1f;
-                else if (Projectile.Center.Distance(sitPosition) < 15) Projectile.velocity *= 0.25f;
-                else if (Projectile.Center.Distance(sitPosition) < 25) Projectile.velocity *= 0.4f;
-                else if (Projectile.Center.Distance(sitPosition) < 35) Projectile.velocity *= 0.55f;
-                else if (Projectile.Center.Distance(sitPosition) < 45) Projectile.velocity *= 0.7f;
-                else if (Projectile.Center.Distance(sitPosition) < 55) Projectile.velocity *= 0.85f;
-            }
+			{
+				Vector2 sitPosition = owner.Center + new Vector2(0, -160);
+				Projectile.velocity = Projectile.Center.DirectionTo(sitPosition) * (Projectile.position.Distance(sitPosition) / 32f);
+				if (Projectile.Center.Distance(sitPosition) < 1)
+				{
+					Projectile.velocity *= 0;
+				}
+				else if (Projectile.Center.Distance(sitPosition) < 5) Projectile.velocity *= 0.1f;
+				else if (Projectile.Center.Distance(sitPosition) < 15) Projectile.velocity *= 0.25f;
+				else if (Projectile.Center.Distance(sitPosition) < 25) Projectile.velocity *= 0.4f;
+				else if (Projectile.Center.Distance(sitPosition) < 35) Projectile.velocity *= 0.55f;
+				else if (Projectile.Center.Distance(sitPosition) < 45) Projectile.velocity *= 0.7f;
+				else if (Projectile.Center.Distance(sitPosition) < 55) Projectile.velocity *= 0.85f;
+			}
+			else Projectile.velocity *= 0.9f;
         }
 		public static Rectangle TumBounds(int size, out int YOffset)
 		{
@@ -298,6 +299,13 @@ namespace V2.Projectiles.Voraria.Pets
 	}
 	public class AstralFairySummon : ModItem
     {
+        public override string Texture => "V2/Items/UnspritedItem";
+        public override void SetStaticDefaults()
+        {
+            DrawAnimationVertical anim = new DrawAnimationVertical(6, 12);
+            Main.RegisterItemAnimation(Type, anim);
+            ItemID.Sets.AnimatesAsSoul[Type] = true;
+        }
         public override void SetDefaults()
         {
             Item.DefaultToVanitypet(ModContent.ProjectileType<AstralFairy>(), ModContent.BuffType<AstralFairyBuff>());
@@ -353,34 +361,34 @@ namespace V2.Projectiles.Voraria.Pets
             Item.value = Item.sellPrice(platinum: 1);
         }
 		public static void OnUse(Player player)
-		{
-            if (player.whoAmI == Main.myPlayer)
-            {
-                Vector2 position = Main.MouseWorld;
-                Projectile astralFairy = null;
-                foreach (var proj in Main.ActiveProjectiles)
-                {
-                    if (proj.active && proj.type == ModContent.ProjectileType<AstralFairy>() && Main.player[proj.owner] == player)
-                    {
-                        astralFairy = proj;
-                    }
-                }
+        {
+			if (player.whoAmI == Main.myPlayer)
+			{
+				Vector2 position = Main.MouseWorld;
+				Projectile astralFairy = null;
+				foreach (var proj in Main.ActiveProjectiles)
+				{
+					if (proj.active && proj.type == ModContent.ProjectileType<AstralFairy>() && Main.player[proj.owner] == player)
+					{
+						astralFairy = proj;
+					}
+				}
                 if (astralFairy == null) return;
-                Rectangle hitbox = new Rectangle((int)position.X - 16, (int)position.Y - 16, 32, 32);
-                foreach (var item in Main.ActiveItems)
-                {
-                    if (item.active && item.CurrentCaptor() is null && hitbox.Intersects(item.Hitbox))
-                    {
-                        PredProjectile.Swallow(astralFairy, item);
-                    }
-                }
-                foreach (var item in Main.ActiveNPCs)
-                {
-                    if (item.active && item.CurrentCaptor() is null && hitbox.Intersects(item.Hitbox))
-                    {
-                        PredProjectile.Swallow(astralFairy, item);
-                    }
-                }
+				Rectangle hitbox = new Rectangle((int)position.X - 16, (int)position.Y - 16, 32, 32);
+				foreach (var item in Main.ActiveItems)
+				{
+					if (item.active && item.CurrentCaptor() is null && hitbox.Intersects(item.Hitbox))
+					{
+						PredProjectile.Swallow(astralFairy, item);
+					}
+				}
+				foreach (var item in Main.ActiveNPCs)
+				{
+					if (item.active && item.CurrentCaptor() is null && hitbox.Intersects(item.Hitbox))
+					{
+						PredProjectile.Swallow(astralFairy, item);
+					}
+				}
                 foreach (var item in Main.ActiveProjectiles)
                 {
                     if (item.active && item.CurrentCaptor() is null && hitbox.Intersects(item.Hitbox) && item.type != ModContent.ProjectileType<AstralFairy>())
@@ -399,7 +407,7 @@ namespace V2.Projectiles.Voraria.Pets
 
                 }
             );
-        }
+            }
         public override bool? UseItem(Player player)
         {
 			OnUse(player);
