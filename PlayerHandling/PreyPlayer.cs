@@ -26,26 +26,8 @@ namespace V2.PlayerHandling
 {
 	public static class PreyPlayerDigestionSounds
 	{
-		public static readonly SoundStyle PlayerDigestingMale = new SoundStyle(
-			"V2/PlayerHandling/MaleHit_FromDigestTick",
-			0,
-			3,
-			SoundType.Sound
-		)
-		{
-			Volume = 1f,
-			PitchVariance = 0f
-		};
-		public static readonly SoundStyle PlayerDigestingFemale = new SoundStyle(
-			"V2/PlayerHandling/FemaleHit_FromDigestTick",
-			0,
-			3,
-			SoundType.Sound
-		)
-		{
-			Volume = 1f,
-			PitchVariance = 0f
-		};
+		public static readonly SoundStyle PlayerDigestingMale = new SoundStyle("V2/PlayerHandling/MaleHit_FromDigestTick", 0, 3, SoundType.Sound) { Volume = 1f, PitchVariance = 0f };
+		public static readonly SoundStyle PlayerDigestingFemale = new SoundStyle("V2/PlayerHandling/FemaleHit_FromDigestTick", 0, 3, SoundType.Sound) { Volume = 1f, PitchVariance = 0f };
 	}
 
 	public partial class PreyPlayer : ModPlayer
@@ -401,14 +383,14 @@ namespace V2.PlayerHandling
 
 				churnableEquip.TakeDigestionDamage(pred, trueDigestionDamage, false, Player.whoAmI);
 			}
-			if (ModContent.GetInstance<V2ServerConfig>().DefenseInDigestionCalcs)
-				trueDigestionDamage -= Player.statDefense;
-			trueDigestionDamage = (int)Math.Round((float)trueDigestionDamage * (1f - Player.endurance));
-			trueDigestionDamage = (int)Math.Round(TakenDigestionDamageModifier.ApplyTo(trueDigestionDamage));
-			if (trueDigestionDamage < 1)
-				trueDigestionDamage = 1;
 			SoftenedDigestionDamageTaken += SoftenedDigestionDamageModifier.ApplyTo(trueDigestionDamage);
 			SoftenedWearoffDelay = SoftenedWearoffMaxDelay;
+			trueDigestionDamage = (int)Math.Round((float)trueDigestionDamage * (1f - Player.endurance));
+			trueDigestionDamage = (int)Math.Round(TakenDigestionDamageModifier.ApplyTo(trueDigestionDamage));
+			if (ModContent.GetInstance<V2ServerConfig>().DefenseInDigestionCalcs)
+				trueDigestionDamage -= Player.statDefense;
+			if (trueDigestionDamage < 1)
+				trueDigestionDamage = 1;
 			Player.statLife -= trueDigestionDamage;
 			switch (Main.netMode)
 			{
