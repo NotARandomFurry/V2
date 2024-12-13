@@ -3654,7 +3654,7 @@ Mods: {
 								A stack of this debuff is applied for every [c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:{SoftenedMaxHealthThreshold} of your BASE maximum health you take in digestion damage]
 								Up to [c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:{SoftenedMaxStacks}] can be applied on you (current: [c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:{SoftenedStacks}])
 								[c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:Decreases defense by {SoftenedDefReduction}] per stack (current: [c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:{SoftenedCurrentDefReduction}])
-								[c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:Increases taken digestion damage by {SoftenedDigestiveAid}] per stack (current: [c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:{SoftenedCurrentDigestiveAid}])
+								[c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:Increases taken digestion damage by {SoftenedDigestiveAid}] per stack, after all other modifiers including defense (current: [c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:{SoftenedCurrentDigestiveAid}])
 								'''
 
 							Flavor: {

@@ -142,6 +142,12 @@ namespace V2.PlayerHandling
 			}
 		}
 
+		public override void PostUpdateBuffs()
+		{
+			Player.statDefense *= (float)(1.0 - (Softened.DefenseReductionPerStack * SoftenedStacks));
+			Player.AsFood().TakenDigestionDamageModifier *= (float)(1.0 + (Softened.DigestionDamageIncreasePerStack * SoftenedStacks));
+		}
+
 		public override void PostItemCheck()
 		{
 			if (Main.netMode != NetmodeID.Server && Player.whoAmI == Main.myPlayer && V2.FeedHotkey.JustPressed)
@@ -383,14 +389,14 @@ namespace V2.PlayerHandling
 
 				churnableEquip.TakeDigestionDamage(pred, trueDigestionDamage, false, Player.whoAmI);
 			}
-			SoftenedDigestionDamageTaken += SoftenedDigestionDamageModifier.ApplyTo(trueDigestionDamage);
-			SoftenedWearoffDelay = SoftenedWearoffMaxDelay;
-			trueDigestionDamage = (int)Math.Round((float)trueDigestionDamage * (1f - Player.endurance));
-			trueDigestionDamage = (int)Math.Round(TakenDigestionDamageModifier.ApplyTo(trueDigestionDamage));
 			if (ModContent.GetInstance<V2ServerConfig>().DefenseInDigestionCalcs)
 				trueDigestionDamage -= Player.statDefense;
+			trueDigestionDamage = (int)Math.Round((float)trueDigestionDamage * (1f - Player.endurance));
+			trueDigestionDamage = (int)Math.Round(TakenDigestionDamageModifier.ApplyTo(trueDigestionDamage));
 			if (trueDigestionDamage < 1)
 				trueDigestionDamage = 1;
+			SoftenedDigestionDamageTaken += SoftenedDigestionDamageModifier.ApplyTo(trueDigestionDamage);
+			SoftenedWearoffDelay = SoftenedWearoffMaxDelay;
 			Player.statLife -= trueDigestionDamage;
 			switch (Main.netMode)
 			{
