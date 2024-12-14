@@ -18,8 +18,6 @@ namespace V2.StatusEffects.Voraria.Buffs
 	{
 		public override LocalizedText DisplayName => Language.GetText("Mods.V2.StatusEffects.Voraria.Buffs.SporeRegen.Name");
 		public override LocalizedText Description => Language.GetText("Mods.V2.StatusEffects.Voraria.Buffs.SporeRegen.Description");
-        public override string Texture => "V2/StatusEffects/Voraria/Buffs/BuffPlaceholder";
-
         public override bool RightClick(int buffIndex) => false;
 
 		public override void ModifyBuffText(ref string buffName, ref string tip, ref int rare)
@@ -29,20 +27,21 @@ namespace V2.StatusEffects.Voraria.Buffs
                 "Mods.V2.StatusEffects.Voraria.Buffs.SporeRegen.Description",
 				new
 				{
-				}
+
+                }
 			);
 		}
 
         public override bool ReApply(Player player, int time, int buffIndex)
         {
-            player.buffTime[buffIndex] += time;
+            player.buffTime[buffIndex] = Math.Min(player.buffTime[buffIndex] + time, 3600);
             return true;
         }
 
         public override void Update(Player player, ref int buffIndex)
 		{
 			player.AddHealthRegenEffect(
-				healthPerSecond: Math.Min(player.buffTime[buffIndex] / 60, 10)
+				healthPerSecond: Math.Min((int)Math.Ceiling(player.buffTime[buffIndex] / 180f), 10)
             );
 		}
 	}

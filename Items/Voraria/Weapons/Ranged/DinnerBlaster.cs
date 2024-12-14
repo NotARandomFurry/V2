@@ -15,6 +15,7 @@ using V2.PlayerHandling;
 using V2.Projectiles.Voraria.Weapons.Summon;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
+using V2.PlayerHandling.PredPlayerGoals.Skilled;
 
 namespace V2.Items.Voraria.Weapons.Ranged
 {
@@ -64,6 +65,8 @@ namespace V2.Items.Voraria.Weapons.Ranged
             Projectile.AsFood().DefinedSize = 0.3;
             Projectile.AsFood().MaxHealth = 25;
             Projectile.AsFood().Health = 25;
+
+            Projectile.AsFood().OnSwallowedBy += OnSwallowedByPlayer_GiveInfFoodGoal;
         }
         public override bool? CanDamage()
         {
@@ -105,6 +108,15 @@ namespace V2.Items.Voraria.Weapons.Ranged
             Dust.NewDustDirect(Projectile.position, 28, 28, DustID.TintablePaint, oldVelocity.X * -0.1f, oldVelocity.Y * -0.1f, 0, new Microsoft.Xna.Framework.Color(128, 49, 0));
             Dust.NewDustDirect(Projectile.position, 28, 28, DustID.TintablePaint, oldVelocity.X * -0.1f, oldVelocity.Y * -0.1f, 0, new Microsoft.Xna.Framework.Color(48, 99, 31));
             return true;
+        }
+        public static void OnSwallowedByPlayer_GiveInfFoodGoal(Projectile projectile, Entity pred)
+        {
+            Player owner = Main.player[projectile.owner];
+            if (owner is not null && owner == pred)
+            {
+                ModContent.GetInstance<BlasterLoophole>().TrySetCompletion(owner);
+            }
+
         }
     }
 }

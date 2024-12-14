@@ -117,14 +117,15 @@ namespace V2.NPCs.Vanilla.Sky
 
 			npc.aiStyle = -1;
 			npc.AsV2NPC().NewAIMethod = V2HarpyAI;
-			npc.AsV2NPC().TargetRange = V2Utils.TileCountAsPixelCount(44.0);
+			npc.AsV2NPC().TargetRange = V2Utils.TileCountAsPixelCount(48.0);
 			npc.AsV2NPC().TargetRequiresLineOfSight = true;
 
 			npc.AsFood().DefinedBaseSize = 1.335;
-			npc.AsPred().MaxStomachCapacity = 1.75;
+			npc.AsPred().MaxStomachCapacity = 1.9;
 			npc.AsPred().BaseStomachacheMeterCapacity = 250.0;
+            npc.AsPred().WeightGainRatio = 0.15;
 
-			npc.AsPred().SmallGulps = Gulps.Short;
+            npc.AsPred().SmallGulps = Gulps.Short;
 			npc.AsPred().SmallGulpThreshold = 0.35;
 			npc.AsPred().BigGulps = Gulps.Standard;
 			npc.AsPred().MaxSwallowRange = V2Utils.TileCountAsPixelCount(4.7);
@@ -172,8 +173,9 @@ namespace V2.NPCs.Vanilla.Sky
 		public static bool V2HarpyAI(NPC npc)
 		{
 			npc.noGravity = true;
-
-			Entity targetEntity = null;
+			npc.ai[3]++;
+			if (npc.ai[3] > 15) npc.ai[3] = 0;
+            Entity targetEntity = null;
 			npc.TryFindNewTarget(Diet);
 			npc.TryVerifyRemainingTarget(Diet);
 			if (npc.target != -1)
@@ -231,8 +233,8 @@ namespace V2.NPCs.Vanilla.Sky
 		public static double GetPreyAbsorptionRate(NPC npc)
 		{
 			double baseAbsorptionRate = 1.0 / (double)V2Utils.SensibleTime(
-				minutes: 3,
-				seconds: 0
+				minutes: 2,
+				seconds: 30
 			);
 			return baseAbsorptionRate;
 		}
@@ -241,15 +243,18 @@ namespace V2.NPCs.Vanilla.Sky
 		{
 			return Math.Min(
 				(int)Math.Floor(5.0 * Math.Sqrt(PredNPC.GetCurrentBellyWeight(npc))),
-				5
+				6
 			);
 		}
 
 		public override void FindFrame(NPC npc, int frameHeight)
 		{
-			if (npc.AsV2NPC().BehaviorPattern is HarpyAI.DiveBombing)
+
+            npc.frame.X = 90 * GetVisualBellySize(npc);
+
+            if (npc.AsV2NPC().BehaviorPattern is HarpyAI.DiveBombing)
 			{
-				npc.frame.Y = 0;
+				npc.frame.Y = 500;
 			}
 			else
 			{
@@ -267,13 +272,12 @@ namespace V2.NPCs.Vanilla.Sky
 
 				npc.frame.Y = WingFlapTimer switch
 				{
-					int i when i < 0 => 1 * 86,
-					int i when i >= 0 && i < 3 => 2 * 86,
-					int i when i >= 3 && i < 15 => 3 * 86,
-					int i when i >= 15 && i < 20 => 4 * 86,
-					int i when i >= 20 && i < 30 => 5 * 86,
-					_ => 0 * 86,
+					int i when i < 0 => 200,
+					int i when i >= 0 && i < 5 => 300,
+					int i when i >= 5 && i < 10 => 400,
+					_ => 0,
 				};
+				if (npc.frame.Y == 0 && npc.ai[3] > 7) npc.frame.Y = 100;
 			}
 		}
 
@@ -281,7 +285,7 @@ namespace V2.NPCs.Vanilla.Sky
 		{
 			return Math.Min(
 				(int)Math.Floor(Math.Sqrt(8) * Math.Sqrt(npc.AsPred().ExtraWeight)),
-				2
+				4
 			);
 		}
 
@@ -305,14 +309,23 @@ namespace V2.NPCs.Vanilla.Sky
 				npc.spriteDirection = npc.direction = (target.position.X >= npc.TrueCenter().X).ToDirectionInt();
 			}
 
-			int weightStage = npc.AsPred().GetVisualWeightStage.Invoke(npc);
-			string weightString = "_Weight" + (weightStage == 0 ? "Base" : weightStage);
-			int bellySize = npc.AsPred().GetVisualBellySize.Invoke(npc);
-			string bellyString = "_Belly" + (bellySize == 0 ? "Base" : bellySize);
+			Vector2 Offset = new Vector2(-24, -12);
+			if (npc.direction == 1) Offset = new Vector2(-36, -12);
 
-			string exactMainBodyTexture = "V2/NPCs/Vanilla/Sky/Harpy" + weightString + bellyString;
-			TextureAssets.Npc[NPCID.Harpy] = ModContent.Request<Texture2D>(exactMainBodyTexture, AssetRequestMode.ImmediateLoad);
-			return true;
+            SpriteEffects val = npc.direction != 1 ? 0 : (SpriteEffects)1;
+            SpriteEffects spriteEffects = val;
+
+            int weightStage = npc.AsPred().GetVisualWeightStage.Invoke(npc);
+            /*string weightString = "_Weight" + (weightStage == 0 ? "Base" : weightStage);
+			int bellySize = npc.AsPred().GetVisualBellySize.Invoke(npc);
+			string bellyString = "_Belly" + (bellySize == 0 ? "Base" : bellySize);*/
+            Rectangle sourceRect = new Rectangle(npc.frame.X, npc.frame.Y, 90, 100);
+            Texture2D sprite = ModContent.Request<Texture2D>("V2/NPCs/Vanilla/Sky/Harpy_Weight" + weightStage).Value;
+            spriteBatch.Draw(sprite, npc.position - Main.screenPosition, sourceRect, drawColor, npc.rotation, -Offset, 1f, spriteEffects, 0f);
+
+            //string exactMainBodyTexture = "V2/NPCs/Vanilla/Sky/Harpy_Weight" + weightStage;
+			//TextureAssets.Npc[NPCID.Harpy] = ModContent.Request<Texture2D>(exactMainBodyTexture, AssetRequestMode.ImmediateLoad);
+			return false;
 		}
 
 		public override void SaveData(NPC npc, TagCompound tag)

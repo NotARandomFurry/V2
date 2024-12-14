@@ -112,7 +112,7 @@ namespace V2.Projectiles.Voraria.Pets
 
 			Projectile.AsPred().SmallBurps = Burps.Humanoid.Small;
 			Projectile.AsPred().StandardBurps = Burps.Humanoid.Standard;
-			Projectile.AsPred().BurpPitchOffset = 0f;
+			Projectile.AsPred().BurpPitchOffset = -0.1f;
 
 			Projectile.AsPred().GetPreyAbsorptionRate = GetPreyAbsorptionRate;
 
@@ -298,13 +298,6 @@ namespace V2.Projectiles.Voraria.Pets
 	}
 	public class AstralFairySummon : ModItem
     {
-        public override string Texture => "V2/Items/UnspritedItem";
-        public override void SetStaticDefaults()
-        {
-            DrawAnimationVertical anim = new DrawAnimationVertical(6, 12);
-            Main.RegisterItemAnimation(Type, anim);
-            ItemID.Sets.AnimatesAsSoul[Type] = true;
-        }
         public override void SetDefaults()
         {
             Item.DefaultToVanitypet(ModContent.ProjectileType<AstralFairy>(), ModContent.BuffType<AstralFairyBuff>());

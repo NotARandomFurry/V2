@@ -635,6 +635,8 @@ namespace V2.PlayerHandling
 		public bool Venomizeous { get; set; }
 
         public double BeeTransformation_ExtraWeight { get; set; }
+        public bool FungalFairySetBonus { get; set; }
+
 
         public override void Initialize()
 		{
@@ -702,6 +704,7 @@ namespace V2.PlayerHandling
 			charmNoDigest = false;
 			charmNoAirDrain = false;
 			charmStealPreyLoot = false;
+			FungalFairySetBonus = false;
 
 			GLP.Base = 0;
 			GLP.Extra = 0;
@@ -859,9 +862,19 @@ namespace V2.PlayerHandling
 			}
 #endif
 		}
+        public override void ModifyHitByProjectile(Projectile proj, ref Player.HurtModifiers modifiers)
+        {
+            if (Player.AsPred().FungalFairySetBonus)
+            {
+                if (CanSwallow(Player, proj))
+                {
+                    Swallow(Player, proj);
+                    modifiers.Cancel();
+                }
+            }
+        }
 
-		
-		public override void PostUpdateRunSpeeds()
+        public override void PostUpdateRunSpeeds()
 		{
 			if (!Player.mount.Active)
 			{
@@ -882,10 +895,8 @@ namespace V2.PlayerHandling
 				Player.runAcceleration *= 0;
 			}
 		}
-		
-		
 
-		public override void PostItemCheck()
+        public override void PostItemCheck()
 		{
 			if (Main.netMode != NetmodeID.Server && Player.whoAmI == Main.myPlayer && !Player.AsPred().BlockSwallowAttempts)
 			{
@@ -1063,8 +1074,10 @@ namespace V2.PlayerHandling
 					return true;
 			}
 			else if (prey is NPC preyNPC)
-			{
-				if (V2.VoreNPCBlacklist is not null && V2.VoreNPCBlacklist.Count > 0 && V2.VoreNPCBlacklist.Contains(preyNPC.type))
+            {
+                if (preyNPC.AsFood().CannotBeEatenDueToShenanigans)
+                    return false;
+                if (V2.VoreNPCBlacklist is not null && V2.VoreNPCBlacklist.Count > 0 && V2.VoreNPCBlacklist.Contains(preyNPC.type))
 					return false;
 
 				bool tastesLikeSkittles = preyNPC.type == NPCID.HallowBoss && ModContent.GetInstance<V2ServerConfig>().EasilyEdibleEmpress;
@@ -1080,7 +1093,7 @@ namespace V2.PlayerHandling
 				if (V2.VoreNPCBlacklist is not null && V2.VoreProjectileBlacklist.Count > 0 && V2.VoreProjectileBlacklist.Contains(preyProjectile.type))
 					return false;
 
-				if (preyProjectile.AsFood().MaxHealth == -1)
+				if (preyProjectile.AsFood().MaxHealth == -1 && !pred.AsPred().FungalFairySetBonus)
 					return false;
 			}
 			else if (prey is Item preyItem)

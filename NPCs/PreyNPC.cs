@@ -38,8 +38,9 @@ namespace V2.NPCs
 	}
 
 	public partial class PreyNPC : GlobalNPC
-	{
-		public int EatenSafetyFrames { get; set; }
+    {
+        public bool CannotBeEatenDueToShenanigans { get; set; }
+        public int EatenSafetyFrames { get; set; }
 		public bool Digested { get; set; }
 
 		public delegate void DelegatePreyAI(NPC npc, Entity pred);
@@ -119,7 +120,7 @@ namespace V2.NPCs
 		{
 			npc.AsFood().Digested = false;
 
-			npc.AsFood().STR = (int)((double)npc.lifeMax / 40.0);
+			npc.AsFood().STR = (int)((double)npc.lifeMax / 40.0) + (int)((double)npc.damage / 25.0) + (int)((double)npc.AsFood().DefinedBaseSize / 25.0);
 			npc.AsFood().StruggleStrengthModifier = StatModifier.Default;
 
 			npc.AsFood().TakenDigestionDamageModifier = StatModifier.Default;

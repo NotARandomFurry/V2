@@ -41,10 +41,13 @@ namespace V2.UI.SizeScanners
 			for (int i = 0; i < Main.maxNPCs; i++)
 			{
 				NPC futureFood = Main.npc[i];
-				if (!futureFood.active || futureFood.CurrentCaptor() is not null)
+                if (!futureFood.active || futureFood.CurrentCaptor() is not null)
 					continue;
 
-				if (futureFood.Distance(player.TrueCenter()) >= maxEntityDistanceForDrawing)
+                if (futureFood.AsFood().CannotBeEatenDueToShenanigans)
+                    continue;
+
+                if (futureFood.Distance(player.TrueCenter()) >= maxEntityDistanceForDrawing)
 					continue;
 
 				string size = "[c/";

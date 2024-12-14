@@ -25,7 +25,7 @@ namespace V2.NPCs.Vanilla.Sky
 					npc.netUpdate = true;
 				}
 
-				float weightMovementModifier = (float)PredNPC.GetCurrentBellyWeight(npc) + (float)npc.AsPred().ExtraWeight;
+				float weightMovementModifier = ((float)PredNPC.GetCurrentBellyWeight(npc) + (float)npc.AsPred().ExtraWeight) * 0.8f;
 
 				npc.spriteDirection = npc.direction = (target.position.X >= npc.TrueCenter().X).ToDirectionInt();
 
@@ -53,14 +53,18 @@ namespace V2.NPCs.Vanilla.Sky
 				{
 					0 => 50,
 					1 => 40,
-					2 => 30,
-				};
+					2 => 26,
+                    3 => 14,
+                    4 => 12,
+                };
 				int flapChanceDenominator = npc.AsPred().GetVisualWeightStage.Invoke(npc) switch
-				{
-					0 => 60,
-					1 => 50,
-					2 => 40,
-				};
+                {
+                    0 => 60,
+                    1 => 50,
+                    2 => 36,
+                    3 => 22,
+                    4 => 14,
+                };
 				if (npc.TrueCenter().Distance(targetPos) < V2Utils.TileCountAsPixelCount(6.0))
 				{
 					minDelay = (int)Math.Round((float)minDelay * 0.60f);
@@ -73,7 +77,7 @@ namespace V2.NPCs.Vanilla.Sky
 				{
 					if (npc.TrueCenter().Distance(targetPos) < V2Utils.TileCountAsPixelCount(6.0))
 						SecondaryTimer++;
-					npc.velocity.Y = -3.2f / wingFlapWeightMovementModifier * wingFlapExtraModifier;
+					npc.velocity.Y = -3.2f / (wingFlapWeightMovementModifier * 0.8f) * wingFlapExtraModifier;
 				}
 			}
 		}

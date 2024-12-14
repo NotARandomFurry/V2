@@ -190,7 +190,7 @@ namespace V2.Projectiles.Voraria.Weapons.Summon
 
 			Projectile.AsPred().SmallBurps = Burps.Humanoid.Small;
 			Projectile.AsPred().StandardBurps = Burps.Humanoid.Standard;
-			Projectile.AsPred().BurpPitchOffset = 0.285f;
+			Projectile.AsPred().BurpPitchOffset = 0.4f;
 
 			Projectile.AsPred().GetPreyAbsorptionRate = GetPreyAbsorptionRate;
 
@@ -222,7 +222,7 @@ namespace V2.Projectiles.Voraria.Weapons.Summon
 		{
 			return Math.Min(
 				(int)Math.Floor(1.4 * Math.Sqrt(projectile.AsPred().ExtraWeight)),
-				7
+				8
 			);
 		}
 
@@ -263,7 +263,7 @@ namespace V2.Projectiles.Voraria.Weapons.Summon
 			}
 			if (ownerPlayer.AsV2Player().ShroomNecklace)
 			{
-                absorbRate *= 1.5f;
+                absorbRate *= 1.35f;
             }
 			return absorbRate;
 		}
@@ -520,7 +520,7 @@ namespace V2.Projectiles.Voraria.Weapons.Summon
 						}
 					}
                     Projectile.velocity = (Projectile.velocity * (inertia - 1) + vectorToIdlePosition) / inertia;
-					Projectile.velocity.Y -= 0.1667f + -SpeedMulti / 6f;
+                    if (!CheckForSolidFloor()) Projectile.velocity.Y -= 0.1667f + -SpeedMulti / 6f;
 
                 }
 				else if (Projectile.velocity == Vector2.Zero)
@@ -531,7 +531,8 @@ namespace V2.Projectiles.Voraria.Weapons.Summon
 			}
 			else Projectile.velocity *= 0.9f;
             Projectile.velocity.X = Math.Clamp(Projectile.velocity.X, -12, 12);
-            Projectile.velocity.Y = Math.Clamp(Projectile.velocity.Y, -12, 12) + (0.2f + -SpeedMulti / 5f);
+			if (!CheckForSolidFloor()) Projectile.velocity.Y = Math.Clamp(Projectile.velocity.Y, -12, 12) + (0.2f + -SpeedMulti / 5f);
+			else Projectile.velocity.Y = Math.Clamp(Projectile.velocity.Y, -12, 12);
 
         }
 		public void CHARGE(Player owner, Entity target, float SpeedMulti)
@@ -572,7 +573,8 @@ namespace V2.Projectiles.Voraria.Weapons.Summon
                 }
                 Projectile.velocity = (Projectile.velocity * (inertia - 1) + direction) / inertia;
 				Projectile.velocity.X = Math.Clamp(Projectile.velocity.X, -18, 18);
-				Projectile.velocity.Y = Math.Clamp(Projectile.velocity.Y, -18, 18) + (0.2f + -SpeedMulti / 5f);
+                if (!CheckForSolidFloor()) Projectile.velocity.Y = Math.Clamp(Projectile.velocity.Y, -18, 18) + (0.2f + -SpeedMulti / 5f);
+                else Projectile.velocity.Y = Math.Clamp(Projectile.velocity.Y, -18, 18);
             }
 		}
 		public void WaitOut(Player owner, float SpeedMulti)
@@ -593,7 +595,17 @@ namespace V2.Projectiles.Voraria.Weapons.Summon
         }
 		public bool CheckForSolidFloor()
 		{
-			if (Collision.SolidTiles(Projectile.position, Projectile.width, Projectile.height * 2, true)) return true;
+			int WeightOffset = 0;
+			switch (GetVisualWeightStage(Projectile))
+			{
+				case 0 or 1 or 2 or 3: WeightOffset = 0; break;
+                case 4: WeightOffset = 10; break;
+                case 5: WeightOffset = 20; break;
+                case 6: WeightOffset = 30; break;
+                case 7: WeightOffset = 40; break;
+                case 8: WeightOffset = 50; break;
+            }
+			if (Collision.SolidTiles(Projectile.position, Projectile.width, Projectile.height * 2 + WeightOffset, true)) return true;
 			return false;
 		}
 		public void CheckForSpore(Player owner)
@@ -629,6 +641,10 @@ namespace V2.Projectiles.Voraria.Weapons.Summon
                 case 5 or 6 or 7:
                     text += "_" + FairySize;
                     frameSize = 148;
+                    break;
+                case 8:
+                    text += "_" + FairySize;
+                    frameSize = 164;
                     break;
             }
             Vector2 Offset = new Vector2(-10, 0);
@@ -672,8 +688,8 @@ namespace V2.Projectiles.Voraria.Weapons.Summon
             if (pred is Player)
 			{
 				Player player = (Player)pred;
-                player.Heal(10);
-				if (Main.player[projectile.owner].AsV2Player().ShroomNecklace) player.AddBuff(ModContent.BuffType<SporeRegen>(), V2Utils.SensibleTime(seconds: 15));
+                player.Heal(15);
+				if (Main.player[projectile.owner].AsV2Player().ShroomNecklace) player.AddBuff(ModContent.BuffType<SporeRegen>(), V2Utils.SensibleTime(seconds: 12));
             }
         }
         public override bool? CanDamage()
@@ -713,14 +729,14 @@ namespace V2.Projectiles.Voraria.Weapons.Summon
 				Projectile.velocity += direction / 8f;
                 Projectile.velocity.X = Math.Clamp(Projectile.velocity.X, -5, 5);
                 Projectile.velocity.Y = Math.Clamp(Projectile.velocity.Y, -5, 5);
-				if (Projectile.Center.Distance(target.Center) <= 125)
+				if (Projectile.Center.Distance(target.Center) <= 150)
 				{
 					Projectile.velocity *= 0.93f;
 				}
                 if (Projectile.Hitbox.Intersects(target.Hitbox))
 				{
 					target.Heal(5);
-                    if (Main.player[Projectile.owner].AsV2Player().ShroomNecklace) target.AddBuff(ModContent.BuffType<SporeRegen>(), V2Utils.SensibleTime(seconds: 5));
+                    if (Main.player[Projectile.owner].AsV2Player().ShroomNecklace) target.AddBuff(ModContent.BuffType<SporeRegen>(), V2Utils.SensibleTime(seconds: 4));
                     ShroomFairy.DustEffect(Projectile);
 					Projectile.Kill();
 				}

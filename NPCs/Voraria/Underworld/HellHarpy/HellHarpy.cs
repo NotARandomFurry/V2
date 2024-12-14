@@ -48,7 +48,7 @@ namespace V2.NPCs.Voraria.Underworld.HellHarpy
             NPC.AsFood().DefinedBaseSize = 19.5;
             NPC.AsPred().WeightGainRatio = 0.111;
             NPC.AsPred().MaxStomachCapacity = 11.0;
-            NPC.AsPred().BaseStomachacheMeterCapacity = 475.0;
+            NPC.AsPred().BaseStomachacheMeterCapacity = 775.0;
 
             NPC.AsPred().DigestionType = EntityDigestionType.Acidic;
             NPC.AsPred().GetDigestionTickDamage = GetDigestionTickDamage;
@@ -153,7 +153,7 @@ namespace V2.NPCs.Voraria.Underworld.HellHarpy
                 }
                 foreach (var npc in Main.ActiveNPCs)
                 {
-                    if (npc.active && npc.type != NPCID.BurningSphere && npc.CurrentCaptor() is null && npc != NPC && npc.AsFood().DefinedEffectiveSize < 7 && PreyData.GetPreySize(npc) < NPC.AsPred().MaxStomachCapacity - PredNPC.GetCurrentBellyWeight(NPC))
+                    if (npc.active && npc.type != NPCID.BurningSphere && npc.CurrentCaptor() is null && npc != NPC && npc.AsFood().DefinedEffectiveSize < 7 && PreyData.GetPreySize(npc) < NPC.AsPred().MaxStomachCapacity - PredNPC.GetCurrentBellyWeight(NPC) && !npc.AsFood().CannotBeEatenDueToShenanigans)
                     {
                         float num3 = Vector2.DistanceSquared(center, npc.Center);
                         if (num3 < num)

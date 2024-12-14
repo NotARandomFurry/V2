@@ -212,8 +212,10 @@ namespace V2.Projectiles
 					return true;
 			}
 			else if (prey is NPC preyNPC)
-			{
-				if (V2.VoreNPCBlacklist is not null && V2.VoreNPCBlacklist.Count > 0 && V2.VoreNPCBlacklist.Contains(preyNPC.type))
+            {
+                if (preyNPC.AsFood().CannotBeEatenDueToShenanigans)
+                    return false;
+                if (V2.VoreNPCBlacklist is not null && V2.VoreNPCBlacklist.Count > 0 && V2.VoreNPCBlacklist.Contains(preyNPC.type))
 					return false;
 
 				bool tastesLikeSkittles = preyNPC.type == NPCID.HallowBoss && ModContent.GetInstance<V2ServerConfig>().EasilyEdibleEmpress;

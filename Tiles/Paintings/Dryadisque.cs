@@ -8,13 +8,12 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
 using V2.Core;
-using V2.Items.Voraria.Placeables;
 using V2.NPCs;
 using V2.Sounds.Vore;
 
 namespace V2.Tiles.Paintings
 {
-    public class MyFairy : ModTile
+    public class Dryadisque : ModTile
     {
         public override void SetStaticDefaults()
         {
@@ -24,36 +23,36 @@ namespace V2.Tiles.Paintings
 
             TileObjectData.newTile.CopyFrom(TileObjectData.Style3x3Wall);
             TileObjectData.newTile.CoordinateHeights = new[] { 16, 16, 16, 16 };
-            TileObjectData.newTile.Width = 4;
+            TileObjectData.newTile.Width = 6;
             TileObjectData.newTile.Height = 4;
 
-            TileObjectData.newTile.HookPostPlaceMyPlayer = new PlacementHook(ModContent.GetInstance<MyFairy_TileEntity>().Hook_AfterPlacement, -1, 0, true);
+            TileObjectData.newTile.HookPostPlaceMyPlayer = new PlacementHook(ModContent.GetInstance<Dryadisque_TileEntity>().Hook_AfterPlacement, -1, 0, true);
             TileObjectData.newTile.UsesCustomCanPlace = true;
 
             TileObjectData.addTile(Type);
 
             AddMapEntry(new Color(120, 85, 60), Language.GetText("MapObject.Painting"));
-            DustType = 41;
         }
         public override void KillMultiTile(int i, int j, int frameX, int frameY)
         {
-            ModContent.GetInstance<MyFairy_TileEntity>().Kill(i, j);
+            ModContent.GetInstance<Dryadisque_TileEntity>().Kill(i, j);
         }
         public override bool PreDraw(int i, int j, SpriteBatch spriteBatch)
         {
             Tile tile = Main.tile[i, j];
             if (TileEntity.ByPosition.TryGetValue(new Point16(i, j), out TileEntity tileEntity))
             {
-                if (tileEntity is MyFairy_TileEntity)
+                if (tileEntity is Dryadisque_TileEntity)
                 {
                     foreach (var npc in Main.ActiveNPCs)
                     {
-                        if (npc.active && (npc.position / 16).Distance(tileEntity.Position.ToVector2()) < 2f && npc.type == ModContent.NPCType<MyFairy_NPCEntity>())
+                        if (npc.active && (npc.position / 16).Distance(tileEntity.Position.ToVector2()) < 2f && npc.type == ModContent.NPCType<Dryadisque_NPCEntity>())
                         {
-                            int tumSize = MyFairy_NPCEntity.GetVisualBellySize(npc);
-                            int weightSize = MyFairy_NPCEntity.GetVisualWeightStage(npc);
-                            Texture2D texture = ModContent.Request<Texture2D>("V2/Tiles/Paintings/MyFairy_SpriteSheet").Value;
-                            Rectangle sourceRect = new Rectangle(64 * weightSize, 64 * tumSize, 64, 64);
+                            int XOffset = 0;
+                            if (npc.ai[0] <= 6) XOffset = 96;
+                            int tumSize = Dryadisque_NPCEntity.GetVisualBellySize(npc);
+                            Texture2D texture = ModContent.Request<Texture2D>("V2/Tiles/Paintings/Dryadisque_SpriteSheet").Value;
+                            Rectangle sourceRect = new Rectangle(XOffset, 64 * tumSize, 96, 64);
                             Vector2 zero = Main.drawToScreen ? Vector2.Zero : new Vector2(Main.offScreenRange);
                             spriteBatch.Draw(
                                 texture,
@@ -67,7 +66,7 @@ namespace V2.Tiles.Paintings
             return false;
         }
     }
-    public class MyFairy_TileEntity : ModTileEntity
+    public class Dryadisque_TileEntity : ModTileEntity
     {
         public NPC connectedNPC = null;
 
@@ -77,7 +76,7 @@ namespace V2.Tiles.Paintings
             {
                 Activate();
             }
-            else if (!connectedNPC.active || connectedNPC.type != ModContent.NPCType<MyFairy_NPCEntity>())
+            else if (!connectedNPC.active || connectedNPC.type != ModContent.NPCType<Dryadisque_NPCEntity>())
             {
                 Activate();
             }
@@ -87,17 +86,16 @@ namespace V2.Tiles.Paintings
         {
             foreach (var npc in Main.ActiveNPCs)
             {
-                if (npc.active && (npc.position / 16).Distance(Position.ToVector2()) < 2f && npc.type == ModContent.NPCType<MyFairy_NPCEntity>())
+                if (npc.active && (npc.position / 16).Distance(Position.ToVector2()) < 2f && npc.type == ModContent.NPCType<Dryadisque_NPCEntity>())
                 {
                     connectedNPC = npc;
                     return;
                 }
             }
-            //ill be honest i dont exactly know the grounds for the offset for the npc but i *think* its like, half of the X tiles and all Y tiles
-            int num = NPC.NewNPC(new EntitySource_TileEntity(this, null), (int)(Position.X * 16) + 32, (int)(Position.Y * 16) + 64, ModContent.NPCType<MyFairy_NPCEntity>());
+
+            int num = NPC.NewNPC(new EntitySource_TileEntity(this, null), (int)(Position.X * 16) + 48, (int)(Position.Y * 16) + 64, ModContent.NPCType<Dryadisque_NPCEntity>());
             connectedNPC = Main.npc[num];
             Main.npc[num].netUpdate = true;
-                
             if (Main.netMode != NetmodeID.MultiplayerClient)
             {
                 NetMessage.SendData(MessageID.TileEntitySharing, -1, -1, null, ID, (float)Position.X, (float)Position.Y);
@@ -106,18 +104,24 @@ namespace V2.Tiles.Paintings
         public override bool IsTileValidForEntity(int x, int y)
         {
             Tile tile = Main.tile[x, y];
-            return tile.HasTile && tile.TileType == ModContent.TileType<MyFairy>();
+            return tile.HasTile && tile.TileType == ModContent.TileType<Dryadisque>();
         }
         public override int Hook_AfterPlacement(int i, int j, int type, int style, int direction, int alternate)
         {
             if (Main.netMode == NetmodeID.MultiplayerClient)
             {
-                int width = 4;
+                // Sync the entire multitile's area.  Modify "width" and "height" to the size of your multitile in tiles
+                int width = 6;
                 int height = 4;
                 NetMessage.SendTileSquare(Main.myPlayer, i, j, width, height);
+
+                // Sync the placement of the tile entity with other clients
+                // The "type" parameter refers to the tile type which placed the tile entity, so "Type" (the type of the tile entity) needs to be used here instead
                 NetMessage.SendData(MessageID.TileEntityPlacement, number: i, number2: j, number3: Type);
                 return -1;
             }
+
+            // ModTileEntity.Place() handles checking if the entity can be placed, then places it for you
             int placedEntity = Place(i, j);
             return placedEntity;
         }
@@ -129,13 +133,13 @@ namespace V2.Tiles.Paintings
             }
         }
     }
-    public class MyFairy_NPCEntity : ModNPC
+    public class Dryadisque_NPCEntity : ModNPC
     {
         public override string Texture => "V2/Tiles/Paintings/InvisibleImage";
         public override void SetDefaults()
         {
             NPC.friendly = true;
-            NPC.width = 64;
+            NPC.width = 96;
             NPC.height = 64;
             NPC.aiStyle = -1;
             NPC.damage = 0;
@@ -148,16 +152,16 @@ namespace V2.Tiles.Paintings
 
             NPC.AsFood().CannotBeEatenDueToShenanigans = true;
 
-            NPC.AsFood().DefinedBaseSize = 8;
-            NPC.AsPred().WeightGainRatio = 0.4;
-            NPC.AsPred().MaxStomachCapacity = 1.5;
-            NPC.AsPred().BaseStomachacheMeterCapacity = 425.0;
+            NPC.AsPred().WeightGainRatio = 0.111;
+            NPC.AsPred().MaxStomachCapacity = 12.50;
+            NPC.AsPred().BaseStomachacheMeterCapacity = 750.0;
 
             NPC.AsPred().CanBeForceFed = CanPaintingBeForceFed;
 
             NPC.AsPred().DigestionType = EntityDigestionType.Acidic;
             NPC.AsPred().GetDigestionTickDamage = GetDigestionTickDamage;
             NPC.AsPred().GetDigestionTickRate = GetDigestionTickRate;
+
             NPC.AsPred().GetPreyAbsorptionRate = GetPreyAbsorptionRate;
 
             NPC.AsPred().GetVisualBellySize = GetVisualBellySize;
@@ -176,8 +180,10 @@ namespace V2.Tiles.Paintings
         public static bool CanPaintingBeForceFed(NPC npc) => true;
         public override void AI()
         {
+            NPC.ai[0]--;
+            if (NPC.ai[0] <= 0) NPC.ai[0] = Main.rand.Next(300, 600);
             Tile Painting = Main.tile[NPC.position.ToTileCoordinates()];
-            if (!Painting.HasTile || Painting.TileType != ModContent.TileType<MyFairy>())
+            if (!Painting.HasTile || Painting.TileType != ModContent.TileType<Dryadisque>())
             {
                 NPC.active = false;
             }
@@ -186,15 +192,15 @@ namespace V2.Tiles.Paintings
         public static int GetVisualBellySize(NPC npc)
         {
             return Math.Min(
-                (int)Math.Floor(4 * Math.Sqrt(PredNPC.GetCurrentBellyWeight(npc))),
-                4
+                (int)Math.Floor(3 * Math.Sqrt(PredNPC.GetCurrentBellyWeight(npc))),
+                7
             );
         }
         public static int GetVisualWeightStage(NPC npc)
         {
             return Math.Min(
                 (int)Math.Floor(2 * Math.Sqrt(npc.AsPred().ExtraWeight)),
-                4
+                0
             );
         }
         public override bool NeedSaving() => true;
@@ -204,6 +210,7 @@ namespace V2.Tiles.Paintings
         public static double GetPreyAbsorptionRate(NPC npc)
         {
             double baseAbsorptionRate = 1.0 / (double)V2Utils.SensibleTime(
+                minutes: 0,
                 seconds: 30
             );
             return baseAbsorptionRate;
