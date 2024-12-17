@@ -18,7 +18,7 @@ namespace V2.PlayerHandling.PredPlayerGoals.Amateur
 		public override bool Available(Player pred) =>
 			pred.AsV2Player().HasVisitedLocation("hell")
 		 || pred.HasItemInInventoryOrOpenVoidBag(ItemID.LavaBucket)
-		 || pred.HasItemInInventoryOrOpenVoidBag(ItemID.LavaCharm)
+		 || pred.lavaMax > 0
 		 || Complete(pred);
 
 		public override int StatPointsFromCompletion => 9;
