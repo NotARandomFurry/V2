@@ -45,9 +45,11 @@ namespace V2.UI.StruggleSystem
 			);
 			bottomCenter.X += 16;
 			bottomCenter.X -= 80;
-			bottomCenter.Y -= 82;
-			bottomCenter += Main.LocalPlayer.Center - (Main.screenPosition + new Vector2(Main.screenWidth / 2, Main.screenHeight / 2));
+			bottomCenter.Y -= 55 * Main.GameZoomTarget;
+			bottomCenter += Main.LocalPlayer.Center - (Main.screenPosition + new Vector2(Main.screenWidth / 2 * Main.UIScale, Main.screenHeight / 2));
 
+			bottomCenter.Y /= Main.UIScale;
+			
 			spriteBatch.Draw(
 				_struggleSystemBackdrop.Value,
 				bottomCenter,
