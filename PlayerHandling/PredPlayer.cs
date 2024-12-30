@@ -1111,7 +1111,7 @@ namespace V2.PlayerHandling
 			if (pred.AsPred().StomachCapacity != -1 && PreyData.GetPreySize(prey) > pred.AsPred().StomachCapacity - pred.AsPred().StomachFullness)
 				return false;
 
-            if (pred.AsPred().Stomachache >= pred.AsPred().StomachacheMeterCapacity)
+            if (pred.AsPred().StomachacheMeterCapacity != -1 && pred.AsPred().Stomachache > pred.AsPred().StomachacheMeterCapacity)
                 return false;
 
             return true;

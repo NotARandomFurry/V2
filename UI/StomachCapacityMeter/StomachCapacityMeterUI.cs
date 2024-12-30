@@ -96,8 +96,10 @@ namespace V2.UI.StomachCapacityMeter
 			);
 			topLeftCorner.X -= 20 + (_capacitySegmentsCount * (_stomachCapacityPanelMiddle.Value.Width / 2));
 			topLeftCorner.Y += 32 * Main.GameZoomTarget;
-			topLeftCorner += Main.LocalPlayer.Center - (Main.screenPosition + new Vector2(Main.screenWidth / 2, Main.screenHeight / 2));
-
+			topLeftCorner += Main.LocalPlayer.Center - (Main.screenPosition + new Vector2(Main.screenWidth / 2 * Main.UIScale, Main.screenHeight / 2));
+			
+			topLeftCorner.Y /= Main.UIScale;
+			
 			for (int i = 0; i < _capacitySegmentsCount; i++)
 			{
 				spriteBatch.Draw(

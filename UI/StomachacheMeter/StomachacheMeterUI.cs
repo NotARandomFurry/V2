@@ -166,8 +166,10 @@ namespace V2.UI.StomachacheMeter
 				);
 				topLeftCorner.X -= 14 + (_stomachacheSegments * (_stomachachePanelMiddle.Value.Width / 2));
 				topLeftCorner.Y -= 40 * Main.GameZoomTarget;
-				topLeftCorner += pred.Center - (Main.screenPosition + new Vector2(Main.screenWidth / 2, Main.screenHeight / 2));
+				topLeftCorner += pred.Center - (Main.screenPosition + new Vector2(Main.screenWidth / 2 * Main.UIScale, Main.screenHeight / 2));
 
+				topLeftCorner.Y /= Main.UIScale;
+				
 				for (int i = 0; i < _stomachacheSegments; i++)
 				{
 					spriteBatch.Draw(

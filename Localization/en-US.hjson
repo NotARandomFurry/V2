@@ -4567,7 +4567,11 @@ Mods: {
 				Census.SpawnCondition: Find and free her from the Jungle's deeper caverns in Hardmode
 			}
 
-			Echo.DisplayName: Ghost
+			Echo: {
+				DisplayName: Ghost
+				Census.SpawnCondition: Conditions unknown
+			}
+
 			MyFairy_NPCEntity.DisplayName: my fairy
 			Dryadisque_NPCEntity.DisplayName: Dryad Painting
 		}
