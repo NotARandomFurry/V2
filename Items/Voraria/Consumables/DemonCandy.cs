@@ -25,6 +25,27 @@ namespace V2.Items.Voraria.Consumables
         public static int DigestedRegenTime => V2Utils.SensibleTime(minutes: 5);
         public override LocalizedText DisplayName => Language.GetText("Mods.V2.ItemName.Voraria.Consumables.DemonCandy");
 		public override LocalizedText Tooltip => Language.GetText("Mods.V2.ItemName.Voraria.Consumables.DemonCandy");
+		public override void SetStaticDefaults()
+		{
+			Item.ResearchUnlockCount = 20;
+		}
+		public override void SetDefaults()
+		{
+            Item.consumable = true;
+            Item.width = 32;
+			Item.height = 32;
+			Item.maxStack = Item.CommonMaxStack;
+
+			Item.value = Item.buyPrice(0, 0, 50);
+			Item.rare = ItemRarityID.LightRed;
+
+            Item.AsFood().MaxHealth = 500;
+            Item.AsFood().Size = 1;
+
+            Item.AsFood().EdibleOnUse = true;
+
+            Item.AsFood().UpdateInStomach += UpdateInStomach;
+        }
 		public override void PostUpdate()
 		{
 			if (Main.netMode != NetmodeID.MultiplayerClient)
@@ -45,24 +66,6 @@ namespace V2.Items.Voraria.Consumables
 				}
 			}
 		}
-
-		public override void SetDefaults()
-		{
-            Item.consumable = true;
-            Item.width = 32;
-			Item.height = 32;
-			Item.maxStack = Item.CommonMaxStack;
-
-			Item.value = Item.buyPrice(0, 0, 50);
-			Item.rare = ItemRarityID.LightRed;
-
-            Item.AsFood().MaxHealth = 500;
-            Item.AsFood().Size = 1;
-
-            Item.AsFood().EdibleOnUse = true;
-
-            Item.AsFood().UpdateInStomach += UpdateInStomach;
-        }
         public static void UpdateInStomach(Entity prey, Entity pred, bool dead)
         {
             if (dead)

@@ -29,6 +29,7 @@ namespace V2.Items.Voraria.Accessories
 			DrawAnimationVertical anim = new DrawAnimationVertical(6, 12);
 			Main.RegisterItemAnimation(Type, anim);
 			ItemID.Sets.AnimatesAsSoul[Type] = true;
+			Item.ResearchUnlockCount = 1;
 		}
 
 		public override void SetDefaults()

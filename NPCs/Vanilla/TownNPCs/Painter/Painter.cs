@@ -155,6 +155,9 @@ namespace V2.NPCs.Vanilla.TownNPCs.Painter
 			if (npc.CurrentCaptor() is not null)
 				return;
 
+			if (Main.GameUpdateCount % 60 != 0)
+				return;
+
 			static void RollForRandomGulp(ref bool gulp) => gulp |= Main.rand.NextBool(4, 200);
 
 			List<NPC> nearbyResidentNPCs = npc.GetNearbyResidentNPCs(out int npcsWithinHouse, out int npcsWithinVillage);

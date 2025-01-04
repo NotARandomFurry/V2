@@ -22,7 +22,7 @@ namespace V2.Items.Voraria.Consumables.PermanentUpgrades
 		public override LocalizedText Tooltip => Language.GetText("Mods.V2.ItemTooltip.Voraria.Consumables.PermanentUpgrades.PureSwallowBoost1.Short");
 		public override void SetStaticDefaults()
 		{
-			Item.ResearchUnlockCount = 20;
+			Item.ResearchUnlockCount = 1;
 
 			ItemID.Sets.DrinkParticleColors[Type] = new Color[3] {
 				new Color(121, 255, 76),

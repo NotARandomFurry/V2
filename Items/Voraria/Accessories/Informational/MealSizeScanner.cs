@@ -25,13 +25,10 @@ namespace V2.Items.Voraria.Accessories.Informational
 		public override bool IsLoadingEnabled(Mod mod) => !V2.GetFooled;
 		public override LocalizedText DisplayName => Language.GetText("Mods.V2.ItemName.Voraria.Accessories.Informational.MealSizeScanner");
 		public override LocalizedText Tooltip => Language.GetText("Mods.V2.ItemTooltip.Voraria.Accessories.Informational.MealSizeScanner.Short");
-		// public override string Texture => "V2/Items/UnspritedItem";
 
 		public override void SetStaticDefaults()
 		{
-			/*DrawAnimationVertical anim = new DrawAnimationVertical(6, 12);
-			Main.RegisterItemAnimation(Type, anim);
-			ItemID.Sets.AnimatesAsSoul[Type] = true;*/
+			Item.ResearchUnlockCount = 1;
 
 			ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<PredCapacityScanner>();
 		}

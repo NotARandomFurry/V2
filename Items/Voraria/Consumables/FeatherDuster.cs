@@ -22,6 +22,10 @@ namespace V2.Items.Voraria.Consumables
 		public override bool IsLoadingEnabled(Mod mod) => !V2.GetFooled;
 		public override LocalizedText DisplayName => Language.GetText("Mods.V2.ItemName.Voraria.Consumables.FeatherDuster");
 		public override LocalizedText Tooltip => Language.GetText("Mods.V2.ItemTooltip.Voraria.Consumables.FeatherDuster.Short");
+		public override void SetStaticDefaults()
+		{
+			Item.ResearchUnlockCount = 99;
+		}
 		public override void SetDefaults()
 		{
 			Item.consumable = true;

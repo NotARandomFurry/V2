@@ -65,7 +65,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Painter
 					painterChatPool.AddRange([
 						"Tonight gives me a lot of inspiration. Inspiration to make people [c/FF0000:my beautifully blood-red meals!]",
 						"If you look out at the [c/FF0000:yearning, hungering] moon in the sky, you can see it glint red onto the rivers! It's a [c/FF0000:truly great] piece idea.",
-						"These sorts of nights are great for finding [c/FF0000:vampires] to paint. They're all REALLY pretty...[c/FF0000:especially all the tasty girls...]",
+						"These sorts of nights are great for finding [c/FF0000:vampires] to paint. They're all REALLY pretty...\n[c/FF0000:Especially all the tasty girls...]",
 					]);
 				}
 				else
@@ -79,7 +79,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Painter
 					if (!player.Male)
 					{
 						painterChatPool.AddRange([
-							"Hm? Do I need a meal? Well...I think just painting you will do fine!...and it helps that you look so...SO good...a- as a subject, of course!",
+							"Hm? Do I need a meal? Well...I think just painting you will do fine!...and it helps that you look so...so, SO good...a- as a subject, of course!",
 						]);
 					}
 					else

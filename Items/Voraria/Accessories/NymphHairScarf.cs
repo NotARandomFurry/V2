@@ -21,6 +21,10 @@ namespace V2.Items.Voraria.Accessories
 
 		public override LocalizedText DisplayName => Language.GetText("Mods.V2.ItemName.Voraria.Accessories.NymphHairScarf");
 		public override LocalizedText Tooltip => Language.GetText("Mods.V2.ItemTooltip.Voraria.Accessories.NymphHairScarf.Short");
+		public override void SetStaticDefaults()
+		{
+			Item.ResearchUnlockCount = 1;
+		}
 		public override void SetDefaults()
 		{
 			Item.accessory = true;

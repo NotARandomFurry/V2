@@ -23,8 +23,10 @@ namespace V2.Items.Voraria.Consumables.PermanentUpgrades.Jujus
 		public override LocalizedText Tooltip => Language.GetText("Mods.V2.ItemTooltip.Voraria.Consumables.PermanentUpgrades.Jujus.BlankJuju");
 
         public override void SetStaticDefaults()
-        {
-            DrawAnimationVertical anim = new DrawAnimationVertical(8, 2);
+		{
+			Item.ResearchUnlockCount = 1;
+
+			DrawAnimationVertical anim = new DrawAnimationVertical(8, 2);
             Main.RegisterItemAnimation(Type, anim);
             ItemID.Sets.AnimatesAsSoul[Type] = true;
 

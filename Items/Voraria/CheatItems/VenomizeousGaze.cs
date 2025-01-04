@@ -22,7 +22,10 @@ namespace V2.Items.Voraria.CheatItems
 		public override bool IsLoadingEnabled(Mod mod) => !V2.GetFooled;
 		public override LocalizedText DisplayName => Language.GetText("Mods.V2.ItemName.Voraria.CheatItems.VenomDevItem");
 		public override LocalizedText Tooltip => Language.GetText("Mods.V2.ItemTooltip.Voraria.CheatItems.VenomDevItem.Short");
-		// override UpdateV
+		public override void SetStaticDefaults()
+		{
+			Item.ResearchUnlockCount = 0;
+		}
 		public override void SetDefaults()
 		{
 			Item.accessory = true;

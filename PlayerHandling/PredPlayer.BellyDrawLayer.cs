@@ -49,40 +49,24 @@ public class LayFlatDrawLayer : PlayerDrawLayer
         if (drawInfo.drawPlayer.AsPred().IsLayingOnTum && drawInfo.drawPlayer.AsPred().Venomizeous)
         {
             drawInfo.Position.X += 20;
-            // drawInfo.Position.Y += drawInfo.drawPlayer.width * 1;
-
-            // drawInfo.drawPlayer.bodyFrame = drawInfo.drawPlayer.body
-            // drawInfo.drawPlayer.bodyVelocity = Vector2.Zero;
-
             drawInfo.rotationOrigin = drawInfo.drawPlayer.Size / 2;
-            
-
-
             drawInfo.rotation += drawInfo.drawPlayer.direction * MathHelper.PiOver2;
-
             // drawInfo.drawPlayer.fullRotation = drawInfo.drawPlayer.direction * MathHelper.PiOver2;
             drawInfo.Position.Y += 4;
             if (drawInfo.drawPlayer.direction == 1)
             {
-                // drawInfo.Position.Y -= BellyDrawLayer.LayingBelly.RestingHeight;
                 drawInfo.Position.X -= drawInfo.drawPlayer.height / 2f;
             }
             else
             {
                 drawInfo.Position.X -= drawInfo.drawPlayer.height;
-
                 drawInfo.Position.X += drawInfo.drawPlayer.height / 2f;
             }
             
-            // drawInfo.Position.Y -= drawInfo
-
             drawInfo.Position.Y -= BellyDrawLayer.LayingBelly.RestingHeight;
             drawInfo.Position.Y += (BellyDrawLayer.LayingBelly.RestingHeight - BellyDrawLayer.LayingBelly.OffsetHeight) * 2;
-
-            // Vector2 p = BellyDrawLayer.RegularBelly.getPositionAtFeetOfPlayer(ref drawInfo, false);
-
-            drawInfo.Position.Y = (int)(drawInfo.Position.Y - 1);
-            drawInfo.Position.X = (int)(drawInfo.Position.X - 1);
+			drawInfo.Position.Y -= 1;
+			drawInfo.Position.X -= 1;
             
             V2Utils.DebugPointMarker(drawInfo.Position - Main.screenPosition);
         }
@@ -97,14 +81,10 @@ public class BellyDrawLayer : PlayerDrawLayer
     private static Texture2D RequestTexture(string path)
     {
         if (TumSpritesCache.TryGetValue(path, out Texture2D result))
-        {
             return result;
-        }
         
         result = ModContent.Request<Texture2D>(path, AssetRequestMode.ImmediateLoad).Value;
         TumSpritesCache[path] = result;
-        
-
         return result;
     }
 
@@ -150,7 +130,7 @@ public class BellyDrawLayer : PlayerDrawLayer
         new LayingBelly() 
     ];
 
-    private void DrawPlayerBelly(ref PlayerDrawSet drawInfo, int size, int frame)
+    private static void DrawPlayerBelly(ref PlayerDrawSet drawInfo, int size, int frame)
     {
         foreach (BellyDrawer bellyDrawer in BellyDrawers)
         {
@@ -170,8 +150,6 @@ public class BellyDrawLayer : PlayerDrawLayer
         var player = drawInfo.drawPlayer;
         var tumSize = player.AsPred().StomachSize;
         // int Frame = getFrameForBelly(drawInfo.drawPlayer);
-
-
         if (V2.GetFooled)
         {
             var spriteEffects = player.direction switch
@@ -200,9 +178,7 @@ public class BellyDrawLayer : PlayerDrawLayer
             drawInfo.DrawDataCache.Add(tumDraw);
         }
         else
-        {
-            DrawPlayerBelly(ref drawInfo, tumSize, getFrameForBelly(player));
-        }
+			DrawPlayerBelly(ref drawInfo, tumSize, getFrameForBelly(player));
     }
 
     /// <summary>

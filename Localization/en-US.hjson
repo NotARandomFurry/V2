@@ -281,6 +281,11 @@ Mods: {
 				By holding the Eat Items keybind and pressing Swallow while hovering over an item, you can send it right into your belly!
 				Several items will also have unique effects when eaten and digested...be sure to check out what your snacks do in their tooltips!
 				'''
+			YouAreNeverSafe:
+				'''
+				Don't ever get too comfortable with how established you are in the world!
+				Anything, and we do mean ANYTHING, can eat you if you're too unlucky a prey, or too overconfident a pred.
+				'''
 		}
 
 		PredStatsMenu: {
@@ -3131,7 +3136,7 @@ Mods: {
 								Long:
 									'''
 									This item can be fed to {PaperMaidName}, the paper maid summoned by the [c/{$Mods.V2.CommonColorCodes.DoSomething}:{$Mods.V2.ItemName.Voraria.Weapons.Summon.PaperMaidSummon}], by right-clicking on her with it.
-									Once she fully digests this item, {PaperMaidName} will permanently gain automagic self-lamination, conferring the following buffs:
+									Once she fully digests this item, {PaperMaidName} will permanently gain automagic self-lamination, conferring to her the following buffs:
 									> +{LaminatedHealth} health.
 									> +{LaminatedStomachCapacity} stomach capacity.
 									> +{LaminatedStomachacheMeterCapacity} stomachache meter capacity.
@@ -3140,7 +3145,7 @@ Mods: {
 								Flavor:
 									'''
 									This small device, a marvel of magical conduction cross-bred with machine lamination, is designed to be able to laminate anything and everything simply by placing the desired item inside it and waiting.
-									Early prototypes erroneously proved capable of accepting people as input and laminating. These prototypes have since been stored in their creator's personal stash for later testing and revision.
+									Early prototypes proved incapable of accepting people as input and laminating. These prototypes have since been stored in their creator's personal stash for later dismantling.
 									That said, while lamination is often used as a tool to hunt origami creations in the wild, fallen off trading caravans and originally left over from Sveetia's annual Sugar Crane Festival, it is also used by the Sveetian people to reinforce their greatest works.
 									'''
 							}
