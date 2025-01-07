@@ -63,6 +63,7 @@ namespace V2.NPCs
 		public float TargetRange { get; set; }
 		public bool TargetRequiresLineOfSight { get; set; }
 		public TargetType TargetType { get; set; }
+		public TargetPriorityLevel TargetPriority { get; set; }
 
 		public int Aggro { get; set; }
 
@@ -80,6 +81,7 @@ namespace V2.NPCs
 			TargetRange = 0f;
 			TargetRequiresLineOfSight = false;
 			TargetType = TargetType.None;
+			TargetPriority = TargetPriorityLevel.Neutral;
 
 			Aggro = 0;
 

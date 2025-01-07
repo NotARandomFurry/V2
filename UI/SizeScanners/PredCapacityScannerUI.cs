@@ -54,26 +54,30 @@ namespace V2.UI.SizeScanners
 
 				if (futurePred.AsPred().GetDigestionTickDamage is null || futurePred.AsPred().GetDigestionTickRate is null)
 					size = "[c/FF0000:N/A]";
+				else if (futurePred.AsPred().MaxStomachCapacity >= 9999999.0)
+					size = "[c/00FFFF:∞]";
 				else
 				{
-					if (futurePredGutCapacity < playerSize)
-						size += "FF00";
+					if (player.AsFood().PerfectMeal)
+						size += "00FFFF";
+					else if (futurePredGutCapacity < playerSize)
+						size += "FF0000";
 					else
 					{
 						double futurePredGutFreeRoom = futurePredGutCapacity - futurePredGutFullness;
 						double futurePredGutTickDamage = Math.Max(futurePred.AsPred().GetDigestionTickDamage.Invoke(futurePred, playerAsFood) - player.statDefense, 0);
 						double futurePredGutDPS = futurePredGutTickDamage * futurePred.AsPred().GetDigestionTickRate.Invoke(futurePred, playerAsFood);
 						if (futurePredGutFreeRoom < playerSize)
-							size += "FFFF";
+							size += "FFFF00";
 						else if (futurePredGutTickDamage <= 0)
-							size += "FFFF";
+							size += "FFFF00";
 						else if (player.statLife > futurePredGutDPS * 60.0)
-							size += "FFFF";
+							size += "FFFF00";
 						else
-							size += "00FF";
+							size += "00FF00";
 					}
 
-					size += "00:" + futurePredGutCapacity + "]";
+					size += ":" + futurePredGutCapacity + "]";
 				}
 
 				ChatManager.DrawColorCodedStringWithShadow(

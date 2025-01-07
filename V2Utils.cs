@@ -161,6 +161,13 @@ namespace V2
 				NPCID.SquirrelGold,
 			];
 
+			public static List<int> LivingWeapons =>
+			[
+				NPCID.EnchantedSword,
+				NPCID.CursedHammer,
+				NPCID.CrimsonAxe,
+			];
+
 			public static List<int> Mimics =>
 			[
 				NPCID.Mimic,

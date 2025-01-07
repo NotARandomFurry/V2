@@ -25,7 +25,7 @@ namespace V2.Items.Voraria.Consumables.PermanentUpgrades.Jujus
         public static int ACIBonus => 8;
         public static float StruggleBonus => 1f;
         public static int PermACIBonus => 2;
-        public static float PermStruggleBonus => 25f;
+        public static float PermStruggleBonus => 0.25f;
 
         public override void SetStaticDefaults()
 		{

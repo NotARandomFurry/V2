@@ -281,6 +281,11 @@ Mods: {
 				Если удерживать клавишу Съесть предметы и нажать Проглотить при наведении на предмет, вы можете отправить его прямо себе в живот!
 				Некоторые предметы также обладают уникальными эффектами при поедании и переваривании... обязательно посмотрите, что делают ваши закуски в их подсказках!
 				'''
+			/* YouAreNeverSafe:
+				'''
+				Don't ever get too comfortable with how established you are in the world!
+				Anything, and we do mean ANYTHING, can eat you if you're too unlucky a prey, or too overconfident a pred.
+				''' */
 		}
 
 		PredStatsMenu: {

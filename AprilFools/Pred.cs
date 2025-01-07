@@ -28,8 +28,8 @@ namespace V2.AprilFools
 			npc.AsPred().CanSwallowBosses = true;
 			npc.AsPred().BigGulps = Gulps.AprilFools;
 
-			npc.AsPred().BaseStomachacheMeterCapacity = 9999999;
-			npc.AsPred().MaxStomachCapacity = 9999999;
+			npc.AsPred().BaseStomachacheMeterCapacity = 9999999.0;
+			npc.AsPred().MaxStomachCapacity = 9999999.0;
 
 			npc.AsPred().GetDigestionTickDamage = GetDigestionTickDamage;
 			npc.AsPred().GetDigestionTickRate = GetDigestionTickRate;

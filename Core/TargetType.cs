@@ -14,4 +14,12 @@ namespace V2.Core
 		Projectile,
 		Other,
 	}
+	public enum TargetPriorityLevel
+	{
+		None,
+		Neutral,
+		High,
+		VeryHigh,
+		Favorite,
+	}
 }

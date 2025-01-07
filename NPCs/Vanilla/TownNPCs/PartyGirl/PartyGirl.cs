@@ -92,8 +92,8 @@ namespace V2.NPCs.Vanilla.TownNPCs.PartyGirl
 
 			npc.AsFood().DefinedBaseSize = 1.0;
 			npc.AsPred().WeightGainRatio = 0.28;
-			npc.AsPred().MaxStomachCapacity = 999999.0;
-			npc.AsPred().BaseStomachacheMeterCapacity = 999999.0;
+			npc.AsPred().MaxStomachCapacity = 9999999.0;
+			npc.AsPred().BaseStomachacheMeterCapacity = 9999999.0;
 
 			npc.AsPred().BigGulps = Gulps.Standard;
 			npc.AsPred().CanSwallowBosses = true;

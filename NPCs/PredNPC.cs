@@ -66,7 +66,7 @@ namespace V2.NPCs
 		}
 
 		/// <summary>
-		/// Denotes whether or not an NPC has eaten someone yet.<br/>
+		/// Denotes whether or not an NPC has eaten someone friendly yet.<br/>
 		/// NPCs which have digested a player or townsperson at least once since spawning do not despawn naturally and are saved with the world.<br/>
 		/// </summary>
 		public bool AteFriendly { get; set; }

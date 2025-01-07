@@ -50,22 +50,31 @@ namespace V2.NPCs
 			npc.AsV2NPC().BehaviorPattern.DoBehavior(npc, target);
 		}
 
-		public static void TryFindNewTarget(this NPC npc, List<(TargetType, int)> specificWhitelist = null)
+		public static void TryFindNewTarget(this NPC npc, List<(TargetType, int, TargetPriorityLevel)> specificWhitelistInput = null)
 		{
-			List<(int index, TargetType type, int aggro, float dist)> targetList = new List<(int, TargetType, int, float)>();
+			List<(TargetType Type, int ID, TargetPriorityLevel PriorityLevel)> specificWhitelist = new List<(TargetType, int, TargetPriorityLevel)>(specificWhitelistInput);
+			if (V2.BlacklistsActive)
+			{
+				specificWhitelist.RemoveAll(x => x.Type == TargetType.NPC && V2.VoreNPCBlacklist.Contains(x.ID));
+				specificWhitelist.RemoveAll(x => x.Type == TargetType.Projectile && V2.VoreProjectileBlacklist.Contains(x.ID));
+			}
+
+			List<(int index, TargetType type, int aggro, float dist, TargetPriorityLevel priority)> targetList = [];
 			foreach (Player targetPlayer in Main.ActivePlayers)
 			{
 				if (targetPlayer.dead || targetPlayer.npcTypeNoAggro[npc.type] || targetPlayer.aggro <= -1000)
 					continue;
 
+				TargetPriorityLevel priority = TargetPriorityLevel.Neutral;
 				bool inSpecificWhitelist = false;
 				if (specificWhitelist is not null)
 				{
-					foreach ((TargetType type, int ID) in specificWhitelist)
+					foreach ((TargetType type, int ID, TargetPriorityLevel priorityLevel) in specificWhitelist)
 					{
 						if (type == TargetType.Player)
 						{
 							inSpecificWhitelist = true;
+							priority = priorityLevel;
 							break;
 						}
 					}
@@ -85,21 +94,23 @@ namespace V2.NPCs
 					canTarget &= Collision.CanHitLine(npc.TrueCenter(), npc.width, npc.height, targetPlayer.TrueCenter(), targetPlayer.width, targetPlayer.height);
 
 				if (canTarget)
-					targetList.Add((targetPlayer.whoAmI, TargetType.Player, targetPlayer.aggro, distanceToTarget));
+					targetList.Add((targetPlayer.whoAmI, TargetType.Player, targetPlayer.aggro, distanceToTarget, priority));
 			}
 			foreach (NPC targetNPC in Main.ActiveNPCs)
 			{
 				if (targetNPC.life <= 0 || targetNPC.AsV2NPC().Aggro <= -1000)
 					continue;
 
+				TargetPriorityLevel priority = TargetPriorityLevel.Neutral;
 				bool inSpecificWhitelist = false;
 				if (specificWhitelist is not null)
 				{
-					foreach ((TargetType type, int ID) in specificWhitelist)
+					foreach ((TargetType type, int ID, TargetPriorityLevel priorityLevel) in specificWhitelist)
 					{
 						if (type == TargetType.NPC && (ID == targetNPC.type || ID == targetNPC.netID))
 						{
 							inSpecificWhitelist = true;
+							priority = priorityLevel;
 							break;
 						}
 					}
@@ -119,21 +130,23 @@ namespace V2.NPCs
 					canTarget &= Collision.CanHitLine(npc.TrueCenter(), npc.width, npc.height, targetNPC.TrueCenter(), targetNPC.width, targetNPC.height);
 
 				if (canTarget)
-					targetList.Add((targetNPC.whoAmI, TargetType.NPC, targetNPC.AsV2NPC().Aggro, distanceToTarget));
+					targetList.Add((targetNPC.whoAmI, TargetType.NPC, targetNPC.AsV2NPC().Aggro, distanceToTarget, priority));
 			}
 			foreach (Projectile targetProjectile in Main.ActiveProjectiles)
 			{
 				if (targetProjectile.AsFood().Health <= 0 || targetProjectile.AsV2Proj().Aggro <= -1000)
 					continue;
 
+				TargetPriorityLevel priority = TargetPriorityLevel.Neutral;
 				bool inSpecificWhitelist = false;
 				if (specificWhitelist is not null)
 				{
-					foreach ((TargetType type, int ID) in specificWhitelist)
+					foreach ((TargetType type, int ID, TargetPriorityLevel priorityLevel) in specificWhitelist)
 					{
 						if (type == TargetType.Projectile && ID == targetProjectile.type)
 						{
 							inSpecificWhitelist = true;
+							priority = priorityLevel;
 							break;
 						}
 					}
@@ -153,13 +166,19 @@ namespace V2.NPCs
 					canTarget &= Collision.CanHitLine(npc.TrueCenter(), npc.width, npc.height, targetProjectile.TrueCenter(), targetProjectile.width, targetProjectile.height);
 
 				if (canTarget)
-					targetList.Add((targetProjectile.whoAmI, TargetType.Projectile, targetProjectile.AsV2Proj().Aggro, distanceToTarget));
+					targetList.Add((targetProjectile.whoAmI, TargetType.Projectile, targetProjectile.AsV2Proj().Aggro, distanceToTarget, priority));
 			}
 
 			if (targetList.Count > 0)
 			{
-				targetList = targetList.OrderByDescending(x => x.aggro).ToList();
-				if (npc.target != -1 && npc.AsV2NPC().TargetType != TargetType.None)
+				bool currentlyTargetingSomething = npc.target != -1 && npc.AsV2NPC().TargetType != TargetType.None && npc.AsV2NPC().TargetPriority != TargetPriorityLevel.None;
+				targetList = new List<(int index, TargetType type, int aggro, float dist, TargetPriorityLevel priority)>(targetList.OrderByDescending(x => x.priority));
+				if (currentlyTargetingSomething && npc.AsV2NPC().TargetPriority >= targetList[0].priority)
+					return;
+
+				targetList.RemoveAll(x => x.priority < targetList[0].priority);
+				targetList = new List<(int index, TargetType type, int aggro, float dist, TargetPriorityLevel priority)>(targetList.OrderByDescending(x => x.aggro));
+				if (currentlyTargetingSomething)
 				{
 					switch (npc.AsV2NPC().TargetType)
 					{
@@ -180,41 +199,53 @@ namespace V2.NPCs
 							break;
 					}
 				}
+
 				targetList.RemoveAll(x => x.aggro < targetList[0].aggro);
-				targetList = targetList.OrderBy(x => x.dist).ToList();
+				targetList = new List<(int index, TargetType type, int aggro, float dist, TargetPriorityLevel priority)>(targetList.OrderBy(x => x.dist));
 				npc.target = targetList[0].index;
 				npc.AsV2NPC().TargetType = targetList[0].type;
+				npc.AsV2NPC().TargetPriority = targetList[0].priority;
 			}
 		}
  
-		public static void TryVerifyRemainingTarget(this NPC npc, List<(TargetType, int)> specificWhitelist = null)
+		public static void TryVerifyRemainingTarget(this NPC npc, List<(TargetType, int, TargetPriorityLevel)> specificWhitelistInput = null)
 		{
+			List<(TargetType Type, int ID, TargetPriorityLevel PriorityLevel)> specificWhitelist = new List<(TargetType, int, TargetPriorityLevel)>(specificWhitelistInput);
+			if (V2.BlacklistsActive)
+			{
+				specificWhitelist.RemoveAll(x => x.Type == TargetType.NPC && V2.VoreNPCBlacklist.Contains(x.ID));
+				specificWhitelist.RemoveAll(x => x.Type == TargetType.Projectile && V2.VoreProjectileBlacklist.Contains(x.ID));
+			}
+
 			if (npc.target != -1)
 			{
 				switch (npc.AsV2NPC().TargetType)
 				{
 					case TargetType.Player:
 						Player targetPlayer = Main.player[npc.target];
-						if (!targetPlayer.active || targetPlayer.dead || targetPlayer.CurrentCaptor() is not null || (npc.AsV2NPC().TargetRequiresLineOfSight && !Collision.CanHitLine(npc.TrueCenter(), npc.width, npc.height, targetPlayer.TrueCenter(), targetPlayer.width, targetPlayer.height)))
+						if (!targetPlayer.active || targetPlayer.dead || targetPlayer.CurrentCaptor() is not null || (npc.AsV2NPC().TargetRequiresLineOfSight && !Collision.CanHitLine(npc.TrueCenter(), npc.width, npc.height, targetPlayer.TrueCenter(), targetPlayer.width, targetPlayer.height)) || specificWhitelist.FindAll(x => x.Type == TargetType.Player).Count == 0)
 						{
 							npc.AsV2NPC().TargetType = TargetType.None;
 							npc.target = -1;
+							npc.AsV2NPC().TargetPriority = TargetPriorityLevel.None;
 						}
 						break;
 					case TargetType.NPC:
 						NPC targetNPC = Main.npc[npc.target];
-						if (!targetNPC.active || targetNPC.life <= 0 || targetNPC.CurrentCaptor() is not null || (npc.AsV2NPC().TargetRequiresLineOfSight && !Collision.CanHitLine(npc.TrueCenter(), npc.width, npc.height, targetNPC.TrueCenter(), targetNPC.width, targetNPC.height)))
+						if (!targetNPC.active || targetNPC.life <= 0 || targetNPC.CurrentCaptor() is not null || (npc.AsV2NPC().TargetRequiresLineOfSight && !Collision.CanHitLine(npc.TrueCenter(), npc.width, npc.height, targetNPC.TrueCenter(), targetNPC.width, targetNPC.height)) || specificWhitelist.FindAll(x => x.Type == TargetType.NPC && x.ID == targetNPC.netID).Count == 0)
 						{
 							npc.AsV2NPC().TargetType = TargetType.None;
 							npc.target = -1;
+							npc.AsV2NPC().TargetPriority = TargetPriorityLevel.None;
 						}
 						break;
 					case TargetType.Projectile:
 						Projectile targetProjectile = Main.projectile[npc.target];
-						if (!targetProjectile.active || targetProjectile.AsFood().Health <= 0 || targetProjectile.CurrentCaptor() is not null || (npc.AsV2NPC().TargetRequiresLineOfSight && !Collision.CanHitLine(npc.TrueCenter(), npc.width, npc.height, targetProjectile.TrueCenter(), targetProjectile.width, targetProjectile.height)))
+						if (!targetProjectile.active || targetProjectile.AsFood().Health <= 0 || targetProjectile.CurrentCaptor() is not null || (npc.AsV2NPC().TargetRequiresLineOfSight && !Collision.CanHitLine(npc.TrueCenter(), npc.width, npc.height, targetProjectile.TrueCenter(), targetProjectile.width, targetProjectile.height)) || specificWhitelist.FindAll(x => x.Type == TargetType.Projectile && x.ID == targetProjectile.type).Count == 0)
 						{
 							npc.AsV2NPC().TargetType = TargetType.None;
 							npc.target = -1;
+							npc.AsV2NPC().TargetPriority = TargetPriorityLevel.None;
 						}
 						break;
 					case TargetType.Other:
@@ -227,7 +258,7 @@ namespace V2.NPCs
 
 		public static List<NPC> GetNearbyResidentNPCs(this NPC npc, out int npcsWithinHouse, out int npcsWithinVillage)
 		{
-			List<NPC> list = new List<NPC>();
+			List<NPC> list = [];
 			npcsWithinHouse = 0;
 			npcsWithinVillage = 0;
 			Vector2 value = new Vector2(npc.homeTileX, npc.homeTileY);
@@ -271,10 +302,17 @@ namespace V2.NPCs
 			return false;
 		}
 
-		public static void DoContactGulpage(this NPC npc, List<(TargetType, int)> specificWhitelist = null)
+		public static void DoContactGulpage(this NPC npc, List<(TargetType, int, TargetPriorityLevel)> specificWhitelistInput = null)
 		{
 			if (npc.CurrentCaptor() is not null)
 				return;
+
+			List<(TargetType Type, int ID, TargetPriorityLevel PriorityLevel)> specificWhitelist = new List<(TargetType, int, TargetPriorityLevel)>(specificWhitelistInput);
+			if (V2.BlacklistsActive)
+			{
+				specificWhitelist.RemoveAll(x => x.Type == TargetType.NPC && V2.VoreNPCBlacklist.Contains(x.ID));
+				specificWhitelist.RemoveAll(x => x.Type == TargetType.Projectile && V2.VoreProjectileBlacklist.Contains(x.ID));
+			}
 
 			for (int i = 0; i < Main.maxNPCs; i++)
 			{
@@ -284,7 +322,7 @@ namespace V2.NPCs
 					bool inSpecificWhitelist = false;
 					if (specificWhitelist is not null)
 					{
-						foreach ((TargetType type, int ID) in specificWhitelist)
+						foreach ((TargetType type, int ID, TargetPriorityLevel priority) in specificWhitelist)
 						{
 							if (type == TargetType.NPC && ID == preyNPC.netID)
 							{
@@ -327,7 +365,7 @@ namespace V2.NPCs
 					bool inSpecificWhitelist = false;
 					if (specificWhitelist is not null)
 					{
-						foreach ((TargetType type, int ID) in specificWhitelist)
+						foreach ((TargetType type, int ID, TargetPriorityLevel priority) in specificWhitelist)
 						{
 							if (type == TargetType.Player)
 							{
@@ -354,7 +392,7 @@ namespace V2.NPCs
 					bool inSpecificWhitelist = false;
 					if (specificWhitelist is not null)
 					{
-						foreach ((TargetType type, int ID) in specificWhitelist)
+						foreach ((TargetType type, int ID, TargetPriorityLevel priority) in specificWhitelist)
 						{
 							if (type == TargetType.Projectile && ID == preyProjectile.type)
 							{

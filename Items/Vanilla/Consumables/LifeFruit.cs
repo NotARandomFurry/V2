@@ -36,6 +36,7 @@ namespace V2.Items.Vanilla.Consumables
 			item.AsFood().OnBreak += OnBreak;
 
 			item.AsFood().EdibleOnUse = true;
+			item.AsFood().AlwaysEatenByUse = true;
 		}
 
 		public static void UpdateInStomach(Entity prey, Entity pred, bool dead)
