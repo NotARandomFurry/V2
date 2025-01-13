@@ -21,51 +21,21 @@ using V2.StatusEffects.Vanilla.Buffs;
 
 namespace V2.Items.Vanilla.Consumables.Potions
 {
-	public class WrathPotion : GlobalItem
+	public class WrathPotion : PotionTemplate
 	{
-		public static int DigestedWrathTime => V2Utils.SensibleTime(minutes: 3);
-		public override bool InstancePerEntity => true;
-		public override bool AppliesToEntity(Item entity, bool lateInstantiation) => entity.type == ItemID.WrathPotion;
+		public override string TooltipTranslationKey => "Vanilla.Consumables.Potions.Wrath";
+		public override int DigestedPotionEffectID => BuffID.Wrath;
+		public override int DigestedPotionEffectDuration => V2Utils.SensibleTime(minutes: 3);
+		public override int AppliesToPotionItem => ItemID.WrathPotion;
 
-		public override void SetDefaults(Item item)
+		public override dynamic TooltipVariables()
 		{
-			item.AsFood().MaxHealth = 400;
-			item.AsFood().Size = 0.15;
-
-			item.buffTime = DigestedWrathTime;
-
-			item.AsFood().UpdateInStomach += UpdateInStomach;
-			item.AsFood().OnBreak += OnBreak;
-
-			item.AsFood().EdibleOnUse = true;
-			item.AsFood().AlwaysEatenByUse = true;
-		}
-
-		public static void UpdateInStomach(Entity prey, Entity pred, bool dead)
-		{
-			if (dead)
-				pred.AddStatus(BuffID.Wrath, DigestedWrathTime, true);
-		}
-
-		public static bool OnBreak(Item item, Entity pred, bool direct)
-		{
-			SoundEngine.PlaySound(MuffledMiscSounds.Shatter, pred.Center);
-			SoundEngine.PlaySound(StomachNoises.Muffled, pred.Center);
-			return true;
-		}
-
-		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
-		{
-			tooltips.AddVorariaDynamicItemTooltip(
-				"Vanilla.Consumables.Potions.Wrath",
-				new
-				{
-					WrathPotionDamageBoost = WrathBuff.DamageBonus.ToPercentage(2),
-					WrathPotionTUMBoost = WrathBuff.TUMBonus,
-					WrathPotionACIBoost = WrathBuff.ACIBonus,
-				}
-			);
-			tooltips.FirstOrDefault(x => x.Name == "BuffTime").Hide();
+			return new
+			{
+				WrathPotionDamageBoost = WrathBuff.DamageBonus.ToPercentage(2),
+				WrathPotionTUMBoost = WrathBuff.TUMBonus,
+				WrathPotionACIBoost = WrathBuff.ACIBonus,
+			};
 		}
 	}
 }

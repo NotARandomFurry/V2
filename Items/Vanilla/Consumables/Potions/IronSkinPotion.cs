@@ -1,23 +1,21 @@
-﻿using System.Collections.Generic;
-using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
+﻿using Terraria.ID;
 
-namespace V2.Items.Vanilla.Consumables.Potions;
-
-public class IronSkinPotion : PotionTemplate
+namespace V2.Items.Vanilla.Consumables.Potions
 {
-    public override string TooltipTranslationKey => "Vanilla.Consumables.Potions.IronSkinPotion";
-    public override int DigestedPotionEffectID => BuffID.Ironskin;
-    public override int DigestedPotionEffectDuration => V2Utils.SensibleTime(minutes: 8);
-    public override int AppliesToPotionItem => ItemID.IronskinPotion;
+	public class IronskinPotion : PotionTemplate
+	{
+		public override string TooltipTranslationKey => "Vanilla.Consumables.Potions.Ironskin";
+		public override int DigestedPotionEffectID => BuffID.Ironskin;
+		public override int DigestedPotionEffectDuration => V2Utils.SensibleTime(minutes: 8);
+		public override int AppliesToPotionItem => ItemID.IronskinPotion;
 
-    public override dynamic TooltipVariables()
-    {
-        int defenseValue = Main.masterMode ? 8 : Main.expertMode ? 6 : 4;
-        return new
-        {
-            DefenseValue = defenseValue
-        };
-    }
+		public override dynamic TooltipVariables()
+		{
+			int defenseValue = 8;
+			return new
+			{
+				IronskinPotionDefenseValue = defenseValue
+			};
+		}
+	}
 }

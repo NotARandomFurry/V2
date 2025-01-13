@@ -21,49 +21,19 @@ using V2.StatusEffects.Vanilla.Buffs;
 
 namespace V2.Items.Vanilla.Consumables.Potions
 {
-	public class RegenerationPotion : GlobalItem
+	public class RegenerationPotion : PotionTemplate
 	{
-		public static int DigestedRegenTime => V2Utils.SensibleTime(minutes: 6);
-		public override bool InstancePerEntity => true;
-		public override bool AppliesToEntity(Item entity, bool lateInstantiation) => entity.type == ItemID.RegenerationPotion;
+		public override string TooltipTranslationKey => "Vanilla.Consumables.Potions.Regeneration";
+		public override int DigestedPotionEffectID => BuffID.Regeneration;
+		public override int DigestedPotionEffectDuration => V2Utils.SensibleTime(minutes: 6);
+		public override int AppliesToPotionItem => ItemID.RegenerationPotion;
 
-		public override void SetDefaults(Item item)
+		public override dynamic TooltipVariables()
 		{
-			item.AsFood().MaxHealth = 400;
-			item.AsFood().Size = 0.15;
-
-			item.buffTime = DigestedRegenTime;
-
-			item.AsFood().UpdateInStomach += UpdateInStomach;
-			item.AsFood().OnBreak += OnBreak;
-
-			item.AsFood().EdibleOnUse = true;
-			item.AsFood().AlwaysEatenByUse = true;
-		}
-
-		public static void UpdateInStomach(Entity prey, Entity pred, bool dead)
-		{
-			if (dead)
-				pred.AddStatus(BuffID.Regeneration, DigestedRegenTime, true);
-		}
-
-		public static bool OnBreak(Item item, Entity pred, bool direct)
-		{
-			SoundEngine.PlaySound(MuffledMiscSounds.Shatter, pred.Center);
-			SoundEngine.PlaySound(StomachNoises.Muffled, pred.Center);
-			return true;
-		}
-
-		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
-		{
-			tooltips.AddVorariaDynamicItemTooltip(
-				"Vanilla.Consumables.Potions.Regeneration",
-				new
-				{
-					RegenPotionRegenFlat = RegenerationBuff.HealthRegenFlat,
-				}
-			);
-			tooltips.FirstOrDefault(x => x.Name == "BuffTime").Hide();
+			return new
+			{
+				RegenPotionRegenFlat = RegenerationBuff.HealthRegenFlat,
+			};
 		}
 	}
 }

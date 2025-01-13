@@ -27,11 +27,11 @@ namespace V2.Items.Voraria.Consumables.Potions
 		{
 			Item.ResearchUnlockCount = 20;
 
-			ItemID.Sets.DrinkParticleColors[Type] = new Color[3] {
+			ItemID.Sets.DrinkParticleColors[Type] = [
 				new Color(121, 255, 76),
 				new Color(121, 255, 76),
 				new Color(50, 191, 38),
-			};
+			];
 		}
 
 		public override void SetDefaults()

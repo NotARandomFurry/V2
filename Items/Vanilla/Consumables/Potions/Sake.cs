@@ -21,47 +21,19 @@ using V2.StatusEffects.Vanilla.Buffs;
 
 namespace V2.Items.Vanilla.Consumables.Potions
 {
-	public class Sake : GlobalItem
+	public class Sake : PotionTemplate
 	{
-		public static int DigestedTipsyTime => V2Utils.SensibleTime(minutes: 3);
-		public override bool InstancePerEntity => true;
-		public override bool AppliesToEntity(Item entity, bool lateInstantiation) => entity.type == ItemID.Sake;
+		public override string TooltipTranslationKey => "Vanilla.Consumables.Potions.Sake";
+		public override int DigestedPotionEffectID => BuffID.Tipsy;
+		public override int DigestedPotionEffectDuration => V2Utils.SensibleTime(minutes: 3);
+		public override int AppliesToPotionItem => ItemID.Sake;
 
-		public override void SetDefaults(Item item)
+		public override dynamic TooltipVariables()
 		{
-			item.AsFood().MaxHealth = 380;
-			item.AsFood().Size = 0.08;
-
-			item.AsFood().UpdateInStomach += UpdateInStomach;
-			item.AsFood().OnBreak += OnBreak;
-
-			item.AsFood().EdibleOnUse = true;
-			item.AsFood().AlwaysEatenByUse = true;
-		}
-
-		public static void UpdateInStomach(Entity prey, Entity pred, bool dead)
-		{
-			if (dead)
-				pred.AddStatus(BuffID.Tipsy, DigestedTipsyTime, true);
-		}
-
-		public static bool OnBreak(Item item, Entity pred, bool direct)
-		{
-			SoundEngine.PlaySound(MuffledMiscSounds.Shatter, pred.Center);
-			SoundEngine.PlaySound(StomachNoises.Muffled, pred.Center);
-			return true;
-		}
-
-		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
-		{
-			tooltips.AddVorariaDynamicItemTooltip(
-				"Vanilla.Consumables.Potions.Sake",
-				new
-				{
-					
-				}
-			);
-			tooltips.FirstOrDefault(x => x.Name == "BuffTime").Hide();
+			return new
+			{
+				
+			};
 		}
 	}
 }
