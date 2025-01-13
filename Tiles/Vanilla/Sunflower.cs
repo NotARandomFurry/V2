@@ -12,12 +12,11 @@ using V2.Core;
 using V2.Items.Voraria.Placeables;
 using V2.NPCs;
 using V2.Projectiles;
-using V2.Projectiles.Voraria.Weapons.Summon;
 using V2.Sounds.Vore;
 
-namespace V2.Tiles.Paintings
+namespace V2.Tiles.Vanilla
 {
-    public class MyFairy : ModTile
+    public class Sunflower : ModTile
     {
         public override void SetStaticDefaults()
         {
@@ -25,38 +24,38 @@ namespace V2.Tiles.Paintings
             Main.tileLavaDeath[Type] = true;
             TileID.Sets.FramesOnKillWall[Type] = true;
 
-            TileObjectData.newTile.CopyFrom(TileObjectData.Style3x3Wall);
+            TileObjectData.newTile.CopyFrom(TileObjectData.Style2xX);
             TileObjectData.newTile.CoordinateHeights = new[] { 16, 16, 16, 16 };
-            TileObjectData.newTile.Width = 4;
+            TileObjectData.newTile.Width = 2;
             TileObjectData.newTile.Height = 4;
 
-            TileObjectData.newTile.HookPostPlaceMyPlayer = new PlacementHook(ModContent.GetInstance<MyFairy_TileEntity>().Hook_AfterPlacement, -1, 0, true);
+            TileObjectData.newTile.HookPostPlaceMyPlayer = new PlacementHook(ModContent.GetInstance<Sunflower_TileEntity>().Hook_AfterPlacement, -1, 0, true);
             TileObjectData.newTile.UsesCustomCanPlace = true;
 
             TileObjectData.addTile(Type);
 
-            AddMapEntry(new Color(120, 85, 60), Language.GetText("MapObject.Painting"));
-            DustType = 41;
+            AddMapEntry(new Color(220,200,10), Language.GetText("Sunflower"));
+            DustType = 2;
         }
         public override void KillMultiTile(int i, int j, int frameX, int frameY)
         {
-            ModContent.GetInstance<MyFairy_TileEntity>().Kill(i, j);
+            ModContent.GetInstance<Sunflower_TileEntity>().Kill(i, j);
         }
         public override bool PreDraw(int i, int j, SpriteBatch spriteBatch)
         {
             Tile tile = Main.tile[i, j];
             if (TileEntity.ByPosition.TryGetValue(new Point16(i, j), out TileEntity tileEntity))
             {
-                if (tileEntity is MyFairy_TileEntity)
+                if (tileEntity is Sunflower_TileEntity)
                 {
                     foreach (var npc in Main.ActiveProjectiles)
                     {
-                        if (npc.active && (npc.position / 16).Distance(tileEntity.Position.ToVector2()) < 2f && npc.type == ModContent.ProjectileType<MyFairy_ProjectileEntity>())
+                        if (npc.active && (npc.position / 16).Distance(tileEntity.Position.ToVector2()) < 2f && npc.type == ModContent.ProjectileType<Sunflower_ProjectileEntity>())
                         {
-                            int tumSize = MyFairy_ProjectileEntity.GetVisualBellySize(npc);
-                            int weightSize = MyFairy_ProjectileEntity.GetVisualWeightStage(npc);
-                            Texture2D texture = ModContent.Request<Texture2D>("V2/Tiles/Paintings/MyFairy_SpriteSheet").Value;
-                            Rectangle sourceRect = new Rectangle(64 * weightSize, 64 * tumSize, 64, 64);
+                            int tumSize = Sunflower_ProjectileEntity.GetVisualBellySize(npc);
+                            int weightSize = Sunflower_ProjectileEntity.GetVisualWeightStage(npc);
+                            Texture2D texture = ModContent.Request<Texture2D>("V2/Tiles/Vanilla/Sunflower_SpriteSheet").Value;
+                            Rectangle sourceRect = new Rectangle(32 * (int)npc.ai[0], (64 * tumSize) + 2 * tumSize, 32, 66);
                             Vector2 zero = Main.drawToScreen ? Vector2.Zero : new Vector2(Main.offScreenRange);
                             spriteBatch.Draw(
                                 texture,
@@ -70,7 +69,7 @@ namespace V2.Tiles.Paintings
             return false;
         }
     }
-    public class MyFairy_TileEntity : ModTileEntity
+    public class Sunflower_TileEntity : ModTileEntity
     {
         public Projectile connectedNPC = null;
         public double WeightOnLoad = 0;
@@ -80,17 +79,17 @@ namespace V2.Tiles.Paintings
             {
                 Activate();
             }
-            else if (!connectedNPC.active || connectedNPC.type != ModContent.ProjectileType<MyFairy_ProjectileEntity>())
+            else if (!connectedNPC.active || connectedNPC.type != ModContent.ProjectileType<Sunflower_ProjectileEntity>())
             {
                 Activate();
             }
-                
+
         }
         public void Activate()
         {
             foreach (var npc in Main.ActiveProjectiles)
             {
-                if (npc.active && (npc.position / 16).Distance(Position.ToVector2()) < 2f && npc.type == ModContent.ProjectileType<MyFairy_ProjectileEntity>())
+                if (npc.active && (npc.position / 16).Distance(Position.ToVector2()) < 1f && npc.type == ModContent.ProjectileType<Sunflower_ProjectileEntity>())
                 {
                     connectedNPC = npc;
                     return;
@@ -99,7 +98,7 @@ namespace V2.Tiles.Paintings
             //ill be honest i dont exactly know the grounds for the offset for the npc but i *think* its like, half of the X tiles and all Y tiles
             if (Main.netMode != NetmodeID.MultiplayerClient)
             {
-                int num = Projectile.NewProjectile(new EntitySource_TileEntity(this, null), new Vector2((int)(Position.X * 16) + 32, (int)(Position.Y * 16) + 32), Vector2.Zero, ModContent.ProjectileType<MyFairy_ProjectileEntity>(), 0, 0);
+                int num = Projectile.NewProjectile(new EntitySource_TileEntity(this, null), new Vector2((int)(Position.X * 16) + 16, (int)(Position.Y * 16) + 32), Vector2.Zero, ModContent.ProjectileType<Sunflower_ProjectileEntity>(), 0, 0);
                 connectedNPC = Main.projectile[num];
                 connectedNPC.AsPred().ExtraWeight = WeightOnLoad;
                 Main.projectile[num].netUpdate = true;
@@ -112,7 +111,7 @@ namespace V2.Tiles.Paintings
         public override bool IsTileValidForEntity(int x, int y)
         {
             Tile tile = Main.tile[x, y];
-            return tile.HasTile && tile.TileType == ModContent.TileType<MyFairy>();
+            return tile.HasTile && tile.TileType == ModContent.TileType<Sunflower>();
         }
         public override int Hook_AfterPlacement(int i, int j, int type, int style, int direction, int alternate)
         {
@@ -145,13 +144,13 @@ namespace V2.Tiles.Paintings
             WeightOnLoad = tag.GetDouble("ExtraWeight");
         }
     }
-    public class MyFairy_ProjectileEntity : ModProjectile
+    public class Sunflower_ProjectileEntity : ModProjectile
     {
         public override string Texture => "V2/Tiles/Paintings/InvisibleImage";
         public override void SetDefaults()
         {
             Projectile.friendly = true;
-            Projectile.width = 64;
+            Projectile.width = 32;
             Projectile.height = 64;
             Projectile.aiStyle = -1;
             Projectile.damage = 0;
@@ -161,9 +160,9 @@ namespace V2.Tiles.Paintings
             Projectile.AsFood().CannotBeEatenDueToShenanigans = true;
 
             Projectile.AsFood().DefinedSize = 8;
-            Projectile.AsPred().WeightGainRatio = 0.4;
+            Projectile.AsPred().WeightGainRatio = 0.1;
             Projectile.AsPred().MaxStomachCapacity = 1.5;
-            Projectile.AsPred().BaseStomachacheMeterCapacity = 425.0;
+            Projectile.AsPred().BaseStomachacheMeterCapacity = 200.0;
             Projectile.AsPred().CanSwallowBosses = false;
             Projectile.AsFood().MaxHealth = 7500;
             Projectile.AsFood().Health = 7500;
@@ -181,7 +180,7 @@ namespace V2.Tiles.Paintings
 
             Projectile.AsPred().SmallBurps = Burps.Humanoid.Small;
             Projectile.AsPred().StandardBurps = Burps.Humanoid.Standard;
-            Projectile.AsPred().BurpPitchOffset = 0.4f;
+            Projectile.AsPred().BurpPitchOffset = 0.1f;
 
             Projectile.AsPred().GetPreyAbsorptionRate = GetPreyAbsorptionRate;
 
@@ -192,12 +191,16 @@ namespace V2.Tiles.Paintings
         public override bool CanHitPlayer(Player target) => false;
         public override bool CanHitPvp(Player target) => false;
         public static bool CanPaintingBeForceFed(Projectile projectile) => true;
+        public override void OnSpawn(IEntitySource source)
+        {
+            Projectile.ai[0] = Main.rand.Next(3);
+        }
         public override void AI()
         {
             Projectile.timeLeft = 6000;
             Projectile.velocity = Vector2.Zero;
             Tile Painting = Main.tile[Projectile.position.ToTileCoordinates()];
-            if (!Painting.HasTile || Painting.TileType != ModContent.TileType<MyFairy>())
+            if (!Painting.HasTile || Painting.TileType != ModContent.TileType<Sunflower>())
             {
                 Projectile.active = false;
             }
@@ -210,15 +213,15 @@ namespace V2.Tiles.Paintings
         public static int GetVisualBellySize(Projectile projectile)
         {
             return Math.Min(
-                (int)Math.Floor(4 * Math.Sqrt(PredProjectile.GetCurrentBellyWeight(projectile))),
-                4
+                (int)Math.Floor(3 * Math.Sqrt(PredProjectile.GetCurrentBellyWeight(projectile))),
+                3
             );
         }
         public static int GetVisualWeightStage(Projectile projectile)
         {
             return Math.Min(
                 (int)Math.Floor(2 * Math.Sqrt(projectile.AsPred().ExtraWeight)),
-                2
+                0
             );
         }
         public static double GetDigestionTickDamage(Projectile projectile, PreyData prey) => 22;

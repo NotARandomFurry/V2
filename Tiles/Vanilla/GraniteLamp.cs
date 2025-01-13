@@ -12,55 +12,84 @@ using V2.Core;
 using V2.Items.Voraria.Placeables;
 using V2.NPCs;
 using V2.Projectiles;
-using V2.Projectiles.Voraria.Weapons.Summon;
 using V2.Sounds.Vore;
 
-namespace V2.Tiles.Paintings
+namespace V2.Tiles.Vanilla
 {
-    public class MyFairy : ModTile
+    public class GraniteLamp : ModTile
     {
+        public override void HitWire(int i, int j)
+        {
+            Tile tile = Main.tile[i, j];
+            int left = i;
+            int top = j;
+            if (tile.TileFrameY == 18)
+            {
+                top--;
+            }
+            else if (tile.TileFrameY == 36)
+            {
+                top -= 2;
+            }
+            if (TileEntity.ByPosition.TryGetValue(new Point16(left, top), out TileEntity tileEntity))
+            {
+                if (tileEntity is GraniteLamp_TileEntity)
+                {
+                    foreach (var npc in Main.ActiveProjectiles)
+                    {
+                        if (npc.active && (npc.position / 16).Distance(tileEntity.Position.ToVector2()) < 2f && npc.type == ModContent.ProjectileType<GraniteLamp_ProjectileEntity>())
+                        {
+                            if (npc.netUpdate == true) continue;
+                            if (npc.ai[0] == 0) npc.ai[0] = 1;
+                            else npc.ai[0] = 0;
+                            npc.netUpdate = true;
+                        }
+                    }
+                }
+            }
+        }
         public override void SetStaticDefaults()
         {
             Main.tileFrameImportant[Type] = true;
             Main.tileLavaDeath[Type] = true;
             TileID.Sets.FramesOnKillWall[Type] = true;
 
-            TileObjectData.newTile.CopyFrom(TileObjectData.Style3x3Wall);
-            TileObjectData.newTile.CoordinateHeights = new[] { 16, 16, 16, 16 };
-            TileObjectData.newTile.Width = 4;
-            TileObjectData.newTile.Height = 4;
+            TileObjectData.newTile.CopyFrom(TileObjectData.Style1xX);
+            TileObjectData.newTile.CoordinateHeights = new[] { 16, 16, 16};
+            TileObjectData.newTile.Width = 1;
+            TileObjectData.newTile.Height = 3;
 
-            TileObjectData.newTile.HookPostPlaceMyPlayer = new PlacementHook(ModContent.GetInstance<MyFairy_TileEntity>().Hook_AfterPlacement, -1, 0, true);
+            TileObjectData.newTile.HookPostPlaceMyPlayer = new PlacementHook(ModContent.GetInstance<GraniteLamp_TileEntity>().Hook_AfterPlacement, -1, 0, true);
             TileObjectData.newTile.UsesCustomCanPlace = true;
 
             TileObjectData.addTile(Type);
 
-            AddMapEntry(new Color(120, 85, 60), Language.GetText("MapObject.Painting"));
-            DustType = 41;
+            AddMapEntry(new Color(220,200,10), Language.GetText("MapObject.FloorLamp"));
+            DustType = 2;
         }
         public override void KillMultiTile(int i, int j, int frameX, int frameY)
         {
-            ModContent.GetInstance<MyFairy_TileEntity>().Kill(i, j);
+            ModContent.GetInstance<GraniteLamp_TileEntity>().Kill(i, j);
         }
         public override bool PreDraw(int i, int j, SpriteBatch spriteBatch)
         {
             Tile tile = Main.tile[i, j];
             if (TileEntity.ByPosition.TryGetValue(new Point16(i, j), out TileEntity tileEntity))
             {
-                if (tileEntity is MyFairy_TileEntity)
+                if (tileEntity is GraniteLamp_TileEntity)
                 {
                     foreach (var npc in Main.ActiveProjectiles)
                     {
-                        if (npc.active && (npc.position / 16).Distance(tileEntity.Position.ToVector2()) < 2f && npc.type == ModContent.ProjectileType<MyFairy_ProjectileEntity>())
+                        if (npc.active && (npc.position / 16).Distance(tileEntity.Position.ToVector2()) < 1f && npc.type == ModContent.ProjectileType<GraniteLamp_ProjectileEntity>())
                         {
-                            int tumSize = MyFairy_ProjectileEntity.GetVisualBellySize(npc);
-                            int weightSize = MyFairy_ProjectileEntity.GetVisualWeightStage(npc);
-                            Texture2D texture = ModContent.Request<Texture2D>("V2/Tiles/Paintings/MyFairy_SpriteSheet").Value;
-                            Rectangle sourceRect = new Rectangle(64 * weightSize, 64 * tumSize, 64, 64);
+                            int tumSize = GraniteLamp_ProjectileEntity.GetVisualBellySize(npc);
+                            int weightSize = GraniteLamp_ProjectileEntity.GetVisualWeightStage(npc);
+                            Texture2D texture = ModContent.Request<Texture2D>("V2/Tiles/Vanilla/GraniteLamp_SpriteSheet").Value;
+                            Rectangle sourceRect = new Rectangle((48 * (int)npc.ai[0]) + (96 * weightSize), 64 * tumSize, 48, 64);
                             Vector2 zero = Main.drawToScreen ? Vector2.Zero : new Vector2(Main.offScreenRange);
                             spriteBatch.Draw(
                                 texture,
-                                new Vector2(i * 16 - (int)Main.screenPosition.X, j * 16 - (int)Main.screenPosition.Y) + zero,
+                                new Vector2(i * 16 - (int)Main.screenPosition.X - 16, j * 16 - (int)Main.screenPosition.Y - 14) + zero,
                                 sourceRect,
                                 Lighting.GetColor(i, j), 0f, default, 1f, SpriteEffects.None, 0f);
                         }
@@ -70,7 +99,7 @@ namespace V2.Tiles.Paintings
             return false;
         }
     }
-    public class MyFairy_TileEntity : ModTileEntity
+    public class GraniteLamp_TileEntity : ModTileEntity
     {
         public Projectile connectedNPC = null;
         public double WeightOnLoad = 0;
@@ -80,17 +109,17 @@ namespace V2.Tiles.Paintings
             {
                 Activate();
             }
-            else if (!connectedNPC.active || connectedNPC.type != ModContent.ProjectileType<MyFairy_ProjectileEntity>())
+            else if (!connectedNPC.active || connectedNPC.type != ModContent.ProjectileType<GraniteLamp_ProjectileEntity>())
             {
                 Activate();
             }
-                
+
         }
         public void Activate()
         {
             foreach (var npc in Main.ActiveProjectiles)
             {
-                if (npc.active && (npc.position / 16).Distance(Position.ToVector2()) < 2f && npc.type == ModContent.ProjectileType<MyFairy_ProjectileEntity>())
+                if (npc.active && (npc.position / 16).Distance(Position.ToVector2()) < 1f && npc.type == ModContent.ProjectileType<GraniteLamp_ProjectileEntity>())
                 {
                     connectedNPC = npc;
                     return;
@@ -99,7 +128,7 @@ namespace V2.Tiles.Paintings
             //ill be honest i dont exactly know the grounds for the offset for the npc but i *think* its like, half of the X tiles and all Y tiles
             if (Main.netMode != NetmodeID.MultiplayerClient)
             {
-                int num = Projectile.NewProjectile(new EntitySource_TileEntity(this, null), new Vector2((int)(Position.X * 16) + 32, (int)(Position.Y * 16) + 32), Vector2.Zero, ModContent.ProjectileType<MyFairy_ProjectileEntity>(), 0, 0);
+                int num = Projectile.NewProjectile(new EntitySource_TileEntity(this, null), new Vector2((int)(Position.X * 16) + 8, (int)(Position.Y * 16) + 24), Vector2.Zero, ModContent.ProjectileType<GraniteLamp_ProjectileEntity>(), 0, 0);
                 connectedNPC = Main.projectile[num];
                 connectedNPC.AsPred().ExtraWeight = WeightOnLoad;
                 Main.projectile[num].netUpdate = true;
@@ -112,7 +141,7 @@ namespace V2.Tiles.Paintings
         public override bool IsTileValidForEntity(int x, int y)
         {
             Tile tile = Main.tile[x, y];
-            return tile.HasTile && tile.TileType == ModContent.TileType<MyFairy>();
+            return tile.HasTile && tile.TileType == ModContent.TileType<GraniteLamp>();
         }
         public override int Hook_AfterPlacement(int i, int j, int type, int style, int direction, int alternate)
         {
@@ -145,14 +174,14 @@ namespace V2.Tiles.Paintings
             WeightOnLoad = tag.GetDouble("ExtraWeight");
         }
     }
-    public class MyFairy_ProjectileEntity : ModProjectile
+    public class GraniteLamp_ProjectileEntity : ModProjectile
     {
         public override string Texture => "V2/Tiles/Paintings/InvisibleImage";
         public override void SetDefaults()
         {
             Projectile.friendly = true;
-            Projectile.width = 64;
-            Projectile.height = 64;
+            Projectile.width = 16;
+            Projectile.height = 48;
             Projectile.aiStyle = -1;
             Projectile.damage = 0;
             Projectile.timeLeft = 6000;
@@ -160,10 +189,10 @@ namespace V2.Tiles.Paintings
 
             Projectile.AsFood().CannotBeEatenDueToShenanigans = true;
 
-            Projectile.AsFood().DefinedSize = 8;
-            Projectile.AsPred().WeightGainRatio = 0.4;
+            Projectile.AsFood().DefinedSize = 4;
+            Projectile.AsPred().WeightGainRatio = 0.1;
             Projectile.AsPred().MaxStomachCapacity = 1.5;
-            Projectile.AsPred().BaseStomachacheMeterCapacity = 425.0;
+            Projectile.AsPred().BaseStomachacheMeterCapacity = 200.0;
             Projectile.AsPred().CanSwallowBosses = false;
             Projectile.AsFood().MaxHealth = 7500;
             Projectile.AsFood().Health = 7500;
@@ -181,7 +210,7 @@ namespace V2.Tiles.Paintings
 
             Projectile.AsPred().SmallBurps = Burps.Humanoid.Small;
             Projectile.AsPred().StandardBurps = Burps.Humanoid.Standard;
-            Projectile.AsPred().BurpPitchOffset = 0.4f;
+            Projectile.AsPred().BurpPitchOffset = 0f;
 
             Projectile.AsPred().GetPreyAbsorptionRate = GetPreyAbsorptionRate;
 
@@ -194,10 +223,12 @@ namespace V2.Tiles.Paintings
         public static bool CanPaintingBeForceFed(Projectile projectile) => true;
         public override void AI()
         {
+            if (Projectile.ai[0] == 0)
+                Lighting.AddLight(Projectile.Center + new Vector2(0,-16), new Vector3(180, 145, 214) * (0.005f + 0.0015f * GetVisualBellySize(Projectile)));
             Projectile.timeLeft = 6000;
             Projectile.velocity = Vector2.Zero;
             Tile Painting = Main.tile[Projectile.position.ToTileCoordinates()];
-            if (!Painting.HasTile || Painting.TileType != ModContent.TileType<MyFairy>())
+            if (!Painting.HasTile || Painting.TileType != ModContent.TileType<GraniteLamp>())
             {
                 Projectile.active = false;
             }
@@ -210,18 +241,18 @@ namespace V2.Tiles.Paintings
         public static int GetVisualBellySize(Projectile projectile)
         {
             return Math.Min(
-                (int)Math.Floor(4 * Math.Sqrt(PredProjectile.GetCurrentBellyWeight(projectile))),
-                4
+                (int)Math.Floor(2.8 * Math.Sqrt(PredProjectile.GetCurrentBellyWeight(projectile))),
+                3
             );
         }
         public static int GetVisualWeightStage(Projectile projectile)
         {
             return Math.Min(
                 (int)Math.Floor(2 * Math.Sqrt(projectile.AsPred().ExtraWeight)),
-                2
+                3
             );
         }
-        public static double GetDigestionTickDamage(Projectile projectile, PreyData prey) => 22;
+        public static double GetDigestionTickDamage(Projectile projectile, PreyData prey) => 16;
         public static double GetDigestionTickRate(Projectile projectile, PreyData prey) => 1.2;
         public static double GetPreyAbsorptionRate(Projectile projectile)
         {

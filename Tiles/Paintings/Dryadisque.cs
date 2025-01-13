@@ -6,9 +6,11 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 using Terraria.ObjectData;
 using V2.Core;
 using V2.NPCs;
+using V2.Projectiles;
 using V2.Sounds.Vore;
 
 namespace V2.Tiles.Paintings
@@ -44,13 +46,13 @@ namespace V2.Tiles.Paintings
             {
                 if (tileEntity is Dryadisque_TileEntity)
                 {
-                    foreach (var npc in Main.ActiveNPCs)
+                    foreach (var npc in Main.ActiveProjectiles)
                     {
-                        if (npc.active && (npc.position / 16).Distance(tileEntity.Position.ToVector2()) < 2f && npc.type == ModContent.NPCType<Dryadisque_NPCEntity>())
+                        if (npc.active && (npc.position / 16).Distance(tileEntity.Position.ToVector2()) < 2f && npc.type == ModContent.ProjectileType<Dryadisque_ProjectileEntity>())
                         {
                             int XOffset = 0;
                             if (npc.ai[0] <= 6) XOffset = 96;
-                            int tumSize = Dryadisque_NPCEntity.GetVisualBellySize(npc);
+                            int tumSize = Dryadisque_ProjectileEntity.GetVisualBellySize(npc);
                             Texture2D texture = ModContent.Request<Texture2D>("V2/Tiles/Paintings/Dryadisque_SpriteSheet").Value;
                             Rectangle sourceRect = new Rectangle(XOffset, 64 * tumSize, 96, 64);
                             Vector2 zero = Main.drawToScreen ? Vector2.Zero : new Vector2(Main.offScreenRange);
@@ -68,7 +70,8 @@ namespace V2.Tiles.Paintings
     }
     public class Dryadisque_TileEntity : ModTileEntity
     {
-        public NPC connectedNPC = null;
+        public Projectile connectedNPC = null;
+        public double WeightOnLoad = 0;
 
         public override void Update()
         {
@@ -76,7 +79,7 @@ namespace V2.Tiles.Paintings
             {
                 Activate();
             }
-            else if (!connectedNPC.active || connectedNPC.type != ModContent.NPCType<Dryadisque_NPCEntity>())
+            else if (!connectedNPC.active || connectedNPC.type != ModContent.ProjectileType<Dryadisque_ProjectileEntity>())
             {
                 Activate();
             }
@@ -84,21 +87,24 @@ namespace V2.Tiles.Paintings
         }
         public void Activate()
         {
-            foreach (var npc in Main.ActiveNPCs)
+            foreach (var npc in Main.ActiveProjectiles)
             {
-                if (npc.active && (npc.position / 16).Distance(Position.ToVector2()) < 2f && npc.type == ModContent.NPCType<Dryadisque_NPCEntity>())
+                if (npc.active && (npc.position / 16).Distance(Position.ToVector2()) < 2f && npc.type == ModContent.ProjectileType<Dryadisque_ProjectileEntity>())
                 {
                     connectedNPC = npc;
                     return;
                 }
             }
-
-            int num = NPC.NewNPC(new EntitySource_TileEntity(this, null), (int)(Position.X * 16) + 48, (int)(Position.Y * 16) + 64, ModContent.NPCType<Dryadisque_NPCEntity>());
-            connectedNPC = Main.npc[num];
-            Main.npc[num].netUpdate = true;
             if (Main.netMode != NetmodeID.MultiplayerClient)
             {
-                NetMessage.SendData(MessageID.TileEntitySharing, -1, -1, null, ID, (float)Position.X, (float)Position.Y);
+                int num = Projectile.NewProjectile(new EntitySource_TileEntity(this, null), new Vector2((int)(Position.X * 16) + 47, (int)(Position.Y * 16) + 32), Vector2.Zero, ModContent.ProjectileType<Dryadisque_ProjectileEntity>(), 0, 0);
+                connectedNPC = Main.projectile[num];
+                connectedNPC.AsPred().ExtraWeight = WeightOnLoad;
+                Main.projectile[num].netUpdate = true;
+                if (Main.netMode != NetmodeID.SinglePlayer)
+                {
+                    NetMessage.SendData(MessageID.TileEntitySharing, -1, -1, null, ID, (float)Position.X, (float)Position.Y);
+                }
             }
         }
         public override bool IsTileValidForEntity(int x, int y)
@@ -132,86 +138,100 @@ namespace V2.Tiles.Paintings
                 NetMessage.SendData(MessageID.TileEntitySharing, number: ID, number2: Position.X, number3: Position.Y);
             }
         }
+        public override void SaveData(TagCompound tag)
+        {
+            tag.Add("ExtraWeight", connectedNPC.AsPred().ExtraWeight);
+        }
+
+        public override void LoadData(TagCompound tag)
+        {
+            WeightOnLoad = tag.GetDouble("ExtraWeight");
+        }
     }
-    public class Dryadisque_NPCEntity : ModNPC
+    public class Dryadisque_ProjectileEntity : ModProjectile
     {
         public override string Texture => "V2/Tiles/Paintings/InvisibleImage";
         public override void SetDefaults()
         {
-            NPC.friendly = true;
-            NPC.width = 96;
-            NPC.height = 64;
-            NPC.aiStyle = -1;
-            NPC.damage = 0;
-            NPC.defense = 0;
-            NPC.immortal = true;
-            NPC.HideStrikeDamage = true;
-            NPC.lifeMax = 5000;
-            NPC.noGravity = true;
-            NPC.ShowNameOnHover = false;
+            Projectile.friendly = true;
+            Projectile.width = 96;
+            Projectile.height = 64;
+            Projectile.aiStyle = -1;
+            Projectile.damage = 0;
+            Projectile.timeLeft = 6000;
+            Projectile.tileCollide = false;
 
-            NPC.AsFood().CannotBeEatenDueToShenanigans = true;
+            Projectile.AsFood().CannotBeEatenDueToShenanigans = true;
 
-            NPC.AsPred().WeightGainRatio = 0.111;
-            NPC.AsPred().MaxStomachCapacity = 12.50;
-            NPC.AsPred().BaseStomachacheMeterCapacity = 750.0;
+            Projectile.AsFood().DefinedSize = 24;
+            Projectile.AsPred().WeightGainRatio = 0;
+            Projectile.AsPred().MaxStomachCapacity = 9;
+            Projectile.AsPred().BaseStomachacheMeterCapacity = 750.0;
+            Projectile.AsPred().CanSwallowBosses = false;
+            Projectile.AsFood().MaxHealth = 7500;
+            Projectile.AsFood().Health = 7500;
 
-            NPC.AsPred().CanBeForceFed = CanPaintingBeForceFed;
+            Projectile.AsPred().MouthSoundRawOffset = new Vector2(0f, -14f);
+            Projectile.AsPred().SmallGulps = Gulps.Short;
+            Projectile.AsPred().SmallGulpThreshold = 0.1;
+            Projectile.AsPred().BigGulps = Gulps.Standard;
+            Projectile.AsPred().CanBeForceFed = CanPaintingBeForceFed;
+            Projectile.AsPred().MaxSwallowRange = V2Utils.TileCountAsPixelCount(12.5);
 
-            NPC.AsPred().DigestionType = EntityDigestionType.Acidic;
-            NPC.AsPred().GetDigestionTickDamage = GetDigestionTickDamage;
-            NPC.AsPred().GetDigestionTickRate = GetDigestionTickRate;
+            Projectile.AsPred().DigestionType = EntityDigestionType.Acidic;
+            Projectile.AsPred().GetDigestionTickDamage = GetDigestionTickDamage;
+            Projectile.AsPred().GetDigestionTickRate = GetDigestionTickRate;
 
-            NPC.AsPred().GetPreyAbsorptionRate = GetPreyAbsorptionRate;
+            Projectile.AsPred().SmallBurps = Burps.Humanoid.Small;
+            Projectile.AsPred().StandardBurps = Burps.Humanoid.Standard;
+            Projectile.AsPred().BurpPitchOffset = 0f;
 
-            NPC.AsPred().GetVisualBellySize = GetVisualBellySize;
-            NPC.AsPred().GetVisualWeightStage = GetVisualWeightStage;
+            Projectile.AsPred().GetPreyAbsorptionRate = GetPreyAbsorptionRate;
 
-            NPC.AsPred().SmallBurps = Burps.Humanoid.Small;
-            NPC.AsPred().SmallBurpThreshold = 0.35;
-            NPC.AsPred().StandardBurps = Burps.Humanoid.Standard;
-            NPC.AsPred().SmallGulps = Gulps.Short;
-            NPC.AsPred().SmallGulpThreshold = 0.35;
-            NPC.AsPred().BigGulps = Gulps.Standard;
+            Projectile.AsPred().GetVisualBellySize = GetVisualBellySize;
+            Projectile.AsPred().GetVisualWeightStage = GetVisualWeightStage;
         }
-        public override bool? CanBeHitByItem(Player player, Item item) => false;
-        public override bool? CanBeHitByProjectile(Projectile projectile) => false;
-        public override bool CanBeHitByNPC(NPC attacker) => false;
-        public static bool CanPaintingBeForceFed(NPC npc) => true;
+        public override bool? CanHitNPC(NPC target) => false;
+        public override bool CanHitPlayer(Player target) => false;
+        public override bool CanHitPvp(Player target) => false;
+        public static bool CanPaintingBeForceFed(Projectile projectile) => true;
         public override void AI()
         {
-            NPC.ai[0]--;
-            if (NPC.ai[0] <= 0) NPC.ai[0] = Main.rand.Next(300, 600);
-            Tile Painting = Main.tile[NPC.position.ToTileCoordinates()];
-            if (!Painting.HasTile || Painting.TileType != ModContent.TileType<Dryadisque>())
+            Projectile.ai[0]--;
+            if (Projectile.ai[0] <= 0) Projectile.ai[0] = Main.rand.Next(300, 600);
+            Projectile.timeLeft = 6000;
+            Projectile.velocity = Vector2.Zero;
+            Tile Painting = Main.tile[Projectile.position.ToTileCoordinates()];
+            if (!Painting.HasTile || Painting.TileType != ModContent.TileType<MyFairy>())
             {
-                NPC.active = false;
+                Projectile.active = false;
             }
-            if (Main.rand.NextBool(100)) NPC.DoContactGulpage();
+            if (Main.rand.NextBool(100)) Projectile.DoContactGulpage();
         }
-        public static int GetVisualBellySize(NPC npc)
+        public override void PostAI()
+        {
+            Projectile.velocity = Vector2.Zero;
+        }
+        public static int GetVisualBellySize(Projectile projectile)
         {
             return Math.Min(
-                (int)Math.Floor(3 * Math.Sqrt(PredNPC.GetCurrentBellyWeight(npc))),
+                (int)Math.Floor(3 * Math.Sqrt(PredProjectile.GetCurrentBellyWeight(projectile))),
                 7
             );
         }
-        public static int GetVisualWeightStage(NPC npc)
+        public static int GetVisualWeightStage(Projectile projectile)
         {
             return Math.Min(
-                (int)Math.Floor(2 * Math.Sqrt(npc.AsPred().ExtraWeight)),
+                (int)Math.Floor(2 * Math.Sqrt(projectile.AsPred().ExtraWeight)),
                 0
             );
         }
-        public override bool NeedSaving() => true;
-
-        public static double GetDigestionTickDamage(NPC npc, PreyData prey) => 22;
-        public static double GetDigestionTickRate(NPC npc, PreyData prey) => 1.2;
-        public static double GetPreyAbsorptionRate(NPC npc)
+        public static double GetDigestionTickDamage(Projectile projectile, PreyData prey) => 22;
+        public static double GetDigestionTickRate(Projectile projectile, PreyData prey) => 1.2;
+        public static double GetPreyAbsorptionRate(Projectile projectile)
         {
             double baseAbsorptionRate = 1.0 / (double)V2Utils.SensibleTime(
-                minutes: 0,
-                seconds: 30
+                seconds: 45
             );
             return baseAbsorptionRate;
         }
