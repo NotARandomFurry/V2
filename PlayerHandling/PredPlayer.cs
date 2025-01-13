@@ -1089,8 +1089,10 @@ namespace V2.PlayerHandling
 					return false;
 			}
 			else if (prey is Projectile preyProjectile)
-			{
-				if (V2.VoreNPCBlacklist is not null && V2.VoreProjectileBlacklist.Count > 0 && V2.VoreProjectileBlacklist.Contains(preyProjectile.type))
+            {
+                if (preyProjectile.AsFood().CannotBeEatenDueToShenanigans)
+                    return false;
+                if (V2.VoreNPCBlacklist is not null && V2.VoreProjectileBlacklist.Count > 0 && V2.VoreProjectileBlacklist.Contains(preyProjectile.type))
 					return false;
 
 				if (preyProjectile.AsFood().MaxHealth == -1 && !pred.AsPred().FungalFairySetBonus)
@@ -1105,13 +1107,17 @@ namespace V2.PlayerHandling
 					return false;
 			}
 
-			if (pred.AsPred().SwallowCapacity != -1 && PreyData.GetPreySize(prey) > pred.AsPred().SwallowCapacity)
+			if (pred.AsPred().SwallowCapacity != -1 && PreyData.GetPreySize(prey) > pred.AsPred().SwallowCapacity && !pred.AsPred().Rose)
 				return false;
 
-			if (pred.AsPred().StomachCapacity != -1 && PreyData.GetPreySize(prey) > pred.AsPred().StomachCapacity - pred.AsPred().StomachFullness)
+			if (pred.AsPred().StomachCapacity != -1 && PreyData.GetPreySize(prey) > pred.AsPred().StomachCapacity - pred.AsPred().StomachFullness && !pred.AsPred().Rose)
 				return false;
 
+<<<<<<< Updated upstream
             if (pred.AsPred().StomachacheMeterCapacity != -1 && pred.AsPred().Stomachache > pred.AsPred().StomachacheMeterCapacity)
+=======
+            if (pred.AsPred().Stomachache >= pred.AsPred().StomachacheMeterCapacity && !pred.AsPred().Rose)
+>>>>>>> Stashed changes
                 return false;
 
             return true;

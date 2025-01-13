@@ -5,6 +5,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
+<<<<<<< Updated upstream
+=======
+using Terraria.DataStructures;
+>>>>>>> Stashed changes
 using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.Personalities;
@@ -127,8 +131,17 @@ namespace V2.NPCs.Voraria.TownNPCs.Ghost
 			NPC.AsPred().GetVisualBellySize = GetVisualBellySize;
 
 			NPC.AsFood().OnDigestedBy = PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
+<<<<<<< Updated upstream
 		}
 		public override void ModifyTypeName(ref string typeName) => typeName = "Ghost";
+=======
+        }
+        public override void OnSpawn(IEntitySource source)
+        {
+            NPC.velocity.Y = -2f;
+        }
+        public override void ModifyTypeName(ref string typeName) => typeName = "Ghost";
+>>>>>>> Stashed changes
 
 		//public override bool CanTownNPCSpawn(int numTownNPCs) => ModContent.GetInstance<V2MasterSystem>().freedEnigma;
 
@@ -248,8 +261,15 @@ namespace V2.NPCs.Voraria.TownNPCs.Ghost
 			);
 		}
 		public override void PostAI()
+<<<<<<< Updated upstream
 		{
 			GhostStuff.GhostProfile.frameWait++;
+=======
+        {
+            Lighting.AddLight(NPC.Center, Color.SkyBlue.ToVector3());
+			//yes i know this doesnt work properly if multiple echos exist but that shouldnt happen in the first place so fuck you
+            GhostStuff.GhostProfile.frameWait++;
+>>>>>>> Stashed changes
 			if (GhostStuff.GhostProfile.frameWait >= GhostStuff.GhostProfile.frameDelay)
 			{
 				GhostStuff.GhostProfile.frameWait = 0;
