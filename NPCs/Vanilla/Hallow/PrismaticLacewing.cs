@@ -105,7 +105,7 @@ namespace V2.NPCs.Vanilla.Hallow
 		public override void PostAI(NPC npc)
 		{
 			if (ModContent.GetInstance<V2ServerConfig>().EasilyEdibleEmpress)
-				npc.DoContactGulpage([(TargetType.NPC, NPCID.HallowBoss)]);
+				npc.DoContactGulpage([(TargetType.NPC, NPCID.HallowBoss, TargetPriorityLevel.Favorite)]);
 		}
 
 		public static int GetEmpressDigestionStage(NPC npc)

@@ -76,6 +76,8 @@ Mods: {
 			StruggleDown.DisplayName: Struggle Down
 			StruggleSpecial.DisplayName: Special Struggle
 			LayOnBelly.DisplayName: Lay On Belly
+			GutSlutVisionOMaticRespawn.DisplayName: Respawn After Digestion
+			RespawnAfterDigestion.DisplayName: Respawn After Digestion
 		}
 
 		Conditions: {
@@ -1863,6 +1865,7 @@ Mods: {
 								'''
 							Flavor: A simple glass of ale. Most drunkands would swallow mugs like these by the pound with ale still in them, or even drink the kegs dry directly. Sometimes, they'd even swallow down the kegs themselves!
 						}
+
 						Healing: {
 							Lesser: {
 								Short:
@@ -1887,6 +1890,7 @@ Mods: {
 									This one is unrefined; its recipe is rough, moreso a makeshift variant made by adventurers than anything professionally produced. Still, it can help heal your wounds in a pinch.
 									'''
 							}
+
 							Normal: {
 								Short:
 									'''
@@ -1909,6 +1913,7 @@ Mods: {
 									This one is refined a bit; while not as impressive as more carefully-devised recipes, it is able to heal for quite a bit, able to patch up most small wounds effortlessly and slightly soothe the pains of larger ones.
 									'''
 							}
+
 							Greater: {
 								Short:
 									'''
@@ -1932,6 +1937,7 @@ Mods: {
 									This one's recipe is more naturally-based, and it is well-refined. Using its more naturally-inclined ingredients, it manages to heal for a great deal with little devaluing compared to its lesser counterparts.
 									'''
 							}
+
 							Super: {
 								Short:
 									'''
@@ -1956,6 +1962,7 @@ Mods: {
 									'''
 							}
 						}
+
 						Ironskin: {
 							Short:
 								'''
@@ -1978,6 +1985,7 @@ Mods: {
 								This potion does it by adding some additional natural ingredients typically found below the surface, bringing out the defensive nature of the metal.
 								'''
 						}
+
 						Rage: {
 							Short:
 								'''
@@ -2001,6 +2009,7 @@ Mods: {
 								While digesting, it makes the consumer uncannily accurate with their shots and stomach, targeting weak points while shooting up, swallowing down, and sloshing all around (what's left of) their prey, regardless of whether that prey was once an ally or not.
 								'''
 						}
+
 						Regeneration: {
 							Short:
 								'''
@@ -2022,7 +2031,7 @@ Mods: {
 								This one's in an easy-to-swallow bottle, and meant to help gradually patch up smaller injuries. Unfortunately for you, it probably won't save you from being churned up alive.
 								'''
 						}
-						
+
 						Sake: {
 							Short:
 								'''
@@ -2040,22 +2049,22 @@ Mods: {
 								'''
 							Flavor: A well-made beverage from the heart of Turea, made predominantly for its endless lineages of princes and princesses...yet still marketed as a drink for the wealthy of other countries, and an exotic booze for those with a few currencies to spare.
 						}
+
 						Swiftness: {
 							Short:
 								'''
-								Boosts damage and your ability to quiet down your prey while digesting
+								Makes you feel lighter on your feet while digesting
 								{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
 								'''
 							Long:
 								'''
-								Improves the damage output of your swings, shots, and stomach alike when drank.
+								Allows you to move a bit quicker both with and without a full gut when drank.
 								Since you're just swallowing the whole potion, bottle and all, you'll need the bottle to break first from running out of durability.
 								You're awfully lucky that glass is really easy to digest, and low in calories to boot.
 
-								Once the bottle breaks, until fully digested, and for 3 minutes thereafter:
-								> [c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases damage] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{WrathPotionDamageBoost}].
-								> [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases TUM] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{WrathPotionTUMBoost}].
-								> [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases ACI] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{WrathPotionACIBoost}].
+								Once the bottle breaks, until fully digested, and for 8 minutes thereafter:
+								> [c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases movement speed] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{SwiftnessPotionMoveSpeedBonus}].
+								> [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Decreases stomach weight] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{SwiftnessPotionStomachWeightReduction}].
 								'''
 							Flavor:
 								'''
@@ -2063,6 +2072,7 @@ Mods: {
 								While digesting, it tends towards making the consumer feel lighter on their feet, even with a full stomacch.
 								'''
 						}
+
 						Wrath: {
 							Short:
 								'''
@@ -3948,7 +3958,7 @@ Mods: {
 
 			DigestedPlayer: {
 				YouWereEaten: You were eaten...
-				ManualRespawn: Press B to respawn
+				ManualRespawn: Press {ManualRespawnButton} to respawn
 				Paradox: Awfully full of yourself today, aren't you, {Player}?
 				AprilFools: "{Player} was fooled by {Pred}."
 

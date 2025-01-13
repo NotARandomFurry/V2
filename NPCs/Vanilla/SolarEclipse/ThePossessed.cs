@@ -9,6 +9,7 @@ using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 using V2.Core;
+using V2.NPCs.Voraria.TownNPCs.Enigma;
 using V2.NPCs.Voraria.TownNPCs.Succubus;
 using V2.Sounds.Vore;
 
@@ -82,58 +83,61 @@ namespace V2.NPCs.Vanilla.SolarEclipse
 
 		public override void PostAI(NPC npc)
 		{
-			List<(TargetType, int)> diet =
+			List<(TargetType, int, TargetPriorityLevel)> diet =
 			[
 				// Town NPCs
-				(TargetType.NPC, NPCID.Guide),
-				(TargetType.NPC, NPCID.Merchant),
-				(TargetType.NPC, NPCID.Nurse),
-				(TargetType.NPC, NPCID.Demolitionist),
-				(TargetType.NPC, NPCID.DyeTrader),
-				(TargetType.NPC, NPCID.BestiaryGirl),
-				(TargetType.NPC, NPCID.Dryad),
-				(TargetType.NPC, ModContent.NPCType<LucindaBound>()),
-				(TargetType.NPC, ModContent.NPCType<Lucinda>()),
-				(TargetType.NPC, NPCID.Painter),
-				(TargetType.NPC, NPCID.GolferRescue),
-				(TargetType.NPC, NPCID.Golfer),
-				(TargetType.NPC, NPCID.ArmsDealer),
-				(TargetType.NPC, NPCID.TravellingMerchant),
-				(TargetType.NPC, NPCID.BartenderUnconscious),
-				(TargetType.NPC, NPCID.DD2Bartender),
-				(TargetType.NPC, NPCID.WebbedStylist),
-				(TargetType.NPC, NPCID.Stylist),
-				(TargetType.NPC, NPCID.Clothier),
-				(TargetType.NPC, NPCID.BoundMechanic),
-				(TargetType.NPC, NPCID.Mechanic),
-				(TargetType.NPC, NPCID.PartyGirl),
-				(TargetType.NPC, NPCID.BoundWizard),
-				(TargetType.NPC, NPCID.Wizard),
-				(TargetType.NPC, NPCID.TaxCollector),
-				(TargetType.NPC, NPCID.Pirate),
-				(TargetType.NPC, NPCID.Steampunker),
+				(TargetType.NPC, NPCID.Guide, TargetPriorityLevel.Neutral),
+				(TargetType.NPC, NPCID.Merchant, TargetPriorityLevel.Neutral),
+				(TargetType.NPC, NPCID.Nurse, TargetPriorityLevel.Neutral),
+				(TargetType.NPC, NPCID.Demolitionist, TargetPriorityLevel.Neutral),
+				(TargetType.NPC, NPCID.DyeTrader, TargetPriorityLevel.Neutral),
+				(TargetType.NPC, NPCID.BestiaryGirl, TargetPriorityLevel.Neutral),
+				(TargetType.NPC, NPCID.Dryad, TargetPriorityLevel.Neutral),
+				(TargetType.NPC, ModContent.NPCType<LucindaBound>(), TargetPriorityLevel.Neutral),
+				(TargetType.NPC, ModContent.NPCType<Lucinda>(), TargetPriorityLevel.Neutral),
+				(TargetType.NPC, NPCID.Painter, TargetPriorityLevel.Neutral),
+				(TargetType.NPC, NPCID.GolferRescue, TargetPriorityLevel.Neutral),
+				(TargetType.NPC, NPCID.Golfer, TargetPriorityLevel.Neutral),
+				(TargetType.NPC, NPCID.ArmsDealer, TargetPriorityLevel.Neutral),
+				(TargetType.NPC, NPCID.TravellingMerchant, TargetPriorityLevel.Neutral),
+				(TargetType.NPC, NPCID.BartenderUnconscious, TargetPriorityLevel.Neutral),
+				(TargetType.NPC, NPCID.DD2Bartender, TargetPriorityLevel.Neutral),
+				(TargetType.NPC, NPCID.WebbedStylist, TargetPriorityLevel.Neutral),
+				(TargetType.NPC, NPCID.Stylist, TargetPriorityLevel.Neutral),
+				(TargetType.NPC, NPCID.Clothier, TargetPriorityLevel.Neutral),
+				(TargetType.NPC, NPCID.BoundMechanic, TargetPriorityLevel.Neutral),
+				(TargetType.NPC, NPCID.Mechanic, TargetPriorityLevel.Neutral),
+				(TargetType.NPC, NPCID.PartyGirl, TargetPriorityLevel.Neutral),
+				(TargetType.NPC, NPCID.BoundWizard, TargetPriorityLevel.Neutral),
+				(TargetType.NPC, NPCID.Wizard, TargetPriorityLevel.Neutral),
+				(TargetType.NPC, NPCID.TaxCollector, TargetPriorityLevel.Neutral),
+				(TargetType.NPC, NPCID.Pirate, TargetPriorityLevel.Neutral),
+				(TargetType.NPC, NPCID.Steampunker, TargetPriorityLevel.Neutral),
+				(TargetType.NPC, ModContent.NPCType<CloverBound>(), TargetPriorityLevel.Neutral),
+				(TargetType.NPC, ModContent.NPCType<Clover>(), TargetPriorityLevel.Neutral),
+				(TargetType.NPC, NPCID.Princess, TargetPriorityLevel.Neutral),
+				(TargetType.NPC, NPCID.Cyborg, TargetPriorityLevel.Neutral),
 
 				// Other meals
-				(TargetType.NPC, NPCID.Harpy),
-				(TargetType.NPC, NPCID.Harpy),
+				(TargetType.NPC, NPCID.Harpy, TargetPriorityLevel.Neutral),
 
 				// Pirates
-				(TargetType.NPC, NPCID.PirateCorsair),
-				(TargetType.NPC, NPCID.PirateCrossbower),
-				(TargetType.NPC, NPCID.PirateDeadeye),
-				(TargetType.NPC, NPCID.PirateDeckhand),
-				(TargetType.NPC, NPCID.PirateCaptain),
+				(TargetType.NPC, NPCID.PirateCorsair, TargetPriorityLevel.Neutral),
+				(TargetType.NPC, NPCID.PirateCrossbower, TargetPriorityLevel.Neutral),
+				(TargetType.NPC, NPCID.PirateDeadeye, TargetPriorityLevel.Neutral),
+				(TargetType.NPC, NPCID.PirateDeckhand, TargetPriorityLevel.Neutral),
+				(TargetType.NPC, NPCID.PirateCaptain, TargetPriorityLevel.Neutral),
 
 				// Lamia
-				(TargetType.NPC, NPCID.DesertLamiaDark),
-				(TargetType.NPC, NPCID.DesertLamiaLight),
+				(TargetType.NPC, NPCID.DesertLamiaDark, TargetPriorityLevel.Neutral),
+				(TargetType.NPC, NPCID.DesertLamiaLight, TargetPriorityLevel.Neutral),
 
 				// Misc. humanoid NPCs
-				(TargetType.NPC, NPCID.LostGirl),
-				(TargetType.NPC, NPCID.Nymph),
+				(TargetType.NPC, NPCID.LostGirl, TargetPriorityLevel.High),
+				(TargetType.NPC, NPCID.Nymph, TargetPriorityLevel.Neutral),
 
 				// Players, of course
-				(TargetType.Player, -1),
+				(TargetType.Player, -1, TargetPriorityLevel.High),
 			];
 			if (PredNPC.GetCurrentBellyWeight(npc) < npc.AsPred().MaxStomachCapacity * 0.80f)
 				npc.DoContactGulpage(diet);

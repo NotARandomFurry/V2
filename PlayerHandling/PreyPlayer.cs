@@ -122,7 +122,7 @@ namespace V2.PlayerHandling
 			if (GuttedGazePred is not null && GuttedGazePred.active)
 				Main.screenPosition = GuttedGazePred.Center - new Vector2(Main.screenWidth / 2, Main.screenHeight / 2);
 
-			bool bPressed = Main.keyState.IsKeyDown(Keys.B) && !Main.oldKeyState.IsKeyDown(Keys.B);
+			bool bPressed = V2.RespawnAfterDigestionHotkey.JustPressed;
 			if (bPressed)
 				Player.respawnTimer = 0;
 			else

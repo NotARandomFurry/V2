@@ -64,13 +64,13 @@ namespace V2.Items.Voraria.Consumables
 				SendDirectlyToSteamGalGut(steamLass, player);
 		}
 
-		public static bool CanUseInStomach(Item item, Player player, Entity pred) => NPC.AnyNPCs(NPCID.Steampunker) && (pred is not NPC predNPC || predNPC.type != NPCID.Steampunker);
+		public static bool CanUseInStomach(Item item, Player player, Entity pred) => true;
 		public static void UseInStomach(Item item, Player player, Entity pred)
 		{
-			NPC steamLass = Main.npc.FirstOrDefault(x => x.active && x.life > 0 && x.type == NPCID.Steampunker && PredNPC.CanSwallow(x, player));
+			NPC steamLass = Main.npc.FirstOrDefault(x => x.active && x.life > 0 && x.type == NPCID.Steampunker && PredNPC.CanSwallow(x, player, true));
 			if (steamLass is not null)
 			{
-				player.CurrentCaptor().Prey.RemoveAll(x => !x.NoHealth && x.Type == PreyType.Player && x.Instance == player);
+				player.CurrentCaptor().Prey.RemoveAll(x => !x.NoHealth && x.Instance is Player preyPlayer && preyPlayer.whoAmI == player.whoAmI);
 				SendDirectlyToSteamGalGut(steamLass, player);
 			}
 		}

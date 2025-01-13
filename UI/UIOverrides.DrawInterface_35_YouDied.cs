@@ -83,7 +83,7 @@ namespace V2.UI
 			{
 				yOffsetFromScreenCenter += Main.screenHeight * 0.50f;
 				respawnCountdownScale = 0.5f;
-				textValue2 = Language.GetTextValue("Mods.V2.Death.DigestedPlayer.ManualRespawn");
+				textValue2 = Language.GetTextValueWith("Mods.V2.Death.DigestedPlayer.ManualRespawn", new { ManualRespawnButton = V2.RespawnAfterDigestionHotkey.GetAssignedKeys()[0] });
 				Main.spriteBatch.DrawString(
 					FontAssets.DeathText.Value,
 					textValue2,

@@ -29,8 +29,10 @@ namespace V2
 		public static ModKeybind StruggleRightHotkey { get; set; }
 		public static ModKeybind StruggleDownHotkey { get; set; }
 		public static ModKeybind StruggleSpecialHotkey { get; set; }
-		
+
 		public static ModKeybind LayOnBellyHotkey { get; set; }
+
+		public static ModKeybind RespawnAfterDigestionHotkey { get; set; }
 
 		/// <summary>
 		/// A special flag which decides whether or not the vore blacklists are actually filled.<br/>
@@ -85,6 +87,8 @@ namespace V2
 			StruggleSpecialHotkey = KeybindLoader.RegisterKeybind(this, "StruggleSpecial", "Space");
 
 			LayOnBellyHotkey = KeybindLoader.RegisterKeybind(this, "LayOnBelly", "L");
+
+			RespawnAfterDigestionHotkey = KeybindLoader.RegisterKeybind(this, "RespawnAfterDigestion", "LeftShift");
 
 			BetterDialogue.BetterDialogue.SupportedNPCs.Add(ModContent.NPCType<Lucinda>());
 			BetterDialogue.BetterDialogue.SupportedNPCs.Add(ModContent.NPCType<LucindaBound>());

@@ -76,6 +76,8 @@ Mods: {
 			StruggleDown.DisplayName: Борьба вниз
 			StruggleSpecial.DisplayName: Специальная борьба
 			// LayOnBelly.DisplayName: Lay On Belly
+			// GutSlutVisionOMaticRespawn.DisplayName: Respawn After Digestion
+			// RespawnAfterDigestion.DisplayName: Respawn After Digestion
 		}
 
 		Conditions: {
@@ -1853,28 +1855,6 @@ Mods: {
 					}
 
 					Potions: {
-						IronSkinPotion: {
-							/* Short:
-								'''
-								Provides increased defense thanks to this potion generating an iron-like barrier on your skin.
-								{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
-								   
-								''' */
-							/* Long:
-								'''
-								It's a piece of iron, mixed with some herbs and then thrown in to a vial. The body needs iron - so more is better?
-								Since you're just swallowing the whole bottle, with the cap still on, you'll need the bottle to break first from running out of durability.
-
-								Once the bottle breaks, until fully digested, and for 8 minutes thereafter:
-								> [c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases defense] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{DefenseValue}]. [c/7F7F7F:(Artificial)]
-								''' */
-							/* Flavor:
-								'''
-								While consuming iron ore directly does not provide any benefits really. This one does it by adding some additional ingredients and blending it together,
-								Providing an increase to your natural defense!
-								''' */
-						}
-
 						Ale: {
 							/* Short:
 								'''
@@ -1893,67 +1873,123 @@ Mods: {
 							// Flavor: A simple glass of ale. Most drunkands would swallow mugs like these by the pound with ale still in them, or even drink the kegs dry directly. Sometimes, they'd even swallow down the kegs themselves!
 						}
 
-						Sake: {
+						Healing: {
+							Lesser: {
+								/* Short:
+									'''
+									Provides increased defense thanks to this potion generating an iron-like barrier on your skin.
+									{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+									   
+									''' */
+								/* Long:
+									'''
+									Heals you a small amount all at once when drank.
+									Since you're just swallowing the whole bottle, with the cap still on, you'll need the bottle to break first from running out of durability.
+									You're awfully lucky that glass is really easy to digest, and low in calories to boot.
+
+									Once the bottle breaks:
+									> [c/{$Mods.V2.CommonColorCodes.Heal}:Heals] for [c/{$Mods.V2.CommonColorCodes.DoSomething}:{HealPotionLesserValue} HP].
+									> [c/{$Mods.V2.CommonColorCodes.NegativeEffect}:Inflicts Potion Sickness] until fully digested, and for 60 seconds thereafter.
+									''' */
+								/* Flavor:
+									'''
+									Healing potions are an extremely common commodity all around the world; if you need something patched up, your best bet is to ask the local medical practitioner for a dosage of a potion!
+									This one is unrefined; its recipe is rough, moreso a makeshift variant made by adventurers than anything professionally produced. Still, it can help heal your wounds in a pinch.
+									''' */
+							}
+
+							Normal: {
+								/* Short:
+									'''
+									Provides increased defense thanks to this potion generating an iron-like barrier on your skin.
+									{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+									''' */
+								/* Long:
+									'''
+									Heals you a modest amount all at once when drank.
+									Since you're just swallowing the whole bottle, with the cap still on, you'll need the bottle to break first from running out of durability.
+									You're awfully lucky that glass is really easy to digest, and low in calories to boot.
+
+									Once the bottle breaks:
+									> [c/{$Mods.V2.CommonColorCodes.Heal}:Heals] for [c/{$Mods.V2.CommonColorCodes.DoSomething}:{HealPotionNormalValue} HP].
+									> [c/{$Mods.V2.CommonColorCodes.NegativeEffect}:Inflicts Potion Sickness] until fully digested, and for 60 seconds thereafter.
+									''' */
+								/* Flavor:
+									'''
+									Healing potions are an extremely common commodity all around the world; if you need something patched up, your best bet is to ask the local medical practitioner for a dosage of a potion!
+									This one is refined a bit; while not as impressive as more carefully-devised recipes, it is able to heal for quite a bit, able to patch up most small wounds effortlessly and slightly soothe the pains of larger ones.
+									''' */
+							}
+
+							Greater: {
+								/* Short:
+									'''
+									Provides increased defense thanks to this potion generating an iron-like barrier on your skin.
+									{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+									   
+									''' */
+								/* Long:
+									'''
+									Heals you a large amount all at once when drank.
+									Since you're just swallowing the whole bottle, with the cap still on, you'll need the bottle to break first from running out of durability.
+									You're awfully lucky that glass is really easy to digest, and low in calories to boot.
+
+									Once the bottle breaks:
+									> [c/{$Mods.V2.CommonColorCodes.Heal}:Heals] for [c/{$Mods.V2.CommonColorCodes.DoSomething}:{HealPotionGreaterValue} HP].
+									> [c/{$Mods.V2.CommonColorCodes.NegativeEffect}:Inflicts Potion Sickness] until fully digested, and for 60 seconds thereafter.
+									''' */
+								/* Flavor:
+									'''
+									Healing potions are an extremely common commodity all around the world; if you need something patched up, your best bet is to ask the local medical practitioner for a dosage of a potion!
+									This one's recipe is more naturally-based, and it is well-refined. Using its more naturally-inclined ingredients, it manages to heal for a great deal with little devaluing compared to its lesser counterparts.
+									''' */
+							}
+
+							Super: {
+								/* Short:
+									'''
+									Provides increased defense thanks to this potion generating an iron-like barrier on your skin.
+									{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+									   
+									''' */
+								/* Long:
+									'''
+									Heals you a huge amount all at once when drank.
+									Since you're just swallowing the whole bottle, with the cap still on, you'll need the bottle to break first from running out of durability.
+									You're awfully lucky that glass is really easy to digest, and low in calories to boot.
+
+									Once the bottle breaks:
+									> [c/{$Mods.V2.CommonColorCodes.Heal}:Heals] for [c/{$Mods.V2.CommonColorCodes.DoSomething}:{HealPotionSuperValue} HP].
+									> [c/{$Mods.V2.CommonColorCodes.NegativeEffect}:Inflicts Potion Sickness] until fully digested, and for 60 seconds thereafter.
+									''' */
+								/* Flavor:
+									'''
+									Healing potions are an extremely common commodity all around the world; if you need something patched up, your best bet is to ask the local medical practitioner for a dosage of a potion!
+									This one reaches towards greatness; while perfection is inachievable, this potion manages to heal many of the more major wounds with but a single serving. The serving size? 1 potion!
+									''' */
+							}
+						}
+
+						Ironskin: {
 							/* Short:
 								'''
-								Makes you tipsy while, and for a short while after, digesting
+								Provides increased defense while digesting
 								{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+								   
 								''' */
 							/* Long:
 								'''
-								It's alcohol, but fancy! And in a fancy bottle!
+								Improves your body's ability to shrug off attacks, at least from the outside, when drank.
 								Since you're just swallowing the whole bottle, with the cap still on, you'll need the bottle to break first from running out of durability.
-								As such, it may take a moment before you really start to feel the good vibes you're drinking this stuff for.
-
-								Once the bottle breaks, until fully digested, and for 3 minutes thereafter, [c/{$Mods.V2.CommonColorCodes.DoSomething}:inflicts the Tipsy debuff].
-								This buff improves your melee capabilities and internal capacities, at the cost of some defense and some digestion rates.
-								''' */
-							// Flavor: A well-made beverage from the heart of Turea, made predominantly for its endless lineages of princes and princesses...yet still marketed as a drink for the wealthy of other countries, and an exotic booze for those with a few currencies to spare.
-						}
-
-						Regeneration: {
-							/* Short:
-								'''
-								Helps regenerate health while digesting
-								{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
-								''' */
-							/* Long:
-								'''
-								Improves your body's ability to heal itself from injuries when drank.
-								Since you're just swallowing the whole potion, bottle and all, you'll need the bottle to break first from running out of durability.
 								You're awfully lucky that glass is really easy to digest, and low in calories to boot.
 
-								Once the bottle breaks, until fully digested, and for 6 minutes thereafter:
-								> [c/{$Mods.V2.CommonColorCodes.Heal}:Increases health regeneration] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{RegenPotionRegenFlat} HP/sec]. [c/7F7F7F:(Artificial)]
+								Once the bottle breaks, until fully digested, and for 8 minutes thereafter:
+								> [c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases defense] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{IronskinPotionDefenseValue}]. [c/7F7F7F:(Artificial)]
 								''' */
 							/* Flavor:
 								'''
-								Simple beginner-level potions like this one are as commonplace as any other tech these days, being meant to help adventurers keep on their feet and off their fellows' waistlines.
-								This one's in an easy-to-swallow bottle, and meant to help gradually patch up smaller injuries. Unfortunately for you, it probably won't save you from being churned up alive.
-								''' */
-						}
-
-						Wrath: {
-							/* Short:
-								'''
-								Boosts damage and your ability to quiet down your prey while digesting
-								{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
-								''' */
-							/* Long:
-								'''
-								Improves the damage output of your swings, shots, and stomach alike when drank.
-								Since you're just swallowing the whole potion, bottle and all, you'll need the bottle to break first from running out of durability.
-								You're awfully lucky that glass is really easy to digest, and low in calories to boot.
-
-								Once the bottle breaks, until fully digested, and for 3 minutes thereafter:
-								> [c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases damage] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{WrathPotionDamageBoost}].
-								> [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases TUM] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{WrathPotionTUMBoost}].
-								> [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases ACI] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{WrathPotionACIBoost}].
-								''' */
-							/* Flavor:
-								'''
-								An amateur-level potion fashioned from the oils of a spiteful fish which makes its home in pitch-dark purple Corrupted waters.
-								While digesting, it makes the consumer rather angry, increasing their combat and predatory prowesses alike. An adventurer with this would-be curse could easily carve up and churn down their fellows into a healthy layer of fat just as easily as they could their foes.
+								While consuming iron ore directly does not provide any noteworthy benefits, there are a number of ways to make it beneficial to consume.
+								This potion does it by adding some additional natural ingredients typically found below the surface, bringing out the defensive nature of the metal.
 								''' */
 						}
 
@@ -1978,6 +2014,93 @@ Mods: {
 								'''
 								An amateur-level potion fashioned from a bloody subspecies of piranha which makes its home in the sanguine seas of the Crimson.
 								While digesting, it makes the consumer uncannily accurate with their shots and stomach, targeting weak points while shooting up, swallowing down, and sloshing all around (what's left of) their prey, regardless of whether that prey was once an ally or not.
+								''' */
+						}
+
+						Regeneration: {
+							/* Short:
+								'''
+								Helps regenerate health while digesting
+								{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+								''' */
+							/* Long:
+								'''
+								Improves your body's ability to heal itself from injuries when drank.
+								Since you're just swallowing the whole potion, bottle and all, you'll need the bottle to break first from running out of durability.
+								You're awfully lucky that glass is really easy to digest, and low in calories to boot.
+
+								Once the bottle breaks, until fully digested, and for 6 minutes thereafter:
+								> [c/{$Mods.V2.CommonColorCodes.Heal}:Increases health regeneration] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{RegenPotionRegenFlat} HP/sec]. [c/7F7F7F:(Artificial)]
+								''' */
+							/* Flavor:
+								'''
+								Simple beginner-level potions like this one are as commonplace as any other tech these days, being meant to help adventurers keep on their feet and off their fellows' waistlines.
+								This one's in an easy-to-swallow bottle, and meant to help gradually patch up smaller injuries. Unfortunately for you, it probably won't save you from being churned up alive.
+								''' */
+						}
+
+						Sake: {
+							/* Short:
+								'''
+								Makes you tipsy while, and for a short while after, digesting
+								{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+								''' */
+							/* Long:
+								'''
+								It's alcohol, but fancy! And in a fancy bottle!
+								Since you're just swallowing the whole bottle, with the cap still on, you'll need the bottle to break first from running out of durability.
+								As such, it may take a moment before you really start to feel the good vibes you're drinking this stuff for.
+
+								Once the bottle breaks, until fully digested, and for 3 minutes thereafter, [c/{$Mods.V2.CommonColorCodes.DoSomething}:inflicts the Tipsy debuff].
+								This buff improves your melee capabilities and internal capacities, at the cost of some defense and some digestion rates.
+								''' */
+							// Flavor: A well-made beverage from the heart of Turea, made predominantly for its endless lineages of princes and princesses...yet still marketed as a drink for the wealthy of other countries, and an exotic booze for those with a few currencies to spare.
+						}
+
+						Swiftness: {
+							/* Short:
+								'''
+								Makes you feel lighter on your feet while digesting
+								{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+								''' */
+							/* Long:
+								'''
+								Allows you to move a bit quicker both with and without a full gut when drank.
+								Since you're just swallowing the whole potion, bottle and all, you'll need the bottle to break first from running out of durability.
+								You're awfully lucky that glass is really easy to digest, and low in calories to boot.
+
+								Once the bottle breaks, until fully digested, and for 8 minutes thereafter:
+								> [c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases movement speed] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{SwiftnessPotionMoveSpeedBonus}].
+								> [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Decreases stomach weight] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{SwiftnessPotionStomachWeightReduction}].
+								''' */
+							/* Flavor:
+								'''
+								A beginner-level potion mixed using the refreshing waters of a cactus and the sporadicity of blinkroot.
+								While digesting, it tends towards making the consumer feel lighter on their feet, even with a full stomacch.
+								''' */
+						}
+
+						Wrath: {
+							/* Short:
+								'''
+								Boosts damage and your ability to quiet down your prey while digesting
+								{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+								''' */
+							/* Long:
+								'''
+								Improves the damage output of your swings, shots, and stomach alike when drank.
+								Since you're just swallowing the whole potion, bottle and all, you'll need the bottle to break first from running out of durability.
+								You're awfully lucky that glass is really easy to digest, and low in calories to boot.
+
+								Once the bottle breaks, until fully digested, and for 3 minutes thereafter:
+								> [c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases damage] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{WrathPotionDamageBoost}].
+								> [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases TUM] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{WrathPotionTUMBoost}].
+								> [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases ACI] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{WrathPotionACIBoost}].
+								''' */
+							/* Flavor:
+								'''
+								An amateur-level potion fashioned from the oils of a spiteful fish which makes its home in pitch-dark purple Corrupted waters.
+								While digesting, it makes the consumer rather angry, increasing their combat and predatory prowesses alike. An adventurer with this would-be curse could easily carve up and churn down their fellows into a healthy layer of fat just as easily as they could their foes.
 								''' */
 						}
 					}
@@ -3594,6 +3717,12 @@ Mods: {
 						[c/{$Mods.V2.CommonColorCodes.Heal}:Увеличивает регенерацию здоровья] на [c/{$Mods.V2.CommonColorCodes.DoSomething}:{RegenPotionRegenFlat} HP/sec]. [c/7F7F7F:(Artificial)]
 						'Вы чувствуете себя немного оживленным'
 						'''
+					/* Swiftness.Description:
+						'''
+						[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases movement speed] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{SwiftnessMoveSpeedBonus}].
+						[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Decreases stomach weight] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{SwiftnessStomachWeightReduction}].
+						'You feel a bit lighter on your feet'
+						''' */
 					Wrath.Description:
 						'''
 						[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Увеличивает урон] на [c/{$Mods.V2.CommonColorCodes.DoSomething}:{WrathDamageBonus}].
@@ -3837,7 +3966,7 @@ Mods: {
 
 			DigestedPlayer: {
 				YouWereEaten: Тебя съели...
-				// ManualRespawn: Press B to respawn
+				// ManualRespawn: Press {ManualRespawnButton} to respawn
 				Paradox: Ужасно самодовольный сегодня, не так ли {Player}?
 				AprilFools: "{Player} был одурачен {Pred}."
 
