@@ -27,7 +27,7 @@ namespace V2.Items.Voraria.Weapons.Summon
 		{
 			ItemID.Sets.GamepadWholeScreenUseRange[Item.type] = true;
 			ItemID.Sets.LockOnIgnoresCollision[Item.type] = true;
-			ItemID.Sets.StaffMinionSlotsRequired[Type] = 1f;
+			ItemID.Sets.StaffMinionSlotsRequired[Type] = 1.5f;
 			ItemID.Sets.ShimmerTransformToItem[Type] = ItemID.SlimeStaff;
 		}
 		public override void SetDefaults()

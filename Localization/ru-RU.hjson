@@ -180,6 +180,16 @@ Mods: {
 							Defaults to false.
 							''' */
 					}
+
+					FatAssesBreakTiles: {
+						// Label: Fatasses Break Tiles
+						/* Tooltip:
+							'''
+							BALANCE BREAKAGE: None
+							Allows really fuckin' fat things to break tiles below them if they aren't on flat ground, platforms & glass break easier
+							Defaults to true.
+							''' */
+					}
 				}
 			}
 
@@ -1456,6 +1466,10 @@ Mods: {
 					// CloverHeadAccessories: Clover's Snazzy Style
 					// CloverSweater: Clover's Sweet Sweater
 					// CloverStockings: Clover's Silly Stockings
+					// MushroomHairpin: Mushroom Hairpin
+					// FungalDress: Fungal Dress
+					// ShroomiteHairpin: Shroomite Hairpin
+					// ShroomiteDress: Shroomite Dress
 				}
 
 				CheatItems: {
@@ -1475,6 +1489,7 @@ Mods: {
 					AntiDigestionSash: Гарантированная створка
 					PromethiaAntiDigestionSash: Створка с ангельскими узорами
 					NymphHairScarf: Шарф хитрой охотницы
+					// ShroomNecklace: Shroom Necklace
 				}
 
 				Consumables: {
@@ -1505,6 +1520,7 @@ Mods: {
 					HairDyeCapacity: Голодная краска для волос
 					// SteampunkerGutFastTravel: Steam-Powered Tumspace Translator
 					// DemonCandy: Demon Candy
+					// GhostBall: Spirit Ball
 				}
 
 				Charms: {
@@ -1537,6 +1553,7 @@ Mods: {
 				// AstralFairyController: Astral Remote
 				// AstralFairySummon: Astral Flower
 				// DinnerBlaster: Dinner Blaster
+				// MushroomToken: Fungal Gift
 			}
 		}
 
@@ -2606,6 +2623,7 @@ Mods: {
 
 				Armor: {
 					// CloverArmorSetBonus: 7 defense, drastically increased struggling strength
+					// FungalFairySetBonus: Enables eating regular projectiles, automatically eat projectiles that are about to hit you
 
 					CloverHeadAccessories: {
 						/* Short:
@@ -2628,7 +2646,7 @@ Mods: {
 							Clover's choice of headwear. It is an amalgamation of items stuffed into a single slot.
 							It consists of:
 							- A four-leaf clover hair... hatpin?
-							- An awfully bright tophat
+							- An awfully bright tophat.
 							- 'Felt Goggles', despite not actually being made of felt.
 							At first, Clover didn't actually like green that much, but eventually it grew on her.
 							''' */
@@ -2687,6 +2705,73 @@ Mods: {
 							like
 							dude
 							''' */
+					}
+
+					MushroomHairpin: {
+						/* Short:
+							'''
+							Increased maximum prey swallowing size and food absorption rate
+							Increases your max number of minions by 1
+							{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+							''' */
+						/* Long:
+							'''
+							[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases GLP] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:7].
+							[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases ABS] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:7].
+							[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases your maximum number of minions] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:1].
+							''' */
+						// Flavor: i hope nobody realises i just took the strange glowing mushroom sprite and flipped it
+					}
+
+					FungalDress: {
+						/* Short:
+							'''
+							Increased stomach size
+							Lowers stomach weight
+							Increases your max number of minions by 1
+							{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+							''' */
+						/* Long:
+							'''
+							[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases TUM] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:9].
+							[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Decreases stomach weight] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:20%].
+							''' */
+						// Flavor: It's a bit tight... You'd think that fairies known for becoming Really Fucking Fat would make stretchier clothes...
+					}
+
+					ShroomiteHairpin: {
+						/* Short:
+							'''
+							Increased maximum prey swallowing size, food absorption rate and acid strength
+							Increases your max number of minions by 3
+							{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+							''' */
+						/* Long:
+							'''
+							[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases GLP] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:19].
+							[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases ABS] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:19].
+							[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases ACI] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:6].
+							[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases your maximum number of minions] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:3].
+							''' */
+						// Flavor: The ultimate glowing mushroom, as a hairpin.
+					}
+
+					ShroomiteDress: {
+						/* Short:
+							'''
+							Increased stomach size and acid strength
+							Lowers stomach weight
+							Increases your max number of minions by 2
+							{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+							''' */
+						/* Long:
+							'''
+							[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases TUM] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:22].
+							[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases ACI] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:6].
+							[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Decreases stomach weight] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:40%].
+							[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases your maximum number of minions] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:2].
+							''' */
+						// Flavor: You had the materials to make it bigger, and yet... It's still small. Are you into this, or..?
 					}
 				}
 
@@ -2903,6 +2988,24 @@ Mods: {
 							Он выдерживает более жадные атаки желудка гораздо лучше, чем его смертный аналог, и предназначен для того, чтобы дать съеденным ангелам немного времени, чтобы как следует проучить хищника, насколько низко он все еще находится в большой пищевой цепи.
 							Прометия, конечно, держит свою при себе не потому, что хочет убежать от хищников, которые ею закусывают, а скорее потому, что хочет еще немного времени, чтобы... насладиться собой, если не сказать больше, в этих голодных желудках.
 							'''
+					}
+
+					ShroomNecklace: {
+						/* Short:
+							'''
+							Increases your max number of minions by 1
+							Strengthens your fungal fairies
+							{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+							''' */
+						/* Long:
+							'''
+							[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases your maximum number of minions] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:1].
+							Your fungal fairies gain the following buffs:
+							- [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Halved weight penalty]
+							- [c/{$Mods.V2.CommonColorCodes.DoSomething}:1.35x] [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:food absorption rate]
+							- Fungal spores grant [c/{$Mods.V2.CommonColorCodes.PositiveEffect}:'Fungal Blessing'] for [c/{$Mods.V2.CommonColorCodes.DoSomething}:4] seconds each [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:(or ][c/{$Mods.V2.CommonColorCodes.DoSomething}:12 seconds][c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}: if eaten)], buff duration stacks
+							''' */
+						// Flavor: A blue necklace, fitted with a mysterious mushroom that seems to leave a positive impact on fungal fairies.
 					}
 				}
 
@@ -3450,6 +3553,16 @@ Mods: {
 							Appears to be the favourite food of a certain type of monster in the lava-filled depths of the Underworld.
 							''' */
 					}
+
+					GhostBall: {
+						/* Short:
+							'''
+							If a certain ghost isn't present, throwing this into a surface will summon them
+							{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+							''' */
+						// Long: "[c/{$Mods.V2.CommonColorCodes.DoSomething}:Summons Echo], who behaves similar to a Town Pet. You will be able to have them live in a house with another Town NPC."
+						// Flavor: Not quite a spirit bomb, but you can pretend it is, i guess.
+					}
 				}
 
 				Weapons: {
@@ -3654,6 +3767,20 @@ Mods: {
 						(Explosion)
 						''' */
 				}
+
+				MushroomToken: {
+					/* Short:
+						'''
+						Can be used to craft certain items
+						{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+						''' */
+					/* Long:
+						'''
+						Dropped from fungal fairies once they reach a high enough weight
+						Can be used to craft equipment related to them
+						''' */
+					// Flavor: A gift from one of your fungal fairies.
+				}
 			}
 		}
 
@@ -3674,6 +3801,10 @@ Mods: {
 			// CLOVERPUNCH.DisplayName: C L O V E R P U N C H
 			// AstralFairy.DisplayName: Astral Fairy
 			// Burger.DisplayName: Burger
+			// MyFairy_ProjectileEntity.DisplayName: My Fairy
+			// Dryadisque_ProjectileEntity.DisplayName: Dryadisque
+			// Sunflower_ProjectileEntity.DisplayName: Sunflower
+			// GraniteLamp_ProjectileEntity.DisplayName: Granite Lamp
 		}
 
 		InfoDisplayName.TallyCounterVore: Подсчет порций
@@ -3801,6 +3932,16 @@ Mods: {
 							[c/{$Mods.V2.CommonColorCodes.Heal}:Increases health regeneration] by [c/{$Mods.V2.CommonColorCodes.DoSomething}: 1 for every 3 seconds of the buff duration, up to 10 HP/sec]. [c/7F7F7F:(Artificial)]
 							Max duration is [c/{$Mods.V2.CommonColorCodes.DoSomething}:1 minute].
 							'Inhaling spores seems like the polar opposite of healthy, if you ask me.'
+							''' */
+					}
+
+					DemonCandyRegen: {
+						// Name: Healing Jam
+						/* Description:
+							'''
+							[c/{$Mods.V2.CommonColorCodes.Heal}:Increases health regeneration] by [c/{$Mods.V2.CommonColorCodes.DoSomething}: 2 HP/sec] [c/7F7F7F:(Artificial)]
+							[c/{$Mods.V2.CommonColorCodes.ManaHeal}:Increases mana regeneration] by [c/{$Mods.V2.CommonColorCodes.DoSomething}: 6 MP/sec] [c/7F7F7F:(Artificial)]
+							'Turns out, it was filled with jam!'
 							''' */
 					}
 				}
@@ -4413,6 +4554,18 @@ Mods: {
 				MoonLord: Повелитель Луны был переварен {Pred}!
 				Default: "{BossName} был переварен {Pred}!"
 			}
+
+			FlattenedByAFatAss: {
+				Universal: {
+					// 1: "{Player} forgot to look up."
+					// 2: "{Player} was crushed by {NPC}'s fat ass."
+					// 3: "{Player} caught a big one!"
+					// 4: "{NPC} either accidentally or intentionally flattened {Player}."
+					// 5: Thanks to {NPC}, {Player} is now equivalent to a sheet of paper.
+					// 6: "{NPC} flattened {Player} into a pancake."
+					// 7: Well, good luck finding {Player} under {NPC}'s body.
+				}
+			}
 		}
 
 		Menu: {
@@ -4711,11 +4864,10 @@ Mods: {
 
 			Echo: {
 				// DisplayName: Ghost
-				// Census.SpawnCondition: Conditions unknown
+				// Census.SpawnCondition: Obtain and toss a Spirit Ball from Clover.
 			}
 
-			// MyFairy_NPCEntity.DisplayName: my fairy
-			// Dryadisque_NPCEntity.DisplayName: Dryad Painting
+			// OversizedFairy.DisplayName: Oversized Fairy
 		}
 
 		ItemObtainmentDetails.Voraria.Accessories.Vanity.BalloonBelly: Mods.V2.ItemObtainmentDetails.Voraria.Accessories.Vanity.BalloonBelly
@@ -4744,6 +4896,11 @@ Mods: {
 				// DisplayName: Dinner Blaster
 				// Tooltip: ""
 			}
+
+			// FungalDress.Tooltip: ""
+			// MushroomHairpin.Tooltip: ""
+			// ShroomiteDress.Tooltip: ""
+			// ShroomiteHairpin.Tooltip: ""
 		}
 	}
 }

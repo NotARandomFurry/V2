@@ -1,21 +1,15 @@
 ﻿using Microsoft.Xna.Framework;
 using System.Collections.Generic;
-using System.Security.Policy;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
-using Terraria.GameContent.Dyes;
-using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using V2.Core;
-using V2.Items.Voraria.Accessories.Informational;
-using V2.NPCs.Voraria.TownNPCs.Enigma;
 using V2.NPCs.Voraria.Underworld.HellHarpy;
-using V2.PlayerHandling;
 using V2.Sounds.MuffledSounds;
 using V2.Sounds.Vore;
+using V2.StatusEffects.Voraria.Buffs;
 
 namespace V2.Items.Voraria.Consumables
 {
@@ -29,23 +23,6 @@ namespace V2.Items.Voraria.Consumables
 		{
 			Item.ResearchUnlockCount = 20;
 		}
-		public override void SetDefaults()
-		{
-            Item.consumable = true;
-            Item.width = 32;
-			Item.height = 32;
-			Item.maxStack = Item.CommonMaxStack;
-
-			Item.value = Item.buyPrice(0, 0, 50);
-			Item.rare = ItemRarityID.LightRed;
-
-            Item.AsFood().MaxHealth = 500;
-            Item.AsFood().Size = 1;
-
-            Item.AsFood().EdibleOnUse = true;
-
-            Item.AsFood().UpdateInStomach += UpdateInStomach;
-        }
 		public override void PostUpdate()
 		{
 			if (Main.netMode != NetmodeID.MultiplayerClient)
@@ -66,10 +43,29 @@ namespace V2.Items.Voraria.Consumables
 				}
 			}
 		}
-        public static void UpdateInStomach(Entity prey, Entity pred, bool dead)
+		public override void SetDefaults()
+		{
+            Item.consumable = true;
+            Item.width = 32;
+			Item.height = 32;
+			Item.maxStack = Item.CommonMaxStack;
+
+			Item.value = Item.buyPrice(0, 0, 50);
+			Item.rare = ItemRarityID.LightRed;
+
+            Item.AsFood().MaxHealth = 500;
+            Item.AsFood().Size = 1;
+
+            Item.AsFood().EdibleOnUse = true;
+
+			Item.AsFood().OnBreak += OnBreak;
+        }
+		public static bool OnBreak(Item item, Entity pred, bool direct)
         {
-            if (dead)
-                pred.AddStatus(BuffID.Regeneration, DigestedRegenTime, true);
+            SoundEngine.PlaySound(StomachNoises.Muffled, pred.Center);
+            if (pred is Player playerPred)
+                playerPred.AddStatus(ModContent.BuffType<DemonCandyRegen>(), DigestedRegenTime, true);
+            return true;
         }
         public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{

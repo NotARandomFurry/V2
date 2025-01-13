@@ -11,6 +11,7 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 using V2.Core;
+using V2.NPCs;
 
 namespace V2.PlayerHandling;
 
@@ -89,7 +90,25 @@ public class BellyDrawLayer : PlayerDrawLayer
     }
 
     public override Position GetDefaultPosition() => new AfterParent(PlayerDrawLayers.Torso);
+    public static int GetKingSlimeDigestionStage(Player plr)
+    {
+        if (plr.AsPred().StomachTracker?.Prey?.FirstOrDefault(x => x.Type == PreyType.NPC && x.ExactType == NPCID.KingSlime) is not PreyData giantJelloDessert)
+            return 0;
 
+        if (!giantJelloDessert.NoHealth)
+            return 1;
+        else
+        {
+            if (giantJelloDessert.WeightLeftToDigest > 20.0)
+                return 1;
+            /*else if (giantJelloDessert.WeightLeftToDigest > 50.0)
+                return 2;
+            else if (giantJelloDessert.WeightLeftToDigest > 40.0)
+                return 3;*/
+            else
+                return 0;
+        }
+    }
 
     private int getFrameForBelly(Player player)
     {
@@ -178,7 +197,13 @@ public class BellyDrawLayer : PlayerDrawLayer
             drawInfo.DrawDataCache.Add(tumDraw);
         }
         else
-			DrawPlayerBelly(ref drawInfo, tumSize, getFrameForBelly(player));
+        {
+            if (GetKingSlimeDigestionStage(player) > 0)
+            {
+
+            }
+            else DrawPlayerBelly(ref drawInfo, tumSize, getFrameForBelly(player));
+        }
     }
 
     /// <summary>
@@ -267,6 +292,12 @@ public class BellyDrawLayer : PlayerDrawLayer
             new (-1, 25),  // 20
         ];
 
+
+        public static readonly IReadOnlyList<TextureOffset> BossBellies =
+        [
+            new (-1, 63),  // KingSlime
+        ];
+
         private const int MAX_FRAMES = 6;
 
         public override bool ShouldDraw(ref PlayerDrawSet drawInfo, int size, int frame)
@@ -279,10 +310,11 @@ public class BellyDrawLayer : PlayerDrawLayer
             var player = drawInfo.drawPlayer;
 
             if (player.AsPred().IsLayingOnTum) return default;
-
+            
             if (size >= 1 && size <= StandardBellies.Count)
             {
                 TextureOffset tum = StandardBellies[size - 1];
+                //TextureOffset tum = BossBellies[0];
 
                 var offsetX = tum.xOffset * 2;
                 var offsetY = tum.yOffset * 2;
@@ -290,6 +322,7 @@ public class BellyDrawLayer : PlayerDrawLayer
                 Vector2 tumLocation = getPositionAtFeetOfPlayer(ref drawInfo);
 
                 string bellySpritePath = V2TumSpritesRoot + $"Tum{size}/Bare";
+                //string bellySpritePath = V2TumSpritesRoot + $"Boss_KingSlime/Bare";
                 Texture2D bareTum = RequestTexture(bellySpritePath);
 
                 tumLocation = getPositionForTumRender(tumLocation, ref drawInfo, offsetX, offsetY, bareTum);

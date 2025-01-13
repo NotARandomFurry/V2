@@ -307,6 +307,7 @@ namespace V2.NPCs.Voraria.TownNPCs.Enigma
 			EnigmaShop.Add<CloverStockings>();
             EnigmaShop.Add<BlankJuju>();
             EnigmaShop.Add<DemonCandy>();
+            EnigmaShop.Add<GhostBall>();
             EnigmaShop.Add<MyFairy>([Condition.InGlowshroom]);
             EnigmaShop.Add<DinnerBlaster>([Condition.NpcIsPresent(NPCID.Cyborg)]);
             EnigmaShop.Register();

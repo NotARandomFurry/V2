@@ -95,7 +95,8 @@ namespace V2.NPCs.Voraria.Sky
 			{
 				if (NPC == npc) continue;
 				if (npc.CurrentCaptor() is not null) continue;
-				if (NPC.Hitbox.Intersects(npc.Hitbox))
+                if (npc.AsV2NPC().IsTileEntity) continue;
+                if (NPC.Hitbox.Intersects(npc.Hitbox))
 				{
 					boing(NPC, npc);
 				}
@@ -265,6 +266,7 @@ namespace V2.NPCs.Voraria.Sky
 			{
 				if (NPC == npc) continue;
 				if (npc.CurrentCaptor() is not null) continue;
+				if (npc.AsV2NPC().IsTileEntity) continue;
 				if (NPC.Hitbox.Intersects(npc.Hitbox))
 				{
 					boing(NPC, npc);
@@ -430,7 +432,8 @@ namespace V2.NPCs.Voraria.Sky
 			{
 				if (NPC == npc) continue;
 				if (npc.CurrentCaptor() is not null) continue;
-				if (NPC.Hitbox.Intersects(npc.Hitbox))
+                if (npc.AsV2NPC().IsTileEntity) continue;
+                if (NPC.Hitbox.Intersects(npc.Hitbox))
 				{
 					boing(NPC, npc);
 				}

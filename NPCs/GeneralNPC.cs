@@ -65,6 +65,8 @@ namespace V2.NPCs
 		public TargetType TargetType { get; set; }
 		public TargetPriorityLevel TargetPriority { get; set; }
 
+		public bool IsTileEntity { get; set; }
+
 		public int Aggro { get; set; }
 
 		public override bool InstancePerEntity => true;
@@ -82,6 +84,8 @@ namespace V2.NPCs
 			TargetRequiresLineOfSight = false;
 			TargetType = TargetType.None;
 			TargetPriority = TargetPriorityLevel.Neutral;
+
+			IsTileEntity = false;
 
 			Aggro = 0;
 

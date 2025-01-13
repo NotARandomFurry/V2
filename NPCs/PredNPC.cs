@@ -136,6 +136,7 @@ namespace V2.NPCs
 
 		public delegate int DelegateGetVisualWeightStage(NPC npc);
 		public DelegateGetVisualWeightStage GetVisualWeightStage { get; set; }
+		public int FloorBreakCounter { get; set; }
 
 		public SlotId ActiveStomachNoises { get; set; }
 
@@ -178,6 +179,8 @@ namespace V2.NPCs
 
 			GetVisualBellySize = null;
 			GetVisualWeightStage = null;
+
+			FloorBreakCounter = 0;
 		}
 
 		public override void ResetEffects(NPC npc)
@@ -242,8 +245,10 @@ namespace V2.NPCs
 					return false;
 			}
 			else if (prey is Projectile preyProjectile)
-			{
-				if (V2.VoreNPCBlacklist is not null && V2.VoreProjectileBlacklist.Count > 0 && V2.VoreProjectileBlacklist.Contains(preyProjectile.type))
+            {
+                if (preyProjectile.AsFood().CannotBeEatenDueToShenanigans)
+                    return false;
+                if (V2.VoreNPCBlacklist is not null && V2.VoreProjectileBlacklist.Count > 0 && V2.VoreProjectileBlacklist.Contains(preyProjectile.type))
 					return false;
 
 				if (preyProjectile.AsFood().MaxHealth == -1)

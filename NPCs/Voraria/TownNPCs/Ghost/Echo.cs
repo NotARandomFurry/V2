@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.Personalities;
@@ -65,7 +66,6 @@ namespace V2.NPCs.Voraria.TownNPCs.Ghost
 			NPCID.Sets.ImmuneToRegularBuffs[NPC.type] = true;
 			NPCID.Sets.IsPetSmallForPetting[NPC.type] = true;
 
-			// Influences how the NPC looks in the Bestiary
 			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers()
 			{
 				Velocity = 1f,
@@ -129,8 +129,6 @@ namespace V2.NPCs.Voraria.TownNPCs.Ghost
 			NPC.AsFood().OnDigestedBy = PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
 		}
 		public override void ModifyTypeName(ref string typeName) => typeName = "Ghost";
-
-		//public override bool CanTownNPCSpawn(int numTownNPCs) => ModContent.GetInstance<V2MasterSystem>().freedEnigma;
 
 		public override ITownNPCProfile TownNPCProfile() => GhostStuff.GhostProfile;
 
@@ -248,8 +246,10 @@ namespace V2.NPCs.Voraria.TownNPCs.Ghost
 			);
 		}
 		public override void PostAI()
-		{
-			GhostStuff.GhostProfile.frameWait++;
+        {
+            Lighting.AddLight(NPC.Center, Color.SkyBlue.ToVector3());
+			//yes i know this doesnt work properly if multiple echos exist but that shouldnt happen in the first place so fuck you
+            GhostStuff.GhostProfile.frameWait++;
 			if (GhostStuff.GhostProfile.frameWait >= GhostStuff.GhostProfile.frameDelay)
 			{
 				GhostStuff.GhostProfile.frameWait = 0;

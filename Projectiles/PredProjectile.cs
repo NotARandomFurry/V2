@@ -32,11 +32,12 @@ namespace V2.Projectiles
 		public double MaxStomachCapacity { get; set; }
 		public float MaxSwallowRange { get; set; }
 		public double ExtraWeight { get; set; }
-		/// <summary>
-		/// Allows this projectile to eat bosses despite not being a boss themselves.<br/>
-		/// Defaults to false.<br/>
-		/// </summary>
-		public bool CanSwallowBosses { get; set; }
+        public double WeightGainRatio { get; set; }
+        /// <summary>
+        /// Allows this projectile to eat bosses despite not being a boss themselves.<br/>
+        /// Defaults to false.<br/>
+        /// </summary>
+        public bool CanSwallowBosses { get; set; }
 
 		public Vector2 MouthSoundRawOffset { internal get; set; }
 		public static Vector2 MouthSoundOffset(Projectile projectile)
@@ -127,7 +128,8 @@ namespace V2.Projectiles
 			MaxStomachCapacity = 0.0;
 			MaxSwallowRange = 36f;
 			ExtraWeight = 0.0;
-			CanSwallowBosses = false;
+            WeightGainRatio = 0.4;
+            CanSwallowBosses = false;
 
 			GetDigestionTickRate = null;
 			GetDigestionTickDamage = null;
@@ -227,8 +229,10 @@ namespace V2.Projectiles
 					return false;
 			}
 			else if (prey is Projectile preyProjectile)
-			{
-				if (V2.VoreNPCBlacklist is not null && V2.VoreProjectileBlacklist.Count > 0 && V2.VoreProjectileBlacklist.Contains(preyProjectile.type))
+            {
+                if (preyProjectile.AsFood().CannotBeEatenDueToShenanigans)
+                    return false;
+                if (V2.VoreNPCBlacklist is not null && V2.VoreProjectileBlacklist.Count > 0 && V2.VoreProjectileBlacklist.Contains(preyProjectile.type))
 					return false;
 			}
 			else if (prey is Item preyItem)
@@ -543,12 +547,12 @@ namespace V2.Projectiles
 					double digestedWeightPerTick = pred.AsPred().GetPreyAbsorptionRate.Invoke(pred) / (double)GetStomachTracker(pred).Prey.Count;
 					if (prey.WeightLeftToDigest <= digestedWeightPerTick)
 					{
-						pred.AsPred().ExtraWeight += prey.WeightLeftToDigest * 0.4;
+						pred.AsPred().ExtraWeight += prey.WeightLeftToDigest * pred.AsPred().WeightGainRatio;
 						prey.WeightLeftToDigest = 0;
 					}
 					else
 					{
-						pred.AsPred().ExtraWeight += digestedWeightPerTick * 0.4;
+						pred.AsPred().ExtraWeight += digestedWeightPerTick * pred.AsPred().WeightGainRatio;
 						prey.WeightLeftToDigest -= digestedWeightPerTick;
 					}
 				}
