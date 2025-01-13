@@ -85,8 +85,8 @@ namespace V2.Projectiles.Voraria.Pets
             Projectile.CloneDefaults(ProjectileID.EyeOfCthulhuPet);
 
             Projectile.aiStyle = -1;
-            Projectile.width = 64;
-			Projectile.height = 162;
+            Projectile.width = 50;
+			Projectile.height = 182;
 
 			Projectile.AsV2Proj().Gender = EntityGender.Female;
 
@@ -137,7 +137,7 @@ namespace V2.Projectiles.Voraria.Pets
 		{
 			return Math.Min(
 				(int)Math.Floor(4.0 * Math.Sqrt(PredProjectile.GetCurrentBellyWeight(projectile))),
-				14
+				4
 			);
 		}
 		public static int GetVisualWeightStage(Projectile projectile)
@@ -196,7 +196,6 @@ namespace V2.Projectiles.Voraria.Pets
             bool ateOwner = owner.IsFoodFor(Projectile, out bool churnedOwner);
 			VoreTracker tracker = PredProjectile.GetStomachTracker(Projectile);
 			CheckActive(owner);
-			Projectile.direction = owner.direction;
 			if ((ateOwner && !churnedOwner) || owner.dead) Projectile.velocity *= 0.9f;
             		else 
 			{
@@ -214,35 +213,20 @@ namespace V2.Projectiles.Voraria.Pets
 				else if (Projectile.Center.Distance(sitPosition) < 55) Projectile.velocity *= 0.85f;
 			}
         }
-		public static Rectangle TumBounds(int size, out int YOffset)
+		public static Rectangle TumBounds(int size, out int YOffset, out int XOffset)
 		{
-			Rectangle bounds = new Rectangle(0, 0, 28, 24);
+			Rectangle bounds = new Rectangle(0, 0, 38, 28);
 			YOffset = 0;
+			XOffset = 0;
 			switch (size)
 			{
-				case 0: bounds = new Rectangle(0, 0, 42, 24); break;
-                case 1: bounds = new Rectangle(0, 24, 42, 26); break;
-                case 2: bounds = new Rectangle(0, 50, 44, 28); break;
-                case 3: bounds = new Rectangle(0, 78, 46, 34); break;
-                case 4: bounds = new Rectangle(0, 112, 52, 40); break;
-                case 5: bounds = new Rectangle(0, 152, 56, 44); break;
-                case 6: bounds = new Rectangle(0, 196, 60, 48); break;
-                case 7: bounds = new Rectangle(0, 244, 64, 54); break;
-                case 8: bounds = new Rectangle(0, 298, 70, 62); break;
-                case 9: bounds = new Rectangle(0, 360, 74, 70); break;
-                case 10: bounds = new Rectangle(0, 430, 80, 76); break;
-                case 11: bounds = new Rectangle(0, 506, 88, 88); break;
-                case 12: bounds = new Rectangle(0, 594, 99, 102); break;
-                case 13:
-					bounds = new Rectangle(0, 812, 140, 140);
-					YOffset = -2;
-					break;
-                case 14:
-                    bounds = new Rectangle(0, 952, 160, 174);
-                    YOffset = -4;
-                    break;
+				case 0: bounds = new Rectangle(0, 0, 38, 28); break;
+                case 1: bounds = new Rectangle(0, 30, 38, 32); break;
+                case 2: bounds = new Rectangle(0, 64, 38, 36); break;
+                case 3: bounds = new Rectangle(0, 102, 42, 40); break;
+                case 4: bounds = new Rectangle(0, 144, 46, 48); break;
             }
-
+			XOffset = -(bounds.Width - 38) / 2;
 			return bounds;
 		}
 		public override void PostAI()
@@ -272,27 +256,25 @@ namespace V2.Projectiles.Voraria.Pets
             SpriteEffects val = Projectile.direction != -1 ? 0 : (SpriteEffects)1;
             SpriteEffects spriteEffects = val;
 
-			Vector2 WingOffset = new Vector2(-22, -4);
-			if (Projectile.direction == -1) WingOffset = new Vector2(12, -4);
+			Vector2 ExtraOffset = new Vector2(-32, -14);
 
             string textWings = "V2/Projectiles/Voraria/Pets/AstralFairyWings";
             Texture2D spriteWings = ModContent.Request<Texture2D>(textWings).Value;
-            Rectangle sourceRectWings = new Rectangle(0, 92 * Projectile.frame, 72, 92);
-            Main.EntitySpriteDraw(spriteWings, Projectile.position - Main.screenPosition + new Vector2(0, Projectile.gfxOffY) + WingOffset, (Rectangle)sourceRectWings, lightColor, Projectile.rotation, Vector2.Zero, 1f, spriteEffects, 0f);
+            Rectangle sourceRectWings = new Rectangle(0, 212 * Projectile.frame, 114, 212);
+            Main.EntitySpriteDraw(spriteWings, Projectile.position - Main.screenPosition + ExtraOffset + new Vector2(0, Projectile.gfxOffY), (Rectangle)sourceRectWings, lightColor, Projectile.rotation, Vector2.Zero, 1f, spriteEffects, 0f);
 
             int bodyFrame = Projectile.frame % 2;
 			string textBody = "V2/Projectiles/Voraria/Pets/AstralFairy";
             Texture2D spriteBody = ModContent.Request<Texture2D>(textBody).Value;
-			Rectangle sourceRectBody = new Rectangle(0, 162 * bodyFrame, 64, 162);
-			Main.EntitySpriteDraw(spriteBody, Projectile.position - Main.screenPosition + new Vector2(0, Projectile.gfxOffY), (Rectangle)sourceRectBody, lightColor, Projectile.rotation, Vector2.Zero, 1f, spriteEffects, 0f);
+			Rectangle sourceRectBody = new Rectangle(0, 212 * bodyFrame, 114, 212);
+			Main.EntitySpriteDraw(spriteBody, Projectile.position - Main.screenPosition + ExtraOffset + new Vector2(0, Projectile.gfxOffY), (Rectangle)sourceRectBody, lightColor, Projectile.rotation, Vector2.Zero, 1f, spriteEffects, 0f);
 
             string textTum = "V2/Projectiles/Voraria/Pets/AstralFairyTums";
             int TumSize = GetVisualBellySize(Projectile);
-			Rectangle TumBox = TumBounds(TumSize, out int YOffset);
-            Vector2 TumOffset = new Vector2(10, 64);
-            if (Projectile.direction == -1) TumOffset = new Vector2(10 - (TumBox.Width - 44), 64);
+			Rectangle TumBox = TumBounds(TumSize, out int YOffset, out int XOffset);
+            Vector2 TumOffset = new Vector2(38, 82);
             Texture2D spriteTum = ModContent.Request<Texture2D>(textTum).Value;
-            Main.EntitySpriteDraw(spriteTum, Projectile.position - Main.screenPosition + new Vector2(0, Projectile.gfxOffY) + (TumOffset + new Vector2(0, YOffset)), (Rectangle)TumBox, lightColor, Projectile.rotation, Vector2.Zero, 1f, spriteEffects, 0f);
+            Main.EntitySpriteDraw(spriteTum, Projectile.position - Main.screenPosition + ExtraOffset + TumOffset + new Vector2(0, Projectile.gfxOffY) + new Vector2(XOffset, YOffset), (Rectangle)TumBox, lightColor, Projectile.rotation, Vector2.Zero, 1f, spriteEffects, 0f);
             return false;
 		}
 	}

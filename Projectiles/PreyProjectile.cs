@@ -7,15 +7,18 @@ using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ModLoader;
+using Terraria.WorldBuilding;
 using V2.Core;
+using V2.PlayerHandling;
 using V2.PlayerHandling.PredPlayerGoals.Starter;
 using V2.UI;
 
 namespace V2.Projectiles
 {
 	public partial class PreyProjectile : GlobalProjectile
-	{
-		public int EatenSafetyFrames { get; set; }
+    {
+        public bool CannotBeEatenDueToShenanigans { get; set; }
+        public int EatenSafetyFrames { get; set; }
 		public bool Digested { get; set; }
 
 		public double DefinedSize { get; set; }
@@ -79,7 +82,7 @@ namespace V2.Projectiles
 			DigestedDeathSound = null;
 		}
 
-		public override bool PreKill(Projectile projectile, int timeLeft)
+        public override bool PreKill(Projectile projectile, int timeLeft)
 		{
 			if (projectile.AsFood().Digested)
 				return false;

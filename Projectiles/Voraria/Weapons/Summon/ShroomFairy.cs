@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Mono.Cecil;
+using ReLogic.Content;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,13 +13,16 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
+using Terraria.GameContent.Personalities;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using V2.Core;
+using V2.Items.Voraria;
 using V2.Items.Voraria.Consumables.Potions;
 using V2.PlayerHandling;
 using V2.Projectiles.Vanilla.Summons.Pets;
+using V2.Projectiles.Voraria.Pets;
 using V2.Sounds.Vore;
 using V2.StatusEffects.Voraria.Buffs;
 using static System.Net.Mime.MediaTypeNames;
@@ -64,7 +68,7 @@ namespace V2.Projectiles.Voraria.Weapons.Summon
             dust.frame = new Rectangle(0, 0, 18, 18);
 			dust.customData = 1f;
 			dust.alpha = 0;
-			if (Main.rand.NextBool(1,2)) dust.customData = -1f;
+			if (Main.rand.NextBool(2)) dust.customData = -1f;
         }
         public override bool PreDraw(Dust dust)
         {
@@ -214,7 +218,7 @@ namespace V2.Projectiles.Voraria.Weapons.Summon
 		public static int GetVisualBellySize(Projectile projectile)
 		{
 			return Math.Min(
-				(int)Math.Floor(4.0 * Math.Sqrt(PredProjectile.GetCurrentBellyWeight(projectile))),
+				(int)Math.Floor(3.0 * Math.Sqrt(PredProjectile.GetCurrentBellyWeight(projectile))),
 				3 + GetVisualWeightStage(projectile)
 			);
 		}
@@ -229,14 +233,14 @@ namespace V2.Projectiles.Voraria.Weapons.Summon
 		public static double GetDigestionTickDamage(Projectile projectile, PreyData prey)
 		{
 			double digestDamage = ShroomFairyStuff.DigestDamage;
-			if (projectile.ai[0] == 1) digestDamage *= 2;
+			if (IsFairyAtMaxCapacity(projectile)) digestDamage *= 2;
 
 			return digestDamage;
 		}
 		public static double GetDigestionTickRate(Projectile projectile, PreyData prey)
 		{
 			double digestRate = ShroomFairyStuff.DigestRate;
-			if (projectile.ai[0] == 1) digestRate *= 2;
+			if (IsFairyAtMaxCapacity(projectile)) digestRate *= 2;
 			Player ownerPlayer = Main.player[projectile.owner];
 			if (!ownerPlayer.dead && ownerPlayer.sleeping.FullyFallenAsleep)
 			{
@@ -253,7 +257,7 @@ namespace V2.Projectiles.Voraria.Weapons.Summon
 		{
 			double absorbRate = ShroomFairyStuff.AbsorbRate * (1 + GetVisualWeightStage(projectile) / (double)1.5);
 			Player ownerPlayer = Main.player[projectile.owner];
-			if (projectile.ai[0] == 1) absorbRate *= 2;
+			if (IsFairyAtMaxCapacity(projectile)) absorbRate *= 2;
 			if (!ownerPlayer.dead && ownerPlayer.sleeping.FullyFallenAsleep)
 			{
 				absorbRate *= 1.75f;
@@ -292,6 +296,37 @@ namespace V2.Projectiles.Voraria.Weapons.Summon
             Dust.NewDustDirect(projectile.Center - new Vector2(8, 8), 32, 32, ModContent.DustType<ShroomFairyDust>(), -1.5f, 1.5f);
             Dust.NewDustPerfect(projectile.Center, ModContent.DustType<ShroomFairyDust2>(), Vector2.Zero);
         }
+		public static Vector2 AnglePosition(int Count, int TotalCount)
+		{
+			Vector2 Angle = new Vector2(0, -1);
+			if (TotalCount > 1)
+			{
+				float multiplier = (float)Count / (float)(TotalCount - 1);
+                Angle = new Vector2(-1, 0);
+				Angle = Angle.RotatedBy((180f * multiplier) * Math.PI / 180f);
+			}
+			return Angle;
+		}
+		public static void GetIdlePosition(Projectile projectile, out int thisProjectilePosition, out int totalFairyCount)
+		{
+			thisProjectilePosition = 0;
+			totalFairyCount = 0;
+			foreach (var proj in Main.ActiveProjectiles)
+			{
+				if (proj.active && proj.owner == projectile.owner && proj.type == ModContent.ProjectileType<ShroomFairy>())
+				{
+					totalFairyCount++;
+					if (proj.whoAmI < projectile.whoAmI)
+					{
+						thisProjectilePosition++;
+					}
+				}
+			}
+		}
+		public static bool IsFairyAtMaxCapacity(Projectile projectile)
+		{
+			return GetVisualBellySize(projectile) >= 3 + GetVisualWeightStage(projectile);
+        }
 		public override void AI()
 		{
 			Player owner = Main.player[Projectile.owner];
@@ -305,12 +340,11 @@ namespace V2.Projectiles.Voraria.Weapons.Summon
 				WaitOut(owner, SetSpeedMulti());
 				return;
 			}
-			if (GetVisualBellySize(Projectile) >= 3 + GetVisualWeightStage(Projectile))
+			if (IsFairyAtMaxCapacity(Projectile))
 			{
 				WaitOut(owner, SetSpeedMulti());
 				return;
 			}
-			Projectile.ai[0] = 0f;
 			if (Projectile.ai[1] > 0f) Projectile.ai[1] -= 1f;
             target = (null, null);
 			FindTarget(owner);
@@ -323,6 +357,14 @@ namespace V2.Projectiles.Voraria.Weapons.Summon
 				CHARGE(owner, target.Item2, SetSpeedMulti());
 			}
 			else Chill(owner, SetSpeedMulti());
+			if (Projectile.ai[0] == 0f && GetVisualWeightStage(Projectile) == 8)
+			{
+				Projectile.ai[0] = 1f;
+				if (Main.netMode != NetmodeID.MultiplayerClient)
+				{
+					Item.NewItem(Projectile.GetSource_FromAI(), new Vector2(Projectile.Center.X, Projectile.Center.Y), Vector2.One, ModContent.ItemType<MushroomToken>());
+				}
+            }
 		}
 		public override void PostAI()
 		{
@@ -445,20 +487,10 @@ namespace V2.Projectiles.Voraria.Weapons.Summon
             Vector2 vectorToIdlePosition;
 			float distanceToIdlePosition;
 			Vector2 idlePosition = owner.Center;
-			idlePosition.Y -= 80f;
-			float minionPositionOffsetX = 0;
-            if (Projectile.minionPos % 2 == 0)
-            {
-				minionPositionOffsetX = 40 + 40 * Projectile.minionPos;
-				idlePosition.Y += 8 * Projectile.minionPos;
-            }
-			else
-			{
-                minionPositionOffsetX = -40 + -40 * (Projectile.minionPos - 1);
-                idlePosition.Y += 8 * (Projectile.minionPos - 1);
-            }
-            minionPositionOffsetX *= owner.direction;
-            idlePosition.X += minionPositionOffsetX;
+			idlePosition.Y -= 50f;
+			GetIdlePosition(Projectile, out int count, out int totalcount);
+			Vector2 Extra = AnglePosition(count, totalcount);
+			idlePosition += Extra * 125;
 			vectorToIdlePosition = idlePosition - Projectile.Center;
 			distanceToIdlePosition = vectorToIdlePosition.Length();
 			bool atPos = false;
@@ -471,9 +503,9 @@ namespace V2.Projectiles.Voraria.Weapons.Summon
                 DustEffect(Projectile);
             }
 
-			float overlapVelocity = 0.04f;
+			//float overlapVelocity = 0.04f;
 
-			foreach (var proj in Main.ActiveProjectiles)
+			/*foreach (var proj in Main.ActiveProjectiles)
 			{
                 if (proj != Projectile && proj.active && proj.type != ModContent.ProjectileType<ShroomFairySpore>() && proj.CurrentCaptor() is null && proj.owner == Projectile.owner && Math.Abs(Projectile.position.X - proj.position.X) + Math.Abs(Projectile.position.Y - proj.position.Y) < Projectile.width)
                 {
@@ -487,7 +519,7 @@ namespace V2.Projectiles.Voraria.Weapons.Summon
                     else
                         Projectile.velocity.Y += overlapVelocity;
                 }
-            }
+            }*/
 
 			if (!ateOwner)
 			{
@@ -579,7 +611,6 @@ namespace V2.Projectiles.Voraria.Weapons.Summon
 		}
 		public void WaitOut(Player owner, float SpeedMulti)
 		{
-			Projectile.ai[0] = (owner.IsFoodFor(Projectile, out bool pastTense) && !pastTense) ? 2f : 1f;
 			if (CheckForSolidFloor())
 			{
 				Projectile.velocity.X *= 0.9f;

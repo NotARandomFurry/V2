@@ -53,5 +53,11 @@ namespace V2
 		[TooltipKey("$Mods.V2.Configs.Server.JustForFun.PermaChurnableEquipment.Tooltip")]
 		[DefaultValue(false)]
 		public bool PermaChurnableEquipment { get; set; }
-	}
+
+        [LabelKey("$Mods.V2.Configs.Server.JustForFun.FatAssesBreakTiles.Label")]
+        [TooltipKey("$Mods.V2.Configs.Server.JustForFun.FatAssesBreakTiles.Tooltip")]
+        [DefaultValue(true)]
+        public bool FatAssesBreakTiles { get; set; }
+
+    }
 }

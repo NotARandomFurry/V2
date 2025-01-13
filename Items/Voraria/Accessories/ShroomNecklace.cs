@@ -23,7 +23,7 @@ namespace V2.Items.Voraria.Accessories
 	public class ShroomNecklace : ModItem
 	{
 		public override bool IsLoadingEnabled(Mod mod) => !V2.GetFooled;
-		public override LocalizedText DisplayName => Language.GetText("Mods.V2.ItemName.Voraria.Accessories.Informational.ShroomNecklace");
+		public override LocalizedText DisplayName => Language.GetText("Mods.V2.ItemName.Voraria.Accessories.ShroomNecklace");
 		public override LocalizedText Tooltip => Language.GetText("Mods.V2.ItemTooltip.Voraria.Accessories.Informational.ShroomNecklace.Short");
 		public override string Texture => "V2/Items/UnspritedItem";
         public override void SetStaticDefaults()
@@ -67,7 +67,7 @@ namespace V2.Items.Voraria.Accessories
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
 			tooltips.AddVorariaDynamicItemTooltip(
-				"Voraria.Accessories.Informational.MealSizeScanner",
+                "Voraria.Accessories.ShroomNecklace",
 				new
 				{
 					
