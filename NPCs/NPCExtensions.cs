@@ -52,11 +52,15 @@ namespace V2.NPCs
 
 		public static void TryFindNewTarget(this NPC npc, List<(TargetType, int, TargetPriorityLevel)> specificWhitelistInput = null)
 		{
-			List<(TargetType Type, int ID, TargetPriorityLevel PriorityLevel)> specificWhitelist = new List<(TargetType, int, TargetPriorityLevel)>(specificWhitelistInput);
-			if (V2.BlacklistsActive)
+			List<(TargetType Type, int ID, TargetPriorityLevel PriorityLevel)> specificWhitelist = null;
+			if (specificWhitelistInput is not null)
 			{
-				specificWhitelist.RemoveAll(x => x.Type == TargetType.NPC && V2.VoreNPCBlacklist.Contains(x.ID));
-				specificWhitelist.RemoveAll(x => x.Type == TargetType.Projectile && V2.VoreProjectileBlacklist.Contains(x.ID));
+				specificWhitelist = new List<(TargetType, int, TargetPriorityLevel)>(specificWhitelistInput);
+				if (V2.BlacklistsActive)
+				{
+					specificWhitelist.RemoveAll(x => x.Type == TargetType.NPC && V2.VoreNPCBlacklist.Contains(x.ID));
+					specificWhitelist.RemoveAll(x => x.Type == TargetType.Projectile && V2.VoreProjectileBlacklist.Contains(x.ID));
+				}
 			}
 
 			List<(int index, TargetType type, int aggro, float dist, TargetPriorityLevel priority)> targetList = [];
@@ -210,11 +214,15 @@ namespace V2.NPCs
  
 		public static void TryVerifyRemainingTarget(this NPC npc, List<(TargetType, int, TargetPriorityLevel)> specificWhitelistInput = null)
 		{
-			List<(TargetType Type, int ID, TargetPriorityLevel PriorityLevel)> specificWhitelist = new List<(TargetType, int, TargetPriorityLevel)>(specificWhitelistInput);
-			if (V2.BlacklistsActive)
+			List<(TargetType Type, int ID, TargetPriorityLevel PriorityLevel)> specificWhitelist = null;
+			if (specificWhitelistInput is not null)
 			{
-				specificWhitelist.RemoveAll(x => x.Type == TargetType.NPC && V2.VoreNPCBlacklist.Contains(x.ID));
-				specificWhitelist.RemoveAll(x => x.Type == TargetType.Projectile && V2.VoreProjectileBlacklist.Contains(x.ID));
+				specificWhitelist = new List<(TargetType, int, TargetPriorityLevel)>(specificWhitelistInput);
+				if (V2.BlacklistsActive)
+				{
+					specificWhitelist.RemoveAll(x => x.Type == TargetType.NPC && V2.VoreNPCBlacklist.Contains(x.ID));
+					specificWhitelist.RemoveAll(x => x.Type == TargetType.Projectile && V2.VoreProjectileBlacklist.Contains(x.ID));
+				}
 			}
 
 			if (npc.target != -1)
@@ -307,11 +315,15 @@ namespace V2.NPCs
 			if (npc.CurrentCaptor() is not null)
 				return;
 
-			List<(TargetType Type, int ID, TargetPriorityLevel PriorityLevel)> specificWhitelist = new List<(TargetType, int, TargetPriorityLevel)>(specificWhitelistInput);
-			if (V2.BlacklistsActive)
+			List<(TargetType Type, int ID, TargetPriorityLevel PriorityLevel)> specificWhitelist = null;
+			if (specificWhitelistInput is not null)
 			{
-				specificWhitelist.RemoveAll(x => x.Type == TargetType.NPC && V2.VoreNPCBlacklist.Contains(x.ID));
-				specificWhitelist.RemoveAll(x => x.Type == TargetType.Projectile && V2.VoreProjectileBlacklist.Contains(x.ID));
+				specificWhitelist = new List<(TargetType, int, TargetPriorityLevel)>(specificWhitelistInput);
+				if (V2.BlacklistsActive)
+				{
+					specificWhitelist.RemoveAll(x => x.Type == TargetType.NPC && V2.VoreNPCBlacklist.Contains(x.ID));
+					specificWhitelist.RemoveAll(x => x.Type == TargetType.Projectile && V2.VoreProjectileBlacklist.Contains(x.ID));
+				}
 			}
 
 			for (int i = 0; i < Main.maxNPCs; i++)

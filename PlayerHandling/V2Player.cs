@@ -11,6 +11,7 @@ using V2.UI;
 using V2.Items.Voraria.Armor;
 using Terraria.DataStructures;
 using V2.Mounts;
+using Terraria.ModLoader.IO;
 
 namespace V2.PlayerHandling
 {
@@ -161,11 +162,36 @@ namespace V2.PlayerHandling
         }
         public bool HasVisitedLocation(string place)
 		{
-			if (LocationsVisited.ContainsKey(place))
-				return LocationsVisited[place];
+			if (LocationsVisited.TryGetValue(place, out bool value))
+				return value;
 			
 			LocationsVisited.TryAdd(place, false);
 			return false;
+		}
+		public override void SaveData(TagCompound tag)
+		{
+			if (LocationsVisited?.Count > 0)
+			{
+				List<string> locationsVisited = [];
+				foreach (KeyValuePair<string, bool> location in LocationsVisited)
+				{
+					if (location.Value)
+						locationsVisited.Add(location.Key);
+				}
+				tag["visitedLocations"] = locationsVisited;
+			}
+		}
+		public override void LoadData(TagCompound tag)
+		{
+			List<string> locationsVisited = [.. tag.GetList<string>("visitedLocations")];
+			if (locationsVisited.Count <= 0)
+				return;
+
+			LocationsVisited = [];
+			foreach (string location in locationsVisited)
+			{
+				LocationsVisited.Add(location, true);
+			}
 		}
 	}
 }
