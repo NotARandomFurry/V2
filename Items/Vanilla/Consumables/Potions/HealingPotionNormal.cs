@@ -41,14 +41,15 @@ namespace V2.Items.Vanilla.Consumables.Potions
 
 		public static void UpdateInStomach(Entity prey, Entity pred, bool dead)
 		{
-			pred.AddStatus(BuffID.PotionSickness, V2Utils.SensibleTime(minutes: 1), true);
+			if (dead)
+				pred.AddStatus(BuffID.PotionSickness, V2Utils.SensibleTime(minutes: 1), true);
 		}
 
 		public static bool OnBreak(Item item, Entity pred, bool direct)
 		{
 			SoundEngine.PlaySound(MuffledMiscSounds.Shatter, pred.Center);
 			SoundEngine.PlaySound(StomachNoises.Muffled, pred.Center);
-			if (pred is Player playerPred)
+			if (pred is Player playerPred && !playerPred.HasBuff(BuffID.PotionSickness))
 				playerPred.Heal(HealAmount);
 			return true;
 		}
