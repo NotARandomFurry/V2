@@ -62,7 +62,6 @@ namespace V2.Items.Vanilla.Consumables.Potions
 					HealPotionSuperValue = HealAmount,
 				}
 			);
-			tooltips.FirstOrDefault(x => x.Name == "BuffTime").Hide();
 		}
 	}
 }

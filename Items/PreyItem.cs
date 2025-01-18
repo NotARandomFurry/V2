@@ -104,7 +104,6 @@ namespace V2.Items
 					if (player.difficulty is PlayerDifficultyID.MediumCore or PlayerDifficultyID.Hardcore || ModContent.GetInstance<V2ServerConfig>().PermaChurnableEquipment)
 					{
 						player.CurrentCaptor().QueueNewPrey(PreyData.NewData(PreyType.Item, item.type, item.AffixName(), item.CalculateSnackSize()));
-						item.TurnToAir();
 						return true;
 					}
 
@@ -114,7 +113,6 @@ namespace V2.Items
 				if (churnable.HasValue && !churnable.Value)
 					return false;
 
-				item.TurnToAir();
 				return true;
 			}
 				
@@ -196,6 +194,12 @@ namespace V2.Items
 			{
 				if (Health == -1 || Health > MaxHealth)
 					Health = MaxHealth;
+
+				if (Health == 0)
+				{
+					item.TurnToAir();
+					return;
+				}
 			}
 		}
 
@@ -208,6 +212,12 @@ namespace V2.Items
 			{
 				if (Health == -1 || Health > MaxHealth)
 					Health = MaxHealth;
+
+				if (Health == 0)
+				{
+					item.TurnToAir();
+					return;
+				}
 			}
 		}
 
@@ -222,8 +232,16 @@ namespace V2.Items
 					item.AsFood().UseInStomach?.Invoke(item, player, player.CurrentCaptor().Predator);
 				return false;
 			}
-			if (item.AsFood().EdibleOnUse && item != player.inventory[58] && player.whoAmI == Main.myPlayer && (V2.ItemGulpHotkey.Current || item.AsFood().AlwaysEatenByUse))
+			bool gulpOnUseAttempt = item != player.inventory[58] && player.whoAmI == Main.myPlayer && V2.ItemGulpHotkey.Current;
+			gulpOnUseAttempt |= item.AsFood().AlwaysEatenByUse;
+			bool attemptingToUse = Main.mouseLeft;
+			if (!item.autoReuse)
+				attemptingToUse &= Main.mouseLeftRelease;
+			attemptingToUse &= item == player.HeldItem;
+			attemptingToUse &= !player.mouseInterface;
+			if (item.AsFood().EdibleOnUse && gulpOnUseAttempt && attemptingToUse)
 			{
+				Main.mouseLeftRelease = false;
 				int origStack = item.stack;
 				item.stack = 1;
 				if (PredPlayer.CanSwallow(player, item))
@@ -294,7 +312,16 @@ namespace V2.Items
 			return true;
 		}
 
-		public override bool CanPickup(Item item, Player player) => !item.IsAir && item.CurrentCaptor() is null;
+		public override bool CanPickup(Item item, Player player)
+		{
+			if (item.CurrentCaptor() is not null)
+				return false;
+
+			if (item.AsFood().MaxHealth != -1 && item.AsFood().Health == 0)
+				return false;
+
+			return !item.IsAir;
+		}
 
 		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
 		{

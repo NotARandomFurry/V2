@@ -1894,9 +1894,8 @@ Mods: {
 							Lesser: {
 								/* Short:
 									'''
-									Provides increased defense thanks to this potion generating an iron-like barrier on your skin.
+									Heals you for a small amount when drank
 									{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
-									   
 									''' */
 								/* Long:
 									'''
@@ -1918,7 +1917,7 @@ Mods: {
 							Normal: {
 								/* Short:
 									'''
-									Provides increased defense thanks to this potion generating an iron-like barrier on your skin.
+									Heals you for a modest amount when drank
 									{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
 									''' */
 								/* Long:
@@ -1941,9 +1940,8 @@ Mods: {
 							Greater: {
 								/* Short:
 									'''
-									Provides increased defense thanks to this potion generating an iron-like barrier on your skin.
+									Heals you for a large amount when drank
 									{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
-									   
 									''' */
 								/* Long:
 									'''
@@ -1965,9 +1963,8 @@ Mods: {
 							Super: {
 								/* Short:
 									'''
-									Provides increased defense thanks to this potion generating an iron-like barrier on your skin.
+									Heals you for a huge amount when drank
 									{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
-									   
 									''' */
 								/* Long:
 									'''

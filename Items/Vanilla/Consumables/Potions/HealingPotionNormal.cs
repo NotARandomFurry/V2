@@ -25,7 +25,7 @@ namespace V2.Items.Vanilla.Consumables.Potions
 	{
 		public static int HealAmount => 100;
 		public override bool InstancePerEntity => true;
-		public override bool AppliesToEntity(Item entity, bool lateInstantiation) => entity.type == ItemID.LesserHealingPotion;
+		public override bool AppliesToEntity(Item entity, bool lateInstantiation) => entity.type == ItemID.HealingPotion;
 
 		public override void SetDefaults(Item item)
 		{
@@ -62,7 +62,6 @@ namespace V2.Items.Vanilla.Consumables.Potions
 					HealPotionNormalValue = HealAmount,
 				}
 			);
-			tooltips.FirstOrDefault(x => x.Name == "BuffTime").Hide();
 		}
 	}
 }
