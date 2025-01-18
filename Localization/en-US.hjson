@@ -2711,7 +2711,11 @@ Mods: {
 							[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases ABS] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:7].
 							[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases your maximum number of minions] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:1].
 							'''
-						Flavor: i hope nobody realises i just took the strange glowing mushroom sprite and flipped it
+						Flavor:
+							'''
+							A small hairpin which seems more akin to a cute, tiny glowing mushroom than an actual hairpin.
+							You can't help but wonder if it'd start growing more on your head if you were to wear it long enough.
+							'''
 					}
 
 					FungalDress: {
@@ -2727,7 +2731,11 @@ Mods: {
 							[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases TUM] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:9].
 							[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Decreases stomach weight] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:20%].
 							'''
-						Flavor: It's a bit tight... You'd think that fairies known for becoming Really Fucking Fat would make stretchier clothes...
+						Flavor:
+							'''
+							A dress sewn from threads spun from glowing mushrooms and the other flora of the caves in which they're found.
+							It's a bit tight. You'd think that fairies known for becoming Really Fucking Fat(TM) would make stretchier clothes, but alas...
+							'''
 					}
 
 					ShroomiteHairpin: {
@@ -2744,7 +2752,13 @@ Mods: {
 							[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases ACI] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:6].
 							[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases your maximum number of minions] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:3].
 							'''
-						Flavor: The ultimate glowing mushroom, as a hairpin.
+						Flavor:
+							'''
+							A small hairpin which seems more akin to a cute, tiny glowing mushroom than an actual hairpin.
+							You can't help but wonder if it'd start growing more on your head if you were to wear it long enough.
+
+							The catch is that this one, which is covered in shroomite, cannot. It will, however, eventually consume that shroomite and start growing anyway.
+							'''
 					}
 
 					ShroomiteDress: {
@@ -2762,7 +2776,11 @@ Mods: {
 							[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Decreases stomach weight] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:40%].
 							[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases your maximum number of minions] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:2].
 							'''
-						Flavor: You had the materials to make it bigger, and yet... It's still small. Are you into this, or..?
+						Flavor:
+							'''
+							A large fungal fairy dress, now well-reinforced with shroomite and similar stronger materials.
+							You had all the right materials to make it bigger, and yet... It's still small. Are you into this, or..?
+							'''
 					}
 				}
 
@@ -2994,10 +3012,10 @@ Mods: {
 						Long:
 							'''
 							[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases your maximum number of minions] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:1].
-							Your fungal fairies gain the following buffs:
-							- [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Halved weight penalty]
-							- [c/{$Mods.V2.CommonColorCodes.DoSomething}:1.35x] [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:food absorption rate]
-							- Fungal spores grant [c/{$Mods.V2.CommonColorCodes.PositiveEffect}:'Fungal Blessing'] for [c/{$Mods.V2.CommonColorCodes.DoSomething}:4] seconds each [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:(or ][c/{$Mods.V2.CommonColorCodes.DoSomething}:12 seconds][c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}: if eaten)], buff duration stacks
+							Confers the following buffs to fungal fairies you own summoned by the [i:V2/ShroomStaff] [c/{$Mods.V2.CommonColorCodes.DoSomething}:Fungal Fairy Staff]:
+							- [c/{$Mods.V2.CommonColorCodes.DoSomething}:Halved] [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:movement speed penalty] from weight gain.
+							- [c/{$Mods.V2.CommonColorCodes.DoSomething}:1.35x] [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:food absorption rate].
+							- Fungal spores grant [c/{$Mods.V2.CommonColorCodes.PositiveEffect}:'Fungal Blessing'] for [c/{$Mods.V2.CommonColorCodes.DoSomething}:4] seconds each [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:(or ][c/{$Mods.V2.CommonColorCodes.DoSomething}:12 seconds][c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}: if eaten)].
 							'''
 						Flavor: A blue necklace, fitted with a mysterious mushroom that seems to leave a positive impact on fungal fairies.
 					}
@@ -4885,11 +4903,6 @@ Mods: {
 				DisplayName: Dinner Blaster
 				Tooltip: ""
 			}
-
-			FungalDress.Tooltip: ""
-			MushroomHairpin.Tooltip: ""
-			ShroomiteDress.Tooltip: ""
-			ShroomiteHairpin.Tooltip: ""
 		}
 	}
 }

@@ -2997,8 +2997,8 @@ Mods: {
 						/* Long:
 							'''
 							[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases your maximum number of minions] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:1].
-							Your fungal fairies gain the following buffs:
-							- [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Halved weight penalty]
+							Fungal fairies you own summoned by the [i:ShroomStaff] [c/{$Mods.V2.CommonColorCodes.DoSomething}:Fungal Fairy Staff] gain the following buffs:
+							- [c/{$Mods.V2.CommonColorCodes.DoSomething}:Halved] [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:movement speed penalty fro weight gain]
 							- [c/{$Mods.V2.CommonColorCodes.DoSomething}:1.35x] [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:food absorption rate]
 							- Fungal spores grant [c/{$Mods.V2.CommonColorCodes.PositiveEffect}:'Fungal Blessing'] for [c/{$Mods.V2.CommonColorCodes.DoSomething}:4] seconds each [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:(or ][c/{$Mods.V2.CommonColorCodes.DoSomething}:12 seconds][c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}: if eaten)], buff duration stacks
 							''' */

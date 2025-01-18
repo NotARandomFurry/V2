@@ -20,9 +20,9 @@ namespace V2.Items.Voraria.Armor
 		public static LocalizedText SetBonusText => Language.GetText("Mods.V2.ItemTooltip.Voraria.Armor.FungalFairySetBonus");
 		public override LocalizedText DisplayName => Language.GetText("Mods.V2.ItemName.Voraria.Armor.MushroomHairpin");
 		public static int GLPBonus => 7;
-        public static int ABSBonus => 7;
+		public static int ABSBonus => 7;
 
-        public override void SetStaticDefaults()
+		public override void SetStaticDefaults()
 		{
 			ArmorIDs.Head.Sets.DrawFullHair[Item.headSlot] = true;
 		}
@@ -32,9 +32,9 @@ namespace V2.Items.Voraria.Armor
 			Item.width = 24;
 			Item.height = 24;
 			Item.value = Item.sellPrice(
-                gold: 5, silver: 75
-            );
-            Item.rare = ItemRarityID.Blue;
+				gold: 5, silver: 75
+			);
+			Item.rare = ItemRarityID.Blue;
 			Item.defense = 6;
 		}
 
@@ -50,58 +50,58 @@ namespace V2.Items.Voraria.Armor
 		public override void UpdateEquip(Player player)
 		{
 			player.AsPred().GLP.Extra += GLPBonus;
-            player.AsPred().ABS.Extra += ABSBonus;
-            player.maxMinions += 1;
-        }
+			player.AsPred().ABS.Extra += ABSBonus;
+			player.maxMinions += 1;
+		}
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
 			tooltips.AddVorariaDynamicItemTooltip(
-                "Voraria.Armor.MushroomHairpin",
+				"Voraria.Armor.MushroomHairpin",
 				new
 				{
 
 				}
 			);
-        }
-        public override void AddRecipes()
-        {
-            CreateRecipe()
-                .AddIngredient<MushroomToken>()
-                .AddIngredient(ItemID.GlowingMushroom)
-                .AddIngredient(ItemID.MushroomGrassSeeds, 10)
+		}
+		public override void AddRecipes()
+		{
+			CreateRecipe()
+				.AddIngredient<MushroomToken>()
+				.AddIngredient(ItemID.GlowingMushroom)
+				.AddIngredient(ItemID.MushroomGrassSeeds, 10)
 				.AddTile(TileID.Anvils)
-                .Register();
-        }
-    }
+				.Register();
+		}
+	}
 	[AutoloadEquip(EquipType.Body)]
 	public class FungalDress : ModItem
 	{
 		public override LocalizedText DisplayName => Language.GetText("Mods.V2.ItemName.Voraria.Armor.FungalDress");
 		public static int TUMBonus => 9;
-        public static float StomachWeightReduction => 0.2f;
+		public static float StomachWeightReduction => 0.2f;
 
-        public override void SetStaticDefaults()
-        {
-            DrawAnimationVertical anim = new DrawAnimationVertical(6, 12);
-            Main.RegisterItemAnimation(Type, anim);
-            ItemID.Sets.AnimatesAsSoul[Type] = true;
-        }
-        public override void SetDefaults()
-        {
-            Item.width = 30;
-            Item.height = 30;
-            Item.value = Item.sellPrice(
-                gold: 5, silver: 95
-            );
-            Item.rare = ItemRarityID.Blue;
+		public override void SetStaticDefaults()
+		{
+			DrawAnimationVertical anim = new DrawAnimationVertical(6, 12);
+			Main.RegisterItemAnimation(Type, anim);
+			ItemID.Sets.AnimatesAsSoul[Type] = true;
+		}
+		public override void SetDefaults()
+		{
+			Item.width = 30;
+			Item.height = 30;
+			Item.value = Item.sellPrice(
+				gold: 5, silver: 95
+			);
+			Item.rare = ItemRarityID.Blue;
 			Item.defense = 7;
 		}
 		public override void UpdateEquip(Player player)
 		{
 			player.AsPred().TUM.Extra += TUMBonus;
-            player.AsPred().StomachWeightModifier *= 1f - StomachWeightReduction;
-            player.maxMinions += 1;
-        }
+			player.AsPred().StomachWeightModifier *= 1f - StomachWeightReduction;
+			player.maxMinions += 1;
+		}
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
 			tooltips.AddVorariaDynamicItemTooltip(
@@ -111,16 +111,16 @@ namespace V2.Items.Voraria.Armor
 
 				}
 			);
-        }
-        public override void AddRecipes()
-        {
-            CreateRecipe()
-                .AddIngredient<MushroomToken>()
-                .AddIngredient(ItemID.GlowingMushroom, 15)
-                .AddIngredient(ItemID.MushroomGrassSeeds, 4)
-                .AddIngredient(ItemID.Silk, 8)
+		}
+		public override void AddRecipes()
+		{
+			CreateRecipe()
+				.AddIngredient<MushroomToken>()
+				.AddIngredient(ItemID.GlowingMushroom, 15)
+				.AddIngredient(ItemID.MushroomGrassSeeds, 4)
+				.AddIngredient(ItemID.Silk, 8)
 				.AddTile(TileID.Loom)
-                .Register();
-        }
-    }
+				.Register();
+		}
+	}
 }
