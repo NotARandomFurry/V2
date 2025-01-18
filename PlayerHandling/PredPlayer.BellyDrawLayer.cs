@@ -165,8 +165,11 @@ public class BellyDrawLayer : PlayerDrawLayer
 
 
     protected override void Draw(ref PlayerDrawSet drawInfo)
-    {
-        var player = drawInfo.drawPlayer;
+	{
+		if (drawInfo.drawPlayer.isDisplayDollOrInanimate)
+			return;
+
+		var player = drawInfo.drawPlayer;
         var tumSize = player.AsPred().StomachSize;
         // int Frame = getFrameForBelly(drawInfo.drawPlayer);
         if (V2.GetFooled)
