@@ -314,13 +314,16 @@ namespace V2.Items
 
 		public override bool CanPickup(Item item, Player player)
 		{
+			if (item.IsAir)
+				return false;
+
 			if (item.CurrentCaptor() is not null)
 				return false;
 
 			if (item.AsFood().MaxHealth != -1 && item.AsFood().Health == 0)
 				return false;
 
-			return !item.IsAir;
+			return true;
 		}
 
 		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
