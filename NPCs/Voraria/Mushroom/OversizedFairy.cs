@@ -21,6 +21,7 @@ namespace V2.NPCs.Voraria.Mushroom
         {
             NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers()
             {
+                CustomTexturePath = "V2/NPCs/Voraria/Mushroom/FATFUCK",
                 Position = new Vector2(-8, 8),
             };
             NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
@@ -28,8 +29,10 @@ namespace V2.NPCs.Voraria.Mushroom
 
         public override void SetDefaults()
         {
-            NPC.width = 170;
-            NPC.height = 82;
+            NPC.friendly = true;
+            NPC.dontTakeDamageFromHostiles = true;
+            NPC.width = 154;
+            NPC.height = 66;
             NPC.aiStyle = -1;
             NPC.damage = 0;
             NPC.defense = 45;
@@ -64,6 +67,13 @@ namespace V2.NPCs.Voraria.Mushroom
             NPC.AsPred().BigGulps = Gulps.Standard;
 
         }
+        public override float SpawnChance(NPCSpawnInfo spawnInfo)
+        {
+            if (spawnInfo.SpawnTileType != TileID.MushroomGrass)
+                return 0f;
+
+            return 0.015f;
+        }
         public override void OnSpawn(IEntitySource source)
         {
             NPC.direction = Main.rand.NextBool().ToDirectionInt();
@@ -73,7 +83,7 @@ namespace V2.NPCs.Voraria.Mushroom
             bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
                 BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.UndergroundMushroom,
 
-                new FlavorTextBestiaryInfoElement("Mods.V2.Bestiary.Underworld.HellHarpy"),
+                new FlavorTextBestiaryInfoElement("Mods.V2.Bestiary.Mushroom.OversizedFairy"),
             });
         }
         public static bool CanFatassFairyBeForceFed(NPC npc) => true;
@@ -91,9 +101,16 @@ namespace V2.NPCs.Voraria.Mushroom
         public override void AI()
         {
             NPC.velocity.X *= 0.9f;
-            NPC.velocity.Y = Math.Min(NPC.velocity.Y + 0.3f, 3f);
+            NPC.velocity.Y = Math.Min(NPC.velocity.Y + 0.3f, 10f);
             FatFuckMethods.OnUpdate(NPC);
             FatFuckMethods.PushPlayers(NPC);
+        }
+        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            Rectangle sourceRect = new Rectangle(0, 0, 170, 82);
+            Texture2D sprite = ModContent.Request<Texture2D>("V2/NPCs/Voraria/Mushroom/FATFUCK").Value;
+            spriteBatch.Draw(sprite, NPC.position - Main.screenPosition - new Vector2(8, 16), sourceRect, drawColor, NPC.rotation, new Vector2(0, 0), 1f, SpriteEffects.None, 0f);
+            return false;
         }
     }
 }
