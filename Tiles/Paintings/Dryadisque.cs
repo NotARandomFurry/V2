@@ -97,7 +97,7 @@ namespace V2.Tiles.Paintings
             }
             if (Main.netMode != NetmodeID.MultiplayerClient)
             {
-                int num = Projectile.NewProjectile(new EntitySource_TileEntity(this, null), new Vector2((int)(Position.X * 16) + 47, (int)(Position.Y * 16) + 32), Vector2.Zero, ModContent.ProjectileType<Dryadisque_ProjectileEntity>(), 0, 0);
+                int num = Projectile.NewProjectile(new EntitySource_TileEntity(this, null), new Vector2((int)(Position.X * 16) + 48, (int)(Position.Y * 16) + 32), Vector2.Zero, ModContent.ProjectileType<Dryadisque_ProjectileEntity>(), 0, 0);
                 connectedNPC = Main.projectile[num];
                 connectedNPC.AsPred().ExtraWeight = WeightOnLoad;
                 Main.projectile[num].netUpdate = true;
@@ -202,7 +202,7 @@ namespace V2.Tiles.Paintings
             Projectile.timeLeft = 6000;
             Projectile.velocity = Vector2.Zero;
             Tile Painting = Main.tile[Projectile.position.ToTileCoordinates()];
-            if (!Painting.HasTile || Painting.TileType != ModContent.TileType<MyFairy>())
+            if (!Painting.HasTile || Painting.TileType != ModContent.TileType<Dryadisque>())
             {
                 Projectile.active = false;
             }

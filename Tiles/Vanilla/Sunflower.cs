@@ -18,6 +18,7 @@ namespace V2.Tiles.Vanilla
 {
     public class Sunflower : ModTile
     {
+        
         public override void SetStaticDefaults()
         {
             Main.tileFrameImportant[Type] = true;
@@ -28,6 +29,7 @@ namespace V2.Tiles.Vanilla
             TileObjectData.newTile.CoordinateHeights = new[] { 16, 16, 16, 16 };
             TileObjectData.newTile.Width = 2;
             TileObjectData.newTile.Height = 4;
+            TileObjectData.newTile.AnchorValidTiles = [TileID.Grass, TileID.CorruptGrass, TileID.HallowedGrass, TileID.CrimsonGrass, TileID.GolfGrass, TileID.GolfGrassHallowed];
 
             TileObjectData.newTile.HookPostPlaceMyPlayer = new PlacementHook(ModContent.GetInstance<Sunflower_TileEntity>().Hook_AfterPlacement, -1, 0, true);
             TileObjectData.newTile.UsesCustomCanPlace = true;
@@ -62,11 +64,24 @@ namespace V2.Tiles.Vanilla
                                 new Vector2(i * 16 - (int)Main.screenPosition.X, j * 16 - (int)Main.screenPosition.Y) + zero,
                                 sourceRect,
                                 Lighting.GetColor(i, j), 0f, default, 1f, SpriteEffects.None, 0f);
+                            Texture2D textureGlow = ModContent.Request<Texture2D>("V2/Tiles/Vanilla/Sunflower_Glowmask").Value;
+                            Rectangle sourceRectGlow = new Rectangle(32 * (int)npc.ai[0], 0, 32, 66);
+                            spriteBatch.Draw(
+                                textureGlow,
+                                new Vector2(i * 16 - (int)Main.screenPosition.X, j * 16 - (int)Main.screenPosition.Y) + zero,
+                                sourceRectGlow,
+                                Color.White);
                         }
                     }
                 }
             }
             return false;
+        }
+
+        public override void NearbyEffects(int i, int j, bool closer)
+        {
+            if (closer) return;
+            Main.SceneMetrics.HasSunflower = true;
         }
     }
     public class Sunflower_TileEntity : ModTileEntity
@@ -205,6 +220,7 @@ namespace V2.Tiles.Vanilla
                 Projectile.active = false;
             }
             if (Main.rand.NextBool(100)) Projectile.DoContactGulpage();
+            Lighting.AddLight(Projectile.Center + new Vector2(0, -16), new Vector3(150, 150, 50) * 0.001f);
         }
         public override void PostAI()
         {
