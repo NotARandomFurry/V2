@@ -3820,6 +3820,8 @@ Mods: {
 			// Dryadisque_ProjectileEntity.DisplayName: Dryadisque
 			// Sunflower_ProjectileEntity.DisplayName: Sunflower
 			// GraniteLamp_ProjectileEntity.DisplayName: Granite Lamp
+			// DoNotEatTheVileMushroom_ProjectileEntity.DisplayName: "'Do Not Eat The Vile Mushroom!'"
+			// EmpressOfLightRelic_ProjectileEntity.DisplayName: Empress Of Light Relic
 		}
 
 		InfoDisplayName.TallyCounterVore: Подсчет порций
@@ -4739,6 +4741,7 @@ Mods: {
 
 			// Sky.Observer: Every so often, a Demon Eye sees much more than it is meant to see in its life as a result of a defect. This, of course, leads to the eye becoming far too large to move freely about the skies. While functionally harmless, their sheer size makes them hard to swallow without good practice.
 			// Underworld.HellHarpy: Harpies are often kidnapped and carted to the Underworld via Desperai's innumerable ingredient hunters. Some of these harpies escape the gluttony of demonkind, though...but not without adjustments to their figure and form. A few demons might still be jostling around on any given one's chest and thighs.
+			// Mushroom.OversizedFairy: Okay, first of all, no idea how you'd unlock this entry. But good job.
 
 			TownNPCs: {
 				Succubus: Прожив на окраине Десперая много лет, прежде чем решиться на отъезд, Люсинда - демон, который просто хочет, чтобы люди верили, что она сильный, независимый хищник, которому не нужны никакие глупые чары... хотя она едва может удержать добычу так же, как ее начальство.

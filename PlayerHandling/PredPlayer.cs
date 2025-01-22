@@ -879,6 +879,7 @@ namespace V2.PlayerHandling
 			if (!Player.mount.Active)
 			{
 				float weightMovementMult = 1.0f / (float)Math.Max(1.0, Player.AsPred().StomachWeight + 1.0);
+				if (Player.AsV2Player().BeeTransformation == true) weightMovementMult += (float)Player.AsPred().BeeTransformation_ExtraWeight;
 				Player.runAcceleration *= weightMovementMult;
 				Player.jumpSpeed *= weightMovementMult;
 				Player.jumpHeight = (int)Math.Round((float)Player.jumpHeight * weightMovementMult);
@@ -1575,19 +1576,19 @@ namespace V2.PlayerHandling
 					double absorptionRate = pred.AsPred().PreyAbsorptionRatePerTick / (double)pred.AsPred().StomachTracker?.Prey.Count;
                     if (prey.WeightLeftToDigest <= absorptionRate)
                     {
-						if (pred.mount.Active && pred.mount.Type == ModContent.MountType<BeeTransformation>())
+						if (pred.AsV2Player().BeeTransformation == true)
 						{
                             double effectiveSize = 1 + pred.AsPred().BeeTransformation_ExtraWeight;
-                            pred.AsPred().BeeTransformation_ExtraWeight += prey.WeightLeftToDigest * BeeTransformation.WeightGainRatio * (1 / effectiveSize);
+                            pred.AsPred().BeeTransformation_ExtraWeight += prey.WeightLeftToDigest * BeeTransformationItem.WeightGainRatio * (1 / effectiveSize);
 						}
                         prey.WeightLeftToDigest = 0;
                     }
                     else
                     {
-                        if (pred.mount.Active && pred.mount.Type == ModContent.MountType<BeeTransformation>())
+                        if (pred.AsV2Player().BeeTransformation == true)
                         {
                             double effectiveSize = 1 + pred.AsPred().BeeTransformation_ExtraWeight;
-                            pred.AsPred().BeeTransformation_ExtraWeight += prey.WeightLeftToDigest * BeeTransformation.WeightGainRatio * (1 / effectiveSize);
+                            pred.AsPred().BeeTransformation_ExtraWeight += prey.WeightLeftToDigest * BeeTransformationItem.WeightGainRatio * (1 / effectiveSize);
                         }
                         prey.WeightLeftToDigest -= absorptionRate;
                     }

@@ -21,6 +21,7 @@ namespace V2.PlayerHandling
 
 		public int GuideHelpText = 0;
         public bool ShroomNecklace { get; set; }
+		public bool BeeTransformation { get; set; }
         public Dictionary<string, bool> LocationsVisited { get; set; }
 
 		public override void Initialize()
@@ -37,6 +38,7 @@ namespace V2.PlayerHandling
 			setBonusActive = false;
 			setBonusShouldBeDisplayed = false;
 			ShroomNecklace = false;
+			BeeTransformation = false;
 
 			if (Player.whoAmI != Main.myPlayer)
 				return;
@@ -48,8 +50,7 @@ namespace V2.PlayerHandling
 					Main.CloseNPCChatOrSign();
 			}
 
-			//test
-			if (Player.mount.Active && Player.mount.Type == ModContent.MountType<BeeTransformation>()) Player.width = 12;
+			if (Player.AsV2Player().BeeTransformation == true) Player.width = 12;
             else Player.width = 20;
             ResetHealthRegenEffectList();
 		}
@@ -155,7 +156,7 @@ namespace V2.PlayerHandling
         {
             foreach (PlayerDrawLayer drawLayer in PlayerDrawLayerLoader.Layers)
             {
-				if (Player.mount.Active && Player.mount.Type == ModContent.MountType<BeeTransformation>())
+				if (Player.AsV2Player().BeeTransformation == true)
 					if (drawLayer != PlayerDrawLayers.HeldItem && drawLayer.Mod == null)
 						drawLayer.Hide();
             }

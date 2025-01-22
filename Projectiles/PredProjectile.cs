@@ -270,7 +270,9 @@ namespace V2.Projectiles
 			}
 
 			PreyData food = PreyData.NewData(prey);
-			switch (food.Type)
+			AddNewPrey(pred, food);
+            PlaySwallowGulp(pred, food);
+            switch (food.Type)
 			{
 				case PreyType.Player:
 					Player player = prey as Player;
@@ -292,14 +294,12 @@ namespace V2.Projectiles
 					break;
 				case PreyType.Item:
 					Item item = prey as Item;
-					item.AsFood().OnSwallow(item, pred);
-					if (item.AsFood().OnSwallowDamage > 0)
+					item.AsFood().OnSwallow?.Invoke(item, pred);
+                    if (item.AsFood().OnSwallowDamage > 0)
 						pred.AsFood().Health -= item.AsFood().OnSwallowDamage;
 					break;
-			}
-			PlaySwallowGulp(pred, food);
-			AddNewPrey(pred, food);
-			pred.netUpdate = true;
+            }
+            pred.netUpdate = true;
 
 			if (MPstate == 1)
 			{
