@@ -1129,9 +1129,9 @@ namespace V2.PlayerHandling
 		/// </param>
 		/// <param name="MPwhoAmI">
 		/// The <see cref="Player.whoAmI"/> of the client that sent a request for this swallow.<br/>
-		/// Unused in singleplayer, but used in multiplayer to subsequently send and correctly receive a second message.<br/>
+		/// Unused in singleplayer, but used in multiplayer to correctly send and subsequently receive netcode messages.<br/>
 		/// </param>
-		public static void Swallow(Player pred, Entity prey, int MPstate = 0, int MPwhoAmI = -1)
+		public static void Swallow(Player pred, Entity prey, int MPstate = 0, int MPwhoAmI = -1, bool skipRealLifeCheck = false)
 		{
 			if (!CanSwallow(pred, prey))
 				return;
@@ -1164,11 +1164,21 @@ namespace V2.PlayerHandling
 				case PreyType.NPC:
 					NPC npc = prey as NPC;
 					npc.AsFood().OnSwallowedBy?.Invoke(npc, pred);
-					for (int i = 0; i < Main.maxNPCs; i++)
+
+					// this is a really fuckin' stupid way to have to do this check
+					// basically, if this is the original call, look through the entire NPC list for NPCs attached to this NPC via realLife
+					// if there are any, swallow all of those connected NPCs as well
+					// this exists purely to allow swallowin' worm enemies all at once instead of havin' to spam your Swallow bind to eat 'em
+					// ideally there'd be a sensible way to allow, like. slurpin' up the tasty noodles gradually instead of havin' to eat them all at once
+					// but this is Terraria and a lot of what you have to do isn't ideal here, so whatever
+					if (!skipRealLifeCheck)
 					{
-						if (Main.npc[i].whoAmI != npc.whoAmI && Main.npc[i].realLife != -1 && Main.npc[i].realLife == npc.whoAmI)
+						for (int i = 0; i < Main.maxNPCs; i++)
 						{
-							Swallow(pred, Main.npc[i]);
+							if (i != npc.whoAmI && Main.npc[i].realLife != -1 && Main.npc[i].realLife == npc.whoAmI)
+							{
+								Swallow(pred, Main.npc[i], MPstate, MPwhoAmI, true);
+							}
 						}
 					}
 
