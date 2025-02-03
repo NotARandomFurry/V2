@@ -1359,13 +1359,15 @@ namespace V2.PlayerHandling
 
 			void Regurgitate_Inner(Player pred, PreyData prey)
 			{
+				if (prey.Instance is null || prey.NoHealth)
+					return;
+
 				Entity realPrey = prey.Type switch
 				{
 					PreyType.Player => prey.Instance as Player,
 					PreyType.NPC => prey.Instance as NPC,
 					PreyType.Projectile => prey.Instance as Projectile,
 					PreyType.Item => prey.Instance as Item,
-					PreyType.Custom => null,
 					_ => throw new NotImplementedException(),
 				};
 				realPrey.position = pred.TrueCenter() + new Vector2(pred.direction * 8f, -14f);
