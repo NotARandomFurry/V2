@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
+using Terraria.IO;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
@@ -13,9 +14,9 @@ using V2.NPCs;
 using V2.Projectiles;
 using V2.Sounds.Vore;
 
-namespace V2.Tiles.Paintings
+namespace V2.Tiles.Vanilla.Paintings
 {
-    public class DoNotEatTheVileMushroom : ModTile
+    public class Dryadisque : ModTile
     {
         public override void SetStaticDefaults()
         {
@@ -28,7 +29,7 @@ namespace V2.Tiles.Paintings
             TileObjectData.newTile.Width = 6;
             TileObjectData.newTile.Height = 4;
 
-            TileObjectData.newTile.HookPostPlaceMyPlayer = new PlacementHook(ModContent.GetInstance<DoNotEatTheVileMushroom_TileEntity>().Hook_AfterPlacement, -1, 0, true);
+            TileObjectData.newTile.HookPostPlaceMyPlayer = new PlacementHook(ModContent.GetInstance<Dryadisque_TileEntity>().Hook_AfterPlacement, -1, 0, true);
             TileObjectData.newTile.UsesCustomCanPlace = true;
 
             TileObjectData.addTile(Type);
@@ -44,20 +45,32 @@ namespace V2.Tiles.Paintings
             Tile tile = Main.tile[i, j];
             if (TileEntity.ByPosition.TryGetValue(new Point16(i, j), out TileEntity tileEntity))
             {
-                if (tileEntity is DoNotEatTheVileMushroom_TileEntity)
+                if (tileEntity is Dryadisque_TileEntity)
                 {
                     foreach (var npc in Main.ActiveProjectiles)
                     {
-                        if (npc.active && (npc.position / 16).Distance(tileEntity.Position.ToVector2()) < 2f && npc.type == ModContent.ProjectileType<DoNotEatTheVileMushroom_ProjectileEntity>())
+                        if (npc.active && (npc.position / 16).Distance(tileEntity.Position.ToVector2()) < 2f && npc.type == ModContent.ProjectileType<Dryadisque_ProjectileEntity>())
                         {
                             int XOffset = 0;
-                            int YSize = 64;
-                            if (npc.ai[0] <= 6) XOffset = 192;
-                            else if (npc.ai[0] <= 12) XOffset = 96;
-                            int tumSize = DoNotEatTheVileMushroom_ProjectileEntity.GetVisualBellySize(npc);
-                            if (tumSize == 7) YSize = 74;
-                            Texture2D texture = ModContent.Request<Texture2D>("V2/Tiles/Paintings/DoNotEatTheVileMushroom_SpriteSheet").Value;
-                            Rectangle sourceRect = new Rectangle(XOffset, 64 * tumSize, 96, YSize);
+                            if (npc.ai[0] <= 6) XOffset = 96;
+                            int tumSize = Dryadisque_ProjectileEntity.GetVisualBellySize(npc);
+							string texturePath = "V2/Tiles/Vanilla/Paintings/";
+							foreach (ResourcePack pack in V2.EnabledResourcePacks)
+							{
+								bool packOverrideFound = false;
+								switch (pack.Name)
+								{
+									case "True Dryad Fan":
+										texturePath += "AltSheetSets/True Dryad Fan/";
+										packOverrideFound = true;
+										break;
+								}
+
+								if (packOverrideFound)
+									break;
+							}
+							Texture2D texture = ModContent.Request<Texture2D>(texturePath + "Dryadisque_SpriteSheet").Value;
+							Rectangle sourceRect = new Rectangle(XOffset, 64 * tumSize, 96, 64);
                             Vector2 zero = Main.drawToScreen ? Vector2.Zero : new Vector2(Main.offScreenRange);
                             spriteBatch.Draw(
                                 texture,
@@ -71,7 +84,7 @@ namespace V2.Tiles.Paintings
             return false;
         }
     }
-    public class DoNotEatTheVileMushroom_TileEntity : ModTileEntity
+    public class Dryadisque_TileEntity : ModTileEntity
     {
         public Projectile connectedNPC = null;
         public double WeightOnLoad = 0;
@@ -82,7 +95,7 @@ namespace V2.Tiles.Paintings
             {
                 Activate();
             }
-            else if (!connectedNPC.active || connectedNPC.type != ModContent.ProjectileType<DoNotEatTheVileMushroom_ProjectileEntity>())
+            else if (!connectedNPC.active || connectedNPC.type != ModContent.ProjectileType<Dryadisque_ProjectileEntity>())
             {
                 Activate();
             }
@@ -92,7 +105,7 @@ namespace V2.Tiles.Paintings
         {
             foreach (var npc in Main.ActiveProjectiles)
             {
-                if (npc.active && (npc.position / 16).Distance(Position.ToVector2()) < 2f && npc.type == ModContent.ProjectileType<DoNotEatTheVileMushroom_ProjectileEntity>())
+                if (npc.active && (npc.position / 16).Distance(Position.ToVector2()) < 2f && npc.type == ModContent.ProjectileType<Dryadisque_ProjectileEntity>())
                 {
                     connectedNPC = npc;
                     return;
@@ -100,7 +113,7 @@ namespace V2.Tiles.Paintings
             }
             if (Main.netMode != NetmodeID.MultiplayerClient)
             {
-                int num = Projectile.NewProjectile(new EntitySource_TileEntity(this, null), new Vector2((int)(Position.X * 16) + 48, (int)(Position.Y * 16) + 32), Vector2.Zero, ModContent.ProjectileType<DoNotEatTheVileMushroom_ProjectileEntity>(), 0, 0);
+                int num = Projectile.NewProjectile(new EntitySource_TileEntity(this, null), new Vector2((int)(Position.X * 16) + 48, (int)(Position.Y * 16) + 32), Vector2.Zero, ModContent.ProjectileType<Dryadisque_ProjectileEntity>(), 0, 0);
                 connectedNPC = Main.projectile[num];
                 connectedNPC.AsPred().ExtraWeight = WeightOnLoad;
                 Main.projectile[num].netUpdate = true;
@@ -113,7 +126,7 @@ namespace V2.Tiles.Paintings
         public override bool IsTileValidForEntity(int x, int y)
         {
             Tile tile = Main.tile[x, y];
-            return tile.HasTile && tile.TileType == ModContent.TileType<DoNotEatTheVileMushroom>();
+            return tile.HasTile && tile.TileType == ModContent.TileType<Dryadisque>();
         }
         public override int Hook_AfterPlacement(int i, int j, int type, int style, int direction, int alternate)
         {
@@ -151,7 +164,7 @@ namespace V2.Tiles.Paintings
             WeightOnLoad = tag.GetDouble("ExtraWeight");
         }
     }
-    public class DoNotEatTheVileMushroom_ProjectileEntity : ModProjectile
+    public class Dryadisque_ProjectileEntity : ModProjectile
     {
         public override string Texture => "V2/Tiles/Paintings/InvisibleImage";
         public override void SetDefaults()
@@ -201,11 +214,11 @@ namespace V2.Tiles.Paintings
         public override void AI()
         {
             Projectile.ai[0]--;
-            if (Projectile.ai[0] <= 0) Projectile.ai[0] = Main.rand.Next(350, 650);
+            if (Projectile.ai[0] <= 0) Projectile.ai[0] = Main.rand.Next(300, 600);
             Projectile.timeLeft = 6000;
             Projectile.velocity = Vector2.Zero;
             Tile Painting = Main.tile[Projectile.position.ToTileCoordinates()];
-            if (!Painting.HasTile || Painting.TileType != ModContent.TileType<DoNotEatTheVileMushroom>())
+            if (!Painting.HasTile || Painting.TileType != ModContent.TileType<Dryadisque>())
             {
                 Projectile.active = false;
             }

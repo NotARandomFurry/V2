@@ -16,10 +16,10 @@ namespace V2.NPCs.Sets
 {
 	public static class LivingWeaponStuff
 	{
-		public static LivingWeapon AsMimic(this NPC npc)
+		public static LivingWeapon AsLivingWeapon(this NPC npc)
 		{
 			if (!npc.TryGetGlobalNPC(out LivingWeapon greedyLivingWeapon))
-				throw new Exception("this instance of a gem critter, supposedly, doesn't exist");
+				throw new Exception("this instance of a living weapon, supposedly, doesn't exist");
 
 			return greedyLivingWeapon;
 		}
