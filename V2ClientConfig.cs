@@ -19,6 +19,15 @@ namespace V2
 		[DefaultValue(false)]
 		public bool SkipPredStatMenuAnims { get; set; }
 
+		[LabelKey("$Mods.V2.Configs.Client.Visual.StruggleSystemBackdropType.Label")]
+		[TooltipKey("$Mods.V2.Configs.Client.Visual.StruggleSystemBackdropType.Tooltip")]
+		[OptionStrings([
+			"Horizontal",
+			"Vertical",
+		])]
+		[DefaultValue("Horizontal")]
+		public string StruggleSystemBackdropType { get; set; }
+
 		[LabelKey("$Mods.V2.Configs.Client.Visual.ShowChurnDamageNumbers.Label")]
 		[TooltipKey("$Mods.V2.Configs.Client.Visual.ShowChurnDamageNumbers.Tooltip")]
 		[DefaultValue(true)]

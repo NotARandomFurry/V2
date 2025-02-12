@@ -67,8 +67,6 @@ namespace V2.PlayerHandling
 
 		public override void Initialize()
 		{
-			STR = new PredStat();
-
 			Digested = false;
 			// uncomment once achievements are available so the Ascended Acolyte race is...relatively fair for everyone
 			// Player.AsPrey().HasBeenDigestedByNPC = new int[NPCLoader.NPCCount];

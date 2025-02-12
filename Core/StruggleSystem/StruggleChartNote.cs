@@ -11,7 +11,7 @@ namespace V2.Core.StruggleSystem
 		/// <summary>
 		/// The lane that this note should arrive in.<br/>
 		/// </summary>
-		public NoteLane Lane { get; private set; }
+		public NoteDirection Direction { get; private set; }
 
 		private int _holdLength;
 		/// <summary>
@@ -44,9 +44,9 @@ namespace V2.Core.StruggleSystem
 		public double PressedPosition { get; set; }
 		public int PressAnimTimer { get; set; }
 
-		public StruggleChartNote(NoteLane lane, int holdLength = 0, bool bad = false)
+		public StruggleChartNote(NoteDirection lane, int holdLength = 0, bool bad = false)
 		{
-			Lane = lane;
+			Direction = lane;
 			HoldLength = holdLength;
 			Bad = bad;
 			Position = 0.0;

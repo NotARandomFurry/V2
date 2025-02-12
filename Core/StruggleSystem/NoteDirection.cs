@@ -6,12 +6,16 @@ using System.Threading.Tasks;
 
 namespace V2.Core.StruggleSystem
 {
-	public enum NoteLane
+	public enum NoteDirection
 	{
+		LeftUp,
 		Up,
+		RightUp,
 		Left,
 		Special,
 		Right,
-		Down
+		LeftDown,
+		Down,
+		RightDown,
 	}
 }

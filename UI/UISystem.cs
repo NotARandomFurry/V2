@@ -28,9 +28,7 @@ namespace V2.UI
 		public StomachacheMeterUI StomachacheMeterInterface;
 
 		public UserInterface PlayerPredStruggleInterfaceLayer;
-		public PlayerPredStruggleUI PlayerPredStruggleInterface;
-		public UserInterface PlayerPreyStruggleInterfaceLayer;
-		public PlayerPreyStruggleUI PlayerPreyStruggleInterface;
+		public StruggleSystemUI PlayerPredStruggleInterface;
 
 		public UserInterface PredStatsMenuMouthInterfaceLayer;
 		public PredStatsMenuMouthUI PredStatsMenuMouthInterface;
@@ -65,13 +63,9 @@ namespace V2.UI
 			StomachacheMeterInterfaceLayer.SetState(StomachacheMeterInterface);
 
 			PlayerPredStruggleInterfaceLayer = new UserInterface();
-			PlayerPredStruggleInterface = new PlayerPredStruggleUI();
+			PlayerPredStruggleInterface = new StruggleSystemUI();
 			PlayerPredStruggleInterface.Activate();
 			PlayerPredStruggleInterfaceLayer.SetState(PlayerPredStruggleInterface);
-			PlayerPreyStruggleInterfaceLayer = new UserInterface();
-			PlayerPreyStruggleInterface = new PlayerPreyStruggleUI();
-			PlayerPreyStruggleInterface.Activate();
-			PlayerPreyStruggleInterfaceLayer.SetState(PlayerPreyStruggleInterface);
 
 			PredStatsMenuMouthInterfaceLayer = new UserInterface();
 			PredStatsMenuMouthInterface = new PredStatsMenuMouthUI();
@@ -144,9 +138,8 @@ namespace V2.UI
 				AddInterfaceLayer(layers, MealSizeScannerInterfaceLayer, MealSizeScannerInterface, OverriddenHairWindowIndex + 2, "Sizemic Scanner");
 				AddInterfaceLayer(layers, PredCapacityScannerInterfaceLayer, PredCapacityScannerInterface, OverriddenHairWindowIndex + 3, "Servant's Scanner");
 				AddInterfaceLayer(layers, PlayerPredStruggleInterfaceLayer, PlayerPredStruggleInterface, OverriddenHairWindowIndex + 4, "Player Pred Struggles");
-				AddInterfaceLayer(layers, PlayerPreyStruggleInterfaceLayer, PlayerPreyStruggleInterface, OverriddenHairWindowIndex + 5, "Player Prey Struggles");
-				AddInterfaceLayer(layers, PredStatsMenuInterfaceLayer, PredStatsMenuInterface, OverriddenHairWindowIndex + 6, "Pred Stats Menu");
-				AddInterfaceLayer(layers, PredStatsMenuMouthInterfaceLayer, PredStatsMenuMouthInterface, OverriddenHairWindowIndex + 7, "Pred Stats Menu's Hungry Mouth");
+				AddInterfaceLayer(layers, PredStatsMenuInterfaceLayer, PredStatsMenuInterface, OverriddenHairWindowIndex + 5, "Pred Stats Menu");
+				AddInterfaceLayer(layers, PredStatsMenuMouthInterfaceLayer, PredStatsMenuMouthInterface, OverriddenHairWindowIndex + 6, "Rose");
 			}
 			int MouseTextIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Mouse Text"));
 			if (MouseTextIndex != -1)

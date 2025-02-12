@@ -211,6 +211,16 @@ Mods: {
 							// I put a whole like 2-4 hours of work into them
 							'''
 					}
+					
+					StruggleSystemBackdropType: {
+						Label: Struggle System UI Orientation
+						Tooltip:
+							'''
+							Determines whether or not you see the short swallow/regurgitate animations upon attempting to open or close the pred stats menu.
+							Defaults to using the Horizontal orientation.
+							// I will die instantly if a third orientation option is requested
+							'''
+					}
 
 					ShowChurnDamageNumbers: {
 						Label: Show Digestion Damage
@@ -726,10 +736,10 @@ Mods: {
 					Description: {
 						Default:
 							'''
-							Enter the Jungle and show the Man Eater who's got the "Eating" role now!
-							'"Man Eater" huh? Just reverse the roles. Now you're eating the Man Eater. Man Eater Eater?'
+							Enter the Jungle and show a Man Eater who's better at eating!
+							'Would that make you a Man Eater Eater?'
 							'''
-						Clarification: Eat and digest a Man eater.
+						Clarification: Eat and digest a Man Eater.
 					}
 				}
 

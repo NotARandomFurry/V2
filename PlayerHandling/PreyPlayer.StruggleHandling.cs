@@ -10,12 +10,10 @@ namespace V2.PlayerHandling
 {
 	public partial class PreyPlayer : ModPlayer
 	{
-		public PredStat STR { get; set; }
 		public StatModifier StruggleStrengthModifier { get; set; }
 		public double StruggleStrength {
 			get {
-				double baseStruggleStrength = 1.5;
-				baseStruggleStrength += 0.3 * STR.Total;
+				double baseStruggleStrength = 6.0;
 				return StruggleStrengthModifier.ApplyTo((float)baseStruggleStrength);
 			}
 		}

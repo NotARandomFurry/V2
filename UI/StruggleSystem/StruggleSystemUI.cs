@@ -12,9 +12,15 @@ using V2.PlayerHandling;
 
 namespace V2.UI.StruggleSystem
 {
-	public class PlayerPredStruggleUI : UIState
+	public class StruggleSystemUI : UIState
 	{
 		public static bool Visible { get; set; }
+		private static int _opacity;
+		public static int Opacity {
+			get => _opacity;
+			set => _opacity = Math.Max(Math.Min(255, value), 0);
+		}
+		public static int ActiveTimer { get; set; }
 
 		public override void Update(GameTime gameTime)
 		{
@@ -27,7 +33,8 @@ namespace V2.UI.StruggleSystem
 				Visible = true;
 		}
 
-		private Asset<Texture2D> _struggleSystemBackdrop = ModContent.Request<Texture2D>("V2/UI/StruggleSystem/StruggleSystem_Main_NoteBackdrop", AssetRequestMode.ImmediateLoad);
+		private Asset<Texture2D> _struggleSystemBackdropHoriz = ModContent.Request<Texture2D>("V2/UI/StruggleSystem/StruggleSystem_Main_NoteBackdrop_Horizontal", AssetRequestMode.ImmediateLoad);
+		private Asset<Texture2D> _struggleSystemBackdropVerti = ModContent.Request<Texture2D>("V2/UI/StruggleSystem/StruggleSystem_Main_NoteBackdrop_Vertical", AssetRequestMode.ImmediateLoad);
 		private Asset<Texture2D> _struggleNoteUp = ModContent.Request<Texture2D>("V2/UI/StruggleSystem/StruggleSystem_Main_UpNote", AssetRequestMode.ImmediateLoad);
 		private Asset<Texture2D> _struggleNoteLeft = ModContent.Request<Texture2D>("V2/UI/StruggleSystem/StruggleSystem_Main_LeftNote", AssetRequestMode.ImmediateLoad);
 		private Asset<Texture2D> _struggleNoteSpecial = ModContent.Request<Texture2D>("V2/UI/StruggleSystem/StruggleSystem_Main_UpNote", AssetRequestMode.ImmediateLoad);
@@ -36,35 +43,47 @@ namespace V2.UI.StruggleSystem
 
 		public override void Draw(SpriteBatch spriteBatch)
 		{
-			if (!Visible)
-				return;
-
+			if (Visible)
+			{
+				Opacity += 15;
+				ActiveTimer++;
+			}
+			else
+			{
+				Opacity -= 15;
+				if (Opacity <= 0)
+					ActiveTimer = 0;
+			}
 			Vector2 bottomCenter = new Vector2(
 				Main.screenWidth / 2,
 				Main.screenHeight / 2
 			);
-			bottomCenter.X += 16;
-			bottomCenter.X += 80;
 			bottomCenter.Y -= 55 * Main.GameZoomTarget;
 			bottomCenter += Main.LocalPlayer.Center - (Main.screenPosition + new Vector2(Main.screenWidth / 2 * Main.UIScale, Main.screenHeight / 2));
 
 			bottomCenter.Y /= Main.UIScale;
 			
 			spriteBatch.Draw(
-				_struggleSystemBackdrop.Value,
+				_struggleSystemBackdropHoriz.Value,
 				bottomCenter,
-				_struggleSystemBackdrop.Value.Bounds,
+				_struggleSystemBackdropHoriz.Value.Bounds,
 				Color.White,
 				0f,
 				new Vector2(
-					_struggleSystemBackdrop.Value.Bounds.Bottom,
-					_struggleSystemBackdrop.Value.Width / 2
+					_struggleSystemBackdropHoriz.Value.Bounds.Bottom,
+					_struggleSystemBackdropHoriz.Value.Width / 2
 				),
-				1f,
+				Main.UIScale,
 				SpriteEffects.None,
 				0f
 			);
 
+			if (ActiveTimer >= 150)
+				goto SkipLaneIdentifiers;
+
+			SkipLaneIdentifiers:
+			// this is the cutoff point for today's struggle system work
+			return;
 			VoreTracker tracker = Main.LocalPlayer.AsPred().StomachTracker;
 			foreach ((StruggleChartNote note, double proximity) noteData in tracker.CheckCloseNotes(-1, true))
 			{
@@ -90,13 +109,13 @@ namespace V2.UI.StruggleSystem
 				}
 				Vector2 notePosition = bottomCenter;
 				notePosition.X -= 16;
-				notePosition.X += noteData.note.Lane switch
+				notePosition.X += noteData.note.Direction switch
 				{
-					NoteLane.Up => -48,
-					NoteLane.Left => -24,
-					NoteLane.Special => 0,
-					NoteLane.Right => 24,
-					NoteLane.Down => 48,
+					NoteDirection.Up => -48,
+					NoteDirection.Left => -24,
+					NoteDirection.Special => 0,
+					NoteDirection.Right => 24,
+					NoteDirection.Down => 48,
 					_ => 0,
 				};
 				notePosition.Y -= (float)((noteData.note.CorrectlyPressed ? noteData.note.PressedPosition : noteData.proximity) * 26.0) * 1.5f;
@@ -115,13 +134,13 @@ namespace V2.UI.StruggleSystem
 					26
 				);
 
-				Texture2D noteTexture = noteData.note.Lane switch
+				Texture2D noteTexture = noteData.note.Direction switch
 				{
-					NoteLane.Up => _struggleNoteUp.Value,
-					NoteLane.Left => _struggleNoteLeft.Value,
-					NoteLane.Special => _struggleNoteSpecial.Value,
-					NoteLane.Right => _struggleNoteRight.Value,
-					NoteLane.Down => _struggleNoteDown.Value,
+					NoteDirection.Up => _struggleNoteUp.Value,
+					NoteDirection.Left => _struggleNoteLeft.Value,
+					NoteDirection.Special => _struggleNoteSpecial.Value,
+					NoteDirection.Right => _struggleNoteRight.Value,
+					NoteDirection.Down => _struggleNoteDown.Value,
 					_ => null,
 				};
 				spriteBatch.Draw(

@@ -95,7 +95,7 @@ namespace V2.Core
 			if (Predator is Player predPlayer)
 				StruggleChartProgress = -predPlayer.AsPred().StruggleGraceTime;
 			StruggleChartProgressRate = 1.75 / (double)V2Utils.SensibleTime(seconds: 1);
-			PredatorStruggleChart = new ProceduralStruggleChart();
+			PredatorStruggleChart = null; // new ProceduralStruggleChart();
 			PredatorStruggleChart.ConnectedTracker = this;
 			PredatorStruggleChart.ForPredator = true;
 			PredatorStruggleChart.OnStartup();
@@ -111,19 +111,19 @@ namespace V2.Core
 					switch (prey.Type)
 					{
 						case PreyType.Player:
-							prey.AssignedStruggleChart = new ProceduralStruggleChart();
+							prey.AssignedStruggleChart = null; // new ProceduralStruggleChart();
 							prey.AssignedStruggleChart.ConnectedTracker = this;
 							prey.AssignedStruggleChart.ForPredator = false;
 							prey.AssignedStruggleChart.OnStartup();
 							break;
 						case PreyType.NPC:
-							prey.AssignedStruggleChart = new ProceduralStruggleChart();
+							prey.AssignedStruggleChart = null; // new ProceduralStruggleChart();
 							prey.AssignedStruggleChart.ConnectedTracker = this;
 							prey.AssignedStruggleChart.ForPredator = false;
 							prey.AssignedStruggleChart.OnStartup();
 							break;
 						case PreyType.Projectile:
-							prey.AssignedStruggleChart = new ProceduralStruggleChart();
+							prey.AssignedStruggleChart = null; // new ProceduralStruggleChart();
 							prey.AssignedStruggleChart.ConnectedTracker = this;
 							prey.AssignedStruggleChart.ForPredator = false;
 							prey.AssignedStruggleChart.OnStartup();
@@ -178,63 +178,6 @@ namespace V2.Core
 				PredProjectile.UpdatePrey(predProjectile);
 		}
 
-		public int TotalPreySTR
-		{
-			get
-			{
-				int STR = 0;
-				if (Prey is not null && Prey.Count > 0)
-				{
-					foreach (PreyData prey in Prey)
-					{
-						if (prey is null)
-							continue;
-
-						if (prey.NoHealth || prey.Instance is null)
-							continue;
-
-						switch (prey.Type)
-						{
-							case PreyType.Player:
-								STR += (prey.Instance as Player).AsFood().STR.Total;
-								break;
-							case PreyType.NPC:
-								STR += (prey.Instance as NPC).AsFood().STR;
-								break;
-							case PreyType.Projectile:
-								STR += (prey.Instance as Projectile).AsFood().STR;
-								break;
-						}
-					}
-				}
-				if (PreyQueue is not null && PreyQueue.Count > 0)
-				{
-					foreach (PreyData prey in PreyQueue)
-					{
-						if (prey is null)
-							continue;
-
-						if (prey.NoHealth || prey.Instance is null)
-							continue;
-
-						switch (prey.Type)
-						{
-							case PreyType.Player:
-								STR += (prey.Instance as Player).AsFood().STR.Total;
-								break;
-							case PreyType.NPC:
-								STR += (prey.Instance as NPC).AsFood().STR;
-								break;
-							case PreyType.Projectile:
-								STR += (prey.Instance as Projectile).AsFood().STR;
-								break;
-						}
-					}
-				}
-				return STR;
-			}
-		}
-
 		/// <summary>
 		/// Checks ALL inputs tracked by the given vore tracker.<br/>
 		/// <b>This is ONLY to be called in singleplayer; if called outside of singleplayer, it will not run, as there is (currently) no struggle system support in multiplayer.</b><br/>
@@ -246,7 +189,7 @@ namespace V2.Core
 
 			if (PredatorStruggleChart is null)
 				return;
-			
+
 			PredatorStruggleChart.RefreshPressedNotes();
 			foreach (PreyData prey in Prey)
 			{
@@ -261,11 +204,12 @@ namespace V2.Core
 			}
 
 			List<(StruggleChartNote note, double proximity)> closeNotes = CheckCloseNotes(-1);
+			/* FOR A LATER DAY
 			if (Predator is Player playerPredator)
 			{
 				if (V2.StruggleUpHotkey.JustPressed)
 				{
-					if (closeNotes.FirstOrDefault(x => x.note.Lane == NoteLane.Up) is (StruggleChartNote note, double proximity) noteData)
+					if (closeNotes.FirstOrDefault(x => x.note.Direction == NoteDirection.Up) is (StruggleChartNote note, double proximity) noteData)
 					{
 						double absoluteProximity = Math.Abs(noteData.proximity);
 						double proximityEffectivenessMultiplier = (MaximumNoteProximityRatio - absoluteProximity) / MaximumNoteProximityRatio;
@@ -279,7 +223,7 @@ namespace V2.Core
 				}
 				if (V2.StruggleDownHotkey.JustPressed)
 				{
-					if (closeNotes.FirstOrDefault(x => x.note.Lane == NoteLane.Down) is (StruggleChartNote note, double proximity) noteData)
+					if (closeNotes.FirstOrDefault(x => x.note.Direction == NoteDirection.Down) is (StruggleChartNote note, double proximity) noteData)
 					{
 						double absoluteProximity = Math.Abs(noteData.proximity);
 						double proximityEffectivenessMultiplier = (MaximumNoteProximityRatio - absoluteProximity) / MaximumNoteProximityRatio;
@@ -293,7 +237,7 @@ namespace V2.Core
 				}
 				if (V2.StruggleLeftHotkey.JustPressed)
 				{
-					if (closeNotes.FirstOrDefault(x => x.note.Lane == NoteLane.Left) is (StruggleChartNote note, double proximity) noteData)
+					if (closeNotes.FirstOrDefault(x => x.note.Direction == NoteDirection.Left) is (StruggleChartNote note, double proximity) noteData)
 					{
 						double absoluteProximity = Math.Abs(noteData.proximity);
 						double proximityEffectivenessMultiplier = (MaximumNoteProximityRatio - absoluteProximity) / MaximumNoteProximityRatio;
@@ -307,7 +251,7 @@ namespace V2.Core
 				}
 				if (V2.StruggleRightHotkey.JustPressed)
 				{
-					if (closeNotes.FirstOrDefault(x => x.note.Lane == NoteLane.Right) is (StruggleChartNote note, double proximity) noteData)
+					if (closeNotes.FirstOrDefault(x => x.note.Direction == NoteDirection.Right) is (StruggleChartNote note, double proximity) noteData)
 					{
 						double absoluteProximity = Math.Abs(noteData.proximity);
 						double proximityEffectivenessMultiplier = (MaximumNoteProximityRatio - absoluteProximity) / MaximumNoteProximityRatio;
@@ -321,7 +265,7 @@ namespace V2.Core
 				}
 				if (V2.StruggleSpecialHotkey.JustPressed)
 				{
-					if (closeNotes.FirstOrDefault(x => x.note.Lane == NoteLane.Special) is (StruggleChartNote note, double proximity) noteData)
+					if (closeNotes.FirstOrDefault(x => x.note.Direction == NoteDirection.Special) is (StruggleChartNote note, double proximity) noteData)
 					{
 						double absoluteProximity = Math.Abs(noteData.proximity);
 						double proximityEffectivenessMultiplier = (MaximumNoteProximityRatio - absoluteProximity) / MaximumNoteProximityRatio;
@@ -512,9 +456,11 @@ namespace V2.Core
 					}
 				}
 			}
+			*/
 
-			HandlePreyNotes:
+			// HandlePreyNotes:
 
+			/*
 			bool predEmpress = PredatorType == PredType.NPC && (Predator as NPC).type == NPCID.HallowBoss;
 			for (int i = 0; i < Prey.Count; i++)
 			{
@@ -528,7 +474,7 @@ namespace V2.Core
 				{
 					if (V2.StruggleUpHotkey.JustPressed)
 					{
-						if (closeNotes.FirstOrDefault(x => x.note.Lane == NoteLane.Up) is (StruggleChartNote note, double proximity) noteData)
+						if (closeNotes.FirstOrDefault(x => x.note.Direction == NoteDirection.Up) is (StruggleChartNote note, double proximity) noteData)
 						{
 							double absoluteProximity = Math.Abs(noteData.proximity);
 							double proximityEffectivenessMultiplier = (MaximumNoteProximityRatio - absoluteProximity) / MaximumNoteProximityRatio;
@@ -544,7 +490,7 @@ namespace V2.Core
 					}
 					if (V2.StruggleDownHotkey.JustPressed)
 					{
-						if (closeNotes.FirstOrDefault(x => x.note.Lane == NoteLane.Down) is (StruggleChartNote note, double proximity) noteData)
+						if (closeNotes.FirstOrDefault(x => x.note.Direction == NoteDirection.Down) is (StruggleChartNote note, double proximity) noteData)
 						{
 							double absoluteProximity = Math.Abs(noteData.proximity);
 							double proximityEffectivenessMultiplier = (MaximumNoteProximityRatio - absoluteProximity) / MaximumNoteProximityRatio;
@@ -560,7 +506,7 @@ namespace V2.Core
 					}
 					if (V2.StruggleLeftHotkey.JustPressed)
 					{
-						if (closeNotes.FirstOrDefault(x => x.note.Lane == NoteLane.Left) is (StruggleChartNote note, double proximity) noteData)
+						if (closeNotes.FirstOrDefault(x => x.note.Direction == NoteDirection.Left) is (StruggleChartNote note, double proximity) noteData)
 						{
 							double absoluteProximity = Math.Abs(noteData.proximity);
 							double proximityEffectivenessMultiplier = (MaximumNoteProximityRatio - absoluteProximity) / MaximumNoteProximityRatio;
@@ -576,7 +522,7 @@ namespace V2.Core
 					}
 					if (V2.StruggleRightHotkey.JustPressed)
 					{
-						if (closeNotes.FirstOrDefault(x => x.note.Lane == NoteLane.Right) is (StruggleChartNote note, double proximity) noteData)
+						if (closeNotes.FirstOrDefault(x => x.note.Direction == NoteDirection.Right) is (StruggleChartNote note, double proximity) noteData)
 						{
 							double absoluteProximity = Math.Abs(noteData.proximity);
 							double proximityEffectivenessMultiplier = (MaximumNoteProximityRatio - absoluteProximity) / MaximumNoteProximityRatio;
@@ -592,7 +538,7 @@ namespace V2.Core
 					}
 					if (V2.StruggleSpecialHotkey.JustPressed)
 					{
-						if (closeNotes.FirstOrDefault(x => x.note.Lane == NoteLane.Special) is (StruggleChartNote note, double proximity) noteData)
+						if (closeNotes.FirstOrDefault(x => x.note.Direction == NoteDirection.Special) is (StruggleChartNote note, double proximity) noteData)
 						{
 							double absoluteProximity = Math.Abs(noteData.proximity);
 							double proximityEffectivenessMultiplier = (MaximumNoteProximityRatio - absoluteProximity) / MaximumNoteProximityRatio;
@@ -703,6 +649,7 @@ namespace V2.Core
 					}
 				}
 			}
+				*/
 		}
 
 		public void ModifyPredStomachacheMeter(double amount)
@@ -988,7 +935,7 @@ namespace V2.Core
 					InitialWeight = InitialSize = WeightLeftToDigest = 1.0;
 					if (ConnectedTracker is not null)
 					{
-						AssignedStruggleChart = new ProceduralStruggleChart();
+						AssignedStruggleChart = null; // new ProceduralStruggleChart();
 						AssignedStruggleChart.ConnectedTracker = ConnectedTracker;
 						AssignedStruggleChart.ForPredator = false;
 						AssignedStruggleChart.OnStartup();
@@ -1011,7 +958,7 @@ namespace V2.Core
 					}
 					if (ConnectedTracker is not null)
 					{
-						AssignedStruggleChart = new ProceduralStruggleChart();
+						AssignedStruggleChart = null; // new ProceduralStruggleChart();
 						AssignedStruggleChart.ConnectedTracker = ConnectedTracker;
 						AssignedStruggleChart.ForPredator = false;
 						AssignedStruggleChart.OnStartup();
@@ -1032,7 +979,7 @@ namespace V2.Core
 					}
 					if (ConnectedTracker is not null)
 					{
-						AssignedStruggleChart = new ProceduralStruggleChart();
+						AssignedStruggleChart = null; // new ProceduralStruggleChart();
 						AssignedStruggleChart.ConnectedTracker = ConnectedTracker;
 						AssignedStruggleChart.ForPredator = false;
 						AssignedStruggleChart.OnStartup();

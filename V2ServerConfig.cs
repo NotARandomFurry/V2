@@ -28,12 +28,12 @@ namespace V2
 
 		[LabelKey("$Mods.V2.Configs.Server.Personalization.GenderBlacklist.Label")]
 		[TooltipKey("$Mods.V2.Configs.Server.Personalization.GenderBlacklist.Tooltip")]
-		[OptionStrings(new string[] {
+		[OptionStrings([
 			"Default (No Blacklist)",
 			"No Female",
 			"No Male",
 			"No M or F...but why?",
-		})]
+		])]
 		[DefaultValue("Default (No Blacklist)")]
 		public string GenderBlacklist { get; set; }
 
