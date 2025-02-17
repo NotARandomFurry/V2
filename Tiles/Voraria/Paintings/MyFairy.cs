@@ -1,6 +1,6 @@
-﻿using System;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -9,15 +9,13 @@ using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using Terraria.ObjectData;
 using V2.Core;
-using V2.Items.Voraria.Placeables;
 using V2.NPCs;
 using V2.Projectiles;
-using V2.Projectiles.Voraria.Weapons.Summon;
 using V2.Sounds.Vore;
 
-namespace V2.Tiles.Paintings
+namespace V2.Tiles.Voraria.Paintings
 {
-    public class MyFairy : ModTile
+	public class MyFairy : ModTile
     {
         public override void SetStaticDefaults()
         {
@@ -55,7 +53,7 @@ namespace V2.Tiles.Paintings
                         {
                             int tumSize = MyFairy_ProjectileEntity.GetVisualBellySize(npc);
                             int weightSize = MyFairy_ProjectileEntity.GetVisualWeightStage(npc);
-                            Texture2D texture = ModContent.Request<Texture2D>("V2/Tiles/Paintings/MyFairy_SpriteSheet").Value;
+                            Texture2D texture = ModContent.Request<Texture2D>("V2/Tiles/Voraria/Paintings/MyFairy_SpriteSheet").Value;
                             Rectangle sourceRect = new Rectangle(64 * weightSize, 64 * tumSize, 64, 64);
                             Vector2 zero = Main.drawToScreen ? Vector2.Zero : new Vector2(Main.offScreenRange);
                             spriteBatch.Draw(
@@ -147,7 +145,7 @@ namespace V2.Tiles.Paintings
     }
     public class MyFairy_ProjectileEntity : ModProjectile
     {
-        public override string Texture => "V2/Tiles/Paintings/InvisibleImage";
+        public override string Texture => "V2/Tiles/InvisibleImage";
         public override void SetDefaults()
         {
             Projectile.friendly = true;

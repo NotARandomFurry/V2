@@ -1,14 +1,13 @@
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.ModLoader.IO;
 
 namespace V2.Items.Voraria.Placeables
 {
 	public class MyFairy : ModItem
     {
         public override void SetDefaults() {
-			Item.DefaultToPlaceableTile(ModContent.TileType<Tiles.Paintings.MyFairy>());
+			Item.DefaultToPlaceableTile(ModContent.TileType<Tiles.Voraria.Paintings.MyFairy>());
 
 			Item.width = 32;
 			Item.height = 32;

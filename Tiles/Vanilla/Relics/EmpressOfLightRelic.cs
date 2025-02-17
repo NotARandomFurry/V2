@@ -1,31 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using System;
+using Terraria;
 using Terraria.DataStructures;
 using Terraria.Enums;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 using Terraria.ObjectData;
-using Terraria;
-using Microsoft.Xna.Framework;
+using V2.Core;
 using V2.Items;
-using V2.Items.Vanilla.Accessories;
 using V2.PlayerHandling;
 using V2.Projectiles;
 using V2.Sounds.Vore;
-using Terraria.GameContent;
-using Terraria.ModLoader.IO;
-using V2.Core;
-using V2.Tiles.Paintings;
 
 namespace V2.Tiles.Vanilla.Relics
 {
-    public class EmpressOfLightRelic : ModTile
+	public class EmpressOfLightRelic : ModTile
     {
         public const int FrameWidth = 18 * 3;
         public const int FrameHeight = 18 * 4;
@@ -237,7 +230,7 @@ namespace V2.Tiles.Vanilla.Relics
     }
     public class EmpressOfLightRelic_ProjectileEntity : ModProjectile
     {
-        public override string Texture => "V2/Tiles/Paintings/InvisibleImage";
+        public override string Texture => "V2/Tiles/InvisibleImage";
         public override void SetDefaults()
         {
             Projectile.friendly = true;

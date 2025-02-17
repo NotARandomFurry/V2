@@ -176,7 +176,7 @@ namespace V2.Tiles.Vanilla
     }
     public class GraniteLamp_ProjectileEntity : ModProjectile
     {
-        public override string Texture => "V2/Tiles/Paintings/InvisibleImage";
+        public override string Texture => "V2/Tiles/InvisibleImage";
         public override void SetDefaults()
         {
             Projectile.friendly = true;

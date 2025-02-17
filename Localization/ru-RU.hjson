@@ -186,7 +186,7 @@ Mods: {
 						/* Tooltip:
 							'''
 							BALANCE BREAKAGE: None
-							Allows really fuckin' fat things to break tiles below them if they aren't on flat ground, platforms & glass break easier
+							Allows really fuckin' fat things to break tiles below them if they aren't on flat ground. Platforms & glass break easier.
 							Defaults to true.
 							''' */
 					}
@@ -205,10 +205,22 @@ Mods: {
 						// Label: Skip Pred Stat Menu's Mouth Animations
 						/* Tooltip:
 							'''
-							Determines whether or not you see the short swallow/regurgitate animations upon attempting to open or close the pred stats menu.
+							Determines whether or not you see Rose's short swallow/regurgitate animations upon attempting to open or close the pred stats menu.
 							Defaults to false.
 							// please at least give these animations a shot first
-							// I put a whole like 2-4 hours of work into them
+							// I put a whole, like. several hours of work into them!
+							// and Rose won't be as happy if she doesn't get to feel the satisfaction of gulpin' down your tasty cursor!
+							// so please keep this one on!
+							''' */
+					}
+
+					StruggleSystemBackdropType: {
+						// Label: Struggle System UI Orientation
+						/* Tooltip:
+							'''
+							Determines what orientation the struggle system's UI is displayed in.
+							Defaults to using the Horizontal orientation.
+							// I will implode on the spot if a third orientation option is requested
 							''' */
 					}
 
@@ -235,6 +247,12 @@ Mods: {
 							''' */
 					}
 				}
+			}
+
+			StruggleUIOrientation: {
+				// Tooltip: ""
+				// Horizontal.Label: Horizontal
+				// Vertical.Label: Vertical
 			}
 		}
 
@@ -298,6 +316,11 @@ Mods: {
 				Don't ever get too comfortable with how established you are in the world!
 				Anything, and we do mean ANYTHING, can eat you if you're too unlucky a prey, or too overconfident a pred.
 				''' */
+		}
+
+		StruggleSystem: {
+			// ThisIsThePredLane: Pred >>>
+			// ThisIsThePreyLane: <<< Prey
 		}
 
 		PredStatsMenu: {
@@ -729,10 +752,10 @@ Mods: {
 					Description: {
 						/* Default:
 							'''
-							Enter the Jungle and show the Man Eater who's got the "Eating" role now!
-							'"Man Eater" huh? Just reverse the roles. Now you're eating the Man Eater. Man Eater Eater?'
+							Enter the Jungle and show a Man Eater who's better at eating!
+							'Would that make you a Man Eater Eater?'
 							''' */
-						// Clarification: Eat and digest a Man eater.
+						// Clarification: Eat and digest a Man Eater.
 					}
 				}
 

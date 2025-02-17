@@ -1,6 +1,6 @@
-﻿using System;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -16,7 +16,7 @@ using V2.Sounds.Vore;
 
 namespace V2.Tiles.Vanilla.Paintings
 {
-    public class Dryadisque : ModTile
+	public class Dryadisque : ModTile
     {
         public override void SetStaticDefaults()
         {
@@ -166,7 +166,7 @@ namespace V2.Tiles.Vanilla.Paintings
     }
     public class Dryadisque_ProjectileEntity : ModProjectile
     {
-        public override string Texture => "V2/Tiles/Paintings/InvisibleImage";
+        public override string Texture => "V2/Tiles/InvisibleImage";
         public override void SetDefaults()
         {
             Projectile.friendly = true;

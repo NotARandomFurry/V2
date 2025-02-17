@@ -1,6 +1,6 @@
-﻿using System;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -15,7 +15,7 @@ using V2.Sounds.Vore;
 
 namespace V2.Tiles.Vanilla.Paintings
 {
-    public class DoNotEatTheVileMushroom : ModTile
+	public class DoNotEatTheVileMushroom : ModTile
     {
         public override void SetStaticDefaults()
         {
@@ -56,7 +56,7 @@ namespace V2.Tiles.Vanilla.Paintings
                             else if (npc.ai[0] <= 12) XOffset = 96;
                             int tumSize = DoNotEatTheVileMushroom_ProjectileEntity.GetVisualBellySize(npc);
                             if (tumSize == 7) YSize = 74;
-                            Texture2D texture = ModContent.Request<Texture2D>("V2/Tiles/Paintings/DoNotEatTheVileMushroom_SpriteSheet").Value;
+                            Texture2D texture = ModContent.Request<Texture2D>("V2/Tiles/Vanilla/Paintings/DoNotEatTheVileMushroom_SpriteSheet").Value;
                             Rectangle sourceRect = new Rectangle(XOffset, 64 * tumSize, 96, YSize);
                             Vector2 zero = Main.drawToScreen ? Vector2.Zero : new Vector2(Main.offScreenRange);
                             spriteBatch.Draw(
@@ -153,7 +153,7 @@ namespace V2.Tiles.Vanilla.Paintings
     }
     public class DoNotEatTheVileMushroom_ProjectileEntity : ModProjectile
     {
-        public override string Texture => "V2/Tiles/Paintings/InvisibleImage";
+        public override string Texture => "V2/Tiles/InvisibleImage";
         public override void SetDefaults()
         {
             Projectile.friendly = true;

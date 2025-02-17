@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 using Terraria.ModLoader.Config;
+using V2.UI.StruggleSystem;
 
 namespace V2
 {
@@ -21,12 +17,8 @@ namespace V2
 
 		[LabelKey("$Mods.V2.Configs.Client.Visual.StruggleSystemBackdropType.Label")]
 		[TooltipKey("$Mods.V2.Configs.Client.Visual.StruggleSystemBackdropType.Tooltip")]
-		[OptionStrings([
-			"Horizontal",
-			"Vertical",
-		])]
-		[DefaultValue("Horizontal")]
-		public string StruggleSystemBackdropType { get; set; }
+		[DefaultValue(StruggleSystemUI.StruggleUIOrientation.Horizontal)]
+		public StruggleSystemUI.StruggleUIOrientation StruggleSystemBackdropOrientation { get; set; }
 
 		[LabelKey("$Mods.V2.Configs.Client.Visual.ShowChurnDamageNumbers.Label")]
 		[TooltipKey("$Mods.V2.Configs.Client.Visual.ShowChurnDamageNumbers.Tooltip")]

@@ -96,9 +96,11 @@ namespace V2.Core
 				StruggleChartProgress = -predPlayer.AsPred().StruggleGraceTime;
 			StruggleChartProgressRate = 1.75 / (double)V2Utils.SensibleTime(seconds: 1);
 			PredatorStruggleChart = null; // new ProceduralStruggleChart();
+			/*
 			PredatorStruggleChart.ConnectedTracker = this;
 			PredatorStruggleChart.ForPredator = true;
 			PredatorStruggleChart.OnStartup();
+			*/
 			foreach (PreyData prey in Prey)
 			{
 				if (prey.NoHealth)
@@ -112,18 +114,21 @@ namespace V2.Core
 					{
 						case PreyType.Player:
 							prey.AssignedStruggleChart = null; // new ProceduralStruggleChart();
+							break;
 							prey.AssignedStruggleChart.ConnectedTracker = this;
 							prey.AssignedStruggleChart.ForPredator = false;
 							prey.AssignedStruggleChart.OnStartup();
 							break;
 						case PreyType.NPC:
 							prey.AssignedStruggleChart = null; // new ProceduralStruggleChart();
+							break;
 							prey.AssignedStruggleChart.ConnectedTracker = this;
 							prey.AssignedStruggleChart.ForPredator = false;
 							prey.AssignedStruggleChart.OnStartup();
 							break;
 						case PreyType.Projectile:
 							prey.AssignedStruggleChart = null; // new ProceduralStruggleChart();
+							break;
 							prey.AssignedStruggleChart.ConnectedTracker = this;
 							prey.AssignedStruggleChart.ForPredator = false;
 							prey.AssignedStruggleChart.OnStartup();
