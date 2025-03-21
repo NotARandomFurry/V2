@@ -220,7 +220,7 @@ Mods: {
 							'''
 							Determines what orientation the struggle system's UI is displayed in.
 							Defaults to using the Horizontal orientation.
-							// I will implode on the spot if a third orientation option is requested
+							// new orientation options MAY be considered
 							''' */
 					}
 
@@ -252,7 +252,9 @@ Mods: {
 			StruggleUIOrientation: {
 				// Tooltip: ""
 				// Horizontal.Label: Horizontal
-				// Vertical.Label: Vertical
+				// HorizontalFlipped.Label: Horizontal (Inverted)
+				// FNF.Label: Upscroll
+				// GuitarHero.Label: Downscroll
 			}
 		}
 
@@ -319,8 +321,25 @@ Mods: {
 		}
 
 		StruggleSystem: {
-			// ThisIsThePredLane: Pred >>>
-			// ThisIsThePreyLane: <<< Prey
+			Horiz: {
+				// ThisIsThePredLane: >>> Pred
+				// ThisIsThePreyLane: Prey <<<
+			}
+
+			HorizFlip: {
+				// ThisIsThePredLane: >>> Prey
+				// ThisIsThePreyLane: Pred <<<
+			}
+
+			FNF: {
+				// ThisIsThePredLane: Pred
+				// ThisIsThePreyLane: Prey
+			}
+
+			Guitar: {
+				// ThisIsThePredLane: Pred
+				// ThisIsThePreyLane: Prey
+			}
 		}
 
 		PredStatsMenu: {
@@ -3845,6 +3864,7 @@ Mods: {
 			// GraniteLamp_ProjectileEntity.DisplayName: Granite Lamp
 			// DoNotEatTheVileMushroom_ProjectileEntity.DisplayName: "'Do Not Eat The Vile Mushroom!'"
 			// EmpressOfLightRelic_ProjectileEntity.DisplayName: Empress Of Light Relic
+			// GraniteChair_ProjectileEntity.DisplayName: Granite Chair
 		}
 
 		InfoDisplayName.TallyCounterVore: Подсчет порций
@@ -4401,6 +4421,7 @@ Mods: {
 							4: "{Player} будет выглядеть суперстильно, как новый слой жира для {Pred}."
 							5: "{Pred} просто не мог устоять перед восхитительными волосами {Player}."
 							6: "{Player} помог {Pred} осуществить политику невозврата."
+							// 7: "{Pred}'s gut snipped and seared away {Player}'s hair, alongside the rest of their body."
 							BloodMoonHaircut: "{Player} попросил подстричься в самый подходящий момент."
 							Hardcore:
 								'''

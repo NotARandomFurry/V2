@@ -19,6 +19,9 @@ namespace V2.UI.StruggleSystem
 {
 	public class StruggleSystemUI : UIState
 	{
+		/// <summary>
+		/// Whether or not the struggle system's UI is currently visible at all.
+		/// </summary>
 		public static bool Visible { get; set; }
 		public static bool PlayerIsPred { get; set; }
 		public static bool PlayerIsPudge { get; set; }
@@ -55,18 +58,22 @@ namespace V2.UI.StruggleSystem
 			}
 		}
 
-		private Asset<Texture2D> _struggleSystemBackdropHoriz = ModContent.Request<Texture2D>("V2/UI/StruggleSystem/StruggleSystem_Main_NoteBackdrop_Horizontal", AssetRequestMode.ImmediateLoad);
-		private Asset<Texture2D> _struggleSystemBackdropVerti = ModContent.Request<Texture2D>("V2/UI/StruggleSystem/StruggleSystem_Main_NoteBackdrop_Vertical", AssetRequestMode.ImmediateLoad);
-		private Asset<Texture2D> _struggleNoteUp = ModContent.Request<Texture2D>("V2/UI/StruggleSystem/StruggleSystem_Main_Notes", AssetRequestMode.ImmediateLoad);
-		private Asset<Texture2D> _struggleNoteLeft = ModContent.Request<Texture2D>("V2/UI/StruggleSystem/StruggleSystem_Main_Notes", AssetRequestMode.ImmediateLoad);
-		private Asset<Texture2D> _struggleNoteSpecial = ModContent.Request<Texture2D>("V2/UI/StruggleSystem/StruggleSystem_Main_Notes", AssetRequestMode.ImmediateLoad);
-		private Asset<Texture2D> _struggleNoteRight = ModContent.Request<Texture2D>("V2/UI/StruggleSystem/StruggleSystem_Main_Notes", AssetRequestMode.ImmediateLoad);
-		private Asset<Texture2D> _struggleNoteDown = ModContent.Request<Texture2D>("V2/UI/StruggleSystem/StruggleSystem_Main_Notes", AssetRequestMode.ImmediateLoad);
+		private static readonly Asset<Texture2D> _struggleSystemBackdropHoriz = ModContent.Request<Texture2D>("V2/UI/StruggleSystem/StruggleSystem_Main_NoteBackdrop_Horizontal", AssetRequestMode.ImmediateLoad);
+		private static readonly Asset<Texture2D> _struggleSystemBackdropHorizFlip = ModContent.Request<Texture2D>("V2/UI/StruggleSystem/StruggleSystem_Main_NoteBackdrop_HorizontalFlipped", AssetRequestMode.ImmediateLoad);
+		private static readonly Asset<Texture2D> _struggleSystemBackdropUpscroll = ModContent.Request<Texture2D>("V2/UI/StruggleSystem/StruggleSystem_Main_NoteBackdrop_FNF", AssetRequestMode.ImmediateLoad);
+		private static readonly Asset<Texture2D> _struggleSystemBackdropDownscroll = ModContent.Request<Texture2D>("V2/UI/StruggleSystem/StruggleSystem_Main_NoteBackdrop_GuitarHero", AssetRequestMode.ImmediateLoad);
+		private static readonly Asset<Texture2D> _struggleNoteUp = ModContent.Request<Texture2D>("V2/UI/StruggleSystem/StruggleSystem_Main_Notes", AssetRequestMode.ImmediateLoad);
+		private static readonly Asset<Texture2D> _struggleNoteLeft = ModContent.Request<Texture2D>("V2/UI/StruggleSystem/StruggleSystem_Main_Notes", AssetRequestMode.ImmediateLoad);
+		private static readonly Asset<Texture2D> _struggleNoteSpecial = ModContent.Request<Texture2D>("V2/UI/StruggleSystem/StruggleSystem_Main_Notes", AssetRequestMode.ImmediateLoad);
+		private static readonly Asset<Texture2D> _struggleNoteRight = ModContent.Request<Texture2D>("V2/UI/StruggleSystem/StruggleSystem_Main_Notes", AssetRequestMode.ImmediateLoad);
+		private static readonly Asset<Texture2D> _struggleNoteDown = ModContent.Request<Texture2D>("V2/UI/StruggleSystem/StruggleSystem_Main_Notes", AssetRequestMode.ImmediateLoad);
 
 		public enum StruggleUIOrientation
 		{
 			Horizontal,
-			Vertical,
+			HorizontalFlipped,
+			FNF,
+			GuitarHero,
 		};
 
 		public override void Draw(SpriteBatch spriteBatch)
@@ -86,40 +93,65 @@ namespace V2.UI.StruggleSystem
 			if (Opacity <= 0)
 				return;
 
-			Vector2 bottomCenter = Main.LocalPlayer.position - Main.screenPosition;
-			bottomCenter.Y -= 55 * Main.GameZoomTarget;
+			Vector2 topLeftCorner = new Vector2(Main.screenWidth / 2, Main.screenHeight / 2);
+			topLeftCorner += Main.LocalPlayer.Center - (Main.screenPosition + new Vector2(Main.screenWidth / 2 * Main.UIScale, Main.screenHeight / 2));
+			topLeftCorner.Y -= 50 * Main.GameZoomTarget;
 
-			bottomCenter.Y /= Main.UIScale;
+			topLeftCorner.Y /= Main.UIScale;
 
 			switch (ModContent.GetInstance<V2ClientConfig>().StruggleSystemBackdropOrientation)
 			{
 				case StruggleUIOrientation.Horizontal:
+					topLeftCorner.Y -= _struggleSystemBackdropHoriz.Height();
 					spriteBatch.Draw(
 						_struggleSystemBackdropHoriz.Value,
-						bottomCenter,
+						topLeftCorner - new Vector2(_struggleSystemBackdropHoriz.Width() / 2f, 0f),
 						_struggleSystemBackdropHoriz.Value.Bounds,
 						Color.White * ((float)Opacity / 255f),
 						0f,
-						new Vector2(
-							_struggleSystemBackdropHoriz.Value.Bounds.Bottom,
-							_struggleSystemBackdropHoriz.Value.Bounds.Width / 2
-						),
+						default,
 						Main.UIScale,
 						SpriteEffects.None,
 						0f
 					);
 					break;
-				case StruggleUIOrientation.Vertical:
+				case StruggleUIOrientation.HorizontalFlipped:
+					topLeftCorner.Y -= _struggleSystemBackdropHorizFlip.Height();
 					spriteBatch.Draw(
-						_struggleSystemBackdropVerti.Value,
-						bottomCenter,
-						_struggleSystemBackdropVerti.Value.Bounds,
+						_struggleSystemBackdropHorizFlip.Value,
+						topLeftCorner - new Vector2(_struggleSystemBackdropHorizFlip.Width() / 2f, 0f),
+						_struggleSystemBackdropHorizFlip.Value.Bounds,
 						Color.White * ((float)Opacity / 255f),
 						0f,
-						new Vector2(
-							_struggleSystemBackdropVerti.Value.Bounds.Bottom,
-							_struggleSystemBackdropVerti.Value.Bounds.Width / 2
-						),
+						default,
+						Main.UIScale,
+						SpriteEffects.None,
+						0f
+					);
+					break;
+				case StruggleUIOrientation.FNF:
+					topLeftCorner.Y -= _struggleSystemBackdropUpscroll.Height();
+					spriteBatch.Draw(
+						_struggleSystemBackdropUpscroll.Value,
+						topLeftCorner - new Vector2(_struggleSystemBackdropUpscroll.Width() / 2f, 0f),
+						_struggleSystemBackdropUpscroll.Value.Bounds,
+						Color.White * ((float)Opacity / 255f),
+						0f,
+						default,
+						Main.UIScale,
+						SpriteEffects.None,
+						0f
+					);
+					break;
+				case StruggleUIOrientation.GuitarHero:
+					topLeftCorner.Y -= _struggleSystemBackdropDownscroll.Height();
+					spriteBatch.Draw(
+						_struggleSystemBackdropDownscroll.Value,
+						topLeftCorner - new Vector2(_struggleSystemBackdropDownscroll.Width() / 2f, 0f),
+						_struggleSystemBackdropDownscroll.Value.Bounds,
+						Color.White * ((float)Opacity / 255f),
+						0f,
+						default,
 						Main.UIScale,
 						SpriteEffects.None,
 						0f
@@ -137,37 +169,37 @@ namespace V2.UI.StruggleSystem
 			laneIdentifierDisplayOffset *= 250.0;
 
 			float laneIdentifierTextScale = 1.2f;
-			Vector2 predLaneIdentifierDisplayLocation = bottomCenter;
+			Vector2 predLaneIdentifierDisplayLocation = topLeftCorner;
 			predLaneIdentifierDisplayLocation.X -= (float)laneIdentifierDisplayOffset;
-			Vector2 preyLaneIdentifierDisplayLocation = bottomCenter;
+			Vector2 preyLaneIdentifierDisplayLocation = topLeftCorner;
 			preyLaneIdentifierDisplayLocation.X += (float)laneIdentifierDisplayOffset;
-			Vector2 predLaneStringSize = ChatManager.GetStringSize(FontAssets.MouseText.Value, Language.GetTextValue("Mods.V2.StruggleSystem.ThisIsThePredLane"), new Vector2(laneIdentifierTextScale));
-			Vector2 preyLaneStringSize = ChatManager.GetStringSize(FontAssets.MouseText.Value, Language.GetTextValue("Mods.V2.StruggleSystem.ThisIsThePreyLane"), new Vector2(laneIdentifierTextScale));
+			Vector2 predLaneStringSize;
+			Vector2 preyLaneStringSize;
 			float laneIdentifierAlpha = (ActiveTimer < 75 ? ActiveTimer : 150 - ActiveTimer) / 75f;
 
 			switch (ModContent.GetInstance<V2ClientConfig>().StruggleSystemBackdropOrientation)
 			{
 				case StruggleUIOrientation.Horizontal:
+					predLaneStringSize = ChatManager.GetStringSize(FontAssets.MouseText.Value, Language.GetTextValue("Mods.V2.StruggleSystem.Horiz.ThisIsThePredLane"), new Vector2(laneIdentifierTextScale));
 					predLaneIdentifierDisplayLocation.X -= 80f;
-					predLaneIdentifierDisplayLocation.X += 30f;
-					predLaneIdentifierDisplayLocation.Y -= 80f;
+					predLaneIdentifierDisplayLocation.Y -= 30f;
 					ChatManager.DrawColorCodedStringWithShadow(
 						spriteBatch,
 						FontAssets.MouseText.Value,
-						Language.GetTextValue("Mods.V2.StruggleSystem.ThisIsThePredLane"),
+						Language.GetTextValue("Mods.V2.StruggleSystem.Horiz.ThisIsThePredLane"),
 						predLaneIdentifierDisplayLocation,
 						Color.Yellow * laneIdentifierAlpha,
 						0f,
 						predLaneStringSize / 2f,
 						new Vector2(laneIdentifierTextScale)
 					);
+					preyLaneStringSize = ChatManager.GetStringSize(FontAssets.MouseText.Value, Language.GetTextValue("Mods.V2.StruggleSystem.Horiz.ThisIsThePreyLane"), new Vector2(laneIdentifierTextScale));
 					preyLaneIdentifierDisplayLocation.X += 80f;
-					preyLaneIdentifierDisplayLocation.X += 30f;
-					preyLaneIdentifierDisplayLocation.Y -= 40f;
+					preyLaneIdentifierDisplayLocation.Y -= 30f;
 					ChatManager.DrawColorCodedStringWithShadow(
 						spriteBatch,
 						FontAssets.MouseText.Value,
-						Language.GetTextValue("Mods.V2.StruggleSystem.ThisIsThePreyLane"),
+						Language.GetTextValue("Mods.V2.StruggleSystem.Horiz.ThisIsThePreyLane"),
 						preyLaneIdentifierDisplayLocation,
 						Color.Yellow * laneIdentifierAlpha,
 						0f,
@@ -175,25 +207,83 @@ namespace V2.UI.StruggleSystem
 						new Vector2(laneIdentifierTextScale)
 					);
 					break;
-				case StruggleUIOrientation.Vertical:
-					predLaneIdentifierDisplayLocation.X -= 105f;
-					predLaneIdentifierDisplayLocation.Y -= 40f;
+				case StruggleUIOrientation.HorizontalFlipped:
+					predLaneStringSize = ChatManager.GetStringSize(FontAssets.MouseText.Value, Language.GetTextValue("Mods.V2.StruggleSystem.HorizFlip.ThisIsThePredLane"), new Vector2(laneIdentifierTextScale));
+					predLaneIdentifierDisplayLocation.X -= 80f;
+					predLaneIdentifierDisplayLocation.Y -= 30f;
 					ChatManager.DrawColorCodedStringWithShadow(
 						spriteBatch,
 						FontAssets.MouseText.Value,
-						Language.GetTextValue("Mods.V2.StruggleSystem.ThisIsThePredLane"),
+						Language.GetTextValue("Mods.V2.StruggleSystem.HorizFlip.ThisIsThePredLane"),
 						predLaneIdentifierDisplayLocation,
 						Color.Yellow * laneIdentifierAlpha,
 						0f,
 						predLaneStringSize / 2f,
 						new Vector2(laneIdentifierTextScale)
 					);
-					preyLaneIdentifierDisplayLocation.X += 105f;
-					preyLaneIdentifierDisplayLocation.Y -= 40f;
+					preyLaneStringSize = ChatManager.GetStringSize(FontAssets.MouseText.Value, Language.GetTextValue("Mods.V2.StruggleSystem.HorizFlip.ThisIsThePreyLane"), new Vector2(laneIdentifierTextScale));
+					preyLaneIdentifierDisplayLocation.X += 80f;
+					preyLaneIdentifierDisplayLocation.Y -= 30f;
 					ChatManager.DrawColorCodedStringWithShadow(
 						spriteBatch,
 						FontAssets.MouseText.Value,
-						Language.GetTextValue("Mods.V2.StruggleSystem.ThisIsThePreyLane"),
+						Language.GetTextValue("Mods.V2.StruggleSystem.HorizFlip.ThisIsThePreyLane"),
+						preyLaneIdentifierDisplayLocation,
+						Color.Yellow * laneIdentifierAlpha,
+						0f,
+						preyLaneStringSize / 2f,
+						new Vector2(laneIdentifierTextScale)
+					);
+					break;
+				case StruggleUIOrientation.FNF:
+					predLaneStringSize = ChatManager.GetStringSize(FontAssets.MouseText.Value, Language.GetTextValue("Mods.V2.StruggleSystem.FNF.ThisIsThePredLane"), new Vector2(laneIdentifierTextScale));
+					predLaneIdentifierDisplayLocation.X -= 80f;
+					predLaneIdentifierDisplayLocation.Y -= 30f;
+					ChatManager.DrawColorCodedStringWithShadow(
+						spriteBatch,
+						FontAssets.MouseText.Value,
+						Language.GetTextValue("Mods.V2.StruggleSystem.FNF.ThisIsThePredLane"),
+						predLaneIdentifierDisplayLocation,
+						Color.Yellow * laneIdentifierAlpha,
+						0f,
+						predLaneStringSize / 2f,
+						new Vector2(laneIdentifierTextScale)
+					);
+					preyLaneStringSize = ChatManager.GetStringSize(FontAssets.MouseText.Value, Language.GetTextValue("Mods.V2.StruggleSystem.FNF.ThisIsThePreyLane"), new Vector2(laneIdentifierTextScale));
+					preyLaneIdentifierDisplayLocation.X += 80f;
+					preyLaneIdentifierDisplayLocation.Y -= 30f;
+					ChatManager.DrawColorCodedStringWithShadow(
+						spriteBatch,
+						FontAssets.MouseText.Value,
+						Language.GetTextValue("Mods.V2.StruggleSystem.FNF.ThisIsThePreyLane"),
+						preyLaneIdentifierDisplayLocation,
+						Color.Yellow * laneIdentifierAlpha,
+						0f,
+						preyLaneStringSize / 2f,
+						new Vector2(laneIdentifierTextScale)
+					);
+					break;
+				case StruggleUIOrientation.GuitarHero:
+					predLaneStringSize = ChatManager.GetStringSize(FontAssets.MouseText.Value, Language.GetTextValue("Mods.V2.StruggleSystem.GuitarHero.ThisIsThePredLane"), new Vector2(laneIdentifierTextScale));
+					predLaneIdentifierDisplayLocation.X -= 80f;
+					predLaneIdentifierDisplayLocation.Y -= 30f;
+					ChatManager.DrawColorCodedStringWithShadow(
+						spriteBatch,
+						FontAssets.MouseText.Value,
+						Language.GetTextValue("Mods.V2.StruggleSystem.GuitarHero.ThisIsThePredLane"),
+						predLaneIdentifierDisplayLocation,
+						Color.Yellow * laneIdentifierAlpha,
+						0f,
+						predLaneStringSize / 2f,
+						new Vector2(laneIdentifierTextScale)
+					);
+					preyLaneStringSize = ChatManager.GetStringSize(FontAssets.MouseText.Value, Language.GetTextValue("Mods.V2.StruggleSystem.GuitarHero.ThisIsThePreyLane"), new Vector2(laneIdentifierTextScale));
+					preyLaneIdentifierDisplayLocation.X += 80f;
+					preyLaneIdentifierDisplayLocation.Y -= 30f;
+					ChatManager.DrawColorCodedStringWithShadow(
+						spriteBatch,
+						FontAssets.MouseText.Value,
+						Language.GetTextValue("Mods.V2.StruggleSystem.GuitarHero.ThisIsThePreyLane"),
 						preyLaneIdentifierDisplayLocation,
 						Color.Yellow * laneIdentifierAlpha,
 						0f,
@@ -229,7 +319,7 @@ namespace V2.UI.StruggleSystem
 						alpha = (float)Math.Min(Math.Max(realProximity / 0.5, 0.0), 1.0);
 					}
 				}
-				Vector2 notePosition = bottomCenter;
+				Vector2 notePosition = topLeftCorner;
 				notePosition.X -= 16;
 				notePosition.X += noteData.note.Direction switch
 				{

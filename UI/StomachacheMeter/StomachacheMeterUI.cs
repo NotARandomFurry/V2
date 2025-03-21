@@ -176,7 +176,12 @@ namespace V2.UI.StomachacheMeter
 						_stomachachePanelMiddle.Value,
 						topLeftCorner + new Vector2(14 + (i * _stomachachePanelMiddle.Value.Width), 6),
 						_stomachachePanelMiddle.Value.Bounds,
-						Color.White
+						Color.White,
+						0f,
+						default,
+						Main.UIScale,
+						SpriteEffects.None,
+						0f
 					);
 				}
 
@@ -198,7 +203,12 @@ namespace V2.UI.StomachacheMeter
 						fillTexture,
 						topLeftCorner + new Vector2(14 + (i * _stomachachePanelMiddle.Value.Width), 8),
 						fullDrawRect,
-						Color.White
+						Color.White,
+						0f,
+						default,
+						Main.UIScale,
+						SpriteEffects.None,
+						0f
 					);
 				}
 
@@ -206,13 +216,23 @@ namespace V2.UI.StomachacheMeter
 					_stomachachePanelLeft.Value,
 					topLeftCorner,
 					_stomachachePanelLeft.Value.Bounds,
-					Color.White
+					Color.White,
+					0f,
+					default,
+					Main.UIScale,
+					SpriteEffects.None,
+					0f
 				);
 				spriteBatch.Draw(
 					_stomachachePanelRight.Value,
 					topLeftCorner + new Vector2(10 + (_stomachacheSegments * _stomachachePanelMiddle.Value.Width), 0),
 					_stomachachePanelRight.Value.Bounds,
-					Color.White
+					Color.White,
+					0f,
+					default,
+					Main.UIScale,
+					SpriteEffects.None,
+					0f
 				);
 
 				Rectangle hoverRect = new Rectangle(

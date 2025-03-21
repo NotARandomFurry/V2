@@ -106,7 +106,12 @@ namespace V2.UI.StomachCapacityMeter
 					_stomachCapacityPanelMiddle.Value,
 					topLeftCorner + new Vector2(20 + (i * _stomachCapacityPanelMiddle.Value.Width), 4),
 					_stomachCapacityPanelMiddle.Value.Bounds,
-					Color.White
+					Color.White,
+					0f,
+					default,
+					Main.UIScale,
+					SpriteEffects.None,
+					0f
 				);
 			}
 
@@ -128,7 +133,12 @@ namespace V2.UI.StomachCapacityMeter
 					fillTexture,
 					topLeftCorner + new Vector2(20 + (i * _stomachCapacityPanelMiddle.Value.Width), 10),
 					fullDrawRect,
-					Color.White
+					Color.White,
+					0f,
+					default,
+					Main.UIScale,
+					SpriteEffects.None,
+					0f
 				);
 
 				if (_kickyPreyPercent <= 0 || (double)i / (double)_capacitySegmentsCount >= _kickyPreyPercent)
@@ -147,7 +157,12 @@ namespace V2.UI.StomachCapacityMeter
 					kickyFillTexture,
 					topLeftCorner + new Vector2(20 + (i * _stomachCapacityPanelMiddle.Value.Width), 10),
 					kickyDrawRect,
-					Color.White
+					Color.White,
+					0f,
+					default,
+					Main.UIScale,
+					SpriteEffects.None,
+					0f
 				);
 			}
 
@@ -155,13 +170,23 @@ namespace V2.UI.StomachCapacityMeter
 				_stomachCapacityPanelLeft.Value,
 				topLeftCorner,
 				_stomachCapacityPanelLeft.Value.Bounds,
-				Color.White
+				Color.White,
+				0f,
+				default,
+				Main.UIScale,
+				SpriteEffects.None,
+				0f
 			);
 			spriteBatch.Draw(
 				_stomachCapacityPanelRight.Value,
 				topLeftCorner + new Vector2(20 + (_capacitySegmentsCount * _stomachCapacityPanelMiddle.Value.Width), 4),
 				_stomachCapacityPanelRight.Value.Bounds,
-				Color.White
+				Color.White,
+				0f,
+				default,
+				Main.UIScale,
+				SpriteEffects.None,
+				0f
 			);
 
 			Rectangle hoverRect = new Rectangle(
