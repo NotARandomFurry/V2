@@ -336,7 +336,7 @@ Mods: {
 				ThisIsThePreyLane: Prey
 			}
 
-			Guitar: {
+			GuitarHero: {
 				ThisIsThePredLane: Pred
 				ThisIsThePreyLane: Prey
 			}

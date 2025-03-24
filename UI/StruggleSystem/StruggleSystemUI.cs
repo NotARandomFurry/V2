@@ -20,13 +20,17 @@ namespace V2.UI.StruggleSystem
 	public class StruggleSystemUI : UIState
 	{
 		/// <summary>
-		/// Whether or not the struggle system's UI is currently visible at all.
+		/// Whether or not the struggle system's UI is currently visible at all.<br/>
 		/// </summary>
 		public static bool Visible { get; set; }
+		/// <summary>
+		/// Whether or not the local player is currently the pred in this scenario.<br/>
+		///	Influences which side of the struggle UI belongs to the player.<br/>
+		/// </summary>
 		public static bool PlayerIsPred { get; set; }
-		public static bool PlayerIsPudge { get; set; }
 		private static int _opacity;
-		public static int Opacity {
+		public static int Opacity
+		{
 			get => _opacity;
 			set => _opacity = Math.Max(Math.Min(255, value), 0);
 		}
@@ -36,7 +40,6 @@ namespace V2.UI.StruggleSystem
 		{
 			Visible = false;
 			PlayerIsPred = false;
-			PlayerIsPudge = false;
 			/*
 			just because I'm overhaulin' this system
 			to be more streamlined and actually work correctly
@@ -49,7 +52,7 @@ namespace V2.UI.StruggleSystem
 			if (player.CurrentCaptor() is not null)// && player.CurrentCaptor().PredatorStruggleChart is not null)
 			{
 				Visible = true;
-				PlayerIsPudge = true;
+				PlayerIsPred = false;
 			}
 			else if (player.AsPred().KickyStomachFullness > 0.0)// && player.AsPred().StomachTracker.PredatorStruggleChart is not null)
 			{
@@ -62,11 +65,7 @@ namespace V2.UI.StruggleSystem
 		private static readonly Asset<Texture2D> _struggleSystemBackdropHorizFlip = ModContent.Request<Texture2D>("V2/UI/StruggleSystem/StruggleSystem_Main_NoteBackdrop_HorizontalFlipped", AssetRequestMode.ImmediateLoad);
 		private static readonly Asset<Texture2D> _struggleSystemBackdropUpscroll = ModContent.Request<Texture2D>("V2/UI/StruggleSystem/StruggleSystem_Main_NoteBackdrop_FNF", AssetRequestMode.ImmediateLoad);
 		private static readonly Asset<Texture2D> _struggleSystemBackdropDownscroll = ModContent.Request<Texture2D>("V2/UI/StruggleSystem/StruggleSystem_Main_NoteBackdrop_GuitarHero", AssetRequestMode.ImmediateLoad);
-		private static readonly Asset<Texture2D> _struggleNoteUp = ModContent.Request<Texture2D>("V2/UI/StruggleSystem/StruggleSystem_Main_Notes", AssetRequestMode.ImmediateLoad);
-		private static readonly Asset<Texture2D> _struggleNoteLeft = ModContent.Request<Texture2D>("V2/UI/StruggleSystem/StruggleSystem_Main_Notes", AssetRequestMode.ImmediateLoad);
-		private static readonly Asset<Texture2D> _struggleNoteSpecial = ModContent.Request<Texture2D>("V2/UI/StruggleSystem/StruggleSystem_Main_Notes", AssetRequestMode.ImmediateLoad);
-		private static readonly Asset<Texture2D> _struggleNoteRight = ModContent.Request<Texture2D>("V2/UI/StruggleSystem/StruggleSystem_Main_Notes", AssetRequestMode.ImmediateLoad);
-		private static readonly Asset<Texture2D> _struggleNoteDown = ModContent.Request<Texture2D>("V2/UI/StruggleSystem/StruggleSystem_Main_Notes", AssetRequestMode.ImmediateLoad);
+		private static readonly Asset<Texture2D> _struggleNotesSheet = ModContent.Request<Texture2D>("V2/UI/StruggleSystem/StruggleSystem_Main_Notes", AssetRequestMode.ImmediateLoad);
 
 		public enum StruggleUIOrientation
 		{
@@ -99,13 +98,16 @@ namespace V2.UI.StruggleSystem
 
 			topLeftCorner.Y /= Main.UIScale;
 
+			topLeftCorner.X = (int)Math.Round(topLeftCorner.X);
+			topLeftCorner.Y = (int)Math.Round(topLeftCorner.Y);
+
 			switch (ModContent.GetInstance<V2ClientConfig>().StruggleSystemBackdropOrientation)
 			{
 				case StruggleUIOrientation.Horizontal:
 					topLeftCorner.Y -= _struggleSystemBackdropHoriz.Height();
 					spriteBatch.Draw(
 						_struggleSystemBackdropHoriz.Value,
-						topLeftCorner - new Vector2(_struggleSystemBackdropHoriz.Width() / 2f, 0f),
+						topLeftCorner - new Vector2((int)Math.Round(_struggleSystemBackdropHoriz.Width() / 2f), 0f),
 						_struggleSystemBackdropHoriz.Value.Bounds,
 						Color.White * ((float)Opacity / 255f),
 						0f,
@@ -119,7 +121,7 @@ namespace V2.UI.StruggleSystem
 					topLeftCorner.Y -= _struggleSystemBackdropHorizFlip.Height();
 					spriteBatch.Draw(
 						_struggleSystemBackdropHorizFlip.Value,
-						topLeftCorner - new Vector2(_struggleSystemBackdropHorizFlip.Width() / 2f, 0f),
+						topLeftCorner - new Vector2((int)Math.Round(_struggleSystemBackdropHorizFlip.Width() / 2f), 0f),
 						_struggleSystemBackdropHorizFlip.Value.Bounds,
 						Color.White * ((float)Opacity / 255f),
 						0f,
@@ -131,9 +133,10 @@ namespace V2.UI.StruggleSystem
 					break;
 				case StruggleUIOrientation.FNF:
 					topLeftCorner.Y -= _struggleSystemBackdropUpscroll.Height();
+					topLeftCorner.Y -= 20;
 					spriteBatch.Draw(
 						_struggleSystemBackdropUpscroll.Value,
-						topLeftCorner - new Vector2(_struggleSystemBackdropUpscroll.Width() / 2f, 0f),
+						topLeftCorner - new Vector2((int)Math.Round(_struggleSystemBackdropUpscroll.Width() / 2f), 0f),
 						_struggleSystemBackdropUpscroll.Value.Bounds,
 						Color.White * ((float)Opacity / 255f),
 						0f,
@@ -145,9 +148,10 @@ namespace V2.UI.StruggleSystem
 					break;
 				case StruggleUIOrientation.GuitarHero:
 					topLeftCorner.Y -= _struggleSystemBackdropDownscroll.Height();
+					topLeftCorner.Y -= 20;
 					spriteBatch.Draw(
 						_struggleSystemBackdropDownscroll.Value,
-						topLeftCorner - new Vector2(_struggleSystemBackdropDownscroll.Width() / 2f, 0f),
+						topLeftCorner - new Vector2((int)Math.Round(_struggleSystemBackdropDownscroll.Width() / 2f), 0f),
 						_struggleSystemBackdropDownscroll.Value.Bounds,
 						Color.White * ((float)Opacity / 255f),
 						0f,
@@ -294,78 +298,135 @@ namespace V2.UI.StruggleSystem
 			}
 
 			SkipLaneIdentifiers:
-			// this is the cutoff point for current struggle system work
-			return;
-			VoreTracker tracker = Main.LocalPlayer.AsPred().StomachTracker;
-			foreach ((StruggleChartNote note, double proximity) noteData in tracker.CheckCloseNotes(-1, true))
+			if (!Visible)
+				return;
+
+			VoreTracker tracker = PlayerIsPred ? Main.LocalPlayer.AsPred().StomachTracker : Main.LocalPlayer.CurrentCaptor();
+			if (tracker.PredatorStruggleChart is null)
+				return;
+
+			if (PlayerIsPred)
 			{
-				if (noteData.note.CorrectlyPressed && noteData.note.PressAnimTimer >= 28)
-					continue;
-				float alpha = 1f;
-				if (!noteData.note.CorrectlyPressed)
+				DrawArrowsForSubject(-1);
+				DrawArrowsForSubject(0);
+			}
+			else
+			{
+				DrawArrowsForSubject(-1);
+				DrawArrowsForSubject(tracker.Prey.FindIndex(x => x.Instance == Main.LocalPlayer));
+			}
+
+			void DrawArrowsForSubject(int index)
+			{
+				foreach ((StruggleChartNote note, double proximity) noteData in tracker.CheckCloseNotes(index, true))
 				{
-					if (noteData.proximity >= 0)
+					if (noteData.note.CorrectlyPressed && noteData.note.PressAnimTimer >= 28)
+						continue;
+					float alpha = 1f;
+					if (!noteData.note.CorrectlyPressed)
 					{
-						double realProximity = 2.5 - noteData.proximity;
-						if (realProximity < 0.0)
-							realProximity = 0.0;
-						alpha = (float)Math.Min(Math.Max(realProximity / 2.5, 0.0), 1.0);
+						if (noteData.proximity >= 0)
+						{
+							double visProximity = 2.5 - Math.Min(noteData.proximity - 1.0, 2.5);
+							if (visProximity < 0.0)
+								visProximity = 0.0;
+							alpha = (float)Math.Min(Math.Max(visProximity / 2.5, 0.0), 1.0);
+						}
+						else if (noteData.proximity < 0)
+						{
+							double visProximity = 0.5 + noteData.proximity;
+							if (visProximity < 0.0)
+								visProximity = 0.0;
+							alpha = (float)Math.Min(Math.Max(visProximity / 0.5, 0.0), 1.0);
+						}
 					}
-					else if (noteData.proximity < 0)
+					Vector2 notePosition = topLeftCorner + new Vector2(0, 13);
+					double noteSpacingFactor = index == -1 ? tracker.PredatorStruggleChart.NoteSpacingFactor : tracker.Prey[index].AssignedStruggleChart.NoteSpacingFactor;
+					float noteOffsetByProximity = (float)Math.Round((13 + (noteData.note.CorrectlyPressed ? noteData.note.PressedPosition : noteData.proximity) * 26.0) * noteSpacingFactor);
+					switch (ModContent.GetInstance<V2ClientConfig>().StruggleSystemBackdropOrientation)
 					{
-						double realProximity = 0.5 + noteData.proximity;
-						if (realProximity < 0.0)
-							realProximity = 0.0;
-						alpha = (float)Math.Min(Math.Max(realProximity / 0.5, 0.0), 1.0);
+						case StruggleUIOrientation.Horizontal:
+							notePosition.Y += 6;
+							notePosition.Y += noteData.note.Direction switch
+							{
+								NoteDirection.Up => 0,
+								NoteDirection.Right => 36,
+								NoteDirection.Special => 72,
+								NoteDirection.Left => 108,
+								NoteDirection.Down => 144,
+								_ => 0,
+							};
+							notePosition.X += (index == -1 ? 1f : -1f) * noteOffsetByProximity;
+							break;
+						case StruggleUIOrientation.HorizontalFlipped:
+							notePosition.Y += 6;
+							notePosition.Y += noteData.note.Direction switch
+							{
+								NoteDirection.Up => 0,
+								NoteDirection.Right => 36,
+								NoteDirection.Special => 72,
+								NoteDirection.Left => 108,
+								NoteDirection.Down => 144,
+								_ => 0,
+							};
+							notePosition.X -= (index == -1 ? 1f : -1f) * noteOffsetByProximity;
+							break;
+						case StruggleUIOrientation.FNF:
+							notePosition.X += (index == -1 ? 1f : -1f) * 20;
+							notePosition.Y -= 13;
+							notePosition.X += noteData.note.Direction switch
+							{
+								NoteDirection.Left => index == -1 ? 0 : -144,
+								NoteDirection.Down => index == -1 ? 36 : -108,
+								NoteDirection.Special => index == -1 ? 72 : -72,
+								NoteDirection.Up => index == -1 ? 108 : -36,
+								NoteDirection.Right => index == -1 ? 144 : 0,
+								_ => 0,
+							};
+							notePosition.Y += noteOffsetByProximity;
+							break;
+						case StruggleUIOrientation.GuitarHero:
+							notePosition.X += (index == -1 ? 1f : -1f) * 20;
+							notePosition.Y += _struggleSystemBackdropDownscroll.Height();
+							notePosition.Y -= 13;
+							notePosition.X += noteData.note.Direction switch
+							{
+								NoteDirection.Left => index == -1 ? 0 : -144,
+								NoteDirection.Up => index == -1 ? 36 : -108,
+								NoteDirection.Special => index == -1 ? 72 : -72,
+								NoteDirection.Down => index == -1 ? 108 : -36,
+								NoteDirection.Right => index == -1 ? 144 : 0,
+								_ => 0,
+							};
+							notePosition.Y -= noteOffsetByProximity;
+							break;
 					}
+
+					Texture2D notesTexture = _struggleNotesSheet.Value;
+					Rectangle noteRect = noteData.note.Direction switch
+					{
+						NoteDirection.Up => new(26, 0, 26, 26),
+						NoteDirection.Left => new(0, 26, 26, 26),
+						NoteDirection.Special => new(26, 26, 26, 26),
+						NoteDirection.Right => new(52, 26, 26, 26),
+						NoteDirection.Down => new(26, 52, 26, 26),
+						_ => new(26, 26, 26, 26),
+					};
+					Color colorToUse = Color.White;
+					if (Math.Abs(noteData.proximity) <= 0.05)
+						colorToUse = Color.Gray;
+					spriteBatch.Draw(
+						notesTexture,
+						notePosition,
+						noteRect,
+						colorToUse * alpha,
+						0f,
+						noteRect.Size() / 2f,
+						Main.UIScale,
+						SpriteEffects.None,
+						0f
+					);
 				}
-				Vector2 notePosition = topLeftCorner;
-				notePosition.X -= 16;
-				notePosition.X += noteData.note.Direction switch
-				{
-					NoteDirection.Up => -48,
-					NoteDirection.Left => -24,
-					NoteDirection.Special => 0,
-					NoteDirection.Right => 24,
-					NoteDirection.Down => 48,
-					_ => 0,
-				};
-				notePosition.Y -= (float)((noteData.note.CorrectlyPressed ? noteData.note.PressedPosition : noteData.proximity) * 26.0) * 1.5f;
-
-				int frame = 0;
-				if (noteData.note.PressAnimTimer > 7)
-					frame = 1;
-				if (noteData.note.PressAnimTimer > 14)
-					frame = 2;
-				if (noteData.note.PressAnimTimer > 21)
-					frame = 3;
-				Rectangle noteFrame = new Rectangle(
-					frame * 28,
-					0,
-					26,
-					26
-				);
-
-				Texture2D noteTexture = noteData.note.Direction switch
-				{
-					NoteDirection.Up => _struggleNoteUp.Value,
-					NoteDirection.Left => _struggleNoteLeft.Value,
-					NoteDirection.Special => _struggleNoteSpecial.Value,
-					NoteDirection.Right => _struggleNoteRight.Value,
-					NoteDirection.Down => _struggleNoteDown.Value,
-					_ => null,
-				};
-				spriteBatch.Draw(
-					noteTexture,
-					notePosition,
-					noteFrame,
-					Color.White * alpha,
-					0f,
-					noteFrame.Size() / 2f,
-					1f,
-					SpriteEffects.None,
-					0f
-				);
 			}
 		}
 	}

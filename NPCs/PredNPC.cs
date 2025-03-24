@@ -10,6 +10,7 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using V2.Core;
+using V2.Core.StruggleSystem;
 using V2.Items;
 using V2.NPCs.Vanilla.TownNPCs.Nurse;
 using V2.PlayerHandling;
@@ -116,6 +117,7 @@ namespace V2.NPCs
 				return StomachacheMeterCapacityModifier.ApplyTo((float)baseStomachacheMeterCapacity);
 			}
 		}
+		public double StomachacheQuellPerTick { get; set; }
 		/// <summary>
 		/// Expresses, from 0 to 12, how well this NPC keeps up with struggles as a pred.<br/>
 		/// Defaults to 5.<br/>
@@ -137,6 +139,7 @@ namespace V2.NPCs
 		public delegate int DelegateGetVisualWeightStage(NPC npc);
 		public DelegateGetVisualWeightStage GetVisualWeightStage { get; set; }
 		public int FloorBreakCounter { get; set; }
+		public StruggleChart AssociatedStruggleChart { get; set; }
 
 		public SlotId ActiveStomachNoises { get; set; }
 
@@ -174,6 +177,7 @@ namespace V2.NPCs
 			StandardBurps = null;
 			BigBurpThreshold = 2.0;
 			BigBurps = null;
+			AssociatedStruggleChart = new EmptyStruggleChart();
 
 			OnDigestionKill = null;
 

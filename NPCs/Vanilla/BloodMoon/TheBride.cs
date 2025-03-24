@@ -15,7 +15,7 @@ using V2.Sounds.Vore;
 
 namespace V2.NPCs.Vanilla.BloodMoon
 {
-	public static class TheBrideStuff
+	public static partial class TheBrideStuff
 	{
 		public static class ItemTheftRules
 		{
@@ -69,6 +69,7 @@ namespace V2.NPCs.Vanilla.BloodMoon
 			npc.AsPred().DigestionType = EntityDigestionType.Acidic;
 			npc.AsPred().GetDigestionTickDamage = GetDigestionTickDamage;
 			npc.AsPred().GetDigestionTickRate = GetDigestionTickRate;
+			npc.AsPred().AssociatedStruggleChart = new TheBrideStuff.TheBrideStruggleChart();
 
 			npc.AsPred().StandardBurps = Burps.Humanoid.Zombie.Standard;
 			npc.AsPred().GetAdditionalDigestedPlayerMessages = GetDigestedPlayerAdditionalDeathMessages;
@@ -76,11 +77,11 @@ namespace V2.NPCs.Vanilla.BloodMoon
 			npc.AsPred().GetPreyAbsorptionRate = GetPreyAbsorptionRate;
 
 			npc.AsFood().OnDigestedBy += OnKilledByDigestion_GrantBrideAndGroomGoal;
-			npc.AsFood().ItemTheftRules = new List<ItemTheftRule>()
-			{
+			npc.AsFood().ItemTheftRules =
+			[
 				TheBrideStuff.ItemTheftRules.WeddingVeil,
 				TheBrideStuff.ItemTheftRules.WeddingDress,
-			};
+			];
 		}
 
 		public static bool CanTheBrideBeForceFed(NPC npc) => true;
@@ -93,15 +94,15 @@ namespace V2.NPCs.Vanilla.BloodMoon
 		public static void GetDigestedPlayerAdditionalDeathMessages(NPC npc, Player player, List<string> deathReasonKeyList)
 		{
 			deathReasonKeyList.AddHumanoidPredMessages();
-			deathReasonKeyList.AddRange(new List<string>
-			{
+			deathReasonKeyList.AddRange(
+			[
 				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Forest.Zombie.1",
 				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Forest.Zombie.2",
 				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Forest.Zombie.3",
 				"Mods.V2.Death.DigestedPlayer.SpecificNPC.BloodMoon.GroomAndBride.1",
 				"Mods.V2.Death.DigestedPlayer.SpecificNPC.BloodMoon.GroomAndBride.2",
 				"Mods.V2.Death.DigestedPlayer.SpecificNPC.BloodMoon.GroomAndBride.TheBride.1",
-			});
+			]);
 			if (player.difficulty == PlayerDifficultyID.Hardcore)
 			{
 				deathReasonKeyList.Clear();
@@ -112,11 +113,6 @@ namespace V2.NPCs.Vanilla.BloodMoon
 		public static double GetDigestionTickRate(NPC npc, PreyData prey) => 0.8;
 		public static double GetDigestionTickDamage(NPC npc, PreyData prey) => 17;
 
-		public static void OnDigestionKill(NPC npc, PreyData digestedPrey)
-		{
-
-		}
-
 		public static double GetPreyAbsorptionRate(NPC npc)
 		{
 			double baseAbsorptionRate = 1.0 / (double)V2Utils.SensibleTime(
@@ -126,11 +122,39 @@ namespace V2.NPCs.Vanilla.BloodMoon
 			return baseAbsorptionRate;
 		}
 
+		public static int GetEmpressDigestionStage(NPC npc)
+		{
+			if (PredNPC.GetStomachTracker(npc) is null)
+				return 0;
+
+			PreyData candyFairy = PredNPC.GetStomachTracker(npc).Prey.FirstOrDefault(x => x.Type == PreyType.NPC && x.ExactType == NPCID.HallowBoss);
+			if (candyFairy is null || candyFairy.WeightLeftToDigest < 4.0)
+				return 0;
+			else
+			{
+				if (!candyFairy.NoHealth)
+					return 1;
+				else
+				{
+					if (candyFairy.WeightLeftToDigest > 37.0)
+						return 1;
+					else if (candyFairy.WeightLeftToDigest > 34.0 && candyFairy.WeightLeftToDigest <= 37.0)
+						return 2;
+					else if (candyFairy.WeightLeftToDigest > 28.5 && candyFairy.WeightLeftToDigest <= 34.0)
+						return 3;
+					else if (candyFairy.WeightLeftToDigest > 4.0)
+						return 4;
+					else
+						return 0;
+				}
+			}
+		}
+
 		public static int GetVisualBellySize(NPC npc)
 		{
 			return Math.Min(
 				(int)Math.Floor(5.0 * Math.Sqrt(PredNPC.GetCurrentBellyWeight(npc))),
-				4
+				6
 			);
 		}
 
@@ -149,12 +173,24 @@ namespace V2.NPCs.Vanilla.BloodMoon
 
 		public override void ModifyHoverBoundingBox(NPC npc, ref Rectangle boundingBox)
 		{
-			boundingBox = new Rectangle(
-				(int)npc.Center.X - 17,
-				(int)npc.Center.Y - 25,
-				34,
-				50
-			);
+			if (GetEmpressDigestionStage(npc) > 0)
+			{
+				boundingBox = new Rectangle(
+					(int)npc.Left.X,
+					(int)npc.Top.Y,
+					114,
+					54
+				);
+			}
+			else
+			{
+				boundingBox = new Rectangle(
+					(int)npc.Center.X - 12,
+					(int)npc.Center.Y - 25,
+					34,
+					50
+				);
+			}
 		}
 
 		public static void OnKilledByDigestion_GrantBrideAndGroomGoal(NPC npc, Entity pred)

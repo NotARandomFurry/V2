@@ -29,7 +29,7 @@ namespace V2.Core
 		public int FrameDictPos { get; set; }
 
 		/// <summary>
-		/// Shorthand for Frames[FrameDictPost]frame.<br/>
+		/// Shorthand for Frames[FrameDictPost].frame.<br/>
 		/// Used primarily for <see cref="DecideFrame"/>.<br/>
 		/// </summary>
 		public int FrameID => Frames is not null ? Frames[FrameDictPos].frame : 0;

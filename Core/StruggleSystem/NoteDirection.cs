@@ -8,14 +8,10 @@ namespace V2.Core.StruggleSystem
 {
 	public enum NoteDirection
 	{
-		LeftUp,
 		Up,
-		RightUp,
 		Left,
 		Special,
 		Right,
-		LeftDown,
 		Down,
-		RightDown,
 	}
 }

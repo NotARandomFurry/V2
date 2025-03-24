@@ -78,7 +78,7 @@ namespace V2.Core
 			tracker.Predator = pred;
 
 			tracker.Prey = prey;
-			tracker.PreyQueue = new List<PreyData>();
+			tracker.PreyQueue = [];
 			ModContent.GetInstance<V2MasterSystem>().VoreTrackers.Add(tracker);
 			if (Main.netMode == NetmodeID.SinglePlayer)
 				tracker.RefreshStruggleChartList();
@@ -92,15 +92,22 @@ namespace V2.Core
 				return;
 
 			StruggleChartProgress = -2.0;
+			StruggleChartProgressRate = 1.0 / (double)V2Utils.SensibleTime(seconds: 1);
+			PredatorStruggleChart = null;
 			if (Predator is Player predPlayer)
+			{
 				StruggleChartProgress = -predPlayer.AsPred().StruggleGraceTime;
-			StruggleChartProgressRate = 1.75 / (double)V2Utils.SensibleTime(seconds: 1);
-			PredatorStruggleChart = null; // new ProceduralStruggleChart();
-			/*
-			PredatorStruggleChart.ConnectedTracker = this;
-			PredatorStruggleChart.ForPredator = true;
-			PredatorStruggleChart.OnStartup();
-			*/
+			}
+			else if (Predator is NPC predNPC)
+			{
+				PredatorStruggleChart = predNPC.AsPred().AssociatedStruggleChart;
+			}
+			if (PredatorStruggleChart is not null)
+			{
+				PredatorStruggleChart.ConnectedTracker = this;
+				PredatorStruggleChart.ForPredator = true;
+				PredatorStruggleChart.OnStartup();
+			}
 			foreach (PreyData prey in Prey)
 			{
 				if (prey.NoHealth)
@@ -108,33 +115,12 @@ namespace V2.Core
 					prey.AssignedStruggleChart = null;
 					continue;
 				}
-				else
+				else if (PredatorStruggleChart is not null)
 				{
-					switch (prey.Type)
-					{
-						case PreyType.Player:
-							prey.AssignedStruggleChart = null; // new ProceduralStruggleChart();
-							break;
-							prey.AssignedStruggleChart.ConnectedTracker = this;
-							prey.AssignedStruggleChart.ForPredator = false;
-							prey.AssignedStruggleChart.OnStartup();
-							break;
-						case PreyType.NPC:
-							prey.AssignedStruggleChart = null; // new ProceduralStruggleChart();
-							break;
-							prey.AssignedStruggleChart.ConnectedTracker = this;
-							prey.AssignedStruggleChart.ForPredator = false;
-							prey.AssignedStruggleChart.OnStartup();
-							break;
-						case PreyType.Projectile:
-							prey.AssignedStruggleChart = null; // new ProceduralStruggleChart();
-							break;
-							prey.AssignedStruggleChart.ConnectedTracker = this;
-							prey.AssignedStruggleChart.ForPredator = false;
-							prey.AssignedStruggleChart.OnStartup();
-							break;
-					}
-					continue;
+					prey.AssignedStruggleChart = PredatorStruggleChart;
+					prey.AssignedStruggleChart.ConnectedTracker = this;
+					prey.AssignedStruggleChart.ForPredator = false;
+					prey.AssignedStruggleChart.OnStartup();
 				}
 			}
 		}
@@ -157,7 +143,7 @@ namespace V2.Core
 				return;
 			if (PreyQueue.Count > 0)
 			{
-				Prey = Prey.Concat(PreyQueue).ToList();
+				Prey = [.. Prey, .. PreyQueue];
 				PreyQueue.Clear();
 				if (Main.netMode == NetmodeID.SinglePlayer)
 					RefreshStruggleChartList();
@@ -682,7 +668,7 @@ namespace V2.Core
 
 		public List<(StruggleChartNote note, double proximity)> CheckCloseNotes(int preyIndex, bool forUI = false)
 		{
-			List<(StruggleChartNote note, double proximity)> closeNotes = new List<(StruggleChartNote note, double proximity)>();
+			List<(StruggleChartNote note, double proximity)> closeNotes = [];
 			StruggleChart targetChart = PredatorStruggleChart;
 			if (preyIndex != -1)
 			{
@@ -933,7 +919,7 @@ namespace V2.Core
 			switch (Type)
 			{
 				case PreyType.Player:
-					if (Instance is null || Instance is not Player preyPlayer)
+					if (Instance is null || Instance is not Player)
 						break;
 
 					ExactType = 0;

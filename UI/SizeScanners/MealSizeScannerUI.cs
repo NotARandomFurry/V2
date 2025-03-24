@@ -83,7 +83,7 @@ namespace V2.UI.SizeScanners
 					size,
 					futureFood.Center + new Vector2(
 						0,
-						-((futureFood.height / 2) + 16)
+						-((futureFood.height / 2) + 20) * Main.GameZoomTarget
 					) - Main.screenPosition,
 					Color.White,
 					0f,

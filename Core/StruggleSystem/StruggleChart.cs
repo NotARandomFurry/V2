@@ -14,6 +14,18 @@ namespace V2.Core.StruggleSystem
 
 		public abstract List<StruggleChartNote[]> Notes { get; }
 
+		/// <summary>
+		/// Determines how fast the chart should move per second.<br/>
+		/// Can be used to state a "BPM" of sorts for the chart.<br/>
+		/// </summary>
+		public virtual double ProgressRate => 1.0;
+
+		/// <summary>
+		/// Determines how much space should be between "beats".<br/>
+		/// Can be used to create more hectic and/or relaxed charts.<br/>
+		/// </summary>
+		public virtual double NoteSpacingFactor => 1.0f;
+
 		public virtual void OnStartup() { }
 
 		public void RefreshPressedNotes()

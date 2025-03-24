@@ -86,7 +86,7 @@ namespace V2.UI.SizeScanners
 					size,
 					futurePred.Center + new Vector2(
 						0,
-						((futurePred.height / 2) + 16)
+						((futurePred.height / 2) + 29) * Main.GameZoomTarget
 					) - Main.screenPosition,
 					Color.White,
 					0f,
