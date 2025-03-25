@@ -11,6 +11,8 @@ namespace V2.NPCs.Vanilla.BloodMoon
 	{
 		public class TheBrideStruggleChart : StruggleChart
 		{
+			public override double ProgressRate => 2.25f;
+			public override double NoteSpacingFactor => 0.6f;
 			public override List<StruggleChartNote[]> Notes =>
 			[
 				[ new StruggleChartNote(NoteDirection.Down) ],

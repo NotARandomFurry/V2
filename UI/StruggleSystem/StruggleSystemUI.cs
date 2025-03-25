@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stubble.Core.Imported;
 using System;
+using System.Security.Cryptography;
 using Terraria;
 using Terraria.Chat;
 using Terraria.GameContent;
@@ -342,7 +343,7 @@ namespace V2.UI.StruggleSystem
 					}
 					Vector2 notePosition = topLeftCorner + new Vector2(0, 13);
 					double noteSpacingFactor = index == -1 ? tracker.PredatorStruggleChart.NoteSpacingFactor : tracker.Prey[index].AssignedStruggleChart.NoteSpacingFactor;
-					float noteOffsetByProximity = (float)Math.Round((13 + (noteData.note.CorrectlyPressed ? noteData.note.PressedPosition : noteData.proximity) * 26.0) * noteSpacingFactor);
+					float noteOffsetByProximity = 20 + (float)Math.Round((noteData.note.CorrectlyPressed ? noteData.note.PressedPosition : noteData.proximity) * 26.0 * noteSpacingFactor);
 					switch (ModContent.GetInstance<V2ClientConfig>().StruggleSystemBackdropOrientation)
 					{
 						case StruggleUIOrientation.Horizontal:
@@ -413,7 +414,7 @@ namespace V2.UI.StruggleSystem
 						_ => new(26, 26, 26, 26),
 					};
 					Color colorToUse = Color.White;
-					if (Math.Abs(noteData.proximity) <= 0.05)
+					if (Math.Abs(noteData.proximity) <= (index == -1 ? tracker.PredatorStruggleChart.ProgressRate : tracker.Prey[index].AssignedStruggleChart.ProgressRate) / 10f)
 						colorToUse = Color.Gray;
 					spriteBatch.Draw(
 						notesTexture,

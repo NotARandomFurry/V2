@@ -11,10 +11,10 @@ namespace V2.PlayerHandling
 	public partial class PreyPlayer : ModPlayer
 	{
 		/// <summary>
-		/// Affects the amount of struggle damage that the player deals to their predator with struggles.
+		/// Affects the amount of struggle damage that the player deals to their predator with struggles.>br/>
 		/// </summary>
 		public StatModifier StruggleStrengthModifier { get; set; }
-		public double StruggleStrength {
+		public double StruggleDamage {
 			get {
 				double baseStruggleStrength = 6.0;
 				return StruggleStrengthModifier.ApplyTo((float)baseStruggleStrength);
