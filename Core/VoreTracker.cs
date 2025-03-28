@@ -133,8 +133,7 @@ namespace V2.Core
 			else
 			{
 				StruggleChartProgress += StruggleChartProgressRate / V2Utils.SensibleTime(seconds: 1);
-				if (StruggleChartProgress > (double)PredatorStruggleChart.Notes.Count + 2.0)
-					StruggleChartProgress -= (double)PredatorStruggleChart.Notes.Count + 4.0;
+				StruggleChartProgress %= PredatorStruggleChart.Notes.Count;
 			}
 		}
 
@@ -191,30 +190,48 @@ namespace V2.Core
 
 			List<(StruggleChartNote note, double proximity)> closeNotes = CheckCloseNotes(-1);
 
-			double GetTotalStruggleDamage(double proximity)
+			double GetParticipantStruggleDamage(int index, double proximity)
 			{
-				if (Predator is Player playerPred)
-					return playerPred.AsFood().StruggleDamage;
+				if (Prey?.Count <= 0 || index >= Prey.Count)
+					return 0.0;
 
+				if (index == -1)
+				{
+					if (Predator is Player playerPred)
+						return 10.0; // tie to TUM scalin' later
+				}
+				else if (!Prey[index].NoHealth && Prey[index].Instance is not null)
+				{
+					Entity prey = Prey[index].Instance;
+					if (prey is Player preyPlayer)
+						return preyPlayer.AsFood().StruggleDamage;
+				}
 				return 0.0;
 			}
 
-			bool TryPressNote(NoteDirection direction, bool pred)
+			bool TryPressNote(NoteDirection direction, int index)
 			{
+				bool pred = index == -1;
 				if (closeNotes.FirstOrDefault(x => x.note.Direction == direction) is (StruggleChartNote note, double proximity) noteData)
 				{
 					double absoluteProximity = Math.Abs(noteData.proximity);
-					double proximityEffectivenessLossMult = absoluteProximity / (MaximumNoteProximityRatio * StruggleChartProgressRate);
-					double finalStruggleEffectiveness = 1 - proximityEffectivenessLossMult;
-					if (finalStruggleEffectiveness > 0)
+					double timingModifier = absoluteProximity switch
 					{
-						ModifyPredStomachacheMeter(pred.ToDirectionInt() * GetTotalStruggleDamage(absoluteProximity) * finalStruggleEffectiveness);
+						double i when i <= MaximumNoteProximityRatio * StruggleChartProgressRate * 0.20 => 1.20,
+						double i when i <= MaximumNoteProximityRatio * StruggleChartProgressRate * 0.40 => 1.00,
+						double i when i <= MaximumNoteProximityRatio * StruggleChartProgressRate * 0.70 => 0.75,
+						double i when i <= MaximumNoteProximityRatio * StruggleChartProgressRate * 1.00 => 0.50,
+						_ => 0.00,
+					};
+					if (timingModifier > 0)
+					{
+						ModifyPredStomachacheMeter(-pred.ToDirectionInt() * GetParticipantStruggleDamage(index, absoluteProximity) * timingModifier);
 						SignifyNotePressed(noteData);
 						return true;
 					}
 				}
 
-				ModifyPredStomachacheMeter(pred.ToDirectionInt() * -1.0);
+				ModifyPredStomachacheMeter(pred.ToDirectionInt() * 1.0);
 				return false;
 			}
 
@@ -225,11 +242,11 @@ namespace V2.Core
 			}
 			if (Predator is Player playerPred)
 			{
-				if (V2.StruggleUpHotkey.JustPressed) TryPressNote(NoteDirection.Up, true);
-				if (V2.StruggleDownHotkey.JustPressed) TryPressNote(NoteDirection.Down, true);
-				if (V2.StruggleLeftHotkey.JustPressed) TryPressNote(NoteDirection.Left, true);
-				if (V2.StruggleRightHotkey.JustPressed) TryPressNote(NoteDirection.Right, true);
-				if (V2.StruggleSpecialHotkey.JustPressed) TryPressNote(NoteDirection.Special, true);
+				if (V2.StruggleUpHotkey.JustPressed) TryPressNote(NoteDirection.Up, -1);
+				if (V2.StruggleDownHotkey.JustPressed) TryPressNote(NoteDirection.Down, -1);
+				if (V2.StruggleLeftHotkey.JustPressed) TryPressNote(NoteDirection.Left, -1);
+				if (V2.StruggleRightHotkey.JustPressed) TryPressNote(NoteDirection.Right, -1);
+				if (V2.StruggleSpecialHotkey.JustPressed) TryPressNote(NoteDirection.Special, -1);
 			}
 			else if (Predator is NPC npcPredator)
 			{
@@ -299,8 +316,6 @@ namespace V2.Core
 			}
 
 			HandlePreyNotes:
-
-			bool predEmpress = PredatorType == PredType.NPC && (Predator as NPC).type == NPCID.HallowBoss;
 			for (int i = 0; i < Prey.Count; i++)
 			{
 				PreyData prey = Prey[i];
@@ -311,86 +326,11 @@ namespace V2.Core
 				Entity preyEntity = prey.Instance;
 				if (preyEntity is Player playerPrey)
 				{
-					if (V2.StruggleUpHotkey.JustPressed)
-					{
-						if (closeNotes.FirstOrDefault(x => x.note.Direction == NoteDirection.Up) is (StruggleChartNote note, double proximity) noteData)
-						{
-							double absoluteProximity = Math.Abs(noteData.proximity);
-							double proximityEffectivenessMultiplier = (MaximumNoteProximityRatio - absoluteProximity) / MaximumNoteProximityRatio;
-							if (predEmpress)
-								proximityEffectivenessMultiplier *= 500.0;
-							ModifyPredStomachacheMeter(preyEntity.StruggleStrength() * proximityEffectivenessMultiplier / prey.AssignedStruggleChart.DifficultyCoeff);
-							SignifyNotePressed(noteData);
-						}
-						else
-						{
-							ModifyPredStomachacheMeter(-0.9);
-						}
-					}
-					if (V2.StruggleDownHotkey.JustPressed)
-					{
-						if (closeNotes.FirstOrDefault(x => x.note.Direction == NoteDirection.Down) is (StruggleChartNote note, double proximity) noteData)
-						{
-							double absoluteProximity = Math.Abs(noteData.proximity);
-							double proximityEffectivenessMultiplier = (MaximumNoteProximityRatio - absoluteProximity) / MaximumNoteProximityRatio;
-							if (predEmpress)
-								proximityEffectivenessMultiplier *= 500.0;
-							ModifyPredStomachacheMeter(preyEntity.StruggleStrength() * proximityEffectivenessMultiplier / prey.AssignedStruggleChart.DifficultyCoeff);
-							SignifyNotePressed(noteData);
-						}
-						else
-						{
-							ModifyPredStomachacheMeter(-0.9);
-						}
-					}
-					if (V2.StruggleLeftHotkey.JustPressed)
-					{
-						if (closeNotes.FirstOrDefault(x => x.note.Direction == NoteDirection.Left) is (StruggleChartNote note, double proximity) noteData)
-						{
-							double absoluteProximity = Math.Abs(noteData.proximity);
-							double proximityEffectivenessMultiplier = (MaximumNoteProximityRatio - absoluteProximity) / MaximumNoteProximityRatio;
-							if (predEmpress)
-								proximityEffectivenessMultiplier *= 500.0;
-							ModifyPredStomachacheMeter(preyEntity.StruggleStrength() * proximityEffectivenessMultiplier / prey.AssignedStruggleChart.DifficultyCoeff);
-							SignifyNotePressed(noteData);
-						}
-						else
-						{
-							ModifyPredStomachacheMeter(-0.9);
-						}
-					}
-					if (V2.StruggleRightHotkey.JustPressed)
-					{
-						if (closeNotes.FirstOrDefault(x => x.note.Direction == NoteDirection.Right) is (StruggleChartNote note, double proximity) noteData)
-						{
-							double absoluteProximity = Math.Abs(noteData.proximity);
-							double proximityEffectivenessMultiplier = (MaximumNoteProximityRatio - absoluteProximity) / MaximumNoteProximityRatio;
-							if (predEmpress)
-								proximityEffectivenessMultiplier *= 500.0;
-							ModifyPredStomachacheMeter(preyEntity.StruggleStrength() * proximityEffectivenessMultiplier / prey.AssignedStruggleChart.DifficultyCoeff);
-							SignifyNotePressed(noteData);
-						}
-						else
-						{
-							ModifyPredStomachacheMeter(-0.9);
-						}
-					}
-					if (V2.StruggleSpecialHotkey.JustPressed)
-					{
-						if (closeNotes.FirstOrDefault(x => x.note.Direction == NoteDirection.Special) is (StruggleChartNote note, double proximity) noteData)
-						{
-							double absoluteProximity = Math.Abs(noteData.proximity);
-							double proximityEffectivenessMultiplier = (MaximumNoteProximityRatio - absoluteProximity) / MaximumNoteProximityRatio;
-							if (predEmpress)
-								proximityEffectivenessMultiplier *= 500.0;
-							ModifyPredStomachacheMeter(preyEntity.StruggleStrength() * proximityEffectivenessMultiplier / prey.AssignedStruggleChart.DifficultyCoeff);
-							SignifyNotePressed(noteData);
-						}
-						else
-						{
-							ModifyPredStomachacheMeter(-0.9);
-						}
-					}
+					if (V2.StruggleUpHotkey.JustPressed) TryPressNote(NoteDirection.Up, i);
+					if (V2.StruggleDownHotkey.JustPressed) TryPressNote(NoteDirection.Down, i);
+					if (V2.StruggleLeftHotkey.JustPressed) TryPressNote(NoteDirection.Left, i);
+					if (V2.StruggleRightHotkey.JustPressed) TryPressNote(NoteDirection.Right, i);
+					if (V2.StruggleSpecialHotkey.JustPressed) TryPressNote(NoteDirection.Special, i);
 				}
 			}
 		}
@@ -436,9 +376,9 @@ namespace V2.Core
 			if (targetChart.Notes is null)
 				return null;
 
-			for (int noteSetIndex = (int)Math.Max(0, Math.Round(StruggleChartProgress) - 3); noteSetIndex <= Math.Min(Math.Round(StruggleChartProgress) + 6, targetChart.Notes.Count - 1); noteSetIndex++)
+			for (int noteSetIndex = (int)Math.Max(0, Math.Round(StruggleChartProgress) - 3); noteSetIndex <= Math.Round(StruggleChartProgress) + 6; noteSetIndex++)
 			{
-				StruggleChartNote[] noteSet = targetChart.Notes[noteSetIndex];
+				StruggleChartNote[] noteSet = noteSetIndex >= targetChart.Notes.Count ? targetChart.Notes[noteSetIndex % targetChart.Notes.Count] : targetChart.Notes[noteSetIndex];
 
 				if (noteSet is null)
 					continue;
@@ -671,11 +611,13 @@ namespace V2.Core
 			switch (Type)
 			{
 				case PreyType.Player:
-					if (Instance is null || Instance is not Player)
+					if (Instance is null || Instance is not Player preyPlayer)
 						break;
 
 					ExactType = 0;
-					InitialWeight = InitialSize = WeightLeftToDigest = 1.0;
+					double playerToPlayerWidthRatio = (double)preyPlayer.width / refPlayerWidth;
+					double playerToPlayerHeightRatio = (double)preyPlayer.height / refPlayerHeight;
+					InitialWeight = InitialSize = WeightLeftToDigest = playerToPlayerWidthRatio * playerToPlayerHeightRatio;
 					if (ConnectedTracker is not null)
 					{
 						AssignedStruggleChart = null; // new ProceduralStruggleChart();

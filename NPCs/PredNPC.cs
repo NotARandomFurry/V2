@@ -117,7 +117,8 @@ namespace V2.NPCs
 				return StomachacheMeterCapacityModifier.ApplyTo((float)baseStomachacheMeterCapacity);
 			}
 		}
-		public double StomachacheQuellPerTick { get; set; }
+		public delegate double DelegateGetStomachacheSootheRate(NPC npc);
+		public DelegateGetStomachacheSootheRate GetStomachacheSootheRate { get; set; }
 		/// <summary>
 		/// Expresses, from 0 to 12, how well this NPC keeps up with struggles as a pred.<br/>
 		/// Defaults to 5.<br/>
@@ -165,6 +166,7 @@ namespace V2.NPCs
 			OnForceFed = null;
 
 			Stomachache = 0;
+			GetStomachacheSootheRate = (npc) => 1.0;
 			BaseStomachacheMeterCapacity = 100.0;
 			CounterStruggleEffectiveness = 5;
 
@@ -189,10 +191,7 @@ namespace V2.NPCs
 
 		public override void ResetEffects(NPC npc)
 		{
-			double stomachacheQuellPerTick = StomachacheMeterCapacity * (0.05 / (double)V2Utils.SensibleTime(seconds: 1));
-			if (GetStomachTracker(npc) is not null && AnyPreyStillAlive(npc))
-				stomachacheQuellPerTick *= 0.1;
-			Stomachache -= stomachacheQuellPerTick;
+			Stomachache -= GetStomachacheSootheRate.Invoke(npc);
 
 			StomachacheMeterCapacityModifier = StatModifier.Default;
 		}

@@ -55,6 +55,7 @@ namespace V2.NPCs.Vanilla.BloodMoon
 			npc.AsFood().DefinedBaseSize = 1.04;
 			npc.AsPred().MaxStomachCapacity = 1.7;
 			npc.AsPred().BaseStomachacheMeterCapacity = 120.0;
+			npc.AsPred().GetStomachacheSootheRate = GetStomachacheSootheRate;
 
 			npc.AsPred().SmallGulps = Gulps.Short;
 			npc.AsPred().SmallGulpThreshold = 0.5;
@@ -82,6 +83,14 @@ namespace V2.NPCs.Vanilla.BloodMoon
 				TheBrideStuff.ItemTheftRules.WeddingVeil,
 				TheBrideStuff.ItemTheftRules.WeddingDress,
 			];
+		}
+
+		public static double GetStomachacheSootheRate(NPC npc)
+		{
+			if (PredNPC.AnyPreyStillAlive(npc))
+				return 0.0;
+
+			return 1.0;
 		}
 
 		public static bool CanTheBrideBeForceFed(NPC npc) => true;
