@@ -527,7 +527,8 @@ namespace V2
 		// for the moment, what this does is search for each potential tooltip line before Tooltip0 in reverse order and return the first one that isn't null
 		public static bool FindLastTooltipLineBeforeFlavorText(List<TooltipLine> tooltips, out TooltipLine line)
 		{
-			line = tooltips.FirstOrDefault(x => x.Name == "V2EdibleByNormalUse")
+			line = tooltips.FirstOrDefault(x => x.Name == "V2StruggleDamage")
+				?? tooltips.FirstOrDefault(x => x.Name == "V2EdibleByNormalUse")
 				?? tooltips.FirstOrDefault(x => x.Name == "V2AcidResist")
 				?? tooltips.FirstOrDefault(x => x.Name == "V2SizeAsFood")
 				?? tooltips.FirstOrDefault(x => x.Name == "V2Durability")

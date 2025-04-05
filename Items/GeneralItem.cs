@@ -1,11 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
-using Steamworks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using V2.PlayerHandling;
 using V2.UI;
@@ -33,6 +31,11 @@ namespace V2.Items
 
 		public int ReleasedNPCNetID;
 
+		public float StruggleDamageBaseMod { get; set; }
+
+		public bool PlaceableCanBeHungry { get; set; }
+		public bool PlaceableHungryByDefault { get; set; }
+
 		public override bool InstancePerEntity => true;
 
 		public GeneralItem()
@@ -40,6 +43,16 @@ namespace V2.Items
 			heldItemUIDrawMethod = null;
 
 			ReleasedNPCNetID = 0;
+
+			StruggleDamageBaseMod = 0f;
+
+			PlaceableCanBeHungry = false;
+			PlaceableHungryByDefault = false;
+		}
+
+		public override void HoldItem(Item item, Player player)
+		{
+			player.AsFood().StruggleDamageModifier.Base += StruggleDamageBaseMod;
 		}
 
 		public override void HorizontalWingSpeeds(Item item, Player player, ref float speed, ref float acceleration)
@@ -61,6 +74,33 @@ namespace V2.Items
 		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
 		{
 			Player player = Main.LocalPlayer;
+
+			TooltipLine damageLine = tooltips.FirstOrDefault(x => x.Name == "Damage");
+			if (damageLine is not null && StruggleDamageBaseMod != 0)
+			{
+				tooltips.Insert(
+					tooltips.IndexOf(damageLine) + 1,
+					new TooltipLine(
+						V2.Instance,
+						"V2StruggleDamage",
+						Language.GetTextValueWith("Mods.V2.ItemTooltip.Generic.StruggleDamageBoost", new { StrDmgUp = StruggleDamageBaseMod })
+					)
+				);
+			}
+
+			V2Utils.FindLastTooltipLineBeforeFlavorText(tooltips, out TooltipLine finalLine);
+			if (PlaceableCanBeHungry)
+			{
+				tooltips.Insert(
+					tooltips.IndexOf(finalLine) + 1,
+					new TooltipLine(
+						V2.Instance,
+						"V2HungryObjects",
+						PlaceableHungryByDefault ? Language.GetTextValue("Mods.V2.ItemTooltip.Generic.HungryPlaceable.DefaultHungry") : Language.GetTextValue("Mods.V2.ItemTooltip.Generic.HungryPlaceable.DefaultNormal")
+					)
+				);
+			}
+
 			if (item.wornArmor && player.AsV2Player().setBonusActive)
 			{
 				TooltipLine setBonusLine = tooltips.FirstOrDefault(x => x.Name == "SetBonus");

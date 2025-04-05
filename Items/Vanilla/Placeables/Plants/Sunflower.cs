@@ -12,11 +12,16 @@ namespace V2.Items.Vanilla.Placeables.Plants
     internal class Sunflower : GlobalItem
     {
         public override bool InstancePerEntity => true;
-        public override bool AppliesToEntity(Item entity, bool lateInstantiation) => entity.type == ItemID.Sunflower;
-        public override void SetDefaults(Item entity)
+        public override bool AppliesToEntity(Item item, bool lateInstantiation) => item.type == ItemID.Sunflower;
+        public override void SetDefaults(Item item)
         {
-            entity.DefaultToPlaceableTile(ModContent.TileType<Tiles.Vanilla.Sunflower>());
-        }
+            item.DefaultToPlaceableTile(ModContent.TileType<Tiles.Vanilla.Sunflower>());
 
+			item.AsFood().MaxHealth = 120;
+			item.AsFood().Size = 0.8;
+
+			item.AsAnItem().PlaceableCanBeHungry = true;
+			item.AsAnItem().PlaceableHungryByDefault = false;
+		}
     }
 }

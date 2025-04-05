@@ -12,7 +12,7 @@ namespace V2.Items.Vanilla.Weapons.Melee
 	public class CopperBroadsword : GlobalItem
 	{
 		public override bool InstancePerEntity => true;
-		public override bool AppliesToEntity(Item entity, bool lateInstantiation) => entity.type == ItemID.CopperBroadsword;
+		public override bool AppliesToEntity(Item item, bool lateInstantiation) => item.type == ItemID.CopperBroadsword;
 
 		public override void SetDefaults(Item item)
 		{

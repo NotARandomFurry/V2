@@ -88,7 +88,7 @@ namespace V2.PlayerHandling
 		{
 			Digested = false;
 
-			StruggleStrengthModifier = StatModifier.Default;
+			StruggleDamageModifier = StatModifier.Default;
 
 			TakenDigestionDamageModifier = StatModifier.Default;
 

@@ -21,7 +21,7 @@ namespace V2.Items.Vanilla.Weapons.Melee
 		public static int PoisonTime => V2Utils.SensibleTime(seconds: 5);
 		public static int WrathTime => V2Utils.SensibleTime(seconds: 5);
 		public override bool InstancePerEntity => true;
-		public override bool AppliesToEntity(Item entity, bool lateInstantiation) => entity.type == ItemID.FruitcakeChakram;
+		public override bool AppliesToEntity(Item item, bool lateInstantiation) => item.type == ItemID.FruitcakeChakram;
 
 		public override void SetDefaults(Item item)
 		{

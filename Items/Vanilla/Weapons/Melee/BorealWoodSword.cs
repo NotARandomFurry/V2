@@ -9,7 +9,7 @@ namespace V2.Items.Vanilla.Weapons.Melee
 	public class BorealWoodSword : GlobalItem
 	{
 		public override bool InstancePerEntity => true;
-		public override bool AppliesToEntity(Item entity, bool lateInstantiation) => entity.type == ItemID.BorealWoodSword;
+		public override bool AppliesToEntity(Item item, bool lateInstantiation) => item.type == ItemID.BorealWoodSword;
 
 		public override void SetDefaults(Item item)
 		{

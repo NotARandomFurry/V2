@@ -774,7 +774,7 @@ namespace V2.PlayerHandling
 			if (PermanentUpgradesGained.TryGetValue("BiomeJujuDesert", out bool eatenDesertJuju) && eatenDesertJuju)
 			{
 				ACI.Base += BiomeJujuDesert.PermACIBonus;
-				Player.AsFood().StruggleStrengthModifier += BiomeJujuDesert.PermStruggleBonus;
+				Player.AsFood().StruggleDamageModifier += BiomeJujuDesert.PermStruggleBonus;
 			}
 			if (PermanentUpgradesGained.TryGetValue("BiomeJujuSnow", out bool eatenSnowJuju) && eatenSnowJuju)
 			{

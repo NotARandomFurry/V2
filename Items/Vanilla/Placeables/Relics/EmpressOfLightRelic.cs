@@ -12,11 +12,13 @@ namespace V2.Items.Vanilla.Placeables.Relics
     internal class EmpressOfLightRelic : GlobalItem
     {
         public override bool InstancePerEntity => true;
-        public override bool AppliesToEntity(Item entity, bool lateInstantiation) => entity.type == ItemID.FairyQueenMasterTrophy;
-        public override void SetDefaults(Item entity)
+        public override bool AppliesToEntity(Item item, bool lateInstantiation) => item.type == ItemID.FairyQueenMasterTrophy;
+        public override void SetDefaults(Item item)
         {
-            entity.DefaultToPlaceableTile(ModContent.TileType<Tiles.Vanilla.Relics.EmpressOfLightRelic>());
-        }
+            item.DefaultToPlaceableTile(ModContent.TileType<Tiles.Vanilla.Relics.EmpressOfLightRelic>());
 
+			item.AsAnItem().PlaceableCanBeHungry = true;
+			item.AsAnItem().PlaceableHungryByDefault = true;
+		}
     }
 }

@@ -43,11 +43,11 @@ namespace V2.Items.Voraria.Armor
 		{
 			player.setBonus = SetBonusText.Value;
 			player.statDefense += 7;
-			player.AsFood().StruggleStrengthModifier += 1.5f;
+			player.AsFood().StruggleDamageModifier += 1.5f;
 		}
 		public override void UpdateEquip(Player player)
 		{
-			player.AsFood().StruggleStrengthModifier += StruggleBonus;
+			player.AsFood().StruggleDamageModifier += StruggleBonus;
 			player.AsPred().GLP.Extra += GLPBonus;
 			player.GetCritChance(DamageClass.Generic) += CritBonus;
 		}
@@ -80,7 +80,7 @@ namespace V2.Items.Voraria.Armor
 		}
 		public override void UpdateEquip(Player player)
 		{
-			player.AsFood().StruggleStrengthModifier += StruggleBonus;
+			player.AsFood().StruggleDamageModifier += StruggleBonus;
 			player.AsPred().TUM.Extra += TUMBonus;
 			player.AsPred().ABS.Extra += ABSBonus;
 			player.GetCritChance(DamageClass.Generic) += CritBonus;
@@ -118,7 +118,7 @@ namespace V2.Items.Voraria.Armor
 		}
 		public override void UpdateEquip(Player player)
 		{
-			player.AsFood().StruggleStrengthModifier += StruggleBonus;
+			player.AsFood().StruggleDamageModifier += StruggleBonus;
 			player.moveSpeed += MoveSpeedBonus;
 			player.AsPred().StomachWeightModifier *= 1f - StomachWeightReduction;
 			player.GetCritChance(DamageClass.Generic) += CritBonus;

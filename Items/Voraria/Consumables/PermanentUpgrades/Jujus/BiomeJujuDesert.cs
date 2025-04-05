@@ -61,7 +61,7 @@ namespace V2.Items.Voraria.Consumables.PermanentUpgrades.Jujus
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             player.AsPred().ACI.Extra += ACIBonus;
-            player.AsFood().StruggleStrengthModifier += StruggleBonus;
+            player.AsFood().StruggleDamageModifier += StruggleBonus;
         }
 
         public static bool OnBreak(Item item, Entity pred, bool direct)

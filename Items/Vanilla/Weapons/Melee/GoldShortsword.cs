@@ -12,15 +12,17 @@ namespace V2.Items.Vanilla.Weapons.Melee
 	public class GoldShortsword : GlobalItem
 	{
 		public override bool InstancePerEntity => true;
-		public override bool AppliesToEntity(Item entity, bool lateInstantiation) => entity.type == ItemID.GoldShortsword;
+		public override bool AppliesToEntity(Item item, bool lateInstantiation) => item.type == ItemID.GoldShortsword;
 
-		public override void SetDefaults(Item entity)
+		public override void SetDefaults(Item item)
 		{
-			entity.AsFood().MaxHealth = 104;
-			entity.AsFood().Size = 0.18;
-			entity.AsFood().AcidResistTier = 2;
+			item.AsFood().MaxHealth = 104;
+			item.AsFood().Size = 0.18;
+			item.AsFood().AcidResistTier = 2;
 
-			entity.AsTaggable().Shortsword = true;
+			item.AsAnItem().StruggleDamageBaseMod = 3;
+
+			item.AsTaggable().Shortsword = true;
 		}
 	}
 }

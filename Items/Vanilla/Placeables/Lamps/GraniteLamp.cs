@@ -12,11 +12,14 @@ namespace V2.Items.Vanilla.Placeables.Lamps
     internal class GraniteLamp : GlobalItem
     {
         public override bool InstancePerEntity => true;
-        public override bool AppliesToEntity(Item entity, bool lateInstantiation) => entity.type == ItemID.GraniteLamp;
-        public override void SetDefaults(Item entity)
+        public override bool AppliesToEntity(Item item, bool lateInstantiation) => item.type == ItemID.GraniteLamp;
+        public override void SetDefaults(Item item)
         {
-            entity.DefaultToPlaceableTile(ModContent.TileType<Tiles.Vanilla.Furniture.GraniteSet.GraniteLamp>());
-        }
+            item.DefaultToPlaceableTile(ModContent.TileType<Tiles.Vanilla.Furniture.GraniteSet.GraniteLamp>());
+
+			item.AsAnItem().PlaceableCanBeHungry = true;
+			item.AsAnItem().PlaceableHungryByDefault = false;
+		}
 
     }
 }

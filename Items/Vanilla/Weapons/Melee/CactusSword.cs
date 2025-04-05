@@ -18,7 +18,7 @@ namespace V2.Items.Vanilla.Weapons.Melee
 	{
 		public static int ThornsBuffTime => V2Utils.SensibleTime(seconds: 10);
 		public override bool InstancePerEntity => true;
-		public override bool AppliesToEntity(Item entity, bool lateInstantiation) => entity.type == ItemID.CactusSword;
+		public override bool AppliesToEntity(Item item, bool lateInstantiation) => item.type == ItemID.CactusSword;
 
 		public override void SetDefaults(Item item)
 		{

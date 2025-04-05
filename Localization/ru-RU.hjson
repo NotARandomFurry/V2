@@ -1621,6 +1621,12 @@ Mods: {
 					This item has been damaged too heavily for continued use and has become non-functional
 					Broken items can be repaired with the Scroll of Divine Indigestion or by visiting St. Promethia
 					''' */
+				// StruggleDamageBoost: +{StrDmgUp} base struggle damage when held in a gut
+
+				HungryPlaceable: {
+					// DefaultHungry: Has a lingering appetite (which can be quelled)
+					// DefaultNormal: Has a dormant appetite (which can be awakened)
+				}
 
 				AcidResistTier: {
 					0: Не поддается воздействию желудочных кислот
