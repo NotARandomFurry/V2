@@ -2515,9 +2515,16 @@ Mods: {
 							Short:
 								'''
 								Can be swung to deal damage
+								May be unwieldy in tighter stomachs
 								{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
 								'''
-							Long: "[c/{$Mods.V2.CommonColorCodes.DoSomething}:Left-click] to swing the sword, dealing [c/{$Mods.V2.CommonColorCodes.DealDamage}:100% damage] to struck targets."
+							Long:
+								'''
+								[c/{$Mods.V2.CommonColorCodes.DoSomething}:Left-click] to swing the sword, dealing [c/{$Mods.V2.CommonColorCodes.DealDamage}:100% damage] to struck targets.
+								Cannot be swung in a stomach which has less than {BroadswordSwingCapacityMin} max capacity.
+								When successfully swung in a stomach, [c/{$Mods.V2.CommonColorCodes.DealDamage}:deals struggle damage] instead.
+								Effectiveness is reduced if not done to the beat of the current pred's struggle chart.
+								'''
 							Flavor: A simple sword fashioned from boreal wood. Has a chilly aftertaste resembling the taste of snow.
 						}
 
@@ -2536,6 +2543,22 @@ Mods: {
 								- [c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Grants the Thorns buff] while digesting, and for [c/FFFF7F:{CactusSwordThornsTime} seconds] longer once fully digested.
 								'''
 							Flavor: A dubiously-wieldy sword fashioned from cactus cuttings. While its prickly nature makes it fairly usable as a weapon, one has to wonder how it would taste...and if there's any way to get around the discomforting amount of spines it still has.
+						}
+
+						CopperShortsword: {
+							Short:
+								'''
+								Can be thrust to deal damage
+								Freely usable, even in tighter stomachs
+								{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+								'''
+							Long:
+								'''
+								[c/{$Mods.V2.CommonColorCodes.DoSomething}:Left-click] to thrust the sword forward, dealing [c/{$Mods.V2.CommonColorCodes.DealDamage}:100% damage] to struck targets.
+								Can be used normally inside any stomach to [c/{$Mods.V2.CommonColorCodes.DealDamage}:deal struggle damage] to a pred.
+								Effectiveness is reduced if not done to the beat of the current pred's struggle chart.
+								'''
+							Flavor: A shortsword forged from copper. While its power isn't anything to write home about, it can still prove an effective weapon in a pinch.
 						}
 
 						FruitcakeChakram: {
@@ -2567,13 +2590,37 @@ Mods: {
 								'''
 						}
 
+						RichMahoganySword: {
+							Short:
+								'''
+								Can be swung to deal damage
+								May be unwieldy in tighter stomachs
+								{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+								'''
+							Long:
+								'''
+								[c/{$Mods.V2.CommonColorCodes.DoSomething}:Left-click] to swing the sword, dealing [c/{$Mods.V2.CommonColorCodes.DealDamage}:100% damage] to struck targets.
+								Cannot be swung in a stomach which has less than {BroadswordSwingCapacityMin} max capacity.
+								When successfully swung in a stomach, [c/{$Mods.V2.CommonColorCodes.DealDamage}:deals struggle damage] instead.
+								Effectiveness is reduced if not done to the beat of the current pred's struggle chart.
+								'''
+							Flavor: A simple sword fashioned from rich mahogany wood. The aftertaste reminds you of the jungle's plant life.
+						}
+
 						OakWoodSword: {
 							Short:
 								'''
 								Can be swung to deal damage
+								May be unwieldy in tighter stomachs
 								{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
 								'''
-							Long: "[c/{$Mods.V2.CommonColorCodes.DoSomething}:Left-click] to swing the sword, dealing [c/{$Mods.V2.CommonColorCodes.DealDamage}:100% damage] to struck targets."
+							Long:
+								'''
+								[c/{$Mods.V2.CommonColorCodes.DoSomething}:Left-click] to swing the sword, dealing [c/{$Mods.V2.CommonColorCodes.DealDamage}:100% damage] to struck targets.
+								Cannot be swung in a stomach which has less than {BroadswordSwingCapacityMin} max capacity.
+								When successfully swung in a stomach, [c/{$Mods.V2.CommonColorCodes.DealDamage}:deals struggle damage] instead.
+								Effectiveness is reduced if not done to the beat of the current pred's struggle chart.
+								'''
 							Flavor: A simple sword fashioned from oak wood, and tasting about the same.
 						}
 					}
@@ -2582,13 +2629,17 @@ Mods: {
 						BorealWoodBow: {
 							Short:
 								'''
-								Can fire arrows to deal damageF
+								Can fire arrows to deal damage
+								Incredibly unwieldy in all but the roomiest bellies
 								{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
 								'''
 							Long:
 								'''
 								[c/{$Mods.V2.CommonColorCodes.DoSomething}:Left-click] to shoot an arrow, dealing [c/{$Mods.V2.CommonColorCodes.DealDamage}:100% damage] to the first target it hits.
 								Some arrows may have [c/{$Mods.V2.CommonColorCodes.DoSomething}:special properties]; examine these in the tooltips of your arrows.
+								Cannot be used in any stomach with less than 20.0 capacity or attached to a pred of a base size lower than 4.0.
+								When successfully fired in a stomach, [c/{$Mods.V2.CommonColorCodes.DealDamage}:deals struggle damage] instead.
+								Effectiveness is reduced if not done to the beat of the current pred's struggle chart.
 								'''
 							Flavor: A simple bow fashioned from boreal wood. Has a chilly aftertaste resembling the taste of snow.
 						}
@@ -2597,12 +2648,16 @@ Mods: {
 							Short:
 								'''
 								Can fire arrows to deal damage
+								Incredibly unwieldy in all but the roomiest bellies
 								{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
 								'''
 							Long:
 								'''
 								[c/{$Mods.V2.CommonColorCodes.DoSomething}:Left-click] to shoot an arrow, dealing [c/{$Mods.V2.CommonColorCodes.DealDamage}:100% damage] to the first target it hits.
 								Some arrows may have [c/{$Mods.V2.CommonColorCodes.DoSomething}:special properties]; examine these in the tooltips of your arrows.
+								Cannot be used in any stomach with less than 20.0 capacity or attached to a pred of a base size lower than 4.0.
+								When successfully fired in a stomach, [c/{$Mods.V2.CommonColorCodes.DealDamage}:deals struggle damage] instead.
+								Effectiveness is reduced if not done to the beat of the current pred's struggle chart.
 								'''
 							Flavor: A simple bow fashioned from oak wood, and tasting about the same.
 						}

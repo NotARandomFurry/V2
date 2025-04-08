@@ -1721,11 +1721,11 @@ namespace V2.PlayerHandling
 				pred.AsPred().OverfullTime = 0;
 		}
 
-		public static string GetDigestedPlayerDeathReason(Player player, Player prey)
+		public static NetworkText GetDigestedPlayerDeathReason(Player player, Player prey)
 		{
 			if (player.whoAmI == prey.whoAmI)
 			{
-				return Language.GetTextValueWith(
+				return NetworkText.FromKey(
 					"Mods.V2.Death.DigestedPlayer.Paradox",
 					new { Player = prey.name }
 				);
@@ -1767,7 +1767,7 @@ namespace V2.PlayerHandling
 			}
 			string finalDeathReasonKey = Main.rand.NextFromCollection(deathMessageKeyList);
 
-			return Language.GetTextValueWith(
+			return NetworkText.FromKey(
 				finalDeathReasonKey,
 				new
 				{

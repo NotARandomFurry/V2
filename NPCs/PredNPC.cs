@@ -692,10 +692,9 @@ namespace V2.NPCs
 				GetStomachTracker(pred).QueueNewPrey(prey);
 		}
 
-		public static string GetDigestedPlayerDeathReason(NPC npc, Player player)
+		public static NetworkText GetDigestedPlayerDeathReason(NPC npc, Player player)
 		{
-			List<string> deathMessageKeyList = new List<string>
-			{
+			List<string> deathMessageKeyList = [
 				"Mods.V2.Death.DigestedPlayer.Universal.1",
 				"Mods.V2.Death.DigestedPlayer.Universal.2",
 				"Mods.V2.Death.DigestedPlayer.Universal.3",
@@ -718,12 +717,11 @@ namespace V2.NPCs
 				"Mods.V2.Death.DigestedPlayer.Universal.20",
 				"Mods.V2.Death.DigestedPlayer.Universal.21",
 				"Mods.V2.Death.DigestedPlayer.Universal.22",
-			};
+			];
 			switch (npc.AsPred().DigestionType)
 			{
 				case EntityDigestionType.Acidic:
-					deathMessageKeyList.AddRange(new List<string>
-					{
+					deathMessageKeyList.AddRange([
 						"Mods.V2.Death.DigestedPlayer.SpecificDigestionType.Acidic.1",
 						"Mods.V2.Death.DigestedPlayer.SpecificDigestionType.Acidic.2",
 						"Mods.V2.Death.DigestedPlayer.SpecificDigestionType.Acidic.3",
@@ -734,17 +732,16 @@ namespace V2.NPCs
 						"Mods.V2.Death.DigestedPlayer.SpecificDigestionType.Acidic.8",
 						"Mods.V2.Death.DigestedPlayer.SpecificDigestionType.Acidic.9",
 						"Mods.V2.Death.DigestedPlayer.SpecificDigestionType.Acidic.10",
-					});
+					]);
 					break;
 				case EntityDigestionType.Thermal:
-					deathMessageKeyList.AddRange(new List<string>
-					{
+					deathMessageKeyList.AddRange([
 						"Mods.V2.Death.DigestedPlayer.SpecificDigestionType.Thermal.1",
 						"Mods.V2.Death.DigestedPlayer.SpecificDigestionType.Thermal.2",
 						"Mods.V2.Death.DigestedPlayer.SpecificDigestionType.Thermal.3",
 						"Mods.V2.Death.DigestedPlayer.SpecificDigestionType.Thermal.4",
 						"Mods.V2.Death.DigestedPlayer.SpecificDigestionType.Thermal.5",
-					});
+					]);
 					break;
 				case EntityDigestionType.Other:
 					break;
@@ -754,7 +751,7 @@ namespace V2.NPCs
 				npc.AsPred().GetAdditionalDigestedPlayerMessages.Invoke(npc, player, deathMessageKeyList);
 			string finalDeathReasonKey = Main.rand.NextFromCollection(deathMessageKeyList);
 			
-			return Language.GetTextValueWith(
+			return NetworkText.FromKey(
 				finalDeathReasonKey,
 				new
 				{

@@ -2548,6 +2548,22 @@ Mods: {
 							Flavor: Сомнительной прочности меч, сделанный из черенков кактуса. Несмотря на то, что его колючесть делает его вполне пригодным для использования в качестве оружия, стоит задуматься, каков он на вкус... и есть ли способ обойтись без неудобного количества шипов, которые у него все еще есть.
 						}
 
+						CopperShortsword: {
+							/* Short:
+								'''
+								Can be thrust to deal damage
+								Freely usable, even in tighter stomachs
+								{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+								''' */
+							/* Long:
+								'''
+								[c/{$Mods.V2.CommonColorCodes.DoSomething}:Left-click] to thrust the sword forward, dealing [c/{$Mods.V2.CommonColorCodes.DealDamage}:100% damage] to struck targets.
+								Can be used normally inside any stomach to [c/{$Mods.V2.CommonColorCodes.DealDamage}:deal struggle damage] to a pred.
+								Effectiveness is reduced if not done to the beat of the current pred's struggle chart.
+								''' */
+							// Flavor: A shortsword forged from copper. While its power isn't anything to write home about, it can still prove an effective weapon in a pinch.
+						}
+
 						FruitcakeChakram: {
 							Short:
 								'''
@@ -2575,6 +2591,23 @@ Mods: {
 
 								Единственное его применение - это оружие и потенциально возможный запас продуктов на случай, если все остальное закончится.
 								'''
+						}
+
+						RichMahoganySword: {
+							/* Short:
+								'''
+								Can be swung to deal damage
+								May be unwieldy in tighter stomachs
+								{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+								''' */
+							/* Long:
+								'''
+								[c/{$Mods.V2.CommonColorCodes.DoSomething}:Left-click] to swing the sword, dealing [c/{$Mods.V2.CommonColorCodes.DealDamage}:100% damage] to struck targets.
+								Cannot be swung in a stomach which has less than {BroadswordSwingCapacityMin} max capacity.
+								When successfully swung in a stomach, [c/{$Mods.V2.CommonColorCodes.DealDamage}:deals struggle damage] instead.
+								Effectiveness is reduced if not done to the beat of the current pred's struggle chart.
+								''' */
+							// Flavor: A simple sword fashioned from rich mahogany wood. The aftertaste reminds you of the jungle's plant life.
 						}
 
 						OakWoodSword: {
