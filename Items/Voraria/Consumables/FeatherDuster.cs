@@ -17,7 +17,7 @@ namespace V2.Items.Voraria.Consumables
 {
 	public class FeatherDuster : ModItem
 	{
-		public static double StruggleDamage => 500;
+		public static double StruggleDamage => 200;
 
 		public override bool IsLoadingEnabled(Mod mod) => !V2.GetFooled;
 		public override LocalizedText DisplayName => Language.GetText("Mods.V2.ItemName.Voraria.Consumables.FeatherDuster");
@@ -61,6 +61,10 @@ namespace V2.Items.Voraria.Consumables
 		public static void UseInStomach(Item item, Player player, Entity pred)
 		{
 			player.CurrentCaptor().ModifyPredStomachacheMeter(StruggleDamage);
+
+			item.stack--;
+			if (item.stack <= 0)
+				item.TurnToAir();
 		}
 
 		public override void ModifyTooltips(List<TooltipLine> tooltips)

@@ -4460,7 +4460,7 @@ Mods: {
 							4: "{Player} будет выглядеть суперстильно, как новый слой жира для {Pred}."
 							5: "{Pred} просто не мог устоять перед восхитительными волосами {Player}."
 							6: "{Player} помог {Pred} осуществить политику невозврата."
-							// 7: "{Pred}'s gut snipped and seared away {Player}'s hair, alongside the rest of their body."
+							// 7: "{1}'s gut snipped and seared away {0}'s hair, alongside the rest of their body."
 							BloodMoonHaircut: "{Player} попросил подстричься в самый подходящий момент."
 							Hardcore:
 								'''
@@ -4566,12 +4566,12 @@ Mods: {
 
 					Hallow: {
 						EmpressButterfly: {
-							// 1: "{Player} was mesmerized too long by a butterfly."
-							// 2: How is a teensy little butterfly strong enough inside to make a meal of {Player}...?
-							// 3: Somehow, {Player}'s even lower on the food chain than the Empress' favorite dessert.
+							// 1: "{0} was mesmerized too long by a butterfly."
+							// 2: How is a teensy little butterfly strong enough inside to make a meal of {0}...?
+							// 3: Somehow, {0}'s even lower on the food chain than the Empress' favorite dessert.
 							/* Hardcore:
 								'''
-								{Player} somehow crammed themselves into the ravenous belly of a tiny, twinkly butterfly.
+								{0} somehow crammed themselves into the ravenous belly of a tiny, twinkly butterfly.
 								A bit of an odd choice for how to end their only life, but we don't judge here.
 								It'll end up lining the Empress' fat thighs before long, anyway.
 								''' */

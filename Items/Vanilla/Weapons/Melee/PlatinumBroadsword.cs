@@ -9,20 +9,18 @@ using Terraria.ModLoader;
 
 namespace V2.Items.Vanilla.Weapons.Melee
 {
-	public class TinShortsword : GlobalItem
+	public class PlatinumBroadsword : GlobalItem
 	{
 		public override bool InstancePerEntity => true;
-		public override bool AppliesToEntity(Item item, bool lateInstantiation) => item.type == ItemID.TinShortsword;
+		public override bool AppliesToEntity(Item item, bool lateInstantiation) => item.type == ItemID.PlatinumBroadsword;
 
 		public override void SetDefaults(Item item)
 		{
-			item.AsFood().MaxHealth = 85;
-			item.AsFood().Size = 0.18;
+			item.AsFood().MaxHealth = 744;
+			item.AsFood().Size = 0.54;
 			item.AsFood().AcidResistTier = 2;
 
-			item.AsAnItem().StruggleDamageBaseMod = 1;
-
-			item.AsTaggable().Shortsword = true;
+			item.AsTaggable().Broadsword = true;
 		}
 	}
 }

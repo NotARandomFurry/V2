@@ -112,7 +112,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 			npc.AsFood().DefinedBaseSize = 1.1625;
 			npc.AsPred().WeightGainRatio = 0.06;
 			npc.AsPred().MaxStomachCapacity = 1.8;
-			npc.AsPred().BaseStomachacheMeterCapacity = 180.0;
+			npc.AsPred().BaseStomachacheMeterCapacity = 200.0;
 
 			npc.AsPred().SmallGulps = Gulps.Short;
 			npc.AsPred().SmallGulpThreshold = 0.65;

@@ -52,10 +52,10 @@ namespace V2.NPCs.Vanilla.BloodMoon
 
 		public static TheGroom AsTheGroom(this NPC npc)
 		{
-			if (!npc.TryGetGlobalNPC(out TheGroom hungryZombieWife))
-				throw new Exception("this instance of The Bride, supposedly, doesn't exist");
+			if (!npc.TryGetGlobalNPC(out TheGroom hungryZombieHubby))
+				throw new Exception("this instance of The Groom, supposedly, doesn't exist");
 
-			return hungryZombieWife;
+			return hungryZombieHubby;
 		}
 	}
 
@@ -72,13 +72,13 @@ namespace V2.NPCs.Vanilla.BloodMoon
 			npc.AsV2NPC().NewAIMethod = V2TheGroomAI;
 
 			npc.AsFood().DefinedBaseSize = 1.04;
-			npc.AsPred().MaxStomachCapacity = 1.5;
-			npc.AsPred().BaseStomachacheMeterCapacity = 145.0;
+			npc.AsPred().MaxStomachCapacity = 2.25;
+			npc.AsPred().BaseStomachacheMeterCapacity = 115.0;
 
 			npc.AsPred().SmallGulps = Gulps.Short;
 			npc.AsPred().SmallGulpThreshold = 0.5;
 			npc.AsPred().BigGulps = Gulps.Standard;
-			npc.AsPred().MaxSwallowRange = V2Utils.TileCountAsPixelCount(4.7);
+			npc.AsPred().MaxSwallowRange = V2Utils.TileCountAsPixelCount(8.0);
 			npc.AsPred().CanBeForceFed = CanTheGroomBeForceFed;
 			npc.AsPred().OnForceFed = OnTheGroomForceFed;
 

@@ -50,12 +50,12 @@ namespace V2.UI.StruggleSystem
 				return;
 
 			Player player = Main.LocalPlayer;
-			if (player.CurrentCaptor() is not null)// && player.CurrentCaptor().PredatorStruggleChart is not null)
+			if (player.CurrentCaptor() is not null && player.CurrentCaptor().PredatorStruggleChart is not null)
 			{
 				Visible = true;
 				PlayerIsPred = false;
 			}
-			else if (player.AsPred().KickyStomachFullness > 0.0)// && player.AsPred().StomachTracker.PredatorStruggleChart is not null)
+			else if (player.AsPred().KickyStomachFullness > 0.0 && player.AsPred().StomachTracker.PredatorStruggleChart is not null)
 			{
 				Visible = true;
 				PlayerIsPred = true;

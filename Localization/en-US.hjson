@@ -75,8 +75,6 @@ Mods: {
 			StruggleRight.DisplayName: Struggle Right
 			StruggleDown.DisplayName: Struggle Down
 			StruggleSpecial.DisplayName: Special Struggle
-			LayOnBelly.DisplayName: Lay On Belly
-			GutSlutVisionOMaticRespawn.DisplayName: Respawn After Digestion
 			RespawnAfterDigestion.DisplayName: Respawn After Digestion
 		}
 
@@ -4221,98 +4219,98 @@ Mods: {
 			DigestedPlayer: {
 				YouWereEaten: You were eaten...
 				ManualRespawn: Press {ManualRespawnButton} to respawn
-				Paradox: Awfully full of yourself today, aren't you, {Player}?
-				AprilFools: "{Player} was fooled by {Pred}."
+				Paradox: Awfully full of yourself today, aren't you, {0}?
+				AprilFools: "{0} was fooled by {1}."
 
 				Universal: {
-					1: "{Player} was eaten by {Pred}."
-					2: "{Player} couldn't escape {Pred}'s stomach."
-					3: "{Pred}'s stomach was the last thing {Player} ever saw."
-					4: "{Player} learned the hard way that napping in a gut isn't safe."
-					5: "{Pred} mulched {Player} without a second thought."
-					6: "{Player} slipped down {Pred}'s throat, never to be seen again."
-					7: "{Pred} had {Player} as a quick snack."
-					8: "{Pred} made a meal of {Player}."
-					9: "{Player} became an idiot sandwich."
-					10: "{Pred} now has Exquisitely Stuffed for a while, thanks to {Player}."
-					11: "{Player} became a second breakfast for {Pred}."
-					12: "{Player} tried to become a gastroenterologist from memory."
-					13: "{Player} mistook pearly whites for pearly gates."
-					14: "{Player} is a terrible dieting advisor."
-					15: "{Player} thought the Iron Maiden sounded hot."
-					16: "{Player} got fucking churned lmaooo"
-					17: "{Player} was mulched by {Pred}."
-					18: "{Player} got got by {Pred}."
-					19: "{Player} was eaten from the bottom up...or was it from the top down?"
-					20: "{Player} underwent a merciful euthanasia by digestion."
-					21: "{Player} was snackrificed to {Pred}."
-					22: "{Player} was voluntold to get into {Pred}'s gut."
+					1: "{0} was eaten by {1}."
+					2: "{0} couldn't escape {1}'s stomach."
+					3: "{1}'s stomach was the last thing {0} ever saw."
+					4: "{0} learned the hard way that napping in a gut isn't safe."
+					5: "{1} mulched {0} without a second thought."
+					6: "{0} slipped down {1}'s throat, never to be seen again."
+					7: "{1} had {0} as a quick snack."
+					8: "{1} made a meal of {0}."
+					9: "{0} became an idiot sandwich."
+					10: "{1} now has Exquisitely Stuffed for a while, thanks to {0}."
+					11: "{0} became a second breakfast for {1}."
+					12: "{0} tried to become a gastroenterologist from memory."
+					13: "{0} mistook pearly whites for pearly gates."
+					14: "{0} is a terrible dieting advisor."
+					15: "{0} thought the Iron Maiden sounded hot."
+					16: "{0} got fucking churned lmaooo"
+					17: "{0} was mulched by {1}."
+					18: "{0} got got by {1}."
+					19: "{0} was eaten from the bottom up...or was it from the top down?"
+					20: "{0} underwent a merciful euthanasia by digestion."
+					21: "{0} was snackrificed to {1}."
+					22: "{0} was voluntold to get into {1}'s gut."
 
 					StomachSuffocation: {
-						1: "{Player} ran out of air in {Pred}'s stomach."
-						2: "{Pred}'s stomach didn't have enough air for {Player}."
+						1: "{0} ran out of air in {1}'s stomach."
+						2: "{1}'s stomach didn't have enough air for {0}."
 					}
 				}
 
 				SpecificDigestionType: {
 					Acidic: {
-						1: "{Player}'s fruitless thrashing was finally stopped by {Pred}'s stomach acids."
-						2: "{Pred}'s stomach acids were too much for {Player}."
-						3: "{Player} went on the other kind of acid trip."
-						4: "{Player} succumbed to {Pred}'s acids."
-						5: "{Player} tried to swim in acid."
-						6: "{Player}'s flesh was melted from the bone inside {Pred}'s stomach."
-						7: "{Player} was transmuted into chyme by {Pred}."
-						8: "{Pred}'s stomach melted {Player} down."
-						9: "{Player} was dissolved by {Pred}."
-						10: "{Player} got a little too soft."
+						1: "{0}'s fruitless thrashing was finally stopped by {1}'s stomach acids."
+						2: "{1}'s stomach acids were too much for {0}."
+						3: "{0} went on the other kind of acid trip."
+						4: "{0} succumbed to {1}'s acids."
+						5: "{0} tried to swim in acid."
+						6: "{0}'s flesh was melted from the bone inside {1}'s stomach."
+						7: "{0} was transmuted into chyme by {1}."
+						8: "{1}'s stomach melted {0} down."
+						9: "{0} was dissolved by {1}."
+						10: "{0} got a little too soft."
 					}
 
 					Thermal: {
-						1: "{Player} got torched."
-						2: "{Player} was smelted by {Pred}."
-						3: "{Player} burned to a fine crisp inside {Pred}."
-						4: "{Player} misjudged the digestive strength of heat."
-						5: "{Player} was burned to death in {Pred}'s stomach."
+						1: "{0} got torched."
+						2: "{0} was smelted by {1}."
+						3: "{0} burned to a fine crisp inside {1}."
+						4: "{0} misjudged the digestive strength of heat."
+						5: "{0} was burned to death in {1}'s stomach."
 					}
 				}
 
 				HumanoidPred: {
-					1: "{Player} became ass fat for {Pred}."
-					2: "{Player} helped to widen up {Pred}'s thighs."
-					3: "{Player} gave {Pred} an extra waistband size."
-					4: "{Player} decided to bulk up {Pred}'s booty a little."
-					5: "{Player} filled out {Pred}'s hips a good bit."
+					1: "{0} became ass fat for {1}."
+					2: "{0} helped to widen up {1}'s thighs."
+					3: "{0} gave {1} an extra waistband size."
+					4: "{0} decided to bulk up {1}'s booty a little."
+					5: "{0} filled out {1}'s hips a good bit."
 				}
 
 				SlimePred: {
-					1: "{Player} wanted to eat a tasty dessert, but ended up part of one instead."
-					2: A wobbly {Pred} managed to dissolve {Player}.
-					3: "{Player} melted into more of a {Pred}."
+					1: "{0} wanted to eat a tasty dessert, but ended up part of one instead."
+					2: A wobbly {1} managed to dissolve {0}.
+					3: "{0} melted into more of a {1}."
 				}
 
 				SpecificNPC: {
 					Forest: {
 						Zombie: {
-							1: "{Player}'s brain, and the rest of them, was eaten by {Pred}."
-							2: "{Player} thought {Pred}'s stomach stopped working after they died. They were then proven very wrong."
-							3: "{Player} couldn't even make it out of a weak, shambling zombie's gut."
+							1: "{0}'s brain, and the rest of them, was eaten by {1}."
+							2: "{0} thought {1}'s stomach stopped working after they died. They were then proven very wrong."
+							3: "{0} couldn't even make it out of a weak, shambling zombie's gut."
 							Hardcore:
 								'''
 								Zombies often seek fresh life to devour and make their own, being too stupid to realize it won't make them alive again.
-								Of course, {Player} unfortunately ended up in the crossfire of this eternal hunt for new life to eat.
+								Of course, {0} unfortunately ended up in the crossfire of this eternal hunt for new life to eat.
 								Their legacy will be short-lived, as will their undead predator. Zombies really aren't hard to fight for most...
 								'''
 						}
 
 						Pinky: {
-							1: A Pinky turned {Player} into some pretty pink gel.
-							2: "{Player} got a little too into a cute little Pinky."
+							1: A Pinky turned {0} into some pretty pink gel.
+							2: "{0} got a little too into a cute little Pinky."
 							Hardcore:
 								'''
 								The Pinky is often seen as one of the weakest species of slime, and for good reason.
 								Their small size makes it difficult for them to ever devour human-sized prey or larger.
-								So how, then, did {Player}'s only life manage to get ended by one of these tiny little treats?
+								So how, then, did {0}'s only life manage to get ended by one of these tiny little treats?
 								At least whatever, or WHOever, eats their new home will be getting a VERY filling dessert...
 								'''
 						}
@@ -4320,11 +4318,11 @@ Mods: {
 
 					Cavern: {
 						Nymph: {
-							1: "{Player} was lured too close by the tempting frame of a nymph."
-							2: All it took was one sultry glance from a nymph for {Player} to get churned.
+							1: "{0} was lured too close by the tempting frame of a nymph."
+							2: All it took was one sultry glance from a nymph for {0} to get churned.
 							Hardcore:
 								'''
-								Within the deeper caverns, {Player} happened across a lost girl in need of food.
+								Within the deeper caverns, {0} happened across a lost girl in need of food.
 								Upon closer inspection, she turned out to be a gluttonous nymph in need of her next meal.
 								She cared little for the fact they couldn't reform; she only cared about getting her breakfast.
 								All that will remain of them once she's done is a new layer of fat on the nymph's more attractive features.
@@ -4335,14 +4333,14 @@ Mods: {
 
 					Sky: {
 						Harpy: {
-							1: "{Player} was snatched out of the sky by a hungry harpy girl."
-							2: A harpy swooped in to snack on {Player}, and left with a hearty meal in tow.
-							3: The early bird caught the {Player}.
-							4: "{Player} might be weighing down a harpy a bit too much to fly for a while."
-							5: "{Player} went birdwatching the wrong way."
+							1: "{0} was snatched out of the sky by a hungry harpy girl."
+							2: A harpy swooped in to snack on {0}, and left with a hearty meal in tow.
+							3: The early bird caught the {0}.
+							4: "{0} might be weighing down a harpy a bit too much to fly for a while."
+							5: "{0} went birdwatching the wrong way."
 							Hardcore:
 								'''
-								The earliest bird of them all nabbed herself a tasty meal of {Player}.
+								The earliest bird of them all nabbed herself a tasty meal of {0}.
 								Snacked on by a harpy, history won't remember them as any more than bird food.
 								The tasty bird that ate them, at least, will make a fine meal for a hungrier pred!
 								After all, most people find the thighs of a harpy the tastiest part, and those thighs'll get much larger after her meal digests...
@@ -4352,28 +4350,28 @@ Mods: {
 
 					BloodMoon: {
 						GroomAndBride: {
-							1: "{Player} will be on {Pred}'s stomach 'til death do them part."
-							2: "{Pred} might not get a wedding cake, but {Player} seems to have worked fine as a substitute."
+							1: "{0} will be on {1}'s stomach 'til death do them part."
+							2: "{1} might not get a wedding cake, but {0} seems to have worked fine as a substitute."
 
 							TheGroom: {
-								1: "{Pred}'s long-decayed suit might be a bit tighter by wedding day, thanks to {Player}."
+								1: "{1}'s long-decayed suit might be a bit tighter by wedding day, thanks to {0}."
 								Hardcore:
 									'''
 									He wished to marry her one night,
 									but fate tore them far apart.
-									With {Player} filling his stomach eternal,
+									With {0} filling his stomach eternal,
 									he seeks her again with his missing heart.
 									'''
 							}
 
 							TheBride: {
-								1: "{Pred}'s already-tattered wedding dress might end up bursting from her new weight, thanks to {Player}."
+								1: "{1}'s already-tattered wedding dress might end up bursting from her new weight, thanks to {0}."
 								Hardcore:
 									'''
 									A bridal carry was her one concession,
 									one she longed for her husband to hear.
 									She now shambles in deathly depression,
-									{Player} forever padding out her rear.
+									{0} forever padding out her rear.
 									'''
 							}
 						}
@@ -4381,26 +4379,26 @@ Mods: {
 
 					Meteorite: {
 						MeteorMarble: {
-							1: "{Player} thought a Meteor Marble was crafted well enough to feed themselves to."
-							2: "{Player} found a Meteor Marble that was just a little too big to handle."
+							1: "{0} thought a Meteor Marble was crafted well enough to feed themselves to."
+							2: "{0} found a Meteor Marble that was just a little too big to handle."
 							Hardcore:
 								'''
-								Somehow, {Player} thought it was a good idea to make a Meteor Marble big enough to fit inside.
+								Somehow, {0} thought it was a good idea to make a Meteor Marble big enough to fit inside.
 								Fitting, then, that the last moments of their only life were spent crammed into that very same Meteor Marble.
 								Nobody will ever find what remains of them...for nothing does.
 								'''
 						}
 
 						MeteorMaiden: {
-							1: "{Player} was helplessly smitten for a refueling Meteor Maiden."
-							2: "{Player} helped to re-energize a Meteor Maiden after a long day's work by the latter."
-							3: "{Player} thought a Meteor Maiden's combustion chamber looked inviting."
-							4: If Meteor Maidens had a rear or thighs to add prey to, {Player} would definitely be working to fatten them up right now.
-							5: A Meteor Maiden saw {Player} as a sufficient fuel source, and secured them for herself.
+							1: "{0} was helplessly smitten for a refueling Meteor Maiden."
+							2: "{0} helped to re-energize a Meteor Maiden after a long day's work by the latter."
+							3: "{0} thought a Meteor Maiden's combustion chamber looked inviting."
+							4: If Meteor Maidens had a rear or thighs to add prey to, {0} would definitely be working to fatten them up right now.
+							5: A Meteor Maiden saw {0} as a sufficient fuel source, and secured them for herself.
 							Hardcore:
 								'''
 								A pleasant chime, almost like a bell mixed with a belch, but bassier and rockier, rings out over the mountaintops.
-								{Player} has ended up as little more than a meal for a Meteor Maiden, never to be seen again.
+								{0} has ended up as little more than a meal for a Meteor Maiden, never to be seen again.
 								Perhaps that Meteor Maiden will go on to eat a moon or seven, and countless celestial bodies beyond? Only time will tell...
 								'''
 						}
@@ -4408,184 +4406,184 @@ Mods: {
 
 					Townsfolk: {
 						Guide: {
-							1: "{Pred} gave {Player} a hands-on demonstration of digestion mechanics."
-							2: "{Player} was guided into {Pred}'s stomach."
+							1: "{1} gave {0} a hands-on demonstration of digestion mechanics."
+							2: "{0} was guided into {1}'s stomach."
 							Hardcore:
 								'''
-								After having a voodoo doll of him thrown into lava countless times, {Pred} got to throw someone into his acids instead.
-								That someone was the short-lived {Player}, who digested without much issue.
+								After having a voodoo doll of him thrown into lava countless times, {1} got to throw someone into his acids instead.
+								That someone was the short-lived {0}, who digested without much issue.
 								'''
 						}
 
 						Nurse: {
-							1: "{Player} made a very healthy meal for {Pred}."
-							2: "{Player} helped to keep {Pred}'s belly happy and healthy."
-							3: "{Pred}'s digestive system was given a check-up by {Player}."
+							1: "{0} made a very healthy meal for {1}."
+							2: "{0} helped to keep {1}'s belly happy and healthy."
+							3: "{1}'s digestive system was given a check-up by {0}."
 							4:
 								'''
-								{Pred} lost her medical license after adding {Player} to her hips...
+								{1} lost her medical license after adding {0} to her hips...
 								...oh, wait. That's what she's qualified to do. Never mind.
 								'''
-							5: "{Player} is now a victim of medical mealpractice."
-							6: "{Player} was quarantined."
-							7: "{Pred} prescribed {Player} a one-way trip to her backside. Whether they got there or not is another story."
-							8: "{Pred} gave {Player} a thorough examination by digestion."
+							5: "{0} is now a victim of medical mealpractice."
+							6: "{0} was quarantined."
+							7: "{1} prescribed {0} a one-way trip to her backside. Whether they got there or not is another story."
+							8: "{1} gave {0} a thorough examination by digestion."
 
 							NoFundsForHeal: {
-								1: "{Player} couldn't pay their medical fees."
-								2: "{Player} thought free healthcare exists."
-								3: "{Player} tried to undercut {Pred}, and learned the hard way how bad of an idea that is."
-								4: "{Player}'s insurance didn't cover digestion."
+								1: "{0} couldn't pay their medical fees."
+								2: "{0} thought free healthcare exists."
+								3: "{0} tried to undercut {1}, and learned the hard way how bad of an idea that is."
+								4: "{0}'s insurance didn't cover digestion."
 							}
 
 							Hardcore:
 								'''
-								{Player} has become the newest victim of {Pred}'s medical mealpractice.
-								Mind you, most healthcare packages cover digestion reformation...but {Player} forgot to buy one.
+								{0} has become the newest victim of {1}'s medical mealpractice.
+								Mind you, most healthcare packages cover digestion reformation...but {0} forgot to buy one.
 								'''
 						}
 
 						ArmsDealer: {
-							1: "{Player} was locked and loaded into {Pred}'s gut."
-							2: "{Pred} gave his stomach some target practice with {Player}."
+							1: "{0} was locked and loaded into {1}'s gut."
+							2: "{1} gave his stomach some target practice with {0}."
 							Hardcore:
 								'''
-								{Player} was chambered into {Pred}'s ruthless gut, never to be seen again.
+								{0} was chambered into {1}'s ruthless gut, never to be seen again.
 								The skilled gunman simply spent the rest of his day unwinding with some relaxing target practice as his prey melted away.
 								'''
 						}
 
 						Angel: {
-							1: "{Player} was given a one-way ticket to the divine realm that is {Pred}'s belly."
-							2: "{Player} atoned for their sins (or, perhaps, committed more of them) within {Pred}'s confines."
-							3: "{Player} will be thoroughly studying {Pred}'s internals."
-							4: "{Player} was somehow a submissive enough snack to get {Pred} to melt them into gut fat. An impressive, if strange, performance."
+							1: "{0} was given a one-way ticket to the divine realm that is {1}'s belly."
+							2: "{0} atoned for their sins (or, perhaps, committed more of them) within {1}'s confines."
+							3: "{0} will be thoroughly studying {1}'s internals."
+							4: "{0} was somehow a submissive enough snack to get {1} to melt them into gut fat. An impressive, if strange, performance."
 							Hardcore:
 								'''
-								{Pred}'s stomach sent {Player} to the most divine of realms...which, in her case, happens to also be her stomach.
+								{1}'s stomach sent {0} to the most divine of realms...which, in her case, happens to also be her stomach.
 								Ah, well. At least the rest of their days in existence will be well-enjoyed as soft, doughy fat rounding out her tummy.
 								'''
 						}
 
 						Stylist: {
-							1: "{Player} melted inside {Pred}'s stylish stomach."
-							2: '''{Pred}'s belly gave {Player} a "free" haircut.'''
-							3: "{Pred} let {Player} marinate for a while in her stomach acids."
-							4: "{Player} will look super stylish as a new layer of fat for {Pred}."
-							5: "{Pred} just couldn't resist {Player}'s delectable hair."
-							6: "{Player} helped {Pred} exercise her no-refunds policy."
-							7: "{Pred}'s gut snipped and seared away {Player}'s hair, alongside the rest of their body."
-							BloodMoonHaircut: "{Player} asked for a haircut at just the right time."
+							1: "{0} melted inside {1}'s stylish stomach."
+							2: '''{1}'s belly gave {0} a "free" haircut.'''
+							3: "{1} let {0} marinate for a while in her stomach acids."
+							4: "{0} will look super stylish as a new layer of fat for {1}."
+							5: "{1} just couldn't resist {0}'s delectable hair."
+							6: "{0} helped {1} exercise her no-refunds policy."
+							7: "{1}'s gut snipped and seared away {0}'s hair, alongside the rest of their body."
+							BloodMoonHaircut: "{0} asked for a haircut at just the right time."
 							Hardcore:
 								'''
-								{Player} snackrificed their only life to its rightful holder: {Pred} the hair stylist.
+								{0} snackrificed their only life to its rightful holder: {1} the hair stylist.
 								May they find endless enjoyment as stylish stomach fat.
 								'''
 						}
 
 						Dryad: {
-							1: "{Player} has been reunited with nature, thanks to {Pred}."
-							2: "{Player} made for great fertilizer to help {Pred} grow stronger."
-							3: "{Pred} decided purifying {Player} was the best course of action."
-							4: "{Pred} knows she can't quite photosynthesize; thankfully, snacking on {Player} was close enough."
+							1: "{0} has been reunited with nature, thanks to {1}."
+							2: "{0} made for great fertilizer to help {1} grow stronger."
+							3: "{1} decided purifying {0} was the best course of action."
+							4: "{1} knows she can't quite photosynthesize; thankfully, snacking on {0} was close enough."
 
 							TaintedWorld: {
-								1: "{Pred} got too frustrated at {Player}'s continued failure to push back the evils of the world."
-								2: "{Player} got mulched with ease because they wouldn't do {Pred}'s job for her."
-								3: According to {Pred}, {Player} is fantastically bad at cleansing. Not surprising, since they're busy filling out her backside now.
+								1: "{1} got too frustrated at {0}'s continued failure to push back the evils of the world."
+								2: "{0} got mulched with ease because they wouldn't do {1}'s job for her."
+								3: According to {1}, {0} is fantastically bad at cleansing. Not surprising, since they're busy filling out her backside now.
 							}
 
 							Hardcore:
 								'''
-								{Player} was, perhaps rather forcibly, made one with nature through {Pred}'s purifying stomach.
+								{0} was, perhaps rather forcibly, made one with nature through {1}'s purifying stomach.
 								Their sacrifice will live on as she prepares further to add a great evil from far beyond Terraria to her waistline...
 								'''
 						}
 
 						Succubus: {
-							1: "{Player} was forced to fatten up {Pred}'s demonic derriere."
-							2: "{Player}'s body is now stored on {Pred}'s hellish hips."
-							3: "{Pred} is one step closer to being the fattest demon in the world, thanks to {Player}."
-							4: "{Player} helped thicken up {Pred}'s satanic sides even further."
-							5: "{Pred} promised {Player} a fun time...and figured that a night of hanging off her midsection counts."
+							1: "{0} was forced to fatten up {1}'s demonic derriere."
+							2: "{0}'s body is now stored on {1}'s hellish hips."
+							3: "{1} is one step closer to being the fattest demon in the world, thanks to {0}."
+							4: "{0} helped thicken up {1}'s satanic sides even further."
+							5: "{1} promised {0} a fun time...and figured that a night of hanging off her midsection counts."
 
 							StomachSuffocation: {
-								1: "{Player}'s lungs couldn't handle {Pred}'s infernal internals."
-								2: "{Pred}'s searing stomach scorched {Player}'s respiratory system."
+								1: "{0}'s lungs couldn't handle {1}'s infernal internals."
+								2: "{1}'s searing stomach scorched {0}'s respiratory system."
 							}
 
 							Hardcore:
 								'''
-								{Player}'s body and soul alike were churned into some new chest fat for {Pred}.
+								{0}'s body and soul alike were churned into some new chest fat for {1}.
 								Maybe now, she'll be able to use that strength to become the apex pred she's wanted to be.
 								'''
 						}
 
 						Mechanic: {
-							1: '''{Pred}'s system converted {Player} into "potential energy".'''
-							2: "{Player} helped to recharge {Pred}'s batteries."
-							3: "{Pred} took a snack break with {Player}."
-							4: "{Pred}'s system caused {Player} to short-circuit."
-							5: "{Player} suffered a blackout in {Pred}'s stomach."
-							6: "{Player} was fixed."
-							7: "{Player} was scrapped."
-							8: "{Player} was turned into a battery by {Pred}."
-							Hardcore: "{Player} has become the best battery {Pred}'s ever used, at the cost of their continued existence."
+							1: '''{1}'s system converted {0} into "potential energy".'''
+							2: "{0} helped to recharge {1}'s batteries."
+							3: "{1} took a snack break with {0}."
+							4: "{1}'s system caused {0} to short-circuit."
+							5: "{0} suffered a blackout in {1}'s stomach."
+							6: "{0} was fixed."
+							7: "{0} was scrapped."
+							8: "{0} was turned into a battery by {1}."
+							Hardcore: "{0} has become the best battery {1}'s ever used, at the cost of their continued existence."
 						}
 
 						Painter: {
-							1: "{Pred} found {Player} too colorful a snack to pass up."
-							2: "{Player} was painted red by the stomach of a starving artist."
-							3: "{Pred} swallowed up {Player} to focus on his next masterpiece...even though they wouldn't stop fighting to get out of his gut."
-							4: "{Player} didn't stop jostling around {Pred}'s gut, and now he's gotta start his newest artwork over because of a wrong brushstroke. How rude!"
-							5: "{Player} made a great model for {Pred}'s latest artpiece!...of himself with a nice, full belly!"
+							1: "{1} found {0} too colorful a snack to pass up."
+							2: "{0} was painted red by the stomach of a starving artist."
+							3: "{1} swallowed up {0} to focus on his next masterpiece...even though they wouldn't stop fighting to get out of his gut."
+							4: "{0} didn't stop jostling around {1}'s gut, and now he's gotta start his newest artwork over because of a wrong brushstroke. How rude!"
+							5: "{0} made a great model for {1}'s latest artpiece!...of himself with a nice, full belly!"
 							Hardcore:
 								'''
-								{Pred} seems to be finishing up painting a beautiful picture! What's it a picture of?
+								{1} seems to be finishing up painting a beautiful picture! What's it a picture of?
 
-								...oh! It's of {Player}'s last moments digesting in his gut!
+								...oh! It's of {0}'s last moments digesting in his gut!
 								What a lovely way to send them off as they churn into more of his ass...
 								'''
 						}
 
 						PartyGirl: {
-							1: "{Pred} had {Player} as a pre-party pick-me-up."
-							2: "{Player} will be the life of the party as {Pred}'s tum fat."
-							3: "{Pred} thought {Player} tasted...almost as good as candy."
-							4: "{Pred} melted {Player} into liquid confetti."
-							5: "{Player} partied too hard in {Pred}'s belly."
-							6: "{Player} was sloshed to the beat of the drums by {Pred}."
+							1: "{1} had {0} as a pre-party pick-me-up."
+							2: "{0} will be the life of the party as {1}'s tum fat."
+							3: "{1} thought {0} tasted...almost as good as candy."
+							4: "{1} melted {0} into liquid confetti."
+							5: "{0} partied too hard in {1}'s belly."
+							6: "{0} was sloshed to the beat of the drums by {1}."
 							Hardcore:
 								'''
-								The last anyone ever saw of {Player} was a breathy, bubbly belch from {Pred}, bringing up a bundle of heated, half-liquid confetti.
+								The last anyone ever saw of {0} was a breathy, bubbly belch from {1}, bringing up a bundle of heated, half-liquid confetti.
 								At least the gut fat they left on her will keep her the life of the party for many weeks to come.
 								'''
 						}
 
 						Steampunker: {
-							1: "{Pred} needed fuel for her engine; fuel which {Player} was all too eager to provide."
-							2: "{Player} was flawlessly converted to steam inside {Pred}'s mechanisms."
-							3: "{Pred} fed {Player} into her countless internal devices and doohickeys."
-							4: "{Pred} hid {Player} away in her stomach, never to see the sun again."
-							5: "{Player} wanted to know how steam is made. {Pred} happily demonstrated."
-							6: The only thing left of {Player} is a healthy gutful of steam inside {Pred}.
-							7: "{Pred}'s body has become a little bit denser, thanks to {Prey}."
+							1: "{1} needed fuel for her engine; fuel which {0} was all too eager to provide."
+							2: "{0} was flawlessly converted to steam inside {1}'s mechanisms."
+							3: "{1} fed {0} into her countless internal devices and doohickeys."
+							4: "{1} hid {0} away in her stomach, never to see the sun again."
+							5: "{0} wanted to know how steam is made. {1} happily demonstrated."
+							6: The only thing left of {0} is a healthy gutful of steam inside {1}.
+							7: "{1}'s body has become a little bit denser, thanks to {Prey}."
 							Hardcore:
 								'''
-								No conclusive evidence will ever be found of where {Player}'s one life disappeared to.
-								The only clue left behind? {Pred} having higher density than usual and belching up a healthy amount of steam.
+								No conclusive evidence will ever be found of where {0}'s one life disappeared to.
+								The only clue left behind? {1} having higher density than usual and belching up a healthy amount of steam.
 								'''
 						}
 					}
 
 					Hallow: {
 						EmpressButterfly: {
-							1: "{Player} was mesmerized too long by a butterfly."
-							2: How is a teensy little butterfly strong enough inside to make a meal of {Player}...?
-							3: Somehow, {Player}'s even lower on the food chain than the Empress' favorite dessert.
+							1: "{0} was mesmerized too long by a butterfly."
+							2: How is a teensy little butterfly strong enough inside to make a meal of {0}...?
+							3: Somehow, {0}'s even lower on the food chain than the Empress' favorite dessert.
 							Hardcore:
 								'''
-								{Player} somehow crammed themselves into the ravenous belly of a tiny, twinkly butterfly.
+								{0} somehow crammed themselves into the ravenous belly of a tiny, twinkly butterfly.
 								A bit of an odd choice for how to end their only life, but we don't judge here.
 								It'll end up lining the Empress' fat thighs before long, anyway.
 								'''
@@ -4594,13 +4592,13 @@ Mods: {
 
 					Bosses: {
 						UnreasonablyThickFairy: {
-							1: "{Player} became a light snack for the Empress of Light."
-							2: The Empress' gut blinded {Player} just a little too long.
-							3: "{Player} was too enamored by the Empress' shiny stomach walls to fight their way out."
-							4: Maybe now, {Player} can tell you if the Empress' tummy is twinklier on the inside.
+							1: "{0} became a light snack for the Empress of Light."
+							2: The Empress' gut blinded {0} just a little too long.
+							3: "{0} was too enamored by the Empress' shiny stomach walls to fight their way out."
+							4: Maybe now, {0} can tell you if the Empress' tummy is twinklier on the inside.
 							Hardcore:
 								'''
-								{Player} was, sadly, far too enamored by the Empress' mesmerizingly twinkly tummy walls to fight their way out.
+								{0} was, sadly, far too enamored by the Empress' mesmerizingly twinkly tummy walls to fight their way out.
 								The only evidence left of their only chance at existence will be a fresh new layer of fat on her already-thick thighs.
 								'''
 						}
@@ -4611,13 +4609,13 @@ Mods: {
 					Summons: {
 						Pets: {
 							MiniCandyFairy: {
-								1: "{Player} became a not-very-light snack for the Heiress of Light."
-								2: A fairy princess' gut mesmerized {Player} just a little too long.
-								3: "{Player} was too enamored by their prismatic fairy companion's shiny stomach walls to fight their way out."
-								4: The Princess of Light's stomach must've been just as twinkly as the Empress' for {Player} to get stuck so long.
+								1: "{0} became a not-very-light snack for the Heiress of Light."
+								2: A fairy princess' gut mesmerized {0} just a little too long.
+								3: "{0} was too enamored by their prismatic fairy companion's shiny stomach walls to fight their way out."
+								4: The Princess of Light's stomach must've been just as twinkly as the Empress' for {0} to get stuck so long.
 								Hardcore:
 									'''
-									{Player} fought many tough battles and even outlasted the voracious Empress of Light, befriending an apprentice of hers in the process.
+									{0} fought many tough battles and even outlasted the voracious Empress of Light, befriending an apprentice of hers in the process.
 									That apprentice, steadily growing fatter by the minute due to caloric excess, is now their gastric tomb.
 									'''
 							}
@@ -4628,15 +4626,15 @@ Mods: {
 
 			OverlyHungryPlayer: {
 				UnsafeLavaDrink: {
-					1: "{Player} had a drink that was a little too warm."
-					2: "{Player} learned why demons bathe in lava more often than drinking it."
-					3: "{Player} was smelted from the inside out."
+					1: "{0} had a drink that was a little too warm."
+					2: "{0} learned why demons bathe in lava more often than drinking it."
+					3: "{0} was smelted from the inside out."
 				}
 
 				UnsafeShimmerDrink: {
-					1: "{Player}'s stomach ended up where their stomach should be, while it was still already there. Quantum mechanics are fun!"
-					2: "{Player} thought the Empress' bathwater would look sparklier in their gut."
-					3: "{Player} decided to see if shimmer would make their belly glowy and glimmery. It did...for about 5 seconds before they died."
+					1: "{0}'s stomach ended up where their stomach should be, while it was still already there. Quantum mechanics are fun!"
+					2: "{0} thought the Empress' bathwater would look sparklier in their gut."
+					3: "{0} decided to see if shimmer would make their belly glowy and glimmery. It did...for about 5 seconds before they died."
 				}
 			}
 

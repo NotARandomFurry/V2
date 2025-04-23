@@ -66,12 +66,6 @@ namespace V2.NPCs
 			return happyBurpyOffsetDirectionized;
 		}
 
-		/// <summary>
-		/// Denotes whether or not an NPC has eaten someone friendly yet.<br/>
-		/// NPCs which have digested a player or townsperson at least once since spawning do not despawn naturally and are saved with the world.<br/>
-		/// </summary>
-		public bool AteFriendly { get; set; }
-
 		public SoundStyle? SmallGulps { get; set; }
 		public double SmallGulpThreshold { get; set; }
 		public SoundStyle? BigGulps { get; set; }
@@ -155,7 +149,6 @@ namespace V2.NPCs
 			ExtraWeight = 0.0;
 			WeightGainRatio = 0.0;
 			CanSwallowBosses = false;
-			AteFriendly = false;
 			
 			GetDigestionTickRate = null;
 			GetDigestionTickDamage = null;
@@ -581,7 +574,6 @@ namespace V2.NPCs
 										Main.NewText("Successfully dealt digestion damage to prey: " + preyPlayer.name);
 									if (prey.NoHealth)
 									{
-										pred.AsPred().AteFriendly = true;
 										if (pred.AsPred().OnDigestionKill is not null)
 											pred.AsPred().OnDigestionKill.Invoke(pred, prey);
 										PlayDigestionBelch(pred, prey);
@@ -605,8 +597,6 @@ namespace V2.NPCs
 										Main.NewText("Failed to deal digestion damage to prey: " + preyNPC.GivenOrTypeName);
 									if (prey.NoHealth)
 									{
-										if (preyNPC.isLikeATownNPC)
-											pred.AsPred().AteFriendly = true;
 										if (pred.AsPred().OnDigestionKill is not null)
 											pred.AsPred().OnDigestionKill.Invoke(pred, prey);
 										PlayDigestionBelch(pred, prey);
@@ -753,11 +743,8 @@ namespace V2.NPCs
 			
 			return NetworkText.FromKey(
 				finalDeathReasonKey,
-				new
-				{
-					Player = player.name,
-					Pred = V2.GetFooled ? npc.FullName : npc.GivenOrTypeName
-				}
+				player.name,
+				V2.GetFooled ? npc.FullName : npc.GivenOrTypeName
 			);
 		}
 
@@ -826,8 +813,6 @@ namespace V2.NPCs
 			return false;
 		}
 
-		public override bool NeedSaving(NPC npc) => npc.AsPred().AteFriendly;
-
 		public override void SaveData(NPC npc, TagCompound tag)
 		{
 			tag.Add("ExtraWeight", npc.AsPred().ExtraWeight);
@@ -835,7 +820,7 @@ namespace V2.NPCs
 
 		public override void LoadData(NPC npc, TagCompound tag)
 		{
-			ExtraWeight = tag.GetDouble("ExtraWeight");
+			npc.AsPred().ExtraWeight = tag.GetDouble("ExtraWeight");
 		}
 	}
 }

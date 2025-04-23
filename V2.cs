@@ -30,8 +30,6 @@ namespace V2
 		public static ModKeybind StruggleDownHotkey { get; set; }
 		public static ModKeybind StruggleSpecialHotkey { get; set; }
 
-		public static ModKeybind LayOnBellyHotkey { get; set; }
-
 		public static ModKeybind RespawnAfterDigestionHotkey { get; set; }
 
 		/// <summary>
@@ -46,7 +44,7 @@ namespace V2
 		/// <summary>
 		/// A special flag which decides whether or not the April Fool's branch is active.<br/>
 		/// Defaults to <see langword="false"/>. If set to <see langword="true"/> instead, the following things become true:<br/>
-		/// - <see cref="BlacklistsActive"/> is overridden to <see langword="false"/>. Nothing shall escape the fury of the Fool of April.<br/>
+		/// - <see cref="BlacklistsActive"/> is overridden to <see langword="false"/>. Nothing shall escape the fury of the Great Fool of April.<br/>
 		/// - All normal <see cref="GlobalNPC"/>s used for specific NPCs are inactive; instead, the universal AprilFoolsPredNPC is used.<br/>
 		/// - All of the nice, well-made belly sprites are replaced with a unified circle tool from Paint.NET because I can't be bothered to rember if I still have MS Paint on here.<br/>
 		/// - Only one tum gurgly sound is used. This sound is never used in the normal game.<br/>
@@ -85,8 +83,6 @@ namespace V2
 			StruggleRightHotkey = KeybindLoader.RegisterKeybind(this, "StruggleRight", "Right");
 			StruggleDownHotkey = KeybindLoader.RegisterKeybind(this, "StruggleDown", "Down");
 			StruggleSpecialHotkey = KeybindLoader.RegisterKeybind(this, "StruggleSpecial", "Space");
-
-			LayOnBellyHotkey = KeybindLoader.RegisterKeybind(this, "LayOnBelly", "L");
 
 			RespawnAfterDigestionHotkey = KeybindLoader.RegisterKeybind(this, "RespawnAfterDigestion", "LeftShift");
 

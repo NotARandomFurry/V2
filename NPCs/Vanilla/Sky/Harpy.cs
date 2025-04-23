@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent;
+using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
@@ -115,9 +116,11 @@ namespace V2.NPCs.Vanilla.Sky
 		{
 			npc.AsV2NPC().Gender = EntityGender.Female;
 
+			npc.lifeMax = 100;
+
 			npc.aiStyle = -1;
 			npc.AsV2NPC().NewAIMethod = V2HarpyAI;
-			npc.AsV2NPC().TargetRange = V2Utils.TileCountAsPixelCount(48.0);
+			npc.AsV2NPC().TargetRange = V2Utils.TileCountAsPixelCount(70.0);
 			npc.AsV2NPC().TargetRequiresLineOfSight = true;
 
 			npc.AsFood().DefinedBaseSize = 1.335;
@@ -158,7 +161,6 @@ namespace V2.NPCs.Vanilla.Sky
 			npc.direction = Main.rand.NextBool().ToDirectionInt();
 			npc.position.Y -= 12;
 			npc.target = -1;
-			npc.AsV2NPC().TargetType = TargetType.None;
 			npc.AsHarpy().WingFlapTimer = Main.rand.Next(-4, 70 + 1);
 			npc.AsHarpy().DirectionChangeTimer = -Main.rand.Next(V2Utils.SensibleTime(seconds: 2), V2Utils.SensibleTime(seconds: 4) + 1);
 			npc.AsV2NPC().BehaviorPattern = new HarpyAI.MainFlying();
@@ -170,21 +172,28 @@ namespace V2.NPCs.Vanilla.Sky
 			npc.AsPred().ExtraWeight = preSetWeight;
 		}
 
+		public override void UpdateLifeRegen(NPC npc, ref int damage)
+		{
+			AdjustHarpyFatteningStats(npc);
+		}
+
 		public static bool V2HarpyAI(NPC npc)
 		{
 			npc.noGravity = true;
 			npc.ai[3]++;
 			if (npc.ai[3] > 15) npc.ai[3] = 0;
             Entity targetEntity = null;
-			npc.TryFindNewTarget(Diet);
-			npc.TryVerifyRemainingTarget(Diet);
-			if (npc.target != -1)
+			if (npc.AsV2NPC().TargetIndex == -1)
+				npc.TryFindNewTarget(Diet);
+			else
+				npc.TryVerifyRemainingTarget(Diet);
+			if (npc.AsV2NPC().TargetIndex != -1)
 			{
 				targetEntity = npc.AsV2NPC().TargetType switch
 				{
-					TargetType.Player => Main.player[npc.target],
-					TargetType.NPC => Main.npc[npc.target],
-					TargetType.Projectile => Main.projectile[npc.target],
+					TargetType.Player => Main.player[npc.AsV2NPC().TargetIndex],
+					TargetType.NPC => Main.npc[npc.AsV2NPC().TargetIndex],
+					TargetType.Projectile => Main.projectile[npc.AsV2NPC().TargetIndex],
 					_ => null,
 				};
 			}
@@ -197,6 +206,33 @@ namespace V2.NPCs.Vanilla.Sky
 			return false;
 		}
 
+		public static void AdjustHarpyFatteningStats(NPC npc)
+		{
+			npc.lifeMax = 100;
+			npc.defense = 8;
+			npc.AsPred().MaxStomachCapacity = 1.9;
+			npc.AsPred().BaseStomachacheMeterCapacity = 120.0;
+			npc.AsPred().MaxSwallowRange = V2Utils.TileCountAsPixelCount(6.0);
+			if (Main.GameModeInfo.IsExpertMode)
+			{
+				npc.lifeMax = 200;
+				npc.defense = 10;
+				npc.AsPred().BaseStomachacheMeterCapacity = 240.0;
+			}
+			if (Main.GameModeInfo.IsMasterMode)
+			{
+				npc.lifeMax = 300;
+				npc.defense = 12;
+				npc.AsPred().BaseStomachacheMeterCapacity = 360.0;
+			}
+
+			npc.lifeMax = (int)Math.Round((double)npc.lifeMax * Math.Pow(1.2, GetVisualWeightStage(npc)));
+			npc.defense = (int)Math.Round((double)npc.defense * Math.Pow(1.2, GetVisualWeightStage(npc)));
+			npc.lifeRegen = (int)Math.Round((double)2.0 * Math.Pow(1.2, GetVisualWeightStage(npc)));
+			npc.AsPred().MaxStomachCapacity = Math.Round(1000.0 * 1.9 * Math.Pow(1.2, GetVisualWeightStage(npc))) / 1000.0;
+			npc.AsPred().BaseStomachacheMeterCapacity = Math.Round(npc.AsPred().BaseStomachacheMeterCapacity * Math.Pow(1.2, GetVisualWeightStage(npc)));
+		}
+
 		public static bool CanHarpyBeForceFed(NPC npc) => true;
 
 		public static void OnHarpyForceFed(NPC npc, Player player)
@@ -207,14 +243,13 @@ namespace V2.NPCs.Vanilla.Sky
 		public static void GetDigestedPlayerAdditionalDeathMessages(NPC npc, Player player, List<string> deathReasonKeyList)
 		{
 			deathReasonKeyList.AddHumanoidPredMessages();
-			deathReasonKeyList.AddRange(new List<string>
-			{
+			deathReasonKeyList.AddRange([
 				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Sky.Harpy.1",
 				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Sky.Harpy.2",
 				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Sky.Harpy.3",
 				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Sky.Harpy.4",
 				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Sky.Harpy.5",
-			});
+			]);
 			if (player.difficulty == PlayerDifficultyID.Hardcore)
 			{
 				deathReasonKeyList.Clear();
@@ -223,7 +258,16 @@ namespace V2.NPCs.Vanilla.Sky
 		}
 
 		public static double GetDigestionTickRate(NPC npc, PreyData prey) => 1.25;
-		public static double GetDigestionTickDamage(NPC npc, PreyData prey) => 18;
+		public static double GetDigestionTickDamage(NPC npc, PreyData prey)
+		{
+			return Main.GameMode switch
+			{
+				GameModeID.Creative => 20 * CreativePowerManager.Instance.GetPower<CreativePowers.DifficultySliderPower>().StrengthMultiplierToGiveNPCs,
+				GameModeID.Master => 30,
+				GameModeID.Expert => 25,
+				_ => 20,
+			};
+		}
 
 		public static void OnDigestionKill(NPC npc, PreyData digestedPrey)
 		{
@@ -236,6 +280,7 @@ namespace V2.NPCs.Vanilla.Sky
 				minutes: 2,
 				seconds: 30
 			);
+			baseAbsorptionRate *= Math.Pow(1.2, GetVisualWeightStage(npc));
 			return baseAbsorptionRate;
 		}
 
@@ -249,7 +294,6 @@ namespace V2.NPCs.Vanilla.Sky
 
 		public override void FindFrame(NPC npc, int frameHeight)
 		{
-
             npc.frame.X = 90 * GetVisualBellySize(npc);
 
             if (npc.AsV2NPC().BehaviorPattern is HarpyAI.DiveBombing)
@@ -262,9 +306,9 @@ namespace V2.NPCs.Vanilla.Sky
 				{
 					Entity target = npc.AsV2NPC().TargetType switch
 					{
-						TargetType.Player => Main.player[npc.target],
-						TargetType.NPC => Main.npc[npc.target],
-						TargetType.Projectile => Main.projectile[npc.target],
+						TargetType.Player => Main.player[npc.AsV2NPC().TargetIndex],
+						TargetType.NPC => Main.npc[npc.AsV2NPC().TargetIndex],
+						TargetType.Projectile => Main.projectile[npc.AsV2NPC().TargetIndex],
 						_ => null,
 					};
 					npc.spriteDirection = npc.direction = (target.position.X >= npc.TrueCenter().X).ToDirectionInt();
@@ -301,9 +345,9 @@ namespace V2.NPCs.Vanilla.Sky
 			{
 				Entity target = npc.AsV2NPC().TargetType switch
 				{
-					TargetType.Player => Main.player[npc.target],
-					TargetType.NPC => Main.npc[npc.target],
-					TargetType.Projectile => Main.projectile[npc.target],
+					TargetType.Player => Main.player[npc.AsV2NPC().TargetIndex],
+					TargetType.NPC => Main.npc[npc.AsV2NPC().TargetIndex],
+					TargetType.Projectile => Main.projectile[npc.AsV2NPC().TargetIndex],
 					_ => null,
 				};
 				npc.spriteDirection = npc.direction = (target.position.X >= npc.TrueCenter().X).ToDirectionInt();
@@ -312,8 +356,7 @@ namespace V2.NPCs.Vanilla.Sky
 			Vector2 Offset = new Vector2(-24, -12);
 			if (npc.direction == 1) Offset = new Vector2(-36, -12);
 
-            SpriteEffects val = npc.direction != 1 ? 0 : (SpriteEffects)1;
-            SpriteEffects spriteEffects = val;
+            SpriteEffects spriteEffects = npc.direction != 1 ? 0 : SpriteEffects.FlipHorizontally;
 
             int weightStage = npc.AsPred().GetVisualWeightStage.Invoke(npc);
             /*string weightString = "_Weight" + (weightStage == 0 ? "Base" : weightStage);

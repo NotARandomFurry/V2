@@ -63,6 +63,7 @@ namespace V2.NPCs
 		public float TargetRange { get; set; }
 		public bool TargetRequiresLineOfSight { get; set; }
 		public TargetType TargetType { get; set; }
+		public int TargetIndex { get; set; }
 		public TargetPriorityLevel TargetPriority { get; set; }
 
 		public bool IsTileEntity { get; set; }
@@ -77,13 +78,16 @@ namespace V2.NPCs
 		{
 			Gender = EntityGender.Other;
 
+			BehaviorPattern = null;
+
 			NewAIMethod = null;
 			FirstFrame = true;
 			FirstFramePreAIMethod = null;
 			TargetRange = 0f;
 			TargetRequiresLineOfSight = false;
 			TargetType = TargetType.None;
-			TargetPriority = TargetPriorityLevel.Neutral;
+			TargetIndex = -1;
+			TargetPriority = TargetPriorityLevel.None;
 
 			IsTileEntity = false;
 

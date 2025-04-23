@@ -68,8 +68,6 @@ namespace V2.PlayerHandling
 			}
 		}
 
-		public bool IsLayingOnTum { get; set; }
-		
 		private double _stomachache;
 		public double Stomachache
 		{
@@ -852,16 +850,6 @@ namespace V2.PlayerHandling
 			}
 		}
 
-		public override void ProcessTriggers(TriggersSet triggersSet)
-		{
-			// Only available in debug - not finished
-#if DEBUG
-			if (V2.LayOnBellyHotkey.JustPressed && this.Venomizeous)
-			{
-				this.IsLayingOnTum = !this.IsLayingOnTum;
-			}
-#endif
-		}
         public override void ModifyHitByProjectile(Projectile proj, ref Player.HurtModifiers modifiers)
         {
             if (Player.AsPred().FungalFairySetBonus)
@@ -888,12 +876,6 @@ namespace V2.PlayerHandling
 				float weightSpeedMult = 1.0f / (float)Math.Max(1.0, ((Player.AsPred().StomachWeight - 0.5) / 2.0) + 1.0);
 				Player.maxRunSpeed *= weightSpeedMult;
 				Player.accRunSpeed *= weightSpeedMult;
-			}
-
-			if (this.IsLayingOnTum)
-			{
-				Player.maxRunSpeed *= 0;
-				Player.runAcceleration *= 0;
 			}
 		}
 
@@ -1727,11 +1709,10 @@ namespace V2.PlayerHandling
 			{
 				return NetworkText.FromKey(
 					"Mods.V2.Death.DigestedPlayer.Paradox",
-					new { Player = prey.name }
+					prey.name
 				);
 			}
-			List<string> deathMessageKeyList =
-			[
+			List<string> deathMessageKeyList = [
 				"Mods.V2.Death.DigestedPlayer.Universal.1",
 				"Mods.V2.Death.DigestedPlayer.Universal.2",
 				"Mods.V2.Death.DigestedPlayer.Universal.3",
@@ -1757,8 +1738,7 @@ namespace V2.PlayerHandling
 			];
 			if (player.difficulty == PlayerDifficultyID.Hardcore)
 			{
-				deathMessageKeyList.AddRange(
-				[
+				deathMessageKeyList.AddRange([
 					"Mods.V2.Death.DigestedPlayer.Hardcore.1",
 					"Mods.V2.Death.DigestedPlayer.Hardcore.2",
 					"Mods.V2.Death.DigestedPlayer.Hardcore.3",
@@ -1769,11 +1749,8 @@ namespace V2.PlayerHandling
 
 			return NetworkText.FromKey(
 				finalDeathReasonKey,
-				new
-				{
-					Player = prey.name,
-					Pred = player.name
-				}
+				player.name,
+				V2.GetFooled ? npc.FullName : npc.GivenOrTypeName
 			);
 		}
 

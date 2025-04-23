@@ -19,10 +19,10 @@ namespace V2.NPCs.Vanilla.BloodMoon
 					public override string Texture => AnimSetSheet;
 
 					public override List<(int frame, int rawDelay)> Frames => [
-						( 0, 10 ),
-						( 1, 10 ),
-						( 2, 10 ),
-						( 3, 10 ),
+						( 0, 18 ),
+						( 1, 18 ),
+						( 2, 18 ),
+						( 3, 18 ),
 					];
 
 					public override Rectangle? DecideFrame() => new Rectangle(
@@ -38,10 +38,10 @@ namespace V2.NPCs.Vanilla.BloodMoon
 					public override string Texture => AnimSetSheet;
 
 					public override List<(int frame, int rawDelay)> Frames => [
-						( 0, 10 ),
-						( 1, 10 ),
-						( 2, 10 ),
-						( 3, 10 ),
+						( 0, 18 ),
+						( 1, 18 ),
+						( 2, 18 ),
+						( 3, 18 ),
 					];
 
 					public override Rectangle? DecideFrame() => new Rectangle(
@@ -57,10 +57,10 @@ namespace V2.NPCs.Vanilla.BloodMoon
 					public override string Texture => AnimSetSheet;
 
 					public override List<(int frame, int rawDelay)> Frames => [
-						( 0, 10 ),
-						( 1, 10 ),
-						( 2, 10 ),
-						( 3, 10 ),
+						( 0, 18 ),
+						( 1, 18 ),
+						( 2, 18 ),
+						( 3, 18 ),
 					];
 
 					public override Rectangle? DecideFrame() => new Rectangle(
@@ -76,10 +76,10 @@ namespace V2.NPCs.Vanilla.BloodMoon
 					public override string Texture => AnimSetSheet;
 
 					public override List<(int frame, int rawDelay)> Frames => [
-						( 0, 10 ),
-						( 1, 10 ),
-						( 2, 10 ),
-						( 3, 10 ),
+						( 0, 18 ),
+						( 1, 18 ),
+						( 2, 18 ),
+						( 3, 18 ),
 					];
 
 					public override Rectangle? DecideFrame() => new Rectangle(

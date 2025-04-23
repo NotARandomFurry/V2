@@ -651,11 +651,8 @@ namespace V2.Projectiles
 
 			return NetworkText.FromKey(
 				finalDeathReasonKey,
-				new
-				{
-					Player = player.name,
-					Pred = projectile.Name
-				}
+				player.name,
+				projectile.Name
 			);
 		}
 

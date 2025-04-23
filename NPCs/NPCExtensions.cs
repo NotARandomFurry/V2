@@ -66,7 +66,7 @@ namespace V2.NPCs
 			List<(int index, TargetType type, int aggro, float dist, TargetPriorityLevel priority)> targetList = [];
 			foreach (Player targetPlayer in Main.ActivePlayers)
 			{
-				if (targetPlayer.dead || targetPlayer.npcTypeNoAggro[npc.type] || targetPlayer.aggro <= -1000)
+				if (targetPlayer.dead || targetPlayer.npcTypeNoAggro[npc.type] || targetPlayer.aggro <= -1000 || targetPlayer.CurrentCaptor() is not null)
 					continue;
 
 				TargetPriorityLevel priority = TargetPriorityLevel.Neutral;
@@ -89,20 +89,20 @@ namespace V2.NPCs
 				if (!inSpecificWhitelist)
 					continue;
 
-				float distanceToTarget = npc.Distance(targetPlayer.TrueCenter());
+				float distanceToTarget = npc.Distance(targetPlayer.position);
 				float negativeAggroDistMult = 1f;
 				if (targetPlayer.aggro < 0)
 					negativeAggroDistMult -= (float)Math.Abs(targetPlayer.aggro) / 1000f;
 				bool canTarget = distanceToTarget <= npc.AsV2NPC().TargetRange * negativeAggroDistMult;
 				if (npc.AsV2NPC().TargetRequiresLineOfSight)
-					canTarget &= Collision.CanHitLine(npc.TrueCenter(), npc.width, npc.height, targetPlayer.TrueCenter(), targetPlayer.width, targetPlayer.height);
+					canTarget &= Collision.CanHitLine(npc.position, npc.width, npc.height, targetPlayer.position, targetPlayer.width, targetPlayer.height);
 
 				if (canTarget)
 					targetList.Add((targetPlayer.whoAmI, TargetType.Player, targetPlayer.aggro, distanceToTarget, priority));
 			}
 			foreach (NPC targetNPC in Main.ActiveNPCs)
 			{
-				if (targetNPC.life <= 0 || targetNPC.AsV2NPC().Aggro <= -1000)
+				if (targetNPC.life <= 0 || targetNPC.AsV2NPC().Aggro <= -1000 || targetNPC.CurrentCaptor() is not null)
 					continue;
 
 				TargetPriorityLevel priority = TargetPriorityLevel.Neutral;
@@ -125,20 +125,20 @@ namespace V2.NPCs
 				if (!inSpecificWhitelist)
 					continue;
 
-				float distanceToTarget = npc.Distance(targetNPC.TrueCenter());
+				float distanceToTarget = npc.Distance(targetNPC.position);
 				float negativeAggroDistMult = 1f;
 				if (targetNPC.AsV2NPC().Aggro < 0)
 					negativeAggroDistMult -= (float)Math.Abs(targetNPC.AsV2NPC().Aggro) / 1000f;
 				bool canTarget = distanceToTarget <= npc.AsV2NPC().TargetRange * negativeAggroDistMult;
 				if (npc.AsV2NPC().TargetRequiresLineOfSight)
-					canTarget &= Collision.CanHitLine(npc.TrueCenter(), npc.width, npc.height, targetNPC.TrueCenter(), targetNPC.width, targetNPC.height);
+					canTarget &= Collision.CanHitLine(npc.position, npc.width, npc.height, targetNPC.position, targetNPC.width, targetNPC.height);
 
 				if (canTarget)
 					targetList.Add((targetNPC.whoAmI, TargetType.NPC, targetNPC.AsV2NPC().Aggro, distanceToTarget, priority));
 			}
 			foreach (Projectile targetProjectile in Main.ActiveProjectiles)
 			{
-				if (targetProjectile.AsFood().Health <= 0 || targetProjectile.AsV2Proj().Aggro <= -1000)
+				if (targetProjectile.AsFood().Health <= 0 || targetProjectile.AsV2Proj().Aggro <= -1000 || targetProjectile.CurrentCaptor() is not null)
 					continue;
 
 				TargetPriorityLevel priority = TargetPriorityLevel.Neutral;
@@ -161,13 +161,13 @@ namespace V2.NPCs
 				if (!inSpecificWhitelist)
 					continue;
 
-				float distanceToTarget = npc.Distance(targetProjectile.TrueCenter());
+				float distanceToTarget = npc.Distance(targetProjectile.position);
 				float negativeAggroDistMult = 1f;
 				if (targetProjectile.AsV2Proj().Aggro < 0)
 					negativeAggroDistMult -= (float)Math.Abs(targetProjectile.AsV2Proj().Aggro) / 1000f;
 				bool canTarget = distanceToTarget <= npc.AsV2NPC().TargetRange * negativeAggroDistMult;
 				if (npc.AsV2NPC().TargetRequiresLineOfSight)
-					canTarget &= Collision.CanHitLine(npc.TrueCenter(), npc.width, npc.height, targetProjectile.TrueCenter(), targetProjectile.width, targetProjectile.height);
+					canTarget &= Collision.CanHitLine(npc.position, npc.width, npc.height, targetProjectile.position, targetProjectile.width, targetProjectile.height);
 
 				if (canTarget)
 					targetList.Add((targetProjectile.whoAmI, TargetType.Projectile, targetProjectile.AsV2Proj().Aggro, distanceToTarget, priority));
@@ -175,38 +175,40 @@ namespace V2.NPCs
 
 			if (targetList.Count > 0)
 			{
-				bool currentlyTargetingSomething = npc.target != -1 && npc.AsV2NPC().TargetType != TargetType.None && npc.AsV2NPC().TargetPriority != TargetPriorityLevel.None;
+				bool currentlyTargetingSomething = npc.AsV2NPC().TargetIndex != -1 && npc.AsV2NPC().TargetType != TargetType.None && npc.AsV2NPC().TargetPriority != TargetPriorityLevel.None;
 				targetList = new List<(int index, TargetType type, int aggro, float dist, TargetPriorityLevel priority)>(targetList.OrderByDescending(x => x.priority));
 				if (currentlyTargetingSomething && npc.AsV2NPC().TargetPriority >= targetList[0].priority)
 					return;
 
-				targetList.RemoveAll(x => x.priority < targetList[0].priority);
+				TargetPriorityLevel highestPriority = targetList[0].priority;
+				targetList.RemoveAll(x => x.priority < highestPriority);
 				targetList = new List<(int index, TargetType type, int aggro, float dist, TargetPriorityLevel priority)>(targetList.OrderByDescending(x => x.aggro));
 				if (currentlyTargetingSomething)
 				{
 					switch (npc.AsV2NPC().TargetType)
 					{
 						case TargetType.Player:
-							Player previousTargetPlayer = Main.player[npc.target];
+							Player previousTargetPlayer = Main.player[npc.AsV2NPC().TargetIndex];
 							if (previousTargetPlayer.aggro >= targetList[0].aggro)
 								return;
 							break;
 						case TargetType.NPC:
-							NPC previousTargetNPC = Main.npc[npc.target];
+							NPC previousTargetNPC = Main.npc[npc.AsV2NPC().TargetIndex];
 							if (previousTargetNPC.AsV2NPC().Aggro >= targetList[0].aggro)
 								return;
 							break;
 						case TargetType.Projectile:
-							Projectile previousTargetProjectile = Main.projectile[npc.target];
+							Projectile previousTargetProjectile = Main.projectile[npc.AsV2NPC().TargetIndex];
 							if (previousTargetProjectile.AsV2Proj().Aggro >= targetList[0].aggro)
 								return;
 							break;
 					}
 				}
 
-				targetList.RemoveAll(x => x.aggro < targetList[0].aggro);
+				int highestAggro = targetList[0].aggro;
+				targetList.RemoveAll(x => x.aggro < highestAggro);
 				targetList = new List<(int index, TargetType type, int aggro, float dist, TargetPriorityLevel priority)>(targetList.OrderBy(x => x.dist));
-				npc.target = targetList[0].index;
+				npc.AsV2NPC().TargetIndex = targetList[0].index;
 				npc.AsV2NPC().TargetType = targetList[0].type;
 				npc.AsV2NPC().TargetPriority = targetList[0].priority;
 			}
@@ -225,34 +227,46 @@ namespace V2.NPCs
 				}
 			}
 
-			if (npc.target != -1)
+			if (npc.AsV2NPC().TargetIndex != -1)
 			{
 				switch (npc.AsV2NPC().TargetType)
 				{
 					case TargetType.Player:
-						Player targetPlayer = Main.player[npc.target];
-						if (!targetPlayer.active || targetPlayer.dead || targetPlayer.CurrentCaptor() is not null || (npc.AsV2NPC().TargetRequiresLineOfSight && !Collision.CanHitLine(npc.TrueCenter(), npc.width, npc.height, targetPlayer.TrueCenter(), targetPlayer.width, targetPlayer.height)) || specificWhitelist.FindAll(x => x.Type == TargetType.Player).Count == 0)
+						Player targetPlayer = Main.player[npc.AsV2NPC().TargetIndex];
+						if (!targetPlayer.active
+						 || targetPlayer.dead
+						 || targetPlayer.CurrentCaptor() is not null
+						 || (npc.AsV2NPC().TargetRequiresLineOfSight && !Collision.CanHitLine(npc.position, npc.width, npc.height, targetPlayer.position, targetPlayer.width, targetPlayer.height))
+						 || specificWhitelist.FindAll(x => x.Type == TargetType.Player).Count == 0)
 						{
 							npc.AsV2NPC().TargetType = TargetType.None;
-							npc.target = -1;
+							npc.AsV2NPC().TargetIndex = -1;
 							npc.AsV2NPC().TargetPriority = TargetPriorityLevel.None;
 						}
 						break;
 					case TargetType.NPC:
-						NPC targetNPC = Main.npc[npc.target];
-						if (!targetNPC.active || targetNPC.life <= 0 || targetNPC.CurrentCaptor() is not null || (npc.AsV2NPC().TargetRequiresLineOfSight && !Collision.CanHitLine(npc.TrueCenter(), npc.width, npc.height, targetNPC.TrueCenter(), targetNPC.width, targetNPC.height)) || specificWhitelist.FindAll(x => x.Type == TargetType.NPC && x.ID == targetNPC.netID).Count == 0)
+						NPC targetNPC = Main.npc[npc.AsV2NPC().TargetIndex];
+						if (!targetNPC.active
+						 || targetNPC.life <= 0
+						 || targetNPC.CurrentCaptor() is not null
+						 || (npc.AsV2NPC().TargetRequiresLineOfSight && !Collision.CanHitLine(npc.position, npc.width, npc.height, targetNPC.position, targetNPC.width, targetNPC.height))
+						 || specificWhitelist.FindAll(x => x.Type == TargetType.NPC && x.ID == targetNPC.netID).Count == 0)
 						{
 							npc.AsV2NPC().TargetType = TargetType.None;
-							npc.target = -1;
+							npc.AsV2NPC().TargetIndex = -1;
 							npc.AsV2NPC().TargetPriority = TargetPriorityLevel.None;
 						}
 						break;
 					case TargetType.Projectile:
-						Projectile targetProjectile = Main.projectile[npc.target];
-						if (!targetProjectile.active || targetProjectile.AsFood().Health <= 0 || targetProjectile.CurrentCaptor() is not null || (npc.AsV2NPC().TargetRequiresLineOfSight && !Collision.CanHitLine(npc.TrueCenter(), npc.width, npc.height, targetProjectile.TrueCenter(), targetProjectile.width, targetProjectile.height)) || specificWhitelist.FindAll(x => x.Type == TargetType.Projectile && x.ID == targetProjectile.type).Count == 0)
+						Projectile targetProj = Main.projectile[npc.AsV2NPC().TargetIndex];
+						if (!targetProj.active
+						 || targetProj.AsFood().Health <= 0
+						 || targetProj.CurrentCaptor() is not null
+						 || (npc.AsV2NPC().TargetRequiresLineOfSight && !Collision.CanHitLine(npc.position, npc.width, npc.height, targetProj.position, targetProj.width, targetProj.height))
+						 || specificWhitelist.FindAll(x => x.Type == TargetType.Projectile && x.ID == targetProj.type).Count == 0)
 						{
 							npc.AsV2NPC().TargetType = TargetType.None;
-							npc.target = -1;
+							npc.AsV2NPC().TargetIndex = -1;
 							npc.AsV2NPC().TargetPriority = TargetPriorityLevel.None;
 						}
 						break;

@@ -55,8 +55,8 @@ namespace V2.Items.ItemGroupUtils
 			{ FurnitureMaterial.Marble,              ( 2.125, 1) },
 			{ FurnitureMaterial.Granite,             ( 2.215, 1) },
 			{ FurnitureMaterial.Sandstone,           ( 2.150, 0) },
-			{ FurnitureMaterial.Ice,              ( 0.950, 0) },
-			{ FurnitureMaterial.Coral,                ( 1.250, 0) },
+			{ FurnitureMaterial.Ice,                 ( 0.950, 0) },
+			{ FurnitureMaterial.Coral,               ( 1.250, 0) },
 			{ FurnitureMaterial.Golden,              ( 3.750, 2) },
 			{ FurnitureMaterial.Crystal,             ( 1.400, 1) },
 		};

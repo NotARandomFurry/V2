@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -17,6 +18,27 @@ namespace V2.NPCs.Vanilla.BloodMoon
 {
 	public static partial class TheBrideStuff
 	{
+		public static float GroundedAccel(NPC npc) => TheBride.GetVisualWeightStage(npc) switch
+		{
+			0 => Main.GameModeInfo.IsMasterMode ? 0.100f : (Main.GameModeInfo.IsExpertMode ? 0.075f : 0.050f),
+			1 => Main.GameModeInfo.IsMasterMode ? 0.080f : (Main.GameModeInfo.IsExpertMode ? 0.060f : 0.040f),
+			2 => Main.GameModeInfo.IsMasterMode ? 0.060f : (Main.GameModeInfo.IsExpertMode ? 0.045f : 0.030f),
+			_ => 0.07f,
+		};
+		public static float GroundedMaxSpeed(NPC npc) => TheBride.GetVisualWeightStage(npc) switch
+		{
+			0 => Main.GameModeInfo.IsMasterMode ? 1.250f : (Main.GameModeInfo.IsExpertMode ? 1.100f : 1.000f),
+			1 => Main.GameModeInfo.IsMasterMode ? 1.125f : (Main.GameModeInfo.IsExpertMode ? 0.990f : 0.900f),
+			2 => Main.GameModeInfo.IsMasterMode ? 1.000f : (Main.GameModeInfo.IsExpertMode ? 0.880f : 0.750f),
+			_ => 0.07f,
+		};
+		public static float InitJumpSpeed(NPC npc) => TheBride.GetVisualWeightStage(npc) switch
+		{
+			0 => Main.GameModeInfo.IsMasterMode ? 8.000f : (Main.GameModeInfo.IsExpertMode ? 7.000f : 6.000f),
+			1 => Main.GameModeInfo.IsMasterMode ? 6.400f : (Main.GameModeInfo.IsExpertMode ? 5.600f : 4.800f),
+			2 => Main.GameModeInfo.IsMasterMode ? 4.800f : (Main.GameModeInfo.IsExpertMode ? 4.200f : 3.600f),
+			_ => 0.07f,
+		};
 		public static class ItemTheftRules
 		{
 			public static ItemTheftRule WeddingVeil => new ItemTheftRule(
@@ -50,17 +72,21 @@ namespace V2.NPCs.Vanilla.BloodMoon
 		public override void SetDefaults(NPC npc)
 		{
 			npc.AsV2NPC().Gender = EntityGender.Female;
+
+			npc.aiStyle = -1;
 			npc.AsV2NPC().NewAIMethod = V2TheBrideAI;
+			npc.AsV2NPC().TargetRange = V2Utils.TileCountAsPixelCount(15.0);
+			npc.AsV2NPC().TargetRequiresLineOfSight = true;
 
 			npc.AsFood().DefinedBaseSize = 1.04;
-			npc.AsPred().MaxStomachCapacity = 1.7;
-			npc.AsPred().BaseStomachacheMeterCapacity = 120.0;
+			npc.AsPred().MaxStomachCapacity = 2.45;
+			npc.AsPred().BaseStomachacheMeterCapacity = 90.0;
 			npc.AsPred().GetStomachacheSootheRate = GetStomachacheSootheRate;
 
 			npc.AsPred().SmallGulps = Gulps.Short;
 			npc.AsPred().SmallGulpThreshold = 0.5;
 			npc.AsPred().BigGulps = Gulps.Standard;
-			npc.AsPred().MaxSwallowRange = V2Utils.TileCountAsPixelCount(4.7);
+			npc.AsPred().MaxSwallowRange = V2Utils.TileCountAsPixelCount(8.0);
 			npc.AsPred().CanBeForceFed = CanTheBrideBeForceFed;
 			npc.AsPred().OnForceFed = OnTheBrideForceFed;
 
@@ -83,6 +109,13 @@ namespace V2.NPCs.Vanilla.BloodMoon
 				TheBrideStuff.ItemTheftRules.WeddingVeil,
 				TheBrideStuff.ItemTheftRules.WeddingDress,
 			];
+		}
+
+		public override void OnSpawn(NPC npc, IEntitySource source)
+		{
+			npc.direction = Main.rand.NextBool().ToDirectionInt();
+			npc.target = -1;
+			npc.AsV2NPC().BehaviorPattern = Main.rand.NextBool() ? new TheBrideAI.AimlessWanderingWalking() : new TheBrideAI.AimlessWanderingStill();
 		}
 
 		public static double GetStomachacheSootheRate(NPC npc)
@@ -171,13 +204,14 @@ namespace V2.NPCs.Vanilla.BloodMoon
 		{
 			return Math.Min(
 				(int)Math.Floor(0.20 * Math.Sqrt(npc.AsPred().ExtraWeight)),
-				0
+				2
 			);
 		}
 
 		public override void FindFrame(NPC npc, int frameHeight)
 		{
 			npc.frame.Width = 150;
+			npc.spriteDirection = npc.direction;
 		}
 
 		public override void ModifyHoverBoundingBox(NPC npc, ref Rectangle boundingBox)

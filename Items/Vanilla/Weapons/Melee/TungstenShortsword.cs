@@ -18,6 +18,7 @@ namespace V2.Items.Vanilla.Weapons.Melee
 		{
 			item.AsFood().MaxHealth = 274;
 			item.AsFood().Size = 0.18;
+			item.AsFood().AcidResistTier = 2;
 
 			item.AsAnItem().StruggleDamageBaseMod = 2;
 
