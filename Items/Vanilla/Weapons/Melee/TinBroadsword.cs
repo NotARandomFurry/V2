@@ -13,8 +13,8 @@ namespace V2.Items.Vanilla.Weapons.Melee
 
 		public override void SetDefaults(Item item)
 		{
-			item.AsFood().MaxHealth = 255;
-			item.AsFood().Size = 0.54;
+			item.AsFood().MaxHealth = 180;
+			item.AsFood().Size = 0.44;
 			item.AsFood().AcidResistTier = 2;
 
 			item.AsTaggable().Broadsword = true;

@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace V2.Items.Vanilla.Placeables.Lamps
 {
-    internal class GraniteLamp : GlobalItem
+    public class GraniteLamp : GlobalItem
     {
         public override bool InstancePerEntity => true;
         public override bool AppliesToEntity(Item item, bool lateInstantiation) => item.type == ItemID.GraniteLamp;

@@ -16,7 +16,7 @@ namespace V2.Items.Vanilla.Weapons.Melee
 
 		public override void SetDefaults(Item item)
 		{
-			item.AsFood().MaxHealth = 85;
+			item.AsFood().MaxHealth = 150;
 			item.AsFood().Size = 0.18;
 			item.AsFood().AcidResistTier = 2;
 

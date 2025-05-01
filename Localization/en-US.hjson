@@ -51,14 +51,34 @@ Bestiary_FlavorText: {
 
 Mods: {
 	V2: {
-		CommonColorCodes: {
+		BasicColorCodes: {
+			White: FFFFFF
+			Black: 000000
+			LightGray: D3D3D3
+			Gray: 5A5A5A
+			Red: FF0000
+			Orange: FF5A00
+			Gold: FFD700
+			Yellow: FFFF00
+			Lime: 00FF00
+			Green: 007F00
+			Mint: 00FF7F
+			Aqua: 00FFFF
+			SkyBlue: 007FFF
+			Blue: 0000FF
+			Indigo: 4B0082
+			Magenta: FF00FF
+			Purple: 7F007F
+			Rose: FF007F
+		}
+		CommonColorCodes: { # some of these also work as aliases for specific colors
 			Heal: FF3F4F
 			ManaHeal: 31D1E2
-			DoSomething: 00FFFF
-			DealDamage: FFFF00
-			PositiveEffect: 5FFF5F
+			DoSomething: "{$Mods.V2.BasicColorCodes.Aqua}"
+			DealDamage: "{$Mods.V2.BasicColorCodes.Yellow}"
+			PositiveEffect: "{$Mods.V2.BasicColorCodes.Lime}"
 			NegativeEffect: FFBF5F
-			PositiveVoreEffect: 00BF00
+			PositiveVoreEffect: "{$Mods.V2.BasicColorCodes.Green}"
 			NegativeVoreEffect: BF5F00
 			ThomasCommentary: "960024"
 			VenomCommentary: 6D319E
@@ -2361,6 +2381,27 @@ Mods: {
 				}
 
 				Placeables: {
+					Bars: {
+						Copper: {
+							Short:
+								'''
+								A very sweet-tasting "gem"
+								'Pretty sappy, if you ask me'
+								{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+								'''
+							Long:
+								'''
+								Can be found commonly [c:]
+								'''
+							Flavor:
+								'''
+								Many people in old times assumed this was a gemstone. It's not! It's actually fossilized tree sap which found a home in desert regions, nestling in the remains of creatures from ages past.
+								While it IS possible to create amber through fairly simple means, most of these means have subsequently been heavily commercialized and privatized by the desserts industry. Why? It's simple!
+
+								Amber tastes very sweet. Sweet-tasting things are desserts to be enjoyed! And where there are desserts to be enjoyed...there's ALWAYS money to be made.
+								'''
+						}
+					}
 					Gems: {
 						Amber: {
 							Short:
@@ -2379,7 +2420,7 @@ Mods: {
 								Many people in old times assumed this was a gemstone. It's not! It's actually fossilized tree sap which found a home in desert regions, nestling in the remains of creatures from ages past.
 								While it IS possible to create amber through fairly simple means, most of these means have subsequently been heavily commercialized and privatized by the desserts industry. Why? It's simple!
 
-								Amber tastes very sweet. Sweet-tasting things are desserts to be enjoyed! And where there are desserts to be enjoyed...there's ALWAYS money to be made.
+								Amber tastes very sweet. Sweet-tasting things are desserts to be enjoyed! And where there are sweet-tasting desserts to be enjoyed...there's ALWAYS money to be made.
 								'''
 						}
 

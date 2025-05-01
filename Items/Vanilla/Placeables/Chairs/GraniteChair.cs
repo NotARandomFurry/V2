@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace V2.Items.Vanilla.Placeables.Chairs
 {
-    internal class GraniteChair : GlobalItem
+    public class GraniteChair : GlobalItem
     {
         public override bool InstancePerEntity => true;
         public override bool AppliesToEntity(Item item, bool lateInstantiation) => item.type == ItemID.GraniteChair;
