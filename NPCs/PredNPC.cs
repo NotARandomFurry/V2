@@ -682,7 +682,7 @@ namespace V2.NPCs
 				GetStomachTracker(pred).QueueNewPrey(prey);
 		}
 
-		public static NetworkText GetDigestedPlayerDeathReason(NPC npc, Player player)
+		public static NetworkText GetDigestedPlayerDeathReason(NPC npc, Player prey)
 		{
 			List<string> deathMessageKeyList = [
 				"Mods.V2.Death.DigestedPlayer.Universal.1",
@@ -738,12 +738,12 @@ namespace V2.NPCs
 			}
 
 			if (npc.AsPred().GetAdditionalDigestedPlayerMessages is not null)
-				npc.AsPred().GetAdditionalDigestedPlayerMessages.Invoke(npc, player, deathMessageKeyList);
+				npc.AsPred().GetAdditionalDigestedPlayerMessages.Invoke(npc, prey, deathMessageKeyList);
 			string finalDeathReasonKey = Main.rand.NextFromCollection(deathMessageKeyList);
 			
 			return NetworkText.FromKey(
 				finalDeathReasonKey,
-				player.name,
+				prey.name,
 				V2.GetFooled ? npc.FullName : npc.GivenOrTypeName
 			);
 		}

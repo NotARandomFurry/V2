@@ -497,16 +497,13 @@ namespace V2.PlayerHandling
 			{
 				if (TotalTimesDigested >= 20)
 				{
-					damageSource.SourceCustomReason = Language.GetTextValueWith(
+					damageSource.CustomReason = NetworkText.FromKey(
 						Main.rand.NextFromList(
 							"Mods.V2.Death.DrownedPlayer.GutSlut.1",
 							"Mods.V2.Death.DrownedPlayer.GutSlut.2",
 							"Mods.V2.Death.DrownedPlayer.GutSlut.3"
 						),
-						new
-						{
-							Player = Player.name
-						}
+						Player.name
 					);
 				}
 			}

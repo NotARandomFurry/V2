@@ -1736,7 +1736,7 @@ namespace V2.PlayerHandling
 				"Mods.V2.Death.DigestedPlayer.Universal.21",
 				"Mods.V2.Death.DigestedPlayer.Universal.22",
 			];
-			if (player.difficulty == PlayerDifficultyID.Hardcore)
+			if (prey.difficulty == PlayerDifficultyID.Hardcore)
 			{
 				deathMessageKeyList.AddRange([
 					"Mods.V2.Death.DigestedPlayer.Hardcore.1",
@@ -1749,8 +1749,8 @@ namespace V2.PlayerHandling
 
 			return NetworkText.FromKey(
 				finalDeathReasonKey,
-				player.name,
-				V2.GetFooled ? npc.FullName : npc.GivenOrTypeName
+				prey.name,
+				player.name
 			);
 		}
 
