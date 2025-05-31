@@ -71,7 +71,9 @@ Mods: {
 			Purple: 7F007F
 			Rose: FF007F
 		}
-		CommonColorCodes: { # some of these also work as aliases for specific colors
+
+		CommonColorCodes: {
+			# some of these also work as aliases for specific colors
 			Heal: FF3F4F
 			ManaHeal: 31D1E2
 			DoSomething: "{$Mods.V2.BasicColorCodes.Aqua}"
@@ -2391,10 +2393,7 @@ Mods: {
 								'Pretty sappy, if you ask me'
 								{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
 								'''
-							Long:
-								'''
-								Can be found commonly [c:]
-								'''
+							Long: Can be found commonly [c:]
 							Flavor:
 								'''
 								Many people in old times assumed this was a gemstone. It's not! It's actually fossilized tree sap which found a home in desert regions, nestling in the remains of creatures from ages past.
@@ -2404,6 +2403,7 @@ Mods: {
 								'''
 						}
 					}
+
 					Gems: {
 						Amber: {
 							Short:
@@ -4102,6 +4102,7 @@ Mods: {
 							'Turns out, it was filled with jam!'
 							'''
 					}
+
 					WellFed: {
 						Name: {
 							-1: Horrendously Filled
@@ -5089,10 +5090,12 @@ Mods: {
 				DisplayName: Enigma
 				Census.SpawnCondition: Find and free her from the Jungle's deeper caverns in Hardmode
 			}
+
 			Echo: {
 				DisplayName: Ghost
 				Census.SpawnCondition: Obtain and toss a Spirit Ball from Clover.
 			}
+
 			MyFairy_NPCEntity.DisplayName: my fairy
 			Dryadisque_NPCEntity.DisplayName: Dryad Painting
 			OversizedFairy.DisplayName: Oversized Fairy
@@ -5130,6 +5133,7 @@ Mods: {
 			ShroomiteDress.Tooltip: ""
 			MushroomHairpin.Tooltip: ""
 			FungalDress.Tooltip: ""
+
 			Spoon: {
 				DisplayName: Spoon
 				Tooltip: ""

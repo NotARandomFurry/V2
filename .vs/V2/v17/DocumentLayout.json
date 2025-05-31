@@ -1,57 +1,125 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\dolfi\\OneDrive\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\",
+  "WorkspaceRootPath": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|c:\\users\\dolfi\\onedrive\\documents\\my games\\terraria\\tmodloader\\modsources\\v2\\npcs\\voraria\\townnpcs\\enigma\\clover.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:npcs\\voraria\\townnpcs\\enigma\\clover.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|c:\\users\\dolfi\\onedrive\\documents\\github\\v2\\tiles\\voraria\\paintings\\myfairy.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:tiles\\voraria\\paintings\\myfairy.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|c:\\users\\dolfi\\onedrive\\documents\\my games\\terraria\\tmodloader\\modsources\\v2\\items\\voraria\\accessories\\transformations\\baelz\\becomebae.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:items\\voraria\\accessories\\transformations\\baelz\\becomebae.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|c:\\users\\dolfi\\onedrive\\documents\\github\\v2\\tiles\\vanilla\\sunflower.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:tiles\\vanilla\\sunflower.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|c:\\users\\dolfi\\onedrive\\documents\\my games\\terraria\\tmodloader\\modsources\\v2\\projectiles\\predprojectile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:projectiles\\predprojectile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|c:\\users\\dolfi\\onedrive\\documents\\my games\\terraria\\tmodloader\\modsources\\v2\\playerhandling\\predplayer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:playerhandling\\predplayer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|c:\\users\\dolfi\\onedrive\\documents\\my games\\terraria\\tmodloader\\modsources\\v2\\projectiles\\preyprojectile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:projectiles\\preyprojectile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|c:\\users\\dolfi\\onedrive\\documents\\my games\\terraria\\tmodloader\\modsources\\v2\\core\\voretracker.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:core\\voretracker.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|c:\\users\\dolfi\\onedrive\\documents\\my games\\terraria\\tmodloader\\modsources\\v2\\items\\voraria\\tools\\spoon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:items\\voraria\\tools\\spoon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|c:\\users\\dolfi\\onedrive\\documents\\my games\\terraria\\tmodloader\\modsources\\v2\\items\\voraria\\weapons\\ranged\\throwingdice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:items\\voraria\\weapons\\ranged\\throwingdice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|c:\\users\\dolfi\\onedrive\\documents\\my games\\terraria\\tmodloader\\modsources\\v2\\localization\\en-us.hjson||{8B382828-6202-11D1-8870-0000F87579D2}",
-      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:localization\\en-us.hjson||{8B382828-6202-11D1-8870-0000F87579D2}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|c:\\users\\dolfi\\onedrive\\documents\\my games\\terraria\\tmodloader\\modsources\\v2\\statuseffects\\voraria\\debuffs\\trance.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:statuseffects\\voraria\\debuffs\\trance.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|c:\\users\\dolfi\\onedrive\\documents\\my games\\terraria\\tmodloader\\modsources\\v2\\tiles\\vanilla\\relics\\empressoflightrelic.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|c:\\users\\dolfi\\onedrive\\documents\\github\\v2\\tiles\\vanilla\\relics\\empressoflightrelic.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:tiles\\vanilla\\relics\\empressoflightrelic.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|c:\\users\\dolfi\\onedrive\\documents\\my games\\terraria\\tmodloader\\modsources\\v2\\npcs\\voraria\\townnpcs\\succubus\\lucinda.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|c:\\users\\dolfi\\onedrive\\documents\\github\\v2\\projectiles\\voraria\\weapons\\summon\\shroomfairy.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:projectiles\\voraria\\weapons\\summon\\shroomfairy.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|c:\\users\\dolfi\\onedrive\\documents\\github\\v2\\playerhandling\\v2player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:playerhandling\\v2player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|c:\\users\\dolfi\\onedrive\\documents\\github\\v2\\playerhandling\\predplayer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:playerhandling\\predplayer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|c:\\users\\dolfi\\onedrive\\documents\\github\\v2\\playerhandling\\predplayer.bellydrawlayer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:playerhandling\\predplayer.bellydrawlayer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|c:\\users\\dolfi\\onedrive\\documents\\github\\v2\\npcs\\voraria\\townnpcs\\ghost\\echo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:npcs\\voraria\\townnpcs\\ghost\\echo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|c:\\users\\dolfi\\onedrive\\documents\\github\\v2\\items\\voraria\\consumables\\demoncandy.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:items\\voraria\\consumables\\demoncandy.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|c:\\users\\dolfi\\onedrive\\documents\\github\\v2\\ui\\strugglesystem\\strugglesystemui.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:ui\\strugglesystem\\strugglesystemui.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|c:\\users\\dolfi\\onedrive\\documents\\github\\v2\\items\\voraria\\armor\\shroomitefairyset.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:items\\voraria\\armor\\shroomitefairyset.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|c:\\users\\dolfi\\onedrive\\documents\\github\\v2\\items\\voraria\\armor\\fungalfairyset.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:items\\voraria\\armor\\fungalfairyset.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|c:\\users\\dolfi\\onedrive\\documents\\github\\v2\\items\\voraria\\accessories\\shroomnecklace.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:items\\voraria\\accessories\\shroomnecklace.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|c:\\users\\dolfi\\onedrive\\documents\\github\\v2\\npcs\\voraria\\mushroom\\oversizedfairy.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:npcs\\voraria\\mushroom\\oversizedfairy.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|c:\\users\\dolfi\\onedrive\\documents\\github\\v2\\npcs\\prednpc.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:npcs\\prednpc.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|c:\\users\\dolfi\\onedrive\\documents\\github\\v2\\items\\voraria\\accessories\\transformations\\beetransformation.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:items\\voraria\\accessories\\transformations\\beetransformation.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|c:\\users\\dolfi\\onedrive\\documents\\github\\v2\\npcs\\fatfuckmethods.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:npcs\\fatfuckmethods.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|c:\\users\\dolfi\\onedrive\\documents\\github\\v2\\items\\vanilla\\placeables\\lamps\\granitelamp.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:items\\vanilla\\placeables\\lamps\\granitelamp.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|c:\\users\\dolfi\\onedrive\\documents\\github\\v2\\items\\itemgrouputils\\dyes.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:items\\itemgrouputils\\dyes.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|c:\\users\\dolfi\\onedrive\\documents\\github\\v2\\npcs\\voraria\\townnpcs\\enigma\\clover.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:npcs\\voraria\\townnpcs\\enigma\\clover.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|c:\\users\\dolfi\\onedrive\\documents\\github\\v2\\items\\voraria\\accessories\\transformations\\baelz\\becomebae.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:items\\voraria\\accessories\\transformations\\baelz\\becomebae.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|c:\\users\\dolfi\\onedrive\\documents\\github\\v2\\projectiles\\predprojectile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:projectiles\\predprojectile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|c:\\users\\dolfi\\onedrive\\documents\\github\\v2\\projectiles\\preyprojectile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:projectiles\\preyprojectile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|c:\\users\\dolfi\\onedrive\\documents\\github\\v2\\core\\voretracker.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:core\\voretracker.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|c:\\users\\dolfi\\onedrive\\documents\\github\\v2\\items\\voraria\\tools\\spoon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:items\\voraria\\tools\\spoon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|c:\\users\\dolfi\\onedrive\\documents\\github\\v2\\items\\voraria\\weapons\\ranged\\throwingdice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:items\\voraria\\weapons\\ranged\\throwingdice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|c:\\users\\dolfi\\onedrive\\documents\\github\\v2\\localization\\en-us.hjson||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:localization\\en-us.hjson||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|c:\\users\\dolfi\\onedrive\\documents\\github\\v2\\statuseffects\\voraria\\debuffs\\trance.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:statuseffects\\voraria\\debuffs\\trance.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|c:\\users\\dolfi\\onedrive\\documents\\github\\v2\\npcs\\voraria\\townnpcs\\succubus\\lucinda.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:npcs\\voraria\\townnpcs\\succubus\\lucinda.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|c:\\users\\dolfi\\onedrive\\documents\\my games\\terraria\\tmodloader\\modsources\\v2\\playerhandling\\playerdetours.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|c:\\users\\dolfi\\onedrive\\documents\\github\\v2\\playerhandling\\playerdetours.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:playerhandling\\playerdetours.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
@@ -62,7 +130,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 5,
           "Children": [
             {
               "$type": "Bookmark",
@@ -86,11 +154,258 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "MyFairy.cs",
+              "DocumentMoniker": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\Tiles\\Voraria\\Paintings\\MyFairy.cs",
+              "RelativeDocumentMoniker": "Tiles\\Voraria\\Paintings\\MyFairy.cs",
+              "ToolTip": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\Tiles\\Voraria\\Paintings\\MyFairy.cs",
+              "RelativeToolTip": "Tiles\\Voraria\\Paintings\\MyFairy.cs",
+              "ViewState": "AQIAAJ8AAAAAAAAAAAAiwNsAAAAJAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-31T14:39:05.264Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 1,
+              "Title": "Sunflower.cs",
+              "DocumentMoniker": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\Tiles\\Vanilla\\Sunflower.cs",
+              "RelativeDocumentMoniker": "Tiles\\Vanilla\\Sunflower.cs",
+              "ToolTip": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\Tiles\\Vanilla\\Sunflower.cs",
+              "RelativeToolTip": "Tiles\\Vanilla\\Sunflower.cs",
+              "ViewState": "AQIAAJwAAAAAAAAAAAAkwB0AAAAuAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-31T14:37:57.693Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ShroomFairy.cs",
+              "DocumentMoniker": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\Projectiles\\Voraria\\Weapons\\Summon\\ShroomFairy.cs",
+              "RelativeDocumentMoniker": "Projectiles\\Voraria\\Weapons\\Summon\\ShroomFairy.cs",
+              "ToolTip": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\Projectiles\\Voraria\\Weapons\\Summon\\ShroomFairy.cs",
+              "RelativeToolTip": "Projectiles\\Voraria\\Weapons\\Summon\\ShroomFairy.cs",
+              "ViewState": "AQIAADECAAAAAAAAAAAgwEECAAAEAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-31T14:29:42.848Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "V2Player.cs",
+              "DocumentMoniker": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\PlayerHandling\\V2Player.cs",
+              "RelativeDocumentMoniker": "PlayerHandling\\V2Player.cs",
+              "ToolTip": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\PlayerHandling\\V2Player.cs",
+              "RelativeToolTip": "PlayerHandling\\V2Player.cs",
+              "ViewState": "AQIAADgBAAAAAAAAAAAwwDUBAAAlAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-31T14:26:31.016Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "PredPlayer.BellyDrawLayer.cs",
+              "DocumentMoniker": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\PlayerHandling\\PredPlayer.BellyDrawLayer.cs",
+              "RelativeDocumentMoniker": "PlayerHandling\\PredPlayer.BellyDrawLayer.cs",
+              "ToolTip": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\PlayerHandling\\PredPlayer.BellyDrawLayer.cs",
+              "RelativeToolTip": "PlayerHandling\\PredPlayer.BellyDrawLayer.cs",
+              "ViewState": "AQIAABIBAAAAAAAAAAAcwPcAAAAtAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-31T14:21:45.443Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Echo.cs",
+              "DocumentMoniker": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\NPCs\\Voraria\\TownNPCs\\Ghost\\Echo.cs",
+              "RelativeDocumentMoniker": "NPCs\\Voraria\\TownNPCs\\Ghost\\Echo.cs",
+              "ToolTip": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\NPCs\\Voraria\\TownNPCs\\Ghost\\Echo.cs",
+              "RelativeToolTip": "NPCs\\Voraria\\TownNPCs\\Ghost\\Echo.cs",
+              "ViewState": "AQIAACQBAAAAAAAAAADwv/wAAAAcAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-31T14:19:32.587Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "DemonCandy.cs",
+              "DocumentMoniker": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\Items\\Voraria\\Consumables\\DemonCandy.cs",
+              "RelativeDocumentMoniker": "Items\\Voraria\\Consumables\\DemonCandy.cs",
+              "ToolTip": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\Items\\Voraria\\Consumables\\DemonCandy.cs",
+              "RelativeToolTip": "Items\\Voraria\\Consumables\\DemonCandy.cs",
+              "ViewState": "AQIAACcAAAAAAAAAAAAmwD4AAABBAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-31T14:18:45.714Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "StruggleSystemUI.cs",
+              "DocumentMoniker": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\UI\\StruggleSystem\\StruggleSystemUI.cs",
+              "RelativeDocumentMoniker": "UI\\StruggleSystem\\StruggleSystemUI.cs",
+              "ToolTip": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\UI\\StruggleSystem\\StruggleSystemUI.cs",
+              "RelativeToolTip": "UI\\StruggleSystem\\StruggleSystemUI.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-31T14:18:29.112Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "ShroomiteFairySet.cs",
+              "DocumentMoniker": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\Items\\Voraria\\Armor\\ShroomiteFairySet.cs",
+              "RelativeDocumentMoniker": "Items\\Voraria\\Armor\\ShroomiteFairySet.cs",
+              "ToolTip": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\Items\\Voraria\\Armor\\ShroomiteFairySet.cs",
+              "RelativeToolTip": "Items\\Voraria\\Armor\\ShroomiteFairySet.cs",
+              "ViewState": "AQIAAGIAAAAAAAAAAAAowHUAAAAFAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-31T14:16:43.534Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "FungalFairySet.cs",
+              "DocumentMoniker": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\Items\\Voraria\\Armor\\FungalFairySet.cs",
+              "RelativeDocumentMoniker": "Items\\Voraria\\Armor\\FungalFairySet.cs",
+              "ToolTip": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\Items\\Voraria\\Armor\\FungalFairySet.cs",
+              "RelativeToolTip": "Items\\Voraria\\Armor\\FungalFairySet.cs",
+              "ViewState": "AQIAAFsAAAAAAAAAAAAQwHAAAAAFAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-31T14:15:08.21Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "EmpressOfLightRelic.cs",
+              "DocumentMoniker": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\Tiles\\Vanilla\\Relics\\EmpressOfLightRelic.cs",
+              "RelativeDocumentMoniker": "Tiles\\Vanilla\\Relics\\EmpressOfLightRelic.cs",
+              "ToolTip": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\Tiles\\Vanilla\\Relics\\EmpressOfLightRelic.cs",
+              "RelativeToolTip": "Tiles\\Vanilla\\Relics\\EmpressOfLightRelic.cs",
+              "ViewState": "AQIAAHkAAAAAAAAAAAAYwKYAAAAFAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-29T14:05:30.887Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "OversizedFairy.cs",
+              "DocumentMoniker": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\NPCs\\Voraria\\Mushroom\\OversizedFairy.cs",
+              "RelativeDocumentMoniker": "NPCs\\Voraria\\Mushroom\\OversizedFairy.cs",
+              "ToolTip": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\NPCs\\Voraria\\Mushroom\\OversizedFairy.cs",
+              "RelativeToolTip": "NPCs\\Voraria\\Mushroom\\OversizedFairy.cs",
+              "ViewState": "AQIAAFsAAAAAAAAAAAAzwGcAAAAjAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-31T14:12:23.738Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "PredNPC.cs",
+              "DocumentMoniker": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\NPCs\\PredNPC.cs",
+              "RelativeDocumentMoniker": "NPCs\\PredNPC.cs",
+              "ToolTip": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\NPCs\\PredNPC.cs",
+              "RelativeToolTip": "NPCs\\PredNPC.cs",
+              "ViewState": "AQIAAEsAAAAAAAAAAAAmwIcAAAAsAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-31T14:11:57.983Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "PredPlayer.cs",
+              "DocumentMoniker": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\PlayerHandling\\PredPlayer.cs",
+              "RelativeDocumentMoniker": "PlayerHandling\\PredPlayer.cs",
+              "ToolTip": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\PlayerHandling\\PredPlayer.cs",
+              "RelativeToolTip": "PlayerHandling\\PredPlayer.cs",
+              "ViewState": "AQIAAOEGAAAAAAAAAAAIwOsGAABMAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-30T08:37:57.393Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "FatFuckMethods.cs",
+              "DocumentMoniker": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\NPCs\\FatFuckMethods.cs",
+              "RelativeDocumentMoniker": "NPCs\\FatFuckMethods.cs",
+              "ToolTip": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\NPCs\\FatFuckMethods.cs",
+              "RelativeToolTip": "NPCs\\FatFuckMethods.cs",
+              "ViewState": "AQIAAIYAAAAAAAAAAAAIwKMAAABIAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-31T14:02:49.619Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "BeeTransformation.cs",
+              "DocumentMoniker": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\Items\\Voraria\\Accessories\\Transformations\\BeeTransformation.cs",
+              "RelativeDocumentMoniker": "Items\\Voraria\\Accessories\\Transformations\\BeeTransformation.cs",
+              "ToolTip": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\Items\\Voraria\\Accessories\\Transformations\\BeeTransformation.cs",
+              "RelativeToolTip": "Items\\Voraria\\Accessories\\Transformations\\BeeTransformation.cs",
+              "ViewState": "AQIAABIAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-31T14:02:02.121Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "ShroomNecklace.cs",
+              "DocumentMoniker": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\Items\\Voraria\\Accessories\\ShroomNecklace.cs",
+              "RelativeDocumentMoniker": "Items\\Voraria\\Accessories\\ShroomNecklace.cs",
+              "ToolTip": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\Items\\Voraria\\Accessories\\ShroomNecklace.cs",
+              "RelativeToolTip": "Items\\Voraria\\Accessories\\ShroomNecklace.cs",
+              "ViewState": "AQIAACwAAAAAAAAAAAAgwEQAAAApAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-31T14:01:25.988Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "GraniteLamp.cs",
+              "DocumentMoniker": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\Items\\Vanilla\\Placeables\\Lamps\\GraniteLamp.cs",
+              "RelativeDocumentMoniker": "Items\\Vanilla\\Placeables\\Lamps\\GraniteLamp.cs",
+              "ToolTip": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\Items\\Vanilla\\Placeables\\Lamps\\GraniteLamp.cs",
+              "RelativeToolTip": "Items\\Vanilla\\Placeables\\Lamps\\GraniteLamp.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-31T14:01:12.08Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "Dyes.cs",
+              "DocumentMoniker": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\Items\\ItemGroupUtils\\Dyes.cs",
+              "RelativeDocumentMoniker": "Items\\ItemGroupUtils\\Dyes.cs",
+              "ToolTip": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\Items\\ItemGroupUtils\\Dyes.cs",
+              "RelativeToolTip": "Items\\ItemGroupUtils\\Dyes.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAkAAAAYAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-31T14:00:21.94Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
               "Title": "BecomeBae.cs",
-              "DocumentMoniker": "C:\\Users\\dolfi\\OneDrive\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\Items\\Voraria\\Accessories\\Transformations\\Baelz\\BecomeBae.cs",
+              "DocumentMoniker": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\Items\\Voraria\\Accessories\\Transformations\\Baelz\\BecomeBae.cs",
               "RelativeDocumentMoniker": "Items\\Voraria\\Accessories\\Transformations\\Baelz\\BecomeBae.cs",
-              "ToolTip": "C:\\Users\\dolfi\\OneDrive\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\Items\\Voraria\\Accessories\\Transformations\\Baelz\\BecomeBae.cs",
+              "ToolTip": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\Items\\Voraria\\Accessories\\Transformations\\Baelz\\BecomeBae.cs",
               "RelativeToolTip": "Items\\Voraria\\Accessories\\Transformations\\Baelz\\BecomeBae.cs",
               "ViewState": "AQIAABUAAAAAAAAAAAAAAGsAAAAFAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -98,11 +413,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 19,
               "Title": "Clover.cs",
-              "DocumentMoniker": "C:\\Users\\dolfi\\OneDrive\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\NPCs\\Voraria\\TownNPCs\\Enigma\\Clover.cs",
+              "DocumentMoniker": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\NPCs\\Voraria\\TownNPCs\\Enigma\\Clover.cs",
               "RelativeDocumentMoniker": "NPCs\\Voraria\\TownNPCs\\Enigma\\Clover.cs",
-              "ToolTip": "C:\\Users\\dolfi\\OneDrive\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\NPCs\\Voraria\\TownNPCs\\Enigma\\Clover.cs",
+              "ToolTip": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\NPCs\\Voraria\\TownNPCs\\Enigma\\Clover.cs",
               "RelativeToolTip": "NPCs\\Voraria\\TownNPCs\\Enigma\\Clover.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAJ8BAABAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -111,11 +426,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 21,
               "Title": "PredProjectile.cs",
-              "DocumentMoniker": "C:\\Users\\dolfi\\OneDrive\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\Projectiles\\PredProjectile.cs",
+              "DocumentMoniker": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\Projectiles\\PredProjectile.cs",
               "RelativeDocumentMoniker": "Projectiles\\PredProjectile.cs",
-              "ToolTip": "C:\\Users\\dolfi\\OneDrive\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\Projectiles\\PredProjectile.cs",
+              "ToolTip": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\Projectiles\\PredProjectile.cs",
               "RelativeToolTip": "Projectiles\\PredProjectile.cs",
               "ViewState": "AQIAABkBAAAAAAAAAAAcwAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -123,11 +438,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 23,
               "Title": "VoreTracker.cs",
-              "DocumentMoniker": "C:\\Users\\dolfi\\OneDrive\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\Core\\VoreTracker.cs",
+              "DocumentMoniker": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\Core\\VoreTracker.cs",
               "RelativeDocumentMoniker": "Core\\VoreTracker.cs",
-              "ToolTip": "C:\\Users\\dolfi\\OneDrive\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\Core\\VoreTracker.cs",
+              "ToolTip": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\Core\\VoreTracker.cs",
               "RelativeToolTip": "Core\\VoreTracker.cs",
               "ViewState": "AQIAAFgDAAAAAAAAAAApwAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -135,23 +450,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "PredPlayer.cs",
-              "DocumentMoniker": "C:\\Users\\dolfi\\OneDrive\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\PlayerHandling\\PredPlayer.cs",
-              "RelativeDocumentMoniker": "PlayerHandling\\PredPlayer.cs",
-              "ToolTip": "C:\\Users\\dolfi\\OneDrive\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\PlayerHandling\\PredPlayer.cs",
-              "RelativeToolTip": "PlayerHandling\\PredPlayer.cs",
-              "ViewState": "AQIAABMFAAAAAAAAAAAcwD4FAAAGAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-30T08:37:57.393Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 22,
               "Title": "PreyProjectile.cs",
-              "DocumentMoniker": "C:\\Users\\dolfi\\OneDrive\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\Projectiles\\PreyProjectile.cs",
+              "DocumentMoniker": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\Projectiles\\PreyProjectile.cs",
               "RelativeDocumentMoniker": "Projectiles\\PreyProjectile.cs",
-              "ToolTip": "C:\\Users\\dolfi\\OneDrive\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\Projectiles\\PreyProjectile.cs",
+              "ToolTip": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\Projectiles\\PreyProjectile.cs",
               "RelativeToolTip": "Projectiles\\PreyProjectile.cs",
               "ViewState": "AQIAAEUAAAAAAAAAAAA0wEsAAAAiAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -159,11 +462,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 25,
               "Title": "ThrowingDice.cs",
-              "DocumentMoniker": "C:\\Users\\dolfi\\OneDrive\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\Items\\Voraria\\Weapons\\Ranged\\ThrowingDice.cs",
+              "DocumentMoniker": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\Items\\Voraria\\Weapons\\Ranged\\ThrowingDice.cs",
               "RelativeDocumentMoniker": "Items\\Voraria\\Weapons\\Ranged\\ThrowingDice.cs",
-              "ToolTip": "C:\\Users\\dolfi\\OneDrive\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\Items\\Voraria\\Weapons\\Ranged\\ThrowingDice.cs",
+              "ToolTip": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\Items\\Voraria\\Weapons\\Ranged\\ThrowingDice.cs",
               "RelativeToolTip": "Items\\Voraria\\Weapons\\Ranged\\ThrowingDice.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -171,11 +474,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 27,
               "Title": "Trance.cs",
-              "DocumentMoniker": "C:\\Users\\dolfi\\OneDrive\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\StatusEffects\\Voraria\\Debuffs\\Trance.cs",
+              "DocumentMoniker": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\StatusEffects\\Voraria\\Debuffs\\Trance.cs",
               "RelativeDocumentMoniker": "StatusEffects\\Voraria\\Debuffs\\Trance.cs",
-              "ToolTip": "C:\\Users\\dolfi\\OneDrive\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\StatusEffects\\Voraria\\Debuffs\\Trance.cs",
+              "ToolTip": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\StatusEffects\\Voraria\\Debuffs\\Trance.cs",
               "RelativeToolTip": "StatusEffects\\Voraria\\Debuffs\\Trance.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAB4AAAADAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -183,11 +486,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 24,
               "Title": "Spoon.cs",
-              "DocumentMoniker": "C:\\Users\\dolfi\\OneDrive\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\Items\\Voraria\\Tools\\Spoon.cs",
+              "DocumentMoniker": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\Items\\Voraria\\Tools\\Spoon.cs",
               "RelativeDocumentMoniker": "Items\\Voraria\\Tools\\Spoon.cs",
-              "ToolTip": "C:\\Users\\dolfi\\OneDrive\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\Items\\Voraria\\Tools\\Spoon.cs",
+              "ToolTip": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\Items\\Voraria\\Tools\\Spoon.cs",
               "RelativeToolTip": "Items\\Voraria\\Tools\\Spoon.cs",
               "ViewState": "AQIAAHMAAAAAAAAAAAAAwFkAAAAiAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -195,11 +498,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 26,
               "Title": "en-US.hjson",
-              "DocumentMoniker": "C:\\Users\\dolfi\\OneDrive\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\Localization\\en-US.hjson",
+              "DocumentMoniker": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\Localization\\en-US.hjson",
               "RelativeDocumentMoniker": "Localization\\en-US.hjson",
-              "ToolTip": "C:\\Users\\dolfi\\OneDrive\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\Localization\\en-US.hjson",
+              "ToolTip": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\Localization\\en-US.hjson",
               "RelativeToolTip": "Localization\\en-US.hjson",
               "ViewState": "AQIAAFQTAAAAAAAAAAAgwJASAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
@@ -207,11 +510,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 28,
               "Title": "Lucinda.cs",
-              "DocumentMoniker": "C:\\Users\\dolfi\\OneDrive\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\NPCs\\Voraria\\TownNPCs\\Succubus\\Lucinda.cs",
+              "DocumentMoniker": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\NPCs\\Voraria\\TownNPCs\\Succubus\\Lucinda.cs",
               "RelativeDocumentMoniker": "NPCs\\Voraria\\TownNPCs\\Succubus\\Lucinda.cs",
-              "ToolTip": "C:\\Users\\dolfi\\OneDrive\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\NPCs\\Voraria\\TownNPCs\\Succubus\\Lucinda.cs",
+              "ToolTip": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\NPCs\\Voraria\\TownNPCs\\Succubus\\Lucinda.cs",
               "RelativeToolTip": "NPCs\\Voraria\\TownNPCs\\Succubus\\Lucinda.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAABcAAAAnAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -219,23 +522,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "EmpressOfLightRelic.cs",
-              "DocumentMoniker": "C:\\Users\\dolfi\\OneDrive\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\Tiles\\Vanilla\\Relics\\EmpressOfLightRelic.cs",
-              "RelativeDocumentMoniker": "Tiles\\Vanilla\\Relics\\EmpressOfLightRelic.cs",
-              "ToolTip": "C:\\Users\\dolfi\\OneDrive\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\Tiles\\Vanilla\\Relics\\EmpressOfLightRelic.cs",
-              "RelativeToolTip": "Tiles\\Vanilla\\Relics\\EmpressOfLightRelic.cs",
-              "ViewState": "AQIAAHgAAAAAAAAAAAAAAJMAAABiAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-29T14:05:30.887Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 29,
               "Title": "PlayerDetours.cs",
-              "DocumentMoniker": "C:\\Users\\dolfi\\OneDrive\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\PlayerHandling\\PlayerDetours.cs",
+              "DocumentMoniker": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\PlayerHandling\\PlayerDetours.cs",
               "RelativeDocumentMoniker": "PlayerHandling\\PlayerDetours.cs",
-              "ToolTip": "C:\\Users\\dolfi\\OneDrive\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\PlayerHandling\\PlayerDetours.cs",
+              "ToolTip": "C:\\Users\\dolfi\\OneDrive\\Documents\\GitHub\\V2\\PlayerHandling\\PlayerDetours.cs",
               "RelativeToolTip": "PlayerHandling\\PlayerDetours.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",

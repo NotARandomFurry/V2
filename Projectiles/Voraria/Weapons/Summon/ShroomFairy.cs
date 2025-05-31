@@ -1,6 +1,13 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.ID;
+using Terraria;
+using Terraria.DataStructures;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.WorldBuilding;
@@ -8,11 +15,9 @@ using V2.Core;
 using V2.Items.Voraria;
 using V2.PlayerHandling;
 using V2.Items.Voraria.Consumables.Potions;
-using V2.PlayerHandling;
 using V2.Projectiles.Vanilla.Summons.Pets;
 using V2.Projectiles.Voraria.Pets;
 using V2.NPCs;
-using V2.PlayerHandling;
 using V2.Projectiles.Voraria.Weapons.Ranged.Throwables;
 using V2.Sounds.Vore;
 using V2.StatusEffects.Voraria.Buffs;
@@ -68,8 +73,6 @@ namespace V2.Projectiles.Voraria.Weapons.Summon
 			{
 				dust.active = false;
 			}
-
-			return false;
 		}
 	}
 	public class ShroomFairyBuff : ModBuff
