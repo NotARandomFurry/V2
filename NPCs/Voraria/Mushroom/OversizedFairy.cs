@@ -42,11 +42,13 @@ namespace V2.NPCs.Voraria.Mushroom
             NPC.value = 37500f;
             NPC.knockBackResist = 0f;
             NPC.noGravity = true;
-
+            NPC.AsV2NPC().CanBeDamagedByFallingPeople = false;
+            NPC.AsV2NPC().Gender = EntityGender.Female;
             NPC.AsFood().DefinedBaseSize = 50.5;
             NPC.AsPred().WeightGainRatio = 0;
             NPC.AsPred().MaxStomachCapacity = 25;
             NPC.AsPred().BaseStomachacheMeterCapacity = 1750.0;
+            NPC.AsFood().WellFedPower = 0.33;
 
             NPC.AsPred().DigestionType = EntityDigestionType.Acidic;
             NPC.AsPred().GetDigestionTickDamage = GetDigestionTickDamage;
@@ -82,7 +84,6 @@ namespace V2.NPCs.Voraria.Mushroom
         {
             bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
                 BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.UndergroundMushroom,
-
                 new FlavorTextBestiaryInfoElement("Mods.V2.Bestiary.Mushroom.OversizedFairy"),
             });
         }

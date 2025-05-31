@@ -40,7 +40,8 @@ namespace V2.NPCs.Voraria.Sky
 			NPC.value = 2500f;
 			NPC.noGravity = true;
 			NPC.AsFood().DefinedBaseSize = 10.0;
-			NPC.AsFood().OnDigestedBy += OnDigestedBy_GrantObserverGoal;
+            NPC.AsFood().WellFedPower = -0.1;
+            NPC.AsFood().OnDigestedBy += OnDigestedBy_GrantObserverGoal;
 		}
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
 		{
@@ -211,7 +212,8 @@ namespace V2.NPCs.Voraria.Sky
 			NPC.value = 2500f;
 			NPC.noGravity = true;
 			NPC.AsFood().DefinedBaseSize = 10.0;
-			NPC.AsFood().OnDigestedBy += ObserverRed.OnDigestedBy_GrantObserverGoal;
+            NPC.AsFood().WellFedPower = -0.1;
+            NPC.AsFood().OnDigestedBy += ObserverRed.OnDigestedBy_GrantObserverGoal;
 		}
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
 		{
@@ -377,7 +379,8 @@ namespace V2.NPCs.Voraria.Sky
 			NPC.value = 2500f;
 			NPC.noGravity = true;
 			NPC.AsFood().DefinedBaseSize = 10.0;
-			NPC.AsFood().OnDigestedBy += ObserverRed.OnDigestedBy_GrantObserverGoal;
+            NPC.AsFood().WellFedPower = -0.1;
+            NPC.AsFood().OnDigestedBy += ObserverRed.OnDigestedBy_GrantObserverGoal;
 		}
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
 		{

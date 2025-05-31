@@ -33,8 +33,9 @@ namespace V2.NPCs.Vanilla.Rain
 			npc.AsV2NPC().Gender = EntityGender.Other;
 
 			npc.AsFood().DefinedBaseSize = 0.6;
+            npc.AsFood().WellFedPower = 0.05;
 
-			npc.AsFood().OnDigestedBy = PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
+            npc.AsFood().OnDigestedBy = PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
 			npc.AsFood().OnDigestedBy += OnKilledByDigestion_GrantFlyingFishGoal;
 		}
 

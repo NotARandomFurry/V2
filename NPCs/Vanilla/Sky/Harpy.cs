@@ -340,8 +340,10 @@ namespace V2.NPCs.Vanilla.Sky
 		}
 
 		public override bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
-		{
-			if (npc.AsV2NPC().BehaviorPattern is HarpyAI.ChargingDiveBomb)
+        {
+            if (npc.CurrentCaptor() is not null)
+                return false;
+            if (npc.AsV2NPC().BehaviorPattern is HarpyAI.ChargingDiveBomb)
 			{
 				Entity target = npc.AsV2NPC().TargetType switch
 				{

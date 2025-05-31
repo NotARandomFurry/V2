@@ -77,11 +77,11 @@ namespace V2.NPCs.Voraria.TownNPCs.Enigma
 			Main.npcFrameCount[NPC.type] = 23;
 			NPCID.Sets.ExtraFramesCount[NPC.type] = 9;
 			NPCID.Sets.AttackFrameCount[NPC.type] = 4;
-			NPCID.Sets.DangerDetectRange[NPC.type] = 62;
+			NPCID.Sets.DangerDetectRange[NPC.type] = 66;
 			NPCID.Sets.AttackType[NPC.type] = 0;
 			NPCID.Sets.AttackTime[NPC.type] = 30;
 			NPCID.Sets.AttackAverageChance[NPC.type] = 1;
-			NPCID.Sets.HatOffsetY[NPC.type] = NPCID.Sets.HatOffsetY[BaseTownNPC];
+			NPCID.Sets.HatOffsetY[NPC.type] = -8;
 			NPCID.Sets.ImmuneToRegularBuffs[NPC.type] = true;
 
 			// Influences how the NPC looks in the Bestiary
@@ -137,8 +137,9 @@ namespace V2.NPCs.Voraria.TownNPCs.Enigma
 			NPC.AsPred().MaxStomachCapacity = 2.2;
 			NPC.AsPred().BaseStomachacheMeterCapacity = 90.0;
 			NPC.AsFood().StruggleEffectiveness = 1; //have fun
+            NPC.AsFood().WellFedPower = -7.77;
 
-			NPC.AsPred().SmallGulps = Gulps.Short;
+            NPC.AsPred().SmallGulps = Gulps.Short;
 			NPC.AsPred().SmallGulpThreshold = 0.45;
 			NPC.AsPred().BigGulps = Gulps.Standard;
 			NPC.AsPred().CanBeForceFed = CanEnigmaBeForceFed;
@@ -347,10 +348,7 @@ namespace V2.NPCs.Voraria.TownNPCs.Enigma
 				deathReasonKeyList.Add("Mods.V2.Death.DigestedPlayer.SpecificNPC.Townsfolk.Enigma.Hardcore");
 			}*/
 		}
-		public override bool UsesPartyHat()
-		{
-			return false;
-		}
+		public override bool UsesPartyHat() => true;
 		public override bool CanGoToStatue(bool toKingStatue) => !toKingStatue;
 
 		public override void TownNPCAttackStrength(ref int damage, ref float knockback)
@@ -377,9 +375,9 @@ namespace V2.NPCs.Voraria.TownNPCs.Enigma
 			randomOffset = 0f;
 		}
 
-		public static double GetDigestionTickRate(NPC npc, PreyData prey) => 1.8;
+		public static double GetDigestionTickRate(NPC npc, PreyData prey) => 0.8;
 
-		public static double GetDigestionTickDamage(NPC npc, PreyData prey) => 6;
+		public static double GetDigestionTickDamage(NPC npc, PreyData prey) => 2;
 
 		public static void OnDigestionKill(NPC npc, PreyData digestedPrey)
 		{
@@ -389,8 +387,7 @@ namespace V2.NPCs.Voraria.TownNPCs.Enigma
 		public static double GetPreyAbsorptionRate(NPC npc)
 		{
 			double baseAbsorptionRate = 1.0 / (double)V2Utils.SensibleTime(
-				minutes: 1,
-				seconds: 5
+				minutes: 7
 			);
 			return baseAbsorptionRate;
 		}
@@ -403,9 +400,21 @@ namespace V2.NPCs.Voraria.TownNPCs.Enigma
 			);
 		}
 
-		public override void FindFrame(int frameHeight)
+        public int LastWalkFrame = 0;
+
+        public override void FindFrame(int frameHeight)
 		{
 			NPC.frame.Width = 194;
+
+			if (NPC.ai[0] == 1)
+            {
+                int walkFrame = LastWalkFrame;
+                if (!Main.gamePaused)
+                {
+                    walkFrame = (int)(Main.GlobalTimeWrappedHourly * 8) % 6;
+                }
+                NPC.frame.Y = (walkFrame + 2) * NPC.frame.Height;
+            }
 		}
 
 		public override void ModifyHoverBoundingBox(ref Rectangle boundingBox)

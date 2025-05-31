@@ -19,7 +19,7 @@ namespace V2.Projectiles.Voraria
 
 		public override void SetDefaults()
 		{
-			Projectile.Size = new Vector2(18);
+			Projectile.Size = new Vector2(44);
 			Projectile.friendly = true;
 			Projectile.penetrate = -1;
 			Projectile.tileCollide = false;

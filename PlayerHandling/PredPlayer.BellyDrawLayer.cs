@@ -72,13 +72,12 @@ public class BellyDrawLayer : PlayerDrawLayer
                 Frame = 4;
                 break;
         }
-
         if ((player.ItemAnimationActive ||
-             player.inventory[player.selectedItem].holdStyle != ItemHoldStyleID.None) && Frame != 1)
+             player.HeldItem.holdStyle != ItemHoldStyleID.None) && Frame != 1)
             Frame = 0;
 
         if (player.sitting.isSitting) Frame = 2;
-        else if (player.sleeping.isSleeping) Frame = 1;
+        else if (player.sleeping.isSleeping || player.swimTime > 0) Frame = 1;
 
         return Frame;
     }
@@ -141,11 +140,7 @@ public class BellyDrawLayer : PlayerDrawLayer
         }
         else
         {
-            if (GetKingSlimeDigestionStage(player) > 0)
-            {
-
-            }
-            else DrawPlayerBelly(ref drawInfo, tumSize, getFrameForBelly(player));
+            DrawPlayerBelly(ref drawInfo, tumSize, getFrameForBelly(player));
         }
     }
 

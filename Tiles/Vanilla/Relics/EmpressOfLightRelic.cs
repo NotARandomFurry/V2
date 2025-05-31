@@ -103,15 +103,21 @@ namespace V2.Tiles.Vanilla.Relics
             // Since this tile does not have the hovering part on its sheet, we have to animate it ourselves
             // Therefore we register the top-left of the tile as a "special point"
             // This allows us to draw things in SpecialDraw
-            // if (drawData.tileFrameX % FrameWidth == 0 && drawData.tileFrameY % FrameHeight == 0)
-            // {
-            // Main.instance.TilesRenderer.AddSpecialLegacyPoint(i, j);
-            // }
+            if (drawData.tileFrameX % FrameWidth == 0 && drawData.tileFrameY % FrameHeight == 0)
+            {
+                Main.instance.TilesRenderer.AddSpecialPoint(i, j, Terraria.GameContent.Drawing.TileDrawing.TileCounterType.CustomNonSolid);
+            }
         }
-
-        public override bool PreDraw(int i, int j, SpriteBatch spriteBatch)
+        public override void SpecialDraw(int i, int j, SpriteBatch spriteBatch)
         {
-            Tile tile = Main.tile[i, j];
+            // Take the tile, check if it actually exists
+            Point p = new Point(i, j);
+            Tile tile = Main.tile[p.X, p.Y];
+            if (!tile.HasTile)
+            {
+                return;
+            }
+
             if (TileEntity.ByPosition.TryGetValue(new Point16(i, j), out TileEntity tileEntity))
             {
                 if (tileEntity is EmpressOfLightRelic_TileEntity)
@@ -120,31 +126,43 @@ namespace V2.Tiles.Vanilla.Relics
                     {
                         if (npc.active && (npc.position / 16).Distance(tileEntity.Position.ToVector2()) < 2f && npc.type == ModContent.ProjectileType<EmpressOfLightRelic_ProjectileEntity>())
                         {
-                            Point p = new Point(i, j);
-                            Texture2D value = RelicTexture.Value;
-                            int frameY = tile.TileFrameX / FrameWidth;
-                            bool flag = tile.TileFrameY / FrameHeight != 0;
+
+                            // Get the initial draw parameters
+                            Texture2D texture = RelicTexture.Value;
+
+                            int frameY = tile.TileFrameX / FrameWidth; // Picks the frame on the sheet based on the placeStyle of the item
                             int tumSize = EmpressOfLightRelic_ProjectileEntity.GetVisualBellySize(npc);
-                            Rectangle rectangle = new Rectangle(0, 88 * tumSize, 88, 84);
-                            Vector2 vector3 = p.ToWorldCoordinates(24f, 64f);
-                            float num3 = (float)Math.Sin((double)(Main.GlobalTimeWrappedHourly * 6.2831855f / 5f));
-                            Vector2 vector2 = vector3 + new Vector2(148f, 124f) + new Vector2(0f, num3 * 4f);
+                            Rectangle frame = new Rectangle(0, 88 * tumSize, 88, 84);
+
+                            Vector2 origin = frame.Size() / 2f;
+                            Vector2 worldPos = p.ToWorldCoordinates(24f, 64f);
+
                             Color color = Lighting.GetColor(p.X, p.Y);
-                            SpriteEffects effects = flag ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-                            Main.spriteBatch.Draw(value, vector2 - Main.screenPosition, new Rectangle?(rectangle), color, 0f, default, 1f, effects, 0f);
-                            float num4 = (float)Math.Sin((double)(Main.GlobalTimeWrappedHourly * 6.2831855f / 2f)) * 0.3f + 0.7f;
-                            Color color2 = color;
-                            color2.A = 0;
-                            color2 = color2 * 0.1f * num4;
-                            for (float num5 = 0f; num5 < 1f; num5 += 0.16666667f)
+
+                            bool direction = tile.TileFrameY / FrameHeight != 0; // This is related to the alternate tile data we registered before
+                            SpriteEffects effects = direction ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+
+                            // Some math magic to make it smoothly move up and down over time
+                            const float TwoPi = (float)Math.PI * 2f;
+                            float offset = (float)Math.Sin(Main.GlobalTimeWrappedHourly * TwoPi / 5f);
+                            Vector2 drawPos = worldPos - Main.screenPosition + new Vector2(0f, -30f) + new Vector2(0f, offset * 4f);
+
+                            // Draw the main texture
+                            spriteBatch.Draw(texture, drawPos, frame, color, 0f, origin, 1f, effects, 0f);
+
+                            // Draw the periodic glow effect
+                            float scale = (float)Math.Sin(Main.GlobalTimeWrappedHourly * TwoPi / 2f) * 0.3f + 0.7f;
+                            Color effectColor = color;
+                            effectColor.A = 0;
+                            effectColor = effectColor * 0.1f * scale;
+                            for (float num5 = 0f; num5 < 1f; num5 += 355f / (678f * (float)Math.PI))
                             {
-                                Main.spriteBatch.Draw(value, vector2 - Main.screenPosition + (6.2831855f * num5).ToRotationVector2() * (6f + num3 * 2f), new Rectangle?(rectangle), color2, 0f, default, 1f, effects, 0f);
+                                spriteBatch.Draw(texture, drawPos + (TwoPi * num5).ToRotationVector2() * (6f + offset * 2f), frame, effectColor, 0f, origin, 1f, effects, 0f);
                             }
                         }
                     }
                 }
             }
-            return true;
         }
     }
 

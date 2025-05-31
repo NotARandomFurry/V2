@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.WorldBuilding;
 using V2.Core;
@@ -22,8 +24,11 @@ namespace V2.Projectiles
 		public bool Digested { get; set; }
 
 		public double DefinedSize { get; set; }
-		public double MaxHealth { get; set; }
+        public double CalorieMultiplier { get; set; }
+        public double WellFedPower { get; set; }
+        public double MaxHealth { get; set; }
 		public double Health { get; set; }
+		public bool TakeDamageFromSwallow { get; set; }
 
 		public delegate void DelegateOnSwallowedBy(Projectile projectile, Entity pred);
 		public DelegateOnSwallowedBy OnSwallowedBy { get; set; }
@@ -68,8 +73,11 @@ namespace V2.Projectiles
 		public PreyProjectile()
 		{
 			DefinedSize = 0.0;
-			MaxHealth = -1;
+            CalorieMultiplier = 1;
+            WellFedPower = 0;
+            MaxHealth = -1;
 			Health = -1;
+			TakeDamageFromSwallow = true;
 			OnSwallowedBy = null;
 
 			SpecialPreyAI = null;

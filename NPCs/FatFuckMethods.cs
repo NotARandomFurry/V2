@@ -40,7 +40,7 @@ namespace V2.NPCs
         public static void DamageTiles(NPC npc, Rectangle Hitbox, int power = 0)
         {
             if (power < 25) return;
-            List<Point> tiles = Collision.GetTilesIn(Hitbox.BottomLeft() - new Vector2(2, -2), Hitbox.BottomRight() + new Vector2(2, 10));
+            List<Point> tiles = Collision.GetTilesIn(Hitbox.BottomLeft() - new Vector2(-2, -2), Hitbox.BottomRight() + new Vector2(2, 10));
             double tileCount = 0;
             foreach (var point in tiles)
             {
@@ -98,7 +98,8 @@ namespace V2.NPCs
                     if (player.Center.Y < Center.Y - (Height / 8) && player.Center.X < Center.X + (Width / 1.25) && player.Center.X > Center.X - (Width / 1.25))
                     {
                         player.RefreshMovementAbilities();
-                        if (player.velocity.Y > 2f) player.velocity.Y = player.velocity.Y * -0.95f;
+                        if (player.velocity.Y > 2f && (player.controlJump || player.controlUp)) player.velocity.Y = player.velocity.Y * -1.2f;
+                        else if (player.velocity.Y > 2f) player.velocity.Y = player.velocity.Y * -0.93f;
                         else player.velocity.Y = -2f;
                     }
                     else if (player.Center.Y >= Center.Y + (Height / 3) && player.Center.X < Center.X + (Width / 2.25) && player.Center.X > Center.X - (Width / 2.25))
@@ -154,10 +155,14 @@ namespace V2.NPCs
                     }
                     if (fallDamage > 0 && npc.velocity.Y > 2f && othernpc.Center.Y >= Center.Y + (Height / 3))
                     {
-                        NPC.HitInfo hitinfo = new NPC.HitInfo();
-                        hitinfo.Damage = (int)(fallDamage * (npc.velocity.Y - 1.5f));
-                        othernpc.StrikeNPC(hitinfo, false, false);
-                        NetMessage.SendStrikeNPC(othernpc, hitinfo);
+                        if (npc.AsV2NPC().FatassCrushingIFrames == 0)
+                        {
+                            npc.AsV2NPC().FatassCrushingIFrames = 60;
+                            NPC.HitInfo hitinfo = new NPC.HitInfo();
+                            hitinfo.Damage = (int)(fallDamage * (npc.velocity.Y - 1.5f));
+                            othernpc.StrikeNPC(hitinfo, false, false);
+                            NetMessage.SendStrikeNPC(othernpc, hitinfo);
+                        }
                     }
                 }
             }

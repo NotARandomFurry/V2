@@ -2,12 +2,15 @@ using Microsoft.Xna.Framework;
 using MonoMod.RuntimeDetour;
 using System.Reflection;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.GameContent.Biomes;
+using Terraria.Graphics.Renderers;
 using Terraria.ModLoader;
 using V2.Core;
 using V2.Core.MainDetours;
 using V2.Core.WorldGeneration;
 using V2.Items;
+using V2.Items.Voraria.Accessories.Transformations.Baelz;
 using V2.NPCs;
 using V2.NPCs.Vanilla.TownNPCs.TravellingMerchant;
 using V2.PlayerHandling;
@@ -214,11 +217,13 @@ namespace V2
 				if (!player.AsPred().InPredStatsMenu || Main.gamePaused)
 					orig(player);
 			};
-
+            On_Player.PickupItem += PlayerDetours.Detour_PickupItem;
+            On_Player.GrappleMovement += PlayerDetours.Detour_GrappleMovement;
 			On_DeadMansChestBiome.TurnGoldChestIntoDeadMansChest += (orig, instance, position) => WorldGenDetours.TurnGoldChestIntoDeadMansChest(position);
+            //On_HiveBiome.Place += (orig, self, origin, structures) => WorldGenDetours.HiveBiome_Place(self, origin, structures);
 		}
 
-		public static void DisengageVoraciousGameFuckery()
+        public static void DisengageVoraciousGameFuckery()
 		{
 			if (NPCLoader_NPCAI_Hook is not null)
 			{

@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using V2.Core;
 using V2.PlayerHandling;
-using V2.PlayerHandling.PredPlayerGoals.Amateur;
-using V2.PlayerHandling.PredPlayerGoals.Skilled;
+using V2.PlayerHandling.PredPlayerGoals.Intermediate;
 
 namespace V2.Items.ItemGroupUtils
 {
@@ -20,6 +20,15 @@ namespace V2.Items.ItemGroupUtils
 		{
 			item.AsFood().Size = 0.1;
 			item.AsFood().MaxHealth = 85;
-		}
-	}
+            item.AsFood().OnBreak += OnBreak;
+        }
+        public static bool OnBreak(Item item, Entity pred, bool direct)
+        {
+            if (pred is Player predPlayer && (item.type == ItemID.RainbowDye || item.type == ItemID.IntenseRainbowDye))
+            {
+                ModContent.GetInstance<EatRainbowDye>().TrySetCompletion(predPlayer);
+            }
+            return true;
+        }
+    }
 }

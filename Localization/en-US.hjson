@@ -83,6 +83,7 @@ Mods: {
 			ThomasCommentary: "960024"
 			VenomCommentary: 6D319E
 			CloverQuote: 55FF7D
+			DoLiterallyNothing: BDBDBD
 		}
 
 		Keybinds: {
@@ -1593,6 +1594,7 @@ Mods: {
 							FragileBottles: {
 								Honey: Fragile Bottle of Honey
 								HotSauce: Fragile Bottle of Scalding Sauce
+								Fungal: Fragile Bottle of Mysterious Spores
 							}
 						}
 					}
@@ -3957,6 +3959,10 @@ Mods: {
 			DoNotEatTheVileMushroom_ProjectileEntity.DisplayName: "'Do Not Eat The Vile Mushroom!'"
 			EmpressOfLightRelic_ProjectileEntity.DisplayName: Empress Of Light Relic
 			GraniteChair_ProjectileEntity.DisplayName: Granite Chair
+			ThrowingDice.DisplayName: Throwing Dice
+			Girthquake.DisplayName: Girthquake
+			FallingHitbox.DisplayName: Girth
+			SpoonProjectile.DisplayName: Spoon
 		}
 
 		InfoDisplayName.TallyCounterVore: Meal Count
@@ -4095,6 +4101,74 @@ Mods: {
 							[c/{$Mods.V2.CommonColorCodes.ManaHeal}:Increases mana regeneration] by [c/{$Mods.V2.CommonColorCodes.DoSomething}: 6 MP/sec] [c/7F7F7F:(Artificial)]
 							'Turns out, it was filled with jam!'
 							'''
+					}
+					WellFed: {
+						Name: {
+							-1: Horrendously Filled
+							0: ...Not Filled In A Good Nor Bad Way I Guess?
+							1: Well Fed
+							2: Plenty Satisfied
+							3: Exquisitely Stuffed
+						}
+
+						Description: {
+							Base: Eating proper & tasty food increases stats, while eating... 'suboptimal' objects may decrease stats.
+							StatChanges:
+								'''
+								{Damage} damage
+								{Defense} defense
+								{Critical} critical strike chance
+								{AttackSpeed} attack speed
+								{Knockback} knockback
+								{RunSpeed} movement speed
+								{MiningSpeed} mining speed
+								'''
+						}
+					}
+
+					BaelzTransformation: {
+						Name: {
+							0: Embodiment of Chaos
+							1: Embodiment of Chaos
+							2: Embodiment of Chaos..?
+							3: Embodiment of... Gluttony..?
+							4: Embodiment of... Gluttony..?
+							5: Embodiment of a Fatass
+							6: Embodiment of a Fatass
+							7: Embodiment of a FAT fuck, holy shit?
+						}
+
+						Description: {
+							Base: {
+								0: Just a silly rat girl up to no good!
+								1: Well, tum windows ARE supposed to show off your belly, although you could use a longer skirt...
+								2:
+									'''
+									Okay, your skirt just snapped off.
+									You should probably find a new one for when you lose some of this weight...
+									...
+									...you ARE planning on losing this weight, right?
+									'''
+								3: ...wait, is your empty stomach touching the ground?
+								4:
+									'''
+									On the bright side, your cup size is the biggest in Hololive now!
+									...along with about everything else.
+									'''
+								5: I think we went past the point of no return.
+								6: I think we went past the point of no return.
+								7: I think we went past the point of no return.
+							}
+
+							StatChanges:
+								'''
+								{Damage} damage
+								{Defense} defense
+								{Critical} critical strike chance
+								{AttackSpeed} attack speed
+								{RunSpeed} movement speed
+								'''
+						}
 					}
 				}
 
@@ -5015,13 +5089,14 @@ Mods: {
 				DisplayName: Enigma
 				Census.SpawnCondition: Find and free her from the Jungle's deeper caverns in Hardmode
 			}
-
 			Echo: {
 				DisplayName: Ghost
 				Census.SpawnCondition: Obtain and toss a Spirit Ball from Clover.
 			}
-
+			MyFairy_NPCEntity.DisplayName: my fairy
+			Dryadisque_NPCEntity.DisplayName: Dryad Painting
 			OversizedFairy.DisplayName: Oversized Fairy
+			JungleFairy.DisplayName: Jungle Fairy
 		}
 
 		ItemObtainmentDetails.Voraria.Accessories.Vanity.BalloonBelly: Mods.V2.ItemObtainmentDetails.Voraria.Accessories.Vanity.BalloonBelly
@@ -5055,6 +5130,15 @@ Mods: {
 			ShroomiteDress.Tooltip: ""
 			MushroomHairpin.Tooltip: ""
 			FungalDress.Tooltip: ""
+			Spoon: {
+				DisplayName: Spoon
+				Tooltip: ""
+			}
+
+			ThrowingDice: {
+				DisplayName: Throwing Dice
+				Tooltip: ""
+			}
 		}
 	}
 }

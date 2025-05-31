@@ -94,7 +94,6 @@ namespace V2.Tiles.Voraria.Paintings
                     return;
                 }
             }
-            //ill be honest i dont exactly know the grounds for the offset for the npc but i *think* its like, half of the X tiles and all Y tiles
             if (Main.netMode != NetmodeID.MultiplayerClient)
             {
                 int num = Projectile.NewProjectile(new EntitySource_TileEntity(this, null), new Vector2((int)(Position.X * 16) + 32, (int)(Position.Y * 16) + 32), Vector2.Zero, ModContent.ProjectileType<MyFairy_ProjectileEntity>(), 0, 0);

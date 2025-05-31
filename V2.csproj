@@ -12,6 +12,10 @@
     <None Remove="externallibs\**" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="Items\Voraria\Accessories\Transformations\BecomeBae_Wings.png" />
+    <None Remove="NPCs\Voraria\Jungle\FATFUCK.png" />
+  </ItemGroup>
+  <ItemGroup>
     <Folder Include="Gores\" />
   </ItemGroup>
   <ItemGroup>

@@ -1,15 +1,19 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using Terraria;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
+using Terraria.WorldBuilding;
 using V2.Core;
 using V2.Items.Voraria;
 using V2.PlayerHandling;
+using V2.Items.Voraria.Consumables.Potions;
+using V2.PlayerHandling;
+using V2.Projectiles.Vanilla.Summons.Pets;
+using V2.Projectiles.Voraria.Pets;
+using V2.NPCs;
+using V2.PlayerHandling;
+using V2.Projectiles.Voraria.Weapons.Ranged.Throwables;
 using V2.Sounds.Vore;
 using V2.StatusEffects.Voraria.Buffs;
 
@@ -55,18 +59,6 @@ namespace V2.Projectiles.Voraria.Weapons.Summon
 			dust.customData = 1f;
 			dust.alpha = 0;
 			if (Main.rand.NextBool(2)) dust.customData = -1f;
-		}
-		public override bool PreDraw(Dust dust)
-		{
-			Main.spriteBatch.Draw(Texture2D.Value, dust.position - Main.screenPosition, dust.frame, Color.FromNonPremultiplied(255, 255, 255, 255 - dust.alpha), dust.rotation, new Vector2(9, 9), 1f, SpriteEffects.None, 0f);
-			return false;
-		}
-		public override bool Update(Dust dust)
-		{
-			dust.position += dust.velocity;
-			dust.rotation += ((float)dust.customData / 5f);
-			dust.alpha += 5;
-			dust.velocity *= 0.1f;
 			dust.customData = (float)dust.customData * 0.95f;
 			float light = 0.01f * (255 - dust.alpha);
 
@@ -135,8 +127,7 @@ namespace V2.Projectiles.Voraria.Weapons.Summon
 
 	public class ShroomFairy : ModProjectile
 	{
-		public (Projectile, NPC) target = (null, null);
-
+		public (Projectile, NPC, Point) target = (null, null, Point.Zero);
 		public override void SetStaticDefaults()
 		{
 			Main.projFrames[Projectile.type] = 4;
@@ -165,8 +156,11 @@ namespace V2.Projectiles.Voraria.Weapons.Summon
 			Projectile.AsFood().DefinedSize = ShroomFairyStuff.Size;
 			Projectile.AsFood().MaxHealth = ShroomFairyStuff.MaxHealth;
 			Projectile.AsFood().Health = ShroomFairyStuff.MaxHealth;
+            Projectile.AsFood().CalorieMultiplier = 1.5;
 
-			Projectile.AsPred().MouthSoundRawOffset = new Vector2(0f, -14f);
+            Projectile.AsFood().TakeDamageFromSwallow = false;
+
+            Projectile.AsPred().MouthSoundRawOffset = new Vector2(0f, -14f);
 			Projectile.AsPred().SmallGulps = Gulps.Short;
 			Projectile.AsPred().SmallGulpThreshold = 0.1;
 			Projectile.AsPred().BigGulps = Gulps.Standard;
@@ -267,26 +261,26 @@ namespace V2.Projectiles.Voraria.Weapons.Summon
 		public override void OnSpawn(IEntitySource source)
 		{
 			DustEffect(Projectile);
-		}
-		public static void DustEffect(Projectile projectile)
+        }
+        public static void DustEffect(Projectile projectile)
 		{
-			Dust.NewDustDirect(projectile.Center - new Vector2(8, 8), 32, 32, ModContent.DustType<ShroomFairyDust>(), 0, 2f);
-			Dust.NewDustDirect(projectile.Center - new Vector2(8, 8), 32, 32, ModContent.DustType<ShroomFairyDust>(), 1.5f, 1.5f);
-			Dust.NewDustDirect(projectile.Center - new Vector2(8, 8), 32, 32, ModContent.DustType<ShroomFairyDust>(), 2f, 0);
-			Dust.NewDustDirect(projectile.Center - new Vector2(8, 8), 32, 32, ModContent.DustType<ShroomFairyDust>(), 1.5f, -1.5f);
-			Dust.NewDustDirect(projectile.Center - new Vector2(8, 8), 32, 32, ModContent.DustType<ShroomFairyDust>(), 0, -2f);
-			Dust.NewDustDirect(projectile.Center - new Vector2(8, 8), 32, 32, ModContent.DustType<ShroomFairyDust>(), -1.5f, -1.5f);
-			Dust.NewDustDirect(projectile.Center - new Vector2(8, 8), 32, 32, ModContent.DustType<ShroomFairyDust>(), -2f, 0);
-			Dust.NewDustDirect(projectile.Center - new Vector2(8, 8), 32, 32, ModContent.DustType<ShroomFairyDust>(), -1.5f, 1.5f);
-			Dust.NewDustPerfect(projectile.Center, ModContent.DustType<ShroomFairyDust2>(), Vector2.Zero);
-		}
+            Dust.NewDustDirect(projectile.Center - new Vector2(8, 8), 32, 32, ModContent.DustType<ShroomFairyDust>(), 0, 2f);
+            Dust.NewDustDirect(projectile.Center - new Vector2(8, 8), 32, 32, ModContent.DustType<ShroomFairyDust>(), 1.5f, 1.5f);
+            Dust.NewDustDirect(projectile.Center - new Vector2(8, 8), 32, 32, ModContent.DustType<ShroomFairyDust>(), 2f, 0);
+            Dust.NewDustDirect(projectile.Center - new Vector2(8, 8), 32, 32, ModContent.DustType<ShroomFairyDust>(), 1.5f, -1.5f);
+            Dust.NewDustDirect(projectile.Center - new Vector2(8, 8), 32, 32, ModContent.DustType<ShroomFairyDust>(), 0, -2f);
+            Dust.NewDustDirect(projectile.Center - new Vector2(8, 8), 32, 32, ModContent.DustType<ShroomFairyDust>(), -1.5f, -1.5f);
+            Dust.NewDustDirect(projectile.Center - new Vector2(8, 8), 32, 32, ModContent.DustType<ShroomFairyDust>(), -2f, 0);
+            Dust.NewDustDirect(projectile.Center - new Vector2(8, 8), 32, 32, ModContent.DustType<ShroomFairyDust>(), -1.5f, 1.5f);
+            Dust.NewDustPerfect(projectile.Center, ModContent.DustType<ShroomFairyDust2>(), Vector2.Zero);
+        }
 		public static Vector2 AnglePosition(int Count, int TotalCount)
 		{
 			Vector2 Angle = new Vector2(0, -1);
 			if (TotalCount > 1)
 			{
 				float multiplier = (float)Count / (float)(TotalCount - 1);
-				Angle = new Vector2(-1, 0);
+                Angle = new Vector2(-1, 0);
 				Angle = Angle.RotatedBy((180f * multiplier) * Math.PI / 180f);
 			}
 			return Angle;
@@ -310,7 +304,7 @@ namespace V2.Projectiles.Voraria.Weapons.Summon
 		public static bool IsFairyAtMaxCapacity(Projectile projectile)
 		{
 			return GetVisualBellySize(projectile) >= 3 + GetVisualWeightStage(projectile);
-		}
+        }
 		public override void AI()
 		{
 			Player owner = Main.player[Projectile.owner];
@@ -330,7 +324,7 @@ namespace V2.Projectiles.Voraria.Weapons.Summon
 				return;
 			}
 			if (Projectile.ai[1] > 0f) Projectile.ai[1] -= 1f;
-			target = (null, null);
+			target = (null, null, Point.Zero);
 			FindTarget(owner);
 			if (target.Item1 != null && Projectile.ai[1] <= 0f)
 			{
@@ -340,10 +334,10 @@ namespace V2.Projectiles.Voraria.Weapons.Summon
 			{
 				CHARGE(owner, target.Item2, SetSpeedMulti());
 			}
-			else Chill(owner, SetSpeedMulti());
-			if (Projectile.ai[0] == 0f && GetVisualWeightStage(Projectile) == 8)
+            else Chill(owner, SetSpeedMulti());
+			if (Projectile.ai[0] > 0f && GetVisualWeightStage(Projectile) == 8)
 			{
-				Projectile.ai[0] = 1f;
+				Projectile.ai[0] *= 1f;
 				if (Main.netMode != NetmodeID.MultiplayerClient)
 				{
 					Item.NewItem(Projectile.GetSource_FromAI(), new Vector2(Projectile.Center.X, Projectile.Center.Y), Vector2.One, ModContent.ItemType<MushroomToken>());
@@ -379,10 +373,12 @@ namespace V2.Projectiles.Voraria.Weapons.Summon
 		{
 			Projectile closestProj = null;
 			NPC closestNPC = null;
-			float projDistance = 99999f;
+            Point closestTile = Point.Zero;
+            float projDistance = 99999f;
 			float npcDistance = 99999f;
+            float tileDistance = 99999f;
 
-			List<(PreyType, int)> IgnoreThese = [
+            List<(PreyType, int)> IgnoreThese = [
 				(PreyType.Projectile, ProjectileID.LastPrismLaser),
 				(PreyType.Projectile, ProjectileID.RainCloudRaining),
 				(PreyType.Projectile, ProjectileID.RainCloudMoving),
@@ -394,7 +390,10 @@ namespace V2.Projectiles.Voraria.Weapons.Summon
 				(PreyType.Projectile, ProjectileID.TerrarianBeam),
 				(PreyType.Projectile, ProjectileID.MagnetSphereBall),
 				(PreyType.Projectile, ProjectileID.TinyEater),
-				];
+                (PreyType.Projectile, ModContent.ProjectileType<ThrowableFungalBottleProjectile>()),
+                (PreyType.Projectile, ModContent.ProjectileType<ThrowableHoneyBottleProjectile>()),
+                (PreyType.Projectile, ModContent.ProjectileType<ThrowableHotSauceBottleProjectile>()),
+                ];
 
 			List<(PreyType, int)> EdibleNPCs = [
 				(PreyType.NPC, NPCID.WaterSphere),
@@ -409,21 +408,64 @@ namespace V2.Projectiles.Voraria.Weapons.Summon
 				(PreyType.NPC, NPCID.BlazingWheel),
 				(PreyType.NPC, NPCID.SpikeBall),
 				(PreyType.NPC, NPCID.ChatteringTeethBomb),
-				];
+                (PreyType.NPC, NPCID.SolarFlare),
+                (PreyType.NPC, NPCID.SolarGoop),
+                (PreyType.NPC, NPCID.AncientLight),
+                (PreyType.NPC, NPCID.AncientDoom),
+                ];
 
+			List<(string, int)> EdibleTiles = [
+				(null, TileID.Spikes),
+                (null, TileID.WoodenSpikes),
+                (null, TileID.RollingCactus),
+                ];
 
-			foreach (var npc in Main.ActiveNPCs)
+            List<(string, int)> IgnoreTileIfThisIsAbove = [
+                (null, TileID.Trees),
+                (null, TileID.Cactus),
+                (null, TileID.RollingCactus),
+                (null, TileID.TreeAmber),
+                (null, TileID.TreeAsh),
+                (null, TileID.TreeAmethyst),
+                (null, TileID.TreeSapphire),
+                (null, TileID.TreeEmerald),
+                (null, TileID.TreeRuby),
+                (null, TileID.TreeDiamond),
+                (null, TileID.TreeTopaz),
+                (null, TileID.MushroomTrees),
+                (null, TileID.PalmTree),
+                (null, TileID.VanityTreeSakura),
+                (null, TileID.VanityTreeYellowWillow),
+                (null, TileID.Containers),
+                (null, TileID.Containers2),
+                (null, TileID.FakeContainers),
+                (null, TileID.FakeContainers2),
+                (null, TileID.Mannequin),
+                (null, TileID.Womannequin),
+                (null, TileID.TrashCan),
+                (null, TileID.Dressers),
+                (null, TileID.HatRack),
+                (null, TileID.DemonAltar),
+                (null, TileID.Bamboo),
+                ];
+
+            foreach (var npc in Main.ActiveNPCs)
 			{
 				if (npc.CurrentCaptor() is not null) continue;
-				if (npc.type == NPCID.WaterSphere || npc.type == NPCID.ChaosBall || npc.type == NPCID.ChaosBallTim || npc.type == NPCID.BurningSphere || npc.type == NPCID.VileSpit || npc.type == NPCID.VileSpitEaterOfWorlds)
-				{
-					float distance = npc.position.Distance(owner.position);
+                bool shouldIgnore = true;
+                foreach ((PreyType type, int ID) in EdibleNPCs)
+                {
+                    if (ID == npc.type || (npc.AsFood().TastyStrange && !npc.boss))
+                        shouldIgnore = false;
+                }
+                if (shouldIgnore)
+                    continue;
+                float distance = npc.position.Distance(owner.position);
 					if (distance < npcDistance)
 					{
 						closestNPC = npc;
 						npcDistance = distance;
 					}
-				}
 			}
 			foreach (var proj in Main.ActiveProjectiles)
 			{
@@ -446,11 +488,59 @@ namespace V2.Projectiles.Voraria.Weapons.Summon
 					}
 				}
 			}
-			if (projDistance > 320) closestProj = null;
+            Rectangle CheckingArea = new Rectangle((int)owner.Center.X - 128, (int)owner.Center.Y - 128, 256, 256);
+            List<Point> NearbyTiles = Collision.GetTilesIn(CheckingArea.TopLeft(), CheckingArea.BottomRight());
+            foreach (var point in NearbyTiles)
+            {
+                Tile tile = Framing.GetTileSafely(point);
+                if (tile.HasTile)
+                {
+                    bool shouldIgnore = true;
+                    foreach ((string nothin, int ID) in EdibleTiles)
+                    {
+                        if (ID == tile.TileType)
+                            shouldIgnore = false;
+                    }
+                    if (shouldIgnore)
+                        continue;
+                    Tile tile2 = Framing.GetTileSafely(point + new Point(0,-1));
+					if (tile2.HasTile)
+					{
+						foreach ((string nothin, int ID) in IgnoreTileIfThisIsAbove)
+						{
+							if (ID == tile2.TileType)
+								shouldIgnore = true;
+						}
+						if (shouldIgnore)
+							continue;
+					}
+                    Vector2 pointReal = new(point.X * 16, point.Y * 16);
+					float distance = pointReal.Distance(owner.position);
+					if (distance < tileDistance)
+					{
+						closestTile = point;
+						tileDistance = distance;
+					}
+                }
+            }
+            if (projDistance > 320) closestProj = null;
 			if (npcDistance > 320) closestNPC = null;
-			if (projDistance <= npcDistance) closestNPC = null;
-			else closestProj = null;
-			target = (closestProj, closestNPC);
+			if (tileDistance <= projDistance && tileDistance <= npcDistance)
+			{
+				closestProj = null;
+                closestNPC = null;
+            }
+            if (projDistance <= tileDistance && projDistance <= npcDistance)
+            {
+                closestTile = Point.Zero;
+                closestNPC = null;
+            }
+            if (npcDistance <= projDistance && npcDistance <= tileDistance)
+            {
+                closestProj = null;
+                closestTile = Point.Zero;
+            }
+			target = (closestProj, closestNPC, closestTile);
 		}
 		public bool CheckActive(Player owner)
 		{
@@ -486,24 +576,6 @@ namespace V2.Projectiles.Voraria.Weapons.Summon
 				Projectile.netUpdate = true;
 				DustEffect(Projectile);
 			}
-
-			//float overlapVelocity = 0.04f;
-
-			/*foreach (var proj in Main.ActiveProjectiles)
-			{
-                if (proj != Projectile && proj.active && proj.type != ModContent.ProjectileType<ShroomFairySpore>() && proj.CurrentCaptor() is null && proj.owner == Projectile.owner && Math.Abs(Projectile.position.X - proj.position.X) + Math.Abs(Projectile.position.Y - proj.position.Y) < Projectile.width)
-                {
-                    if (Projectile.position.X < proj.position.X)
-                        Projectile.velocity.X -= overlapVelocity;
-                    else
-                        Projectile.velocity.X += overlapVelocity;
-
-                    if (Projectile.position.Y < proj.position.Y)
-                        Projectile.velocity.Y -= overlapVelocity;
-                    else
-                        Projectile.velocity.Y += overlapVelocity;
-                }
-            }*/
 
 			if (!ateOwner)
 			{
@@ -553,7 +625,7 @@ namespace V2.Projectiles.Voraria.Weapons.Summon
 		}
 		public void CHARGE(Player owner, Entity target, float SpeedMulti)
 		{
-			if (!target.active)
+			if (!target.active || target.CurrentCaptor() is not null)
 				return;
 
 			float speed = 25f;
@@ -593,7 +665,56 @@ namespace V2.Projectiles.Voraria.Weapons.Summon
 				else Projectile.velocity.Y = Math.Clamp(Projectile.velocity.Y, -18, 18);
 			}
 		}
-		public void WaitOut(Player owner, float SpeedMulti)
+        public void CHARGE_Tile(Player owner, Point tilePoint, float SpeedMulti)
+        {
+            Tile target = Framing.GetTileSafely(tilePoint);
+            Vector2 GlobalPosition = new(tilePoint.X * 16, tilePoint.Y * 16);
+            if (!target.HasTile)
+                return;
+
+            float speed = 25f;
+            float inertia = 25f;
+            Vector2 direction = Projectile.position.DirectionTo(GlobalPosition);
+            direction.Normalize();
+            Vector2 direction2 = direction * 10f;
+            float distance = Projectile.position.Distance(GlobalPosition);
+            if (distance <= 180)
+            {
+                DustEffect(Projectile);
+
+                Dust.NewDustDirect(Projectile.Center - new Vector2(8, 8), 32, 32, ModContent.DustType<ShroomFairyDust>(), direction2.X, direction2.Y, 0, default, 1f);
+                Dust.NewDustDirect(Projectile.Center - new Vector2(8, 8), 32, 32, ModContent.DustType<ShroomFairyDust>(), direction2.X, direction2.Y, 0, default, 1.25f);
+                Dust.NewDustDirect(Projectile.Center - new Vector2(8, 8), 32, 32, ModContent.DustType<ShroomFairyDust>(), direction2.X, direction2.Y, 0, default, 1.5f);
+                Dust.NewDustDirect(Projectile.Center - new Vector2(8, 8), 32, 32, ModContent.DustType<ShroomFairyDust>(), direction2.X, direction2.Y, 0, default, 1.75f);
+                Dust.NewDustDirect(Projectile.Center - new Vector2(8, 8), 32, 32, ModContent.DustType<ShroomFairyDust>(), direction2.X, direction2.Y, 0, default, 2f);
+
+                Projectile.ai[1] = 8f / SpeedMulti;
+                Projectile.position = GlobalPosition;
+                int takenItem = TileBullshit.HelperMethods.PickItem(target);
+                if (Main.netMode != NetmodeID.MultiplayerClient && takenItem >= 0)
+				{
+					int DroppedItem = Item.NewItem(Projectile.GetSource_FromAI(), new Vector2(Projectile.Center.X, Projectile.Center.Y), Vector2.One, takenItem);
+					PredProjectile.Swallow(Projectile, Main.item[DroppedItem]);
+					WorldGen.KillTile(tilePoint.X, tilePoint.Y, false, false, true);
+				}
+                DustEffect(Projectile);
+            }
+            else
+            {
+                direction *= speed;
+                direction.X *= SpeedMulti;
+                if (direction.Y < 0)
+                {
+                    direction.Y *= SpeedMulti;
+                    direction.Y *= (SpeedMulti + 2) / 3;
+                }
+                Projectile.velocity = (Projectile.velocity * (inertia - 1) + direction) / inertia;
+                Projectile.velocity.X = Math.Clamp(Projectile.velocity.X, -18, 18);
+                if (!CheckForSolidFloor()) Projectile.velocity.Y = Math.Clamp(Projectile.velocity.Y, -18, 18) + (0.2f + -SpeedMulti / 5f);
+                else Projectile.velocity.Y = Math.Clamp(Projectile.velocity.Y, -18, 18);
+            }
+        }
+        public void WaitOut(Player owner, float SpeedMulti)
 		{
 			if (CheckForSolidFloor())
 			{

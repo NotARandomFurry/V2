@@ -49,7 +49,6 @@ namespace V2.Items.Voraria.Consumables
 				silver: 80
 			);
 		}
-
 		public override bool CanUseItem(Player player) => player.CurrentCaptor() is not null;
 
 		public override void UseAnimation(Player player)

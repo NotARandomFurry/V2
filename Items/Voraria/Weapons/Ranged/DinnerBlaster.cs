@@ -15,11 +15,11 @@ using V2.PlayerHandling;
 using V2.Projectiles.Voraria.Weapons.Summon;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
-using V2.PlayerHandling.PredPlayerGoals.Skilled;
+using V2.PlayerHandling.PredPlayerGoals.Amateur;
 
 namespace V2.Items.Voraria.Weapons.Ranged
 {
-    internal class DinnerBlaster : ModItem
+    public class DinnerBlaster : ModItem
     {
         public override bool IsLoadingEnabled(Mod mod) => !V2.GetFooled;
         public override void SetDefaults()
@@ -49,7 +49,7 @@ namespace V2.Items.Voraria.Weapons.Ranged
             );
         }
     }
-    internal class Burger : ModProjectile
+    public class Burger : ModProjectile
     {
         public override void SetDefaults()
         {

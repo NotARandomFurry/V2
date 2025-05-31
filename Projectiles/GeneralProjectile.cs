@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ModLoader;
 using V2.Core;
 using V2.NPCs;
@@ -26,8 +27,11 @@ namespace V2.Projectiles
 		public DelegateGetChat GetChat { get; set; }
 
 		public int Aggro { get; set; }
+		public float GrappleStrength { get; set; }
+        public float GrappleSpeed { get; set; }
 
-		public override bool InstancePerEntity => true;
+
+        public override bool InstancePerEntity => true;
 
 		public override bool AppliesToEntity(Projectile entity, bool lateInstantiation) => true;
 
@@ -40,9 +44,11 @@ namespace V2.Projectiles
 			GetChat = null;
 
 			Aggro = 0;
-		}
+			GrappleStrength = 0;
+            GrappleSpeed = 0;
+        }
 
-		public override bool PreDraw(Projectile projectile, ref Color lightColor)
+        public override bool PreDraw(Projectile projectile, ref Color lightColor)
 		{
 			if (projectile.CurrentCaptor() is not null)
 				return false;
