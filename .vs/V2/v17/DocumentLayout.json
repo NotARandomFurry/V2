@@ -1,13 +1,58 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\",
+  "WorkspaceRootPath": "C:\\Users\\dolfi\\OneDrive\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|e:\\documents\\my games\\terraria\\tmodloader\\modsources\\v2\\items\\voraria\\cheatitems\\venomdevitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:items\\voraria\\cheatitems\\venomdevitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|c:\\users\\dolfi\\onedrive\\documents\\my games\\terraria\\tmodloader\\modsources\\v2\\npcs\\voraria\\townnpcs\\enigma\\clover.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:npcs\\voraria\\townnpcs\\enigma\\clover.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\Games\\SteamApp\\steamapps\\common\\tModLoader\\tMLMod.targets||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|c:\\users\\dolfi\\onedrive\\documents\\my games\\terraria\\tmodloader\\modsources\\v2\\items\\voraria\\accessories\\transformations\\baelz\\becomebae.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:items\\voraria\\accessories\\transformations\\baelz\\becomebae.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|c:\\users\\dolfi\\onedrive\\documents\\my games\\terraria\\tmodloader\\modsources\\v2\\projectiles\\predprojectile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:projectiles\\predprojectile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|c:\\users\\dolfi\\onedrive\\documents\\my games\\terraria\\tmodloader\\modsources\\v2\\playerhandling\\predplayer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:playerhandling\\predplayer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|c:\\users\\dolfi\\onedrive\\documents\\my games\\terraria\\tmodloader\\modsources\\v2\\projectiles\\preyprojectile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:projectiles\\preyprojectile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|c:\\users\\dolfi\\onedrive\\documents\\my games\\terraria\\tmodloader\\modsources\\v2\\core\\voretracker.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:core\\voretracker.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|c:\\users\\dolfi\\onedrive\\documents\\my games\\terraria\\tmodloader\\modsources\\v2\\items\\voraria\\tools\\spoon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:items\\voraria\\tools\\spoon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|c:\\users\\dolfi\\onedrive\\documents\\my games\\terraria\\tmodloader\\modsources\\v2\\items\\voraria\\weapons\\ranged\\throwingdice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:items\\voraria\\weapons\\ranged\\throwingdice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|c:\\users\\dolfi\\onedrive\\documents\\my games\\terraria\\tmodloader\\modsources\\v2\\localization\\en-us.hjson||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:localization\\en-us.hjson||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|c:\\users\\dolfi\\onedrive\\documents\\my games\\terraria\\tmodloader\\modsources\\v2\\statuseffects\\voraria\\debuffs\\trance.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:statuseffects\\voraria\\debuffs\\trance.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|c:\\users\\dolfi\\onedrive\\documents\\my games\\terraria\\tmodloader\\modsources\\v2\\tiles\\vanilla\\relics\\empressoflightrelic.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:tiles\\vanilla\\relics\\empressoflightrelic.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|c:\\users\\dolfi\\onedrive\\documents\\my games\\terraria\\tmodloader\\modsources\\v2\\npcs\\voraria\\townnpcs\\succubus\\lucinda.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:npcs\\voraria\\townnpcs\\succubus\\lucinda.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|c:\\users\\dolfi\\onedrive\\documents\\my games\\terraria\\tmodloader\\modsources\\v2\\playerhandling\\playerdetours.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EC9753AD-8C80-4928-ABCA-C3E967AEF58D}|V2.csproj|solutionrelative:playerhandling\\playerdetours.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -17,8 +62,12 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 6,
           "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{e506b91c-c606-466a-90a9-123d1d1e12b3}"
+            },
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
@@ -38,26 +87,159 @@
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "tMLMod.targets",
-              "DocumentMoniker": "D:\\Games\\SteamApp\\steamapps\\common\\tModLoader\\tMLMod.targets",
-              "ToolTip": "D:\\Games\\SteamApp\\steamapps\\common\\tModLoader\\tMLMod.targets",
-              "ViewState": "AgIAAA4AAAAAAAAAAADwvykAAAACAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003801|",
-              "WhenOpened": "2024-11-26T23:41:52.895Z",
-              "EditorCaption": ""
+              "Title": "BecomeBae.cs",
+              "DocumentMoniker": "C:\\Users\\dolfi\\OneDrive\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\Items\\Voraria\\Accessories\\Transformations\\Baelz\\BecomeBae.cs",
+              "RelativeDocumentMoniker": "Items\\Voraria\\Accessories\\Transformations\\Baelz\\BecomeBae.cs",
+              "ToolTip": "C:\\Users\\dolfi\\OneDrive\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\Items\\Voraria\\Accessories\\Transformations\\Baelz\\BecomeBae.cs",
+              "RelativeToolTip": "Items\\Voraria\\Accessories\\Transformations\\Baelz\\BecomeBae.cs",
+              "ViewState": "AQIAABUAAAAAAAAAAAAAAGsAAAAFAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-30T20:06:24.588Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "VenomDevItem.cs",
-              "DocumentMoniker": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\Items\\Voraria\\CheatItems\\VenomDevItem.cs",
-              "RelativeDocumentMoniker": "Items\\Voraria\\CheatItems\\VenomDevItem.cs",
-              "ToolTip": "E:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\Items\\Voraria\\CheatItems\\VenomDevItem.cs",
-              "RelativeToolTip": "Items\\Voraria\\CheatItems\\VenomDevItem.cs",
-              "ViewState": "AgIAAAkAAAAAAAAAAAAAABQAAAAfAAAAAAAAAA==",
+              "Title": "Clover.cs",
+              "DocumentMoniker": "C:\\Users\\dolfi\\OneDrive\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\NPCs\\Voraria\\TownNPCs\\Enigma\\Clover.cs",
+              "RelativeDocumentMoniker": "NPCs\\Voraria\\TownNPCs\\Enigma\\Clover.cs",
+              "ToolTip": "C:\\Users\\dolfi\\OneDrive\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\NPCs\\Voraria\\TownNPCs\\Enigma\\Clover.cs",
+              "RelativeToolTip": "NPCs\\Voraria\\TownNPCs\\Enigma\\Clover.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAJ8BAABAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-26T17:38:54.874Z",
+              "WhenOpened": "2025-05-29T10:45:09.464Z",
               "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "PredProjectile.cs",
+              "DocumentMoniker": "C:\\Users\\dolfi\\OneDrive\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\Projectiles\\PredProjectile.cs",
+              "RelativeDocumentMoniker": "Projectiles\\PredProjectile.cs",
+              "ToolTip": "C:\\Users\\dolfi\\OneDrive\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\Projectiles\\PredProjectile.cs",
+              "RelativeToolTip": "Projectiles\\PredProjectile.cs",
+              "ViewState": "AQIAABkBAAAAAAAAAAAcwAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-30T08:47:51.001Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "VoreTracker.cs",
+              "DocumentMoniker": "C:\\Users\\dolfi\\OneDrive\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\Core\\VoreTracker.cs",
+              "RelativeDocumentMoniker": "Core\\VoreTracker.cs",
+              "ToolTip": "C:\\Users\\dolfi\\OneDrive\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\Core\\VoreTracker.cs",
+              "RelativeToolTip": "Core\\VoreTracker.cs",
+              "ViewState": "AQIAAFgDAAAAAAAAAAApwAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-30T08:39:24.325Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "PredPlayer.cs",
+              "DocumentMoniker": "C:\\Users\\dolfi\\OneDrive\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\PlayerHandling\\PredPlayer.cs",
+              "RelativeDocumentMoniker": "PlayerHandling\\PredPlayer.cs",
+              "ToolTip": "C:\\Users\\dolfi\\OneDrive\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\PlayerHandling\\PredPlayer.cs",
+              "RelativeToolTip": "PlayerHandling\\PredPlayer.cs",
+              "ViewState": "AQIAABMFAAAAAAAAAAAcwD4FAAAGAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-30T08:37:57.393Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "PreyProjectile.cs",
+              "DocumentMoniker": "C:\\Users\\dolfi\\OneDrive\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\Projectiles\\PreyProjectile.cs",
+              "RelativeDocumentMoniker": "Projectiles\\PreyProjectile.cs",
+              "ToolTip": "C:\\Users\\dolfi\\OneDrive\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\Projectiles\\PreyProjectile.cs",
+              "RelativeToolTip": "Projectiles\\PreyProjectile.cs",
+              "ViewState": "AQIAAEUAAAAAAAAAAAA0wEsAAAAiAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-30T08:37:15.74Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "ThrowingDice.cs",
+              "DocumentMoniker": "C:\\Users\\dolfi\\OneDrive\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\Items\\Voraria\\Weapons\\Ranged\\ThrowingDice.cs",
+              "RelativeDocumentMoniker": "Items\\Voraria\\Weapons\\Ranged\\ThrowingDice.cs",
+              "ToolTip": "C:\\Users\\dolfi\\OneDrive\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\Items\\Voraria\\Weapons\\Ranged\\ThrowingDice.cs",
+              "RelativeToolTip": "Items\\Voraria\\Weapons\\Ranged\\ThrowingDice.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-30T08:35:25.357Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "Trance.cs",
+              "DocumentMoniker": "C:\\Users\\dolfi\\OneDrive\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\StatusEffects\\Voraria\\Debuffs\\Trance.cs",
+              "RelativeDocumentMoniker": "StatusEffects\\Voraria\\Debuffs\\Trance.cs",
+              "ToolTip": "C:\\Users\\dolfi\\OneDrive\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\StatusEffects\\Voraria\\Debuffs\\Trance.cs",
+              "RelativeToolTip": "StatusEffects\\Voraria\\Debuffs\\Trance.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAB4AAAADAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-29T13:55:20.762Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Spoon.cs",
+              "DocumentMoniker": "C:\\Users\\dolfi\\OneDrive\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\Items\\Voraria\\Tools\\Spoon.cs",
+              "RelativeDocumentMoniker": "Items\\Voraria\\Tools\\Spoon.cs",
+              "ToolTip": "C:\\Users\\dolfi\\OneDrive\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\Items\\Voraria\\Tools\\Spoon.cs",
+              "RelativeToolTip": "Items\\Voraria\\Tools\\Spoon.cs",
+              "ViewState": "AQIAAHMAAAAAAAAAAAAAwFkAAAAiAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-29T13:48:16.473Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "en-US.hjson",
+              "DocumentMoniker": "C:\\Users\\dolfi\\OneDrive\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\Localization\\en-US.hjson",
+              "RelativeDocumentMoniker": "Localization\\en-US.hjson",
+              "ToolTip": "C:\\Users\\dolfi\\OneDrive\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\Localization\\en-US.hjson",
+              "RelativeToolTip": "Localization\\en-US.hjson",
+              "ViewState": "AQIAAFQTAAAAAAAAAAAgwJASAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2025-05-29T10:46:45.531Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "Lucinda.cs",
+              "DocumentMoniker": "C:\\Users\\dolfi\\OneDrive\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\NPCs\\Voraria\\TownNPCs\\Succubus\\Lucinda.cs",
+              "RelativeDocumentMoniker": "NPCs\\Voraria\\TownNPCs\\Succubus\\Lucinda.cs",
+              "ToolTip": "C:\\Users\\dolfi\\OneDrive\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\NPCs\\Voraria\\TownNPCs\\Succubus\\Lucinda.cs",
+              "RelativeToolTip": "NPCs\\Voraria\\TownNPCs\\Succubus\\Lucinda.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABcAAAAnAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-29T10:45:17.418Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "EmpressOfLightRelic.cs",
+              "DocumentMoniker": "C:\\Users\\dolfi\\OneDrive\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\Tiles\\Vanilla\\Relics\\EmpressOfLightRelic.cs",
+              "RelativeDocumentMoniker": "Tiles\\Vanilla\\Relics\\EmpressOfLightRelic.cs",
+              "ToolTip": "C:\\Users\\dolfi\\OneDrive\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\Tiles\\Vanilla\\Relics\\EmpressOfLightRelic.cs",
+              "RelativeToolTip": "Tiles\\Vanilla\\Relics\\EmpressOfLightRelic.cs",
+              "ViewState": "AQIAAHgAAAAAAAAAAAAAAJMAAABiAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-29T14:05:30.887Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "PlayerDetours.cs",
+              "DocumentMoniker": "C:\\Users\\dolfi\\OneDrive\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\PlayerHandling\\PlayerDetours.cs",
+              "RelativeDocumentMoniker": "PlayerHandling\\PlayerDetours.cs",
+              "ToolTip": "C:\\Users\\dolfi\\OneDrive\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\V2\\PlayerHandling\\PlayerDetours.cs",
+              "RelativeToolTip": "PlayerHandling\\PlayerDetours.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-29T06:18:55.306Z"
             }
           ]
         }

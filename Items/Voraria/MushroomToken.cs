@@ -1,11 +1,16 @@
 ﻿using System.Collections.Generic;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
+using V2.Core;
 using V2.Items.Voraria.Weapons.Summon;
+using V2.PlayerHandling.PredPlayerGoals.Amateur;
+using V2.Sounds.Vore;
+using V2.StatusEffects.Voraria.Buffs;
 
 namespace V2.Items.Voraria
 {
@@ -33,9 +38,21 @@ namespace V2.Items.Voraria
 			Item.value = Item.sellPrice(
                 gold: 5
             );
-		}
 
-		public override void ModifyTooltips(List<TooltipLine> tooltips)
+            Item.AsFood().MaxHealth = 500;
+            Item.AsFood().Size = 0.21;
+            Item.AsFood().OnBreak += OnBreak;
+        }
+        public static bool OnBreak(Item item, Entity pred, bool direct)
+        {
+            if (pred is Player predPlayer)
+            {
+                ModContent.GetInstance<EatFungalGift>().TrySetCompletion(predPlayer);
+            }
+            return true;
+        }
+
+        public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
 			tooltips.AddVorariaDynamicItemTooltip(
 				"Voraria.MushroomToken",

@@ -534,7 +534,28 @@ namespace V2.Projectiles
 									}
 								}
 								break;
-						}
+                            case PreyType.Item:
+                                Item preyItem = prey.Instance as Item;
+                                if (preyItem.IsAir)
+                                    break;
+
+                                bool shouldDigestItem = true;
+                                if (shouldDigestItem)
+                                {
+                                    prey.NoHealth = preyItem.TakeDigestionDamage(pred, digestionDamage);
+                                    if (ModContent.GetInstance<V2ServerConfig>().DebugChatMessages)
+                                        Main.NewText("Successfully dealt digestion damage to prey: " + preyItem.Name);
+                                    else if (ModContent.GetInstance<V2ServerConfig>().DebugChatMessages)
+                                        Main.NewText("Failed to deal digestion damage to prey: " + preyItem.Name);
+                                    if (prey.NoHealth)
+                                    {
+                                        if (pred.AsPred().OnDigestionKill is not null)
+                                            pred.AsPred().OnDigestionKill.Invoke(pred, prey);
+                                        PlayDigestionBelch(pred, prey);
+                                    }
+                                }
+                                break;
+                        }
 					}
 				}
 				else

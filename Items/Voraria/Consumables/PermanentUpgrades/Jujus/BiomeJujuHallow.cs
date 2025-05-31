@@ -15,12 +15,12 @@ namespace V2.Items.Voraria.Consumables.PermanentUpgrades.Jujus
 {
 	public class BiomeJujuHallow : ModItem
 	{
-		public override bool IsLoadingEnabled(Mod mod) => false;
+		public override bool IsLoadingEnabled(Mod mod) => !V2.GetFooled;
 		public override LocalizedText DisplayName => Language.GetText("Mods.V2.ItemName.Voraria.Consumables.PermanentUpgrades.Jujus.BiomeJujuHallow");
 		public override LocalizedText Tooltip => Language.GetText("Mods.V2.ItemTooltip.Voraria.Consumables.PermanentUpgrades.Jujus.BiomeJujuHallow.Short");
 
         public static int TUMBonus => 7;
-        public static int ABSBonus => 7;
+        public static int ABSBonus => 1000;
         public static int PermTUMBonus => 1;
         public static int PermABSBonus => 1;
 

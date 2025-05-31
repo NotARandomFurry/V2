@@ -90,7 +90,11 @@ namespace V2.UI.StruggleSystem
 				}
 				Vector2 notePosition = bottomCenter;
 				notePosition.X -= 16;
+<<<<<<< Updated upstream
 				notePosition.X += noteData.note.Lane switch
+=======
+				notePosition.X += noteData.note.Direction switch
+>>>>>>> Stashed changes
 				{
 					NoteLane.Up => -48,
 					NoteLane.Left => -24,
@@ -115,7 +119,11 @@ namespace V2.UI.StruggleSystem
 					26
 				);
 
+<<<<<<< Updated upstream
 				Texture2D noteTexture = noteData.note.Lane switch
+=======
+				Texture2D noteTexture = noteData.note.Direction switch
+>>>>>>> Stashed changes
 				{
 					NoteLane.Up => _struggleNoteUp.Value,
 					NoteLane.Left => _struggleNoteLeft.Value,

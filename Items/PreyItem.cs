@@ -45,7 +45,7 @@ namespace V2.Items
 		/// <returns>Whether or not the resulting digestion tick "kills" (depletes the durability of) the item.</returns>
 		public static bool TakeDigestionDamage(this Item item, Entity pred, double digestionDamage, bool direct = true, int indirectWhoAmI = -1)
 		{
-			int trueDigestionDamage = Main.DamageVar((float)digestionDamage);
+            int trueDigestionDamage = Main.DamageVar((float)digestionDamage);
 			if (ModContent.GetInstance<V2ServerConfig>().DefenseInDigestionCalcs)
 				trueDigestionDamage -= item.defense / 2;
 			if (trueDigestionDamage < 1)
@@ -134,14 +134,19 @@ namespace V2.Items
 			set => _health = Math.Min(value, MaxHealth);
 		}
 		public double Size { get; set; } = 0.0;
-		/// <summary>
-		/// The minimum acid tier required to digest (deal durability damage to) this item.<br/>
-		/// Defaults to 0, allowing all acids to churn and gurgle this item down into fat.<br/>
-		/// </summary>
-		public int AcidResistTier { get; set; } = 0;
+		public double CalorieMultiplier { get; set; } = 1;
+		public double WellFedPower { get; set; } = 0;
+        /// <summary>
+        /// The minimum acid tier required to digest (deal durability damage to) this item.<br/>
+        /// Defaults to 0, allowing all acids to churn and gurgle this item down into fat.<br/>
+        /// </summary>
+        public int AcidResistTier { get; set; } = 0;
 		public string MealSizeTextOverride { get; set; } = null;
 
-		public delegate void DelegateOnSwallow(Item item, Entity pred);
+        public delegate bool DelegatePreSwallow(Item item, Entity pred);
+        public DelegatePreSwallow PreSwallow { get; set; } = null;
+
+        public delegate void DelegateOnSwallow(Item item, Entity pred);
 		public DelegateOnSwallow OnSwallow { get; set; } = null;
 		public int OnSwallowDamage { get; set; } = 0;
 		public string OnSwallowDeathReason { get; set; } = null;

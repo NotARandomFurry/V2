@@ -15,6 +15,7 @@ using V2.Items;
 using V2.NPCs;
 using V2.PlayerHandling;
 using V2.Projectiles;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace V2.Core
 {
@@ -818,7 +819,9 @@ namespace V2.Core
 		public double InitialWeight { get; set; }
 		public double InitialSize { get; set; }
 		public double WeightLeftToDigest { get; set; }
-		public double SizeLeftToDigest => WeightLeftToDigest / InitialWeight * InitialSize;
+        public double CalorieMultiplier { get; set; }
+        public double WellFedPower { get; set; }
+        public double SizeLeftToDigest => WeightLeftToDigest / InitialWeight * InitialSize;
 		public StruggleChart AssignedStruggleChart { get; set; }
 
 		public int timeSpentInStomach;
@@ -839,12 +842,14 @@ namespace V2.Core
 		/// <param name="exactType"></param>
 		/// <param name="weightRemainingIfDead"></param>
 		/// <returns></returns>
-		public static PreyData NewData(PreyType type, int exactType, string name, double weightRemainingIfDead = -1)
+		public static PreyData NewData(PreyType type, int exactType, string name, double weightRemainingIfDead = -1, double calmul = 1.0, double fedadd = 0.0)
 		{
 			PreyData data = new PreyData();
 			data.Type = type;
 			data.ExactType = exactType;
 			data.Name = name;
+			data.CalorieMultiplier = calmul;
+			data.WellFedPower = fedadd;
 			if (weightRemainingIfDead != -1)
 			{
 				data.WeightLeftToDigest = weightRemainingIfDead;
@@ -869,7 +874,23 @@ namespace V2.Core
 				LiquidID.Shimmer => "Shimmer",
 				_ => "Some Other Liquid",
 			};
-			data.WeightLeftToDigest = liquidAmount;
+            data.CalorieMultiplier = liquidType switch
+            {
+                LiquidID.Water => 0.1,
+                LiquidID.Lava => 3,
+                LiquidID.Honey => 1.5,
+                LiquidID.Shimmer => -1.5,
+                _ => 0.1,
+            };
+            data.WellFedPower = liquidType switch
+            {
+                LiquidID.Water => 0,
+                LiquidID.Lava => 0.1,
+                LiquidID.Honey => 0.3,
+                LiquidID.Shimmer => -3,
+                _ => 0,
+            };
+            data.WeightLeftToDigest = liquidAmount;
 			return data;
 		}
 
@@ -888,7 +909,23 @@ namespace V2.Core
 				LiquidID.Shimmer => "Shimmer",
 				_ => "Some Other Liquid",
 			};
-			data.WeightLeftToDigest = liquidAmount;
+            data.CalorieMultiplier = liquidType switch
+            {
+                LiquidID.Water => 0.1,
+                LiquidID.Lava => 3,
+                LiquidID.Honey => 1.5,
+                LiquidID.Shimmer => -1.5,
+                _ => 0.1,
+            };
+            data.WellFedPower = liquidType switch
+            {
+                LiquidID.Water => 0,
+                LiquidID.Lava => 0.1,
+                LiquidID.Honey => 0.3,
+                LiquidID.Shimmer => -3,
+                _ => 0,
+            };
+            data.WeightLeftToDigest = liquidAmount;
 			return data;
 		}
 
@@ -905,7 +942,8 @@ namespace V2.Core
 				PreyData data = NewData(
 					type: PreyType.Player,
 					exactType: 0,
-					name: "Player " + preyPlayer.name
+					name: "Player " + preyPlayer.name,
+					calmul: 1
 				);
 				data.Instance = preyPlayer;
 				if (tracker is not null)
@@ -918,8 +956,10 @@ namespace V2.Core
 				PreyData data = NewData(
 					type: PreyType.NPC,
 					exactType: preyNPC.type,
-					name: preyNPC.GivenOrTypeName
-				);
+					name: preyNPC.GivenOrTypeName,
+                    calmul: preyNPC.AsFood().CalorieMultiplier,
+                    fedadd: preyNPC.AsFood().WellFedPower
+                );
 				data.Instance = preyNPC;
 				if (tracker is not null)
 					data.ConnectedTracker = tracker;
@@ -931,8 +971,10 @@ namespace V2.Core
 				PreyData data = NewData(
 					type: PreyType.Projectile,
 					exactType: preyProjectile.type,
-					name: preyProjectile.Name
-				);
+					name: preyProjectile.Name,
+                    calmul: preyProjectile.AsFood().CalorieMultiplier,
+                    fedadd: preyProjectile.AsFood().WellFedPower
+                );
 				data.Instance = preyProjectile;
 				if (tracker is not null)
 					data.ConnectedTracker = tracker;
@@ -944,8 +986,10 @@ namespace V2.Core
 				PreyData data = NewData(
 					type: PreyType.Item,
 					exactType: preyItem.type,
-					name: preyItem.AffixName()
-				);
+					name: preyItem.AffixName(),
+                    calmul: preyItem.AsFood().CalorieMultiplier,
+                    fedadd: preyItem.AsFood().WellFedPower
+                );
 				data.Instance = preyItem;
 				if (tracker is not null)
 					data.ConnectedTracker = tracker;
@@ -1016,6 +1060,7 @@ namespace V2.Core
 						AssignedStruggleChart.ForPredator = false;
 						AssignedStruggleChart.OnStartup();
 					}
+					CalorieMultiplier = preyNPC.AsFood().CalorieMultiplier;
 					return;
 				case PreyType.Projectile:
 					if (Instance is null || Instance is not Projectile preyProjectile)
@@ -1036,8 +1081,9 @@ namespace V2.Core
 						AssignedStruggleChart.ConnectedTracker = ConnectedTracker;
 						AssignedStruggleChart.ForPredator = false;
 						AssignedStruggleChart.OnStartup();
-					}
-					return;
+                    }
+                    CalorieMultiplier = preyProjectile.AsFood().CalorieMultiplier;
+                    return;
 				case PreyType.Item:
 					if (Instance is null || Instance is not Item preyItem)
 						break;
@@ -1045,7 +1091,8 @@ namespace V2.Core
 					ExactType = preyItem.type;
 					InitialWeight = InitialSize = WeightLeftToDigest = preyItem.CalculateSnackSize();
 					UpdateInStomach += preyItem.AsFood().UpdateInStomach;
-					return;
+                    CalorieMultiplier = preyItem.AsFood().CalorieMultiplier;
+                    return;
 				case PreyType.Liquid:
 					if (Instance is not null)
 						Instance = null;
@@ -1088,9 +1135,25 @@ namespace V2.Core
 				LiquidID.Lava => "Lava",
 				LiquidID.Honey => "Honey",
 				LiquidID.Shimmer => "Shimmer",
-				_ => "Some Other Liquid",
+                _ => "Some Other Liquid",
 			};
-			InitialWeight = InitialSize = WeightLeftToDigest = liquidAmountReal;
+            CalorieMultiplier = liquidType switch
+            {
+                LiquidID.Water => 0.1,
+                LiquidID.Lava => 3,
+                LiquidID.Honey => 1.5,
+                LiquidID.Shimmer => -1.5,
+                _ => 0.1,
+            };
+            WellFedPower = liquidType switch
+            {
+                LiquidID.Water => 0,
+                LiquidID.Lava => 0.1,
+                LiquidID.Honey => 0.3,
+                LiquidID.Shimmer => -3,
+                _ => 0,
+            };
+            InitialWeight = InitialSize = WeightLeftToDigest = liquidAmountReal;
 		}
 
 		public PreyData(int liquidType, double liquidAmount)
@@ -1107,7 +1170,23 @@ namespace V2.Core
 				LiquidID.Shimmer => "Shimmer",
 				_ => "Some Other Liquid",
 			};
-			InitialWeight = InitialSize = WeightLeftToDigest = liquidAmount;
+            CalorieMultiplier = liquidType switch
+            {
+                LiquidID.Water => 0.1,
+                LiquidID.Lava => 3,
+                LiquidID.Honey => 1.5,
+                LiquidID.Shimmer => -1,
+                _ => 0.1,
+            };
+            WellFedPower = liquidType switch
+            {
+                LiquidID.Water => 0,
+                LiquidID.Lava => 0.1,
+                LiquidID.Honey => 0.3,
+                LiquidID.Shimmer => -3,
+                _ => 0,
+            };
+            InitialWeight = InitialSize = WeightLeftToDigest = liquidAmount;
 		}
 
 		/// <summary>
@@ -1120,7 +1199,14 @@ namespace V2.Core
 		{
 			double initialSize = NewData(preyEntity).InitialSize;
 			if (preyEntity is Player preyPlayer)
-				return initialSize + preyPlayer.AsPred().StomachFullness;
+            {
+                double actualSize = preyPlayer.AsPred().StomachFullness;
+				if (preyPlayer.AsV2Player().BaeTransformation)
+				{
+                    actualSize += preyPlayer.AsPred().BaeTransformation_ExtraWeight;
+				}
+                return initialSize + actualSize;
+            }
 			if (preyEntity is NPC preyNPC)
 				return initialSize + preyNPC.AsPred().ExtraWeight + PredNPC.GetCurrentBellyWeight(preyNPC);
 			if (preyEntity is Projectile preyProjectile)

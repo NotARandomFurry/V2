@@ -184,7 +184,10 @@ namespace V2.Tiles.Paintings
 =======
         public override void SaveData(TagCompound tag)
         {
-            tag.Add("ExtraWeight", connectedNPC.AsPred().ExtraWeight);
+            if (connectedNPC != null)
+            {
+                tag.Add("ExtraWeight", connectedNPC.AsPred().ExtraWeight);
+            }
         }
 
         public override void LoadData(TagCompound tag)

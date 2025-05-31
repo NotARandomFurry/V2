@@ -23,7 +23,11 @@ namespace V2.Core.StruggleSystem
 			RandomNoteSpan = new List<StruggleChartNote[]>();
 			if (ConnectedTracker is null)
 				return;
+<<<<<<< Updated upstream
 
+=======
+			float DifficultyCoeff = 1f;
+>>>>>>> Stashed changes
 			int notesAdded = 0;
 			for (int i = 0; i < MaxRandomNoteSpanLength; i++)
 			{

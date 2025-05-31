@@ -16,7 +16,7 @@ using V2.PlayerHandling;
 using V2.Projectiles;
 using V2.Sounds.Vore;
 
-namespace V2.Mounts
+namespace V2.Items.Voraria.Accessories.Transformations
 {
     public class BeeTransformationBuff : ModBuff
     {
@@ -130,17 +130,32 @@ namespace V2.Mounts
         protected override void Draw(ref PlayerDrawSet drawInfo)
         {
             var player = drawInfo.drawPlayer;
+<<<<<<< Updated upstream:Mounts/BeeTransformation.cs
             if (player.mount.Active && player.mount.Type == ModContent.MountType<BeeTransformation>())
+=======
+            int walkFrame = (int)(Main.GlobalTimeWrappedHourly * 6) % 2;
+            if (walkFrame == 1) walkFrame = 1;
+            else walkFrame = 2;
+            bool isActuallyMoving = player.IsAirborne() || player.velocity.X != 0;
+            if (player.AsV2Player().BeeTransformation == true)
+>>>>>>> Stashed changes:Items/Voraria/Accessories/Transformations/BeeTransformation.cs
             {
                 var tumSize = Math.Min((int)Math.Floor(player.AsPred().StomachSize / 2f), BeeTransformation.MaxTumSize);
                 var weightSize = BeeTransformation.GetVisualWeightStage(player);
                 Vector2 pos = new Vector2((int)(drawInfo.Position.X - Main.screenPosition.X - 20), (int)(drawInfo.Position.Y - Main.screenPosition.Y - 14));
+<<<<<<< Updated upstream:Mounts/BeeTransformation.cs
                 Texture2D BeeBody = ModContent.Request<Texture2D>("V2/Mounts/BeeBody_Weight" + weightSize).Value;
                 Rectangle sourceRect = new Rectangle(tumSize * BeeBody.Width / 5, player.mount._frame * (BeeBody.Height / 3), BeeBody.Width / 5, BeeBody.Height / 3);
+=======
+                Texture2D BeeBody = ModContent.Request<Texture2D>("V2/Items/Voraria/Accessories/Transformations/BeeBody_Weight" + weightSize).Value;
+                Rectangle sourceRect = Rectangle.Empty;
+                if (isActuallyMoving) sourceRect = new Rectangle(tumSize * BeeBody.Width / 5, BeeBody.Height / 3 * walkFrame, BeeBody.Width / 5, BeeBody.Height / 3);
+                else sourceRect = new Rectangle(tumSize * BeeBody.Width / 5, 0, BeeBody.Width / 5, BeeBody.Height / 3);
+>>>>>>> Stashed changes:Items/Voraria/Accessories/Transformations/BeeTransformation.cs
                 DrawData actualDraw = new DrawData(BeeBody, pos, sourceRect, drawInfo.colorMount, player.bodyRotation, Vector2.Zero, 1f, drawInfo.playerEffect);
                 actualDraw.shader = player.cMount;
                 drawInfo.DrawDataCache.Add(actualDraw);
-           }
+            }
         }
     }
     public class BeeTransformationItem : ModItem
@@ -165,14 +180,14 @@ namespace V2.Mounts
             Item.rare = ItemRarityID.Yellow;
             Item.value = Item.sellPrice(
                 gold: 3,
-                silver : 15
+                silver: 15
             );
         }
 
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
             tooltips.AddVorariaDynamicItemTooltip(
-                "Voraria.Mounts.BeeTransformationItem",
+                "Voraria.Accessories.Transformations.BeeTransformationItem",
                 new
                 {
 

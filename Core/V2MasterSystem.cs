@@ -1,9 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
+using V2.Tiles.Vanilla;
+using V2.Tiles.Vanilla.Paintings;
 
 namespace V2.Core
 {
@@ -15,15 +19,31 @@ namespace V2.Core
 
 		public List<VoreTracker> VoreTrackers { get; set; } = new List<VoreTracker>();
 
-		public override void OnWorldLoad()
+        public static RecipeGroup CounterweightRecipeGroup;
+        public override void Unload()
+        {
+            CounterweightRecipeGroup = null;
+        }
+
+        public override void AddRecipeGroups()
+        {
+            // Create a recipe group and store it
+            // Language.GetTextValue("LegacyMisc.37") is the word "Any" in english, and the corresponding word in other languages
+            CounterweightRecipeGroup = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} " + "Counterweight",
+                ItemID.RedCounterweight, ItemID.BlackCounterweight, ItemID.BlueCounterweight, ItemID.GreenCounterweight, ItemID.PurpleCounterweight, ItemID.YellowCounterweight);
+
+            // To avoid name collisions, when a modded items is the iconic or 1st item in a recipe group, name the recipe group: ModName:ItemName
+            RecipeGroup.RegisterGroup("Voraria:Counterweights", CounterweightRecipeGroup);
+        }
+
+        public override void OnWorldLoad()
 		{
 			VoreTrackers = [];
 			freedSucc = false;
 			freedAngel = false;
 			freedEnigma = false;
 		}
-
-		public override void OnWorldUnload()
+        public override void OnWorldUnload()
 		{
 			VoreTrackers = [];
 			freedSucc = false;
@@ -32,7 +52,43 @@ namespace V2.Core
 
 		}
 
-		public override void PreUpdateEntities()
+        public override void PostWorldGen()
+        {
+			//going through every single tile in the world... Awesome...
+			for (int x = 5; x < Main.maxTilesX - 5; x++)
+			{
+				for (int y = 5; y < Main.maxTilesY - 5; y++)
+				{
+					Tile tile = Main.tile[x, y];
+					if (tile.TileType == TileID.Sunflower)
+					{
+						tile.TileType = (ushort)ModContent.TileType<Sunflower>();
+						if (tile.TileFrameY == 0 && (tile.TileFrameX == 0 || tile.TileFrameX == 36 || tile.TileFrameX == 72))
+                        {
+							tile.TileFrameX = 0;
+							TileEntity.PlaceEntityNet(x, y, ModContent.TileEntityType<Sunflower_TileEntity>());
+						}
+						else if (tile.TileFrameX == 36 || tile.TileFrameX == 72)
+                            tile.TileFrameX = 0;
+                        else if (tile.TileFrameX == 54 || tile.TileFrameX == 90)
+                            tile.TileFrameX = 18;
+                    }
+					else if (tile.TileType == TileID.Painting6X4 && tile.TileFrameX >= 0 && tile.TileFrameX <= 90 && tile.TileFrameY >= 360 && tile.TileFrameY <= 414)
+					{
+						tile.TileType = (ushort)ModContent.TileType<Dryadisque>();
+						if (tile.TileFrameX == 0 && tile.TileFrameY == 360)
+						{
+							tile.TileFrameY = 0;
+							TileEntity.PlaceEntityNet(x, y, ModContent.TileEntityType<Dryadisque_TileEntity>());
+						}
+						else
+							tile.TileFrameY -= 360;
+                    }
+                }
+            }
+        }
+
+        public override void PreUpdateEntities()
 		{
 			foreach (VoreTracker tracker in VoreTrackers)
 			{

@@ -29,10 +29,6 @@ namespace V2.NPCs.Voraria.TownNPCs.Ghost
 	{
 		private Asset<Texture2D> _defaultNoAlt;
 
-		public int frameDelay = 8;
-        public int frameWait = 0;
-        public int currentFrame = 0;
-
 		public GhostProfile()
 		{
 			if (Main.dedServ) // #if SERVER
@@ -267,6 +263,7 @@ namespace V2.NPCs.Voraria.TownNPCs.Ghost
 =======
         {
             Lighting.AddLight(NPC.Center, Color.SkyBlue.ToVector3());
+<<<<<<< Updated upstream
 			//yes i know this doesnt work properly if multiple echos exist but that shouldnt happen in the first place so fuck you
             GhostStuff.GhostProfile.frameWait++;
 >>>>>>> Stashed changes
@@ -276,6 +273,11 @@ namespace V2.NPCs.Voraria.TownNPCs.Ghost
 				GhostStuff.GhostProfile.currentFrame++;
 				if (GhostStuff.GhostProfile.currentFrame >= 4) GhostStuff.GhostProfile.currentFrame = 0;
 			}
+=======
+            int idleFrame = (int)(Main.GlobalTimeWrappedHourly * 5) % 4;
+			if (!Main.gamePaused)
+				NPC.frame.Y = idleFrame;
+>>>>>>> Stashed changes
 			switch (GetVisualBellySize(NPC))
 			{
 				case 0 or 1:
@@ -396,7 +398,7 @@ namespace V2.NPCs.Voraria.TownNPCs.Ghost
 			int weightStage = GetVisualWeightStage(NPC);
 			int tumSize = GetVisualBellySize(NPC);
 			ExtraMainSpriteSize(weightStage, out var SpriteSize, out var SpriteOffset);
-            Rectangle sourceRect = new Rectangle(0, GhostStuff.GhostProfile.currentFrame * (int)SpriteSize.Y, (int)SpriteSize.X, (int)SpriteSize.Y);
+            Rectangle sourceRect = new Rectangle(0, NPC.frame.Y * (int)SpriteSize.Y, (int)SpriteSize.X, (int)SpriteSize.Y);
             Texture2D spriteMain = ModContent.Request<Texture2D>(Folder + "Echo_Weight" + weightStage).Value;
             spriteBatch.Draw(spriteMain, NPC.position - Main.screenPosition + new Vector2(-12 - (int)SpriteOffset.X, -20 - (int)SpriteOffset.Y), sourceRect, new Color(255, 255, 255), NPC.rotation, new Vector2(0, 0), 1f, spriteEffects, 0f);
 			if (tumSize > 0)

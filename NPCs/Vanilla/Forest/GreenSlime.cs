@@ -53,8 +53,9 @@ namespace V2.NPCs.Vanilla.Forest
 
 			npc.AsFood().DefinedBaseSize = 0.45;
 			npc.AsPred().MaxStomachCapacity = 0.675;
+            npc.AsFood().WellFedPower = 0.1;
 
-			npc.AsPred().SmallGulpThreshold = 0.00;
+            npc.AsPred().SmallGulpThreshold = 0.00;
 			npc.AsPred().BigGulps = null;
 			npc.AsPred().CanBeForceFed = CanGreenSlimeBeForceFed;
 

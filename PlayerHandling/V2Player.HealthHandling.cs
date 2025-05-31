@@ -371,6 +371,7 @@ namespace V2.PlayerHandling
 				if (player.statLife <= 0 && player.whoAmI == Main.myPlayer)
 				{
 					if (player.poisoned || player.venom)
+						
 						player.KillMe(PlayerDeathReason.ByOther(9), 10.0, 0);
 					else if (player.electrified)
 						player.KillMe(PlayerDeathReason.ByOther(10), 10.0, 0);

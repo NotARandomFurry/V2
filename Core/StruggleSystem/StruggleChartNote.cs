@@ -11,7 +11,11 @@ namespace V2.Core.StruggleSystem
 		/// <summary>
 		/// The lane that this note should arrive in.<br/>
 		/// </summary>
+<<<<<<< Updated upstream
 		public NoteLane Lane { get; private set; }
+=======
+		public NoteLane Direction { get; private set; }
+>>>>>>> Stashed changes
 
 		private int _holdLength;
 		/// <summary>
