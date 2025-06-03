@@ -32,12 +32,12 @@ namespace V2.Projectiles
 		public double MaxStomachCapacity { get; set; }
 		public float MaxSwallowRange { get; set; }
 		public double ExtraWeight { get; set; }
-        public double WeightGainRatio { get; set; }
-        /// <summary>
-        /// Allows this projectile to eat bosses despite not being a boss themselves.<br/>
-        /// Defaults to false.<br/>
-        /// </summary>
-        public bool CanSwallowBosses { get; set; }
+		public double WeightGainRatio { get; set; }
+		/// <summary>
+		/// Allows this projectile to eat bosses despite not being a boss themselves.<br/>
+		/// Defaults to false.<br/>
+		/// </summary>
+		public bool CanSwallowBosses { get; set; }
 
 		public Vector2 MouthSoundRawOffset { internal get; set; }
 		public static Vector2 MouthSoundOffset(Projectile projectile)
@@ -128,8 +128,8 @@ namespace V2.Projectiles
 			MaxStomachCapacity = 0.0;
 			MaxSwallowRange = 36f;
 			ExtraWeight = 0.0;
-            WeightGainRatio = 0.4;
-            CanSwallowBosses = false;
+			WeightGainRatio = 0.4;
+			CanSwallowBosses = false;
 
 			GetDigestionTickRate = null;
 			GetDigestionTickDamage = null;
@@ -214,10 +214,10 @@ namespace V2.Projectiles
 					return true;
 			}
 			else if (prey is NPC preyNPC)
-            {
-                if (preyNPC.AsFood().CannotBeEatenDueToShenanigans)
-                    return false;
-                if (V2.VoreNPCBlacklist is not null && V2.VoreNPCBlacklist.Count > 0 && V2.VoreNPCBlacklist.Contains(preyNPC.type))
+			{
+				if (preyNPC.AsFood().CannotBeEatenDueToShenanigans)
+					return false;
+				if (V2.VoreNPCBlacklist is not null && V2.VoreNPCBlacklist.Count > 0 && V2.VoreNPCBlacklist.Contains(preyNPC.type))
 					return false;
 
 				bool tastesLikeSkittles = preyNPC.type == NPCID.HallowBoss && ModContent.GetInstance<V2ServerConfig>().EasilyEdibleEmpress;
@@ -229,10 +229,10 @@ namespace V2.Projectiles
 					return false;
 			}
 			else if (prey is Projectile preyProjectile)
-            {
-                if (preyProjectile.AsFood().CannotBeEatenDueToShenanigans)
-                    return false;
-                if (V2.VoreNPCBlacklist is not null && V2.VoreProjectileBlacklist.Count > 0 && V2.VoreProjectileBlacklist.Contains(preyProjectile.type))
+			{
+				if (preyProjectile.AsFood().CannotBeEatenDueToShenanigans)
+					return false;
+				if (V2.VoreNPCBlacklist is not null && V2.VoreProjectileBlacklist.Count > 0 && V2.VoreProjectileBlacklist.Contains(preyProjectile.type))
 					return false;
 			}
 			else if (prey is Item preyItem)
@@ -271,8 +271,8 @@ namespace V2.Projectiles
 
 			PreyData food = PreyData.NewData(prey);
 			AddNewPrey(pred, food);
-            PlaySwallowGulp(pred, food);
-            switch (food.Type)
+			PlaySwallowGulp(pred, food);
+			switch (food.Type)
 			{
 				case PreyType.Player:
 					Player player = prey as Player;
@@ -295,11 +295,11 @@ namespace V2.Projectiles
 				case PreyType.Item:
 					Item item = prey as Item;
 					item.AsFood().OnSwallow?.Invoke(item, pred);
-                    if (item.AsFood().OnSwallowDamage > 0)
+					if (item.AsFood().OnSwallowDamage > 0)
 						pred.AsFood().Health -= item.AsFood().OnSwallowDamage;
 					break;
-            }
-            pred.netUpdate = true;
+			}
+			pred.netUpdate = true;
 
 			if (MPstate == 1)
 			{
@@ -534,28 +534,28 @@ namespace V2.Projectiles
 									}
 								}
 								break;
-                            case PreyType.Item:
-                                Item preyItem = prey.Instance as Item;
-                                if (preyItem.IsAir)
-                                    break;
+							case PreyType.Item:
+								Item preyItem = prey.Instance as Item;
+								if (preyItem.IsAir)
+									break;
 
-                                bool shouldDigestItem = true;
-                                if (shouldDigestItem)
-                                {
-                                    prey.NoHealth = preyItem.TakeDigestionDamage(pred, digestionDamage);
-                                    if (ModContent.GetInstance<V2ServerConfig>().DebugChatMessages)
-                                        Main.NewText("Successfully dealt digestion damage to prey: " + preyItem.Name);
-                                    else if (ModContent.GetInstance<V2ServerConfig>().DebugChatMessages)
-                                        Main.NewText("Failed to deal digestion damage to prey: " + preyItem.Name);
-                                    if (prey.NoHealth)
-                                    {
-                                        if (pred.AsPred().OnDigestionKill is not null)
-                                            pred.AsPred().OnDigestionKill.Invoke(pred, prey);
-                                        PlayDigestionBelch(pred, prey);
-                                    }
-                                }
-                                break;
-                        }
+								bool shouldDigestItem = true;
+								if (shouldDigestItem)
+								{
+									prey.NoHealth = preyItem.TakeDigestionDamage(pred, digestionDamage);
+									if (ModContent.GetInstance<V2ServerConfig>().DebugChatMessages)
+										Main.NewText("Successfully dealt digestion damage to prey: " + preyItem.Name);
+									else if (ModContent.GetInstance<V2ServerConfig>().DebugChatMessages)
+										Main.NewText("Failed to deal digestion damage to prey: " + preyItem.Name);
+									if (prey.NoHealth)
+									{
+										if (pred.AsPred().OnDigestionKill is not null)
+											pred.AsPred().OnDigestionKill.Invoke(pred, prey);
+										PlayDigestionBelch(pred, prey);
+									}
+								}
+								break;
+						}
 					}
 				}
 				else

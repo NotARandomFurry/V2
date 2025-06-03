@@ -2,28 +2,28 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <Import Project="..\tModLoader.targets" />
   <PropertyGroup>
-    <AssemblyName>V2</AssemblyName>
-    <LangVersion>latest</LangVersion>
+	<AssemblyName>V2</AssemblyName>
+	<LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <AdditionalFiles Remove="externallibs\**" />
-    <Compile Remove="externallibs\**" />
-    <EmbeddedResource Remove="externallibs\**" />
-    <None Remove="externallibs\**" />
+	<AdditionalFiles Remove="externallibs\**" />
+	<Compile Remove="externallibs\**" />
+	<EmbeddedResource Remove="externallibs\**" />
+	<None Remove="externallibs\**" />
   </ItemGroup>
   <ItemGroup>
-    <None Remove="Items\Voraria\Accessories\Transformations\BecomeBae_Wings.png" />
-    <None Remove="NPCs\Voraria\Jungle\FATFUCK.png" />
+	<None Remove="Items\Voraria\Accessories\Transformations\BecomeBae_Wings.png" />
+	<None Remove="NPCs\Voraria\Jungle\FATFUCK.png" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Gores\" />
+	<Folder Include="Gores\" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="BetterDialogue">
-      <HintPath>..\..\ModReader\BetterDialogue\BetterDialogue.dll</HintPath>
-    </Reference>
-    <Reference Include="WeaponDisplay">
-      <HintPath>externallibs\WeaponDisplay.dll</HintPath>
-    </Reference>
+	<Reference Include="BetterDialogue">
+	  <HintPath>..\..\ModReader\BetterDialogue\BetterDialogue.dll</HintPath>
+	</Reference>
+	<Reference Include="WeaponDisplay">
+	  <HintPath>externallibs\WeaponDisplay.dll</HintPath>
+	</Reference>
   </ItemGroup>
 </Project>

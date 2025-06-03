@@ -22,85 +22,85 @@ namespace V2.Items.Voraria.Consumables.PermanentUpgrades.Jujus
 		public override LocalizedText DisplayName => Language.GetText("Mods.V2.ItemName.Voraria.Consumables.PermanentUpgrades.Jujus.BiomeJujuSnow");
 		public override LocalizedText Tooltip => Language.GetText("Mods.V2.ItemTooltip.Voraria.Consumables.PermanentUpgrades.Jujus.BiomeJujuSnow.Short");
 
-        public static int GLPBonus => 8;
-        public static int ABSBonus => 3;
-        public static int PermGLPBonus => 2;
-        public static int PermABSBonus => 1;
+		public static int GLPBonus => 8;
+		public static int ABSBonus => 3;
+		public static int PermGLPBonus => 2;
+		public static int PermABSBonus => 1;
 
-        public override void SetStaticDefaults()
+		public override void SetStaticDefaults()
 		{
 			Item.ResearchUnlockCount = 1;
 
 			DrawAnimationVertical anim = new DrawAnimationVertical(8, 2);
-            Main.RegisterItemAnimation(Type, anim);
-            ItemID.Sets.AnimatesAsSoul[Type] = true;
-        }
+			Main.RegisterItemAnimation(Type, anim);
+			ItemID.Sets.AnimatesAsSoul[Type] = true;
+		}
 
-        public override void SetDefaults()
+		public override void SetDefaults()
 		{
-            Item.accessory = true;
+			Item.accessory = true;
 
-            Item.width = 32;
+			Item.width = 32;
 			Item.height = 32;
 			Item.maxStack = 1;
 
 			Item.value = Item.sellPrice(0, 3);
 			Item.rare = ItemRarityID.Lime;
 
-            Item.AsFood().Size = 0.5;
-            Item.AsFood().MaxHealth = 150;
+			Item.AsFood().Size = 0.5;
+			Item.AsFood().MaxHealth = 150;
 
-            Item.AsFood().EdibleOnUse = true;
+			Item.AsFood().EdibleOnUse = true;
 
-            Item.AsFood().OnBreak += OnBreak;
-        }
-        public override void PostUpdate()
-        {
-            Lighting.AddLight(Item.Center, new Vector3(80, 200, 255) * 0.005f);
-        }
-        public override void UpdateAccessory(Player player, bool hideVisual)
-        {
-            player.AsPred().GLP.Extra += GLPBonus;
-            player.AsPred().ABS.Extra += ABSBonus;
-        }
+			Item.AsFood().OnBreak += OnBreak;
+		}
+		public override void PostUpdate()
+		{
+			Lighting.AddLight(Item.Center, new Vector3(80, 200, 255) * 0.005f);
+		}
+		public override void UpdateAccessory(Player player, bool hideVisual)
+		{
+			player.AsPred().GLP.Extra += GLPBonus;
+			player.AsPred().ABS.Extra += ABSBonus;
+		}
 
-        public static bool OnBreak(Item item, Entity pred, bool direct)
-        {
-            SoundEngine.PlaySound(StomachNoises.Muffled, pred.Center);
-            if (pred is Player playerPred)
-            {
-                if (!playerPred.AsPred().PermanentUpgradesGained.ContainsKey("BiomeJujuSnow"))
-                    playerPred.AsPred().PermanentUpgradesGained.Add("BiomeJujuSnow", false);
+		public static bool OnBreak(Item item, Entity pred, bool direct)
+		{
+			SoundEngine.PlaySound(StomachNoises.Muffled, pred.Center);
+			if (pred is Player playerPred)
+			{
+				if (!playerPred.AsPred().PermanentUpgradesGained.ContainsKey("BiomeJujuSnow"))
+					playerPred.AsPred().PermanentUpgradesGained.Add("BiomeJujuSnow", false);
 
-                if (!playerPred.AsPred().PermanentUpgradesGained["BiomeJujuSnow"])
-                    playerPred.AsPred().PermanentUpgradesGained["BiomeJujuSnow"] = true;
-            }
-            return true;
-        }
+				if (!playerPred.AsPred().PermanentUpgradesGained["BiomeJujuSnow"])
+					playerPred.AsPred().PermanentUpgradesGained["BiomeJujuSnow"] = true;
+			}
+			return true;
+		}
 
-        public override void ModifyTooltips(List<TooltipLine> tooltips)
+		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
 			Player player = Main.LocalPlayer;
 			tooltips.AddVorariaDynamicItemTooltip(
-                "Voraria.Consumables.PermanentUpgrades.Jujus.BiomeJujuSnow",
+				"Voraria.Consumables.PermanentUpgrades.Jujus.BiomeJujuSnow",
 				new
 				{
-                    GLP = GLPBonus,
-                    ABS = ABSBonus,
-                    PermGLP = PermGLPBonus,
-                    PermABS = PermABSBonus,
-                }
+					GLP = GLPBonus,
+					ABS = ABSBonus,
+					PermGLP = PermGLPBonus,
+					PermABS = PermABSBonus,
+				}
 			);
 		}
-        public override void AddRecipes()
-        {
-            CreateRecipe()
-                .AddIngredient<BlankJuju>()
-                .AddIngredient(ItemID.BorealWood, 25)
-                .AddIngredient(ItemID.SnowBlock, 100)
-                .AddIngredient(ItemID.FrostCore, 1)
-                .AddIngredient(ItemID.Shiverthorn, 5)
-                .Register();
-        }
-    }
+		public override void AddRecipes()
+		{
+			CreateRecipe()
+				.AddIngredient<BlankJuju>()
+				.AddIngredient(ItemID.BorealWood, 25)
+				.AddIngredient(ItemID.SnowBlock, 100)
+				.AddIngredient(ItemID.FrostCore, 1)
+				.AddIngredient(ItemID.Shiverthorn, 5)
+				.Register();
+		}
+	}
 }

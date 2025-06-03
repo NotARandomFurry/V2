@@ -10,7 +10,7 @@ using V2.PlayerHandling.PredPlayerGoals.Intermediate;
 
 namespace V2.NPCs.Vanilla.Ocean
 {
-    public static class SharkStuff
+	public static class SharkStuff
 	{
 		public static Shark AsShark(this NPC npc)
 		{

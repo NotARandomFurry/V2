@@ -33,17 +33,17 @@ namespace V2.NPCs.Vanilla.Sky
 					0 => 80,
 					1 => 65,
 					2 => 50,
-                    3 => 35,
-                    4 => 20,
-                };
+					3 => 35,
+					4 => 20,
+				};
 				int flapChance = npc.AsPred().GetVisualWeightStage.Invoke(npc) switch
 				{
 					0 => 80,
 					1 => 70,
 					2 => 60,
-                    3 => 50,
-                    4 => 40,
-                };
+					3 => 50,
+					4 => 40,
+				};
 				if (npc.AsHarpy().WingFlapTimer >= minDelay && Main.rand.NextBool(flapChance))
 					npc.AsHarpy().WingFlapTimer = -4;
 				else if (npc.AsHarpy().WingFlapTimer == 0)

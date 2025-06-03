@@ -55,10 +55,10 @@ namespace V2.NPCs.Vanilla.Hallow
 
 			npc.AsFood().DefinedBaseSize = 3;
 			npc.AsPred().MaxStomachCapacity = 1.5;
-            npc.AsFood().WellFedPower = 0.3;
-            npc.AsFood().CalorieMultiplier = 6;
+			npc.AsFood().WellFedPower = 0.3;
+			npc.AsFood().CalorieMultiplier = 6;
 
-            npc.AsPred().SmallGulpThreshold = 0.00;
+			npc.AsPred().SmallGulpThreshold = 0.00;
 			npc.AsPred().BigGulps = null;
 			npc.AsPred().CanBeForceFed = CanRainbowSlimeBeForceFed;
 

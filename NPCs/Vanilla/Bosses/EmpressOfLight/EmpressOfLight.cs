@@ -180,10 +180,10 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 			npc.AsFood().DefinedBaseSize = 40.0;
 			npc.AsPred().MaxStomachCapacity = 1000.0;
 			npc.AsPred().BaseStomachacheMeterCapacity = 50000.0;
-            npc.AsFood().CalorieMultiplier = 25;
-            npc.AsFood().WellFedPower = 2;
+			npc.AsFood().CalorieMultiplier = 25;
+			npc.AsFood().WellFedPower = 2;
 
-            npc.AsV2NPC().NewAIMethod = V2UnreasonablyThickFairyAI;
+			npc.AsV2NPC().NewAIMethod = V2UnreasonablyThickFairyAI;
 			npc.AsFood().SpecialPreyAI = UnreasonablyThickFairyPreyAI;
 
 			npc.AsPred().SmallGulps = Gulps.Short;

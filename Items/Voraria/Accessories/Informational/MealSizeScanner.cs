@@ -32,12 +32,12 @@ namespace V2.Items.Voraria.Accessories.Informational
 
 			ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<PredCapacityScanner>();
 		}
-        public override void HoldStyle(Player player, Rectangle heldItemFrame)
+		public override void HoldStyle(Player player, Rectangle heldItemFrame)
 		{
 			player.itemLocation.X -= 24 * 0.75f * player.direction;
 			player.itemLocation.Y += 14;
 		}
-        public override void SetDefaults()
+		public override void SetDefaults()
 		{
 			Item.accessory = true;
 

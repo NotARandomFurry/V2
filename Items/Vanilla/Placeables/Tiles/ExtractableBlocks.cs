@@ -22,32 +22,32 @@ namespace V2.Items.Vanilla.Placeables.Tile
 			item.AsFood().MaxHealth = 30;
 			item.AsFood().Size = 0.1;
 		}
-        public static bool OnBreak(Item item, Entity pred, bool direct)
-        {
-            SoundEngine.PlaySound(MuffledMiscSounds.Shatter, pred.Center);
-            SoundEngine.PlaySound(StomachNoises.Muffled, pred.Center);
+		public static bool OnBreak(Item item, Entity pred, bool direct)
+		{
+			SoundEngine.PlaySound(MuffledMiscSounds.Shatter, pred.Center);
+			SoundEngine.PlaySound(StomachNoises.Muffled, pred.Center);
 
-            if (pred is Player playerPred)
-            {
-               
-            }
-            else if (pred is NPC NPCPred)
-            {
-                
-            }
-            return true;
-        }
-    }
-    public class Fossil : GlobalItem
-    {
-        public override bool InstancePerEntity => true;
-        public override bool AppliesToEntity(Item entity, bool lateInstantiation) => entity.type == ItemID.DesertFossil;
+			if (pred is Player playerPred)
+			{
+			   
+			}
+			else if (pred is NPC NPCPred)
+			{
+				
+			}
+			return true;
+		}
+	}
+	public class Fossil : GlobalItem
+	{
+		public override bool InstancePerEntity => true;
+		public override bool AppliesToEntity(Item entity, bool lateInstantiation) => entity.type == ItemID.DesertFossil;
 
-        public override void SetDefaults(Item item)
-        {
-            item.AsFood().MaxHealth = 250;
-            item.AsFood().AcidResistTier = 1;
-            item.AsFood().Size = 0.15;
-        }
-    }
+		public override void SetDefaults(Item item)
+		{
+			item.AsFood().MaxHealth = 250;
+			item.AsFood().AcidResistTier = 1;
+			item.AsFood().Size = 0.15;
+		}
+	}
 }

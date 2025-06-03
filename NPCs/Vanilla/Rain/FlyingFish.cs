@@ -10,7 +10,7 @@ using V2.PlayerHandling.PredPlayerGoals.Intermediate;
 
 namespace V2.NPCs.Vanilla.Rain
 {
-    public static class FlyingFishStuff
+	public static class FlyingFishStuff
 	{
 		public static FlyingFish AsFlyingFish(this NPC npc)
 		{
@@ -33,9 +33,9 @@ namespace V2.NPCs.Vanilla.Rain
 			npc.AsV2NPC().Gender = EntityGender.Other;
 
 			npc.AsFood().DefinedBaseSize = 0.6;
-            npc.AsFood().WellFedPower = 0.05;
+			npc.AsFood().WellFedPower = 0.05;
 
-            npc.AsFood().OnDigestedBy = PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
+			npc.AsFood().OnDigestedBy = PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
 			npc.AsFood().OnDigestedBy += OnKilledByDigestion_GrantFlyingFishGoal;
 		}
 

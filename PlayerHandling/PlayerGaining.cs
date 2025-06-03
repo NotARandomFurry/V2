@@ -35,71 +35,71 @@ using V2.Items.Voraria.Accessories.Transformations.Baelz;
 
 namespace V2.PlayerHandling
 {
-    internal class PlayerGaining
-    {
-        public static double CalculateGain(Player pred, double amount, PreyData prey)
-        {
-            double effectiveSize = PredPlayer.GetCurrentWeight(pred);
-            return amount * prey.CalorieMultiplier * (1 / effectiveSize) * pred.AsPred().BaseWeightGainRatio;
-        }
-        public static double CalculateGain(Player pred, double amount)
-        {
-            double effectiveSize = PredPlayer.GetCurrentWeight(pred);
-            return amount * (1 / effectiveSize) * pred.AsPred().BaseWeightGainRatio;
-        }
-        public static void AddWeight(Player pred, double amount, PreyData prey)
-        {
-            if (amount > 0 && pred.AsPred().ActuallyReasonableAmountOfFood < 0.1)
-            {
-                pred.AsPred().ActuallyReasonableAmountOfFood = Math.Max(pred.AsPred().ActuallyReasonableAmountOfFood + CalculateGain(pred, amount, prey), 0);
-            }
-            else
-            {
-                if (pred.AsV2Player().BeeTransformation == true)
-                {
-                    pred.AsPred().BeeTransformation_ExtraWeight = Math.Max((pred.AsPred().BeeTransformation_ExtraWeight + CalculateGain(pred, amount, prey)) * pred.AsPred().WeightGainMultiplier, 0);
-                }
-                else if (pred.AsV2Player().BaeTransformation == true)
-                {
-                    pred.AsPred().BaeTransformation_ExtraWeight = Math.Max((pred.AsPred().BaeTransformation_ExtraWeight + CalculateGain(pred, amount, prey)) * pred.AsPred().WeightGainMultiplier, 0);
-                }
-            }
-        }
-        public static void AddWeight(Player pred, double amount)
-        {
-            if (amount > 0 && pred.AsPred().ActuallyReasonableAmountOfFood < 0.1)
-            {
-                pred.AsPred().ActuallyReasonableAmountOfFood = Math.Max(pred.AsPred().ActuallyReasonableAmountOfFood + CalculateGain(pred, amount), 0);
-            }
-            else
-            {
-                if (pred.AsV2Player().BeeTransformation == true)
-                {
-                    pred.AsPred().BeeTransformation_ExtraWeight = Math.Max((pred.AsPred().BeeTransformation_ExtraWeight + CalculateGain(pred, amount)) * pred.AsPred().WeightGainMultiplier, 0);
-                }
-                else if (pred.AsV2Player().BaeTransformation == true)
-                {
-                    pred.AsPred().BaeTransformation_ExtraWeight = Math.Max((pred.AsPred().BaeTransformation_ExtraWeight + CalculateGain(pred, amount)) * pred.AsPred().WeightGainMultiplier, 0);
-                }
-            }
-        }
-        public static void ReduceWeight(Player pred, double amount)
-        {
-            if (pred.AsPred().ActuallyReasonableAmountOfFood > 0)
-            {
-                pred.AsPred().ActuallyReasonableAmountOfFood = Math.Max(pred.AsPred().ActuallyReasonableAmountOfFood - amount * pred.AsPred().WeightLossMultiplier, 0);
-            }
-            else
-            {
-                if (pred.AsV2Player().BeeTransformation == true)
-                {
-                    pred.AsPred().BeeTransformation_ExtraWeight = Math.Max(pred.AsPred().BeeTransformation_ExtraWeight - amount * pred.AsPred().WeightLossMultiplier, 0);
-                }
-                else if (pred.AsV2Player().BaeTransformation == true)
-                {
-                    pred.AsPred().BaeTransformation_ExtraWeight = Math.Max(pred.AsPred().BaeTransformation_ExtraWeight - amount * pred.AsPred().WeightLossMultiplier, 0);
-                }
-            }
-        }
-    }
+	internal class PlayerGaining
+	{
+		public static double CalculateGain(Player pred, double amount, PreyData prey)
+		{
+			double effectiveSize = PredPlayer.GetCurrentWeight(pred);
+			return amount * prey.CalorieMultiplier * (1 / effectiveSize) * pred.AsPred().BaseWeightGainRatio;
+		}
+		public static double CalculateGain(Player pred, double amount)
+		{
+			double effectiveSize = PredPlayer.GetCurrentWeight(pred);
+			return amount * (1 / effectiveSize) * pred.AsPred().BaseWeightGainRatio;
+		}
+		public static void AddWeight(Player pred, double amount, PreyData prey)
+		{
+			if (amount > 0 && pred.AsPred().ActuallyReasonableAmountOfFood < 0.1)
+			{
+				pred.AsPred().ActuallyReasonableAmountOfFood = Math.Max(pred.AsPred().ActuallyReasonableAmountOfFood + CalculateGain(pred, amount, prey), 0);
+			}
+			else
+			{
+				if (pred.AsV2Player().BeeTransformation == true)
+				{
+					pred.AsPred().BeeTransformation_ExtraWeight = Math.Max((pred.AsPred().BeeTransformation_ExtraWeight + CalculateGain(pred, amount, prey)) * pred.AsPred().WeightGainMultiplier, 0);
+				}
+				else if (pred.AsV2Player().BaeTransformation == true)
+				{
+					pred.AsPred().BaeTransformation_ExtraWeight = Math.Max((pred.AsPred().BaeTransformation_ExtraWeight + CalculateGain(pred, amount, prey)) * pred.AsPred().WeightGainMultiplier, 0);
+				}
+			}
+		}
+		public static void AddWeight(Player pred, double amount)
+		{
+			if (amount > 0 && pred.AsPred().ActuallyReasonableAmountOfFood < 0.1)
+			{
+				pred.AsPred().ActuallyReasonableAmountOfFood = Math.Max(pred.AsPred().ActuallyReasonableAmountOfFood + CalculateGain(pred, amount), 0);
+			}
+			else
+			{
+				if (pred.AsV2Player().BeeTransformation == true)
+				{
+					pred.AsPred().BeeTransformation_ExtraWeight = Math.Max((pred.AsPred().BeeTransformation_ExtraWeight + CalculateGain(pred, amount)) * pred.AsPred().WeightGainMultiplier, 0);
+				}
+				else if (pred.AsV2Player().BaeTransformation == true)
+				{
+					pred.AsPred().BaeTransformation_ExtraWeight = Math.Max((pred.AsPred().BaeTransformation_ExtraWeight + CalculateGain(pred, amount)) * pred.AsPred().WeightGainMultiplier, 0);
+				}
+			}
+		}
+		public static void ReduceWeight(Player pred, double amount)
+		{
+			if (pred.AsPred().ActuallyReasonableAmountOfFood > 0)
+			{
+				pred.AsPred().ActuallyReasonableAmountOfFood = Math.Max(pred.AsPred().ActuallyReasonableAmountOfFood - amount * pred.AsPred().WeightLossMultiplier, 0);
+			}
+			else
+			{
+				if (pred.AsV2Player().BeeTransformation == true)
+				{
+					pred.AsPred().BeeTransformation_ExtraWeight = Math.Max(pred.AsPred().BeeTransformation_ExtraWeight - amount * pred.AsPred().WeightLossMultiplier, 0);
+				}
+				else if (pred.AsV2Player().BaeTransformation == true)
+				{
+					pred.AsPred().BaeTransformation_ExtraWeight = Math.Max(pred.AsPred().BaeTransformation_ExtraWeight - amount * pred.AsPred().WeightLossMultiplier, 0);
+				}
+			}
+		}
+	}
 }

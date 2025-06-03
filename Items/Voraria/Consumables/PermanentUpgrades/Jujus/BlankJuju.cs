@@ -22,21 +22,21 @@ namespace V2.Items.Voraria.Consumables.PermanentUpgrades.Jujus
 		public override LocalizedText DisplayName => Language.GetText("Mods.V2.ItemName.Voraria.Consumables.PermanentUpgrades.Jujus.BlankJuju");
 		public override LocalizedText Tooltip => Language.GetText("Mods.V2.ItemTooltip.Voraria.Consumables.PermanentUpgrades.Jujus.BlankJuju");
 
-        public override void SetStaticDefaults()
+		public override void SetStaticDefaults()
 		{
 			Item.ResearchUnlockCount = 1;
 
 			DrawAnimationVertical anim = new DrawAnimationVertical(8, 2);
-            Main.RegisterItemAnimation(Type, anim);
-            ItemID.Sets.AnimatesAsSoul[Type] = true;
+			Main.RegisterItemAnimation(Type, anim);
+			ItemID.Sets.AnimatesAsSoul[Type] = true;
 
-            ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<ShimmerJuju>();
-        }
-        public override void PostUpdate()
-        {
-            Lighting.AddLight(Item.Center, new Vector3(255,255,255) * 0.005f);
-        }
-        public override void SetDefaults()
+			ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<ShimmerJuju>();
+		}
+		public override void PostUpdate()
+		{
+			Lighting.AddLight(Item.Center, new Vector3(255,255,255) * 0.005f);
+		}
+		public override void SetDefaults()
 		{
 			Item.width = 32;
 			Item.height = 32;
@@ -50,7 +50,7 @@ namespace V2.Items.Voraria.Consumables.PermanentUpgrades.Jujus
 		{
 			Player player = Main.LocalPlayer;
 			tooltips.AddVorariaDynamicItemTooltip(
-                "Voraria.Consumables.PermanentUpgrades.Jujus.BlankJuju",
+				"Voraria.Consumables.PermanentUpgrades.Jujus.BlankJuju",
 				new
 				{
 

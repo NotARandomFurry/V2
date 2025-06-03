@@ -22,12 +22,12 @@ namespace V2.StatusEffects.Voraria.Debuffs
 		{
 			Main.debuff[Type] = true;
 			BuffID.Sets.NurseCannotRemoveDebuff[Type] = true;
-            Main.buffNoTimeDisplay[Type] = true;
-        }
+			Main.buffNoTimeDisplay[Type] = true;
+		}
 
 		public override void ModifyBuffText(ref string buffName, ref string tip, ref int rare)
 		{
 			rare = ItemRarityID.LightPurple;
 		}
-    }
+	}
 }

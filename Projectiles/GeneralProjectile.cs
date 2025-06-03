@@ -28,10 +28,10 @@ namespace V2.Projectiles
 
 		public int Aggro { get; set; }
 		public float GrappleStrength { get; set; }
-        public float GrappleSpeed { get; set; }
+		public float GrappleSpeed { get; set; }
 
 
-        public override bool InstancePerEntity => true;
+		public override bool InstancePerEntity => true;
 
 		public override bool AppliesToEntity(Projectile entity, bool lateInstantiation) => true;
 
@@ -45,10 +45,10 @@ namespace V2.Projectiles
 
 			Aggro = 0;
 			GrappleStrength = 0;
-            GrappleSpeed = 0;
-        }
+			GrappleSpeed = 0;
+		}
 
-        public override bool PreDraw(Projectile projectile, ref Color lightColor)
+		public override bool PreDraw(Projectile projectile, ref Color lightColor)
 		{
 			if (projectile.CurrentCaptor() is not null)
 				return false;

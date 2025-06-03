@@ -18,26 +18,26 @@ namespace V2.StatusEffects.Voraria.Buffs
 	{
 		public override LocalizedText DisplayName => Language.GetText("Mods.V2.StatusEffects.Voraria.Buffs.DemonCandyRegen.Name");
 		public override LocalizedText Description => Language.GetText("Mods.V2.StatusEffects.Voraria.Buffs.DemonCandyRegen.Description");
-        public override bool RightClick(int buffIndex) => false;
+		public override bool RightClick(int buffIndex) => false;
 
 		public override void ModifyBuffText(ref string buffName, ref string tip, ref int rare)
 		{
 			rare = ItemRarityID.Green;
 			tip = Language.GetTextValueWith(
-                "Mods.V2.StatusEffects.Voraria.Buffs.DemonCandyRegen.Description",
+				"Mods.V2.StatusEffects.Voraria.Buffs.DemonCandyRegen.Description",
 				new
 				{
 
-                }
+				}
 			);
 		}
 
-        public override void Update(Player player, ref int buffIndex)
+		public override void Update(Player player, ref int buffIndex)
 		{
 			player.AddHealthRegenEffect(
 				healthPerSecond: 3
-            );
-            player.AsPred().specialManaRegenCount += 8;
-        }
+			);
+			player.AsPred().specialManaRegenCount += 8;
+		}
 	}
 }

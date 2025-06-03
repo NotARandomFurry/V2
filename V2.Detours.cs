@@ -217,13 +217,13 @@ namespace V2
 				if (!player.AsPred().InPredStatsMenu || Main.gamePaused)
 					orig(player);
 			};
-            On_Player.PickupItem += PlayerDetours.Detour_PickupItem;
-            On_Player.GrappleMovement += PlayerDetours.Detour_GrappleMovement;
+			On_Player.PickupItem += PlayerDetours.Detour_PickupItem;
+			On_Player.GrappleMovement += PlayerDetours.Detour_GrappleMovement;
 			On_DeadMansChestBiome.TurnGoldChestIntoDeadMansChest += (orig, instance, position) => WorldGenDetours.TurnGoldChestIntoDeadMansChest(position);
-            //On_HiveBiome.Place += (orig, self, origin, structures) => WorldGenDetours.HiveBiome_Place(self, origin, structures);
+			//On_HiveBiome.Place += (orig, self, origin, structures) => WorldGenDetours.HiveBiome_Place(self, origin, structures);
 		}
 
-        public static void DisengageVoraciousGameFuckery()
+		public static void DisengageVoraciousGameFuckery()
 		{
 			if (NPCLoader_NPCAI_Hook is not null)
 			{

@@ -19,14 +19,14 @@ using V2.Sounds.Vore;
 
 namespace V2.Tiles.Vanilla.Furniture.GraniteSet
 {
-    public class GraniteChair : ModTile
-    {
-        public override void SetStaticDefaults()
-        {
-            Main.tileFrameImportant[Type] = true;
+	public class GraniteChair : ModTile
+	{
+		public override void SetStaticDefaults()
+		{
+			Main.tileFrameImportant[Type] = true;
 			Main.tileNoAttach[Type] = true;
 			Main.tileLavaDeath[Type] = true;
-            TileID.Sets.FramesOnKillWall[Type] = true;
+			TileID.Sets.FramesOnKillWall[Type] = true;
 			TileID.Sets.HasOutlines[Type] = true;
 			TileID.Sets.CanBeSatOnForNPCs[Type] = true; // Facilitates calling ModifySittingTargetInfo for NPCs
 			TileID.Sets.CanBeSatOnForPlayers[Type] = true; // Facilitates calling ModifySittingTargetInfo for Players
@@ -37,10 +37,10 @@ namespace V2.Tiles.Vanilla.Furniture.GraniteSet
 			AdjTiles = [TileID.Chairs];
 
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style1x2);
-            TileObjectData.newTile.CoordinateHeights = [16, 18];
+			TileObjectData.newTile.CoordinateHeights = [16, 18];
 			TileObjectData.newTile.CoordinatePaddingFix = new Point16(0, 2);
 			TileObjectData.newTile.Width = 1;
-            TileObjectData.newTile.Height = 2;
+			TileObjectData.newTile.Height = 2;
 			TileObjectData.newTile.Direction = TileObjectDirection.PlaceLeft;
 			// The following 3 lines are needed if you decide to add more styles and stack them vertically
 			TileObjectData.newTile.StyleWrapLimit = 2;
@@ -48,54 +48,54 @@ namespace V2.Tiles.Vanilla.Furniture.GraniteSet
 			TileObjectData.newTile.StyleHorizontal = true;
 
 			TileObjectData.newTile.HookPostPlaceMyPlayer = new PlacementHook(ModContent.GetInstance<GraniteChair_TileEntity>().Hook_AfterPlacement, -1, 0, true);
-            TileObjectData.newTile.UsesCustomCanPlace = true;
+			TileObjectData.newTile.UsesCustomCanPlace = true;
 
 			TileObjectData.newAlternate.CopyFrom(TileObjectData.newTile);
 			TileObjectData.newAlternate.Direction = TileObjectDirection.PlaceRight;
 			TileObjectData.addAlternate(1); // Facing right will use the second texture style
-            TileObjectData.addTile(Type);
+			TileObjectData.addTile(Type);
 
-            AddMapEntry(new Color(220, 200, 10), Language.GetText("MapObject.Chair"));
-            DustType = 2;
-        }
-        public override void KillMultiTile(int i, int j, int frameX, int frameY)
-        {
-            ModContent.GetInstance<GraniteChair_TileEntity>().Kill(i, j);
-        }
-        public override bool PreDraw(int i, int j, SpriteBatch spriteBatch)
-        {
-            Tile tile = Main.tile[i, j];
-            if (TileEntity.ByPosition.TryGetValue(new Point16(i, j), out TileEntity tileEntity))
-            {
-                if (tileEntity is GraniteChair_TileEntity)
-                {
-                    foreach (var npc in Main.ActiveProjectiles)
-                    {
-                        if (npc.active && (npc.position / 16).Distance(tileEntity.Position.ToVector2()) < 1f && npc.type == ModContent.ProjectileType<GraniteChair_ProjectileEntity>())
-                        {
-                            int tumSize = GraniteChair_ProjectileEntity.GetVisualBellySize(npc);
-                            int weightSize = GraniteChair_ProjectileEntity.GetVisualWeightStage(npc);
-                            Texture2D texture = ModContent.Request<Texture2D>("V2/Tiles/Vanilla/Furniture/GraniteSet/GraniteChair_SpriteSheet").Value;
-                            Rectangle sourceRect = new Rectangle(62 * weightSize, 34 * tumSize, 62, 34);
-                            Vector2 zero = Main.drawToScreen ? Vector2.Zero : new Vector2(Main.offScreenRange);
+			AddMapEntry(new Color(220, 200, 10), Language.GetText("MapObject.Chair"));
+			DustType = 2;
+		}
+		public override void KillMultiTile(int i, int j, int frameX, int frameY)
+		{
+			ModContent.GetInstance<GraniteChair_TileEntity>().Kill(i, j);
+		}
+		public override bool PreDraw(int i, int j, SpriteBatch spriteBatch)
+		{
+			Tile tile = Main.tile[i, j];
+			if (TileEntity.ByPosition.TryGetValue(new Point16(i, j), out TileEntity tileEntity))
+			{
+				if (tileEntity is GraniteChair_TileEntity)
+				{
+					foreach (var npc in Main.ActiveProjectiles)
+					{
+						if (npc.active && (npc.position / 16).Distance(tileEntity.Position.ToVector2()) < 1f && npc.type == ModContent.ProjectileType<GraniteChair_ProjectileEntity>())
+						{
+							int tumSize = GraniteChair_ProjectileEntity.GetVisualBellySize(npc);
+							int weightSize = GraniteChair_ProjectileEntity.GetVisualWeightStage(npc);
+							Texture2D texture = ModContent.Request<Texture2D>("V2/Tiles/Vanilla/Furniture/GraniteSet/GraniteChair_SpriteSheet").Value;
+							Rectangle sourceRect = new Rectangle(62 * weightSize, 34 * tumSize, 62, 34);
+							Vector2 zero = Main.drawToScreen ? Vector2.Zero : new Vector2(Main.offScreenRange);
 							zero.X += 24;
 							zero.Y += 34;
-                            spriteBatch.Draw(
-                                texture,
-                                new Vector2(i * 16 - (int)Main.screenPosition.X - 16, j * 16 - (int)Main.screenPosition.Y - 14) + zero,
-                                sourceRect,
-                                Lighting.GetColor(i, j),
+							spriteBatch.Draw(
+								texture,
+								new Vector2(i * 16 - (int)Main.screenPosition.X - 16, j * 16 - (int)Main.screenPosition.Y - 14) + zero,
+								sourceRect,
+								Lighting.GetColor(i, j),
 								0f,
 								new Vector2(12f, 22f),
 								1f,
 								tile.TileFrameX != 0 ? SpriteEffects.None : SpriteEffects.FlipHorizontally,
 								0f
 							);
-                        }
-                    }
-                }
-            }
-            return false;
+						}
+					}
+				}
+			}
+			return false;
 		}
 
 		public override bool HasSmartInteract(int i, int j, SmartInteractScanSettings settings)
@@ -155,165 +155,165 @@ namespace V2.Tiles.Vanilla.Furniture.GraniteSet
 			}
 		}
 	}
-    public class GraniteChair_TileEntity : ModTileEntity
-    {
-        public Projectile connectedNPC = null;
-        public double WeightOnLoad = 0;
-        public override void Update()
-        {
-            if (connectedNPC is null)
-            {
-                Activate();
-            }
-            else if (!connectedNPC.active || connectedNPC.type != ModContent.ProjectileType<GraniteChair_ProjectileEntity>())
-            {
-                Activate();
-            }
+	public class GraniteChair_TileEntity : ModTileEntity
+	{
+		public Projectile connectedNPC = null;
+		public double WeightOnLoad = 0;
+		public override void Update()
+		{
+			if (connectedNPC is null)
+			{
+				Activate();
+			}
+			else if (!connectedNPC.active || connectedNPC.type != ModContent.ProjectileType<GraniteChair_ProjectileEntity>())
+			{
+				Activate();
+			}
 
-        }
-        public void Activate()
-        {
-            foreach (var npc in Main.ActiveProjectiles)
-            {
-                if (npc.active && (npc.position / 16).Distance(Position.ToVector2()) < 1f && npc.type == ModContent.ProjectileType<GraniteChair_ProjectileEntity>())
-                {
-                    connectedNPC = npc;
-                    return;
-                }
-            }
-            //ill be honest i dont exactly know the grounds for the offset for the npc but i *think* its like, half of the X tiles and all Y tiles
-            if (Main.netMode != NetmodeID.MultiplayerClient)
-            {
-                int num = Projectile.NewProjectile(new EntitySource_TileEntity(this, null), new Vector2((int)(Position.X * 16) + 8, (int)(Position.Y * 16) + 24), Vector2.Zero, ModContent.ProjectileType<GraniteChair_ProjectileEntity>(), 0, 0);
-                connectedNPC = Main.projectile[num];
-                connectedNPC.AsPred().ExtraWeight = WeightOnLoad;
-                Main.projectile[num].netUpdate = true;
-                if (Main.netMode != NetmodeID.SinglePlayer)
-                {
-                    NetMessage.SendData(MessageID.TileEntitySharing, -1, -1, null, ID, (float)Position.X, (float)Position.Y);
-                }
-            }
-        }
-        public override bool IsTileValidForEntity(int x, int y)
-        {
-            Tile tile = Main.tile[x, y];
-            return tile.HasTile && tile.TileType == ModContent.TileType<GraniteChair>();
-        }
-        public override int Hook_AfterPlacement(int i, int j, int type, int style, int direction, int alternate)
-        {
-            if (Main.netMode == NetmodeID.MultiplayerClient)
-            {
-                int width = 4;
-                int height = 4;
-                NetMessage.SendTileSquare(Main.myPlayer, i, j, width, height);
-                NetMessage.SendData(MessageID.TileEntityPlacement, number: i, number2: j, number3: Type);
-                return -1;
-            }
-            int placedEntity = Place(i, j);
-            return placedEntity;
-        }
-        public override void OnNetPlace()
-        {
-            if (Main.netMode == NetmodeID.Server)
-            {
-                NetMessage.SendData(MessageID.TileEntitySharing, number: ID, number2: Position.X, number3: Position.Y);
-            }
-        }
+		}
+		public void Activate()
+		{
+			foreach (var npc in Main.ActiveProjectiles)
+			{
+				if (npc.active && (npc.position / 16).Distance(Position.ToVector2()) < 1f && npc.type == ModContent.ProjectileType<GraniteChair_ProjectileEntity>())
+				{
+					connectedNPC = npc;
+					return;
+				}
+			}
+			//ill be honest i dont exactly know the grounds for the offset for the npc but i *think* its like, half of the X tiles and all Y tiles
+			if (Main.netMode != NetmodeID.MultiplayerClient)
+			{
+				int num = Projectile.NewProjectile(new EntitySource_TileEntity(this, null), new Vector2((int)(Position.X * 16) + 8, (int)(Position.Y * 16) + 24), Vector2.Zero, ModContent.ProjectileType<GraniteChair_ProjectileEntity>(), 0, 0);
+				connectedNPC = Main.projectile[num];
+				connectedNPC.AsPred().ExtraWeight = WeightOnLoad;
+				Main.projectile[num].netUpdate = true;
+				if (Main.netMode != NetmodeID.SinglePlayer)
+				{
+					NetMessage.SendData(MessageID.TileEntitySharing, -1, -1, null, ID, (float)Position.X, (float)Position.Y);
+				}
+			}
+		}
+		public override bool IsTileValidForEntity(int x, int y)
+		{
+			Tile tile = Main.tile[x, y];
+			return tile.HasTile && tile.TileType == ModContent.TileType<GraniteChair>();
+		}
+		public override int Hook_AfterPlacement(int i, int j, int type, int style, int direction, int alternate)
+		{
+			if (Main.netMode == NetmodeID.MultiplayerClient)
+			{
+				int width = 4;
+				int height = 4;
+				NetMessage.SendTileSquare(Main.myPlayer, i, j, width, height);
+				NetMessage.SendData(MessageID.TileEntityPlacement, number: i, number2: j, number3: Type);
+				return -1;
+			}
+			int placedEntity = Place(i, j);
+			return placedEntity;
+		}
+		public override void OnNetPlace()
+		{
+			if (Main.netMode == NetmodeID.Server)
+			{
+				NetMessage.SendData(MessageID.TileEntitySharing, number: ID, number2: Position.X, number3: Position.Y);
+			}
+		}
 
-        public override void SaveData(TagCompound tag)
-        {
-            tag.Add("ExtraWeight", connectedNPC.AsPred().ExtraWeight);
-        }
+		public override void SaveData(TagCompound tag)
+		{
+			tag.Add("ExtraWeight", connectedNPC.AsPred().ExtraWeight);
+		}
 
-        public override void LoadData(TagCompound tag)
-        {
-            WeightOnLoad = tag.GetDouble("ExtraWeight");
-        }
-    }
-    public class GraniteChair_ProjectileEntity : ModProjectile
-    {
-        public override string Texture => "V2/Tiles/InvisibleImage";
-        public override void SetDefaults()
-        {
-            Projectile.friendly = true;
-            Projectile.width = 16;
-            Projectile.height = 32;
-            Projectile.aiStyle = -1;
-            Projectile.damage = 0;
-            Projectile.timeLeft = 6000;
-            Projectile.tileCollide = false;
+		public override void LoadData(TagCompound tag)
+		{
+			WeightOnLoad = tag.GetDouble("ExtraWeight");
+		}
+	}
+	public class GraniteChair_ProjectileEntity : ModProjectile
+	{
+		public override string Texture => "V2/Tiles/InvisibleImage";
+		public override void SetDefaults()
+		{
+			Projectile.friendly = true;
+			Projectile.width = 16;
+			Projectile.height = 32;
+			Projectile.aiStyle = -1;
+			Projectile.damage = 0;
+			Projectile.timeLeft = 6000;
+			Projectile.tileCollide = false;
 
-            Projectile.AsFood().CannotBeEatenDueToShenanigans = true;
+			Projectile.AsFood().CannotBeEatenDueToShenanigans = true;
 
-            Projectile.AsFood().DefinedSize = 0.80;
-            Projectile.AsPred().WeightGainRatio = 0.185;
-            Projectile.AsPred().MaxStomachCapacity = 4.5;
-            Projectile.AsPred().BaseStomachacheMeterCapacity = 400.0;
-            Projectile.AsPred().CanSwallowBosses = false;
-            Projectile.AsFood().MaxHealth = 7500;
-            Projectile.AsFood().Health = 7500;
+			Projectile.AsFood().DefinedSize = 0.80;
+			Projectile.AsPred().WeightGainRatio = 0.185;
+			Projectile.AsPred().MaxStomachCapacity = 4.5;
+			Projectile.AsPred().BaseStomachacheMeterCapacity = 400.0;
+			Projectile.AsPred().CanSwallowBosses = false;
+			Projectile.AsFood().MaxHealth = 7500;
+			Projectile.AsFood().Health = 7500;
 
-            Projectile.AsPred().MouthSoundRawOffset = new Vector2(0f, -14f);
-            Projectile.AsPred().SmallGulps = Gulps.Short;
-            Projectile.AsPred().SmallGulpThreshold = 0.1;
-            Projectile.AsPred().BigGulps = Gulps.Standard;
-            Projectile.AsPred().CanBeForceFed = CanGraniteChairBeForceFed;
-            Projectile.AsPred().MaxSwallowRange = V2Utils.TileCountAsPixelCount(12.5);
+			Projectile.AsPred().MouthSoundRawOffset = new Vector2(0f, -14f);
+			Projectile.AsPred().SmallGulps = Gulps.Short;
+			Projectile.AsPred().SmallGulpThreshold = 0.1;
+			Projectile.AsPred().BigGulps = Gulps.Standard;
+			Projectile.AsPred().CanBeForceFed = CanGraniteChairBeForceFed;
+			Projectile.AsPred().MaxSwallowRange = V2Utils.TileCountAsPixelCount(12.5);
 
-            Projectile.AsPred().DigestionType = EntityDigestionType.Acidic;
-            Projectile.AsPred().GetDigestionTickDamage = GetDigestionTickDamage;
-            Projectile.AsPred().GetDigestionTickRate = GetDigestionTickRate;
+			Projectile.AsPred().DigestionType = EntityDigestionType.Acidic;
+			Projectile.AsPred().GetDigestionTickDamage = GetDigestionTickDamage;
+			Projectile.AsPred().GetDigestionTickRate = GetDigestionTickRate;
 
-            Projectile.AsPred().SmallBurps = Burps.Humanoid.Small;
-            Projectile.AsPred().StandardBurps = Burps.Humanoid.Standard;
-            Projectile.AsPred().BurpPitchOffset = 0f;
+			Projectile.AsPred().SmallBurps = Burps.Humanoid.Small;
+			Projectile.AsPred().StandardBurps = Burps.Humanoid.Standard;
+			Projectile.AsPred().BurpPitchOffset = 0f;
 
-            Projectile.AsPred().GetPreyAbsorptionRate = GetPreyAbsorptionRate;
+			Projectile.AsPred().GetPreyAbsorptionRate = GetPreyAbsorptionRate;
 
-            Projectile.AsPred().GetVisualBellySize = GetVisualBellySize;
-            Projectile.AsPred().GetVisualWeightStage = GetVisualWeightStage;
-        }
-        public override bool? CanHitNPC(NPC target) => false;
-        public override bool CanHitPlayer(Player target) => false;
-        public override bool CanHitPvp(Player target) => false;
-        public static bool CanGraniteChairBeForceFed(Projectile projectile) => true;
-        public override void AI()
-        {
-            Projectile.timeLeft = 6000;
-            Projectile.velocity = Vector2.Zero;
-            Tile Painting = Main.tile[Projectile.position.ToTileCoordinates()];
-            if (!Painting.HasTile || Painting.TileType != ModContent.TileType<GraniteChair>())
-            {
-                Projectile.active = false;
-            }
-            if (Main.rand.NextBool(100)) Projectile.DoContactGulpage();
-        }
-        public override void PostAI()
-        {
-            Projectile.velocity = Vector2.Zero;
-        }
-        public static int GetVisualBellySize(Projectile projectile)
-        {
-            return Math.Min(
-                (int)Math.Floor(5.35 * Math.Sqrt(PredProjectile.GetCurrentBellyWeight(projectile))),
-                7
-            );
-        }
-        public static int GetVisualWeightStage(Projectile projectile)
-        {
-            return Math.Min(
-                (int)Math.Floor(4.5 * Math.Sqrt(projectile.AsPred().ExtraWeight)),
-                2
-            );
-        }
-        public static double GetDigestionTickDamage(Projectile projectile, PreyData prey) => 16;
-        public static double GetDigestionTickRate(Projectile projectile, PreyData prey) => 1.2;
-        public static double GetPreyAbsorptionRate(Projectile projectile)
-        {
-            double baseAbsorptionRate = 1.0 / (double)V2Utils.SensibleTime(
-                seconds: 30
-            );
-            return baseAbsorptionRate;
-        }
-    }
+			Projectile.AsPred().GetVisualBellySize = GetVisualBellySize;
+			Projectile.AsPred().GetVisualWeightStage = GetVisualWeightStage;
+		}
+		public override bool? CanHitNPC(NPC target) => false;
+		public override bool CanHitPlayer(Player target) => false;
+		public override bool CanHitPvp(Player target) => false;
+		public static bool CanGraniteChairBeForceFed(Projectile projectile) => true;
+		public override void AI()
+		{
+			Projectile.timeLeft = 6000;
+			Projectile.velocity = Vector2.Zero;
+			Tile Painting = Main.tile[Projectile.position.ToTileCoordinates()];
+			if (!Painting.HasTile || Painting.TileType != ModContent.TileType<GraniteChair>())
+			{
+				Projectile.active = false;
+			}
+			if (Main.rand.NextBool(100)) Projectile.DoContactGulpage();
+		}
+		public override void PostAI()
+		{
+			Projectile.velocity = Vector2.Zero;
+		}
+		public static int GetVisualBellySize(Projectile projectile)
+		{
+			return Math.Min(
+				(int)Math.Floor(5.35 * Math.Sqrt(PredProjectile.GetCurrentBellyWeight(projectile))),
+				7
+			);
+		}
+		public static int GetVisualWeightStage(Projectile projectile)
+		{
+			return Math.Min(
+				(int)Math.Floor(4.5 * Math.Sqrt(projectile.AsPred().ExtraWeight)),
+				2
+			);
+		}
+		public static double GetDigestionTickDamage(Projectile projectile, PreyData prey) => 16;
+		public static double GetDigestionTickRate(Projectile projectile, PreyData prey) => 1.2;
+		public static double GetPreyAbsorptionRate(Projectile projectile)
+		{
+			double baseAbsorptionRate = 1.0 / (double)V2Utils.SensibleTime(
+				seconds: 30
+			);
+			return baseAbsorptionRate;
+		}
+	}
 }

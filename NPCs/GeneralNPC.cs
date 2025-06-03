@@ -70,10 +70,10 @@ namespace V2.NPCs
 
 		public int Aggro { get; set; }
 
-        public int FatassCrushingIFrames { get; set; }
-        public bool CanBeDamagedByFallingPeople { get; set; }
+		public int FatassCrushingIFrames { get; set; }
+		public bool CanBeDamagedByFallingPeople { get; set; }
 
-        public override bool InstancePerEntity => true;
+		public override bool InstancePerEntity => true;
 
 		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => true;
 
@@ -95,20 +95,20 @@ namespace V2.NPCs
 			IsTileEntity = false;
 
 			IsTileEntity = false;
-            CanBeDamagedByFallingPeople = true;
-            FatassCrushingIFrames = 0;
+			CanBeDamagedByFallingPeople = true;
+			FatassCrushingIFrames = 0;
 
-            Aggro = 0;
+			Aggro = 0;
 
 			GetNewDialogue = null;
 		}
-        public override void ResetEffects(NPC npc)
-        {
+		public override void ResetEffects(NPC npc)
+		{
 			if (npc.AsV2NPC().FatassCrushingIFrames > 0)
 				npc.AsV2NPC().FatassCrushingIFrames--;
-        }
+		}
 
-        public static void SetChatboxText(NPC npc, Player player, string chatText)
+		public static void SetChatboxText(NPC npc, Player player, string chatText)
 		{
 			Main.CancelHairWindow();
 			Main.SetNPCShopIndex(0);

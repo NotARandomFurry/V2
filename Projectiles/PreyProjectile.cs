@@ -18,15 +18,15 @@ using V2.UI;
 namespace V2.Projectiles
 {
 	public partial class PreyProjectile : GlobalProjectile
-    {
-        public bool CannotBeEatenDueToShenanigans { get; set; }
-        public int EatenSafetyFrames { get; set; }
+	{
+		public bool CannotBeEatenDueToShenanigans { get; set; }
+		public int EatenSafetyFrames { get; set; }
 		public bool Digested { get; set; }
 
 		public double DefinedSize { get; set; }
-        public double CalorieMultiplier { get; set; }
-        public double WellFedPower { get; set; }
-        public double MaxHealth { get; set; }
+		public double CalorieMultiplier { get; set; }
+		public double WellFedPower { get; set; }
+		public double MaxHealth { get; set; }
 		public double Health { get; set; }
 		public bool TakeDamageFromSwallow { get; set; }
 
@@ -73,9 +73,9 @@ namespace V2.Projectiles
 		public PreyProjectile()
 		{
 			DefinedSize = 0.0;
-            CalorieMultiplier = 1;
-            WellFedPower = 0;
-            MaxHealth = -1;
+			CalorieMultiplier = 1;
+			WellFedPower = 0;
+			MaxHealth = -1;
 			Health = -1;
 			TakeDamageFromSwallow = true;
 			OnSwallowedBy = null;
@@ -90,7 +90,7 @@ namespace V2.Projectiles
 			DigestedDeathSound = null;
 		}
 
-        public override bool PreKill(Projectile projectile, int timeLeft)
+		public override bool PreKill(Projectile projectile, int timeLeft)
 		{
 			if (projectile.AsFood().Digested)
 				return false;

@@ -137,9 +137,9 @@ namespace V2.NPCs.Voraria.TownNPCs.Enigma
 			NPC.AsPred().MaxStomachCapacity = 2.2;
 			NPC.AsPred().BaseStomachacheMeterCapacity = 90.0;
 			NPC.AsFood().StruggleEffectiveness = 1; //have fun
-            NPC.AsFood().WellFedPower = -7.77;
+			NPC.AsFood().WellFedPower = -7.77;
 
-            NPC.AsPred().SmallGulps = Gulps.Short;
+			NPC.AsPred().SmallGulps = Gulps.Short;
 			NPC.AsPred().SmallGulpThreshold = 0.45;
 			NPC.AsPred().BigGulps = Gulps.Standard;
 			NPC.AsPred().CanBeForceFed = CanEnigmaBeForceFed;
@@ -306,12 +306,12 @@ namespace V2.NPCs.Voraria.TownNPCs.Enigma
 			EnigmaShop.Add<CloverHeadAccessories>();
 			EnigmaShop.Add<CloverSweater>();
 			EnigmaShop.Add<CloverStockings>();
-            EnigmaShop.Add<BlankJuju>();
-            EnigmaShop.Add<DemonCandy>();
-            EnigmaShop.Add<GhostBall>();
-            EnigmaShop.Add<MyFairy>([Condition.InGlowshroom]);
-            EnigmaShop.Add<DinnerBlaster>([Condition.NpcIsPresent(NPCID.Cyborg)]);
-            EnigmaShop.Register();
+			EnigmaShop.Add<BlankJuju>();
+			EnigmaShop.Add<DemonCandy>();
+			EnigmaShop.Add<GhostBall>();
+			EnigmaShop.Add<MyFairy>([Condition.InGlowshroom]);
+			EnigmaShop.Add<DinnerBlaster>([Condition.NpcIsPresent(NPCID.Cyborg)]);
+			EnigmaShop.Register();
 		}
 
 		public static bool CanEnigmaBeForceFed(NPC npc) => true;
@@ -400,21 +400,21 @@ namespace V2.NPCs.Voraria.TownNPCs.Enigma
 			);
 		}
 
-        public int LastWalkFrame = 0;
+		public int LastWalkFrame = 0;
 
-        public override void FindFrame(int frameHeight)
+		public override void FindFrame(int frameHeight)
 		{
 			NPC.frame.Width = 194;
 
 			if (NPC.ai[0] == 1)
-            {
-                int walkFrame = LastWalkFrame;
-                if (!Main.gamePaused)
-                {
-                    walkFrame = (int)(Main.GlobalTimeWrappedHourly * 8) % 6;
-                }
-                NPC.frame.Y = (walkFrame + 2) * NPC.frame.Height;
-            }
+			{
+				int walkFrame = LastWalkFrame;
+				if (!Main.gamePaused)
+				{
+					walkFrame = (int)(Main.GlobalTimeWrappedHourly * 8) % 6;
+				}
+				NPC.frame.Y = (walkFrame + 2) * NPC.frame.Height;
+			}
 		}
 
 		public override void ModifyHoverBoundingBox(ref Rectangle boundingBox)

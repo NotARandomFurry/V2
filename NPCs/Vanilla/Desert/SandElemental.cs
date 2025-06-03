@@ -10,7 +10,7 @@ using V2.PlayerHandling.PredPlayerGoals.Intermediate;
 
 namespace V2.NPCs.Vanilla.Desert
 {
-    public static class SandElementalStuff
+	public static class SandElementalStuff
 	{
 		public static SandElemental AsSandElemental(this NPC npc)
 		{

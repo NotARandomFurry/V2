@@ -26,18 +26,18 @@ namespace V2.Items.Voraria.Accessories
 		public override LocalizedText DisplayName => Language.GetText("Mods.V2.ItemName.Voraria.Accessories.ShroomNecklace");
 		public override LocalizedText Tooltip => Language.GetText("Mods.V2.ItemTooltip.Voraria.Accessories.ShroomNecklace.Short");
 		public override string Texture => "V2/Items/UnspritedItem";
-        public override void SetStaticDefaults()
+		public override void SetStaticDefaults()
 		{
 			DrawAnimationVertical anim = new DrawAnimationVertical(6, 12);
 			Main.RegisterItemAnimation(Type, anim);
 			ItemID.Sets.AnimatesAsSoul[Type] = true;
 		}
-        public override void HoldStyle(Player player, Rectangle heldItemFrame)
+		public override void HoldStyle(Player player, Rectangle heldItemFrame)
 		{
 			player.itemLocation.X -= 24 * 0.75f * player.direction;
 			player.itemLocation.Y += 14;
 		}
-        public override void SetDefaults()
+		public override void SetDefaults()
 		{
 			Item.accessory = true;
 
@@ -48,17 +48,17 @@ namespace V2.Items.Voraria.Accessories
 			Item.value = Item.sellPrice(
 				gold: 10
 			);
-        }
-        public override void AddRecipes()
-        {
-            CreateRecipe()
-                .AddIngredient(ItemID.PygmyNecklace)
-                .AddIngredient(ItemID.GlowingMushroom, 100)
-                .AddIngredient(ModContent.ItemType<MushroomToken>())
-                .AddTile(TileID.Anvils)
-                .Register();
-        }
-        public override void UpdateAccessory(Player player, bool hideVisual)
+		}
+		public override void AddRecipes()
+		{
+			CreateRecipe()
+				.AddIngredient(ItemID.PygmyNecklace)
+				.AddIngredient(ItemID.GlowingMushroom, 100)
+				.AddIngredient(ModContent.ItemType<MushroomToken>())
+				.AddTile(TileID.Anvils)
+				.Register();
+		}
+		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
 			player.AsV2Player().ShroomNecklace = true;
 			player.maxMinions += 1;

@@ -9,7 +9,7 @@ using V2.PlayerHandling.PredPlayerGoals.Beginner;
 
 namespace V2.NPCs.Vanilla.Graveyard
 {
-    public static class GhostStuff
+	public static class GhostStuff
 	{
 		public static Ghost AsGhost(this NPC npc)
 		{

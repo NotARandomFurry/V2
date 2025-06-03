@@ -88,16 +88,16 @@ namespace V2.Items.Voraria.Weapons.Summon
 	}
 	public class ShroomStaffDrop : GlobalNPC
 	{
-        public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
-        {
-            if (npc.type == NPCID.SporeBat || npc.type == NPCID.ZombieMushroom || npc.type == NPCID.ZombieMushroomHat || npc.type == NPCID.SporeSkeleton)
-            {
-                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ShroomStaff>(), 90));
-            }
-            else if(npc.type == NPCID.AnomuraFungus || npc.type == NPCID.MushiLadybug || npc.type == NPCID.FungoFish || npc.type == NPCID.FungiBulb || npc.type == NPCID.GiantFungiBulb)
-            {
-                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ShroomStaff>(), 50));
-            }
-        }
-    }
+		public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
+		{
+			if (npc.type == NPCID.SporeBat || npc.type == NPCID.ZombieMushroom || npc.type == NPCID.ZombieMushroomHat || npc.type == NPCID.SporeSkeleton)
+			{
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ShroomStaff>(), 90));
+			}
+			else if(npc.type == NPCID.AnomuraFungus || npc.type == NPCID.MushiLadybug || npc.type == NPCID.FungoFish || npc.type == NPCID.FungiBulb || npc.type == NPCID.GiantFungiBulb)
+			{
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ShroomStaff>(), 50));
+			}
+		}
+	}
 }

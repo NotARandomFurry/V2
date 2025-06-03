@@ -39,18 +39,18 @@ namespace V2.Items.Voraria
 			);
 		}
 	}
-    public class Binoculars : GlobalItem
-    {
-        public override bool AppliesToEntity(Item entity, bool lateInstantiation) => entity.type == ItemID.Binoculars;
-        public override void AddRecipes()
-        {
-            Recipe recipe = Recipe.Create(ItemID.Binoculars);
-            recipe
+	public class Binoculars : GlobalItem
+	{
+		public override bool AppliesToEntity(Item entity, bool lateInstantiation) => entity.type == ItemID.Binoculars;
+		public override void AddRecipes()
+		{
+			Recipe recipe = Recipe.Create(ItemID.Binoculars);
+			recipe
 				.AddRecipeGroup(RecipeGroupID.IronBar, 6)
-                .AddIngredient(ItemID.Lens, 4)
-                .AddIngredient<ObserverPupil>(4)
-                .AddTile(TileID.Anvils)
-                .Register();
-        }
-    }
+				.AddIngredient(ItemID.Lens, 4)
+				.AddIngredient<ObserverPupil>(4)
+				.AddTile(TileID.Anvils)
+				.Register();
+		}
+	}
 }

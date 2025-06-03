@@ -56,8 +56,8 @@ namespace V2.NPCs.Vanilla.Sky
 					0 => 60,
 					1 => 50,
 					2 => 36,
-                    3 => 22,
-                    4 => 14,
+					3 => 22,
+					4 => 14,
 					_ => 14,
 				};
 				if (npc.AsHarpy().WingFlapTimer >= minDelay && Main.rand.NextBool(flapChance))

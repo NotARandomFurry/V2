@@ -2949,7 +2949,7 @@ Mods: {
 						Flavor:
 							'''
 							[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:this is a prefabricated copy of Rose's personal flower hairpin]
-							[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:it's not where any of her more                egregious predatory abilities come from]
+							[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:it's not where any of her more				egregious predatory abilities come from]
 							[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:she is naturally just that much a glutton. ate an entire mountain range as a snack once]
 							[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:she tells people that this flower was the very last thing left from the last world she ate]
 							[c/{$Mods.V2.CommonColorCodes.ThomasCommentary}:she doesn't tell them that I made it for her when I made her]

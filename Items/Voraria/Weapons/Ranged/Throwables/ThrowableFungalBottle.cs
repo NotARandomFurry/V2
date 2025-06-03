@@ -56,7 +56,7 @@ namespace V2.Items.Voraria.Weapons.Ranged.Throwables
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
 			tooltips.AddVorariaDynamicItemTooltip(
-                "Voraria.Weapons.Ranged.Throwables.FragileBottles.Fungal",
+				"Voraria.Weapons.Ranged.Throwables.FragileBottles.Fungal",
 				new
 				{
 					ThrowableBottleCondimentName = ThrowableFungalDetails.CondimentName,

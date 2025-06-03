@@ -20,15 +20,15 @@ namespace V2.Items.ItemGroupUtils
 		{
 			item.AsFood().Size = 0.1;
 			item.AsFood().MaxHealth = 85;
-            item.AsFood().OnBreak += OnBreak;
-        }
-        public static bool OnBreak(Item item, Entity pred, bool direct)
-        {
-            if (pred is Player predPlayer && (item.type == ItemID.RainbowDye || item.type == ItemID.IntenseRainbowDye))
-            {
-                ModContent.GetInstance<EatRainbowDye>().TrySetCompletion(predPlayer);
-            }
-            return true;
-        }
-    }
+			item.AsFood().OnBreak += OnBreak;
+		}
+		public static bool OnBreak(Item item, Entity pred, bool direct)
+		{
+			if (pred is Player predPlayer && (item.type == ItemID.RainbowDye || item.type == ItemID.IntenseRainbowDye))
+			{
+				ModContent.GetInstance<EatRainbowDye>().TrySetCompletion(predPlayer);
+			}
+			return true;
+		}
+	}
 }

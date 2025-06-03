@@ -25,7 +25,7 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace V2.Projectiles.Voraria.Pets
 {
-    public class AstralFairyBuff : ModBuff
+	public class AstralFairyBuff : ModBuff
 	{
 		public override LocalizedText DisplayName => Language.GetText("Mods.V2.StatusEffects.Voraria.Summons.AstralFairy.Name");
 		public override LocalizedText Description => Language.GetText("Mods.V2.StatusEffects.Voraria.Summons.AstralFairy.Description");
@@ -34,34 +34,34 @@ namespace V2.Projectiles.Voraria.Pets
 		{
 			Main.buffNoSave[Type] = true;
 			Main.buffNoTimeDisplay[Type] = true;
-            Main.vanityPet[Type] = true;
+			Main.vanityPet[Type] = true;
 			Main.persistentBuff[Type] = true;
-        }
+		}
 
 		public override void ModifyBuffText(ref string buffName, ref string tip, ref int rare)
 		{
 			rare = ItemRarityID.Green;
 			tip = Language.GetTextValueWith(
-                "Mods.V2.StatusEffects.Voraria.Summons.AstralFairy.Description",
+				"Mods.V2.StatusEffects.Voraria.Summons.AstralFairy.Description",
 				new
 				{
 					
 				}
 			);
 		}
-        public override void Update(Player player, ref int buffIndex)
-        { 
-            bool unused = false;
-            player.BuffHandle_SpawnPetIfNeededAndSetTime(buffIndex, ref unused, ModContent.ProjectileType<AstralFairy>());
-        }
-    }
+		public override void Update(Player player, ref int buffIndex)
+		{ 
+			bool unused = false;
+			player.BuffHandle_SpawnPetIfNeededAndSetTime(buffIndex, ref unused, ModContent.ProjectileType<AstralFairy>());
+		}
+	}
 
 	public static partial class AstralFairyStuff
 	{
 		public static int MaxHealth => 785000;
 		public static double Size => 29;
 		public static double MaxStomachCapacity => 42000.0;
-        public static double Stomachache => 250000.0;
+		public static double Stomachache => 250000.0;
 		public static double DigestDamage => 70.0;
 		public static double DigestRate => 2;
 		public static double AbsorbRate => 1.0 / (double)V2Utils.SensibleTime(
@@ -82,10 +82,10 @@ namespace V2.Projectiles.Voraria.Pets
 
 		public sealed override void SetDefaults()
 		{
-            Projectile.CloneDefaults(ProjectileID.EyeOfCthulhuPet);
+			Projectile.CloneDefaults(ProjectileID.EyeOfCthulhuPet);
 
-            Projectile.aiStyle = -1;
-            Projectile.width = 50;
+			Projectile.aiStyle = -1;
+			Projectile.width = 50;
 			Projectile.height = 182;
 
 			Projectile.AsV2Proj().Gender = EntityGender.Female;
@@ -193,11 +193,11 @@ namespace V2.Projectiles.Voraria.Pets
 		public override void AI()
 		{
 			Player owner = Main.player[Projectile.owner];
-            bool ateOwner = owner.IsFoodFor(Projectile, out bool churnedOwner);
+			bool ateOwner = owner.IsFoodFor(Projectile, out bool churnedOwner);
 			VoreTracker tracker = PredProjectile.GetStomachTracker(Projectile);
 			CheckActive(owner);
 			if ((ateOwner && !churnedOwner) || owner.dead) Projectile.velocity *= 0.9f;
-            		else 
+					else 
 			{
 				Vector2 sitPosition = owner.Center + new Vector2(0, -160);
 				Projectile.velocity = Projectile.Center.DirectionTo(sitPosition) * (Projectile.position.Distance(sitPosition) / 32f);
@@ -212,7 +212,7 @@ namespace V2.Projectiles.Voraria.Pets
 				else if (Projectile.Center.Distance(sitPosition) < 45) Projectile.velocity *= 0.7f;
 				else if (Projectile.Center.Distance(sitPosition) < 55) Projectile.velocity *= 0.85f;
 			}
-        }
+		}
 		public static Rectangle TumBounds(int size, out int YOffset, out int XOffset)
 		{
 			Rectangle bounds = new Rectangle(0, 0, 38, 28);
@@ -221,11 +221,11 @@ namespace V2.Projectiles.Voraria.Pets
 			switch (size)
 			{
 				case 0: bounds = new Rectangle(0, 0, 38, 28); break;
-                case 1: bounds = new Rectangle(0, 30, 38, 32); break;
-                case 2: bounds = new Rectangle(0, 64, 38, 36); break;
-                case 3: bounds = new Rectangle(0, 102, 42, 40); break;
-                case 4: bounds = new Rectangle(0, 144, 46, 48); break;
-            }
+				case 1: bounds = new Rectangle(0, 30, 38, 32); break;
+				case 2: bounds = new Rectangle(0, 64, 38, 36); break;
+				case 3: bounds = new Rectangle(0, 102, 42, 40); break;
+				case 4: bounds = new Rectangle(0, 144, 46, 48); break;
+			}
 			XOffset = -(bounds.Width - 38) / 2;
 			return bounds;
 		}
@@ -243,99 +243,99 @@ namespace V2.Projectiles.Voraria.Pets
 				}
 			}
 			Lighting.AddLight(Projectile.Center, new Vector3(111, 0, 255) * 0.005f);
-        }
-        public void CheckActive(Player player)
-        {
-            if (player.HasBuff(ModContent.BuffType<AstralFairyBuff>()))
-            {
-                Projectile.timeLeft = 2;
-            }
-        }
-        public override bool PreDraw(ref Color lightColor)
-        {
-            SpriteEffects val = Projectile.direction != -1 ? 0 : (SpriteEffects)1;
-            SpriteEffects spriteEffects = val;
+		}
+		public void CheckActive(Player player)
+		{
+			if (player.HasBuff(ModContent.BuffType<AstralFairyBuff>()))
+			{
+				Projectile.timeLeft = 2;
+			}
+		}
+		public override bool PreDraw(ref Color lightColor)
+		{
+			SpriteEffects val = Projectile.direction != -1 ? 0 : (SpriteEffects)1;
+			SpriteEffects spriteEffects = val;
 
 			Vector2 ExtraOffset = new Vector2(-32, -14);
 
-            string textWings = "V2/Projectiles/Voraria/Pets/AstralFairyWings";
-            Texture2D spriteWings = ModContent.Request<Texture2D>(textWings).Value;
-            Rectangle sourceRectWings = new Rectangle(0, 212 * Projectile.frame, 114, 212);
-            Main.EntitySpriteDraw(spriteWings, Projectile.position - Main.screenPosition + ExtraOffset + new Vector2(0, Projectile.gfxOffY), (Rectangle)sourceRectWings, lightColor, Projectile.rotation, Vector2.Zero, 1f, spriteEffects, 0f);
+			string textWings = "V2/Projectiles/Voraria/Pets/AstralFairyWings";
+			Texture2D spriteWings = ModContent.Request<Texture2D>(textWings).Value;
+			Rectangle sourceRectWings = new Rectangle(0, 212 * Projectile.frame, 114, 212);
+			Main.EntitySpriteDraw(spriteWings, Projectile.position - Main.screenPosition + ExtraOffset + new Vector2(0, Projectile.gfxOffY), (Rectangle)sourceRectWings, lightColor, Projectile.rotation, Vector2.Zero, 1f, spriteEffects, 0f);
 
-            int bodyFrame = Projectile.frame % 2;
+			int bodyFrame = Projectile.frame % 2;
 			string textBody = "V2/Projectiles/Voraria/Pets/AstralFairy";
-            Texture2D spriteBody = ModContent.Request<Texture2D>(textBody).Value;
+			Texture2D spriteBody = ModContent.Request<Texture2D>(textBody).Value;
 			Rectangle sourceRectBody = new Rectangle(0, 212 * bodyFrame, 114, 212);
 			Main.EntitySpriteDraw(spriteBody, Projectile.position - Main.screenPosition + ExtraOffset + new Vector2(0, Projectile.gfxOffY), (Rectangle)sourceRectBody, lightColor, Projectile.rotation, Vector2.Zero, 1f, spriteEffects, 0f);
 
-            string textTum = "V2/Projectiles/Voraria/Pets/AstralFairyTums";
-            int TumSize = GetVisualBellySize(Projectile);
+			string textTum = "V2/Projectiles/Voraria/Pets/AstralFairyTums";
+			int TumSize = GetVisualBellySize(Projectile);
 			Rectangle TumBox = TumBounds(TumSize, out int YOffset, out int XOffset);
-            Vector2 TumOffset = new Vector2(38, 82);
-            Texture2D spriteTum = ModContent.Request<Texture2D>(textTum).Value;
-            Main.EntitySpriteDraw(spriteTum, Projectile.position - Main.screenPosition + ExtraOffset + TumOffset + new Vector2(0, Projectile.gfxOffY) + new Vector2(XOffset, YOffset), (Rectangle)TumBox, lightColor, Projectile.rotation, Vector2.Zero, 1f, spriteEffects, 0f);
-            return false;
+			Vector2 TumOffset = new Vector2(38, 82);
+			Texture2D spriteTum = ModContent.Request<Texture2D>(textTum).Value;
+			Main.EntitySpriteDraw(spriteTum, Projectile.position - Main.screenPosition + ExtraOffset + TumOffset + new Vector2(0, Projectile.gfxOffY) + new Vector2(XOffset, YOffset), (Rectangle)TumBox, lightColor, Projectile.rotation, Vector2.Zero, 1f, spriteEffects, 0f);
+			return false;
 		}
 	}
 	public class AstralFairySummon : ModItem
-    {
-        public override void SetDefaults()
-        {
-            Item.DefaultToVanitypet(ModContent.ProjectileType<AstralFairy>(), ModContent.BuffType<AstralFairyBuff>());
+	{
+		public override void SetDefaults()
+		{
+			Item.DefaultToVanitypet(ModContent.ProjectileType<AstralFairy>(), ModContent.BuffType<AstralFairyBuff>());
 
-            Item.width = 22;
-            Item.height = 32;
-            Item.rare = ItemRarityID.Purple;
-            Item.value = Item.sellPrice(platinum: 1);
-        }
-        public override void ModifyTooltips(List<TooltipLine> tooltips)
-        {
-            tooltips.AddVorariaDynamicItemTooltip(
-                "Voraria.AstralFairySummon",
-                new
-                {
+			Item.width = 22;
+			Item.height = 32;
+			Item.rare = ItemRarityID.Purple;
+			Item.value = Item.sellPrice(platinum: 1);
+		}
+		public override void ModifyTooltips(List<TooltipLine> tooltips)
+		{
+			tooltips.AddVorariaDynamicItemTooltip(
+				"Voraria.AstralFairySummon",
+				new
+				{
 
-                }
-            );
-        }
-        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
-        {
-            player.AddBuff(Item.buffType, 20);
+				}
+			);
+		}
+		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+		{
+			player.AddBuff(Item.buffType, 20);
 
-            return false;
-        }
-        public override void OnCreated(ItemCreationContext context)
-        {
-            if (context is RecipeItemCreationContext)
+			return false;
+		}
+		public override void OnCreated(ItemCreationContext context)
+		{
+			if (context is RecipeItemCreationContext)
 			{
-                Item.NewItem(Main.LocalPlayer.GetSource_Misc("ThrowItem"), new Vector2(Main.LocalPlayer.position.X, Main.LocalPlayer.position.Y), new Vector2(Main.LocalPlayer.width, Main.LocalPlayer.height), ModContent.ItemType<AstralFairyController>());
-            }
-        }
-        public override void AddRecipes()
-        {
-            CreateRecipe()
-                .AddIngredient(ItemID.LunarBar, 3)
-                .AddIngredient(ItemID.JungleRose, 1)
-                .AddIngredient(ItemID.PixieDust, 75)
-                .AddTile(TileID.LunarCraftingStation)
-                .Register();
-        }
-    }
-    public class AstralFairyController : ModItem
-    {
-        public override void SetDefaults()
-        {
+				Item.NewItem(Main.LocalPlayer.GetSource_Misc("ThrowItem"), new Vector2(Main.LocalPlayer.position.X, Main.LocalPlayer.position.Y), new Vector2(Main.LocalPlayer.width, Main.LocalPlayer.height), ModContent.ItemType<AstralFairyController>());
+			}
+		}
+		public override void AddRecipes()
+		{
+			CreateRecipe()
+				.AddIngredient(ItemID.LunarBar, 3)
+				.AddIngredient(ItemID.JungleRose, 1)
+				.AddIngredient(ItemID.PixieDust, 75)
+				.AddTile(TileID.LunarCraftingStation)
+				.Register();
+		}
+	}
+	public class AstralFairyController : ModItem
+	{
+		public override void SetDefaults()
+		{
 			Item.useStyle = ItemUseStyleID.Shoot;
 			Item.useAnimation = 10;
 			Item.useTime = 10;
-            Item.width = 30;
-            Item.height = 34;
-            Item.rare = ItemRarityID.Purple;
-            Item.value = Item.sellPrice(platinum: 1);
-        }
+			Item.width = 30;
+			Item.height = 34;
+			Item.rare = ItemRarityID.Purple;
+			Item.value = Item.sellPrice(platinum: 1);
+		}
 		public static void OnUse(Player player)
-        {
+		{
 			if (player.whoAmI == Main.myPlayer)
 			{
 				Vector2 position = Main.MouseWorld;
@@ -347,7 +347,7 @@ namespace V2.Projectiles.Voraria.Pets
 						astralFairy = proj;
 					}
 				}
-                if (astralFairy == null) return;
+				if (astralFairy == null) return;
 				Rectangle hitbox = new Rectangle((int)position.X - 16, (int)position.Y - 16, 32, 32);
 				foreach (var item in Main.ActiveItems)
 				{
@@ -363,29 +363,29 @@ namespace V2.Projectiles.Voraria.Pets
 						PredProjectile.Swallow(astralFairy, item);
 					}
 				}
-                foreach (var item in Main.ActiveProjectiles)
-                {
-                    if (item.active && item.CurrentCaptor() is null && hitbox.Intersects(item.Hitbox) && item.type != ModContent.ProjectileType<AstralFairy>())
-                    {
-                        PredProjectile.Swallow(astralFairy, item);
-                    }
-                }
-            }
-        }
-        public override void ModifyTooltips(List<TooltipLine> tooltips)
-        {
-            tooltips.AddVorariaDynamicItemTooltip(
-                "Voraria.AstralFairyController",
-                new
-                {
+				foreach (var item in Main.ActiveProjectiles)
+				{
+					if (item.active && item.CurrentCaptor() is null && hitbox.Intersects(item.Hitbox) && item.type != ModContent.ProjectileType<AstralFairy>())
+					{
+						PredProjectile.Swallow(astralFairy, item);
+					}
+				}
+			}
+		}
+		public override void ModifyTooltips(List<TooltipLine> tooltips)
+		{
+			tooltips.AddVorariaDynamicItemTooltip(
+				"Voraria.AstralFairyController",
+				new
+				{
 
-                }
-            );
-            }
-        public override bool? UseItem(Player player)
-        {
+				}
+			);
+			}
+		public override bool? UseItem(Player player)
+		{
 			OnUse(player);
-            return true;
-        }
-    }
+			return true;
+		}
+	}
 }

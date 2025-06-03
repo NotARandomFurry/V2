@@ -50,7 +50,7 @@ namespace V2.Projectiles.Voraria.Weapons.Ranged.Throwables
 						Projectile.TrueCenter().X + Main.rand.NextFloat(-Projectile.width * Projectile.scale, Projectile.width * Projectile.scale),
 						Projectile.TrueCenter().Y + Main.rand.NextFloat(-Projectile.height * Projectile.scale, Projectile.height * Projectile.scale)
 					),
-                    ModContent.DustType<ShroomFairyDust>(),
+					ModContent.DustType<ShroomFairyDust>(),
 					Projectile.velocity * 0.1f,
 					0,
 					default,
@@ -77,7 +77,7 @@ namespace V2.Projectiles.Voraria.Weapons.Ranged.Throwables
 			{
 				Dust.NewDustPerfect(
 					Projectile.TrueCenter(),
-                    ModContent.DustType<ShroomFairyDust>(),
+					ModContent.DustType<ShroomFairyDust>(),
 					new Vector2(0, 4).RotatedBy(degreesPerCondimentDust * i).RotatedByRandom(degreesPerCondimentDust / 5f),
 					0,
 					default,

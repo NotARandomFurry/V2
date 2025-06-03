@@ -19,16 +19,16 @@ namespace V2.Items.Voraria
 		public override bool IsLoadingEnabled(Mod mod) => !V2.GetFooled;
 		public override LocalizedText DisplayName => Language.GetText("Mods.V2.ItemName.Voraria.MushroomToken");
 		public override LocalizedText Tooltip => Language.GetText("Mods.V2.ItemTooltip.Voraria.MushroomToken.Short");
-        public override string Texture => "V2/Items/UnspritedItem";
+		public override string Texture => "V2/Items/UnspritedItem";
 
-        public override void SetStaticDefaults()
-        {
-            DrawAnimationVertical anim = new DrawAnimationVertical(6, 12);
-            Main.RegisterItemAnimation(Type, anim);
-            ItemID.Sets.AnimatesAsSoul[Type] = true;
-        }
+		public override void SetStaticDefaults()
+		{
+			DrawAnimationVertical anim = new DrawAnimationVertical(6, 12);
+			Main.RegisterItemAnimation(Type, anim);
+			ItemID.Sets.AnimatesAsSoul[Type] = true;
+		}
 
-        public override void SetDefaults()
+		public override void SetDefaults()
 		{
 			Item.maxStack = Item.CommonMaxStack;
 
@@ -36,23 +36,23 @@ namespace V2.Items.Voraria
 			Item.height = 30;
 			Item.rare = ItemRarityID.Blue;
 			Item.value = Item.sellPrice(
-                gold: 5
-            );
+				gold: 5
+			);
 
-            Item.AsFood().MaxHealth = 500;
-            Item.AsFood().Size = 0.21;
-            Item.AsFood().OnBreak += OnBreak;
-        }
-        public static bool OnBreak(Item item, Entity pred, bool direct)
-        {
-            if (pred is Player predPlayer)
-            {
-                ModContent.GetInstance<EatFungalGift>().TrySetCompletion(predPlayer);
-            }
-            return true;
-        }
+			Item.AsFood().MaxHealth = 500;
+			Item.AsFood().Size = 0.21;
+			Item.AsFood().OnBreak += OnBreak;
+		}
+		public static bool OnBreak(Item item, Entity pred, bool direct)
+		{
+			if (pred is Player predPlayer)
+			{
+				ModContent.GetInstance<EatFungalGift>().TrySetCompletion(predPlayer);
+			}
+			return true;
+		}
 
-        public override void ModifyTooltips(List<TooltipLine> tooltips)
+		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
 			tooltips.AddVorariaDynamicItemTooltip(
 				"Voraria.MushroomToken",

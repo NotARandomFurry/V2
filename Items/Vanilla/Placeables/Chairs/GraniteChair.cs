@@ -9,16 +9,16 @@ using Terraria.ModLoader;
 
 namespace V2.Items.Vanilla.Placeables.Chairs
 {
-    public class GraniteChair : GlobalItem
-    {
-        public override bool InstancePerEntity => true;
-        public override bool AppliesToEntity(Item item, bool lateInstantiation) => item.type == ItemID.GraniteChair;
-        public override void SetDefaults(Item item)
-        {
-            item.DefaultToPlaceableTile(ModContent.TileType<Tiles.Vanilla.Furniture.GraniteSet.GraniteChair>());
+	public class GraniteChair : GlobalItem
+	{
+		public override bool InstancePerEntity => true;
+		public override bool AppliesToEntity(Item item, bool lateInstantiation) => item.type == ItemID.GraniteChair;
+		public override void SetDefaults(Item item)
+		{
+			item.DefaultToPlaceableTile(ModContent.TileType<Tiles.Vanilla.Furniture.GraniteSet.GraniteChair>());
 
 			item.AsAnItem().PlaceableCanBeHungry = true;
 			item.AsAnItem().PlaceableHungryByDefault = false;
 		}
-    }
+	}
 }

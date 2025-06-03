@@ -30,8 +30,8 @@ namespace V2.Items.Vanilla.Currency
 			item.AsFood().MaxHealth = 4;
 			item.AsFood().Size = 0.0025;
 			item.AsFood().AcidResistTier = 1;
-            item.AsFood().WellFedPower = 0.01;
-        }
+			item.AsFood().WellFedPower = 0.01;
+		}
 
 		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
 		{

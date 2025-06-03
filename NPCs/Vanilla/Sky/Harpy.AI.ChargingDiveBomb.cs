@@ -54,17 +54,17 @@ namespace V2.NPCs.Vanilla.Sky
 					0 => 50,
 					1 => 40,
 					2 => 26,
-                    3 => 14,
-                    4 => 12,
-                };
+					3 => 14,
+					4 => 12,
+				};
 				int flapChanceDenominator = npc.AsPred().GetVisualWeightStage.Invoke(npc) switch
-                {
-                    0 => 60,
-                    1 => 50,
-                    2 => 36,
-                    3 => 22,
-                    4 => 14,
-                };
+				{
+					0 => 60,
+					1 => 50,
+					2 => 36,
+					3 => 22,
+					4 => 14,
+				};
 				if (npc.TrueCenter().Distance(targetPos) < V2Utils.TileCountAsPixelCount(6.0))
 				{
 					minDelay = (int)Math.Round((float)minDelay * 0.60f);

@@ -5,16 +5,16 @@ using Terraria.ModLoader;
 
 namespace V2.Items.Vanilla.Tools
 {
-    public class GoldPickaxe : GlobalItem
-    {
-        public override bool InstancePerEntity => true;
-        public override bool AppliesToEntity(Item entity, bool lateInstantiation) => entity.type == ItemID.GoldPickaxe;
+	public class GoldPickaxe : GlobalItem
+	{
+		public override bool InstancePerEntity => true;
+		public override bool AppliesToEntity(Item entity, bool lateInstantiation) => entity.type == ItemID.GoldPickaxe;
 
-        public override void SetDefaults(Item item)
-        {
-            item.AsFood().MaxHealth = 600;
-            item.AsFood().Size = 0.30;
+		public override void SetDefaults(Item item)
+		{
+			item.AsFood().MaxHealth = 600;
+			item.AsFood().Size = 0.30;
 			item.AsFood().AcidResistTier = 2;
-        }
-    }
+		}
+	}
 }

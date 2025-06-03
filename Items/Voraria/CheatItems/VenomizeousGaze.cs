@@ -35,12 +35,12 @@ namespace V2.Items.Voraria.CheatItems
 			Item.rare = ItemRarityID.Master;
 			Item.value = 0;
 		}
-        public override void UpdateAccessory(Player player, bool hideVisual)
-        {
+		public override void UpdateAccessory(Player player, bool hideVisual)
+		{
 			player.AsPred().Rose = true;
 			player.AsPred().Venomizeous = true;
 			player.AsPred().StomachWeightModifier *= 0.0f;
-        }
+		}
 
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
@@ -53,8 +53,8 @@ namespace V2.Items.Voraria.CheatItems
 			);
 		}
 		/*
-        public class DevItemDrawLayer : PlayerDrawLayer
-        {
+		public class DevItemDrawLayer : PlayerDrawLayer
+		{
 			public override Position GetDefaultPosition() => new AfterParent(PlayerDrawLayers.HairBack);
 			private static Texture2D eyes;
 			protected override void Draw(ref PlayerDrawSet drawInfo)
@@ -64,8 +64,8 @@ namespace V2.Items.Voraria.CheatItems
 					if (eyes is null)
 						eyes = ModContent.Request<Texture2D>("V2/PlayerHandling/Venomizeous_eye").Value;
 					drawInfo.DrawDataCache.Add(new DrawData(eyes, drawInfo.Position.Floor() - Main.screenPosition.Floor() - drawInfo.headVect + new Vector2(12, 12), null, Color.Purple, 0f, Vector2.Zero, 1f, drawInfo.playerEffect, -1));
-                }
+				}
 			}
-        }*/
-    }
+		}*/
+	}
 }

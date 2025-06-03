@@ -38,9 +38,9 @@ namespace V2.NPCs
 	}
 
 	public partial class PreyNPC : GlobalNPC
-    {
-        public bool CannotBeEatenDueToShenanigans { get; set; }
-        public int EatenSafetyFrames { get; set; }
+	{
+		public bool CannotBeEatenDueToShenanigans { get; set; }
+		public int EatenSafetyFrames { get; set; }
 		public bool Digested { get; set; }
 
 		public delegate void DelegatePreyAI(NPC npc, Entity pred);
@@ -48,18 +48,18 @@ namespace V2.NPCs
 
 		public double DefinedBaseSize { get; set; }
 		public double DefinedEffectiveSize { get; set; }
-        public double CalorieMultiplier { get; set; }
-        public double WellFedPower { get; set; }
+		public double CalorieMultiplier { get; set; }
+		public double WellFedPower { get; set; }
 
-        public bool TastySweet { get; set; }
+		public bool TastySweet { get; set; }
 		public bool TastySpicy { get; set; }
 		public bool TastySour { get; set; }
 		public bool TastyMeaty { get; set; }
 		public bool TastyBitter { get; set; }
 		public bool TastyFruity { get; set; }
-        public bool TastyStrange { get; set; }
+		public bool TastyStrange { get; set; }
 
-        public delegate void DelegateOnSwallowedBy(NPC npc, Entity pred);
+		public delegate void DelegateOnSwallowedBy(NPC npc, Entity pred);
 		public DelegateOnSwallowedBy OnSwallowedBy { get; set; }
 
 		public int STR { get; set; }
@@ -148,9 +148,9 @@ namespace V2.NPCs
 			npc.AsFood().TastyMeaty = false;
 			npc.AsFood().TastyBitter = false;
 			npc.AsFood().TastyFruity = false;
-            npc.AsFood().TastyStrange = false;
+			npc.AsFood().TastyStrange = false;
 
-            npc.AsFood().DefinedEffectiveSize = npc.AsFood().DefinedBaseSize;
+			npc.AsFood().DefinedEffectiveSize = npc.AsFood().DefinedBaseSize;
 			DetermineDigestingSounds(npc);
 		}
 

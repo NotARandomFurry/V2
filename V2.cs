@@ -136,7 +136,7 @@ namespace V2
 				V2WeaponDisplay ArmamentDisplayCompat = new V2WeaponDisplay(armamentdisplay);
 				ArmamentDisplayCompat.ApplyCompatibility();
 			}
-        }
+		}
 
 		public override void Unload()
 		{

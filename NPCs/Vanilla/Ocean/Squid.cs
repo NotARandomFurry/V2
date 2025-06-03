@@ -9,7 +9,7 @@ using V2.PlayerHandling.PredPlayerGoals.Beginner;
 
 namespace V2.NPCs.Vanilla.Ocean
 {
-    public static class SquidStuff
+	public static class SquidStuff
 	{
 		public static Squid AsSquid(this NPC npc)
 		{

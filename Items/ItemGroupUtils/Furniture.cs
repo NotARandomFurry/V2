@@ -29,7 +29,7 @@ namespace V2.Items.ItemGroupUtils
 		public static void OnSwallow_GrantFurnitureGoals(Item item, Entity pred)
 		{
 			if (pred is Player predPlayer)
-                ModContent.GetInstance<SwallowAnyFurniture>().TrySetCompletion(predPlayer);
+				ModContent.GetInstance<SwallowAnyFurniture>().TrySetCompletion(predPlayer);
 		}
 	}
 }

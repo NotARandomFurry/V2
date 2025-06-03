@@ -9,15 +9,15 @@ using Terraria.ModLoader;
 
 namespace V2.Items.Vanilla.Placeables.Bars
 {
-    public class LeadBar : GlobalItem
-    {
-        public override bool InstancePerEntity => true;
-        public override bool AppliesToEntity(Item item, bool lateInstantiation) => item.type == ItemID.LeadBar;
-        public override void SetDefaults(Item item)
+	public class LeadBar : GlobalItem
+	{
+		public override bool InstancePerEntity => true;
+		public override bool AppliesToEntity(Item item, bool lateInstantiation) => item.type == ItemID.LeadBar;
+		public override void SetDefaults(Item item)
 		{
 			item.AsFood().MaxHealth = 60;
 			item.AsFood().Size = 0.05;
 			item.AsFood().AcidResistTier = 2;
 		}
-    }
+	}
 }

@@ -26,20 +26,20 @@ namespace V2.Items.Vanilla.Accessories.Informational
 			double Size = PreyData.GetPreySize(player);
 			return "Current Size: " + Size.CastToDecimalPlaces(3).ToString();
 		}
-    }
-    public class WeightDisplayer2SaturationDisplay : InfoDisplay
-    {
-        public override string Texture => "V2/Items/Vanilla/Accessories/Informational/TallyCounter_VoreInfoDisplay_Icon";
+	}
+	public class WeightDisplayer2SaturationDisplay : InfoDisplay
+	{
+		public override string Texture => "V2/Items/Vanilla/Accessories/Informational/TallyCounter_VoreInfoDisplay_Icon";
 
-        public override LocalizedText DisplayName => Language.GetText("Mods.V2.InfoDisplayName.WeightDisplayer.Saturation");
+		public override LocalizedText DisplayName => Language.GetText("Mods.V2.InfoDisplayName.WeightDisplayer.Saturation");
 
-        public override bool Active() => Main.player[Main.myPlayer].AsPred().WeightDisplay;
+		public override bool Active() => Main.player[Main.myPlayer].AsPred().WeightDisplay;
 
-        public override string DisplayValue(ref Color displayColor, ref Color displayShadowColor)
-        {
-            Player player = Main.player[Main.myPlayer];
+		public override string DisplayValue(ref Color displayColor, ref Color displayShadowColor)
+		{
+			Player player = Main.player[Main.myPlayer];
 			double Amount = player.AsPred().ActuallyReasonableAmountOfFood;
-            return "Saturation: " + Amount.CastToDecimalPlaces(3).ToString();
-        }
-    }
+			return "Saturation: " + Amount.CastToDecimalPlaces(3).ToString();
+		}
+	}
 }

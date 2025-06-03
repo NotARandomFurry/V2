@@ -9,14 +9,14 @@ using Terraria.ModLoader;
 
 namespace V2.PlayerHandling.PredPlayerGoals.Skilled
 {
-    public class TrulyStuffed : PredPlayerGoal
-    {
-        public override string InternalName => "TrulyStuffed";
-        public override string DisplayName(Player pred) => "Mods.V2.PredPlayerGoals.Skilled.TrulyStuffed.Name";
-        public override string Description(Player pred) => "Mods.V2.PredPlayerGoals.Skilled.TrulyStuffed.Description";
+	public class TrulyStuffed : PredPlayerGoal
+	{
+		public override string InternalName => "TrulyStuffed";
+		public override string DisplayName(Player pred) => "Mods.V2.PredPlayerGoals.Skilled.TrulyStuffed.Name";
+		public override string Description(Player pred) => "Mods.V2.PredPlayerGoals.Skilled.TrulyStuffed.Description";
 
-        public override int StatPointsFromCompletion => 15;
+		public override int StatPointsFromCompletion => 15;
 
-        public override ProgressionStage Stage => ModContent.GetInstance<SkilledStage>();
-    }
+		public override ProgressionStage Stage => ModContent.GetInstance<SkilledStage>();
+	}
 }

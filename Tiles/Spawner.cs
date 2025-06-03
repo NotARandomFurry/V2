@@ -17,25 +17,25 @@ using V2.Sounds.Vore;
 
 namespace V2.Tiles.Voraria
 {
-    public class Spawner : ModTile
-    {
-        public override string Texture => "V2/Tiles/InvisibleImage";
-        public override void SetStaticDefaults()
-        {
-            Main.tileSolid[Type] = false;
-            Main.tileBlockLight[Type] = false;
-            AddMapEntry(new Color(255, 255, 255), Language.GetText("MapObject.Painting"));
-        }
-        public override void RandomUpdate(int i, int j)
-        {
-            NPC npc = NPC.NewNPCDirect(
-                NPC.GetSource_NaturalSpawn(),
-                i * 16,
-                j * 16,
-                ModContent.NPCType<JungleFairy>()
-            );
-            npc.netUpdate = true;
-            WorldGen.KillTile(i, j);
-        }
-    }
+	public class Spawner : ModTile
+	{
+		public override string Texture => "V2/Tiles/InvisibleImage";
+		public override void SetStaticDefaults()
+		{
+			Main.tileSolid[Type] = false;
+			Main.tileBlockLight[Type] = false;
+			AddMapEntry(new Color(255, 255, 255), Language.GetText("MapObject.Painting"));
+		}
+		public override void RandomUpdate(int i, int j)
+		{
+			NPC npc = NPC.NewNPCDirect(
+				NPC.GetSource_NaturalSpawn(),
+				i * 16,
+				j * 16,
+				ModContent.NPCType<JungleFairy>()
+			);
+			npc.netUpdate = true;
+			WorldGen.KillTile(i, j);
+		}
+	}
 }

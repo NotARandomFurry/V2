@@ -56,7 +56,7 @@ namespace V2.NPCs.Vanilla.Desert
 			npc.AsFood().DefinedBaseSize = 0.52;
 			npc.AsPred().MaxStomachCapacity = 0.78;
 
-            npc.AsPred().SmallGulpThreshold = 0.00;
+			npc.AsPred().SmallGulpThreshold = 0.00;
 			npc.AsPred().BigGulps = null;
 			npc.AsPred().CanBeForceFed = CanSandSlimeBeForceFed;
 

@@ -61,7 +61,7 @@ namespace V2
 			{
 				case MessageType.Dull:
 					Logger.WarnFormat(
-						".     .   .\n"
+						".	 .   .\n"
 					  + "your message is too boring !!!\n"
 					  + "super bland and basically a small crumb pile to my hungry tummy :c\n"
 					  + "i need seconds of whatever your next tasty packet is to make up for it !\n"

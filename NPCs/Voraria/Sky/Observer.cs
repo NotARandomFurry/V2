@@ -40,8 +40,8 @@ namespace V2.NPCs.Voraria.Sky
 			NPC.value = 2500f;
 			NPC.noGravity = true;
 			NPC.AsFood().DefinedBaseSize = 10.0;
-            NPC.AsFood().WellFedPower = -0.1;
-            NPC.AsFood().OnDigestedBy += OnDigestedBy_GrantObserverGoal;
+			NPC.AsFood().WellFedPower = -0.1;
+			NPC.AsFood().OnDigestedBy += OnDigestedBy_GrantObserverGoal;
 		}
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
 		{
@@ -52,7 +52,7 @@ namespace V2.NPCs.Voraria.Sky
 				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Sky,
 
 				// Sets the description of this NPC that is listed in the bestiary.
-                new FlavorTextBestiaryInfoElement("Mods.V2.Bestiary.Sky.Observer"),
+				new FlavorTextBestiaryInfoElement("Mods.V2.Bestiary.Sky.Observer"),
 			});
 		}
 		public override float SpawnChance(NPCSpawnInfo spawnInfo)
@@ -96,8 +96,8 @@ namespace V2.NPCs.Voraria.Sky
 			{
 				if (NPC == npc) continue;
 				if (npc.CurrentCaptor() is not null) continue;
-                if (npc.AsV2NPC().IsTileEntity) continue;
-                if (NPC.Hitbox.Intersects(npc.Hitbox))
+				if (npc.AsV2NPC().IsTileEntity) continue;
+				if (NPC.Hitbox.Intersects(npc.Hitbox))
 				{
 					boing(NPC, npc);
 				}
@@ -162,29 +162,29 @@ namespace V2.NPCs.Voraria.Sky
 			if (pred is Player predPlayer)
 				ModContent.GetInstance<EatObserver>().TrySetCompletion(predPlayer);
 		}
-        public override void ModifyNPCLoot(NPCLoot npcLoot)
-        {
-            npcLoot.Add(
-                new V2CommonDropRules.DifficultyScalingDrop(
-                    new CommonDrop(
-                        itemId: ModContent.ItemType<ObserverPupil>(),
-                        chanceNumerator: 1,
-                        chanceDenominator: 1
-                    ),
-                    new CommonDrop(
-                        itemId: ModContent.ItemType<ObserverPupil>(),
-                        chanceNumerator: 1,
-                        chanceDenominator: 1
-                    ),
-                    new CommonDrop(
-                        itemId: ModContent.ItemType<ObserverPupil>(),
-                        chanceNumerator: 1,
-                        chanceDenominator: 1
-                    )
-                )
-            );
-        }
-    }
+		public override void ModifyNPCLoot(NPCLoot npcLoot)
+		{
+			npcLoot.Add(
+				new V2CommonDropRules.DifficultyScalingDrop(
+					new CommonDrop(
+						itemId: ModContent.ItemType<ObserverPupil>(),
+						chanceNumerator: 1,
+						chanceDenominator: 1
+					),
+					new CommonDrop(
+						itemId: ModContent.ItemType<ObserverPupil>(),
+						chanceNumerator: 1,
+						chanceDenominator: 1
+					),
+					new CommonDrop(
+						itemId: ModContent.ItemType<ObserverPupil>(),
+						chanceNumerator: 1,
+						chanceDenominator: 1
+					)
+				)
+			);
+		}
+	}
 
 	public class ObserverGreen : ModNPC
 	{
@@ -212,8 +212,8 @@ namespace V2.NPCs.Voraria.Sky
 			NPC.value = 2500f;
 			NPC.noGravity = true;
 			NPC.AsFood().DefinedBaseSize = 10.0;
-            NPC.AsFood().WellFedPower = -0.1;
-            NPC.AsFood().OnDigestedBy += ObserverRed.OnDigestedBy_GrantObserverGoal;
+			NPC.AsFood().WellFedPower = -0.1;
+			NPC.AsFood().OnDigestedBy += ObserverRed.OnDigestedBy_GrantObserverGoal;
 		}
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
 		{
@@ -224,7 +224,7 @@ namespace V2.NPCs.Voraria.Sky
 				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Sky,
 
 				// Sets the description of this NPC that is listed in the bestiary.
-                new FlavorTextBestiaryInfoElement("Mods.V2.Bestiary.Sky.Observer"),
+				new FlavorTextBestiaryInfoElement("Mods.V2.Bestiary.Sky.Observer"),
 			});
 		}
 		public override float SpawnChance(NPCSpawnInfo spawnInfo)
@@ -329,29 +329,29 @@ namespace V2.NPCs.Voraria.Sky
 				Gore.NewGore(NPC.GetSource_Death(), NPC.Center + new Vector2(0, 30), new Vector2(0, 1.5f), Gore2);
 			}
 		}
-        public override void ModifyNPCLoot(NPCLoot npcLoot)
-        {
-            npcLoot.Add(
-                new V2CommonDropRules.DifficultyScalingDrop(
-                    new CommonDrop(
-                        itemId: ModContent.ItemType<ObserverPupil>(),
-                        chanceNumerator: 1,
-                        chanceDenominator: 1
-                    ),
-                    new CommonDrop(
-                        itemId: ModContent.ItemType<ObserverPupil>(),
-                        chanceNumerator: 1,
-                        chanceDenominator: 1
-                    ),
-                    new CommonDrop(
-                        itemId: ModContent.ItemType<ObserverPupil>(),
-                        chanceNumerator: 1,
-                        chanceDenominator: 1
-                    )
-                )
-            );
-        }
-    }
+		public override void ModifyNPCLoot(NPCLoot npcLoot)
+		{
+			npcLoot.Add(
+				new V2CommonDropRules.DifficultyScalingDrop(
+					new CommonDrop(
+						itemId: ModContent.ItemType<ObserverPupil>(),
+						chanceNumerator: 1,
+						chanceDenominator: 1
+					),
+					new CommonDrop(
+						itemId: ModContent.ItemType<ObserverPupil>(),
+						chanceNumerator: 1,
+						chanceDenominator: 1
+					),
+					new CommonDrop(
+						itemId: ModContent.ItemType<ObserverPupil>(),
+						chanceNumerator: 1,
+						chanceDenominator: 1
+					)
+				)
+			);
+		}
+	}
 
 	public class ObserverPurple : ModNPC
 	{
@@ -379,8 +379,8 @@ namespace V2.NPCs.Voraria.Sky
 			NPC.value = 2500f;
 			NPC.noGravity = true;
 			NPC.AsFood().DefinedBaseSize = 10.0;
-            NPC.AsFood().WellFedPower = -0.1;
-            NPC.AsFood().OnDigestedBy += ObserverRed.OnDigestedBy_GrantObserverGoal;
+			NPC.AsFood().WellFedPower = -0.1;
+			NPC.AsFood().OnDigestedBy += ObserverRed.OnDigestedBy_GrantObserverGoal;
 		}
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
 		{
@@ -391,7 +391,7 @@ namespace V2.NPCs.Voraria.Sky
 				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Sky,
 
 				// Sets the description of this NPC that is listed in the bestiary.
-                new FlavorTextBestiaryInfoElement("Mods.V2.Bestiary.Sky.Observer"),
+				new FlavorTextBestiaryInfoElement("Mods.V2.Bestiary.Sky.Observer"),
 			});
 		}
 		public override float SpawnChance(NPCSpawnInfo spawnInfo)
@@ -435,8 +435,8 @@ namespace V2.NPCs.Voraria.Sky
 			{
 				if (NPC == npc) continue;
 				if (npc.CurrentCaptor() is not null) continue;
-                if (npc.AsV2NPC().IsTileEntity) continue;
-                if (NPC.Hitbox.Intersects(npc.Hitbox))
+				if (npc.AsV2NPC().IsTileEntity) continue;
+				if (NPC.Hitbox.Intersects(npc.Hitbox))
 				{
 					boing(NPC, npc);
 				}
@@ -496,27 +496,27 @@ namespace V2.NPCs.Voraria.Sky
 				Gore.NewGore(NPC.GetSource_Death(), NPC.Center + new Vector2(0, 30), new Vector2(0, 1.5f), Gore2);
 			}
 		}
-        public override void ModifyNPCLoot(NPCLoot npcLoot)
-        {
-            npcLoot.Add(
-                new V2CommonDropRules.DifficultyScalingDrop(
-                    new CommonDrop(
-                        itemId: ModContent.ItemType<ObserverPupil>(),
-                        chanceNumerator: 1,
-                        chanceDenominator: 1
-                    ),
-                    new CommonDrop(
-                        itemId: ModContent.ItemType<ObserverPupil>(),
-                        chanceNumerator: 1,
-                        chanceDenominator: 1
-                    ),
-                    new CommonDrop(
-                        itemId: ModContent.ItemType<ObserverPupil>(),
-                        chanceNumerator: 1,
-                        chanceDenominator: 1
-                    )
-                )
-            );
-        }
-    }
+		public override void ModifyNPCLoot(NPCLoot npcLoot)
+		{
+			npcLoot.Add(
+				new V2CommonDropRules.DifficultyScalingDrop(
+					new CommonDrop(
+						itemId: ModContent.ItemType<ObserverPupil>(),
+						chanceNumerator: 1,
+						chanceDenominator: 1
+					),
+					new CommonDrop(
+						itemId: ModContent.ItemType<ObserverPupil>(),
+						chanceNumerator: 1,
+						chanceDenominator: 1
+					),
+					new CommonDrop(
+						itemId: ModContent.ItemType<ObserverPupil>(),
+						chanceNumerator: 1,
+						chanceDenominator: 1
+					)
+				)
+			);
+		}
+	}
 }
