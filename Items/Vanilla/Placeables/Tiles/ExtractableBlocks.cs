@@ -15,7 +15,8 @@ namespace V2.Items.Vanilla.Placeables.Tile
 	public class Silt : GlobalItem
 	{
 		public override bool InstancePerEntity => true;
-		public override bool AppliesToEntity(Item entity, bool lateInstantiation) => entity.type == ItemID.SiltBlock || entity.type == ItemID.SlushBlock;
+		public override bool AppliesToEntity(Item entity, bool lateInstantiation) => 
+			entity.type is ItemID.SiltBlock or ItemID.SlushBlock;
 
 		public override void SetDefaults(Item item)
 		{

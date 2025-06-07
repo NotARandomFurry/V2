@@ -42,7 +42,16 @@ namespace V2.Items.Vanilla.Accessories.VoodooDolls
 		public static bool OnBreak_GrantVoodooDigestionGoal(Item item, Entity pred, bool direct)
 		{
 			if (pred is Player predPlayer)
+			{
+				// Terraria.Item.CheckLavaDeath
+				if (predPlayer.AsPred().StomachTracker.ContainsLiquid(LiquidID.Lava))
+				{
+					NPC.SpawnWOF(pred.Center);
+				}
+
 				ModContent.GetInstance<DigestWithVoodoo>().TrySetCompletion(predPlayer);
+			}
+
 			return true;
 		}
 	}

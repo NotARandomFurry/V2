@@ -143,7 +143,6 @@ namespace V2.Items
 
 		public delegate bool DelegatePreSwallow(Item item, Entity pred);
 		public DelegatePreSwallow PreSwallow { get; set; } = null;
-
 		public delegate void DelegateOnSwallow(Item item, Entity pred);
 		public DelegateOnSwallow OnSwallow { get; set; } = null;
 		public int OnSwallowDamage { get; set; } = 0;
