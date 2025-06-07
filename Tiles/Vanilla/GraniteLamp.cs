@@ -248,12 +248,7 @@ namespace V2.Tiles.Vanilla
 		public static int GetVisualWeightStage(Projectile projectile)
 		{
 			return Math.Min(
-				(int)Math.Floor(2 * Math.Sqrt(projectile.AsPred().ExtraWeight)),
-<<<<<<< Updated upstream:Tiles/Vanilla/GraniteLamp.cs
-				3
-=======
-				6
->>>>>>> Stashed changes:Tiles/Voraria/Paintings/MyFairy.cs
+				(int)Math.Floor(2 * Math.Sqrt(projectile.AsPred().ExtraWeight)), 3
 			);
 		}
 		public static double GetDigestionTickDamage(Projectile projectile, PreyData prey) => 16;
