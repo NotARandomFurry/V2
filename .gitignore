@@ -8,3 +8,9 @@
 /.vs/V2/v17/.suo
 /.vs/V2/DesignTimeBuild/.dtbcache.v2
 /.gitignore
+
+
+# Rider ignored files
+.run/*
+.idea/*
+.vs/ProjectEvaluation/*
