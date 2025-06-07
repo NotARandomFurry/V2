@@ -819,7 +819,7 @@ namespace V2.PlayerHandling
 		{
 			if (inventory.Length == 59)
 			{
-				if (Player.whoAmI == Main.myPlayer && (V2.ItemGulpHotkey.JustPressed || (Main.keyState.IsKeyDown(Keys.LeftShift) && V2.ItemGulpHotkey.Current && Main.GameUpdateCount % 20 == 0)))
+				if (Player.whoAmI == Main.myPlayer && (V2.ItemGulpHotkey.JustPressed || (Main.keyState.IsKeyDown(Keys.LeftShift) && V2.ItemGulpHotkey.Current && Main.GameUpdateCount % 2 == 0)))
 				{
 					if (inventory[slot].IsAir)
 						return true;
@@ -1026,7 +1026,7 @@ namespace V2.PlayerHandling
 			if (Main.netMode != NetmodeID.Server && Player.whoAmI == Main.myPlayer && !Player.AsPred().BlockSwallowAttempts)
 			{
 				#region Swallowing nearby prey
-				if (V2.SwallowHotkey.JustPressed)
+				if (V2.SwallowHotkey.JustPressed || (V2.SwallowHotkey.Current && Main.keyState.IsKeyDown(Keys.LeftShift) && Main.GameUpdateCount % 2 == 0))
 				{
 					string mealType = "none";
 					int mealIndex = -1;
