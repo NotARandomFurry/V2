@@ -4,6 +4,8 @@
 
 import os
 import subprocess
+from threading import Thread
+
 # from threading import Thread
 
 # Path to the Aseprite executable
@@ -51,13 +53,13 @@ def process_folders_in_parallel(base_folder):
 				
 				process_file(aseprite_file, output_file)
 				# Create a thread for each file
-				#thread = Thread(target=process_file, args=(aseprite_file, output_file))
-				#threads.append(thread)
-				#thread.start()
+				thread = Thread(target=process_file, args=(aseprite_file, output_file))
+				threads.append(thread)
+				thread.start()
 	
 	# Wait for all threads to complete
-	# for thread in threads:
-	#	thread.join()
+	for thread in threads:
+		thread.join()
 	print("All files processed.")
 
 # Run the script

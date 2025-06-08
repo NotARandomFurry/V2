@@ -10,6 +10,7 @@
 	<Compile Remove="externallibs\**" />
 	<EmbeddedResource Remove="externallibs\**" />
 	<None Remove="externallibs\**" />
+	<None Remove=".build\*" />
   </ItemGroup>
   <ItemGroup>
 	<None Remove="Items\Voraria\Accessories\Transformations\BecomeBae_Wings.png" />
