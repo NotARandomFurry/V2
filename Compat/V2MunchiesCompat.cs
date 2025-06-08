@@ -17,7 +17,7 @@ namespace V2.Compat
 	{
 		private void AddSingleConsumablePlayer<TItem>(string upgradeName = null) where TItem : class
 		{
-			compatMod.Call("AddSingleConsumable", V2.Instance, "1.4.2", ModContent.GetInstance<TItem>(), "player", hasMyPlayerPermanentUpgradeFunc(upgradeName ?? typeof(TItem).Name), null, null);
+			compatMod.Call("AddSingleConsumable", V2.Instance, "1.4.2", ModContent.GetInstance<TItem>(), "player", HasMyPlayerPermanentUpgradeFunc(upgradeName ?? typeof(TItem).Name), null, null);
 		}
 		public V2MunchiesCompat(Mod compatMod) : base(compatMod)
 		{
@@ -37,15 +37,9 @@ namespace V2.Compat
 
 		}
 
-		private static Func<bool> hasMyPlayerPermanentUpgradeFunc(string upgrade)
+		private static Func<bool> HasMyPlayerPermanentUpgradeFunc(string upgrade)
 		{
-			return () =>
-			{
-				if (Main.player[Main.myPlayer].AsPred().PermanentUpgradesGained.TryGetValue(upgrade, out bool hasUpgrade))
-					return hasUpgrade;
-				else
-					return false;
-			};
+			return () => Main.player[Main.myPlayer].AsPred().PermanentUpgradesGained.TryGetValue(upgrade, out bool hasUpgrade) && hasUpgrade;
 		}
 
 	}

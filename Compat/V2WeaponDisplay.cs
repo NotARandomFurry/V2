@@ -50,11 +50,9 @@ namespace V2.Compat
 
 		public override void UnapplyCompatibility()
 		{
-			if (WeaponDisplay_ItemInWorld_ItemLightHook is not null)
-			{
-				WeaponDisplay_ItemInWorld_ItemLightHook.Undo();
-				WeaponDisplay_ItemInWorld_ItemLightHook = null;
-			}
+			if (WeaponDisplay_ItemInWorld_ItemLightHook is null) return;
+			WeaponDisplay_ItemInWorld_ItemLightHook.Undo();
+			WeaponDisplay_ItemInWorld_ItemLightHook = null;
 		}
 	}
 }
