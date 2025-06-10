@@ -2963,7 +2963,15 @@ Mods: {
 							[c/7F7F7F:> ][c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases absorption rate by a factor of 8.]
 							Several item effects and UI elements will be modified while this item or any of its counterparts are equipped.
 							''' */
-						// Flavor: "[c/{$Mods.V2.CommonColorCodes.VenomCommentary}:Test]"
+						/* Flavor:
+							'''
+							[c/{$Mods.V2.CommonColorCodes.VenomCommentary}:While Venomizeous may be a vampire, he still has an enormous appetite.]
+							[c/{$Mods.V2.CommonColorCodes.VenomCommentary}:But don't let his size and race fool you. He can pack quite a bit... And then a bit more than you may expect.]
+							[c/{$Mods.V2.CommonColorCodes.VenomCommentary}:He likes to snack on really random things, sometimes something as small as an egg and sometimes as large as a planet.]
+							[c/{$Mods.V2.CommonColorCodes.VenomCommentary}:Good thing he doesn't gain any weight permanently, else he would be quite the size. He remains very slim for some odd reason.]
+							[c/{$Mods.V2.CommonColorCodes.VenomCommentary}:This specific gem (flower at the moment) encapsulates this inner predatory power.]
+							[c/{$Mods.V2.CommonColorCodes.VenomCommentary}:And whoever wears this gem gets gifted these powers temporarily.]
+							''' */
 					}
 
 					SecondBestAngelFeather: {

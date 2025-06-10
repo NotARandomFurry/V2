@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.Localization;
@@ -25,7 +26,18 @@ namespace V2.Items.Voraria.Accessories.Vanity
 		public static SoundStyle InflationSound => new SoundStyle("V2/Sounds/Item/BalloonBellyInflate", SoundType.Sound);
 		public static SoundStyle DeflationSound => new SoundStyle("V2/Sounds/Item/BalloonBellyDeflate", SoundType.Sound);
 		public static int MaximumInflatedSize => 5;
-		public int InflatedSize { get; set; }
+		public static double BaseSnackSize = 0.25d;
+		private int _inflatedSize;
+
+		public int InflatedSize
+		{
+			get => _inflatedSize;
+			set
+			{
+				_inflatedSize = value;
+				UpdateBalloonBellySnackSize();
+			}
+		}
 		public Color SkinColor { get; set; }
 		public override LocalizedText DisplayName => Language.GetText("Mods.V2.ItemName.Voraria.Accessories.Vanity.BalloonBelly");
 		public override LocalizedText Tooltip => Language.GetText("Mods.V2.ItemTooltip.Voraria.Accessories.Vanity.BalloonBelly.Short");
@@ -47,7 +59,20 @@ namespace V2.Items.Voraria.Accessories.Vanity
 
 			InflatedSize = 0;
 			SkinColor = Color.White;
+
+			Item.AsFood().MaxHealth = 75;
+			Item.AsFood().WellFedPower = 0.01;
+			// Item.AsFood().OnBreak += OnBreak;
+			
+			UpdateBalloonBellySnackSize();
 		}
+
+		// private static bool OnBreak(Item item, Entity pred, bool direct)
+		// {
+		// 	if (pred is NPC or Player pPred)
+		// 	{
+		// 	}
+		// }
 
 		public override ModItem Clone(Item newEntity)
 		{
@@ -109,6 +134,11 @@ namespace V2.Items.Voraria.Accessories.Vanity
 				);
 			}
 			return false;
+		}
+
+		private void UpdateBalloonBellySnackSize()
+		{
+			Item.AsFood().Size = Math.Round(BaseSnackSize + PredPlayer.StomachFullnessFromSize(InflatedSize), 2);
 		}
 
 		public override void UpdateAccessory(Player player, bool hideVisual)

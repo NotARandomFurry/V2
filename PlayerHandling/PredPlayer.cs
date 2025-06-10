@@ -630,6 +630,15 @@ namespace V2.PlayerHandling
 			}
 		}
 
+		public static double StomachFullnessFromSize(int tummySize, double percentBellySizeModifier = 1)
+		{
+			// tummySize = 5.0 * Math.Sqrt(StomachFullness);
+			// tummySize = tummySize * PercentBellySizeModifier;
+			// (tummySize / 5 / PercentBellySizeModifier)^2 = StomachFullness
+			// int clampedTummySize = Math.Clamp(tummySize, 0, BellyDrawLayer.RegularBelly.StandardBellies.Count);
+			return Math.Pow(tummySize / 5d / percentBellySizeModifier, 2d);
+		}
+
 		public bool SizeScanner { get; set; }
 
 		public bool Rose { get; set; }
@@ -914,7 +923,7 @@ namespace V2.PlayerHandling
 			Player.GetAttackSpeed(DamageClass.Generic) += atkspd;
 			Player.GetDamage(DamageClass.Generic) += dmg;
 			Player.GetKnockback(DamageClass.Generic) += kb;
-			Player.moveSpeed += runspd;
+			Player.moveSpeed = Math.Max(0, Player.moveSpeed + runspd); // Had to clamp this, otherwise being overstuffed caused to run backwards
 			Player.pickSpeed -= minespd;
 		}
 
