@@ -7,10 +7,8 @@ namespace V2.Items.Vanilla.Placeables.Crates;
 
 public class CratesItem : GlobalItem
 {
-    public override bool AppliesToEntity(Item entity, bool lateInstantiation)
-    {
-        return ItemID.Sets.IsFishingCrate[entity.type];
-    }
+    public override bool AppliesToEntity(Item entity, bool lateInstantiation) =>
+        ItemID.Sets.IsFishingCrate[entity.type];
 
     public override void SetDefaults(Item entity)
     {

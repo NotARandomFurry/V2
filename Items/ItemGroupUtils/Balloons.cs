@@ -13,6 +13,7 @@ public class Balloons : GlobalItem
 
     public override bool AppliesToEntity(Item entity, bool lateInstantiation) =>
         V2Utils.ItemIDSets.EquipableBalloons.Contains(entity.type);
+
     public override void SetDefaults(Item entity)
     {
         entity.AsFood().MaxHealth = MaxHealth;
@@ -26,15 +27,11 @@ public class Balloons : GlobalItem
     {
         SoundEngine.PlaySound(SoundID.NPCDeath63);
         if (pred is Player predPlayer)
-        {
             predPlayer.AsPred().StomachTracker.PreyFromInstance(item).WeightLeftToDigest = poppedSize;
-        }
 
         return true;
     }
-    
-    public static bool OnBalloonBrokenDown(Item item, Entity pred, bool direct)
-    {
-        return OnBalloonBrokenDown(item, pred, direct, AfterPopSize);
-    }
+
+    public static bool OnBalloonBrokenDown(Item item, Entity pred, bool direct) =>
+        OnBalloonBrokenDown(item, pred, direct, AfterPopSize);
 }
