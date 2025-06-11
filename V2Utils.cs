@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Graphics;
@@ -189,6 +190,55 @@ namespace V2
 				ItemID.FogboundDye,
 				ItemID.HallowBossDye,
 			];
+
+			#region Balloons
+			public static List<int> BasicBalloons =>
+			[
+				ItemID.ShinyRedBalloon,
+				ItemID.GelBalloon,
+				ItemID.BalloonPufferfish,
+				ItemID.SharkronBalloon
+			];
+			
+			public static List<int> BalloonsWithClouds =>
+			[
+				ItemID.BlizzardinaBalloon,
+				ItemID.FartInABalloon,
+				ItemID.CloudinaBalloon,
+				ItemID.SandstorminaBalloon
+			];
+
+			public static List<int> BalloonsWithHorseshoe =>
+			[
+				ItemID.BalloonHorseshoeFart,
+				ItemID.BalloonHorseshoeHoney,
+				ItemID.BalloonHorseshoeSharkron,
+				ItemID.BlueHorseshoeBalloon,
+				ItemID.WhiteHorseshoeBalloon,
+				ItemID.YellowHorseshoeBalloon,
+			];
+
+			public static List<int> BalloonTiles =>
+			[
+				ItemID.SillyBalloonGreen,
+				ItemID.SillyBalloonGreenWall,
+				ItemID.SillyBalloonPink,
+				ItemID.SillyBalloonPinkWall,
+				ItemID.SillyBalloonPurple,
+				ItemID.SillyBalloonPurpleWall,
+			];
+			
+			public static List<int> EquipableBalloons => [..BasicBalloons, ..BalloonsWithClouds, ..BalloonsWithHorseshoe];
+			#endregion Balloons
+
+			public static List<int> Baits =>
+			[
+				ItemID.ApprenticeBait,
+				ItemID.JourneymanBait,
+				ItemID.MasterBait,
+				ItemID.SharkBait
+			];
+
 		}
 
 		public static class NPCIDSets

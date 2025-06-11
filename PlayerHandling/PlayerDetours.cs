@@ -25,6 +25,7 @@ using V2.Tiles;
 using Terraria.Graphics.Renderers;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.Graphics;
+using V2.Core.MainDetours;
 using V2.StatusEffects.Voraria.Debuffs;
 
 namespace V2.PlayerHandling
@@ -2999,7 +3000,11 @@ namespace V2.PlayerHandling
 			}
 		}
 
-
-
+		// Well this is a very weird to fix this shit but it works, feel free to change this implementation
+		public static void Detour_DropFromItem(On_Player.orig_DropFromItem orig, Player self, int itemType)
+		{
+			orig(self, itemType);
+			MainDetours.CrateWasJustDigested = false;
+		}
 	}
 }

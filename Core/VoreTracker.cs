@@ -87,6 +87,10 @@ namespace V2.Core
 
 		public void QueueNewPrey(PreyData prey) => PreyQueue.Add(prey);
 
+		public PreyData? PreyFromInstance(Entity instance)
+		{
+			return Prey.FirstOrDefault(e=>e.Instance == instance);
+		}
 		public bool ContainsLiquid(int liquidType, int liquidAmount = 0)
 		{
 			return Prey.Any(e=>e.Type == PreyType.Liquid && e.ExactType == liquidType && e.WeightLeftToDigest >= liquidAmount);

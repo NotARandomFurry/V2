@@ -220,6 +220,7 @@ namespace V2
 			};
 			On_Player.PickupItem += PlayerDetours.Detour_PickupItem;
 			On_Player.GrappleMovement += PlayerDetours.Detour_GrappleMovement;
+			On_Player.DropFromItem += PlayerDetours.Detour_DropFromItem;
 			On_DeadMansChestBiome.TurnGoldChestIntoDeadMansChest += (orig, instance, position) => WorldGenDetours.TurnGoldChestIntoDeadMansChest(position);
 			//On_HiveBiome.Place += (orig, self, origin, structures) => WorldGenDetours.HiveBiome_Place(self, origin, structures);
 		}

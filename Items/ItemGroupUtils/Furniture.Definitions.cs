@@ -479,7 +479,9 @@ namespace V2.Items.ItemGroupUtils
 			{ ItemID.CrystalTable,				   (FurnitureType.Table,		FurnitureMaterial.Crystal) },
 			{ ItemID.ToiletCrystal,				  (FurnitureType.Toilet,	   FurnitureMaterial.Crystal) },
 			{ ItemID.CrystalBlockWall,			   (FurnitureType.Wall,		 FurnitureMaterial.Crystal) },
-			{ ItemID.CrystalWorkbench,			   (FurnitureType.WorkBench,	FurnitureMaterial.Crystal) },
+			{ ItemID.CrystalWorkbench,			   (FurnitureType.WorkBench,	FurnitureMaterial.Crystal) }
+			
+			// TODO: Missing Balloon furniture
 		};
 	}
 }

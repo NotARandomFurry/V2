@@ -16,6 +16,8 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using V2.Core;
+using V2.Items.ItemGroupUtils;
+using V2.NPCs;
 using V2.PlayerHandling;
 
 namespace V2.Items.Voraria.Accessories.Vanity
@@ -25,8 +27,8 @@ namespace V2.Items.Voraria.Accessories.Vanity
 		public override bool IsLoadingEnabled(Mod mod) => !V2.GetFooled;
 		public static SoundStyle InflationSound => new SoundStyle("V2/Sounds/Item/BalloonBellyInflate", SoundType.Sound);
 		public static SoundStyle DeflationSound => new SoundStyle("V2/Sounds/Item/BalloonBellyDeflate", SoundType.Sound);
+		public static double BaseSnackSize => Balloons.AfterPopSize;
 		public static int MaximumInflatedSize => 5;
-		public static double BaseSnackSize = 0.25d;
 		private int _inflatedSize;
 
 		public int InflatedSize
@@ -60,19 +62,13 @@ namespace V2.Items.Voraria.Accessories.Vanity
 			InflatedSize = 0;
 			SkinColor = Color.White;
 
-			Item.AsFood().MaxHealth = 75;
+			Item.AsFood().MaxHealth = Balloons.MaxHealth;
 			Item.AsFood().WellFedPower = 0.01;
-			// Item.AsFood().OnBreak += OnBreak;
+			Item.AsFood().OnBreak += Balloons.OnBalloonBrokenDown; // We'll just forward it to the balloons method
 			
 			UpdateBalloonBellySnackSize();
 		}
-
-		// private static bool OnBreak(Item item, Entity pred, bool direct)
-		// {
-		// 	if (pred is NPC or Player pPred)
-		// 	{
-		// 	}
-		// }
+		
 
 		public override ModItem Clone(Item newEntity)
 		{

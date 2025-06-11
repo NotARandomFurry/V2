@@ -1,6 +1,7 @@
 ﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using V2.Core.MainDetours;
 
 namespace V2.Items.Vanilla.Placeables.Crates;
 
@@ -13,11 +14,11 @@ public class CratesItem : GlobalItem
 
     public override void SetDefaults(Item entity)
     {
-        var preyItem = entity.AsFood();
+        PreyItem preyItem = entity.AsFood();
         preyItem.MaxHealth = 350;
         preyItem.Size = 2.4d;
         preyItem.WellFedPower = 0.12d;
-        //preyItem.OnSwallowSoreThroatTime// = //V2Utils.SensibleTime(seconds: 10);
+        //preyItem.OnSwallowSoreThroatTime = V2Utils.SensibleTime(seconds: 10);
 
         preyItem.OnBreak += OnBreak;
     }
@@ -25,14 +26,17 @@ public class CratesItem : GlobalItem
     private static bool OnBreak(Item item, Entity pred, bool direct)
     {
         if (pred is Player predPlayer)
+        {
             // var rulesForItemId = Main.ItemDropsDB.GetRulesForItemID(item.type);
             // foreach (var itemDropRule in rulesForItemId)
             // {
             //     V2.Instance.Logger.Info($"{itemDropRule}");
             // }
             // TODO: Intercept drops from NewItem_Inner in Item.cs (Terraria core file)
+            MainDetours.CrateWasJustDigested = true;
             predPlayer.DropFromItem(item.type);
-        ;
+        }
+
         return true;
     }
 }
