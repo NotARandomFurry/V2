@@ -51,35 +51,35 @@ public class BellyDrawLayer : PlayerDrawLayer
 		}
 	}
 
-	private int getFrameForBelly(Player player)
+	private static int GetFrameForBelly(Player player)
 	{
-		var Frame = 0;
+		int frame = 0;
 		switch (player.legFrame.Y / 56)
 		{
 			case 0:
-				Frame = 0;
+				frame = 0;
 				break;
 			case 5:
-				Frame = 1;
+				frame = 1;
 				break;
 			case 7 or 14:
-				Frame = 3;
+				frame = 3;
 				break;
 			case 8 or 9 or 15 or 16:
-				Frame = 5;
+				frame = 5;
 				break;
 			case 10 or 17:
-				Frame = 4;
+				frame = 4;
 				break;
 		}
 		if ((player.ItemAnimationActive ||
-			 player.HeldItem.holdStyle != ItemHoldStyleID.None) && Frame != 1)
-			Frame = 0;
+			 player.HeldItem.holdStyle != ItemHoldStyleID.None) && frame != 1)
+			frame = 0;
 
-		if (player.sitting.isSitting) Frame = 2;
-		else if (player.sleeping.isSleeping || player.swimTime > 0) Frame = 1;
+		if (player.sitting.isSitting) frame = 2;
+		else if (player.sleeping.isSleeping || player.swimTime > 0) frame = 1;
 
-		return Frame;
+		return frame;
 	}
 
 	public static readonly List<BellyDrawer> BellyDrawers =
@@ -140,7 +140,7 @@ public class BellyDrawLayer : PlayerDrawLayer
 		}
 		else
 		{
-			DrawPlayerBelly(ref drawInfo, tumSize, getFrameForBelly(player));
+			DrawPlayerBelly(ref drawInfo, tumSize, GetFrameForBelly(player));
 		}
 	}
 
@@ -194,7 +194,7 @@ public class BellyDrawLayer : PlayerDrawLayer
 			return p.Floor() - Main.screenPosition.Floor();
 		}
 
-		public static Vector2 getPositionForTumRender(Vector2 feetPosition, ref PlayerDrawSet drawInfo,
+		public static Vector2 GetPositionForTumRender(Vector2 feetPosition, ref PlayerDrawSet drawInfo,
 			float offsetX, float offsetY, Texture2D sprite)
 		{
 			// Offset belly accordingly
@@ -213,11 +213,11 @@ public class BellyDrawLayer : PlayerDrawLayer
 			new (-1, 27),  // 3
 			new (-1, 37),  // 4
 			new (-1, 37),  // 5
-			new (0,  37),   // 6
-			new (0,  37),   // 7
-			new (0,  37),   // 8
-			new (0,  37),   // 9
-			new (0,  37),   // 10
+			new (0,  37),  // 6
+			new (0,  37),  // 7
+			new (0,  37),  // 8
+			new (0,  37),  // 9
+			new (0,  37),  // 10
 			new (-1, 37),  // 11
 			new (-1, 37),  // 12
 			new (-1, 35),  // 13
@@ -261,7 +261,7 @@ public class BellyDrawLayer : PlayerDrawLayer
 				//string bellySpritePath = V2TumSpritesRoot + $"Boss_KingSlime/Bare";
 				Texture2D bareTum = RequestTexture(bellySpritePath);
 
-				tumLocation = getPositionForTumRender(tumLocation, ref drawInfo, offsetX, offsetY, bareTum);
+				tumLocation = GetPositionForTumRender(tumLocation, ref drawInfo, offsetX, offsetY, bareTum);
 
 				if (frame == 3 || frame == 5) tumLocation.Y -= 2;
 				if (frame == 2) tumLocation.Y -= player.sitting.offsetForSeat.Y - 4;
@@ -333,7 +333,7 @@ public class BellyDrawLayer : PlayerDrawLayer
 			// if (string.IsNullOrWhiteSpace(tumCover) || tumCover == "Bare") return default;
 
 
-			var filePath = V2TumSpritesRoot + $"Tum{size}/{tumCover}";
+			var filePath = $"{V2TumSpritesRoot}Tum{size}/{tumCover}";
 			if (ModContent.HasAsset(filePath))
 			{
 				var TumArmor = RequestTexture(filePath);

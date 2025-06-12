@@ -26,6 +26,7 @@ using Terraria.Graphics.Renderers;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.Graphics;
 using V2.Core.MainDetours;
+using V2.Items.Vanilla.Placeables.Tile;
 using V2.StatusEffects.Voraria.Debuffs;
 
 namespace V2.PlayerHandling
@@ -3004,7 +3005,13 @@ namespace V2.PlayerHandling
 		public static void Detour_DropFromItem(On_Player.orig_DropFromItem orig, Player self, int itemType)
 		{
 			orig(self, itemType);
-			MainDetours.CrateWasJustDigested = false;
+			MainDetours.LootWasJustDigested = false;
+		}
+
+		public static void Detour_DropItemFromExtractinator(On_Player.orig_DropItemFromExtractinator orig, Player self, int itemType, int stack)
+		{
+			orig(self, itemType, stack);
+			MainDetours.LootWasJustDigested = false;
 		}
 	}
 }

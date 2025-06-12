@@ -23,17 +23,9 @@ public class CratesItem : GlobalItem
 
     private static bool OnBreak(Item item, Entity pred, bool direct)
     {
-        if (pred is Player predPlayer)
-        {
-            // var rulesForItemId = Main.ItemDropsDB.GetRulesForItemID(item.type);
-            // foreach (var itemDropRule in rulesForItemId)
-            // {
-            //     V2.Instance.Logger.Info($"{itemDropRule}");
-            // }
-            // TODO: Intercept drops from NewItem_Inner in Item.cs (Terraria core file)
-            MainDetours.CrateWasJustDigested = true;
-            predPlayer.DropFromItem(item.type);
-        }
+        if (pred is not Player predPlayer) return true;
+        MainDetours.LootWasJustDigested = true;
+        predPlayer.DropFromItem(item.type);
 
         return true;
     }

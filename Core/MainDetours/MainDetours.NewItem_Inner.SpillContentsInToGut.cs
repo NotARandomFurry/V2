@@ -9,23 +9,21 @@ namespace V2.Core.MainDetours;
 public static partial class MainDetours
 {
     /// <summary>
-    ///     What a stupid way to fix this issue:
-    ///     "So like, sure this works but it throws loot content if you right click as usual while digesting a nice loot meal?
-    ///     how tf fix this???!?!"
+    /// Set this flag to <b>True</b> when an openable loot (bag, silt or similar) has been digested. This will cause additional items to try to be forced in to the gut
+    /// Make sure to set it to <b>False</b> using a detour in the appropriate "event".
     /// </summary>
-    public static bool CrateWasJustDigested { get; set; }
+    
+    // What a garbage way to make this feature work regarding digesting crates and other openable loot... Oh well, it works at least
+    public static bool LootWasJustDigested { get; set; }
 
     public static int SpillLootInToGut(On_Item.orig_NewItem_Inner orig, IEntitySource source, int x, int y, int width,
         int height, Item itemToClone, int type, int stack, bool noBroadcast, int pfix, bool noGrabDelay,
         bool reverseLookup)
     {
-        if (source is not EntitySource_ItemOpen src)
-            return orig(source, x, y, width, height, itemToClone, type, stack, noBroadcast, pfix, noGrabDelay,
-                reverseLookup);
-        
-        bool lootSourceWasInGut = CrateWasJustDigested &&
-                                  (src.Player.AsPred().StomachTracker?.Prey.Any(e => e.ExactType == src.ItemType) ??
-                                   false);
+
+        bool lootSourceWasInGut = LootWasJustDigested; //&&
+                                  // (src.Player.AsPred().StomachTracker?.Prey.Any(e => e.ExactType == src.ItemType) ??
+                                  //  false);
         if (!lootSourceWasInGut)
             return orig(source, x, y, width, height, itemToClone, type, stack, noBroadcast, pfix, noGrabDelay,
                 reverseLookup);
@@ -37,7 +35,17 @@ public static partial class MainDetours
             noGrabDelay, reverseLookup);
 
         Item item = Main.item[itemIdx];
-        if (item.AsFood().MaxHealth > 0) PredPlayer.AddNewPrey(src.Player, PreyData.NewData(item));
+        if (item.AsFood().MaxHealth > 0)
+        {
+            Player pred = source switch
+            {
+                EntitySource_TileInteraction te_src => te_src.Entity as Player,
+                EntitySource_ItemOpen io_src => io_src.Player
+            };
+            
+            if (pred is not null)
+                PredPlayer.AddNewPrey(pred, PreyData.NewData(item));
+        }
         return itemIdx;
     }
 }
