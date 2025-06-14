@@ -41,8 +41,9 @@ namespace V2.Items.Vanilla.Placeables.Tile
 			if (pred is Player playerPred)
 			{
 				int extractType = ItemID.Sets.ExtractinatorMode[item.type];
-				MainDetours.LootWasJustDigested = true;
+				playerPred.AsPred().LootWasJustDigested = true;
 				Player_ExtractinatorUse.Invoke(playerPred, [extractType, TileID.Extractinator]);
+				playerPred.AsPred().LootWasJustDigested = false;
 			}
 			else if (pred is NPC NPCPred)
 			{

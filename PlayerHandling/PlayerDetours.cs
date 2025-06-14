@@ -3000,18 +3000,5 @@ namespace V2.PlayerHandling
 				}
 			}
 		}
-
-		// Well this is a very weird to fix this shit but it works, feel free to change this implementation
-		public static void Detour_DropFromItem(On_Player.orig_DropFromItem orig, Player self, int itemType)
-		{
-			orig(self, itemType);
-			MainDetours.LootWasJustDigested = false;
-		}
-
-		public static void Detour_DropItemFromExtractinator(On_Player.orig_DropItemFromExtractinator orig, Player self, int itemType, int stack)
-		{
-			orig(self, itemType, stack);
-			MainDetours.LootWasJustDigested = false;
-		}
 	}
 }

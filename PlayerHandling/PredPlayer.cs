@@ -58,6 +58,7 @@ namespace V2.PlayerHandling
 	}
 	public partial class PredPlayer : ModPlayer
 	{
+		public bool LootWasJustDigested { get; set; }
 		public bool SyncRequired_PredPoints { get; set; }
 		public VoreTracker StomachTracker
 		{
