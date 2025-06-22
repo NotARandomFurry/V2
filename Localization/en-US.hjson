@@ -57,6 +57,7 @@ Mods: {
 			LightGray: D3D3D3
 			Gray: 5A5A5A
 			Red: FF0000
+			DarkRed: 7F0000
 			Orange: FF5A00
 			Gold: FFD700
 			Yellow: FFFF00
@@ -783,7 +784,7 @@ Mods: {
 					}
 				}
 
-				EatTheManEater: {
+				EatManEater: {
 					Name: Man Eating
 
 					Description: {
@@ -2682,7 +2683,7 @@ Mods: {
 								When successfully fired in a stomach, [c/{$Mods.V2.CommonColorCodes.DealDamage}:deals struggle damage] instead.
 								Effectiveness is reduced if not done to the beat of the current pred's struggle chart.
 								'''
-							Flavor: A simple bow fashioned from boreal wood. Has a chilly aftertaste resembling the taste of snow.
+							Flavor: A simple bow fashioned from boreal wood. It has a chilly aftertaste resembling the taste of snow.
 						}
 
 						OakWoodBow: {
@@ -2701,6 +2702,30 @@ Mods: {
 								Effectiveness is reduced if not done to the beat of the current pred's struggle chart.
 								'''
 							Flavor: A simple bow fashioned from oak wood, and tasting about the same.
+						}
+
+						FlareGun: {
+							Short:
+								'''
+								Can fire flares to deal damage; must be reloaded between shots
+								Light and easy to use in a belly
+								{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+								'''
+							Long:
+								'''
+								[c/{$Mods.V2.CommonColorCodes.DoSomething}:Left-click] to shoot a flare, dealing [c/{$Mods.V2.CommonColorCodes.DealDamage}:{FlareGunDamageRatio} damage] to the first target it hits.
+								Some flares may have [c/{$Mods.V2.CommonColorCodes.DoSomething}:special properties]; examine these in the tooltips of your flares.
+								
+								Can only fire a flare if said flare is loaded into the barrel.
+								[c/{$Mods.V2.CommonColorCodes.DoSomething}:Right-click] to begin loading a flare into the barrel. This takes {FlareGunReloadTime} seconds.
+								Only one flare can be loaded into the barrel at a time.
+
+								Can be used in any stomach.
+								When successfully fired in a stomach, [c/{$Mods.V2.CommonColorCodes.DealDamage}:deals struggle damage] instead.
+								Effectiveness is reduced if not done to the beat of the current pred's struggle chart.
+								Deals [c/{$Mods.V2.CommonColorCodes.PositiveEffect}:+{FlareGunNonBurnproofBonus} damage] against the stomachs of preds which are not burnproof. Deals [c/{$Mods.V2.CommonColorCodes.NegativeEffect}:no damage] against those of preds who are.
+								'''
+							Flavor: While sadly not used much in the well-respected profession of hunting compared to other ranged weapons of its caliber, flare guns are a common tool amongst adventurers and spelunkers alike to mark important locations or raise visibility in dark caves. The gun's design marks it as predominantly for usage outside of a stomach...but that doesn't make it a bad queasing weapon in a pinch, so long as you have flares left undigested to load it with.
 						}
 					}
 				}

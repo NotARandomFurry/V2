@@ -689,7 +689,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Dryad
 						if (GetEmpressDigestionStage(npc) > 0)
 						{
 							boundingBox = new Rectangle(
-								(int)npc.Left.X,
+								(int)npc.Center.X - 40,
 								(int)npc.Bottom.X - 90,
 								80,
 								90
@@ -710,7 +710,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Dryad
 			if (GetEmpressDigestionStage(npc) > 0)
 			{
 				boundingBox = new Rectangle(
-					(int)npc.Left.X,
+					(int)npc.Center.X - 40,
 					(int)npc.Bottom.X - 90,
 					80,
 					90
