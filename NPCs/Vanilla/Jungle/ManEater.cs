@@ -21,7 +21,7 @@ public class ManEater : GlobalNPC
 	{
 		if (pred is Player predPlayer)
 		{
-			ModContent.GetInstance<EatTheManEater>().TrySetCompletion(predPlayer);
+			ModContent.GetInstance<EatManEater>().TrySetCompletion(predPlayer);
 		}
 	}
 }

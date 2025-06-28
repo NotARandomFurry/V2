@@ -5,6 +5,7 @@ using System.Linq;
 using Terraria;
 using Terraria.Localization;
 using Terraria.ModLoader;
+using V2.Core;
 using V2.PlayerHandling;
 using V2.UI;
 
@@ -89,17 +90,47 @@ namespace V2.Items
 			}
 
 			V2Utils.FindLastTooltipLineBeforeFlavorText(tooltips, out TooltipLine finalLine);
+			int flavorTextOffset = 1;
 			if (PlaceableCanBeHungry)
 			{
-				tooltips.Insert(
-					tooltips.IndexOf(finalLine) + 1,
+				V2Utils.InsertNewTooltipLine(
+					ref tooltips,
+					finalLine,
+					flavorTextOffset,
 					new TooltipLine(
 						V2.Instance,
 						"V2HungryObjects",
 						PlaceableHungryByDefault ? Language.GetTextValue("Mods.V2.ItemTooltip.Generic.HungryPlaceable.DefaultHungry") : Language.GetTextValue("Mods.V2.ItemTooltip.Generic.HungryPlaceable.DefaultNormal")
 					)
 				);
+				flavorTextOffset++;
 			}
+
+			/*if (item.AsAnItem().reloadTime > 0)
+			{
+				double reloadTimeInSeconds = (double)item.AsAnItem().reloadTime / 60.0;
+				List<string> reloadKeybind = DissonantDuality.ReloadKeybind.GetAssignedKeys();
+				bool reloadKeyBound = reloadKeybind != null && reloadKeybind.Count > 0;
+				string reloadTimeText = Language.GetTextValueWith(
+					"Mods.DissonantDuality.ItemTooltip.Generic.ReloadTime",
+					new
+					{
+						ReloadKey = reloadKeyBound ? reloadKeybind[0] : "HOTKEY NOT BOUND",
+						ReloadTime = reloadTimeInSeconds.CastToDecimalPlaces(1)
+					}
+				);
+				if (V2Utils.FindLastDamageRelatedTooltipLine(tooltips, out TooltipLine lastDamageRelatedLine) && lastDamageRelatedLine != null)
+				{
+					V2Utils.InsertNewTooltipLine(
+						ref tooltips,
+						lastDamageRelatedLine,
+						1,
+						new TooltipLine(Mod, "ReloadTime", reloadTimeText)
+					);
+				}
+				else
+					tooltips.Add(new TooltipLine(Mod, "ReloadTime", reloadTimeText));
+			}*/
 
 			if (item.wornArmor && player.AsV2Player().setBonusActive)
 			{
