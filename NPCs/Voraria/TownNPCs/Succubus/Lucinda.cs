@@ -186,7 +186,7 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 			List<NPC> nearbyResidentNPCs = npc.GetNearbyResidentNPCs(out int npcsWithinHouse, out int npcsWithinVillage);
 			NPC bestGirl = nearbyResidentNPCs.FirstOrDefault(x => x.type == NPCID.Stylist);
 
-			List<string> succubusChatPool = new List<string>();
+			List<string> succubusChatPool = [];
 			V2Utils.FigureOutWhatTimeItIs(
 				out bool pastMorning,
 				out int hour,
@@ -201,49 +201,44 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 			{
 				if (Main.bloodMoon)
 				{
-					succubusChatPool.AddRange(new List<string>
-					{
+					succubusChatPool.AddRange([
 						"I warned you not to get in my way, didn't I? Now quiet down like the helpless gut fodder you are.",
-					});
+					]);
 				}
 				else
 				{
-					succubusChatPool.AddRange(new List<string>
-					{
+					succubusChatPool.AddRange([
 						"Finally got you right where I want you: ready to plump up my demonic derrière even more.",
 						"Getting cozy in there? I know I'm loving having you in there; hope you don't mind being demon fat.",
 						"I wonder how much you'll bulk up my breasts...maybe they'll finally burst this old shirt. I know a few people who'd love that.",
 						"I can't wait to see how much better my thighs look with a few dozen pounds of you draped over them, gutmeat.",
 						"Comfy in there, lunch? I'd hope so...'cause the only place you're goin' from where you are right now is right downstairs to my ass and my thighs. Maybe a little for the rack, too...",
-					});
+					]);
 				}
 			}
 			else
 			{
 				if (Main.bloodMoon)
 				{
-					succubusChatPool.AddRange(new List<string>
-					{
+					succubusChatPool.AddRange([
 						"Get outta my face, before I stuff you right into it. I'm REALLY hangry right now.",
 						"These blood moons always get me so FUCKIN' MAD...leave me alone, or I'll digest you!",
 						"Just- could you just...agh, get in my belly or get lost!",
 						"I need to scream! After that, I'm gonna eat anything in my sight, you included!",
 						"Whaddaya want, gut-meat-to-be? Can't you see I'm pissed!?",
 						"I'm in the worst mood possible tonight, meat. Stay outta my way, or you won't stay outta my stomach!",
-					});
+					]);
 					if (PredNPC.GetStomachTracker(npc) is not null)
 					{
-						succubusChatPool.AddRange(new List<string>
-						{
+						succubusChatPool.AddRange([
 							"You think I'm full? You and those CHUMPS back home don't know SHIT about bein' full! Get me more or get in my gut, meatsack!",
 							"Me? Content? I'll have eaten the rest of the WORLD before I'm satisfied, startin' with you if you don't scram!",
-						});
+						]);
 						if (playerIsFood && playerWasAlreadyDigested)
 						{
-							succubusChatPool.AddRange(new List<string>
-							{
+							succubusChatPool.AddRange([
 								"How are you already-...y'know what, WHATEVER! Just get in my gut already!...again!",
-							});
+							]);
 						}
 					}
 				}
@@ -254,104 +249,92 @@ namespace V2.NPCs.Voraria.TownNPCs.Succubus
 						switch (GetVisualBellySize(npc))
 						{
 							default:
-								succubusChatPool.AddRange(new List<string>
-								{
+								succubusChatPool.AddRange([
 									"I can't figure out if my gut is or isn't empty. How about you give me a little help solvin' that problem?",
 									"The worst kind of food is the kind that doesn't bloat up your gut. Howzabout you be a better brunch than whatever's currently in or out of mine?",
-								});
+								]);
 								break;
 							case 1:
-								succubusChatPool.AddRange(new List<string>
-								{
+								succubusChatPool.AddRange([
 									"Hey. Don't mind the- [c/00BB00:*urp!*] -rumbles from my waist. Just ate a little appetizer.",
 									"Hm? Oh, this? Well, a day's always better with a good snack! Now, why don't you help turn that into a decent meal?",
 									"Oh, this? Just had a light snack, that's all. Think you'll wanna add to that?",
 									"Hey. Just had a- [c/00FF00:*hic!*] -little treat for myself. Don't mind me.",
-								});
+								]);
 								break;
 							case 2:
-								succubusChatPool.AddRange(new List<string>
-								{
+								succubusChatPool.AddRange([
 									"[c/00BB00:*belch!*]\nAhhh, that's the good stuff. Nothing like a bloated little belly to make a better day. Definitely want some more, though.",
 									"Just finished up a good appetizer here. Could go for a lot more, though...you offerin'?",
 									"Huh? Oh, this. Just a nice little- [c/00BB00:*burp!*] -snack to tide me over until lunch. Don't worry about it, lunch.",
 									"Finally got the starts of a good meal goin' here. Mind if I make it a little better with you as the next course?",
 									"Hey there, f-[c/00BB00:*oourp.*]- ...food. Care to help me fix up my post-snack munchies a little better?",
-								});
+								]);
 								break;
 							case 3:
-								succubusChatPool.AddRange(new List<string>
-								{
+								succubusChatPool.AddRange([
 									"[c/00BB00:*BWORP!*]\nTHERE we go...that's some good eats right in there, though I'll go for a little more, I think. Got any recommendations, such as yourself?",
 									"Nice day, yeah? Even better now that I've got a good-sized meal in my gut. Then again...could always use a second course.",
 									"Huh? Yeah, I could go for more. I've still got a TON of room in this gut for morsels like you, just you wait!",
-								});
+								]);
 								break;
 							case 4:
-								succubusChatPool.AddRange(new List<string>
-								{
+								succubusChatPool.AddRange([
 									"[c/00BB00:*BWOOOURRP!*]\nNow THAT's a good meal. Almost makes me not wanna eatcha...almost. You free to be food?",
 									"Huh? Yeah, I could go for more! Just...takin' a minute before I do. Don't wanna eat too fast and get hiccups.",
-									"You know, if you're lookin' for a way to do this sorta thing yourself, the dragonfruit vine tells me there's a heavenly little treat that frequents our planet who'd just LOVE to cram herself down your throat...unless you'd rather I get to her first.",
 									"What's the matter, hotshot? Jealous of my big, food-filled belly? You should be, because I'm just- [c/00FF00:*hic!*] -...er...j- just gettin' started.",
-								});
+								]);
 								break;
 						}
 					}
 					else
 					{
-						succubusChatPool.AddRange(new List<string>
-						{
+						succubusChatPool.AddRange([
 							"Hey. Looking to spend some time on the waistline of an incredible pred like me?",
 							"Huh? Am I hungry? I'm ALWAYS hungry, morsel. Hungry for SNACKS like you! YEAH!",
 							"Not lookin' to head back home, at least for the moment, so maybe keep some good food around, yeah?",
 							"Got any rowdy townsfolk you need taken care of? I'll be sure to put 'em to REAL good- ...what do you mean, you don't?",
 							"Yeah, I'm an apex pred. I eat chumps like YOU for breakfast, lunch, AND dinner, EVERY DAY. Got a problem with that?",
-						});
+						]);
 
 						if (Main.dayTime)
 						{
-							succubusChatPool.AddRange(new List<string>
-							{
+							succubusChatPool.AddRange([
 								"All those slimes goin' around are...honestly, exceptionally mediocre prey. I prefer my meals with some MEAT to them, if you know what I mean.",
 								"Every so often, a small, pink slime'll show up in the forests. Might wanna munch on it when you see it...I hear it tastes REALLY good.",
 								"Tried to grill a slime earlier...the damn thing just burned right up, right in front of me! So much for grilled gel...those things wouldn't last 5 seconds back home.",
-							});
+							]);
 
 							if (Main.IsItAHappyWindyDay)
 							{
-								succubusChatPool.AddRange(new List<string>
-								{
+								succubusChatPool.AddRange([
 									"Damn, just take a look at this wind! Bet you could calm some rowdy prey down REAL quick with gusts like this knockin' 'em around in ya!",
 									"These sorts of days are always great. Plenty of opportunities for some good prey to blow right on into my mouth.",
-								});
+								]);
 							}
 						}
 						else
 						{
-							succubusChatPool.AddRange(new List<string>
-							{
+							succubusChatPool.AddRange([
 								"Those zombies that always shamble around at these hours are really annoyin'. They're not even good food...you'll just get food poisonin' if you try.",
 								"I feel like those eyes flyin' around all the time at night could really be good for my eyesight. Maybe yours, too, if you're hungry enough.",
 								"Might go out and gulp down a few dozen of those little fairies I sometimes see when the moon's at its peak. Hear they're real good at gettin' preds into their prime.",
-							});
+							]);
 						}
 
 						if (Main.IsItRaining)
 						{
-							succubusChatPool.AddRange(new List<string>
-							{
+							succubusChatPool.AddRange([
 								"...well, this sure never happened back home. I'm not gonna, like...melt into a puddle or anything else dumb if I touch the rain, right?",
 								"The sounds this rain makes against the roof...they kinda remind me of fingers, happily drummin' on a calm, full gut. It's...weirdly relaxin'. Could listen to it for a while.",
-							});
+							]);
 						}
 						if (Main.IsItStorming)
 						{
-							succubusChatPool.AddRange(new List<string>
-							{
+							succubusChatPool.AddRange([
 								"HAH! LOOK at all that lightning! HEAR all that thunder! That's the heavens above, SCARED of me and my gut! I'll eat every last angel up there one day, y'hear!?",
 								"One of these days, I'M gonna eat one of those HUGE stormclouds, and I'm gonna melt it RIGHT down into fat for my breasts and my backside, to show that I'm the BEST pred there is. Just you wait, morsel.",
-							});
+							]);
 						}
 					}
 				}

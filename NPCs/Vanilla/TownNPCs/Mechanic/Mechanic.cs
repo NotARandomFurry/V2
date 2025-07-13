@@ -133,11 +133,10 @@ namespace V2.NPCs.Vanilla.TownNPCs.Mechanic
 
 			npc.AsPred().GetVisualBellySize = GetVisualBellySize;
 
-			npc.AsFood().ItemTheftRules = new List<ItemTheftRule>
-			{
+			npc.AsFood().ItemTheftRules = [
 				MechanicStuff.ItemTheftRules.CombatWrench,
 				MechanicStuff.ItemTheftRules.MealSizeScanner,
-			};
+			];
 		}
 
 		public override ITownNPCProfile ModifyTownNPCProfile(NPC npc) => MechanicStuff.PredMechanicProfile;
@@ -159,6 +158,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Mechanic
 			NPC bootlegChippy = nearbyResidentNPCs.FirstOrDefault(x => x.type == NPCID.Clothier);
 			NPC bestGirl = nearbyResidentNPCs.FirstOrDefault(x => x.type == NPCID.Stylist);
 			NPC steamLass = nearbyResidentNPCs.FirstOrDefault(x => x.type == NPCID.Steampunker);
+			NPC salad = nearbyResidentNPCs.FirstOrDefault(x => x.type == NPCID.Dryad);
 			NPC succubus = nearbyResidentNPCs.FirstOrDefault(x => x.type == ModContent.NPCType<Lucinda>());
 
 			List<string> mechanicChatPool = new List<string>();
@@ -176,38 +176,34 @@ namespace V2.NPCs.Vanilla.TownNPCs.Mechanic
 				bool noDigest = false;
 				if (Main.bloodMoon)
 				{
-					mechanicChatPool.AddRange(
-					[
+					mechanicChatPool.AddRange([
 						"[c/FF0000:Shut your mouth. Do that and melt.] I'm trying to work.",
 						"Exactly as calculated; you're [c/FF0000:digesting] just fine. [c/FF0000:Continue, quietly.]",
 					]);
 				}
 				else
 				{
-					mechanicChatPool.AddRange(new List<string>
-					{
+					mechanicChatPool.AddRange([
 						"...you shouldn't bother worrying about getting in the way. I stitched these overalls myself specifically to resolve that issue.",
 						"...you know that moving around too much in there is going to hurt both of us, right? System damage goes both ways...",
-					});
+					]);
 					if (noDigest)
 					{
-						mechanicChatPool.AddRange(new List<string>
-						{
+						mechanicChatPool.AddRange([
 							"...there should be some spare wire inside there. Push some up. I need some.",
 							"...thank you for staying calm inside me. This helps me focus.",
 							"...this gives me valuable additional data on how the human stomach handles live prey without digesting. Continue.",
-						});
+						]);
 					}
 					else
 					{
-						mechanicChatPool.AddRange(new List<string>
-						{
+						mechanicChatPool.AddRange([
 							"[c/00BB00:*BUOARP!*]\n"
 						  + "...my focus is coming back after that. Good. I need to work.",
 							"...you're digesting well, or at least it sounds like you are. Can't help but wonder if I could optimize my stomach just a bit more...",
 							"...nothing like some decent brain food while you work. Helps the mind stay on track.",
 							"...better not add too much cellulite to me. Gets hard to work if I'm heavy past a certain breakpoint.",
-						});
+						]);
 					}
 				}
 			}
@@ -216,7 +212,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Mechanic
 				if (Main.bloodMoon)
 				{
 					mechanicChatPool.AddRange([
-						"Don't bother me. You're [c/FF0000:just as easy to swallow as wire].",
+						"...don't bother me. [c/FF0000:For your own safety.]",
 						"My workflow is interrupted. Leave or become a [c/FF0000:part of it].",
 						"I've eaten [c/FF0000:skeletons] less bothersome than you. What do you want?",
 					]);
@@ -389,7 +385,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Mechanic
 						{
 							mechanicChatPool.AddRange(
 							[
-								"...the cold here makes my machines work well, but I don't enjoy being this far underground.",
+								"...the cold here makes my machines work well, but I don't like being this far underground.",
 								"...I have mixed feelings about this place. Useful for my work. Not so much for me.",
 							]);
 						}
@@ -452,7 +448,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Mechanic
 							else if (!NPC.downedPlantBoss)
 							{
 								mechanicChatPool.AddRange([
-									"...why were the robots a threat? Well...I made those mechanical monstrosities under orders from the High Priest of the Fallen Star. They seek to make augmented body parts for...[c/7F5FBF:them].",
+									"...why were the robots a threat? Well...I made those mechanical monstrosities under orders from the High Priest of the Fallen Star. They seek to make augmented, self-sustaining bodily extensions for...[c/7F5FBF:them].",
 									"...you dismantled all three of the mechs to be used for the cult's goal? Hm...\n"
 								  + "\n"
 								  + "...thank you. Maybe now I can return to my normal work.",
@@ -559,11 +555,10 @@ namespace V2.NPCs.Vanilla.TownNPCs.Mechanic
 
 			if (Main.netMode != NetmodeID.Server && Main.CurrentPlayer.whoAmI == Main.myPlayer && Main.CurrentPlayer.Distance(npc.Center) <= npc.AsPred().MaxSwallowRange && shouldHaveBrainFood)
 			{
-				List<string> potentialRandomGulpLines = new List<string>
-				{
+				List<string> potentialRandomGulpLines = [
 					"...I need some brain food. You'll have to do.",
 					"...sorry, but I need fuel, and you were right there.",
-				};
+				];
 				PredNPC.SwallowWithTextIfApplicable(
 					npc,
 					Main.CurrentPlayer,
