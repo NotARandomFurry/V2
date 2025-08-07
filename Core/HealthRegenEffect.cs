@@ -30,7 +30,6 @@ namespace V2.Core
 		/// </summary>
 		/// <param name="healthPerSecond">The amount of health to be regenerated or drained per second.</param>
 		/// <param name="natural">Whether or not the effect should be counted as natural.</param>
-		/// <param name="extraEffects">Any extra effects that this source of health regen has.</param>
 		public HealthRegenEffect(DelegateHealthRegenPerSecond healthPerSecond, bool natural = false, DelegateHealthRegenModifyHealthRegenTime modifyHealthRegenTimeMethod = null, DelegateHealthRegenModifyTotalHealthRegen modifyTotalHealthRegenMethod = null, DelegateHealthRegenOnHealthAdjustment onHealthAdjustmentMethod = null)
 		{
 			this.healthPerSecond = healthPerSecond;
@@ -45,7 +44,6 @@ namespace V2.Core
 		/// </summary>
 		/// <param name="healthPerSecond">The amount of health to be regenerated or drained per second.</param>
 		/// <param name="natural">Whether or not the effect should be counted as natural.</param>
-		/// <param name="extraEffects">Any extra effects that this source of health regen has.</param>
 		public HealthRegenEffect(double healthPerSecond, bool natural = false, DelegateHealthRegenModifyHealthRegenTime modifyHealthRegenTimeMethod = null, DelegateHealthRegenModifyTotalHealthRegen modifyTotalHealthRegenMethod = null, DelegateHealthRegenOnHealthAdjustment onHealthAdjustmentMethod = null)
 		{
 			this.healthPerSecond = (player) => healthPerSecond;

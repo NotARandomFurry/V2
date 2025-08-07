@@ -44,12 +44,34 @@ namespace V2.NPCs.Vanilla.BloodMoon
 			public static ItemTheftRule WeddingVeil => new ItemTheftRule(
 				type: (npc, pred) => ItemID.TheBrideHat,
 				amount: (npc, pred) => 1,
-				chance: (npc, pred) => 1.0
+				chance: (npc, pred) => {
+					if (pred is not Player predPlayer)
+						return 0.40;
+
+					return predPlayer.AsPred().PreyStealLootLevel switch
+					{
+						0 => 0.20,
+						1 => 0.40,
+						2 => 0.75,
+						_ => 1.00,
+					};
+				}
 			);
 			public static ItemTheftRule WeddingDress => new ItemTheftRule(
 				type: (npc, pred) => ItemID.TheBrideDress,
 				amount: (npc, pred) => 1,
-				chance: (npc, pred) => 1.0
+				chance: (npc, pred) => {
+					if (pred is not Player predPlayer)
+						return 0.40;
+
+					return predPlayer.AsPred().PreyStealLootLevel switch
+					{
+						0 => 0.20,
+						1 => 0.40,
+						2 => 0.75,
+						_ => 1.00,
+					};
+				}
 			);
 		}
 

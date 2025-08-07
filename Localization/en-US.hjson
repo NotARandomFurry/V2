@@ -4,6 +4,11 @@ ItemName: {
 	WoodHelmet: Oak Wood Helm
 	WoodBreastplate: Oak Wood Chestguard
 	WoodGreaves: Oak Wood Makeshift Boots
+	GoldCrown: Gold Battle Tiara
+	GoldHelmet: Ancient Gold Helmet
+	AncientGoldHelmet: Ancienter Gold Helmet
+	GoldChainmail: Gold Chain Dress
+	GoldGreaves: Gold Formal Sabatons
 	# Placeables
 	Wood: Oak Wood
 	Bed: Oak Wood Bed
@@ -34,7 +39,7 @@ ItemName: {
 
 Bestiary_FlavorText: {
 	# Bosses
-	npc_HallowBoss: The most gluttonous prismatic fairy to ever inhabit Terraria, rumored to have eaten a titaness whole and alive to gain her modern-day size and strength. She wishes to one day shine with the feast-worthy, fattening light of the digested sun.
+	npc_HallowBoss: The most gluttonous prismatic fairy to ever inhabit Terraria, rumored to have eaten a titaness whole and alive, body and soul, to gain her modern-day size and strength. She wishes to one day shine with the feast-worthy, fattening light of the digested sun.
 	# Caverns
 	npc_LostGirl: A lady of no clothes or cruel countenance (don't mind the ominous rumbling or that she's licking her lips), patiently awaiting a savior that can rescue her and return her to the surface.
 	npc_Nymph: Masterfully deceives the common fool by posing as a lost, scared lady, then lunges forward and gobbles up her prey before they can so much as touch her. Also enjoys certain card and board games.
@@ -1838,6 +1843,332 @@ Mods: {
 							Long: "[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases natural health regeneration] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:5%]; this is [c/{$Mods.V2.CommonColorCodes.PositiveEffect}:doubled] when [c/{$Mods.V2.CommonColorCodes.DoSomething}:exposed to sunlight]."
 						}
 					}
+
+					Tungsten: {
+						Head: {
+							Short:
+								'''
+								Increases defense very slightly in daylight
+								{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+								'''
+							Long:
+								'''
+								[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases defense] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:1] when [c/{$Mods.V2.CommonColorCodes.DoSomething}:exposed to sunlight].
+								{$Mods.V2.ItemTooltip.Generic.LongTooltipHelpers.SunlightExposureRules}
+								Has no special effects when eaten.
+								'''
+							Flavor:
+								'''
+								A makeshift helmet fashioned from oak wood.
+								It has a very plain taste.
+								'''
+						}
+
+						Chest: {
+							Short:
+								'''
+								Increases defense very slightly in daylight
+								{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+								'''
+							Long:
+								'''
+								[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases defense] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:1] when [c/{$Mods.V2.CommonColorCodes.DoSomething}:exposed to sunlight].
+								{$Mods.V2.ItemTooltip.Generic.LongTooltipHelpers.SunlightExposureRules}
+								Has no special effects when eaten.
+								'''
+							Flavor:
+								'''
+								A makeshift chestplate fashioned from oak wood.
+								It has a very plain taste.
+								'''
+						}
+
+						Legs: {
+							Short:
+								'''
+								Increases defense very slightly in daylight
+								{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+								'''
+							Long:
+								'''
+								[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases defense] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:1] when [c/{$Mods.V2.CommonColorCodes.DoSomething}:exposed to sunlight].
+								{$Mods.V2.ItemTooltip.Generic.LongTooltipHelpers.SunlightExposureRules}
+								Has no special effects when eaten.
+								'''
+							Flavor:
+								'''
+								A makeshift pair of boots fashioned from oak wood.
+								They have a very plain taste.
+								'''
+						}
+
+						SetBonus: {
+							Short: Boosts natural health regeneration, moreso in daylight
+							Long: "[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases natural health regeneration] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:5%]; this is [c/{$Mods.V2.CommonColorCodes.PositiveEffect}:doubled] when [c/{$Mods.V2.CommonColorCodes.DoSomething}:exposed to sunlight]."
+						}
+					}
+
+					Gold: {
+						Head: {
+							Short:
+								'''
+								Increases magic damage by {GoldCrownMagDMGUp}
+								Increases mana efficiency by {GoldCrownManaEffUp}
+								{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+								'''
+							Long:
+								'''
+								[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases magic damage] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{GoldCrownMagDMGUp}].
+								[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases mana efficiency] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{GoldCrownManaEffUp}].
+								Has no special effects when eaten.
+								'''
+							Flavor:
+								'''
+								A crown forged with gold and rubies, molded into a form useful for battle.
+								Crowns such as these were often used by rulers of times long past, denoting their status as both royalty and magically inclined. Of course, nowadays, those denotations are moot, as virtually everyone has readily-available access to at least basic magics, and royalty is often shown through predatory prowess and ruling capability rather than mere gaudiness. Nonetheless, they're still a common implement on the heads of military caster specialists to improve their efficiency in battle.
+								'''
+						}
+
+						OldHead: {
+							Short:
+								'''
+								Increases magic damage by {GoldOldHeadMagDMGUpPercent} + {GoldOldHeadMagDMGUpFlat}
+								Increases mana efficiency by {GoldOldHeadManaEffUp}
+								{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+								'''
+							Long:
+								'''
+								[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases magic damage] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{GoldOldHeadMagDMGUpPercent} + {GoldOldHeadMagDMGUpFlat}].
+								[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases mana efficiency] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{GoldOldHeadManaEffUp}].
+								Has no special effects when eaten.
+								'''
+							Flavor:
+								'''
+								An old style of golden helmet similar to the type used back in the Grand Avarsician Civil War by understudies of then-rebel-leader Mary Caldera.
+								While not as flexible or maw-friendly as the gilded tiaras of modern casting militia, there were still mechanisms in the helmet to allow somewhat-easier consumption of defeated foes.
+								'''
+						}
+
+						OldOldHead: {
+							Short:
+								'''
+								Increases magic damage by {GoldOldOldHeadMagDMGUpPercent} + {GoldOldOldHeadMagDMGUpFlat}
+								Increases magic crit chance by {GoldOldOldHeadMagCritUp}
+								Increases mana efficiency by {GoldOldOldHeadManaEffUp}
+								{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+								'''
+							Long:
+								'''
+								[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases magic damage] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{GoldOldOldHeadMagDMGUpPercent} + {GoldOldOldHeadMagDMGUpFlat}].
+								[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases magic crit chance] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{GoldOldOldHeadMagCritUp}].
+								[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases mana efficiency] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{GoldOldOldHeadManaEffUp}].
+								Has no special effects when eaten.
+								'''
+							Flavor:
+								'''
+								An archaic style of golden helmet dating back to the origins of what would become Avarsici.
+								This resembles some of the first golden helmets ever forged for war. Casters at the time were of limited supply, due to not many people knowing magic as intricately as the common person does now, so they needed items which could very well protect their head while still allowing them to defend themselves with their appetites.
+								'''
+						}
+
+						Chest: {
+							Short:
+								'''
+								Increases magic projectile velocity {GoldDressMagDMGUp}
+								Increases mana efficiency by {GoldDressManaEffUp}
+								{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+								'''
+							Long:
+								'''
+								[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases magic damage] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{GoldDressMagDMGUp}].
+								[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases mana efficiency] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{GoldDressManaEffUp}].
+								Has no special effects when eaten.
+								'''
+							Flavor:
+								'''
+								A long chainmail-esque dress, shaped from gold and given rubies for accents.
+								Chain dresses are a common implement for military types, especially amongst fancier-feeling foot soldiers --- they provide equal parts fashion and utility, able to easily drape over a belly full of tasty enemy meat to defend it from attacks while it digests its quarry. Gold in particular is often found adorning the magically inclined due to the metal's mana-conductivity.
+								'''
+						}
+
+						Legs: {
+							Short:
+								'''
+								Increases mana efficiency by {GoldSabsManaEffUp}
+								Increases mana regen while moving by {GoldSabsMovingManaRateUp}
+								{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+								'''
+							Long:
+								'''
+								[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases mana efficiency] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{GoldSabsManaEffUp}].
+								[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases mana regen rate while moving] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{GoldSabsMovingManaRateUp}].
+								Has no special effects when eaten.
+								'''
+							Flavor:
+								'''
+								A pair of fanciful combat boots melded from gold and finished with rubies.
+								Boots like these greatly ease traveling over rocky terrain, and can easily score some points at the local infantry base looks contest, too. That said, they're usually not forged from gold --- such boots as these should only be on backline casters who can afford steadying themselves with only one or two enemies to a gut and need the extra ease of casting.
+								'''
+						}
+
+						SetBonus: {
+							Short:
+								'''
+								A small, hungry gilded prince floats next to you, conferring a desire for coins to your magic weapons
+								'For and having only the most refined of tastes'
+								'''
+							Long:
+								'''
+								Calls forth a [c/{$Mods.V2.BasicColorCodes.Gold}:miniature gold prince] to float next to you.
+								[c/{$Mods.V2.CommonColorCodes.DoSomething}:While active,] the [c/{$Mods.V2.BasicColorCodes.Gold}:prince] [c/{$Mods.V2.CommonColorCodes.PositiveEffect}:confers the following buffs] to your magic weapons:
+								[c/{$Mods.V2.BasicColorCodes.Gray}:> ][c/{$Mods.V2.CommonColorCodes.DoSomething}:+{GoldPrinceMidasChance} chance] [c/{$Mods.V2.BasicColorCodes.Gray}:to] [c/{$Mods.V2.CommonColorCodes.DealDamage}:inflict Midas] [c/{$Mods.V2.BasicColorCodes.Gray}:on hit.]
+								[c/{$Mods.V2.BasicColorCodes.Gray}:> ][c/{$Mods.V2.CommonColorCodes.DoSomething}:+{GoldPrinceMagDMGUp}] [c/{$Mods.V2.CommonColorCodes.DealDamage}:damage][c/{$Mods.V2.BasicColorCodes.Gray}:.]
+								[c/{$Mods.V2.CommonColorCodes.DoSomething}:The first hit you take] while the [c/{$Mods.V2.BasicColorCodes.Gold}:prince] is active [c/{$Mods.V2.BasicColorCodes.Orange}:wounds him], rendering him unable to provide his bonuses for {GoldPrinceRecoverTime} seconds while he recovers.
+								The [c/{$Mods.V2.BasicColorCodes.Gold}:prince] will [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:devour] the first enemy that attempts to deal contact damage to you, [c/{$Mods.V2.CommonColorCodes.PositiveEffect}:nullifying the hit].
+								[c/{$Mods.V2.BasicColorCodes.DarkGray}:> Swallow capacity: ][c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:{GoldPrinceSwallowCapacity}]
+								[c/{$Mods.V2.BasicColorCodes.DarkGray}:> Stomach capacity: ][c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:{GoldPrinceStomachCapacity}]
+								[c/{$Mods.V2.BasicColorCodes.DarkGray}:> Digestion tick damage: ][c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:{GoldPrinceDigestDamage}]
+								[c/{$Mods.V2.BasicColorCodes.DarkGray}:> Digestion tick rate: ][c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:{GoldPrinceDigestRate}/sec]
+								[c/{$Mods.V2.BasicColorCodes.DarkGray}:> Absorption rate: ][c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:{GoldPrinceAbsorbRate}/min]
+								[c/{$Mods.V2.CommonColorCodes.DoSomething}:While digesting an enemy,] the [c/{$Mods.V2.BasicColorCodes.Gold}:prince] will [c/{$Mods.V2.CommonColorCodes.PositiveEffect}:confers the following buffs to you] instead of his normal bonuses:
+								[c/{$Mods.V2.BasicColorCodes.Gray}:> ][c/{$Mods.V2.CommonColorCodes.DoSomething}:+{GoldPrinceDigestingRegen}/sec] [c/{$Mods.V2.CommonColorCodes.Heal}:health regeneration][c/{$Mods.V2.BasicColorCodes.Gray}:.]
+								[c/{$Mods.V2.BasicColorCodes.Gray}:> ][c/{$Mods.V2.CommonColorCodes.DoSomething}:+{GoldPrinceDigestingDefense}] [c/{$Mods.V2.CommonColorCodes.PositiveEffect}:defense][c/{$Mods.V2.BasicColorCodes.Gray}:.]
+								The [c/{$Mods.V2.BasicColorCodes.Gold}:prince] can be [c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:eaten] if enemies prioritize him.
+								[c/{$Mods.V2.BasicColorCodes.DarkGray}:> Size: ][c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:{GoldPrinceSize}]
+								[c/{$Mods.V2.BasicColorCodes.DarkGray}:> Health: ][c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:{GoldPrinceMaxHealth}]
+								If he is eaten and digested, he will provide no bonuses for 1 minute --- after this time has passed, he will reform at your side and confer his bonuses again.
+								If he is eaten and digested by you, he will instead provide the same bonuses as if he were digesting something until he reforms, and will not reform until fully digested.
+								'''
+						}
+					}
+
+					Jungle: {
+						Head: {
+							Short:
+								'''
+								Increases defense very slightly in daylight
+								{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+								'''
+							Long:
+								'''
+								[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases defense] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:1] when [c/{$Mods.V2.CommonColorCodes.DoSomething}:exposed to sunlight].
+								{$Mods.V2.ItemTooltip.Generic.LongTooltipHelpers.SunlightExposureRules}
+								Has no special effects when eaten.
+								'''
+							Flavor:
+								'''
+								A makeshift helmet fashioned from oak wood.
+								It has a very plain taste.
+								'''
+						}
+
+						Chest: {
+							Short:
+								'''
+								Increases defense very slightly in daylight
+								{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+								'''
+							Long:
+								'''
+								[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases defense] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:1] when [c/{$Mods.V2.CommonColorCodes.DoSomething}:exposed to sunlight].
+								{$Mods.V2.ItemTooltip.Generic.LongTooltipHelpers.SunlightExposureRules}
+								Has no special effects when eaten.
+								'''
+							Flavor:
+								'''
+								A makeshift chestplate fashioned from oak wood.
+								It has a very plain taste.
+								'''
+						}
+
+						Legs: {
+							Short:
+								'''
+								Increases defense very slightly in daylight
+								{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+								'''
+							Long:
+								'''
+								[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases defense] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:1] when [c/{$Mods.V2.CommonColorCodes.DoSomething}:exposed to sunlight].
+								{$Mods.V2.ItemTooltip.Generic.LongTooltipHelpers.SunlightExposureRules}
+								Has no special effects when eaten.
+								'''
+							Flavor:
+								'''
+								A makeshift pair of boots fashioned from oak wood.
+								They have a very plain taste.
+								'''
+						}
+
+						SetBonus: {
+							Short: Boosts natural health regeneration, moreso in daylight
+							Long: "[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases natural health regeneration] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:5%]; this is [c/{$Mods.V2.CommonColorCodes.PositiveEffect}:doubled] when [c/{$Mods.V2.CommonColorCodes.DoSomething}:exposed to sunlight]."
+						}
+					}
+
+					Bee: {
+						Head: {
+							Short:
+								'''
+								Increases defense very slightly in daylight
+								{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+								'''
+							Long:
+								'''
+								[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases defense] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:1] when [c/{$Mods.V2.CommonColorCodes.DoSomething}:exposed to sunlight].
+								{$Mods.V2.ItemTooltip.Generic.LongTooltipHelpers.SunlightExposureRules}
+								Has no special effects when eaten.
+								'''
+							Flavor:
+								'''
+								A makeshift helmet fashioned from oak wood.
+								It has a very plain taste.
+								'''
+						}
+
+						Chest: {
+							Short:
+								'''
+								Increases defense very slightly in daylight
+								{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+								'''
+							Long:
+								'''
+								[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases defense] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:1] when [c/{$Mods.V2.CommonColorCodes.DoSomething}:exposed to sunlight].
+								{$Mods.V2.ItemTooltip.Generic.LongTooltipHelpers.SunlightExposureRules}
+								Has no special effects when eaten.
+								'''
+							Flavor:
+								'''
+								A makeshift chestplate fashioned from oak wood.
+								It has a very plain taste.
+								'''
+						}
+
+						Legs: {
+							Short:
+								'''
+								Increases defense very slightly in daylight
+								{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+								'''
+							Long:
+								'''
+								[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases defense] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:1] when [c/{$Mods.V2.CommonColorCodes.DoSomething}:exposed to sunlight].
+								{$Mods.V2.ItemTooltip.Generic.LongTooltipHelpers.SunlightExposureRules}
+								Has no special effects when eaten.
+								'''
+							Flavor:
+								'''
+								A makeshift pair of boots fashioned from oak wood.
+								They have a very plain taste.
+								'''
+						}
+
+						SetBonus: {
+							Short: Boosts natural health regeneration, moreso in daylight
+							Long: "[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases natural health regeneration] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:5%]; this is [c/{$Mods.V2.CommonColorCodes.PositiveEffect}:doubled] when [c/{$Mods.V2.CommonColorCodes.DoSomething}:exposed to sunlight]."
+						}
+					}
 				}
 
 				Consumables: {
@@ -1899,7 +2230,7 @@ Mods: {
 							Flavor:
 								'''
 								The easiest type of cookie to bake. Uses no captivating ingredients whatsoever.
-								In old times, an extra ingredient added to these sorts of cookies would cause them to grow sentient, fleeing from their creators. Sveetian culture still allows these cookies a place of their own (with limitations), but elsewhere? They have nowhere to run with all the sweets-hungry predators around.
+								In old times, an extra ingredient added to these sorts of cookies would cause them to grow sentient, fleeing from their creators. Sveetian culture still cultivates this ingredient in controlled doses and allows these cookies a place of their own (with limitations), but elsewhere? They have nowhere to run with all the sweets-hungry predators around.
 								This one represents one of the simplest and least nuanced cookies to be baked with that peculiar ingredient.
 								'''
 						}
@@ -2715,7 +3046,7 @@ Mods: {
 								'''
 								[c/{$Mods.V2.CommonColorCodes.DoSomething}:Left-click] to shoot a flare, dealing [c/{$Mods.V2.CommonColorCodes.DealDamage}:{FlareGunDamageRatio} damage] to the first target it hits.
 								Some flares may have [c/{$Mods.V2.CommonColorCodes.DoSomething}:special properties]; examine these in the tooltips of your flares.
-								
+
 								Can only fire a flare if said flare is loaded into the barrel.
 								[c/{$Mods.V2.CommonColorCodes.DoSomething}:Right-click] to begin loading a flare into the barrel. This takes {FlareGunReloadTime} seconds.
 								Only one flare can be loaded into the barrel at a time.
@@ -3970,6 +4301,8 @@ Mods: {
 						}
 					}
 				}
+
+				Voraria.Armor.Familiars.GoldSetBonusPrince: Gilded Prince Aurifer
 			}
 
 			ShroomFairy.DisplayName: Fungal Fairy
@@ -3988,6 +4321,7 @@ Mods: {
 			Girthquake.DisplayName: Girthquake
 			FallingHitbox.DisplayName: Girth
 			SpoonProjectile.DisplayName: Spoon
+			GoldSetPrince.DisplayName: Gold Set Prince
 		}
 
 		InfoDisplayName.TallyCounterVore: Meal Count

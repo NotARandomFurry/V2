@@ -48,7 +48,7 @@ namespace V2.NPCs.Sets
 			if (predPlayer.AsPred().StomachTracker is null)
 				return;
 
-			List<int> distinctGemCritters = new List<int>(V2Utils.NPCIDSets.GemCritters);
+			List<int> distinctGemCritters = [.. V2Utils.NPCIDSets.GemCritters];
 			int distinctGemCrittersInTummy = 0;
 			if (predPlayer.AsPred().StomachTracker.PreyQueue?.Count <= 0)
 				goto checkMainPreyList;

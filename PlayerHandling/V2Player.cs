@@ -34,10 +34,14 @@ namespace V2.PlayerHandling
 		public bool ShroomNecklace { get; set; }
 		public bool BeeTransformation { get; set; }
 		public bool BaeTransformation { get; set; }
-		public int isAtCrushingSpeed { get; set; }
+		public int IsAtCrushingSpeed { get; set; }
 		public int CrushingDamage { get; set; }
 		public Vector2 GrappleLastSpeed { get; set; }
 		public SlotId LastSound { get; set; }
+
+		public float ManaRegenOverallMod { get; set; }
+		public float ManaRegenStillMod { get; set; }
+		public float ManaRegenMovingMod { get; set; }
 
 		public int lastWidth = 20;
 
@@ -47,6 +51,8 @@ namespace V2.PlayerHandling
 		{
 			ResetHealthRegenTime();
 			ResetHealthRegenEffectList();
+			ResetManaRegenTime();
+			ResetManaRegenEffectList();
 
 			GrappleLastSpeed = Vector2.Zero;
 
@@ -62,7 +68,7 @@ namespace V2.PlayerHandling
 			BeeTransformation = false;
 			BaeTransformation = false;
 
-			if (Player.name.ToLower() == "baelz" || Player.name.ToLower() == "hakosbaelz" || Player.name.ToLower() == "hakos baelz" || Player.name.ToLower() == "baelzhakos" || Player.name.ToLower() == "baelz hakos")
+			if (Player.name.ToLower() is "baelz" or "hakosbaelz" or "hakos baelz" or "baelzhakos" or "baelz hakos")
 			{
 				BaeTransformation = true;
 				Player.AddBuff(ModContent.BuffType<BaelzTransformation>(), V2Utils.SensibleTime(frames: 4));
@@ -78,20 +84,27 @@ namespace V2.PlayerHandling
 					Main.CloseNPCChatOrSign();
 			}
 			ResetHealthRegenEffectList();
+			ResetManaRegenEffectList();
 		}
 
 		public override void ModifyLuck(ref float luck)
 		{
-			if (Player.armor[0].type == ModContent.ItemType<CloverHeadAccessories>()) luck += 0.3f;
-			if (Player.armor[1].type == ModContent.ItemType<CloverSweater>()) luck += 0.1f;
-			if (Player.armor[2].type == ModContent.ItemType<CloverStockings>()) luck += 0.1f;
+			if (Player.armor[0].type == ModContent.ItemType<CloverHeadAccessories>())
+				luck += 0.3f;
+			if (Player.armor[1].type == ModContent.ItemType<CloverSweater>())
+				luck += 0.1f;
+			if (Player.armor[2].type == ModContent.ItemType<CloverStockings>())
+				luck += 0.1f;
 		}
 
 		public override void UpdateDead()
 		{
 			ResetHealthRegenTime();
 			ResetHealthRegenEffectList();
+			ResetManaRegenTime();
+			ResetManaRegenEffectList();
 		}
+
 		public override void Kill(double damage, int hitDirection, bool pvp, PlayerDeathReason damageSource)
 		{
 			if (Player.AsV2Player().BaeTransformation)
@@ -108,6 +121,7 @@ namespace V2.PlayerHandling
 				);
 			}
 		}
+
 		public override void ModifyHurt(ref Player.HurtModifiers modifiers)
 		{
 			if (Player.HasBuff<Trance>())
@@ -125,7 +139,7 @@ namespace V2.PlayerHandling
 
 		public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo)
 		{
-			if (Player.AsV2Player().isAtCrushingSpeed > 0)
+			if (Player.AsV2Player().IsAtCrushingSpeed > 0)
 			{
 				hurtInfo.Cancelled = true;
 				return;
@@ -137,18 +151,7 @@ namespace V2.PlayerHandling
 		{
 			ResetHealthRegenTime();
 		}
-		/*public bool SurfaceBelow()
-		{
-			List<Point> tiles = Collision.GetTilesIn(Player.Hitbox.BottomLeft() - new Vector2(2, -2), Player.Hitbox.BottomRight() + new Vector2(2, 10));
-			foreach (var point in tiles)
-			{
-				Tile tile = Framing.GetTileSafely(point);
-				if (tile.HasTile)
-				{
-					if (Main.tileSolid)
-				}
-			}
-		}*/
+
 		public override void UpdateVisibleAccessories()
 		{
 			bool OnSelectScreen = Main.gameMenu;
@@ -163,11 +166,12 @@ namespace V2.PlayerHandling
 				}
 			}
 		}
-		public int FallingForce(Player player)
+		public static int FallingForce(Player player)
 		{
 			return (int)Math.Ceiling(player.velocity.Y * PreyData.GetPreySize(player) / 2);
 		}
-		public bool CheckForSolidGround(Player player)
+
+		public static bool CheckForSolidGround(Player player)
 		{
 			List<Point> tiles = Collision.GetTilesIn(player.Hitbox.BottomLeft() - new Vector2(-2, -2), player.Hitbox.BottomRight() + new Vector2(2, 10));
 			bool HasSolidTile = false;
@@ -184,6 +188,7 @@ namespace V2.PlayerHandling
 			}
 			return HasSolidTile;
 		}
+
 		public override void PostUpdateEquips()
 		{
 			if (Player.AsV2Player().BeeTransformation == true) Player.width = 12;
@@ -224,19 +229,19 @@ namespace V2.PlayerHandling
 			lastWidth = Player.width;
 			if (Main.myPlayer == Player.whoAmI)
 			{
-				Player.AsV2Player().isAtCrushingSpeed = Math.Max(Player.AsV2Player().isAtCrushingSpeed - 1, 0);
+				Player.AsV2Player().IsAtCrushingSpeed = Math.Max(Player.AsV2Player().IsAtCrushingSpeed - 1, 0);
 				if (FallingForce(Player) > 30)
 				{
-					Player.AsV2Player().isAtCrushingSpeed = 3;
+					Player.AsV2Player().IsAtCrushingSpeed = 3;
 					Player.AsV2Player().CrushingDamage = FallingForce(Player);
 					Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center + Player.velocity, Vector2.Zero, ModContent.ProjectileType<FallingHitbox>(), Player.AsV2Player().CrushingDamage, (int)Math.Ceiling(Math.Sqrt(Player.AsV2Player().CrushingDamage)), Main.myPlayer, Player.width, Player.height);
 				}
-				if (!Player.IsAirborne() && CheckForSolidGround(Player) && Player.AsV2Player().isAtCrushingSpeed > 0)
+				if (!Player.IsAirborne() && CheckForSolidGround(Player) && Player.AsV2Player().IsAtCrushingSpeed > 0)
 				{
-					Player.AsV2Player().isAtCrushingSpeed = 0;
+					Player.AsV2Player().IsAtCrushingSpeed = 0;
 					Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Vector2.Zero, ModContent.ProjectileType<Girthquake>(), Player.AsV2Player().CrushingDamage, (int)Math.Ceiling(Math.Sqrt(Player.AsV2Player().CrushingDamage)), Main.myPlayer, 0, 5f + (Player.AsV2Player().CrushingDamage / 10f));
 				}
-				if (Player.AsV2Player().isAtCrushingSpeed == 0)
+				if (Player.AsV2Player().IsAtCrushingSpeed == 0)
 				{
 					Player.AsV2Player().CrushingDamage = 0;
 				}
@@ -341,6 +346,7 @@ namespace V2.PlayerHandling
 			LocationsVisited.TryAdd(place, false);
 			return false;
 		}
+
 		public override void SaveData(TagCompound tag)
 		{
 			if (LocationsVisited?.Count > 0)
