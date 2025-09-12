@@ -346,16 +346,8 @@ namespace V2.PlayerHandling
 
 		public SlotId BellySlosh { get; set; }
 
-		public bool charmBracelet;
-		public int CharmBraceletSlots
-		{
-			get
-			{
-				return 1;
-			}
-		}
+		public int PreyStealLootLevel { get; set; }
 
-		// Charms.
 		/// <summary>
 		/// Denotes whether or not this player has the Indigestion Charm equipped.<br/>
 		/// Defaults to <see langword="false"/> at the start of each tick. Set to <see langword="true"/> if the player has the Indigestion Charm equipped.<br/>
@@ -363,8 +355,6 @@ namespace V2.PlayerHandling
 		public bool charmNoDigest;
 		public bool charmNoAirDrain;
 		public bool charmStealPreyLoot;
-
-		public Dictionary<string, bool> PermanentUpgradesGained { get; set; }
 
 		public bool EndoToggleUnlocked { get; set; }
 		private bool endoToggle;
@@ -377,8 +367,10 @@ namespace V2.PlayerHandling
 					return;
 
 				endoToggle = value;
-			}		 
+			}
 		}
+
+		public Dictionary<string, bool> PermanentUpgradesGained { get; set; }
 
 		public string lastEntitySwallowed;
 		public string lastEntitySwallowedMod;
@@ -1294,12 +1286,16 @@ namespace V2.PlayerHandling
 			switch (food.Type)
 			{
 				case PreyType.Player:
+					AddNewPrey(pred, food);
+
 					Player player = prey as Player;
 					player.AsFood().TotalTimesSwallowed += 1;
 					pred.AsPred().lastEntitySwallowed = "Player";
 					pred.AsPred().lastEntitySwallowedMod = "Terraria";
 					break;
 				case PreyType.NPC:
+					AddNewPrey(pred, food);
+						
 					NPC npc = prey as NPC;
 					npc.AsFood().OnSwallowedBy?.Invoke(npc, pred);
 
@@ -1328,10 +1324,12 @@ namespace V2.PlayerHandling
 					if (projectile.AsFood().MaxHealth == -1)
 					{
 						food = PreyData.NewData(PreyType.Projectile, projectile.type, projectile.Name, PreyData.GetPreySize(projectile));
+						AddNewPrey(pred, food);
 						projectile.active = false;
 					}
 					else
 					{
+						AddNewPrey(pred, food);
 						projectile.AsFood().OnSwallowedBy?.Invoke(projectile, pred);
 
 						pred.AsPred().lastEntitySwallowed = projectile.Name;
@@ -1339,6 +1337,7 @@ namespace V2.PlayerHandling
 					}
 					break;
 				case PreyType.Item:
+					AddNewPrey(pred, food);
 					Item item = prey as Item;
 					pred.AsPred().lastEntitySwallowed = item.Name;
 					pred.AsPred().lastEntitySwallowedMod = item.ModItem != null ? item.ModItem.Mod.DisplayName : "Terraria";
@@ -1347,7 +1346,7 @@ namespace V2.PlayerHandling
 					if (item.AsFood().OnSwallowDamage > 0 && item.AsFood().OnSwallowDeathReason is not null)
 					{
 						pred.Hurt(
-							damageSource: PlayerDeathReason.ByCustomReason(item.AsFood().OnSwallowDeathReason),
+							damageSource: PlayerDeathReason.ByCustomReason(NetworkText.FromLiteral(item.AsFood().OnSwallowDeathReason)),
 							Damage: item.AsFood().OnSwallowDamage,
 							hitDirection: 0,
 							dodgeable: false,
@@ -1358,7 +1357,6 @@ namespace V2.PlayerHandling
 						pred.AddBuff(ModContent.BuffType<SoreThroat>(), item.AsFood().OnSwallowSoreThroatTime);
 					break;
 			}
-			AddNewPrey(pred, food);
 
 			if (MPstate == 1)
 			{
@@ -1672,7 +1670,7 @@ namespace V2.PlayerHandling
 								if (prey.Instance is null)
 									break;
 								Player preyPlayer = prey.Instance as Player;
-								bool shouldDigestPlayer = !pred.AsPred().SafeStomach;
+								bool shouldDigestPlayer = !pred.AsPred().charmNoDigest;
 								if (shouldDigestPlayer)
 								{
 									hasDoneDigestionTick = true;
@@ -1692,7 +1690,7 @@ namespace V2.PlayerHandling
 								if (prey.Instance is null)
 									break;
 								NPC preyNPC = prey.Instance as NPC;
-								bool shouldDigestNPC = !pred.AsPred().SafeStomach;
+								bool shouldDigestNPC = !pred.AsPred().charmNoDigest;
 								if (shouldDigestNPC)
 								{
 									hasDoneDigestionTick = true;
@@ -1716,7 +1714,7 @@ namespace V2.PlayerHandling
 								if (prey.Instance is null)
 									break;
 								Projectile preyProjectile = prey.Instance as Projectile;
-								bool shouldDigestProjectile = true;
+								bool shouldDigestProjectile = !pred.AsPred().charmNoDigest;
 								if (shouldDigestProjectile)
 								{
 									hasDoneDigestionTick = true;

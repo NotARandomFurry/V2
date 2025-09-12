@@ -30,7 +30,7 @@ namespace V2.Items.ItemGroupUtils
 			if (pred is Player predPlayer)
 			{
 				ModContent.GetInstance<EatLargeGem>().TrySetCompletion(predPlayer);
-				List<int> distinctLargeGems = new List<int>(V2Utils.ItemIDSets.LargeGems);
+				List<int> distinctLargeGems = [.. V2Utils.ItemIDSets.LargeGems];
 				int distinctLargeGemsInTummy = 1;
 				distinctLargeGems.Remove(item.type);
 				foreach (PreyData prey in predPlayer.AsPred().StomachTracker.Prey)
