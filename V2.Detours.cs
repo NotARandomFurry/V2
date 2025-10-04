@@ -10,11 +10,11 @@ using V2.Core;
 using V2.Core.MainDetours;
 using V2.Core.WorldGeneration;
 using V2.Items;
-using V2.Items.Voraria.Accessories.Transformations.Baelz;
 using V2.NPCs;
 using V2.NPCs.Vanilla.TownNPCs.TravellingMerchant;
 using V2.PlayerHandling;
 using V2.Projectiles;
+using V2.StatusEffects.Voraria.Debuffs;
 using V2.UI.PredStatsMenu;
 
 namespace V2
@@ -67,6 +67,15 @@ namespace V2
 			{
 				GeneralNPC npcAsV2NPC = npc.AsV2NPC(risky: true);
 				PreyNPC npcAsPrey = npc.AsFood(risky: true);
+				if (npc.HasBuff<TimeStun>() || (npc.realLife > -1 && Main.npc[npc.realLife].active && Main.npc[npc.realLife].HasBuff<TimeStun>()))
+				{
+					npc.frameCounter = 0;
+					if (npc.AsV2NPC().VelocityBeforeTimeStun == null)
+                        npc.AsV2NPC().VelocityBeforeTimeStun = npc.velocity;
+                    npc.velocity = Vector2.Zero;
+					npc.GravityMultiplier *= 0;
+                    return;
+                }
 				if (npcAsV2NPC is null || npcAsPrey is null)
 					orig(npc);
 				else

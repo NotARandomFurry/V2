@@ -12,6 +12,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using V2.Core.StruggleSystem;
 using V2.Items;
+using V2.Items.Voraria.TransformationItems.Baelz;
 using V2.NPCs;
 using V2.PlayerHandling;
 using V2.Projectiles;
@@ -446,7 +447,8 @@ namespace V2.Core
 		public string Name { get; set; }
 		public bool NoHealth { get; set; }
 		public bool InventoryItem { get; set; }
-		public double InitialWeight { get; set; }
+        public bool CannotBeRegurgitated { get; set; }
+        public double InitialWeight { get; set; }
 		public double InitialSize { get; set; }
 		public double WeightLeftToDigest { get; set; }
 		public double CalorieMultiplier { get; set; }
@@ -472,7 +474,7 @@ namespace V2.Core
 		/// <param name="exactType"></param>
 		/// <param name="weightRemainingIfDead"></param>
 		/// <returns></returns>
-		public static PreyData NewData(PreyType type, int exactType, string name, double weightRemainingIfDead = -1, double calmul = 1.0, double fedadd = 0.0)
+		public static PreyData NewData(PreyType type, int exactType, string name, double weightRemainingIfDead = -1, double calmul = 1.0, double fedadd = 0.0, bool cantRegurg = false)
 		{
 			PreyData data = new PreyData();
 			data.Type = type;
@@ -480,6 +482,7 @@ namespace V2.Core
 			data.Name = name;
 			data.CalorieMultiplier = calmul;
 			data.WellFedPower = fedadd;
+			data.CannotBeRegurgitated = cantRegurg;
 			if (weightRemainingIfDead != -1)
 			{
 				data.WeightLeftToDigest = weightRemainingIfDead;
@@ -541,10 +544,10 @@ namespace V2.Core
 			};
 			data.CalorieMultiplier = liquidType switch
 			{
-				LiquidID.Water => 0.1,
+				LiquidID.Water => 0.01,
 				LiquidID.Lava => 3,
 				LiquidID.Honey => 1.5,
-				LiquidID.Shimmer => -1.5,
+				LiquidID.Shimmer => -3,
 				_ => 0.1,
 			};
 			data.WellFedPower = liquidType switch
@@ -588,7 +591,8 @@ namespace V2.Core
 					exactType: preyNPC.type,
 					name: preyNPC.GivenOrTypeName,
 					calmul: preyNPC.AsFood().CalorieMultiplier,
-					fedadd: preyNPC.AsFood().WellFedPower
+					fedadd: preyNPC.AsFood().WellFedPower,
+					cantRegurg: preyNPC.AsFood().CannotBeRegurgitated
 				);
 				data.Instance = preyNPC;
 				if (tracker is not null)
@@ -604,7 +608,10 @@ namespace V2.Core
 					name: preyProjectile.Name,
 					calmul: preyProjectile.AsFood().CalorieMultiplier,
 					fedadd: preyProjectile.AsFood().WellFedPower
-				);
+					calmul: preyProjectile.AsFood().CalorieMultiplier,
+					fedadd: preyProjectile.AsFood().WellFedPower,
+                    cantRegurg: preyProjectile.AsFood().CannotBeRegurgitated
+                );
 				data.Instance = preyProjectile;
 				if (tracker is not null)
 					data.ConnectedTracker = tracker;
@@ -618,8 +625,9 @@ namespace V2.Core
 					exactType: preyItem.type,
 					name: preyItem.AffixName(),
 					calmul: preyItem.AsFood().CalorieMultiplier,
-					fedadd: preyItem.AsFood().WellFedPower
-				);
+					fedadd: preyItem.AsFood().WellFedPower,
+                    cantRegurg: preyItem.AsFood().CannotBeRegurgitated
+                );
 				data.Instance = preyItem;
 				if (tracker is not null)
 					data.ConnectedTracker = tracker;
@@ -659,8 +667,15 @@ namespace V2.Core
 						break;
 
 					ExactType = 0;
-					double playerToPlayerWidthRatio = (double)preyPlayer.width / refPlayerWidth;
-					double playerToPlayerHeightRatio = (double)preyPlayer.height / refPlayerHeight;
+                    double playerToPlayerWidthRatio = (double)preyPlayer.width / refPlayerWidth;
+                    double playerToPlayerHeightRatio = (double)preyPlayer.height / refPlayerHeight;
+                    if (preyPlayer.AsV2Player().HasTransformation)
+					{
+						playerToPlayerWidthRatio = 1;
+                        playerToPlayerHeightRatio = 1;
+						if (preyPlayer.AsV2Player().BaeTransformation)
+							playerToPlayerWidthRatio = BaelzInfo.BaseWeight;
+                    }
 					InitialWeight = InitialSize = WeightLeftToDigest = playerToPlayerWidthRatio * playerToPlayerHeightRatio;
 					if (ConnectedTracker is not null)
 					{
@@ -748,103 +763,109 @@ namespace V2.Core
 			);
 		}
 
-		public PreyData(int liquidType, int liquidAmount)
-		{
-			double liquidAmountReal = liquidAmount / 256.0 * (liquidType switch
-			{
-				LiquidID.Lava => 4.0,
-				LiquidID.Honey => 1.5,
-				LiquidID.Shimmer => 0.75,
-				_ => 1.0,
-			});
-			Type = PreyType.Liquid;
-			Instance = null;
-			NoHealth = true;
-			ExactType = liquidType;
-			Name = liquidType switch
-			{
-				LiquidID.Water => "Water",
-				LiquidID.Lava => "Lava",
-				LiquidID.Honey => "Honey",
-				LiquidID.Shimmer => "Shimmer",
-				_ => "Some Other Liquid",
-			};
-			CalorieMultiplier = liquidType switch
-			{
-				LiquidID.Water => 0.1,
-				LiquidID.Lava => 3,
-				LiquidID.Honey => 1.5,
-				LiquidID.Shimmer => -1.5,
-				_ => 0.1,
-			};
-			WellFedPower = liquidType switch
-			{
-				LiquidID.Water => 0,
-				LiquidID.Lava => 0.1,
-				LiquidID.Honey => 0.3,
-				LiquidID.Shimmer => -3,
-				_ => 0,
-			};
-			InitialWeight = InitialSize = WeightLeftToDigest = liquidAmountReal;
-		}
+        public PreyData(int liquidType, int liquidAmount)
+        {
+            double liquidAmountReal = liquidAmount / 256.0 * (liquidType switch
+            {
+                LiquidID.Lava => 4.0,
+                LiquidID.Honey => 1.5,
+                LiquidID.Shimmer => 0.75,
+                _ => 1.0,
+            });
+            Type = PreyType.Liquid;
+            Instance = null;
+            NoHealth = true;
+            ExactType = liquidType;
+            Name = liquidType switch
+            {
+                LiquidID.Water => "Water",
+                LiquidID.Lava => "Lava",
+                LiquidID.Honey => "Honey",
+                LiquidID.Shimmer => "Shimmer",
+                _ => "Some Other Liquid",
+            };
+            CalorieMultiplier = liquidType switch
+            {
+                LiquidID.Water => 0.01,
+                LiquidID.Lava => 3,
+                LiquidID.Honey => 1.5,
+                LiquidID.Shimmer => -3,
+                _ => 0.1,
+            };
+            WellFedPower = liquidType switch
+            {
+                LiquidID.Water => 0,
+                LiquidID.Lava => 0.1,
+                LiquidID.Honey => 0.3,
+                LiquidID.Shimmer => -3,
+                _ => 0,
+            };
+            InitialWeight = InitialSize = WeightLeftToDigest = liquidAmountReal;
+        }
 
-		public PreyData(int liquidType, double liquidAmount)
-		{
-			Type = PreyType.Liquid;
-			Instance = null;
-			NoHealth = true;
-			ExactType = liquidType;
-			Name = liquidType switch
-			{
-				LiquidID.Water => "Water",
-				LiquidID.Lava => "Lava",
-				LiquidID.Honey => "Honey",
-				LiquidID.Shimmer => "Shimmer",
-				_ => "Some Other Liquid",
-			};
-			CalorieMultiplier = liquidType switch
-			{
-				LiquidID.Water => 0.1,
-				LiquidID.Lava => 3,
-				LiquidID.Honey => 1.5,
-				LiquidID.Shimmer => -1,
-				_ => 0.1,
-			};
-			WellFedPower = liquidType switch
-			{
-				LiquidID.Water => 0,
-				LiquidID.Lava => 0.1,
-				LiquidID.Honey => 0.3,
-				LiquidID.Shimmer => -3,
-				_ => 0,
-			};
-			InitialWeight = InitialSize = WeightLeftToDigest = liquidAmount;
-		}
+        public PreyData(int liquidType, double liquidAmount)
+        {
+            Type = PreyType.Liquid;
+            Instance = null;
+            NoHealth = true;
+            ExactType = liquidType;
+            Name = liquidType switch
+            {
+                LiquidID.Water => "Water",
+                LiquidID.Lava => "Lava",
+                LiquidID.Honey => "Honey",
+                LiquidID.Shimmer => "Shimmer",
+                _ => "Some Other Liquid",
+            };
+            CalorieMultiplier = liquidType switch
+            {
+                LiquidID.Water => 0.01,
+                LiquidID.Lava => 3,
+                LiquidID.Honey => 1.5,
+                LiquidID.Shimmer => -3,
+                _ => 0.1,
+            };
+            WellFedPower = liquidType switch
+            {
+                LiquidID.Water => 0,
+                LiquidID.Lava => 0.1,
+                LiquidID.Honey => 0.3,
+                LiquidID.Shimmer => -3,
+                _ => 0,
+            };
+            InitialWeight = InitialSize = WeightLeftToDigest = liquidAmount;
+        }
 
-		/// <summary>
-		/// Allows you to check what the size of something as a snack would be by creating a new dummy <see cref="PreyData"/> for a few moments.<br/>
-		/// Accounts for anything that might be in the given snack's belly.<br/>
-		/// </summary>
-		/// <param name="preyEntity">The snack-size entity to check the size of.</param>
-		/// <returns>The size of the given soon-to-be stomach fodder.</returns>
-		public static double GetPreySize(Entity preyEntity)
-		{
-			double initialSize = NewData(preyEntity).InitialSize;
-			if (preyEntity is Player preyPlayer)
-			{
-				double actualSize = preyPlayer.AsPred().StomachFullness;
-				if (preyPlayer.AsV2Player().BaeTransformation)
-				{
-					actualSize += preyPlayer.AsPred().BaeTransformation_ExtraWeight;
-				}
-				return initialSize + actualSize;
-			}
-			if (preyEntity is NPC preyNPC)
-				return initialSize + preyNPC.AsPred().ExtraWeight + PredNPC.GetCurrentBellyWeight(preyNPC);
-			if (preyEntity is Projectile preyProjectile)
-				return initialSize + preyProjectile.AsPred().ExtraWeight + PredProjectile.GetCurrentBellyWeight(preyProjectile);
+        /// <summary>
+        /// Allows you to check what the size of something as a snack would be by creating a new dummy <see cref="PreyData"/> for a few moments.<br/>
+        /// Accounts for anything that might be in the given snack's belly.<br/>
+        /// </summary>
+        /// <param name="preyEntity">The snack-size entity to check the size of.</param>
+        /// <returns>The size of the given soon-to-be stomach fodder.</returns>
+        public static double GetPreySize(Entity preyEntity)
+        {
+            double initialSize = NewData(preyEntity).InitialSize;
+            if (preyEntity is Player preyPlayer)
+            {
+                double actualSize = preyPlayer.AsPred().StomachFullness;
+                if (preyPlayer.AsV2Player().BaeTransformation)
+                    actualSize += preyPlayer.AsPred().BaeTransformation_ExtraWeight;
+                else if (preyPlayer.AsV2Player().KroniiTransformation)
+                    actualSize += preyPlayer.AsPred().KroniiTransformation_ExtraWeight;
+                else if (preyPlayer.AsV2Player().OllieTransformation)
+                    actualSize += preyPlayer.AsPred().OllieTransformation_ExtraWeight;
+                else if (preyPlayer.AsV2Player().SoraTransformation)
+                    actualSize += preyPlayer.AsPred().SoraTransformation_ExtraWeight;
+                else if (preyPlayer.AsV2Player().MintTransformation)
+                    actualSize += preyPlayer.AsPred().MintTransformation_ExtraWeight;
+                return initialSize + actualSize;
+            }
+            if (preyEntity is NPC preyNPC)
+                return initialSize + preyNPC.AsPred().ExtraWeight + PredNPC.GetCurrentBellyWeight(preyNPC);
+            if (preyEntity is Projectile preyProjectile)
+                return initialSize + preyProjectile.AsPred().ExtraWeight + PredProjectile.GetCurrentBellyWeight(preyProjectile);
 
-			return initialSize;
-		}
+            return initialSize;
+        }
 	}
 }

@@ -2427,122 +2427,136 @@ namespace V2.PlayerHandling
 			}
 		}
 
-		private static void GetGrapplingForces(Player self, Vector2 fromPosition, out int? preferredPlayerDirectionToSet, out float preferedPlayerVelocityX, out float preferedPlayerVelocityY)
-		{
+        private static void GetGrapplingForces(Player self, Vector2 fromPosition, out int? preferredPlayerDirectionToSet, out float preferedPlayerVelocityX, out float preferedPlayerVelocityY)
+        {
 			bool noGravity = false;
-			float num = 0f;
-			float num2 = 0f;
-			preferredPlayerDirectionToSet = null;
-			int num3 = 0;
-			for (int i = 0; i < self.grapCount; i++)
-			{
-				Projectile projectile = Main.projectile[self.grappling[i]];
-				if (projectile.ai[0] == 2f && !projectile.position.HasNaNs())
-				{
-					int type = projectile.type;
-					bool flag = projectile.ModProjectile != null && projectile.ModProjectile.AIType > 0;
-					if (flag)
-					{
-						projectile.type = projectile.ModProjectile.AIType;
-					}
-					num += projectile.position.X + (float)(projectile.width / 2);
-					num2 += projectile.position.Y + (float)(projectile.height / 2);
-					num3++;
-					if (projectile.type == 446)
-					{
-						Vector2 vector;
-						vector = new((float)(self.controlRight.ToInt() - self.controlLeft.ToInt()), (float)(self.controlDown.ToInt() - self.controlUp.ToInt()) * self.gravDir);
-						if (vector != Vector2.Zero)
-						{
-							vector.Normalize();
-						}
-						vector *= 100f;
-						Vector2 vec = Vector2.Normalize(self.Center - projectile.Center + vector);
-						if (vec.HasNaNs())
-						{
-							vec = -Vector2.UnitY;
-						}
-						float num4 = 200f;
-						num += vec.X * num4;
-						num2 += vec.Y * num4;
-						noGravity = true;
-					}
-					else if (projectile.type == 652)
-					{
-						Vector2 vector2 = new Vector2((float)(self.controlRight.ToInt() - self.controlLeft.ToInt()), (float)(self.controlDown.ToInt() - self.controlUp.ToInt()) * self.gravDir).SafeNormalize(Vector2.Zero);
-						Vector2 vector3 = projectile.Center - self.Center;
-						Vector2 vector4 = vector3.SafeNormalize(Vector2.Zero);
-						Vector2 value = Vector2.Zero;
-						if (vector2 != Vector2.Zero)
-						{
-							value = vector4 * Vector2.Dot(vector4, vector2);
-						}
-						float num5 = 6f;
-						if (Vector2.Dot(value, vector3) < 0f && vector3.Length() >= 600f)
-						{
-							num5 = 0f;
-						}
-						num += 0f - vector3.X + value.X * num5;
-						num2 += 0f - vector3.Y + value.Y * num5;
-						noGravity = true;
-					}
-					else if (projectile.type == 865)
-					{
-						Vector2 vector5 = (projectile.rotation - 1.5707964f).ToRotationVector2().SafeNormalize(Vector2.UnitY);
-						Vector2 vector6 = -vector5 * 28f;
-						num += vector6.X;
-						num2 += vector6.Y;
-						if (vector5.X != 0f)
-						{
-							preferredPlayerDirectionToSet = new int?(Math.Sign(vector5.X));
-						}
-					}
-					if (flag)
-					{
-						projectile.type = type;
-					}
-					ProjectileLoader.GrappleTargetPoint(projectile, self, ref num, ref num2);
-				}
-			}
-			if (num3 == 0)
-			{
-				preferedPlayerVelocityX = self.velocity.X;
-				preferedPlayerVelocityY = self.velocity.Y;
-				return;
-			}
-			float num6 = num / (float)num3;
-			float num7 = num2 / (float)num3;
-			preferedPlayerVelocityX = num6 - fromPosition.X;
-			preferedPlayerVelocityY = num7 - fromPosition.Y;
-			float num8 = (float)Math.Sqrt((double)(preferedPlayerVelocityX * preferedPlayerVelocityX + preferedPlayerVelocityY * preferedPlayerVelocityY));
-			float num9 = 11f;
-			if (Main.projectile[self.grappling[0]].type == 315)
-			{
-				num9 = 14f;
-			}
-			if (Main.projectile[self.grappling[0]].type == 487)
-			{
-				num9 = 12f;
-			}
-			if (Main.projectile[self.grappling[0]].type >= 646 && Main.projectile[self.grappling[0]].type <= 649)
-			{
-				num9 = 16f;
-			}
-			ProjectileLoader.GrapplePullSpeed(Main.projectile[self.grappling[0]], self, ref num9);
-			float num10 = (num8 <= num9) ? 1f : (num9 / num8);
-			preferedPlayerVelocityX *= num10;
-			preferedPlayerVelocityY *= num10;
+            float num = 0f;
+            float num2 = 0f;
+            preferredPlayerDirectionToSet = null;
+            int num3 = 0;
+            for (int i = 0; i < self.grapCount; i++)
+            {
+                Projectile projectile = Main.projectile[self.grappling[i]];
+                if (projectile.ai[0] == 2f && !projectile.position.HasNaNs())
+                {
+                    int type = projectile.type;
+                    bool flag = projectile.ModProjectile != null && projectile.ModProjectile.AIType > 0;
+                    if (flag)
+                    {
+                        projectile.type = projectile.ModProjectile.AIType;
+                    }
+                    num += projectile.position.X + (float)(projectile.width / 2);
+                    num2 += projectile.position.Y + (float)(projectile.height / 2);
+                    num3++;
+                    if (projectile.type == 446)
+                    {
+                        Vector2 vector;
+                        vector = new((float)(self.controlRight.ToInt() - self.controlLeft.ToInt()), (float)(self.controlDown.ToInt() - self.controlUp.ToInt()) * self.gravDir);
+                        if (vector != Vector2.Zero)
+                        {
+                            vector.Normalize();
+                        }
+                        vector *= 100f;
+                        Vector2 vec = Vector2.Normalize(self.Center - projectile.Center + vector);
+                        if (vec.HasNaNs())
+                        {
+                            vec = -Vector2.UnitY;
+                        }
+                        float num4 = 200f;
+                        num += vec.X * num4;
+                        num2 += vec.Y * num4;
+                        noGravity = true;
+                    }
+                    else if (projectile.type == 652)
+                    {
+                        Vector2 vector2 = new Vector2((float)(self.controlRight.ToInt() - self.controlLeft.ToInt()), (float)(self.controlDown.ToInt() - self.controlUp.ToInt()) * self.gravDir).SafeNormalize(Vector2.Zero);
+                        Vector2 vector3 = projectile.Center - self.Center;
+                        Vector2 vector4 = vector3.SafeNormalize(Vector2.Zero);
+                        Vector2 value = Vector2.Zero;
+                        if (vector2 != Vector2.Zero)
+                        {
+                            value = vector4 * Vector2.Dot(vector4, vector2);
+                        }
+                        float num5 = 6f;
+                        if (Vector2.Dot(value, vector3) < 0f && vector3.Length() >= 600f)
+                        {
+                            num5 = 0f;
+                        }
+                        num += 0f - vector3.X + value.X * num5;
+                        num2 += 0f - vector3.Y + value.Y * num5;
+                        noGravity = true;
+                    }
+                    else if (projectile.type == 865)
+                    {
+                        Vector2 vector5 = (projectile.rotation - 1.5707964f).ToRotationVector2().SafeNormalize(Vector2.UnitY);
+                        Vector2 vector6 = -vector5 * 28f;
+                        num += vector6.X;
+                        num2 += vector6.Y;
+                        if (vector5.X != 0f)
+                        {
+                            preferredPlayerDirectionToSet = new int?(Math.Sign(vector5.X));
+                        }
+                    }
+                    if (flag)
+                    {
+                        projectile.type = type;
+                    }
+                    ProjectileLoader.GrappleTargetPoint(projectile, self, ref num, ref num2);
+                }
+            }
+            if (num3 == 0)
+            {
+                preferedPlayerVelocityX = self.velocity.X;
+                preferedPlayerVelocityY = self.velocity.Y;
+                return;
+            }
+            float num6 = num / (float)num3;
+            float num7 = num2 / (float)num3;
+            preferedPlayerVelocityX = num6 - fromPosition.X;
+            preferedPlayerVelocityY = num7 - fromPosition.Y;
+            float num8 = (float)Math.Sqrt((double)(preferedPlayerVelocityX * preferedPlayerVelocityX + preferedPlayerVelocityY * preferedPlayerVelocityY));
+            float num9 = 11f;
+            if (Main.projectile[self.grappling[0]].type == 315)
+            {
+                num9 = 14f;
+            }
+            if (Main.projectile[self.grappling[0]].type == 487)
+            {
+                num9 = 12f;
+            }
+            if (Main.projectile[self.grappling[0]].type >= 646 && Main.projectile[self.grappling[0]].type <= 649)
+            {
+                num9 = 16f;
+            }
+            ProjectileLoader.GrapplePullSpeed(Main.projectile[self.grappling[0]], self, ref num9);
+            float num10 = (num8 <= num9) ? 1f : (num9 / num8);
+            preferedPlayerVelocityX *= num10;
+            preferedPlayerVelocityY *= num10;
 
 			//got all that? okay, now forget it.
 
 			if (!noGravity)
 			{
+<<<<<<< Updated upstream
+                double PlayerWeight = self.AsPred().StomachWeight + 1.0;
+                if (self.AsV2Player().BaeTransformation)
+                {
+                    PlayerWeight += self.AsPred().BaeTransformation_ExtraWeight;
+                }
+=======
 				double PlayerWeight = self.AsPred().StomachWeight + 1.0;
 				if (self.AsV2Player().BaeTransformation)
-				{
 					PlayerWeight += self.AsPred().BaeTransformation_ExtraWeight;
-				}
-				float additionalWeight = ((float)Math.Max(0, PlayerWeight - 1) / 4f);
+                else if (self.AsV2Player().KroniiTransformation)
+                    PlayerWeight += self.AsPred().KroniiTransformation_ExtraWeight;
+                else if (self.AsV2Player().OllieTransformation)
+                    PlayerWeight += self.AsPred().OllieTransformation_ExtraWeight;
+                else if (self.AsV2Player().SoraTransformation)
+                    PlayerWeight += self.AsPred().SoraTransformation_ExtraWeight;
+                else if (self.AsV2Player().MintTransformation)
+                    PlayerWeight += self.AsPred().MintTransformation_ExtraWeight;
+>>>>>>> Stashed changes
+                float additionalWeight = ((float)Math.Max(0, PlayerWeight - 1) / 4f);
 				Vector2 TargetForce = Vector2.Zero;
 				float HookStrength = 0f;
 				float HighestGrappleSpeed = 0f;
@@ -2551,252 +2565,278 @@ namespace V2.PlayerHandling
 				int hookCount = 0;
 				bool isBatHook = false; //this mf
 				bool Close = false;
-				for (int i = 0; i < self.grapCount; i++)
-				{
-					Projectile projectile = Main.projectile[self.grappling[i]];
-					if (projectile.ai[0] == 2f && !projectile.position.HasNaNs())
-					{
+                for (int i = 0; i < self.grapCount; i++)
+                {
+                    Projectile projectile = Main.projectile[self.grappling[i]];
+                    if (projectile.ai[0] == 2f && !projectile.position.HasNaNs())
+                    {
 						saidOneHook = projectile.whoAmI;
 						hookCount++;
-						int type = projectile.type;
-						bool flag = projectile.ModProjectile != null && projectile.ModProjectile.AIType > 0;
-						if (flag)
-						{
-							projectile.type = projectile.ModProjectile.AIType;
-						}
+                        int type = projectile.type;
+                        bool flag = projectile.ModProjectile != null && projectile.ModProjectile.AIType > 0;
+                        if (flag)
+                        {
+                            projectile.type = projectile.ModProjectile.AIType;
+                        }
 						float distance = 1 + self.Center.Distance(projectile.Center) / 160f;
-						float distance2 = 1 + self.Center.Distance(projectile.Center) / 500f;
+                        float distance2 = 1 + self.Center.Distance(projectile.Center) / 500f;
 						float adddedForce = Math.Clamp(distance2, 0, 1.25f);
-						if (i > 0)
-							onlyOneHook = false;
-						if (distance < 1.25f)
+                        if (i > 0)
+                            onlyOneHook = false;
+                        if (distance < 1.25f)
 						{
 							Close = true;
 						}
-						TargetForce += self.Center.DirectionTo(projectile.Center) * projectile.AsV2Proj().GrappleSpeed * adddedForce;
+                        TargetForce += self.Center.DirectionTo(projectile.Center) * projectile.AsV2Proj().GrappleSpeed * adddedForce;
 						HookStrength += projectile.AsV2Proj().GrappleStrength;
 						if (projectile.AsV2Proj().GrappleSpeed > HighestGrappleSpeed)
 							HighestGrappleSpeed = projectile.AsV2Proj().GrappleSpeed;
 						if (projectile.type == ProjectileID.BatHook)
 							isBatHook = true;
-					}
-				}
+                    }
+                }
 				TargetForce /= 0.5f + (hookCount * 0.5f);
-				HookStrength /= 0.5f + (hookCount * 0.5f);
-				if (HookStrength < additionalWeight)
+                HookStrength /= 0.5f + (hookCount * 0.5f);
+                if (HookStrength < additionalWeight)
 				{
 					float modifier = (additionalWeight - HookStrength + 1) * (1 + 0.1f * additionalWeight);
-					if (isBatHook)
-						TargetForce /= Math.Min(modifier * 1.25f, 2);
-					if (TargetForce.X != 0)
+                    if (isBatHook)
+                        TargetForce /= Math.Min(modifier * 1.25f, 2);
+                    if (TargetForce.X != 0)
 						TargetForce.X /= modifier;
 					if (TargetForce.Y != 0)
 						TargetForce.X /= modifier;
-					TargetForce.Y += modifier;
+                    TargetForce.Y += modifier;
 				}
-				self.velocity *= 0.95f;
+                self.velocity *= 0.95f;
 				if (Close && onlyOneHook)
-				{
-					TargetForce *= 0.85f;
-					self.velocity *= 0.85f;
-				}
+                {
+                    TargetForce *= 0.85f;
+                    self.velocity *= 0.85f;
+                }
 				Vector2 totalVelocity = self.velocity + TargetForce;
 				if (onlyOneHook && saidOneHook >= 0)
 				{
 					float distance = self.Center.Distance(Main.projectile[saidOneHook].Center) - (TargetForce.Length() / 8);
 					if (distance < 14)
-					{
-						totalVelocity = totalVelocity * (distance / 16);
-					}
+                    {
+                        totalVelocity = totalVelocity * (distance / 16);
+                    }
 				}
-				if (totalVelocity.Length() > HighestGrappleSpeed * 8)
+                if (totalVelocity.Length() > HighestGrappleSpeed * 8)
 				{
 					totalVelocity.Normalize();
-					totalVelocity *= HighestGrappleSpeed * 8;
-				}
+                    totalVelocity *= HighestGrappleSpeed * 8;
+                }
 				if (totalVelocity.Length() < 0.03f)
 					totalVelocity = Vector2.Zero;
-				preferedPlayerVelocityX = totalVelocity.X;
-				preferedPlayerVelocityY = totalVelocity.Y;
-			}
+                preferedPlayerVelocityX = totalVelocity.X;
+                preferedPlayerVelocityY = totalVelocity.Y;
+            }
 
-		}
-		public static void Detour_GrappleMovement(On_Player.orig_GrappleMovement orig, Player self)
-		{
-			if (self.grappling[0] < 0)
-			{
+        }
+        public static void Detour_GrappleMovement(On_Player.orig_GrappleMovement orig, Player self)
+        {
+            if (self.grappling[0] < 0)
+            {
 				self.AsV2Player().GrappleLastSpeed = Vector2.Zero;
-				return;
-			}
-			self.StopVanityActions(true);
-			if (Main.myPlayer == self.whoAmI && self.mount.Active)
-			{
-				self.mount.Dismount(self);
-			}
-			self.canCarpet = true;
-			self.carpetFrame = -1;
-			self.wingFrame = 1;
-			if (self.velocity.Y == 0f || (self.wet && (double)self.velocity.Y > -0.02 && (double)self.velocity.Y < 0.02))
-			{
-				self.wingFrame = 0;
-			}
-			if (self.wings == 4)
-			{
-				self.wingFrame = 3;
-			}
-			if (self.wings == 30)
-			{
-				self.wingFrame = 0;
-			}
-			self.RefreshMovementAbilities(true);
-			self.rocketFrame = false;
-			self.canRocket = false;
-			self.rocketRelease = false;
-			self.fallStart = (int)(self.position.Y / 16f);
-			int num = -1;
-			for (int i = 0; i < self.grapCount; i++)
-			{
-				if (Main.projectile[self.grappling[i]].type == 403)
-				{
-					num = i;
-				}
-			}
-			int? preferredPlayerDirectionToSet;
-			float preferedPlayerVelocityX;
-			float preferedPlayerVelocityY;
+                return;
+            }
+            self.StopVanityActions(true);
+            if (Main.myPlayer == self.whoAmI && self.mount.Active)
+            {
+                self.mount.Dismount(self);
+            }
+            self.canCarpet = true;
+            self.carpetFrame = -1;
+            self.wingFrame = 1;
+            if (self.velocity.Y == 0f || (self.wet && (double)self.velocity.Y > -0.02 && (double)self.velocity.Y < 0.02))
+            {
+                self.wingFrame = 0;
+            }
+            if (self.wings == 4)
+            {
+                self.wingFrame = 3;
+            }
+            if (self.wings == 30)
+            {
+                self.wingFrame = 0;
+            }
+            self.RefreshMovementAbilities(true);
+            self.rocketFrame = false;
+            self.canRocket = false;
+            self.rocketRelease = false;
+            self.fallStart = (int)(self.position.Y / 16f);
+            int num = -1;
+            for (int i = 0; i < self.grapCount; i++)
+            {
+                if (Main.projectile[self.grappling[i]].type == 403)
+                {
+                    num = i;
+                }
+            }
+            int? preferredPlayerDirectionToSet;
+            float preferedPlayerVelocityX;
+            float preferedPlayerVelocityY;
 			GetGrapplingForces(self, self.Center, out preferredPlayerDirectionToSet, out preferedPlayerVelocityX, out preferedPlayerVelocityY);
-			if (preferedPlayerVelocityY > 0f)
-			{
-				self.GoingDownWithGrapple = true;
-			}
-			self.velocity.X = preferedPlayerVelocityX;
-			self.velocity.Y = preferedPlayerVelocityY;
-			if (num != -1)
-			{
-				Projectile projectile = Main.projectile[self.grappling[num]];
-				if (projectile.position.X < self.position.X + (float)self.width && projectile.position.X + (float)projectile.width >= self.position.X && projectile.position.Y < self.position.Y + (float)self.height && projectile.position.Y + (float)projectile.height >= self.position.Y)
-				{
-					int num2 = (int)(projectile.position.X + (float)(projectile.width / 2)) / 16;
-					int num3 = (int)(projectile.position.Y + (float)(projectile.height / 2)) / 16;
-					self.velocity = Vector2.Zero;
-					if (Main.tile[num2, num3].TileType == 314)
-					{
-						Vector2 Position = default(Vector2);
-						Position.X = projectile.position.X + (float)(projectile.width / 2) - (float)(self.width / 2);
-						Position.Y = projectile.position.Y + (float)(projectile.height / 2) - (float)(self.height / 2);
-						self.RemoveAllGrapplingHooks();
-						int num4 = 13;
-						if (self.miscEquips[2].stack > 0 && self.miscEquips[2].mountType >= 0 && MountID.Sets.Cart[self.miscEquips[2].mountType] && (!self.miscEquips[2].expertOnly || Main.expertMode) && (!self.miscEquips[2].masterOnly || Main.masterMode))
-						{
-							num4 = self.miscEquips[2].mountType;
-						}
-						int num5 = self.height + Mount.GetHeightBoost(num4);
-						if (Minecart.GetOnTrack(num2, num3, ref Position, self.width, num5) && !Collision.SolidCollision(Position, self.width, num5 - 20))
-						{
-							self.position = Position;
-							DelegateMethods.Minecart.rotation = self.fullRotation;
-							DelegateMethods.Minecart.rotationOrigin = self.fullRotationOrigin;
-							self.mount.SetMount(num4, self, self.minecartLeft);
-							Minecart.WheelSparks(self.mount.Delegations.MinecartDust, self.position, self.width, self.height, 25);
-						}
-					}
-				}
-			}
-			if (self.itemAnimation == 0)
-			{
-				if (self.velocity.X == 0f && preferredPlayerDirectionToSet != null)
-				{
-					self.ChangeDir(preferredPlayerDirectionToSet.Value);
-				}
-				if (self.velocity.X > 0f)
-				{
-					self.ChangeDir(1);
-				}
-				if (self.velocity.X < 0f)
-				{
-					self.ChangeDir(-1);
-				}
-			}
-			if (self.controlJump)
-			{
-				if (self.releaseJump)
-				{
-					if (self.velocity.Y > -0.1 && self.velocity.Y < 0.1 && !self.controlDown)
-					{
-						self.velocity.Y = 0f - Player.jumpSpeed;
-						self.jump = Player.jumpHeight / 2;
-						self.releaseJump = false;
-					}
-					else
-					{
-						self.velocity.Y = self.velocity.Y + 0.01f;
-						self.releaseJump = false;
-					}
-					self.RefreshExtraJumps();
-					self.RemoveAllGrapplingHooks();
-					return;
-				}
-			}
-			else
-			{
-				self.releaseJump = true;
-			}
-		}
+            if (preferedPlayerVelocityY > 0f)
+            {
+                self.GoingDownWithGrapple = true;
+            }
+            self.velocity.X = preferedPlayerVelocityX;
+            self.velocity.Y = preferedPlayerVelocityY;
+            if (num != -1)
+            {
+                Projectile projectile = Main.projectile[self.grappling[num]];
+                if (projectile.position.X < self.position.X + (float)self.width && projectile.position.X + (float)projectile.width >= self.position.X && projectile.position.Y < self.position.Y + (float)self.height && projectile.position.Y + (float)projectile.height >= self.position.Y)
+                {
+                    int num2 = (int)(projectile.position.X + (float)(projectile.width / 2)) / 16;
+                    int num3 = (int)(projectile.position.Y + (float)(projectile.height / 2)) / 16;
+                    self.velocity = Vector2.Zero;
+                    if (Main.tile[num2, num3].TileType == 314)
+                    {
+                        Vector2 Position = default(Vector2);
+                        Position.X = projectile.position.X + (float)(projectile.width / 2) - (float)(self.width / 2);
+                        Position.Y = projectile.position.Y + (float)(projectile.height / 2) - (float)(self.height / 2);
+                        self.RemoveAllGrapplingHooks();
+                        int num4 = 13;
+                        if (self.miscEquips[2].stack > 0 && self.miscEquips[2].mountType >= 0 && MountID.Sets.Cart[self.miscEquips[2].mountType] && (!self.miscEquips[2].expertOnly || Main.expertMode) && (!self.miscEquips[2].masterOnly || Main.masterMode))
+                        {
+                            num4 = self.miscEquips[2].mountType;
+                        }
+                        int num5 = self.height + Mount.GetHeightBoost(num4);
+                        if (Minecart.GetOnTrack(num2, num3, ref Position, self.width, num5) && !Collision.SolidCollision(Position, self.width, num5 - 20))
+                        {
+                            self.position = Position;
+                            DelegateMethods.Minecart.rotation = self.fullRotation;
+                            DelegateMethods.Minecart.rotationOrigin = self.fullRotationOrigin;
+                            self.mount.SetMount(num4, self, self.minecartLeft);
+                            Minecart.WheelSparks(self.mount.Delegations.MinecartDust, self.position, self.width, self.height, 25);
+                        }
+                    }
+                }
+            }
+            if (self.itemAnimation == 0)
+            {
+                if (self.velocity.X == 0f && preferredPlayerDirectionToSet != null)
+                {
+                    self.ChangeDir(preferredPlayerDirectionToSet.Value);
+                }
+                if (self.velocity.X > 0f)
+                {
+                    self.ChangeDir(1);
+                }
+                if (self.velocity.X < 0f)
+                {
+                    self.ChangeDir(-1);
+                }
+            }
+            if (self.controlJump)
+            {
+                if (self.releaseJump)
+                {
+                    if (self.velocity.Y > -0.1 && self.velocity.Y < 0.1 && !self.controlDown)
+                    {
+                        self.velocity.Y = 0f - Player.jumpSpeed;
+                        self.jump = Player.jumpHeight / 2;
+                        self.releaseJump = false;
+                    }
+                    else
+                    {
+                        self.velocity.Y = self.velocity.Y + 0.01f;
+                        self.releaseJump = false;
+                    }
+                    self.RefreshExtraJumps();
+                    self.RemoveAllGrapplingHooks();
+                    return;
+                }
+            }
+            else
+            {
+                self.releaseJump = true;
+            }
+        }
 
-		public static Item Detour_PickupItem(On_Player.orig_PickupItem orig, Player self, int playerIndex, int worldItemArrayIndex, Item itemToPickUp)
+        public static Item Detour_PickupItem(On_Player.orig_PickupItem orig, Player self, int playerIndex, int worldItemArrayIndex, Item itemToPickUp)
 		{
-			if (ItemID.Sets.NebulaPickup[itemToPickUp.type])
-			{
-				SoundEngine.PlaySound(SoundID.Grab, new Vector2((int)self.position.X, (int)self.position.Y));
-				int num = itemToPickUp.buffType;
-				itemToPickUp = new Item();
-				if (Main.netMode == 1)
-				{
-					NetMessage.SendData(MessageID.NebulaLevelupRequest, -1, -1, null, playerIndex, (float)num, self.Center.X, self.Center.Y, 0, 0, 0);
-				}
-				else
-				{
-					self.NebulaLevelup(num);
-				}
-			}
-			if (itemToPickUp.type == ItemID.Heart || itemToPickUp.type == ItemID.CandyApple || itemToPickUp.type == ItemID.CandyCane)
-			{
-				SoundEngine.PlaySound(SoundID.Grab, new Vector2((int)self.position.X, (int)self.position.Y));
-				self.Heal(20);
-				itemToPickUp = new Item();
-			}
-			else if (itemToPickUp.type == ItemID.Star || itemToPickUp.type == ItemID.SoulCake || itemToPickUp.type == ItemID.SugarPlum)
-			{
-				SoundEngine.PlaySound(SoundID.Grab, new Vector2((int)self.position.X, (int)self.position.Y));
-				self.statMana += 100;
-				if (Main.myPlayer == self.whoAmI)
-				{
-					self.ManaEffect(100);
-				}
-				if (self.statMana > self.statManaMax2)
-				{
-					self.statMana = self.statManaMax2;
-				}
-				itemToPickUp = new Item();
-			}
-			else if (itemToPickUp.type == ItemID.ManaCloakStar)
-			{
-				SoundEngine.PlaySound(SoundID.Grab, new Vector2((int)self.position.X, (int)self.position.Y));
-				self.statMana += 50;
-				if (Main.myPlayer == self.whoAmI)
-				{
-					self.ManaEffect(50);
-				}
-				if (self.statMana > self.statManaMax2)
-				{
-					self.statMana = self.statManaMax2;
-				}
-				itemToPickUp = new Item();
-			}
+            if (ItemID.Sets.NebulaPickup[itemToPickUp.type])
+            {
+                SoundEngine.PlaySound(SoundID.Grab, new Vector2((int)self.position.X, (int)self.position.Y));
+                int num = itemToPickUp.buffType;
+                itemToPickUp = new Item();
+                if (Main.netMode == 1)
+                {
+                    NetMessage.SendData(MessageID.NebulaLevelupRequest, -1, -1, null, playerIndex, (float)num, self.Center.X, self.Center.Y, 0, 0, 0);
+                }
+                else
+                {
+                    self.NebulaLevelup(num);
+                }
+            }
+            if (itemToPickUp.type == ItemID.Heart || itemToPickUp.type == ItemID.CandyApple || itemToPickUp.type == ItemID.CandyCane)
+            {
+                SoundEngine.PlaySound(SoundID.Grab, new Vector2((int)self.position.X, (int)self.position.Y));
+                self.Heal(20);
+                itemToPickUp = new Item();
+            }
+            else if (itemToPickUp.type == ItemID.Star || itemToPickUp.type == ItemID.SoulCake || itemToPickUp.type == ItemID.SugarPlum)
+            {
+                SoundEngine.PlaySound(SoundID.Grab, new Vector2((int)self.position.X, (int)self.position.Y));
+                self.statMana += 100;
+                if (Main.myPlayer == self.whoAmI)
+                {
+                    self.ManaEffect(100);
+                }
+                if (self.statMana > self.statManaMax2)
+                {
+                    self.statMana = self.statManaMax2;
+                }
+                itemToPickUp = new Item();
+            }
+            else if (itemToPickUp.type == ItemID.ManaCloakStar)
+            {
+                SoundEngine.PlaySound(SoundID.Grab, new Vector2((int)self.position.X, (int)self.position.Y));
+                self.statMana += 50;
+                if (Main.myPlayer == self.whoAmI)
+                {
+                    self.ManaEffect(50);
+                }
+                if (self.statMana > self.statManaMax2)
+                {
+                    self.statMana = self.statManaMax2;
+                }
+                itemToPickUp = new Item();
+            }
 			else if (self.HasBuff<Trance>() && itemToPickUp.AsFood().Health > 0)
+<<<<<<< Updated upstream
+            {
+                PredPlayer.Swallow(self, itemToPickUp, ForceSwallow: true);
+                itemToPickUp = new Item();
+            }
+            else
+            {
+                itemToPickUp = self.GetItem(playerIndex, itemToPickUp, GetItemSettings.PickupItemFromWorld);
+            }
+            Main.item[worldItemArrayIndex] = itemToPickUp;
+            if (Main.netMode == 1)
+            {
+                NetMessage.SendData(MessageID.SyncItem, -1, -1, null, worldItemArrayIndex, 0f, 0f, 0f, 0, 0, 0);
+            }
+            return itemToPickUp;
+=======
 			{
-				PredPlayer.Swallow(self, itemToPickUp, ForceSwallow: true);
-				itemToPickUp = new Item();
+				if (itemToPickUp.stack > 25)
+				{
+					itemToPickUp.stack -= 25;
+                    Item eatenItem = new Item();
+                    eatenItem.SetDefaults(itemToPickUp.type);
+					eatenItem.stack = 25;
+                    self.ForceDropItem(self.Center, ref eatenItem, out Item itemDrop);
+                    PredPlayer.Swallow(self, itemDrop, ForceSwallow: true);
+					itemToPickUp = self.GetItem(playerIndex, itemToPickUp, GetItemSettings.PickupItemFromWorld);
+                }
+				else
+					PredPlayer.Swallow(self, itemToPickUp, ForceSwallow: true);
 			}
 			else
 			{
@@ -2808,9 +2848,10 @@ namespace V2.PlayerHandling
 				NetMessage.SendData(MessageID.SyncItem, -1, -1, null, worldItemArrayIndex, 0f, 0f, 0f, 0, 0, 0);
 			}
 			return itemToPickUp;
+>>>>>>> Stashed changes
 		}
 
-		public static void KillMe(Player player, PlayerDeathReason damageSource, double dmg, int hitDirection, bool pvp = false)
+        public static void KillMe(Player player, PlayerDeathReason damageSource, double dmg, int hitDirection, bool pvp = false)
 		{
 			if (player.creativeGodMode || player.dead)
 				return;
@@ -3001,5 +3042,5 @@ namespace V2.PlayerHandling
 
 
 
-	}
+    }
 }

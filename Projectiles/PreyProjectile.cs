@@ -1,9 +1,9 @@
-﻿using Microsoft.Xna.Framework;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -11,6 +11,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.WorldBuilding;
 using V2.Core;
+using V2.NPCs;
 using V2.PlayerHandling;
 using V2.PlayerHandling.PredPlayerGoals.Starter;
 using V2.UI;
@@ -20,7 +21,8 @@ namespace V2.Projectiles
 	public partial class PreyProjectile : GlobalProjectile
 	{
 		public bool CannotBeEatenDueToShenanigans { get; set; }
-		public int EatenSafetyFrames { get; set; }
+        public bool CannotBeRegurgitated { get; set; }
+        public int EatenSafetyFrames { get; set; }
 		public bool Digested { get; set; }
 
 		public double DefinedSize { get; set; }
@@ -89,8 +91,21 @@ namespace V2.Projectiles
 			DigestingHitSound = null;
 			DigestedDeathSound = null;
 		}
+        public override bool CanHitPlayer(Projectile projectile, Player target)
+        {
+			if (projectile.CurrentCaptor() is not null)
+				return false;
 
-		public override bool PreKill(Projectile projectile, int timeLeft)
+			return true;
+        }
+        public override bool? CanHitNPC(Projectile projectile, NPC target)
+        {
+			if (projectile.CurrentCaptor() is not null || target.CurrentCaptor() is not null)
+				return false;
+
+			return null;
+        } 
+        public override bool PreKill(Projectile projectile, int timeLeft)
 		{
 			if (projectile.AsFood().Digested)
 				return false;

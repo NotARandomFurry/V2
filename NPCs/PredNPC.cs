@@ -39,6 +39,8 @@ namespace V2.NPCs
 	{
 		public EntityGender Gender { get; set; }
 
+		public int LastSwallowedDye { get; set; }
+
 		public static VoreTracker GetStomachTracker(NPC npc)
 		{
 			if (Main.gameMenu)
@@ -296,7 +298,6 @@ namespace V2.NPCs
 			}
 
 			PreyData food = PreyData.NewData(prey);
-			AddNewPrey(pred, food);
 			if (playSound)
 				PlaySwallowGulp(pred, food);
 			switch (food.Type)
@@ -321,7 +322,12 @@ namespace V2.NPCs
 					break;
 				case PreyType.Item:
 					Item item = prey as Item;
-					item.AsFood().OnSwallow?.Invoke(item, pred);
+                    if (item.AsFood().PreSwallow is not null && !item.AsFood().PreSwallow.Invoke(item, pred))
+                    {
+                        food = null;
+                        return;
+                    }
+                    item.AsFood().OnSwallow?.Invoke(item, pred);
 					if (item.AsFood().OnSwallowDamage > 0)
 					{
 						pred.StrikeNPC(
@@ -338,7 +344,9 @@ namespace V2.NPCs
 						pred.AddBuff(ModContent.BuffType<SoreThroat>(), item.AsFood().OnSwallowSoreThroatTime);
 					break;
 			}
-			pred.netUpdate = true;
+
+            AddNewPrey(pred, food);
+            pred.netUpdate = true;
 
 			if (MPstate == 1)
 			{
@@ -374,8 +382,12 @@ namespace V2.NPCs
 
 			double totalRegurgiweight = 0.0;
 
-			void Regurgitate_Inner(NPC pred, PreyData prey)
+            List<PreyData> clearedPrey = new List<PreyData>();
+
+            void Regurgitate_Inner(NPC pred, PreyData prey)
 			{
+				if (prey.CannotBeRegurgitated)
+					return;
 				Entity realPrey = prey.Type switch
 				{
 					PreyType.Player => prey.Instance as Player,
@@ -402,24 +414,35 @@ namespace V2.NPCs
 				else if (realPrey is Item realPreyItem)
 				{
 					realPreyItem.noGrabDelay = 60;
-				}
+                    for (int i = 0; i < realPreyItem.stack; i++)
+                        if (realPreyItem.AsFood().OnRegurgitate is not null && realPreyItem.AsFood().OnRegurgitate.Invoke(realPreyItem, pred))
+                        {
+                            realPreyItem.stack--;
+                        }
+                    if (realPreyItem.stack <= 0)
+                        realPreyItem.TurnToAir();
+                }
 				totalRegurgiweight += prey.WeightLeftToDigest;
-			}
-
+                clearedPrey.Add(prey);
+            }
 			if (index == -1)
-			{
-				foreach (PreyData prey in GetStomachTracker(pred).Prey)
-					Regurgitate_Inner(pred, prey);
-
-				GetStomachTracker(pred).Prey.Clear();
+            {
+                foreach (PreyData prey in GetStomachTracker(pred).Prey)
+                {
+                    Regurgitate_Inner(pred, prey);
+                }
+				foreach (PreyData prey in clearedPrey)
+                {
+                    GetStomachTracker(pred).Prey.Remove(prey);
+                }
 				GetStomachTracker(pred).RefreshStruggleChartList();
 			}
 			else
 			{
 				PreyData prey = GetStomachTracker(pred).Prey[index];
 				Regurgitate_Inner(pred, prey);
-
-				GetStomachTracker(pred).Prey.Remove(prey);
+				if (clearedPrey.Count > 0)
+					GetStomachTracker(pred).Prey.Remove(prey);
 			}
 
 			SoundEngine.PlaySound(
@@ -622,7 +645,28 @@ namespace V2.NPCs
 									}
 								}
 								break;
-						}
+                            case PreyType.Item:
+                                Item preyItem = prey.Instance as Item;
+                                if (preyItem.IsAir)
+                                    break;
+
+                                bool shouldDigestItem = true;
+                                if (shouldDigestItem)
+                                {
+                                    prey.NoHealth = preyItem.TakeDigestionDamage(pred, digestionDamage);
+                                    if (ModContent.GetInstance<V2ServerConfig>().DebugChatMessages)
+                                        Main.NewText("Successfully dealt digestion damage to prey: " + preyItem.Name);
+                                    else if (ModContent.GetInstance<V2ServerConfig>().DebugChatMessages)
+                                        Main.NewText("Failed to deal digestion damage to prey: " + preyItem.Name);
+                                    if (prey.NoHealth)
+                                    {
+                                        if (pred.AsPred().OnDigestionKill is not null)
+                                            pred.AsPred().OnDigestionKill.Invoke(pred, prey);
+                                        PlayDigestionBelch(pred, prey);
+                                    }
+                                }
+                                break;
+                        }
 					}
 				}
 				else
@@ -639,12 +683,12 @@ namespace V2.NPCs
 
 					if (prey.WeightLeftToDigest <= digestedWeightPerTick)
 					{
-						pred.AsPred().ExtraWeight += prey.WeightLeftToDigest * pred.AsPred().WeightGainRatio * (pred.AsFood().DefinedBaseSize / effectiveSize);
+						pred.AsPred().ExtraWeight += prey.WeightLeftToDigest * prey.CalorieMultiplier * pred.AsPred().WeightGainRatio * (pred.AsFood().DefinedBaseSize / effectiveSize);
 						prey.WeightLeftToDigest = 0;
 					}
 					else
 					{
-						pred.AsPred().ExtraWeight += digestedWeightPerTick * pred.AsPred().WeightGainRatio * (pred.AsFood().DefinedBaseSize / effectiveSize);
+						pred.AsPred().ExtraWeight += digestedWeightPerTick * prey.CalorieMultiplier * pred.AsPred().WeightGainRatio * (pred.AsFood().DefinedBaseSize / effectiveSize);
 						prey.WeightLeftToDigest -= digestedWeightPerTick;
 					}
 				}

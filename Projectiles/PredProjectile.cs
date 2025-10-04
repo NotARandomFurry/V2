@@ -31,13 +31,19 @@ namespace V2.Projectiles
 		public EntityDigestionType DigestionType { get; set; }
 		public double MaxStomachCapacity { get; set; }
 		public float MaxSwallowRange { get; set; }
+		public bool IsPredTileEntity { get; set; }
 		public double ExtraWeight { get; set; }
 		public double WeightGainRatio { get; set; }
-		/// <summary>
-		/// Allows this projectile to eat bosses despite not being a boss themselves.<br/>
-		/// Defaults to false.<br/>
-		/// </summary>
-		public bool CanSwallowBosses { get; set; }
+        /// <summary>
+        /// Tracks how much food this pred has absorbed, including the food's calorie multiplier.<br/>
+        /// Can be used for making things happen after having digested enough food, i suppose!<br/>
+        /// </summary>
+		public double FoodAbsorbed { get; set; }
+        /// <summary>
+        /// Allows this projectile to eat bosses despite not being a boss themselves.<br/>
+        /// Defaults to false.<br/>
+        /// </summary>
+        public bool CanSwallowBosses { get; set; }
 
 		public Vector2 MouthSoundRawOffset { internal get; set; }
 		public static Vector2 MouthSoundOffset(Projectile projectile)
@@ -117,6 +123,9 @@ namespace V2.Projectiles
 		public delegate int DelegateGetVisualWeightStage(Projectile projectile);
 		public DelegateGetVisualWeightStage GetVisualWeightStage { get; set; }
 
+		public Item TiedToSummonItem { get; set; }
+		public int TiedToSummonIndex { get; set; }
+
 		public SlotId ActiveStomachNoises { get; set; }
 
 		public override bool InstancePerEntity => true;
@@ -130,6 +139,11 @@ namespace V2.Projectiles
 			ExtraWeight = 0.0;
 			WeightGainRatio = 0.4;
 			CanSwallowBosses = false;
+
+            TiedToSummonItem = null;
+			TiedToSummonIndex = -1;
+
+            IsPredTileEntity = false;
 
 			GetDigestionTickRate = null;
 			GetDigestionTickDamage = null;
@@ -253,79 +267,86 @@ namespace V2.Projectiles
 			return true;
 		}
 
-		/// <summary>
-		/// Causes the given predator projectile to swallow the given prey entity, if the given prey entity can be swallowed.
-		/// </summary>
-		/// <param name="pred">The predator which will attempt to swallow the given prey.</param>
-		/// <param name="prey">The prey which will be attempt to be swallowed by the given predator.</param>
-		public static void Swallow(Projectile pred, Entity prey, int MPstate = 0, int MPwhoAmI = -1)
-		{
-			if (!CanSwallow(pred, prey))
-				return;
+        /// <summary>
+        /// Causes the given predator projectile to swallow the given prey entity, if the given prey entity can be swallowed.
+        /// </summary>
+        /// <param name="pred">The predator which will attempt to swallow the given prey.</param>
+        /// <param name="prey">The prey which will be attempt to be swallowed by the given predator.</param>
+        public static void Swallow(Projectile pred, Entity prey, int MPstate = 0, int MPwhoAmI = -1)
+        {
+            if (!CanSwallow(pred, prey))
+                return;
 
-			if (MPstate == 0 && Main.netMode == NetmodeID.MultiplayerClient)
-			{
-				MPstate = 1;
-				MPwhoAmI = Main.myPlayer;
-			}
+            if (MPstate == 0 && Main.netMode == NetmodeID.MultiplayerClient)
+            {
+                MPstate = 1;
+                MPwhoAmI = Main.myPlayer;
+            }
 
-			PreyData food = PreyData.NewData(prey);
-			AddNewPrey(pred, food);
-			PlaySwallowGulp(pred, food);
-			switch (food.Type)
-			{
-				case PreyType.Player:
-					Player player = prey as Player;
-					player.AsFood().TotalTimesSwallowed += 1;
-					break;
-				case PreyType.NPC:
-					NPC npc = prey as NPC;
-					npc.AsFood().OnSwallowedBy?.Invoke(npc, pred);
-					break;
-				case PreyType.Projectile:
-					Projectile projectile = prey as Projectile;
-					if (projectile.AsFood().MaxHealth == -1)
-					{
-						food = PreyData.NewData(PreyType.Projectile, projectile.type, projectile.Name, PreyData.GetPreySize(projectile));
-						projectile.active = false;
-					}
-					else
-						projectile.AsFood().OnSwallowedBy?.Invoke(projectile, pred);
-					break;
-				case PreyType.Item:
-					Item item = prey as Item;
-					item.AsFood().OnSwallow?.Invoke(item, pred);
-					if (item.AsFood().OnSwallowDamage > 0)
-						pred.AsFood().Health -= item.AsFood().OnSwallowDamage;
-					break;
-			}
-			pred.netUpdate = true;
+            PreyData food = PreyData.NewData(prey);
+            PlaySwallowGulp(pred, food);
+            switch (food.Type)
+            {
+                case PreyType.Player:
+                    Player player = prey as Player;
+                    player.AsFood().TotalTimesSwallowed += 1;
+                    break;
+                case PreyType.NPC:
+                    NPC npc = prey as NPC;
+                    npc.AsFood().OnSwallowedBy?.Invoke(npc, pred);
+                    break;
+                case PreyType.Projectile:
+                    Projectile projectile = prey as Projectile;
+                    if (projectile.AsFood().MaxHealth == -1)
+                    {
+                        food = PreyData.NewData(PreyType.Projectile, projectile.type, projectile.Name, PreyData.GetPreySize(projectile));
+                        projectile.active = false;
+                    }
+                    else
+                        projectile.AsFood().OnSwallowedBy?.Invoke(projectile, pred);
+                    break;
+                case PreyType.Item:
+                    Item item = prey as Item;
+                    if (item.AsFood().PreSwallow is not null && !item.AsFood().PreSwallow.Invoke(item, pred))
+                    {
+                        food = null;
+                        return;
+                    }
+                    item.AsFood().OnSwallow?.Invoke(item, pred);
+                    if (item.AsFood().OnSwallowDamage > 0)
+                        pred.AsFood().Health -= item.AsFood().OnSwallowDamage;
+                    break;
+            }
 
-			if (MPstate == 1)
-			{
-				ModPacket packet = V2.Instance.GetPacket();
-				packet.Write((byte)V2.MessageType.RequestSwallowPrey);
-				packet.Write((byte)2);
-				packet.Write(pred.whoAmI);
-				packet.Write((byte)food.Type);
-				packet.Write(prey.whoAmI);
-				packet.Write(MPwhoAmI);
-				packet.Send();
-			}
-			else if (MPstate == 2)
-			{
-				ModPacket packet = V2.Instance.GetPacket();
-				packet.Write((byte)V2.MessageType.SyncSwallowPrey);
-				packet.Write((byte)2);
-				packet.Write(pred.whoAmI);
-				packet.Write((byte)food.Type);
-				packet.Write(prey.whoAmI);
-				packet.Write(MPwhoAmI);
-				packet.Send(ignoreClient: MPwhoAmI);
-			}
-		}
+            AddNewPrey(pred, food);
 
-		public static void Regurgitate(Projectile pred, int index = -1, int MPstate = 0, int MPwhoAmI = -1)
+            pred.netUpdate = true;
+
+            if (MPstate == 1)
+            {
+                ModPacket packet = V2.Instance.GetPacket();
+                packet.Write((byte)V2.MessageType.RequestSwallowPrey);
+                packet.Write((byte)2);
+                packet.Write(pred.whoAmI);
+                packet.Write((byte)food.Type);
+                packet.Write(prey.whoAmI);
+                packet.Write(MPwhoAmI);
+                packet.Send();
+            }
+            else if (MPstate == 2)
+            {
+                ModPacket packet = V2.Instance.GetPacket();
+                packet.Write((byte)V2.MessageType.SyncSwallowPrey);
+                packet.Write((byte)2);
+                packet.Write(pred.whoAmI);
+                packet.Write((byte)food.Type);
+                packet.Write(prey.whoAmI);
+                packet.Write(MPwhoAmI);
+                packet.Send(ignoreClient: MPwhoAmI);
+            }
+        }
+
+        public static void Regurgitate(Projectile pred, int index = -1, int MPstate = 0, int MPwhoAmI = -1)
 		{
 			if (MPstate == 0 && Main.netMode == NetmodeID.MultiplayerClient)
 			{
@@ -363,7 +384,14 @@ namespace V2.Projectiles
 				else if (realPrey is Item realPreyItem)
 				{
 					realPreyItem.noGrabDelay = 60;
-				}
+                    for (int i = 0; i < realPreyItem.stack; i++)
+                        if (realPreyItem.AsFood().OnRegurgitate is not null && realPreyItem.AsFood().OnRegurgitate.Invoke(realPreyItem, pred))
+                        {
+                            realPreyItem.stack--;
+                        }
+                    if (realPreyItem.stack <= 0)
+                        realPreyItem.TurnToAir();
+                }
 				totalRegurgiweight += prey.WeightLeftToDigest;
 			}
 
@@ -568,13 +596,17 @@ namespace V2.Projectiles
 					double digestedWeightPerTick = pred.AsPred().GetPreyAbsorptionRate.Invoke(pred) / (double)GetStomachTracker(pred).Prey.Count;
 					if (prey.WeightLeftToDigest <= digestedWeightPerTick)
 					{
-						pred.AsPred().ExtraWeight += prey.WeightLeftToDigest * pred.AsPred().WeightGainRatio;
-						prey.WeightLeftToDigest = 0;
+						pred.AsPred().ExtraWeight += prey.WeightLeftToDigest * prey.CalorieMultiplier * pred.AsPred().WeightGainRatio;
+						pred.AsPred().FoodAbsorbed += prey.WeightLeftToDigest * prey.CalorieMultiplier;
+
+                        prey.WeightLeftToDigest = 0;
 					}
 					else
 					{
-						pred.AsPred().ExtraWeight += digestedWeightPerTick * pred.AsPred().WeightGainRatio;
-						prey.WeightLeftToDigest -= digestedWeightPerTick;
+						pred.AsPred().ExtraWeight += digestedWeightPerTick * prey.CalorieMultiplier * pred.AsPred().WeightGainRatio;
+                        pred.AsPred().FoodAbsorbed += digestedWeightPerTick * prey.CalorieMultiplier;
+
+                        prey.WeightLeftToDigest -= digestedWeightPerTick;
 					}
 				}
 			}

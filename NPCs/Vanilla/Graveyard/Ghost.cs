@@ -33,6 +33,8 @@ namespace V2.NPCs.Vanilla.Graveyard
 
 			npc.AsFood().DefinedBaseSize = 0.45;
 
+			npc.AsFood().IsAGhostlySnackForACertainMaid = true;
+
 			npc.AsFood().OnDigestedBy = PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
 			npc.AsFood().OnDigestedBy += OnKilledByDigestion_GrantGhostGoal;
 		}

@@ -1,12 +1,12 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -14,10 +14,12 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using Terraria.UI.Chat;
+using Terraria.WorldBuilding;
 using V2.Core;
 using V2.NPCs.Voraria.TownNPCs.Succubus;
 using V2.PlayerHandling;
 using V2.PlayerHandling.PredPlayerGoals.Starter;
+using V2.StatusEffects.Voraria.Buffs;
 using V2.StatusEffects.Voraria.Debuffs;
 
 namespace V2.NPCs
@@ -40,7 +42,13 @@ namespace V2.NPCs
 	public partial class PreyNPC : GlobalNPC
 	{
 		public bool CannotBeEatenDueToShenanigans { get; set; }
-		public int EatenSafetyFrames { get; set; }
+        /// <summary>
+        /// Prevents this NPC from being regurgitated, ever.<br/>
+        /// Works well for super spiky or sticky things that'd get jammed in a gut, or something.<br/>
+        /// Defaults to false.<br/>
+        /// </summary>
+        public bool CannotBeRegurgitated { get; set; }
+        public int EatenSafetyFrames { get; set; }
 		public bool Digested { get; set; }
 
 		public delegate void DelegatePreyAI(NPC npc, Entity pred);
@@ -51,7 +59,9 @@ namespace V2.NPCs
 		public double CalorieMultiplier { get; set; }
 		public double WellFedPower { get; set; }
 
-		public bool TastySweet { get; set; }
+		public bool IsAGhostlySnackForACertainMaid { get; set; }
+
+        public bool TastySweet { get; set; }
 		public bool TastySpicy { get; set; }
 		public bool TastySour { get; set; }
 		public bool TastyMeaty { get; set; }
@@ -79,8 +89,11 @@ namespace V2.NPCs
 
 		public delegate void DelegateOnKilledByDigestion(NPC npc, Entity pred);
 		public DelegateOnKilledByDigestion OnDigestedBy { get; set; }
+        public int OnSwallowDamage { get; set; }
+        public string OnSwallowDeathReason { get; set; }
+        public int OnSwallowSoreThroatTime { get; set; }
 
-		public bool CanChatAsPrey { get; set; }
+        public bool CanChatAsPrey { get; set; }
 
 		public SoundStyle? DigestingHitSound;
 		public SoundStyle? DigestedDeathSound;
@@ -102,8 +115,11 @@ namespace V2.NPCs
 			DefinedBaseSize = 0;
 			CalorieMultiplier = 1;
 			WellFedPower = 0;
+			OnSwallowDamage = 0;
+			OnSwallowDeathReason = null;
+			OnSwallowSoreThroatTime = 0;
 
-			STR = 0;
+        STR = 0;
 			StruggleEffectiveness = 5;
 
 			OnDigestedBy = null;
@@ -140,7 +156,7 @@ namespace V2.NPCs
 			if (npc.AsFood().SoftenedWearoffDelay > 0)
 				npc.AsFood().SoftenedWearoffDelay--;
 			else if (npc.AsFood().SoftenedDigestionDamageTaken > 0)
-				npc.AsFood().SoftenedDigestionDamageTaken -= npc.AsFood().SoftenedWearoffRateModifier.ApplyTo((float)(25.0 / 60.0));
+				npc.AsFood().SoftenedDigestionDamageTaken = Math.Max(npc.AsFood().SoftenedDigestionDamageTaken - npc.AsFood().SoftenedWearoffRateModifier.ApplyTo((float)(25.0 / 60.0)), 0);
 
 			npc.AsFood().TastySweet = false;
 			npc.AsFood().TastySpicy = false;
@@ -226,7 +242,23 @@ namespace V2.NPCs
 			}
 		}
 
-		public override bool? CanChat(NPC npc)
+        public override void ModifyHitPlayer(NPC npc, Player target, ref Player.HurtModifiers modifiers)
+        {
+            if (npc.AsFood().IsAGhostlySnackForACertainMaid && target.AsV2Player().MintTransformation)
+            {
+                modifiers.FinalDamage *= 0;
+                modifiers.Knockback.Base = 0f;
+            }
+        }
+        public override void OnHitPlayer(NPC npc, Player target, Player.HurtInfo hurtInfo)
+        {
+            if (npc.AsFood().IsAGhostlySnackForACertainMaid && target.AsV2Player().MintTransformation)
+            {
+				PredPlayer.Swallow(target, npc, ForceSwallow: true);
+            }
+        }
+
+        public override bool? CanChat(NPC npc)
 		{
 			if (npc.CurrentCaptor() is not null)
 				return npc.AsFood().CanChatAsPrey;
@@ -248,7 +280,7 @@ namespace V2.NPCs
 		/// <param name="pred">The pred currently digesting this NPC.</param>
 		/// <param name="digestionDamage">The total amount of digestion damage to be dealt, before damage variation calculations.</param>
 		/// <returns>Whether or not the resulting digestion tick kills the NPC.</returns>
-		public static bool TakeDigestionDamage(NPC npc, Entity pred, double digestionDamage, bool voodoo = true)
+		public static bool TakeDigestionDamage(NPC npc, Entity pred, double digestionDamage, bool voodoo = false)
 		{
 			if (npc.life <= 0)
 				return true;
@@ -264,6 +296,23 @@ namespace V2.NPCs
 			trueDigestionDamage = (int)Math.Floor(npc.AsFood().TakenDigestionDamageModifier.ApplyTo(trueDigestionDamage));
 			npc.AsFood().SoftenedDigestionDamageTaken += npc.AsFood().SoftenedDigestionDamageModifier.ApplyTo(trueDigestionDamage);
 			npc.AsFood().SoftenedWearoffDelay = SoftenedWearoffMaxDelay;
+
+			//Baelz digestion crit (we are so fuckin good at making content)
+			bool digestionCrit = false;
+			Color DigestionTextColor = npc.friendly ? Color.DarkGreen : Color.LimeGreen;
+            if (pred is Player && !voodoo)
+			{
+				Player predPlayer = pred as Player;
+				int chance = Main.rand.Next(101);
+				int critChance = BaelzTransformation.GetCritChanceForDigestionTicks(predPlayer);
+				if (chance <= critChance)
+				{
+					digestionCrit = true;
+					trueDigestionDamage *= 2;
+                    DigestionTextColor = npc.friendly ? Color.FromNonPremultiplied(125, 175, 0, 255) : Color.FromNonPremultiplied(205, 255, 0, 255);
+                }
+			}
+
 			npc.life -= trueDigestionDamage;
 			switch (Main.netMode)
 			{
@@ -273,9 +322,9 @@ namespace V2.NPCs
 
 					CombatText digestionDamageText = Main.combatText[CombatText.NewText(
 						npc.Hitbox,
-						npc.friendly ? Color.DarkGreen : Color.LimeGreen,
+                        DigestionTextColor,
 						trueDigestionDamage,
-						false,
+						digestionCrit,
 						true
 					)];
 					digestionDamageText.position.X = (voodoo ? npc : pred).Center.X + ((voodoo ? npc : pred).direction * 28);

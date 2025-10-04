@@ -10,6 +10,7 @@ using V2.UI.SizeScanners;
 using V2.UI.StomachacheMeter;
 using V2.UI.StomachCapacityMeter;
 using V2.UI.StruggleSystem;
+using V2.UI.MintWispSummonMeter;
 
 namespace V2.UI
 {
@@ -28,7 +29,9 @@ namespace V2.UI
 		public StomachacheMeterUI StomachacheMeterInterface;
 
 		public UserInterface PlayerPredStruggleInterfaceLayer;
-		public StruggleSystemUI PlayerPredStruggleInterface;
+		public PlayerPredStruggleUI PlayerPredStruggleInterface;
+		public UserInterface PlayerPreyStruggleInterfaceLayer;
+		public PlayerPreyStruggleUI PlayerPreyStruggleInterface;
 
 		public UserInterface PredStatsMenuMouthInterfaceLayer;
 		public PredStatsMenuMouthUI PredStatsMenuMouthInterface;
@@ -40,7 +43,10 @@ namespace V2.UI
 		public UserInterface PredCapacityScannerInterfaceLayer;
 		public PredCapacityScannerUI PredCapacityScannerInterface;
 
-		public override void OnWorldLoad()
+        public UserInterface MintWispSummonMeterInterfaceLayer;
+        public MintWispSummonMeterUI MintWispSummonMeterInterface;
+
+        public override void OnWorldLoad()
 		{
 			MouseRestrictionDummyLayer = new UserInterface();
 			MouseRestrictionDummy = new MouseRestrictionDummyUI();
@@ -63,9 +69,13 @@ namespace V2.UI
 			StomachacheMeterInterfaceLayer.SetState(StomachacheMeterInterface);
 
 			PlayerPredStruggleInterfaceLayer = new UserInterface();
-			PlayerPredStruggleInterface = new StruggleSystemUI();
+			PlayerPredStruggleInterface = new PlayerPredStruggleUI();
 			PlayerPredStruggleInterface.Activate();
 			PlayerPredStruggleInterfaceLayer.SetState(PlayerPredStruggleInterface);
+			PlayerPreyStruggleInterfaceLayer = new UserInterface();
+			PlayerPreyStruggleInterface = new PlayerPreyStruggleUI();
+			PlayerPreyStruggleInterface.Activate();
+			PlayerPreyStruggleInterfaceLayer.SetState(PlayerPreyStruggleInterface);
 
 			PredStatsMenuMouthInterfaceLayer = new UserInterface();
 			PredStatsMenuMouthInterface = new PredStatsMenuMouthUI();
@@ -84,7 +94,12 @@ namespace V2.UI
 			PredCapacityScannerInterface = new PredCapacityScannerUI();
 			PredCapacityScannerInterface.Activate();
 			PredCapacityScannerInterfaceLayer.SetState(PredCapacityScannerInterface);
-		}
+
+            MintWispSummonMeterInterfaceLayer = new UserInterface();
+            MintWispSummonMeterInterface = new MintWispSummonMeterUI();
+            MintWispSummonMeterInterface.Activate();
+            MintWispSummonMeterInterfaceLayer.SetState(MintWispSummonMeterInterface);
+        }
 
 		public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
 		{
@@ -138,9 +153,17 @@ namespace V2.UI
 				AddInterfaceLayer(layers, MealSizeScannerInterfaceLayer, MealSizeScannerInterface, OverriddenHairWindowIndex + 2, "Sizemic Scanner");
 				AddInterfaceLayer(layers, PredCapacityScannerInterfaceLayer, PredCapacityScannerInterface, OverriddenHairWindowIndex + 3, "Servant's Scanner");
 				AddInterfaceLayer(layers, PlayerPredStruggleInterfaceLayer, PlayerPredStruggleInterface, OverriddenHairWindowIndex + 4, "Player Pred Struggles");
+<<<<<<< Updated upstream
+				AddInterfaceLayer(layers, PlayerPreyStruggleInterfaceLayer, PlayerPreyStruggleInterface, OverriddenHairWindowIndex + 5, "Player Prey Struggles");
+				AddInterfaceLayer(layers, PredStatsMenuInterfaceLayer, PredStatsMenuInterface, OverriddenHairWindowIndex + 6, "Pred Stats Menu");
+				AddInterfaceLayer(layers, PredStatsMenuMouthInterfaceLayer, PredStatsMenuMouthInterface, OverriddenHairWindowIndex + 7, "Pred Stats Menu's Hungry Mouth");
+			}
+=======
 				AddInterfaceLayer(layers, PredStatsMenuInterfaceLayer, PredStatsMenuInterface, OverriddenHairWindowIndex + 5, "Pred Stats Menu");
 				AddInterfaceLayer(layers, PredStatsMenuMouthInterfaceLayer, PredStatsMenuMouthInterface, OverriddenHairWindowIndex + 6, "Rose");
-			}
+                AddInterfaceLayer(layers, MintWispSummonMeterInterfaceLayer, MintWispSummonMeterInterface, OverriddenHairWindowIndex + 7, "Mint Wisp Summon Meter");
+            }
+>>>>>>> Stashed changes
 			int MouseTextIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Mouse Text"));
 			if (MouseTextIndex != -1)
 				AddInterfaceLayer(layers, HeldItemInterfaceLayer, HeldItemInterface, MouseTextIndex, "Held Item");

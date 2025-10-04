@@ -8,10 +8,7 @@ using Terraria.GameContent.Bestiary;
 using Terraria.ID;
 using Terraria.ModLoader;
 using V2.Core;
-using V2.Items.Voraria.Accessories.Transformations.Baelz;
-using V2.Items.Voraria.Consumables;
-using V2.Projectiles.Voraria.Weapons.Ranged;
-using V2.Projectiles.Voraria.Weapons.Summon;
+using V2.Projectiles.Voraria.Weapons.Summon.ShroomFairy;
 using V2.Sounds.Vore;
 
 namespace V2.NPCs.Voraria.Jungle

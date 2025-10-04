@@ -9,7 +9,6 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using V2.Items.Voraria.Consumables.PermanentUpgrades.Jujus;
 using V2.PlayerHandling;
 
 namespace V2.Items.Voraria.Armor

@@ -26,7 +26,7 @@ namespace V2.NPCs.Voraria.TownNPCs.Enigma
 			NPC.lifeMax = 500;
 			NPC.damage = 35;
 			NPC.defense = 38;
-			NPC.rarity = 4;
+			NPC.rarity = 1;
 			NPC.knockBackResist = 0f;
 			NPC.HitSound = SoundID.NPCHit1;
 			NPC.noGravity = true;

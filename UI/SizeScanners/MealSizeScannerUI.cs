@@ -41,13 +41,13 @@ namespace V2.UI.SizeScanners
 			for (int i = 0; i < Main.maxNPCs; i++)
 			{
 				NPC futureFood = Main.npc[i];
-				if (!futureFood.active || futureFood.CurrentCaptor() is not null)
+                if (!futureFood.active || futureFood.CurrentCaptor() is not null)
 					continue;
 
-				if (futureFood.AsFood().CannotBeEatenDueToShenanigans)
-					continue;
+                if (futureFood.AsFood().CannotBeEatenDueToShenanigans)
+                    continue;
 
-				if (futureFood.Distance(player.TrueCenter()) >= maxEntityDistanceForDrawing)
+                if (futureFood.Distance(player.TrueCenter()) >= maxEntityDistanceForDrawing)
 					continue;
 
 				string size = "[c/";
@@ -76,21 +76,29 @@ namespace V2.UI.SizeScanners
 
 				size += ":" + npcSize + "]";
 
-
+				spriteBatch.End();
+				spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
 				ChatManager.DrawColorCodedStringWithShadow(
 					spriteBatch,
 					FontAssets.MouseText.Value,
 					size,
-					futureFood.Center + new Vector2(
+					(futureFood.Center + new Vector2(
 						0,
-						-((futureFood.height / 2) + 20) * Main.GameZoomTarget
+<<<<<<< Updated upstream
+						-((futureFood.height / 2) + 16)
 					) - Main.screenPosition,
+=======
+						(futureFood.height / 2) + 16
+					) - Main.screenPosition),
+>>>>>>> Stashed changes
 					Color.White,
 					0f,
 					ChatManager.GetStringSize(FontAssets.MouseText.Value, size, Vector2.One) * 0.5f,
-					Vector2.One
+					new Vector2(1.25f, 1.25f) / Main.GameZoomTarget
 				);
-			}
+                spriteBatch.End();
+                spriteBatch.Begin();
+            }
 
 			for (int i = 0; i < Main.maxPlayers; i++)
 			{
@@ -125,19 +133,23 @@ namespace V2.UI.SizeScanners
 
 				size += "00:" + playerSize + "]";
 
-				ChatManager.DrawColorCodedStringWithShadow(
-					spriteBatch,
-					FontAssets.MouseText.Value,
-					size,
-					futureFood.Center + new Vector2(
-						0,
-						-((futureFood.height / 2) + 16)
-					) - Main.screenPosition,
-					Color.White,
-					0f,
-					ChatManager.GetStringSize(FontAssets.MouseText.Value, size, Vector2.One) * 0.5f,
-					Vector2.One
-				);
+                spriteBatch.End();
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
+                ChatManager.DrawColorCodedStringWithShadow(
+                    spriteBatch,
+                    FontAssets.MouseText.Value,
+                    size,
+                    (futureFood.Center + new Vector2(
+                        0,
+                        (futureFood.height / 2) + 20
+                    ) - Main.screenPosition),
+                    Color.White,
+                    0f,
+                    ChatManager.GetStringSize(FontAssets.MouseText.Value, size, Vector2.One) * 0.5f,
+                    new Vector2(1.25f, 1.25f) / Main.GameZoomTarget
+                );
+                spriteBatch.End();
+                spriteBatch.Begin();
 			}
 		}
 	}

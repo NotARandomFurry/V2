@@ -11,6 +11,14 @@ using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
+using V2.NPCs.Voraria.Hallow;
+using System.Collections;
+using V2.PlayerHandling;
+using V2.NPCs;
+using V2.Projectiles;
+using System.Security.Cryptography.X509Certificates;
+using static Terraria.ID.ContentSamples.CreativeHelper;
+using V2.Items;
 
 namespace V2
 {
@@ -54,142 +62,468 @@ namespace V2
 
 			Main.spriteBatch.Draw(p, position - p.Size()/2, Color.White);
 		}
-		public static class ItemIDSets
-		{
-			public static List<int> LargeGems =>
-			[
-				ItemID.LargeAmber,
-				ItemID.LargeAmethyst,
-				ItemID.LargeDiamond,
-				ItemID.LargeEmerald,
-				ItemID.LargeRuby,
-				ItemID.LargeSapphire,
-				ItemID.LargeTopaz,
-			];
+        public static class ItemIDSets
+        {
+            public static List<int> LargeGems =>
+            [
+                ItemID.LargeAmber,
+                ItemID.LargeAmethyst,
+                ItemID.LargeDiamond,
+                ItemID.LargeEmerald,
+                ItemID.LargeRuby,
+                ItemID.LargeSapphire,
+                ItemID.LargeTopaz,
+            ];
 
-			public static List<int> Dyes =>
-			[
-				ItemID.RedDye,
-				ItemID.OrangeDye,
-				ItemID.YellowDye,
-				ItemID.LimeDye,
-				ItemID.GreenDye,
-				ItemID.TealDye,
-				ItemID.CyanDye,
-				ItemID.SkyBlueDye,
-				ItemID.BlueDye,
-				ItemID.PurpleDye,
-				ItemID.VioletDye,
-				ItemID.PinkDye,
-				ItemID.BlackDye,
-				ItemID.BrownDye,
-				ItemID.SilverDye,
-				ItemID.BrightRedDye,
-				ItemID.BrightOrangeDye,
-				ItemID.BrightYellowDye,
-				ItemID.BrightLimeDye,
-				ItemID.BrightGreenDye,
-				ItemID.BrightTealDye,
-				ItemID.BrightCyanDye,
-				ItemID.BrightSkyBlueDye,
-				ItemID.BrightBlueDye,
-				ItemID.BrightPurpleDye,
-				ItemID.BrightVioletDye,
-				ItemID.BrightPinkDye,
-				ItemID.BrightBrownDye,
-				ItemID.BrightSilverDye,
-				ItemID.RedandBlackDye,
-				ItemID.OrangeandBlackDye,
-				ItemID.YellowandBlackDye,
-				ItemID.LimeandBlackDye,
-				ItemID.GreenandBlackDye,
-				ItemID.TealandBlackDye,
-				ItemID.CyanandBlackDye,
-				ItemID.SkyBlueandBlackDye,
-				ItemID.BlueandBlackDye,
-				ItemID.PurpleandBlackDye,
-				ItemID.VioletandBlackDye,
-				ItemID.PinkandBlackDye,
-				ItemID.BrownAndBlackDye,
-				ItemID.SilverAndBlackDye,
-				ItemID.RedandSilverDye,
-				ItemID.OrangeandSilverDye,
-				ItemID.YellowandSilverDye,
-				ItemID.LimeandSilverDye,
-				ItemID.GreenandSilverDye,
-				ItemID.TealandSilverDye,
-				ItemID.CyanandSilverDye,
-				ItemID.SkyBlueandSilverDye,
-				ItemID.BlueandSilverDye,
-				ItemID.PurpleandSilverDye,
-				ItemID.VioletandSilverDye,
-				ItemID.PinkandSilverDye,
-				ItemID.BrownAndSilverDye,
-				ItemID.BlackAndWhiteDye,
-				ItemID.FlameDye,
-				ItemID.GreenFlameDye,
-				ItemID.BlueFlameDye,
-				ItemID.YellowGradientDye,
-				ItemID.CyanGradientDye,
-				ItemID.VioletGradientDye,
-				ItemID.RainbowDye,
-				ItemID.IntenseFlameDye,
-				ItemID.IntenseGreenFlameDye,
-				ItemID.IntenseBlueFlameDye,
-				ItemID.IntenseRainbowDye,
-				ItemID.FlameAndBlackDye,
-				ItemID.GreenFlameAndBlackDye,
-				ItemID.BlueFlameAndBlackDye,
-				ItemID.FlameAndSilverDye,
-				ItemID.GreenFlameAndSilverDye,
-				ItemID.BlueFlameAndSilverDye,
-				ItemID.AcidDye,
-				ItemID.BlueAcidDye,
-				ItemID.RedAcidDye,
-				ItemID.ChlorophyteDye,
-				ItemID.GelDye,
-				ItemID.MushroomDye,
-				ItemID.GrimDye,
-				ItemID.HadesDye,
-				ItemID.BurningHadesDye,
-				ItemID.ShadowflameHadesDye,
-				ItemID.LivingOceanDye,
-				ItemID.LivingFlameDye,
-				ItemID.LivingRainbowDye,
-				ItemID.MartianArmorDye,
-				ItemID.MidnightRainbowDye,
-				ItemID.MirageDye,
-				ItemID.NegativeDye,
-				ItemID.PixieDye,
-				ItemID.PhaseDye,
-				ItemID.PurpleOozeDye,
-				ItemID.ReflectiveDye,
-				ItemID.ReflectiveCopperDye,
-				ItemID.ReflectiveGoldDye,
-				ItemID.ReflectiveObsidianDye,
-				ItemID.ReflectiveMetalDye,
-				ItemID.ReflectiveSilverDye,
-				ItemID.ShadowDye,
-				ItemID.ShiftingSandsDye,
-				ItemID.DevDye,
-				ItemID.TwilightDye,
-				ItemID.WispDye,
-				ItemID.InfernalWispDye,
-				ItemID.UnicornWispDye,
-				ItemID.PinkGelDye,
-				ItemID.ShiftingPearlSandsDye,
-				ItemID.NebulaDye,
-				ItemID.SolarDye,
-				ItemID.StardustDye,
-				ItemID.VortexDye,
-				ItemID.VoidDye,
-				ItemID.LokisDye,
-				ItemID.TeamDye,
-				ItemID.BloodbathDye,
-				ItemID.FogboundDye,
-				ItemID.HallowBossDye,
-			];
-		}
+            public static List<int> Dyes =>
+            [
+                ItemID.RedDye,
+                ItemID.OrangeDye,
+                ItemID.YellowDye,
+                ItemID.LimeDye,
+                ItemID.GreenDye,
+                ItemID.TealDye,
+                ItemID.CyanDye,
+                ItemID.SkyBlueDye,
+                ItemID.BlueDye,
+                ItemID.PurpleDye,
+                ItemID.VioletDye,
+                ItemID.PinkDye,
+                ItemID.BlackDye,
+                ItemID.BrownDye,
+                ItemID.SilverDye,
+                ItemID.BrightRedDye,
+                ItemID.BrightOrangeDye,
+                ItemID.BrightYellowDye,
+                ItemID.BrightLimeDye,
+                ItemID.BrightGreenDye,
+                ItemID.BrightTealDye,
+                ItemID.BrightCyanDye,
+                ItemID.BrightSkyBlueDye,
+                ItemID.BrightBlueDye,
+                ItemID.BrightPurpleDye,
+                ItemID.BrightVioletDye,
+                ItemID.BrightPinkDye,
+                ItemID.BrightBrownDye,
+                ItemID.BrightSilverDye,
+                ItemID.RedandBlackDye,
+                ItemID.OrangeandBlackDye,
+                ItemID.YellowandBlackDye,
+                ItemID.LimeandBlackDye,
+                ItemID.GreenandBlackDye,
+                ItemID.TealandBlackDye,
+                ItemID.CyanandBlackDye,
+                ItemID.SkyBlueandBlackDye,
+                ItemID.BlueandBlackDye,
+                ItemID.PurpleandBlackDye,
+                ItemID.VioletandBlackDye,
+                ItemID.PinkandBlackDye,
+                ItemID.BrownAndBlackDye,
+                ItemID.SilverAndBlackDye,
+                ItemID.RedandSilverDye,
+                ItemID.OrangeandSilverDye,
+                ItemID.YellowandSilverDye,
+                ItemID.LimeandSilverDye,
+                ItemID.GreenandSilverDye,
+                ItemID.TealandSilverDye,
+                ItemID.CyanandSilverDye,
+                ItemID.SkyBlueandSilverDye,
+                ItemID.BlueandSilverDye,
+                ItemID.PurpleandSilverDye,
+                ItemID.VioletandSilverDye,
+                ItemID.PinkandSilverDye,
+                ItemID.BrownAndSilverDye,
+                ItemID.BlackAndWhiteDye,
+                ItemID.FlameDye,
+                ItemID.GreenFlameDye,
+                ItemID.BlueFlameDye,
+                ItemID.YellowGradientDye,
+                ItemID.CyanGradientDye,
+                ItemID.VioletGradientDye,
+                ItemID.RainbowDye,
+                ItemID.IntenseFlameDye,
+                ItemID.IntenseGreenFlameDye,
+                ItemID.IntenseBlueFlameDye,
+                ItemID.IntenseRainbowDye,
+                ItemID.FlameAndBlackDye,
+                ItemID.GreenFlameAndBlackDye,
+                ItemID.BlueFlameAndBlackDye,
+                ItemID.FlameAndSilverDye,
+                ItemID.GreenFlameAndSilverDye,
+                ItemID.BlueFlameAndSilverDye,
+                ItemID.AcidDye,
+                ItemID.BlueAcidDye,
+                ItemID.RedAcidDye,
+                ItemID.ChlorophyteDye,
+                ItemID.GelDye,
+                ItemID.MushroomDye,
+                ItemID.GrimDye,
+                ItemID.HadesDye,
+                ItemID.BurningHadesDye,
+                ItemID.ShadowflameHadesDye,
+                ItemID.LivingOceanDye,
+                ItemID.LivingFlameDye,
+                ItemID.LivingRainbowDye,
+                ItemID.MartianArmorDye,
+                ItemID.MidnightRainbowDye,
+                ItemID.MirageDye,
+                ItemID.NegativeDye,
+                ItemID.PixieDye,
+                ItemID.PhaseDye,
+                ItemID.PurpleOozeDye,
+                ItemID.ReflectiveDye,
+                ItemID.ReflectiveCopperDye,
+                ItemID.ReflectiveGoldDye,
+                ItemID.ReflectiveObsidianDye,
+                ItemID.ReflectiveMetalDye,
+                ItemID.ReflectiveSilverDye,
+                ItemID.ShadowDye,
+                ItemID.ShiftingSandsDye,
+                ItemID.DevDye,
+                ItemID.TwilightDye,
+                ItemID.WispDye,
+                ItemID.InfernalWispDye,
+                ItemID.UnicornWispDye,
+                ItemID.PinkGelDye,
+                ItemID.ShiftingPearlSandsDye,
+                ItemID.NebulaDye,
+                ItemID.SolarDye,
+                ItemID.StardustDye,
+                ItemID.VortexDye,
+                ItemID.VoidDye,
+                ItemID.LokisDye,
+                ItemID.TeamDye,
+                ItemID.BloodbathDye,
+                ItemID.FogboundDye,
+                ItemID.HallowBossDye,
+            ];
+<<<<<<< Updated upstream
+=======
+
+            public static List<int> RegularBanners =>
+            [
+                ItemID.RedBanner,
+                ItemID.GreenBanner,
+                ItemID.BlueBanner,
+                ItemID.YellowBanner,
+                ItemID.MarchingBonesBanner,
+                ItemID.NecromanticSign,
+                ItemID.RustedCompanyStandard,
+                ItemID.RaggedBrotherhoodSigil,
+                ItemID.MoltenLegionFlag,
+                ItemID.DiabolicSigil,
+                ItemID.WorldBanner,
+                ItemID.SunBanner,
+                ItemID.GravityBanner,
+                ItemID.HellboundBanner,
+                ItemID.HellHammerBanner,
+                ItemID.HelltowerBanner,
+                ItemID.LostHopesofManBanner,
+                ItemID.ObsidianWatcherBanner,
+                ItemID.LavaEruptsBanner,
+                ItemID.AnkhBanner,
+                ItemID.SnakeBanner,
+                ItemID.OmegaBanner,
+            ];
+
+            public static List<int> EnemyBanners =>
+            [
+                ItemID.SlimeBanner,
+                ItemID.GreenSlimeBanner,
+                ItemID.PurpleSlimeBanner,
+                ItemID.UmbrellaSlimeBanner,
+                ItemID.RedSlimeBanner,
+                ItemID.YellowSlimeBanner,
+                ItemID.BlackSlimeBanner,
+                ItemID.MotherSlimeBanner,
+                ItemID.DungeonSlimeBanner,
+                ItemID.PinkyBanner,
+                ItemID.JungleSlimeBanner,
+                ItemID.SpikedJungleSlimeBanner,
+                ItemID.IceSlimeBanner,
+                ItemID.SpikedIceSlimeBanner,
+                ItemID.SandSlimeBanner,
+                ItemID.LavaSlimeBanner,
+                ItemID.ShimmerSlimeBanner,
+                ItemID.ToxicSludgeBanner,
+                ItemID.SlimerBanner,
+                ItemID.CorruptSlimeBanner,
+                ItemID.CrimslimeBanner,
+                ItemID.GastropodBanner,
+                ItemID.IlluminantSlimeBanner,
+                ItemID.RainbowSlimeBanner,
+                ItemID.BirdBanner,
+                ItemID.BunnyBanner,
+                ItemID.GoldfishBanner,
+                ItemID.ZombieBanner,
+                ItemID.DemonEyeBanner,
+                ItemID.GoblinScoutBanner,
+                ItemID.GnomeBanner,
+                ItemID.HarpyBanner,
+                ItemID.CrabBanner,
+                ItemID.PinkJellyfishBanner,
+                ItemID.SquidBanner,
+                ItemID.SeaSnailBanner,
+                ItemID.SharkBanner,
+                ItemID.PossessedArmorBanner,
+                ItemID.WanderingEyeBanner,
+                ItemID.WraithBanner,
+                ItemID.WerewolfBanner,
+                ItemID.WyvernBanner,
+                ItemID.BatBanner,
+                ItemID.CochinealBeetleBanner,
+                ItemID.CrawdadBanner,
+                ItemID.GiantShellyBanner,
+                ItemID.SalamanderBanner,
+                ItemID.WormBanner,
+                ItemID.NypmhBanner, //lmao
+                ItemID.SkeletonBanner,
+                ItemID.TimBanner,
+                ItemID.UndeadMinerBanner,
+                ItemID.JellyfishBanner,
+                ItemID.ArmoredSkeletonBanner,
+                ItemID.SkeletonArcherBanner,
+                ItemID.GiantBatBanner,
+                ItemID.MimicBanner,
+                ItemID.RockGolemBanner,
+                ItemID.RuneWizardBanner,
+                ItemID.AnglerFishBanner,
+                ItemID.GreenJellyfishBanner,
+                ItemID.GraniteFlyerBanner,
+                ItemID.GraniteGolemBanner,
+                ItemID.GreekSkeletonBanner,
+                ItemID.MedusaBanner,
+                ItemID.SpiderBanner,
+                ItemID.BlackRecluseBanner,
+                ItemID.AnomuraFungusBanner,
+                ItemID.FungiBulbBanner,
+                ItemID.MushiLadybugBanner,
+                ItemID.SporeBatBanner,
+                ItemID.SporeSkeletonBanner,
+                ItemID.SporeZombieBanner,
+                ItemID.FungoFishBanner,
+                ItemID.CyanBeetleBanner,
+                ItemID.IceBatBanner,
+                ItemID.PenguinBanner,
+                ItemID.SnowFlinxBanner,
+                ItemID.UndeadVikingBanner,
+                ItemID.ZombieEskimoBanner,
+                ItemID.ArmoredVikingBanner,
+                ItemID.IceElementalBanner,
+                ItemID.IceTortoiseBanner,
+                ItemID.IcyMermanBanner,
+                ItemID.PigronBanner,
+                ItemID.WolfBanner,
+                ItemID.DoctorBonesBanner,
+                ItemID.HornetBanner,
+                ItemID.JungleBatBanner,
+                ItemID.ManEaterBanner,
+                ItemID.SnatcherBanner,
+                ItemID.LacBeetleBanner,
+                ItemID.PiranhaBanner,
+                ItemID.AngryTrapperBanner,
+                ItemID.DerplingBanner,
+                ItemID.TortoiseBanner,
+                ItemID.GiantFlyingFoxBanner,
+                ItemID.JungleCreeperBanner,
+                ItemID.ArapaimaBanner,
+                ItemID.MossHornetBanner,
+                ItemID.MothBanner,
+                ItemID.LihzahrdBanner,
+                ItemID.FlyingSnakeBanner,
+                ItemID.AntlionBanner,
+                ItemID.WalkingAntlionBanner,
+                ItemID.FlyingAntlionBanner,
+                ItemID.LarvaeAntlionBanner,
+                ItemID.TombCrawlerBanner,
+                ItemID.VultureBanner,
+                ItemID.DesertBasiliskBanner,
+                ItemID.DesertDjinnBanner,
+                ItemID.DesertLamiaBanner,
+                ItemID.DesertGhoulBanner,
+                ItemID.DuneSplicerBanner,
+                ItemID.RavagerScorpionBanner,
+                ItemID.MummyBanner,
+                ItemID.BoneSerpentBanner,
+                ItemID.DemonBanner,
+                ItemID.FireImpBanner,
+                ItemID.HellbatBanner,
+                ItemID.LavaBatBanner,
+                ItemID.RedDevilBanner,
+                ItemID.AngryBonesBanner,
+                ItemID.CursedSkullBanner,
+                ItemID.SkeletonMageBanner,
+                ItemID.BlueArmoredBonesBanner,
+                ItemID.RustyArmoredBonesBanner,
+                ItemID.HellArmoredBonesBanner,
+                ItemID.DiablolistBanner,
+                ItemID.NecromancerBanner,
+                ItemID.RaggedCasterBanner,
+                ItemID.GiantCursedSkullBanner,
+                ItemID.DungeonSpiritBanner,
+                ItemID.BoneLeeBanner,
+                ItemID.SkeletonCommandoBanner,
+                ItemID.SkeletonSniperBanner,
+                ItemID.TacticalSkeletonBanner,
+                ItemID.PaladinBanner,
+                ItemID.DevourerBanner,
+                ItemID.EaterofSoulsBanner,
+                ItemID.CorruptorBanner,
+                ItemID.ClingerBanner,
+                ItemID.BigMimicCorruptionBanner,
+                ItemID.CursedHammerBanner,
+                ItemID.DarkMummyBanner,
+                ItemID.WorldFeederBanner,
+                ItemID.BloodCrawlerBanner,
+                ItemID.FaceMonsterBanner,
+                ItemID.CrimeraBanner,
+                ItemID.BloodFeederBanner,
+                ItemID.BloodJellyBanner,
+                ItemID.BloodMummyBanner,
+                ItemID.IchorStickerBanner,
+                ItemID.FloatyGrossBanner,
+                ItemID.CrimsonAxeBanner,
+                ItemID.BigMimicCrimsonBanner,
+                ItemID.HerplingBanner,
+                ItemID.ChaosElementalBanner,
+                ItemID.IlluminantBatBanner,
+                ItemID.BigMimicHallowBanner,
+                ItemID.PixieBanner,
+                ItemID.UnicornBanner,
+                ItemID.EnchantedSwordBanner,
+                ItemID.LightMummyBanner,
+                ItemID.MeteorHeadBanner,
+                ItemID.FlyingFishBanner,
+                ItemID.AngryNimbusBanner,
+                ItemID.RaincoatZombieBanner,
+                ItemID.IceGolemBanner,
+                ItemID.SandElementalBanner,
+                ItemID.TumbleweedBanner,
+                ItemID.SandsharkBanner,
+                ItemID.SandsharkHallowedBanner,
+                ItemID.SandsharkCorruptBanner,
+                ItemID.SandsharkCrimsonBanner,
+                ItemID.DandelionBanner,
+                ItemID.BloodZombieBanner,
+                ItemID.DripplerBanner,
+                ItemID.ZombieMermanBanner,
+                ItemID.BloodEelBanner,
+                ItemID.GoblinSharkBanner,
+                ItemID.EyeballFlyingFishBanner,
+                ItemID.BloodNautilusBanner,
+                ItemID.BloodSquidBanner,
+                ItemID.ClownBanner,
+                ItemID.CorruptBunnyBanner,
+                ItemID.CorruptGoldfishBanner,
+                ItemID.CorruptPenguinBanner,
+                ItemID.CrimsonBunnyBanner,
+                ItemID.CrimsonGoldfishBanner,
+                ItemID.CrimsonPenguinBanner,
+                ItemID.TheGroomBanner,
+                ItemID.TheBrideBanner,
+                ItemID.GoblinArcherBanner,
+                ItemID.GoblinThiefBanner,
+                ItemID.GoblinPeonBanner,
+                ItemID.GoblinWarriorBanner,
+                ItemID.GoblinSorcererBanner,
+                ItemID.GoblinSummonerBanner,
+                ItemID.RavenBanner,
+                ItemID.GhostBanner,
+                ItemID.HoppinJackBanner,
+                ItemID.ParrotBanner,
+                ItemID.PirateCaptainBanner,
+                ItemID.PirateDeadeyeBanner,
+                ItemID.PirateCrossbowerBanner,
+                ItemID.PirateCorsairBanner,
+                ItemID.PirateBanner,
+                ItemID.MisterStabbyBanner,
+                ItemID.SnowBallaBanner,
+                ItemID.SnowmanGangstaBanner,
+                ItemID.ButcherBanner,
+                ItemID.VampireBanner,
+                ItemID.CreatureFromTheDeepBanner,
+                ItemID.DeadlySphereBanner,
+                ItemID.DrManFlyBanner,
+                ItemID.FritzBanner,
+                ItemID.FrankensteinBanner,
+                ItemID.MothronBanner,
+                ItemID.ReaperBanner,
+                ItemID.EyezorBanner,
+                ItemID.NailheadBanner,
+                ItemID.PsychoBanner,
+                ItemID.SwampThingBanner,
+                ItemID.ThePossessedBanner,
+                ItemID.HeadlessHorsemanBanner,
+                ItemID.ScarecrowBanner,
+                ItemID.PoltergeistBanner,
+                ItemID.HellhoundBanner,
+                ItemID.SplinterlingBanner,
+                ItemID.ZombieElfBanner,
+                ItemID.ElfArcherBanner,
+                ItemID.ElfCopterBanner,
+                ItemID.GingerbreadManBanner,
+                ItemID.FlockoBanner,
+                ItemID.KrampusBanner,
+                ItemID.PresentMimicBanner,
+                ItemID.NutcrackerBanner,
+                ItemID.YetiBanner,
+                ItemID.MartianBrainscramblerBanner,
+                ItemID.MartianDroneBanner,
+                ItemID.MartianEngineerBanner,
+                ItemID.MartianGigazapperBanner,
+                ItemID.MartianGreyGruntBanner,
+                ItemID.MartianOfficerBanner,
+                ItemID.MartianRaygunnerBanner,
+                ItemID.MartianScutlixGunnerBanner,
+                ItemID.ScutlixBanner,
+                ItemID.MartianWalkerBanner,
+                ItemID.MartianTeslaTurretBanner,
+                ItemID.BlueCultistArcherBanner,
+                ItemID.BlueCultistCasterBanner,
+                ItemID.BlueCultistFighterBanner,
+                ItemID.WhiteCultistArcherBanner,
+                ItemID.WhiteCultistCasterBanner,
+                ItemID.WhiteCultistFighterBanner,
+                ItemID.VortexLarvaBanner,
+                ItemID.VortexHornetBanner,
+                ItemID.VortexHornetQueenBanner,
+                ItemID.VortexSoldierBanner,
+                ItemID.VortexRiflemanBanner,
+                ItemID.NebulaBrainBanner,
+                ItemID.NebulaHeadcrabBanner,
+                ItemID.NebulaSoldierBanner,
+                ItemID.NebulaBeastBanner,
+                ItemID.StardustLargeCellBanner,
+                ItemID.StardustSmallCellBanner,
+                ItemID.StardustSoldierBanner,
+                ItemID.StardustWormBanner,
+                ItemID.StardustSpiderBanner,
+                ItemID.StardustJellyfishBanner,
+                ItemID.SolarCoriteBanner,
+                ItemID.SolarSolenianBanner,
+                ItemID.SolarDrakomireBanner,
+                ItemID.SolarDrakomireRiderBanner,
+                ItemID.SolarSrollerBanner,
+                ItemID.SolarCrawltipedeBanner,
+                ItemID.DD2GoblinBanner,
+                ItemID.DD2GoblinBomberBanner,
+                ItemID.DD2JavelinThrowerBanner,
+                ItemID.DD2SkeletonBanner,
+                ItemID.DD2WyvernBanner,
+                ItemID.DD2DrakinBanner,
+                ItemID.DD2LightningBugBanner,
+                ItemID.DD2KoboldBanner,
+                ItemID.DD2KoboldFlyerBanner,
+                ItemID.DD2WitherBeastBanner,
+            ];
+
+            /*public static Dictionary<int, (double HPMult, double CalorieMult, double WellFedPower)> FoodItems => new Dictionary<int, (double HPMult, double CalorieMult, double WellFedPower)>
+            {
+                { ItemID.Marshmallow, (0.8, 1.1, 1) },
+                { ItemID., (0.8, 1.1, 1.1) },
+            };*/
+>>>>>>> Stashed changes
+        }
 
 		public static class NPCIDSets
 		{
@@ -246,6 +580,7 @@ namespace V2
 				NPCID.IceSlime,
 				NPCID.SpikedIceSlime,
 				NPCID.SandSlime,
+				ModContent.NPCType<GumdropSlime>()
 			];
 
 			public static List<int> GemCritters =>
@@ -527,8 +862,7 @@ namespace V2
 		// for the moment, what this does is search for each potential tooltip line before Tooltip0 in reverse order and return the first one that isn't null
 		public static bool FindLastTooltipLineBeforeFlavorText(List<TooltipLine> tooltips, out TooltipLine line)
 		{
-			line = tooltips.FirstOrDefault(x => x.Name == "V2StruggleDamage")
-				?? tooltips.FirstOrDefault(x => x.Name == "V2EdibleByNormalUse")
+			line = tooltips.FirstOrDefault(x => x.Name == "V2EdibleByNormalUse")
 				?? tooltips.FirstOrDefault(x => x.Name == "V2AcidResist")
 				?? tooltips.FirstOrDefault(x => x.Name == "V2SizeAsFood")
 				?? tooltips.FirstOrDefault(x => x.Name == "V2Durability")
@@ -648,5 +982,642 @@ namespace V2
 			else
 				tooltips.Insert(tooltips.IndexOf(baseLine) + lineOffset, newLine);
 		}
-	}
+
+        // damn terraria code and making shit private methods so i have to copy paste them >:C
+        public static void ExtractItemInTum(int ItemID, Entity pred)
+        {
+			int extractinatorBlockType = 219;
+            int num = 5000;
+            int num2 = 25;
+            int num3 = 50;
+            int num4 = -1;
+            int num5 = -1;
+            int num6 = -1;
+            int num7 = 1;
+            if (ItemID != 2337)
+            {
+                if (ItemID != 3347)
+                {
+                    if (ItemID == 4354)
+                    {
+                        num = -1;
+                        num2 = -1;
+                        num3 = -1;
+                        num4 = -1;
+                        num5 = -1;
+                        num7 = -1;
+                        num6 = 1;
+                    }
+                }
+                else
+                {
+                    num /= 3;
+                    num2 *= 2;
+                    num3 = 20;
+                    num4 = 10;
+                }
+            }
+            else
+            {
+                num = -1;
+                num2 = -1;
+                num3 = -1;
+                num4 = -1;
+                num5 = 1;
+                num7 = -1;
+            }
+            int num8 = -1;
+            int num9 = 1;
+            if (num4 != -1 && Main.rand.NextBool(num4))
+            {
+                num8 = 3380;
+                if (Main.rand.NextBool(5))
+                {
+                    num9 += Main.rand.Next(2);
+                }
+                if (Main.rand.NextBool(10))
+                {
+                    num9 += Main.rand.Next(3);
+                }
+                if (Main.rand.NextBool(15))
+                {
+                    num9 += Main.rand.Next(4);
+                }
+            }
+            else if (num7 != -1 && Main.rand.NextBool(2))
+            {
+                if (Main.rand.NextBool(12000))
+                {
+                    num8 = 74;
+                    if (Main.rand.NextBool(14))
+                    {
+                        num9 += Main.rand.Next(0, 2);
+                    }
+                    if (Main.rand.NextBool(14))
+                    {
+                        num9 += Main.rand.Next(0, 2);
+                    }
+                    if (Main.rand.NextBool(14))
+                    {
+                        num9 += Main.rand.Next(0, 2);
+                    }
+                }
+                else if (Main.rand.NextBool(800))
+                {
+                    num8 = 73;
+                    if (Main.rand.NextBool(6))
+                    {
+                        num9 += Main.rand.Next(1, 21);
+                    }
+                    if (Main.rand.NextBool(6))
+                    {
+                        num9 += Main.rand.Next(1, 21);
+                    }
+                    if (Main.rand.NextBool(6))
+                    {
+                        num9 += Main.rand.Next(1, 21);
+                    }
+                    if (Main.rand.NextBool(6))
+                    {
+                        num9 += Main.rand.Next(1, 21);
+                    }
+                    if (Main.rand.NextBool(6))
+                    {
+                        num9 += Main.rand.Next(1, 20);
+                    }
+                }
+                else if (Main.rand.NextBool(60))
+                {
+                    num8 = 72;
+                    if (Main.rand.NextBool(4))
+                    {
+                        num9 += Main.rand.Next(5, 26);
+                    }
+                    if (Main.rand.NextBool(4))
+                    {
+                        num9 += Main.rand.Next(5, 26);
+                    }
+                    if (Main.rand.NextBool(4))
+                    {
+                        num9 += Main.rand.Next(5, 26);
+                    }
+                    if (Main.rand.NextBool(4))
+                    {
+                        num9 += Main.rand.Next(5, 25);
+                    }
+                }
+                else
+                {
+                    num8 = 71;
+                    if (Main.rand.NextBool(3))
+                    {
+                        num9 += Main.rand.Next(10, 26);
+                    }
+                    if (Main.rand.NextBool(3))
+                    {
+                        num9 += Main.rand.Next(10, 26);
+                    }
+                    if (Main.rand.NextBool(3))
+                    {
+                        num9 += Main.rand.Next(10, 26);
+                    }
+                    if (Main.rand.NextBool(3))
+                    {
+                        num9 += Main.rand.Next(10, 25);
+                    }
+                }
+            }
+            else if (num != -1 && Main.rand.NextBool(num))
+            {
+                num8 = 1242;
+            }
+            else if (num5 != -1)
+            {
+                num8 = ((!Main.rand.NextBool(4)) ? 2674 : ((!Main.rand.NextBool(3)) ? 2006 : ((Main.rand.NextBool(3)) ? 2675 : 2002)));
+            }
+            else if (num6 != -1 && extractinatorBlockType == 642)
+            {
+                if (Main.rand.NextBool(10))
+                {
+                    switch (Main.rand.Next(5))
+                    {
+                        case 0:
+                            num8 = 4354;
+                            break;
+                        case 1:
+                            num8 = 4389;
+                            break;
+                        case 2:
+                            num8 = 4377;
+                            break;
+                        case 3:
+                            num8 = 5127;
+                            break;
+                        default:
+                            num8 = 4378;
+                            break;
+                    }
+                }
+                else
+                {
+                    switch (Main.rand.Next(5))
+                    {
+                        case 0:
+                            num8 = 4349;
+                            break;
+                        case 1:
+                            num8 = 4350;
+                            break;
+                        case 2:
+                            num8 = 4351;
+                            break;
+                        case 3:
+                            num8 = 4352;
+                            break;
+                        default:
+                            num8 = 4353;
+                            break;
+                    }
+                }
+            }
+            else if (num6 != -1)
+            {
+                switch (Main.rand.Next(5))
+                {
+                    case 0:
+                        num8 = 4349;
+                        break;
+                    case 1:
+                        num8 = 4350;
+                        break;
+                    case 2:
+                        num8 = 4351;
+                        break;
+                    case 3:
+                        num8 = 4352;
+                        break;
+                    default:
+                        num8 = 4353;
+                        break;
+                }
+            }
+            else if (num2 != -1 && Main.rand.NextBool(num2))
+            {
+                switch (Main.rand.Next(6))
+                {
+                    case 0:
+                        num8 = 181;
+                        break;
+                    case 1:
+                        num8 = 180;
+                        break;
+                    case 2:
+                        num8 = 177;
+                        break;
+                    case 3:
+                        num8 = 179;
+                        break;
+                    case 4:
+                        num8 = 178;
+                        break;
+                    default:
+                        num8 = 182;
+                        break;
+                }
+                if (Main.rand.NextBool(20))
+                {
+                    num9 += Main.rand.Next(0, 2);
+                }
+                if (Main.rand.NextBool(30))
+                {
+                    num9 += Main.rand.Next(0, 3);
+                }
+                if (Main.rand.NextBool(40))
+                {
+                    num9 += Main.rand.Next(0, 4);
+                }
+                if (Main.rand.NextBool(50))
+                {
+                    num9 += Main.rand.Next(0, 5);
+                }
+                if (Main.rand.NextBool(60))
+                {
+                    num9 += Main.rand.Next(0, 6);
+                }
+            }
+            else if (num3 != -1 && Main.rand.NextBool(num3))
+            {
+                num8 = 999;
+                if (Main.rand.NextBool(20))
+                {
+                    num9 += Main.rand.Next(0, 2);
+                }
+                if (Main.rand.NextBool(30))
+                {
+                    num9 += Main.rand.Next(0, 3);
+                }
+                if (Main.rand.NextBool(40))
+                {
+                    num9 += Main.rand.Next(0, 4);
+                }
+                if (Main.rand.NextBool(50))
+                {
+                    num9 += Main.rand.Next(0, 5);
+                }
+                if (Main.rand.NextBool(60))
+                {
+                    num9 += Main.rand.Next(0, 6);
+                }
+            }
+            else if (Main.rand.NextBool(3))
+            {
+                if (Main.rand.NextBool(5000))
+                {
+                    num8 = 74;
+                    if (Main.rand.NextBool(10))
+                    {
+                        num9 += Main.rand.Next(0, 3);
+                    }
+                    if (Main.rand.NextBool(10))
+                    {
+                        num9 += Main.rand.Next(0, 3);
+                    }
+                    if (Main.rand.NextBool(10))
+                    {
+                        num9 += Main.rand.Next(0, 3);
+                    }
+                    if (Main.rand.NextBool(10))
+                    {
+                        num9 += Main.rand.Next(0, 3);
+                    }
+                    if (Main.rand.NextBool(10))
+                    {
+                        num9 += Main.rand.Next(0, 3);
+                    }
+                }
+                else if (Main.rand.NextBool(400))
+                {
+                    num8 = 73;
+                    if (Main.rand.NextBool(5))
+                    {
+                        num9 += Main.rand.Next(1, 21);
+                    }
+                    if (Main.rand.NextBool(5))
+                    {
+                        num9 += Main.rand.Next(1, 21);
+                    }
+                    if (Main.rand.NextBool(5))
+                    {
+                        num9 += Main.rand.Next(1, 21);
+                    }
+                    if (Main.rand.NextBool(5))
+                    {
+                        num9 += Main.rand.Next(1, 21);
+                    }
+                    if (Main.rand.NextBool(5))
+                    {
+                        num9 += Main.rand.Next(1, 20);
+                    }
+                }
+                else if (Main.rand.NextBool(30))
+                {
+                    num8 = 72;
+                    if (Main.rand.NextBool(3))
+                    {
+                        num9 += Main.rand.Next(5, 26);
+                    }
+                    if (Main.rand.NextBool(3))
+                    {
+                        num9 += Main.rand.Next(5, 26);
+                    }
+                    if (Main.rand.NextBool(3))
+                    {
+                        num9 += Main.rand.Next(5, 26);
+                    }
+                    if (Main.rand.NextBool(3))
+                    {
+                        num9 += Main.rand.Next(5, 25);
+                    }
+                }
+                else
+                {
+                    num8 = 71;
+                    if (Main.rand.NextBool(2))
+                    {
+                        num9 += Main.rand.Next(10, 26);
+                    }
+                    if (Main.rand.NextBool(2))
+                    {
+                        num9 += Main.rand.Next(10, 26);
+                    }
+                    if (Main.rand.NextBool(2))
+                    {
+                        num9 += Main.rand.Next(10, 26);
+                    }
+                    if (Main.rand.NextBool(2))
+                    {
+                        num9 += Main.rand.Next(10, 25);
+                    }
+                }
+            }
+            else if (extractinatorBlockType == 642)
+            {
+                switch (Main.rand.Next(14))
+                {
+                    case 0:
+                        num8 = 12;
+                        break;
+                    case 1:
+                        num8 = 11;
+                        break;
+                    case 2:
+                        num8 = 14;
+                        break;
+                    case 3:
+                        num8 = 13;
+                        break;
+                    case 4:
+                        num8 = 699;
+                        break;
+                    case 5:
+                        num8 = 700;
+                        break;
+                    case 6:
+                        num8 = 701;
+                        break;
+                    case 7:
+                        num8 = 702;
+                        break;
+                    case 8:
+                        num8 = 364;
+                        break;
+                    case 9:
+                        num8 = 1104;
+                        break;
+                    case 10:
+                        num8 = 365;
+                        break;
+                    case 11:
+                        num8 = 1105;
+                        break;
+                    case 12:
+                        num8 = 366;
+                        break;
+                    default:
+                        num8 = 1106;
+                        break;
+                }
+                if (Main.rand.NextBool(20))
+                {
+                    num9 += Main.rand.Next(0, 2);
+                }
+                if (Main.rand.NextBool(30))
+                {
+                    num9 += Main.rand.Next(0, 3);
+                }
+                if (Main.rand.NextBool(40))
+                {
+                    num9 += Main.rand.Next(0, 4);
+                }
+                if (Main.rand.NextBool(50))
+                {
+                    num9 += Main.rand.Next(0, 5);
+                }
+                if (Main.rand.NextBool(60))
+                {
+                    num9 += Main.rand.Next(0, 6);
+                }
+            }
+            else
+            {
+                switch (Main.rand.Next(8))
+                {
+                    case 0:
+                        num8 = 12;
+                        break;
+                    case 1:
+                        num8 = 11;
+                        break;
+                    case 2:
+                        num8 = 14;
+                        break;
+                    case 3:
+                        num8 = 13;
+                        break;
+                    case 4:
+                        num8 = 699;
+                        break;
+                    case 5:
+                        num8 = 700;
+                        break;
+                    case 6:
+                        num8 = 701;
+                        break;
+                    default:
+                        num8 = 702;
+                        break;
+                }
+                if (Main.rand.NextBool(20))
+                {
+                    num9 += Main.rand.Next(0, 2);
+                }
+                if (Main.rand.NextBool(30))
+                {
+                    num9 += Main.rand.Next(0, 3);
+                }
+                if (Main.rand.NextBool(40))
+                {
+                    num9 += Main.rand.Next(0, 4);
+                }
+                if (Main.rand.NextBool(50))
+                {
+                    num9 += Main.rand.Next(0, 5);
+                }
+                if (Main.rand.NextBool(60))
+                {
+                    num9 += Main.rand.Next(0, 6);
+                }
+            }
+            //ItemLoader.ExtractinatorUse(ref num8, ref num9, extractType, extractinatorBlockType);
+            if (num8 > 0)
+            {
+                //int ResultingItem = Item.NewItem(Item.GetSource_None(), (int)pred.Center.X, (int)pred.Center.Y, 1, 1, num8, num9, false, -1, false, false);
+                //if (Main.netMode == NetmodeID.MultiplayerClient)
+                //{
+                //    NetMessage.SendData(MessageID.SyncItem, -1, -1, null, ResultingItem, 1f, 0f, 0f, 0, 0, 0);
+                //}
+				
+				if (pred is Player)
+                {
+					Player predPlayer = pred as Player;
+                    Item eatenItem = new Item();
+                    eatenItem.SetDefaults(num8);
+                    eatenItem.stack = num9;
+					SummonItemHere(pred, pred.Center, ref eatenItem, out Item itemDrop);
+					if (itemDrop.AsFood().MaxHealth > 0)
+						PredPlayer.Swallow(predPlayer, itemDrop, ForceSwallow: true, Silent: true);
+                }
+                else if (pred is NPC)
+                {
+                    NPC predNPC = pred as NPC;
+                    Item eatenItem = new Item();
+                    eatenItem.SetDefaults(num8);
+                    eatenItem.stack = num9;
+                    SummonItemHere(pred, pred.Center, ref eatenItem, out Item itemDrop);
+                    if (itemDrop.AsFood().MaxHealth > 0)
+                        PredNPC.Swallow(predNPC, itemDrop);
+                }
+                else if (pred is Projectile)
+                {
+                    Projectile predProjectile = pred as Projectile;
+                    Item eatenItem = new Item();
+                    eatenItem.SetDefaults(num8);
+                    eatenItem.stack = num9;
+                    SummonItemHere(pred, pred.Center, ref eatenItem, out Item itemDrop);
+                    if (itemDrop.AsFood().MaxHealth > 0)
+                        PredProjectile.Swallow(predProjectile, itemDrop);
+                }
+                //this.DropItemFromExtractinator(num8, num9);
+            }
+        }
+
+        public static void SummonItemHere(Entity entity, Vector2 position, ref Item item, out Item itemDrop)
+        {
+            itemDrop = null;
+            if (item.IsAir)
+                return;
+            if (item.favorited)
+                return;
+
+            int itemDropId = Item.NewItem(entity.GetSource_Misc("ThrowItem"), (int)position.X, (int)position.Y, entity.width, entity.height, item);
+            itemDrop = Main.item[itemDropId];
+
+            itemDrop.velocity.Y = (float)Main.rand.Next(-20, 1) * 0.2f;
+            itemDrop.velocity.X = (float)Main.rand.Next(-20, 21) * 0.2f;
+            itemDrop.noGrabDelay = 100;
+            itemDrop.newAndShiny = false;
+
+            if (Main.netMode == NetmodeID.MultiplayerClient)
+                NetMessage.SendData(MessageID.SyncItem, -1, -1, null, itemDropId);
+
+            item.TurnToAir();
+        }
+
+        public static string GetStatChangeString(float Amount, bool Flat = false, bool NegativeIsGood = false, bool IsVoreStat = false, bool IsMultiplier = false)
+        {
+            string PositiveColor = "[c/00FF00:+";
+            string NeutralColor = "[c/BDBDBD:";
+            string NegativeColor = "[c/FFBF5F:";
+
+            string text = string.Empty;
+
+            if (IsMultiplier)
+            {
+                PositiveColor = "[c/00FF00:x";
+                NeutralColor = "[c/BDBDBD:x";
+                NegativeColor = "[c/FFBF5F:x";
+
+
+                if (NegativeIsGood && IsVoreStat)
+                {
+                    PositiveColor = "[c/BF5F00:x";
+                    NegativeColor = "[c/007F00:x";
+                }
+                else if (IsVoreStat)
+                {
+                    PositiveColor = "[c/007F00:x";
+                    NegativeColor = "[c/BF5F00:x";
+                }
+                else if (NegativeIsGood)
+                {
+                    PositiveColor = "[c/FFBF5F:x";
+                    NegativeColor = "[c/00FF00:x";
+                }
+
+                text = Amount.ToString();
+                if (Amount > 1)
+                {
+                    text = PositiveColor + text + "]";
+                }
+                else if (Amount < 1)
+                {
+                    text = NegativeColor + text + "]";
+                }
+                else
+                    text = NeutralColor + text + "]";
+                return text;
+            }
+
+
+            if (NegativeIsGood && IsVoreStat)
+            {
+                PositiveColor = "[c/BF5F00:+";
+                NegativeColor = "[c/007F00:";
+            }
+            else if (IsVoreStat)
+            {
+                PositiveColor = "[c/007F00:+";
+                NegativeColor = "[c/BF5F00:";
+            }
+            else if (NegativeIsGood)
+			{
+                PositiveColor = "[c/FFBF5F:+";
+                NegativeColor = "[c/00FF00:";
+            }
+
+            text = Flat ? Amount.ToString() : Amount.ToString() + "%";
+
+            if (Amount > 0)
+            {
+                text = PositiveColor + text + "]";
+            }
+            else if (Amount < 0)
+            {
+                text = NegativeColor + text + "]";
+            }
+            else
+                text = NeutralColor + text + "]";
+            return text;
+        }
+    }
 }

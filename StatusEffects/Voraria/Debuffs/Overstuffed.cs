@@ -12,13 +12,6 @@ using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using Terraria.UI.Chat;
-using V2.Core;
-using V2.Items.Vanilla.Accessories;
-using V2.Items.Voraria.Accessories;
-using V2.Items.Voraria.Accessories.Transformations;
-using V2.Items.Voraria.Accessories.Transformations.Baelz;
-using V2.Items.Voraria.Consumables.Potions;
 using V2.PlayerHandling;
 
 namespace V2.StatusEffects.Voraria.Debuffs

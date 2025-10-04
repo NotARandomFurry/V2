@@ -90,28 +90,32 @@ namespace V2.UI.StomachCapacityMeter
 
 			PrepareFields(Main.LocalPlayer);
 
-			Vector2 topLeftCorner = new Vector2(
-				Main.screenWidth / 2,
-				Main.screenHeight / 2
-			);
-			topLeftCorner.X -= 20 + (_capacitySegmentsCount * (_stomachCapacityPanelMiddle.Value.Width / 2));
-			topLeftCorner.Y += 32 * Main.GameZoomTarget;
-			topLeftCorner += Main.LocalPlayer.Center - (Main.screenPosition + new Vector2(Main.screenWidth / 2 * Main.UIScale, Main.screenHeight / 2));
-			
-			topLeftCorner.Y /= Main.UIScale;
-			
-			for (int i = 0; i < _capacitySegmentsCount; i++)
+            Vector2 topLeftCorner = Main.LocalPlayer.Center - Main.screenPosition;
+
+            topLeftCorner.X -= (20 + _capacitySegmentsCount * (_stomachCapacityPanelMiddle.Value.Width / 2)) * Main.UIScale;
+			topLeftCorner.Y += 32 * Main.UIScale * Main.GameZoomTarget;
+
+            topLeftCorner /= Main.UIScale;
+
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.UIScaleMatrix);
+
+            for (int i = 0; i < _capacitySegmentsCount; i++)
 			{
 				spriteBatch.Draw(
 					_stomachCapacityPanelMiddle.Value,
 					topLeftCorner + new Vector2(20 + (i * _stomachCapacityPanelMiddle.Value.Width), 4),
 					_stomachCapacityPanelMiddle.Value.Bounds,
+<<<<<<< Updated upstream
+					Color.White
+=======
 					Color.White,
 					0f,
 					default,
-					Main.UIScale,
+					1,
 					SpriteEffects.None,
 					0f
+>>>>>>> Stashed changes
 				);
 			}
 
@@ -133,12 +137,16 @@ namespace V2.UI.StomachCapacityMeter
 					fillTexture,
 					topLeftCorner + new Vector2(20 + (i * _stomachCapacityPanelMiddle.Value.Width), 10),
 					fullDrawRect,
+<<<<<<< Updated upstream
+					Color.White
+=======
 					Color.White,
 					0f,
 					default,
-					Main.UIScale,
+					1,
 					SpriteEffects.None,
 					0f
+>>>>>>> Stashed changes
 				);
 
 				if (_kickyPreyPercent <= 0 || (double)i / (double)_capacitySegmentsCount >= _kickyPreyPercent)
@@ -157,12 +165,16 @@ namespace V2.UI.StomachCapacityMeter
 					kickyFillTexture,
 					topLeftCorner + new Vector2(20 + (i * _stomachCapacityPanelMiddle.Value.Width), 10),
 					kickyDrawRect,
+<<<<<<< Updated upstream
+					Color.White
+=======
 					Color.White,
 					0f,
 					default,
-					Main.UIScale,
-					SpriteEffects.None,
+                    1,
+                    SpriteEffects.None,
 					0f
+>>>>>>> Stashed changes
 				);
 			}
 
@@ -170,23 +182,31 @@ namespace V2.UI.StomachCapacityMeter
 				_stomachCapacityPanelLeft.Value,
 				topLeftCorner,
 				_stomachCapacityPanelLeft.Value.Bounds,
+<<<<<<< Updated upstream
+				Color.White
+=======
 				Color.White,
 				0f,
 				default,
-				Main.UIScale,
+				1,
 				SpriteEffects.None,
 				0f
+>>>>>>> Stashed changes
 			);
 			spriteBatch.Draw(
 				_stomachCapacityPanelRight.Value,
 				topLeftCorner + new Vector2(20 + (_capacitySegmentsCount * _stomachCapacityPanelMiddle.Value.Width), 4),
 				_stomachCapacityPanelRight.Value.Bounds,
+<<<<<<< Updated upstream
+				Color.White
+=======
 				Color.White,
 				0f,
 				default,
-				Main.UIScale,
+				1,
 				SpriteEffects.None,
 				0f
+>>>>>>> Stashed changes
 			);
 
 			Rectangle hoverRect = new Rectangle(
@@ -228,7 +248,10 @@ namespace V2.UI.StomachCapacityMeter
 				}
 				Main.mouseText = true;
 			}
-		}
+
+            spriteBatch.End();
+            spriteBatch.Begin();
+        }
 
 		private void PrepareFields(Player player)
 		{

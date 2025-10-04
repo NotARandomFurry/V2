@@ -81,7 +81,11 @@ namespace V2.NPCs.Voraria.Sky
 		public override void AI()
 		{
 			NPC.TargetClosest(false);
-			if (NPC.HasValidTarget)
+			if (NPC.collideX)
+				NPC.velocity.X *= -1;
+            if (NPC.collideY)
+                NPC.velocity.Y *= -1;
+            if (NPC.HasValidTarget)
 			{
 				Player? target = Main.player[NPC.target];
 				if (target != null)

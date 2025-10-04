@@ -15,8 +15,8 @@ namespace V2.PlayerHandling.PredPlayerGoals.Amateur
 		public override string InternalName => "EatFungalGift";
 		public override string DisplayName(Player pred) => "Mods.V2.PredPlayerGoals.Amateur.EatFungalGift.Name";
 		public override string Description(Player pred) => "Mods.V2.PredPlayerGoals.Amateur.EatFungalGift.Description";
-		public override bool Available(Player pred) => pred.HasItemInInventoryOrOpenVoidBag(ModContent.ItemType<ShroomStaff>());
-		public override int StatPointsFromCompletion => 14;
+		public override bool Available(Player pred) => pred.HasItemInInventoryOrOpenVoidBag(ModContent.ItemType<ShroomStaff>()) || Complete(pred);
+		public override int StatPointsFromCompletion => 11;
 
 		public override ProgressionStage Stage => ModContent.GetInstance<AmateurStage>();
 	}

@@ -52,7 +52,7 @@ namespace V2.Items.Voraria.Consumables.PermanentUpgrades
 			Item.AsFood().EdibleOnUse = true;
 
 			Item.AsFood().OnSwallowDamage = 15;
-			Item.AsFood().OnSwallowDeathReason = "{0} thought they were taking a shot, not getting one.";
+			Item.AsFood().OnSwallowDeathReason = "Mods.V2.Death.SwallowDamage.NurseNeedle";
 
 			Item.AsFood().OnBreak += OnBreak;
 		}

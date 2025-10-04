@@ -8,6 +8,7 @@ using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using V2.Core;
+using V2.StatusEffects.Voraria.Debuffs;
 
 namespace V2.NPCs
 {
@@ -68,7 +69,11 @@ namespace V2.NPCs
 
 		public bool IsTileEntity { get; set; }
 
-		public int Aggro { get; set; }
+		public Vector2? VelocityBeforeTimeStun { get; set; }
+		public int TimeStunCooldown { get; set; }
+        public int TimeStunCounter { get; set; }
+
+        public int Aggro { get; set; }
 
 		public int FatassCrushingIFrames { get; set; }
 		public bool CanBeDamagedByFallingPeople { get; set; }
@@ -92,11 +97,13 @@ namespace V2.NPCs
 			TargetIndex = -1;
 			TargetPriority = TargetPriorityLevel.None;
 
-			IsTileEntity = false;
+			VelocityBeforeTimeStun = null;
 
 			IsTileEntity = false;
+
 			CanBeDamagedByFallingPeople = true;
 			FatassCrushingIFrames = 0;
+			TimeStunCounter = 0;
 
 			Aggro = 0;
 
@@ -106,6 +113,13 @@ namespace V2.NPCs
 		{
 			if (npc.AsV2NPC().FatassCrushingIFrames > 0)
 				npc.AsV2NPC().FatassCrushingIFrames--;
+			if (TimeStunCooldown > 0)
+				TimeStunCooldown--;
+			if (!npc.HasBuff<TimeStun>() && VelocityBeforeTimeStun != null)
+			{
+				npc.velocity = (Vector2)VelocityBeforeTimeStun;
+				VelocityBeforeTimeStun = null;
+			}
 		}
 
 		public static void SetChatboxText(NPC npc, Player player, string chatText)
@@ -143,6 +157,15 @@ namespace V2.NPCs
 		{
 
 		}
+
+
+        public override void DrawEffects(NPC npc, ref Color drawColor)
+        {
+            if (npc.HasBuff<TimeStun>())
+                drawColor = new Color(0, 0, 255);
+			else if (npc.realLife > -1 && Main.npc[npc.realLife].active && Main.npc[npc.realLife].HasBuff<TimeStun>())
+                drawColor = new Color(0, 0, 255);
+        }
 
 		public override bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
 		{

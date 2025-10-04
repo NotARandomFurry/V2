@@ -7,7 +7,7 @@ using Terraria;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using V2.Items.Voraria.Consumables.PermanentUpgrades;
-using V2.Items.Voraria.Consumables.PermanentUpgrades.Jujus;
+using V2.Items.Voraria.Accessories.Thingymajigs;
 using V2.PlayerHandling;
 
 namespace V2.Compat
@@ -25,13 +25,20 @@ namespace V2.Compat
 		public override void ApplyCompatibility()
 		{
 			AddSingleConsumablePlayer<PureSwallowBoost1>("PureSwallow1");
-			AddSingleConsumablePlayer<BiomeJujuForest>();
-			AddSingleConsumablePlayer<BiomeJujuDesert>();
-			AddSingleConsumablePlayer<BiomeJujuSnow>();
-			AddSingleConsumablePlayer<BiomeJujuJungle>();
-			AddSingleConsumablePlayer<BiomeJujuSky>();
-			AddSingleConsumablePlayer<ShimmerJuju>();
-		}
+            AddSingleConsumablePlayer<BiomeCorruptionThingy>("Thingy_BiomeCorruption");
+            AddSingleConsumablePlayer<BiomeCrimsonThingy>("Thingy_BiomeCrimson");
+            AddSingleConsumablePlayer<BiomeDesertThingy>("Thingy_BiomeDesert");
+			AddSingleConsumablePlayer<BiomeDungeonThingy>("Thingy_BiomeDungeon");
+            AddSingleConsumablePlayer<BiomeForestThingy>("Thingy_BiomeForest");
+            AddSingleConsumablePlayer<BiomeHallowThingy>("Thingy_BiomeHallow");
+            AddSingleConsumablePlayer<BiomeJungleThingy>("Thingy_BiomeJungle");
+            AddSingleConsumablePlayer<BiomeMushroomThingy>("Thingy_BiomeMushroom");
+            AddSingleConsumablePlayer<BiomeOceanThingy>("Thingy_BiomeOcean");
+            AddSingleConsumablePlayer<BiomeShimmerThingy>("Thingy_BiomeShimmer");
+            AddSingleConsumablePlayer<BiomeSkyThingy>("Thingy_BiomeSky");
+            AddSingleConsumablePlayer<BiomeSnowThingy>("Thingy_BiomeSnow");
+            AddSingleConsumablePlayer<BiomeUnderworldThingy>("Thingy_BiomeUnderworld");
+        }
 		public override void UnapplyCompatibility()
 		{
 
