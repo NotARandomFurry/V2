@@ -5,13 +5,11 @@ using ReLogic.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Input;
 using Terraria;
 using Terraria.Audio;
 using Terraria.Chat;
 using Terraria.DataStructures;
-using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -19,7 +17,7 @@ using Terraria.ModLoader.IO;
 using V2.Core;
 using V2.Items;
 using V2.Items.Voraria.Consumables.PermanentUpgrades;
-using V2.Items.Voraria.Consumables.PermanentUpgrades.Jujus;
+using V2.Items.Voraria.Accessories.Thingymajigs;
 using V2.NPCs;
 using V2.PlayerHandling.PredPlayerGoals;
 using V2.PlayerHandling.PredPlayerGoals.Amateur;
@@ -29,9 +27,9 @@ using V2.Projectiles;
 using V2.Sounds.Vore;
 using V2.StatusEffects.Voraria.Buffs;
 using V2.StatusEffects.Voraria.Debuffs;
-using V2.Items.Voraria.Accessories.Transformations;
-using V2.Items.Voraria.Accessories.Transformations.Baelz;
 using V2.PlayerHandling.PredPlayerGoals.Skilled;
+using V2.Projectiles.Voraria.Other;
+using V2.PlayerHandling.PredPlayerGoals.Intermediate;
 
 namespace V2.PlayerHandling
 {
@@ -347,6 +345,8 @@ namespace V2.PlayerHandling
 
 		public SlotId BellySlosh { get; set; }
 
+		public float BurpPitchOffset { get; set; }
+
 		public bool charmBracelet;
 		public int CharmBraceletSlots
 		{
@@ -544,6 +544,7 @@ namespace V2.PlayerHandling
 		}
 
 		public StatModifier StomachWeightModifier;
+		public double FlatStomachWeightModifier { get; set; }
 
 		public double StomachWeight
 		{
@@ -576,9 +577,10 @@ namespace V2.PlayerHandling
 								break;
 						}
 					}
-				}
-				return (double)StomachWeightModifier.ApplyTo((float)totalBellyWeight);
-			}
+                }
+                totalBellyWeight = (double)StomachWeightModifier.ApplyTo((float)totalBellyWeight);
+                return Math.Max(totalBellyWeight + FlatStomachWeightModifier, 0);
+            }
 		}
 
 		public double KickyStomachWeight
@@ -613,9 +615,10 @@ namespace V2.PlayerHandling
 								break;
 						}
 					}
-				}
-				return (double)StomachWeightModifier.ApplyTo((float)totalBellyWeight);
-			}
+                }
+				totalBellyWeight = (double)StomachWeightModifier.ApplyTo((float)totalBellyWeight);
+                return Math.Max(totalBellyWeight + FlatStomachWeightModifier, 0);
+            }
 		}
 
 		public double PercentBellySizeModifier { get; set; }
@@ -634,6 +637,7 @@ namespace V2.PlayerHandling
 
 		public bool SizeScanner { get; set; }
 
+<<<<<<< Updated upstream
         public bool Rose { get; set; }
 		public bool Venomizeous { get; set; }
         public bool FungalFairySetBonus { get; set; }
@@ -649,6 +653,40 @@ namespace V2.PlayerHandling
         public double WeightLossMultiplier { get; set; }
         public bool HasJumped { get; set; }
 
+=======
+		public int ItemCooldownWhenSwallowingANonStackedItemFromTheMouseSlotBecauseThisGameIsCoolAndAwesome { get; set; }
+
+		public bool Rose { get; set; }
+		public bool Venomizeous { get; set; }
+		public bool FungalFairySetBonus { get; set; }
+        public double WellFed_Multiplier { get; set; }
+
+        //basically everything related to wg or other things
+        public double BaeTransformation_ExtraWeight { get; set; }
+        public double KroniiTransformation_ExtraWeight { get; set; }
+        public double OllieTransformation_ExtraWeight { get; set; }
+        public double SoraTransformation_ExtraWeight { get; set; }
+        public double MintTransformation_ExtraWeight { get; set; }
+		public bool WeightDisplay { get; set; }
+		public double ActuallyReasonableAmountOfFood { get; set; }
+		public double BaseWeightGainRatio { get; set; }
+		public double WeightGainMultiplier { get; set; }
+		public double WeightLossMultiplier { get; set; }
+
+        public StatModifier BodyWeightModifier;
+        public double FlatBodyWeightModifier { get; set; }
+        public bool HasJumped { get; set; }
+
+		//study shows that being really heavy and then falling on other people hurts said people
+        public int isAtCrushingSpeed { get; set; }
+        public int CrushingDamage { get; set; }
+        public int LandState { get; set; }
+
+        public bool StrangeThingymajig {  get; set; }
+		public bool AquaticThingymajig {  get; set; }
+        public bool PermanentAquaticThingymajig { get; set; }
+
+>>>>>>> Stashed changes
         public override void Initialize()
 		{
 			SmallGulps = Gulps.Short;
@@ -706,12 +744,22 @@ namespace V2.PlayerHandling
 
 			StomachWeightAtSleepStart = 0.0;
 			OverfullTime = 0;
+<<<<<<< Updated upstream
             BeeTransformation_ExtraWeight = 0;
             BaeTransformation_ExtraWeight = 0;
+=======
+			BaeTransformation_ExtraWeight = 0;
+            KroniiTransformation_ExtraWeight = 0;
+            OllieTransformation_ExtraWeight = 0;
+            SoraTransformation_ExtraWeight = 0;
+            MintTransformation_ExtraWeight = 0;
+>>>>>>> Stashed changes
         }
 
 		public override void ResetEffects()
 		{
+			BurpPitchOffset = 0;
+
 			SyncRequired_PredPoints = false;
 
 			charmNoDigest = false;
@@ -749,6 +797,7 @@ namespace V2.PlayerHandling
 			DebuffDisextensionTimeModifier = StatModifier.Default;
 
 			StomachWeightModifier = StatModifier.Default;
+			BodyWeightModifier = StatModifier.Default;
 			if (V2.GetFooled)
 				StomachWeightModifier *= 0.0f;
 
@@ -767,6 +816,10 @@ namespace V2.PlayerHandling
             Rose = false;
 			Venomizeous = false;
 
+			StrangeThingymajig = false;
+			AquaticThingymajig = false;
+			PermanentAquaticThingymajig = false;
+
 			if (Player.sleeping.FullyFallenAsleep)
 			{
 				Player.AsPred().DigestionTickRateModifier += 0.25f;
@@ -783,39 +836,82 @@ namespace V2.PlayerHandling
 				Player.AddBuff(ModContent.BuffType<WellFed>(), 3);
             if (Player.jump <= 0)
 				Player.AsPred().HasJumped = false;
+<<<<<<< Updated upstream
+=======
+			if (Player.AsPred().ItemCooldownWhenSwallowingANonStackedItemFromTheMouseSlotBecauseThisGameIsCoolAndAwesome > 0)
+				Player.AsPred().ItemCooldownWhenSwallowingANonStackedItemFromTheMouseSlotBecauseThisGameIsCoolAndAwesome--;
+>>>>>>> Stashed changes
         }
 
 		public void UpdatePredStatPointsFromPermUpgrades()
 		{
 			if (PermanentUpgradesGained.TryGetValue("PureSwallow1", out bool swallowStimsEaten) && swallowStimsEaten)
 				GLP.Base += PureSwallowBoost1.GLPBonus;
-			if (PermanentUpgradesGained.TryGetValue("BiomeJujuForest", out bool eatenForestJuju) && eatenForestJuju)
+			if (PermanentUpgradesGained.TryGetValue("Thingy_BiomeForest", out bool eatenForestThingy) && eatenForestThingy)
 			{
-				TUM.Base += BiomeJujuForest.PermTUMBonus;
-				ABS.Base += BiomeJujuForest.PermABSBonus;
+				SwallowCapacityModifier += BiomeForestThingy.PermBuff;
+				PreyAbsorptionRateModifier += BiomeForestThingy.PermBuff;
 			}
-			if (PermanentUpgradesGained.TryGetValue("BiomeJujuDesert", out bool eatenDesertJuju) && eatenDesertJuju)
+			if (PermanentUpgradesGained.TryGetValue("Thingy_BiomeShimmer", out bool eatenShimmerThingy) && eatenShimmerThingy)
 			{
+<<<<<<< Updated upstream
 				ACI.Base += BiomeJujuDesert.PermACIBonus;
 				Player.AsFood().StruggleStrengthModifier += BiomeJujuDesert.PermStruggleBonus;
+=======
+				GLP.Base += BiomeShimmerThingy.PermBuff;
+				TUM.Base += BiomeShimmerThingy.PermBuff;
+				ACI.Base += BiomeShimmerThingy.PermBuff;
+				ABS.Base += BiomeShimmerThingy.PermBuff;
+>>>>>>> Stashed changes
 			}
-			if (PermanentUpgradesGained.TryGetValue("BiomeJujuSnow", out bool eatenSnowJuju) && eatenSnowJuju)
-			{
-				GLP.Base += BiomeJujuSnow.PermGLPBonus;
-				ABS.Base += BiomeJujuSnow.PermABSBonus;
-			}
-			if (PermanentUpgradesGained.TryGetValue("BiomeJujuJungle", out bool eatenJungleJuju) && eatenJungleJuju)
-				TUM.Base += BiomeJujuJungle.PermTUMBonus;
-			if (PermanentUpgradesGained.TryGetValue("BiomeJujuSky", out bool eatenSkyJuju) && eatenSkyJuju)
-				StomachWeightModifier *= 1f - BiomeJujuSky.PermStomachWeight;
-			if (PermanentUpgradesGained.TryGetValue("ShimmerJuju", out bool eatenShimmerJuju) && eatenShimmerJuju)
-			{
-				GLP.Base += ShimmerJuju.PermAllBonus;
-				TUM.Base += ShimmerJuju.PermAllBonus;
-				ACI.Base += ShimmerJuju.PermAllBonus;
-				ABS.Base += ShimmerJuju.PermAllBonus;
-			}
-		}
+			if (PermanentUpgradesGained.TryGetValue("Thingy_BiomeSky", out bool eatenSkyThingy) && eatenSkyThingy)
+            {
+                StomachWeightModifier += BiomeSkyThingy.PermBuff;
+                BodyWeightModifier += BiomeSkyThingy.PermBuff;
+            }
+            if (PermanentUpgradesGained.TryGetValue("Thingy_BiomeSnow", out bool eatenSnowThingy) && eatenSnowThingy)
+            {
+				StomachacheMeterCapacityModifier += BiomeSnowThingy.PermAcheBuff;
+            }
+            if (PermanentUpgradesGained.TryGetValue("Thingy_BiomeDesert", out bool eatenDesertThingy) && eatenDesertThingy)
+            {
+                Player.AsFood().StruggleDamageModifier += BiomeDesertThingy.PermStrBuff;
+            }
+            if (PermanentUpgradesGained.TryGetValue("Thingy_BiomeJungle", out bool eatenJungleThingy) && eatenJungleThingy)
+            {
+				StomachCapacityModifier += BiomeJungleThingy.PermCapBuff;
+            }
+            if (PermanentUpgradesGained.TryGetValue("Thingy_BiomeCorruption", out bool eatenCorruptionThingy) && eatenCorruptionThingy)
+            {
+                StomachacheMeterCapacityModifier += BiomeCorruptionThingy.PermAcheBuff;
+            }
+            if (PermanentUpgradesGained.TryGetValue("Thingy_BiomeCrimson", out bool eatenCrimsonThingy) && eatenCrimsonThingy)
+            {
+                DigestionTickDamageModifier += BiomeCrimsonThingy.PermDigestBuff;
+            }
+            if (PermanentUpgradesGained.TryGetValue("Thingy_BiomeHallow", out bool eatenHallowThingy) && eatenHallowThingy)
+            {
+                Player.moveSpeed += BiomeHallowThingy.PermSpdBuff;
+                PreyAbsorptionRateModifier += BiomeHallowThingy.PermAbsBuff;
+            }
+            if (PermanentUpgradesGained.TryGetValue("Thingy_BiomeMushroom", out bool eatenMushroomThingy) && eatenMushroomThingy)
+            {
+                BodyWeightModifier += BiomeMushroomThingy.PermBWeightBuff;
+            }
+            if (PermanentUpgradesGained.TryGetValue("Thingy_BiomeDungeon", out bool eatenDungeonThingy) && eatenDungeonThingy)
+            {
+				Player.statDefense += BiomeDungeonThingy.PermDefBuff;
+                StomachacheMeterCapacityModifier += BiomeDungeonThingy.PermAcheBuff;
+            }
+            if (PermanentUpgradesGained.TryGetValue("Thingy_BiomeUnderworld", out bool eatenUnderworldThingy) && eatenUnderworldThingy)
+            {
+                DigestionTickDamageModifier += BiomeUnderworldThingy.PermDigestBuff;
+            }
+            if (PermanentUpgradesGained.TryGetValue("Thingy_BiomeOcean", out bool eatenOceanThingy) && eatenOceanThingy)
+            {
+				PermanentAquaticThingymajig = true;
+            }
+        }
 
 		public override bool HoverSlot(Item[] inventory, int context, int slot)
 		{
@@ -827,6 +923,7 @@ namespace V2.PlayerHandling
 						return true;
 
 					int origStack = inventory[slot].stack;
+<<<<<<< Updated upstream
                     if (inventory[slot].AsFood().PreSwallow is not null && inventory[slot].AsFood().PreSwallow.Invoke(inventory[slot], Player))
                     {
 
@@ -834,6 +931,14 @@ namespace V2.PlayerHandling
                     }
                     inventory[slot].stack = 1;
                     if (CanSwallow(Player, inventory[slot]))
+=======
+					if (inventory[slot].AsFood().PreSwallow is not null && !inventory[slot].AsFood().PreSwallow.Invoke(inventory[slot], Player))
+					{
+						return false;
+					}
+					inventory[slot].stack = 1;
+					if (CanSwallow(Player, inventory[slot]))
+>>>>>>> Stashed changes
 					{
 						if (origStack > 1)
 						{
@@ -857,7 +962,6 @@ namespace V2.PlayerHandling
 			}
 			return false;
 		}
-
 		public override void UpdateBadLifeRegen()
 		{
 			if (Player.AsPred().MoltenTummy)
@@ -889,6 +993,7 @@ namespace V2.PlayerHandling
 			}
 #endif
 		}
+<<<<<<< Updated upstream
         public override void ModifyHitByProjectile(Projectile proj, ref Player.HurtModifiers modifiers)
         {
             if (Player.AsPred().FungalFairySetBonus)
@@ -928,6 +1033,50 @@ namespace V2.PlayerHandling
             Player.GetKnockback(DamageClass.Generic) += kb;
             Player.moveSpeed += runspd;
             Player.pickSpeed -= minespd;
+=======
+        public override void ModifyHitByNPC(NPC npc, ref Player.HurtModifiers modifiers)
+        {
+            if (Player.AsV2Player().MintTransformation && npc.AsFood().IsAGhostlySnackForACertainMaid)
+            {
+                Swallow(Player, npc, ForceSwallow: true, Silent: true);
+                modifiers.Cancel();
+            }
+        }
+
+		public override void PostUpdateBuffs()
+		{
+			double multiplier = Math.Clamp(WellFed_Multiplier, -3.5, 3.5);
+			if (Player.HasBuff<Overstuffed>())
+			{
+				multiplier = Math.Max(-Overstuff * 3, -10);
+				StomachacheMeterCapacityModifier -= (float)Math.Min(Overstuff / 2f, 0.8);
+				if (Overstuff >= 3)
+                    ModContent.GetInstance<JustABitMore>().TrySetCompletion(Player);
+            }
+			else
+			{
+				if (multiplier >= 3.5)
+					ModContent.GetInstance<PerfectMeal>().TrySetCompletion(Player);
+				else if (multiplier <= -3.5)
+                    ModContent.GetInstance<Recycler>().TrySetCompletion(Player);
+            }
+			int def = (int)Math.Round(WellFed.Def * multiplier);
+			int crit = (int)Math.Round(WellFed.Crit * multiplier);
+			float atkspd = (float)Math.Round((int)(WellFed.AtkSpd * 100) * multiplier) / 100;
+			float dmg = (float)Math.Round((int)(WellFed.Dmg * 100) * multiplier) / 100;
+			float kb = (float)Math.Round((int)(WellFed.KB * 100) * multiplier) / 100;
+			float runspd = (float)Math.Round((int)(WellFed.RunSpd * 100) * multiplier) / 100;
+			float minespd = (float)Math.Round((int)(WellFed.MineSpd * 100) * multiplier) / 100;
+
+			Player.statDefense += def;
+			Player.GetCritChance(DamageClass.Generic) += crit;
+			Player.GetAttackSpeed(DamageClass.Generic) += atkspd;
+			Player.GetDamage(DamageClass.Generic) += dmg;
+			Player.GetKnockback(DamageClass.Generic) += kb;
+			Player.moveSpeed = (float)Math.Max(Player.moveSpeed + runspd, 0.01);
+			Player.pickSpeed -= minespd;
+
+>>>>>>> Stashed changes
         }
 
         public bool IsRunningAgainstConveyor(Player player)
@@ -949,6 +1098,7 @@ namespace V2.PlayerHandling
 			if (RightConveyors == LeftConveyors) return false;
 			if (RightConveyors > LeftConveyors && player.controlRight)
 				return true;
+<<<<<<< Updated upstream
             if (RightConveyors < LeftConveyors && player.controlLeft)
                 return true;
             return false;
@@ -961,6 +1111,41 @@ namespace V2.PlayerHandling
                 Player.AsPred().HasJumped = true;
                 PlayerGaining.ReduceWeight(Player, 0.00008);
             }
+=======
+			if (RightConveyors < LeftConveyors && player.controlLeft)
+				return true;
+			return false;
+		}
+
+		public static float WeightMovementMultiplier(Player player)
+		{
+			/*float TumWeight = (float)(player.AsPred().StomachWeight + 1.0);
+			float ExtraWeight = 0;
+            if (player.AsV2Player().BaeTransformation)
+				ExtraWeight += (float)player.AsPred().BaeTransformation_ExtraWeight;
+            else if (player.AsV2Player().KroniiTransformation)
+                ExtraWeight += (float)player.AsPred().KroniiTransformation_ExtraWeight;
+            else if (player.AsV2Player().OllieTransformation)
+                ExtraWeight += (float)player.AsPred().OllieTransformation_ExtraWeight;
+            else if (player.AsV2Player().SoraTransformation)
+                ExtraWeight += (float)player.AsPred().SoraTransformation_ExtraWeight;
+            else if (player.AsV2Player().MintTransformation)
+                ExtraWeight += (float)player.AsPred().MintTransformation_ExtraWeight;
+            player.AsPred().ExcessWeightModifier.ApplyTo(ExtraWeight);*/
+			float Weight = (float)PlayerGaining.GetPlayerWeight(player, true);
+
+            return 1.0f / (float)Math.Max(1.0, Weight);
+        }
+
+		public override void PostUpdateEquips()
+		{
+			PlayerGaining.ReduceWeight(Player, 0.000005);
+			if (!Player.AsPred().HasJumped && Player.jump > 0)
+			{
+				Player.AsPred().HasJumped = true;
+				PlayerGaining.ReduceWeight(Player, 0.00008);
+			}
+>>>>>>> Stashed changes
 			if (!(Player.IsAirborne() || Player.sleeping.isSleeping || Player.sitting.isSitting || Player.grappling[0] >= 0 || Player.pulley))
 			{
 				if ((Player.controlRight && Player.velocity.X > 0) || (Player.controlLeft && Player.velocity.X < 0))
@@ -968,18 +1153,37 @@ namespace V2.PlayerHandling
 					PlayerGaining.ReduceWeight(Player, 0.000005);
 					
 				}
+<<<<<<< Updated upstream
                 if (IsRunningAgainstConveyor(Player))
                 {
                     //PlayerGaining.ReduceWeight(Player, 0.00006);
                     PlayerGaining.ReduceWeight(Player, 0.1);
                 }
             }
+=======
+				if (IsRunningAgainstConveyor(Player))
+				{
+					//PlayerGaining.ReduceWeight(Player, 0.00009);
+					PlayerGaining.ReduceWeight(Player, 0.1);
+				}
+			}
+
+
+
+            //moar weight bull
+            PlayerGaining.GetPlayerWeightGainStats(Player, out float DamageMult, out float AttackSpeedMult, out int MaxLifeIncrease);
+            Player.GetDamage(DamageClass.Generic) *= DamageMult;
+            Player.GetAttackSpeed(DamageClass.Generic) *= AttackSpeedMult;
+            Player.statLifeMax2 += MaxLifeIncrease;
+
+>>>>>>> Stashed changes
         }
 
         public override void PostUpdateRunSpeeds()
 		{
-			if (!Player.mount.Active)
+			if (!Player.mount.Active && Player.AsV2Player().OllieDashDuration <= 0)
 			{
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 				float weightMovementMult = 1.0f / (float)Math.Max(1.0, Player.AsPred().StomachWeight + 1.0);
 =======
@@ -992,6 +1196,10 @@ namespace V2.PlayerHandling
                 float weightMovementMult = 1.0f / (float)Math.Max(1.0, PlayerWeight);
 >>>>>>> Stashed changes
 				Player.runAcceleration *= weightMovementMult;
+=======
+				float weightMovementMult = WeightMovementMultiplier(Player);
+                Player.runAcceleration *= weightMovementMult;
+>>>>>>> Stashed changes
 				Player.jumpSpeed *= Math.Min(1.0f, weightMovementMult * 2);
 				Player.jumpHeight = (int)Math.Round((float)Player.jumpHeight * Math.Min(1.0f, weightMovementMult * 2));
 				Player.gravity /= (2f + weightMovementMult) / 3f;
@@ -999,8 +1207,17 @@ namespace V2.PlayerHandling
 				float weightSpeedMult = 1.0f / (float)Math.Max(1.0, ((Player.AsPred().StomachWeight - 0.5) / 2.0) + 1.0);
 				Player.maxRunSpeed *= weightSpeedMult;
 				Player.accRunSpeed *= weightSpeedMult;
+<<<<<<< Updated upstream
                 Player.wingTimeMax = (int)Math.Ceiling(Player.wingTimeMax * Math.Min(1.0f, weightMovementMult / 2));
 
+=======
+				Player.rocketTimeMax = (int)Math.Ceiling(Player.rocketTimeMax * Math.Min(1.0f, weightMovementMult * 3f));
+                if (Player.rocketTime > Player.rocketTimeMax)
+                    Player.rocketTime = Player.rocketTimeMax;
+                Player.wingTimeMax = (int)Math.Ceiling(Player.wingTimeMax * Math.Min(1.0f, weightMovementMult * 1.25f));
+				if (Player.wingTime > Player.wingTimeMax)
+					Player.wingTime = Player.wingTimeMax;
+>>>>>>> Stashed changes
 
             }
 
@@ -1010,10 +1227,49 @@ namespace V2.PlayerHandling
 				Player.runAcceleration *= 0;
 			}
 		}
+<<<<<<< Updated upstream
         public override void PostUpdate()
         {
             if (Player.pulley)
             {
+=======
+
+        public int FallingForce(Player player)
+        {
+            return (int)Math.Ceiling(player.velocity.Length() * PlayerGaining.GetPlayerWeight(player, true, false) / 3.5) - 20;
+        }
+        public bool CheckForSolidGround(Player player)
+        {
+            List<Point> tiles = Collision.GetTilesIn(player.Hitbox.BottomLeft() - new Vector2(-2, -2), player.Hitbox.BottomRight() + new Vector2(2, 6));
+            bool HasSolidTile = false;
+            foreach (var point in tiles)
+            {
+                Tile tile = Framing.GetTileSafely(point);
+                if (tile.HasTile)
+                {
+                    if (Main.tileSolid[tile.TileType])
+                        HasSolidTile = true;
+                    if (Main.tileSolidTop[tile.TileType])
+                        HasSolidTile = true;
+                }
+            }
+			if (HasSolidTile)
+			{
+				if (LandState == 0)
+					LandState = 1;
+				else
+					LandState = 2;
+			}
+			else
+				LandState = 0;
+			return HasSolidTile;
+        }
+
+        public override void PostUpdate()
+		{
+			if (Player.pulley)
+			{
+>>>>>>> Stashed changes
 
                 double PlayerWeight = Player.AsPred().StomachWeight + 1.0;
 				if (Player.AsV2Player().BaeTransformation)
@@ -1035,6 +1291,7 @@ namespace V2.PlayerHandling
                 Player.velocity.Y += DownWeigh;
             }
 
+<<<<<<< Updated upstream
             double overstuff = Player.AsPred().StomachFullness / Player.AsPred().StomachCapacity;
             Overstuff = overstuff;
             if (overstuff > 1)
@@ -1044,6 +1301,56 @@ namespace V2.PlayerHandling
             }
         }
         public override void PostItemCheck()
+=======
+			double overstuff = Player.AsPred().StomachFullness / Player.AsPred().StomachCapacity;
+			Overstuff = overstuff;
+			if (overstuff > 1)
+			{
+				Player.ClearBuff(ModContent.BuffType<WellFed>());
+				Player.AddBuff(ModContent.BuffType<Overstuffed>(), 3);
+			}
+
+            if (Main.myPlayer == Player.whoAmI)
+            {
+                Player.AsPred().isAtCrushingSpeed = Math.Max(Player.AsPred().isAtCrushingSpeed - 1, 0);
+                if (FallingForce(Player) > 15)
+                {
+                    Player.AsPred().isAtCrushingSpeed = 3;
+                    Player.AsPred().CrushingDamage = FallingForce(Player);
+                    Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center + Player.velocity, Vector2.Zero, ModContent.ProjectileType<FallingHitbox>(), Player.AsPred().CrushingDamage, (int)Math.Ceiling(Math.Sqrt(Player.AsPred().CrushingDamage)), Main.myPlayer, Player.width, Player.height);
+                }
+                if (CheckForSolidGround(Player) && Player.AsPred().isAtCrushingSpeed > 0)
+                {
+                    Player.AsPred().isAtCrushingSpeed = 0;
+					if (LandState == 1)
+						Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Vector2.Zero, ModContent.ProjectileType<Girthquake>(), Player.AsPred().CrushingDamage, (int)Math.Ceiling(Math.Sqrt(Player.AsPred().CrushingDamage)), Main.myPlayer, 0, 5f + (Player.AsPred().CrushingDamage / 10f));
+                }
+                if (Player.AsPred().isAtCrushingSpeed == 0)
+                {
+                    Player.AsPred().CrushingDamage = 0;
+                }
+            }
+			UpdateWellFed(Player);
+
+            if (AquaticThingymajig && (Player.wet || Player.honeyWet || Player.HasBuff(BuffID.Wet) || Player.HasBuff(BuffID.Honey)))
+            {
+                DigestionTickDamageModifier += BiomeOceanThingy.StatBuff;
+                PreyAbsorptionRateModifier += BiomeOceanThingy.StatBuff;
+                Player.endurance += BiomeOceanThingy.EnduBuff;
+            }
+            if (PermanentAquaticThingymajig && (Player.wet || Player.honeyWet || Player.HasBuff(BuffID.Wet) || Player.HasBuff(BuffID.Honey)))
+            {
+                DigestionTickDamageModifier += BiomeOceanThingy.PermBuff;
+                PreyAbsorptionRateModifier += BiomeOceanThingy.PermBuff;
+            }
+            if (StrangeThingymajig)
+            {
+                double fat = PlayerGaining.GetPlayerWeight(Player, false, false, true) / 4;
+                StomachCapacityModifier += (float)fat;
+            }
+        }
+		public override void PostItemCheck()
+>>>>>>> Stashed changes
 		{
 			if (Main.netMode != NetmodeID.Server && Player.whoAmI == Main.myPlayer && !Player.AsPred().BlockSwallowAttempts)
 			{
@@ -1290,9 +1597,13 @@ namespace V2.PlayerHandling
 		/// Unused in singleplayer, but used in multiplayer to subsequently send and correctly receive a second message.<br/>
 		/// </param>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 		public static void Swallow(Player pred, Entity prey, int MPstate = 0, int MPwhoAmI = -1)
 =======
 		public static void Swallow(Player pred, Entity prey, int MPstate = 0, int MPwhoAmI = -1, bool skipRealLifeCheck = false, bool ForceSwallow = false)
+>>>>>>> Stashed changes
+=======
+		public static void Swallow(Player pred, Entity prey, int MPstate = 0, int MPwhoAmI = -1, bool skipRealLifeCheck = false, bool ForceSwallow = false, bool Silent = false)
 >>>>>>> Stashed changes
 		{
 			if (!CanSwallow(pred, prey, ForceSwallow))
@@ -1305,7 +1616,7 @@ namespace V2.PlayerHandling
 			}
 
 			PreyData food = PreyData.NewData(prey);
-			if (prey is not NPC preyNPC || preyNPC.realLife == -1)
+			if ((prey is not NPC preyNPC || preyNPC.realLife == -1) && !Silent)
 			{
 				SoundEngine.PlaySound(
 					food.WeightLeftToDigest <= 0.3
@@ -1326,7 +1637,31 @@ namespace V2.PlayerHandling
 				case PreyType.NPC:
 					NPC npc = prey as NPC;
 					npc.AsFood().OnSwallowedBy?.Invoke(npc, pred);
+<<<<<<< Updated upstream
 					for (int i = 0; i < Main.maxNPCs; i++)
+=======
+
+                    if (npc.AsFood().OnSwallowDamage > 0 && npc.AsFood().OnSwallowDeathReason is not null)
+                    {
+                        pred.Hurt(
+                            damageSource: PlayerDeathReason.ByCustomReason(NetworkText.FromKey(
+                                npc.AsFood().OnSwallowDeathReason,
+                                pred.name)),
+                            Damage: npc.AsFood().OnSwallowDamage,
+                            hitDirection: 0,
+                            dodgeable: false,
+                            scalingArmorPenetration: 1f
+                        );
+                    }
+
+                    // this is a really fuckin' stupid way to have to do this check
+                    // basically, if this is the original call, look through the entire NPC list for NPCs attached to this NPC via realLife
+                    // if there are any, swallow all of those connected NPCs as well
+                    // this exists purely to allow swallowin' worm enemies all at once instead of havin' to spam your Swallow bind to eat 'em
+                    // ideally there'd be a sensible way to allow, like. slurpin' up the tasty noodles gradually instead of havin' to eat them all at once
+                    // but this is Terraria and a lot of what you have to do isn't ideal here, so whatever
+                    if (!skipRealLifeCheck)
+>>>>>>> Stashed changes
 					{
 						if (Main.npc[i].whoAmI != npc.whoAmI && Main.npc[i].realLife != -1 && Main.npc[i].realLife == npc.whoAmI)
 						{
@@ -1357,12 +1692,22 @@ namespace V2.PlayerHandling
 					pred.AsPred().lastEntitySwallowed = item.Name;
 					pred.AsPred().lastEntitySwallowedMod = item.ModItem != null ? item.ModItem.Mod.DisplayName : "Terraria";
 
-					item.AsFood().OnSwallow?.Invoke(item, pred);
+					if (item.AsFood().PreSwallow is not null && !item.AsFood().PreSwallow.Invoke(item, pred))
+					{
+						food = null;
+						return;
+					}
+
+                    for (int i = 0; i < item.stack; i++)
+                        item.AsFood().OnSwallow?.Invoke(item, pred);
+
 					if (item.AsFood().OnSwallowDamage > 0 && item.AsFood().OnSwallowDeathReason is not null)
 					{
 						pred.Hurt(
-							damageSource: PlayerDeathReason.ByCustomReason(item.AsFood().OnSwallowDeathReason),
-							Damage: item.AsFood().OnSwallowDamage,
+							damageSource: PlayerDeathReason.ByCustomReason(NetworkText.FromKey(
+								item.AsFood().OnSwallowDeathReason,
+								pred.name)),
+							Damage: item.AsFood().OnSwallowDamage * item.stack,
 							hitDirection: 0,
 							dodgeable: false,
 							scalingArmorPenetration: 1f
@@ -1372,6 +1717,8 @@ namespace V2.PlayerHandling
 						pred.AddBuff(ModContent.BuffType<SoreThroat>(), item.AsFood().OnSwallowSoreThroatTime);
 					break;
 			}
+			if (food is null)
+				return;
 			AddNewPrey(pred, food);
 
 			if (MPstate == 1)
@@ -1509,9 +1856,21 @@ namespace V2.PlayerHandling
 
 			double totalRegurgiweight = 0.0;
 
-			void Regurgitate_Inner(Player pred, PreyData prey)
+            List<PreyData> clearedPrey = new List<PreyData>();
+
+            void Regurgitate_Inner(Player pred, PreyData prey)
 			{
+<<<<<<< Updated upstream
 				Entity realPrey = prey.Type switch
+=======
+				if (prey.Instance is null || prey.NoHealth)
+					return;
+
+                if (prey.CannotBeRegurgitated)
+                    return;
+
+                Entity realPrey = prey.Type switch
+>>>>>>> Stashed changes
 				{
 					PreyType.Player => prey.Instance as Player,
 					PreyType.NPC => prey.Instance as NPC,
@@ -1520,8 +1879,8 @@ namespace V2.PlayerHandling
 					PreyType.Custom => null,
 					_ => throw new NotImplementedException(),
 				};
-				realPrey.position = pred.TrueCenter() + new Vector2(pred.direction * 8f, -14f);
-				realPrey.velocity = new Vector2(pred.direction * 10f, -2.5f);
+				realPrey.position = pred.TrueCenter() + new Vector2(pred.direction * 8f + realPrey.width * pred.direction, -10f - realPrey.height);
+				realPrey.velocity = new Vector2(pred.direction * 10f, Main.rand.Next(-100,101) / 100f);
 				if (realPrey is NPC realPreyNPC)
 				{
 					realPreyNPC.AsFood().EatenSafetyFrames = 20;
@@ -1537,30 +1896,43 @@ namespace V2.PlayerHandling
 				else if (realPrey is Item realPreyItem)
 				{
 					realPreyItem.noGrabDelay = 60;
+                    for (int i = 0; i < realPreyItem.stack; i++)
+                        if (realPreyItem.AsFood().OnRegurgitate is not null && realPreyItem.AsFood().OnRegurgitate.Invoke(realPreyItem, pred))
+						{
+							realPreyItem.stack--;
+						}
+					if (realPreyItem.stack <= 0)
+						realPreyItem.TurnToAir();
 				}
 				totalRegurgiweight += prey.WeightLeftToDigest;
-			}
+                clearedPrey.Add(prey);
+            }
 
 			if (index == -1)
 			{
 				foreach (PreyData prey in pred.AsPred().StomachTracker.Prey)
 					Regurgitate_Inner(pred, prey);
 
-				pred.AsPred().StomachTracker.Prey.Clear();
-				pred.AsPred().StomachTracker.RefreshStruggleChartList();
+                foreach (PreyData prey in clearedPrey)
+                {
+                    pred.AsPred().StomachTracker.Prey.Remove(prey);
+                }
+                pred.AsPred().StomachTracker.RefreshStruggleChartList();
 			}
 			else
 			{
 				PreyData prey = pred.AsPred().StomachTracker.Prey[index];
 				Regurgitate_Inner(pred, prey);
 
-				pred.AsPred().StomachTracker.Prey.Remove(prey);
-			}
+                if (clearedPrey.Count > 0)
+                    pred.AsPred().StomachTracker.Prey.Remove(prey);
+            }
 
-			SoundEngine.PlaySound(
-				totalRegurgiweight <= 0.3 ? pred.AsPred().SmallBurps : pred.AsPred().StandardBurps,
-				pred.TrueCenter() + new Vector2(pred.direction * 8f, -14f)
-			);
+			if (totalRegurgiweight > 0)
+				SoundEngine.PlaySound(
+					totalRegurgiweight <= 0.3 ? pred.AsPred().SmallBurps : pred.AsPred().StandardBurps,
+					pred.TrueCenter() + new Vector2(pred.direction * 8f, -14f)
+				);
 
 			if (MPstate == 1)
 			{
@@ -1599,6 +1971,7 @@ namespace V2.PlayerHandling
 		{
 			if (pred.AsPred().StomachacheMeterCapacity > 0 && pred.AsPred().Stomachache >= pred.AsPred().StomachacheMeterCapacity && pred.AsPred().StomachTracker is not null && pred.AsPred().StomachTracker.Prey.Count > 0)
 			{
+<<<<<<< Updated upstream
                 Regurgitate(pred);
                 ModContent.GetInstance<BLUH>().TrySetCompletion(pred);
                 return;
@@ -1606,6 +1979,14 @@ namespace V2.PlayerHandling
             pred.AsPred().WellFed_Multiplier = 0;
 			bool hasDoneDigestionTick = false;
             foreach (PreyData prey in pred.AsPred().StomachTracker.Prey)
+=======
+				Regurgitate(pred);
+				ModContent.GetInstance<BLUH>().TrySetCompletion(pred);
+				return;
+			}
+            bool hasDoneDigestionTick = false;
+			foreach (PreyData prey in pred.AsPred().StomachTracker.Prey)
+>>>>>>> Stashed changes
 			{
 				if (!prey.NoHealth)
 				{
@@ -1658,9 +2039,16 @@ namespace V2.PlayerHandling
 								prey.NoHealth = true;
 								break;
 							}
+<<<<<<< Updated upstream
                             preyItem.AsFood().UpdateInStomach?.Invoke(preyItem, pred, prey.NoHealth);
 							preyItem.position = pred.position;
                             bool canProperlyDigestItem = pred.AsPred().AcidTier >= preyItem.AsFood().AcidResistTier;
+=======
+							preyItem.AsFood().UpdateInStomach?.Invoke(preyItem, pred, prey.NoHealth);
+                            preyItem.velocity = Vector2.Zero;
+                            preyItem.position = pred.position;
+							bool canProperlyDigestItem = pred.AsPred().AcidTier >= preyItem.AsFood().AcidResistTier;
+>>>>>>> Stashed changes
 							if (canProperlyDigestItem)
 								pred.AsPred().WellFed_Multiplier += prey.WellFedPower * prey.WeightLeftToDigest;
                             else
@@ -1694,8 +2082,9 @@ namespace V2.PlayerHandling
 										pred.AsPred().mealCount.TryAdd("Terraria: Player", 0);
 										pred.AsPred().mealCount["Terraria: Player"] += 1;
 										SoundEngine.PlaySound(
-											pred.AsPred().StandardBurps,
-											pred.TrueCenter() + new Vector2(pred.direction * 8f, -14f)
+                                            prey.WeightLeftToDigest < 0.3 ? pred.AsPred().SmallBurps with { Pitch = pred.AsPred().BurpPitchOffset }
+                                            : pred.AsPred().StandardBurps with { Pitch = pred.AsPred().BurpPitchOffset },
+                                            pred.TrueCenter() + new Vector2(pred.direction * 8f, -14f)
 										);
 									}
 								}
@@ -1718,8 +2107,9 @@ namespace V2.PlayerHandling
 										pred.AsPred().mealCount.TryAdd(preyNPCMod + ": " + preyNPC.TypeName, 0);
 										pred.AsPred().mealCount[preyNPCMod + ": " + preyNPC.TypeName] += 1;
 										SoundEngine.PlaySound(
-											prey.WeightLeftToDigest < 0.3 ? pred.AsPred().SmallBurps : pred.AsPred().StandardBurps,
-											pred.TrueCenter() + new Vector2(pred.direction * 8f, -14f)
+                                            prey.WeightLeftToDigest < 0.3 ? pred.AsPred().SmallBurps with { Pitch = pred.AsPred().BurpPitchOffset }
+                                            : pred.AsPred().StandardBurps with { Pitch = pred.AsPred().BurpPitchOffset },
+                                            pred.TrueCenter() + new Vector2(pred.direction * 8f, -14f)
 										);
 									}
 								}
@@ -1745,8 +2135,9 @@ namespace V2.PlayerHandling
 										pred.AsPred().mealCount.TryAdd(preyProjectileMod + ": " + preyProjectile.Name, 0);
 										pred.AsPred().mealCount[preyProjectileMod + ": " + preyProjectile.Name] += 1;
 										SoundEngine.PlaySound(
-											prey.WeightLeftToDigest < 0.3 ? pred.AsPred().SmallBurps : pred.AsPred().StandardBurps,
-											pred.TrueCenter() + new Vector2(pred.direction * 8f, -14f)
+                                            prey.WeightLeftToDigest < 0.3 ? pred.AsPred().SmallBurps with { Pitch = pred.AsPred().BurpPitchOffset }
+                                            : pred.AsPred().StandardBurps with { Pitch = pred.AsPred().BurpPitchOffset },
+                                            pred.TrueCenter() + new Vector2(pred.direction * 8f, -14f)
 										);
 									}
 								}
@@ -1770,7 +2161,8 @@ namespace V2.PlayerHandling
 											pred.AsPred().mealCount.Add(preyItemMod + ": " + preyItem.Name, 0);
 										pred.AsPred().mealCount[preyItemMod + ": " + preyItem.Name] += preyItem.stack;
 										SoundEngine.PlaySound(
-											prey.WeightLeftToDigest < 0.3 ? pred.AsPred().SmallBurps : pred.AsPred().StandardBurps,
+											prey.WeightLeftToDigest < 0.3 ? pred.AsPred().SmallBurps with { Pitch = pred.AsPred().BurpPitchOffset }
+											: pred.AsPred().StandardBurps with { Pitch = pred.AsPred().BurpPitchOffset },
 											pred.TrueCenter() + new Vector2(pred.direction * 8f, -14f)
 										);
 									}
@@ -1794,6 +2186,7 @@ namespace V2.PlayerHandling
 						}
 =======
 						PlayerGaining.AddWeight(pred, prey.WeightLeftToDigest, prey);
+<<<<<<< Updated upstream
 >>>>>>> Stashed changes
                         prey.WeightLeftToDigest = 0;
                     }
@@ -1807,6 +2200,17 @@ namespace V2.PlayerHandling
                         }
 =======
                         PlayerGaining.AddWeight(pred, absorptionRate, prey);
+>>>>>>> Stashed changes
+=======
+						if (pred.AsV2Player().MintTransformation)
+                            pred.AsV2Player().MintWispSummonMeter += prey.WeightLeftToDigest * prey.CalorieMultiplier * (0.4 + (pred.maxMinions - 1) / 10.0);
+                        prey.WeightLeftToDigest = 0;
+					}
+					else
+					{
+						PlayerGaining.AddWeight(pred, absorptionRate, prey);
+                        if (pred.AsV2Player().MintTransformation)
+                            pred.AsV2Player().MintWispSummonMeter += absorptionRate * prey.CalorieMultiplier * (0.4 + (pred.maxMinions - 1) / 10.0);
 >>>>>>> Stashed changes
                         prey.WeightLeftToDigest -= absorptionRate;
 						pred.AsPred().WellFed_Multiplier += prey.WellFedPower * prey.WeightLeftToDigest;
@@ -1924,7 +2328,22 @@ namespace V2.PlayerHandling
 				pred.AsPred().OverfullTime = 0;
 		}
 
+<<<<<<< Updated upstream
 		public static string GetDigestedPlayerDeathReason(Player player, Player prey)
+=======
+		public static void UpdateWellFed(Player player)
+        {
+            player.AsPred().WellFed_Multiplier = 0;
+            if (player.HasBuff(BuffID.WellFed3))
+                player.AsPred().WellFed_Multiplier += 1.5;
+            else if (player.HasBuff(BuffID.WellFed2))
+                player.AsPred().WellFed_Multiplier += 1;
+            else if (player.HasBuff(BuffID.WellFed))
+                player.AsPred().WellFed_Multiplier += 0.5;
+        }
+
+		public static NetworkText GetDigestedPlayerDeathReason(Player player, Player prey)
+>>>>>>> Stashed changes
 		{
 			if (player.whoAmI == prey.whoAmI)
 			{
@@ -2040,6 +2459,7 @@ namespace V2.PlayerHandling
 			}
 		}
 
+<<<<<<< Updated upstream
 		public static double GetCurrentWeight(Player pred)
 		{
 			double amount = 1;
@@ -2055,6 +2475,9 @@ namespace V2.PlayerHandling
         }
 
 		public static void CountDigestionKillForBannersAndDropThem(Player player, NPC npc)
+=======
+        public static void CountDigestionKillForBannersAndDropThem(Player player, NPC npc)
+>>>>>>> Stashed changes
 		{
 			int num = Item.NPCtoBanner(npc.BannerID());
 			if (num <= 0 || npc.ExcludedFromDeathTally())
@@ -2117,8 +2540,17 @@ namespace V2.PlayerHandling
 			}
 
 			tag.Add("Bae_ExtraWeight", BaeTransformation_ExtraWeight);
+<<<<<<< Updated upstream
             tag.Add("Saturation", ActuallyReasonableAmountOfFood);
         }
+=======
+            tag.Add("Kronii_ExtraWeight", KroniiTransformation_ExtraWeight);
+            tag.Add("Ollie_ExtraWeight", OllieTransformation_ExtraWeight);
+            tag.Add("Sora_ExtraWeight", SoraTransformation_ExtraWeight);
+            tag.Add("Mint_ExtraWeight", MintTransformation_ExtraWeight);
+            tag.Add("Saturation", ActuallyReasonableAmountOfFood);
+		}
+>>>>>>> Stashed changes
 
 		public override void LoadData(TagCompound tag)
 		{
@@ -2162,9 +2594,19 @@ namespace V2.PlayerHandling
 				}
 			}
 			BaeTransformation_ExtraWeight = tag.GetDouble("Bae_ExtraWeight");
+<<<<<<< Updated upstream
             ActuallyReasonableAmountOfFood = tag.GetDouble("Saturation");
         }
     }
+=======
+            KroniiTransformation_ExtraWeight = tag.GetDouble("Kronii_ExtraWeight");
+            OllieTransformation_ExtraWeight = tag.GetDouble("Ollie_ExtraWeight");
+            SoraTransformation_ExtraWeight = tag.GetDouble("Sora_ExtraWeight");
+            MintTransformation_ExtraWeight = tag.GetDouble("Mint_ExtraWeight");
+            ActuallyReasonableAmountOfFood = tag.GetDouble("Saturation");
+		}
+	}
+>>>>>>> Stashed changes
 
 	
 }

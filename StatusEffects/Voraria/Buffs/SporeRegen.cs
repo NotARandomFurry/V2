@@ -7,6 +7,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
+using V2.Core;
 using V2.Items.Vanilla.Accessories;
 using V2.Items.Voraria.Accessories;
 using V2.Items.Voraria.Consumables.Potions;
@@ -18,30 +19,53 @@ namespace V2.StatusEffects.Voraria.Buffs
 	{
 		public override LocalizedText DisplayName => Language.GetText("Mods.V2.StatusEffects.Voraria.Buffs.SporeRegen.Name");
 		public override LocalizedText Description => Language.GetText("Mods.V2.StatusEffects.Voraria.Buffs.SporeRegen.Description");
+<<<<<<< Updated upstream
         public override bool RightClick(int buffIndex) => false;
+=======
+>>>>>>> Stashed changes
 
 		public override void ModifyBuffText(ref string buffName, ref string tip, ref int rare)
 		{
+			Player player = Main.LocalPlayer;
+            int Power = player.buffTime[player.FindBuffIndex(ModContent.BuffType<SporeRegen>())];
+
 			rare = ItemRarityID.Green;
 			tip = Language.GetTextValueWith(
                 "Mods.V2.StatusEffects.Voraria.Buffs.SporeRegen.Description",
 				new
+<<<<<<< Updated upstream
 				{
 
+=======
+                {
+                    Regen = (0.5 + Power / 1800f).CastToDecimalPlaces(1).ToString(),
+>>>>>>> Stashed changes
                 }
 			);
 		}
 
+<<<<<<< Updated upstream
         public override bool ReApply(Player player, int time, int buffIndex)
         {
             player.buffTime[buffIndex] = Math.Min(player.buffTime[buffIndex] + time, 3600);
             return true;
         }
+=======
+		public override bool ReApply(Player player, int time, int buffIndex)
+		{
+			player.buffTime[buffIndex] = Math.Min(player.buffTime[buffIndex] + time, 10800);
+			return true;
+		}
+>>>>>>> Stashed changes
 
         public override void Update(Player player, ref int buffIndex)
 		{
 			player.AddHealthRegenEffect(
+<<<<<<< Updated upstream
 				healthPerSecond: Math.Min((int)Math.Ceiling(player.buffTime[buffIndex] / 180f), 10)
+=======
+				healthPerSecond: 0.5 + (double)(player.buffTime[buffIndex] / 1800f)
+>>>>>>> Stashed changes
             );
 		}
 	}

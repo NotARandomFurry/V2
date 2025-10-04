@@ -12,11 +12,20 @@
     <None Remove="externallibs\**" />
   </ItemGroup>
   <ItemGroup>
+<<<<<<< Updated upstream
     <None Remove="Items\Voraria\Accessories\Transformations\BecomeBae_Wings.png" />
     <None Remove="NPCs\Voraria\Jungle\FATFUCK.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Gores\" />
+=======
+	<None Remove="NPCs\Voraria\Jungle\FATFUCK.png" />
+  </ItemGroup>
+  <ItemGroup>
+	<Folder Include="Gores\" />
+	<Folder Include="Items\Vanilla\Plants\NewFolder\" />
+	<Folder Include="PlayerHandling\Transformations\HakosBaelz\Default\" />
+>>>>>>> Stashed changes
   </ItemGroup>
   <ItemGroup>
     <Reference Include="BetterDialogue">

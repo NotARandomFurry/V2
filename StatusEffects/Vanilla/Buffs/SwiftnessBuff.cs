@@ -21,11 +21,9 @@ namespace V2.StatusEffects.Vanilla.Buffs
 			V2.ModifiedStatusEffects.Add(BuffID.Swiftness, this);
 		}
 
-		public override bool RightClick(int type, int buffIndex) => type != BuffID.Swiftness;
-
 		public override void Update(int type, Player player, ref int buffIndex)
 		{
-			if (type != BuffID.Wrath)
+			if (type != BuffID.Swiftness)
 				return;
 
 			player.moveSpeed += MoveSpeedBonus;
@@ -34,7 +32,7 @@ namespace V2.StatusEffects.Vanilla.Buffs
 
 		public override void ModifyBuffText(int type, ref string buffName, ref string tip, ref int rare)
 		{
-			if (type != BuffID.Wrath)
+			if (type != BuffID.Swiftness)
 				return;
 
 			rare = ItemRarityID.Red;

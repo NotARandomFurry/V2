@@ -30,7 +30,7 @@ namespace V2.Items.Vanilla.Weapons.Melee
 			item.AsFood().MealSizeTextOverride = "Despite its size, it makes for a terrible meal";
 
 			item.AsFood().OnSwallowDamage = 40;
-			item.AsFood().OnSwallowDeathReason = "{0} thought fruitcake was a good idea to eat. Ever.";
+			item.AsFood().OnSwallowDeathReason = "Mods.V2.Death.SwallowDamage.Fruitcake";
 			item.AsFood().OnSwallowSoreThroatTime = V2Utils.SensibleTime(seconds: 10, frames: 0);
 
 			item.AsFood().UpdateInStomach += UpdateInStomach;

@@ -60,7 +60,27 @@ namespace V2.Items.Voraria.Consumables
 		public static void UseInStomach(Item item, Player player, Entity pred)
 		{
 			player.CurrentCaptor().ModifyPredStomachacheMeter(StruggleDamage);
+<<<<<<< Updated upstream
 		}
+=======
+
+            if (player.whoAmI == Main.myPlayer && player.inventory[58] == item)
+            {
+                Main.mouseItem.stack--;
+                if (Main.mouseItem.stack <= 0)
+				{
+                    player.AsPred().ItemCooldownWhenSwallowingANonStackedItemFromTheMouseSlotBecauseThisGameIsCoolAndAwesome = 7;
+                    Main.mouseItem.TurnToAir();
+                }
+            }
+			else
+            {
+                item.stack--;
+                if (item.stack <= 0)
+                    item.TurnToAir();
+            }
+        }
+>>>>>>> Stashed changes
 
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{

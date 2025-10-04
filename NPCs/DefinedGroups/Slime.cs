@@ -11,6 +11,7 @@ using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using V2.Core;
 using V2.NPCs.Vanilla.NPCAIReference;
+using V2.NPCs.Voraria.Hallow;
 using V2.PlayerHandling;
 using V2.PlayerHandling.PredPlayerGoals.Beginner;
 
@@ -221,7 +222,10 @@ namespace V2.NPCs.Sets
 			if (npc.type == NPCID.GoldenSlime)
 				flag = true;
 
-			if (npc.type == NPCID.RainbowSlime)
+			if (npc.type == ModContent.NPCType<GumdropSlime>())
+                flag = true;
+
+            if (npc.type == NPCID.RainbowSlime)
 			{
 				flag = true;
 				npc.ai[0] += 2f;

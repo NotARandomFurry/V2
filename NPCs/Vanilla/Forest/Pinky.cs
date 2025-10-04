@@ -74,7 +74,12 @@ namespace V2.NPCs.Vanilla.Forest
 			npc.AsFood().DefinedBaseSize = 0.1;
 			npc.AsPred().MaxStomachCapacity = 0.15;
 
+<<<<<<< Updated upstream
             npc.AsFood().WellFedPower = 10;
+=======
+			npc.AsFood().WellFedPower = 5;
+			npc.AsFood().CalorieMultiplier = 1.5;
+>>>>>>> Stashed changes
 
             npc.AsPred().SmallGulpThreshold = 0.00;
 			npc.AsPred().BigGulps = null;

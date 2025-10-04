@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Graphics.PackedVector;
 using ReLogic.Content;
 using ReLogic.Utilities;
 using System;
@@ -15,6 +16,8 @@ using Terraria.ModLoader;
 using V2.Core;
 using V2.PlayerHandling;
 using V2.Sounds.Vore;
+using static System.Net.Mime.MediaTypeNames;
+using static V2.Projectiles.Vanilla.Summons.Pets.FairyPrincessStuff.Animations.BaseWeight.OVHerOwnFuckingMother;
 
 namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 {
@@ -145,7 +148,7 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 		public static CandyFairy AsCandyFairy(this NPC npc)
 		{
 			if (!npc.TryGetGlobalNPC(out CandyFairy unreasonablyThickFairy))
-				throw new Exception("this instance of the Empress of Light, sadly, can't be pred or prey. the unreasonably thick candy fairy can't be food today, I guess");
+				throw new Exception("npc instance of the Empress of Light, sadly, can't be pred or prey. the unreasonably thick candy fairy can't be food today, I guess");
 
 			return unreasonablyThickFairy;
 		}
@@ -180,8 +183,13 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 			npc.AsFood().DefinedBaseSize = 40.0;
 			npc.AsPred().MaxStomachCapacity = 1000.0;
 			npc.AsPred().BaseStomachacheMeterCapacity = 50000.0;
+<<<<<<< Updated upstream
             npc.AsFood().CalorieMultiplier = 25;
             npc.AsFood().WellFedPower = 2;
+=======
+			npc.AsFood().CalorieMultiplier = 75;
+			npc.AsFood().WellFedPower = 2;
+>>>>>>> Stashed changes
 
             npc.AsV2NPC().NewAIMethod = V2UnreasonablyThickFairyAI;
 			npc.AsFood().SpecialPreyAI = UnreasonablyThickFairyPreyAI;
@@ -723,7 +731,7 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 			}
 		}
 
-		public static bool V2UnreasonablyThickFairyAI(NPC npc)
+        public static bool V2UnreasonablyThickFairyAI(NPC npc)
 		{
 			if (npc.ai[0] is 8f or 9f)
 				npc.DoContactGulpage();

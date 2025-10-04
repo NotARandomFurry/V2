@@ -13,7 +13,7 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using V2.StatusEffects.Voraria.Debuffs;
 using V2.Core;
-using V2.Projectiles.Voraria.Weapons.Summon;
+using V2.Projectiles.Voraria.Weapons.Summon.ShroomFairy;
 
 namespace V2.Projectiles.Voraria.Weapons.Ranged.Throwables
 {

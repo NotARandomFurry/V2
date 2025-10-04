@@ -7,16 +7,6 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using Terraria.WorldBuilding;
-using V2.Core;
-using V2.Items.Voraria;
-using V2.Items.Voraria.Accessories.Transformations.Baelz;
-using V2.NPCs;
-using V2.PlayerHandling;
-using V2.Projectiles.Voraria.Weapons.Ranged.Throwables;
-using V2.Sounds.Vore;
-using V2.StatusEffects.Voraria.Buffs;
-using V2.Tiles.Vanilla.Paintings;
 
 namespace V2.Projectiles.Voraria.Weapons.Ranged
 {

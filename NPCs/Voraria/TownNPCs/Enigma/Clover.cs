@@ -13,7 +13,7 @@ using Terraria.ModLoader;
 using V2.Core;
 using V2.Items.Voraria.Armor;
 using V2.Items.Voraria.Consumables;
-using V2.Items.Voraria.Consumables.PermanentUpgrades.Jujus;
+using V2.Items.Voraria.Accessories.Thingymajigs;
 using V2.Items.Voraria.Placeables;
 using V2.Items.Voraria.Weapons.Ranged;
 using V2.PlayerHandling;
@@ -306,12 +306,21 @@ namespace V2.NPCs.Voraria.TownNPCs.Enigma
 			EnigmaShop.Add<CloverHeadAccessories>();
 			EnigmaShop.Add<CloverSweater>();
 			EnigmaShop.Add<CloverStockings>();
+<<<<<<< Updated upstream
             EnigmaShop.Add<BlankJuju>();
             EnigmaShop.Add<DemonCandy>();
             EnigmaShop.Add<GhostBall>();
             EnigmaShop.Add<MyFairy>([Condition.InGlowshroom]);
             EnigmaShop.Add<DinnerBlaster>([Condition.NpcIsPresent(NPCID.Cyborg)]);
             EnigmaShop.Register();
+=======
+			EnigmaShop.Add<BlankThingy>();
+			EnigmaShop.Add<DemonCandy>();
+			EnigmaShop.Add<GhostBall>();
+			EnigmaShop.Add<MyFairy>([Condition.InGlowshroom]);
+			EnigmaShop.Add<DinnerBlaster>([Condition.NpcIsPresent(NPCID.Cyborg)]);
+			EnigmaShop.Register();
+>>>>>>> Stashed changes
 		}
 
 		public static bool CanEnigmaBeForceFed(NPC npc) => true;

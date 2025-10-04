@@ -15,7 +15,7 @@ using V2.PlayerHandling;
 using V2.Projectiles.Voraria.Weapons.Summon;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
-using V2.PlayerHandling.PredPlayerGoals.Amateur;
+using V2.PlayerHandling.PredPlayerGoals.Skilled;
 
 namespace V2.Items.Voraria.Weapons.Ranged
 {

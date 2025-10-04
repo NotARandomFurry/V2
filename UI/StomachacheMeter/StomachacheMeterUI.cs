@@ -149,7 +149,10 @@ namespace V2.UI.StomachacheMeter
 			if (!Visible)
 				return;
 
-			void Draw(Entity pred)
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.UIScaleMatrix);
+
+            void Draw(Entity pred)
 			{
 				if (pred.CurrentCaptor() is not null)
 					return;
@@ -160,23 +163,29 @@ namespace V2.UI.StomachacheMeter
 				if (!_predHasStomachFull && _stomachacheExactCurrent <= 0)
 					return;
 
-				Vector2 topLeftCorner = new Vector2(
-					Main.screenWidth / 2,
-					Main.screenHeight / 2
-				);
-				topLeftCorner.X -= 14 + (_stomachacheSegments * (_stomachachePanelMiddle.Value.Width / 2));
-				topLeftCorner.Y -= 40 * Main.GameZoomTarget;
-				topLeftCorner += pred.Center - (Main.screenPosition + new Vector2(Main.screenWidth / 2 * Main.UIScale, Main.screenHeight / 2));
+                Vector2 topLeftCorner = pred.Center - Main.screenPosition;
 
-				topLeftCorner.Y /= Main.UIScale;
-				
-				for (int i = 0; i < _stomachacheSegments; i++)
+                topLeftCorner.X -= (14 + _stomachacheSegments * (_stomachachePanelMiddle.Value.Width / 2)) * Main.UIScale;
+				topLeftCorner.Y -= 40 * Main.UIScale * Main.GameZoomTarget;
+
+                topLeftCorner /= Main.UIScale;
+
+                for (int i = 0; i < _stomachacheSegments; i++)
 				{
 					spriteBatch.Draw(
 						_stomachachePanelMiddle.Value,
 						topLeftCorner + new Vector2(14 + (i * _stomachachePanelMiddle.Value.Width), 6),
 						_stomachachePanelMiddle.Value.Bounds,
+<<<<<<< Updated upstream
 						Color.White
+=======
+						Color.White,
+						0f,
+						default,
+						1,
+						SpriteEffects.None,
+						0f
+>>>>>>> Stashed changes
 					);
 				}
 
@@ -198,7 +207,16 @@ namespace V2.UI.StomachacheMeter
 						fillTexture,
 						topLeftCorner + new Vector2(14 + (i * _stomachachePanelMiddle.Value.Width), 8),
 						fullDrawRect,
+<<<<<<< Updated upstream
 						Color.White
+=======
+						Color.White,
+						0f,
+						default,
+						1,
+						SpriteEffects.None,
+						0f
+>>>>>>> Stashed changes
 					);
 				}
 
@@ -206,13 +224,31 @@ namespace V2.UI.StomachacheMeter
 					_stomachachePanelLeft.Value,
 					topLeftCorner,
 					_stomachachePanelLeft.Value.Bounds,
+<<<<<<< Updated upstream
 					Color.White
+=======
+					Color.White,
+					0f,
+					default,
+					1,
+					SpriteEffects.None,
+					0f
+>>>>>>> Stashed changes
 				);
 				spriteBatch.Draw(
 					_stomachachePanelRight.Value,
 					topLeftCorner + new Vector2(10 + (_stomachacheSegments * _stomachachePanelMiddle.Value.Width), 0),
 					_stomachachePanelRight.Value.Bounds,
+<<<<<<< Updated upstream
 					Color.White
+=======
+					Color.White,
+					0f,
+					default,
+					1,
+					SpriteEffects.None,
+					0f
+>>>>>>> Stashed changes
 				);
 
 				Rectangle hoverRect = new Rectangle(
@@ -298,7 +334,11 @@ namespace V2.UI.StomachacheMeter
 				PrepareFields(projectile);
 				Draw(projectile);
 			}
-		}
+
+
+            spriteBatch.End();
+            spriteBatch.Begin();
+        }
 
 		private void PrepareFields(Player player)
 		{

@@ -62,6 +62,7 @@ Mods: {
 			NegativeVoreEffect: BF5F00
 			ThomasCommentary: "960024"
 			VenomCommentary: 6D319E
+			JumpsuCommentary: FFB01C
 			CloverQuote: 55FF7D
 			DoLiterallyNothing: BDBDBD
 		}
@@ -79,6 +80,8 @@ Mods: {
 			LayOnBelly.DisplayName: Lay On Belly
 			GutSlutVisionOMaticRespawn.DisplayName: Respawn After Digestion
 			RespawnAfterDigestion.DisplayName: Respawn After Digestion
+			OllieDash.DisplayName: Ollie: Dash
+			MintSummonWisp.DisplayName: Mint: Summon Wisp
 		}
 
 		Conditions: {
@@ -233,6 +236,17 @@ Mods: {
 							// probably should make this one default to true later for all the gut sluts in my audience
 
 							// because I know there are a ton of you
+							'''
+					}
+
+					StreamerMode: {
+						Label: Streamer Mode
+						Tooltip:
+							'''
+							Changes some sprites to cover up a bit more to make the experience a (bit) more TOS friendly.
+							Defaults to true.
+							[c/{$Mods.V2.CommonColorCodes.JumpsuCommentary}:im setting the default to true incase someone forgets to re-check the config after this update]
+							[c/{$Mods.V2.CommonColorCodes.JumpsuCommentary}:also good if you just dont wanna see nips or whatever]
 							'''
 					}
 				}
@@ -976,6 +990,19 @@ Mods: {
 					}
 				}
 
+				BLUH: {
+					Name: BLUH
+
+					Description: {
+						Default:
+							'''
+							Fail to contain your prey.
+							[c/{$Mods.V2.CommonColorCodes.JumpsuCommentary}:trial and error!]
+							'''
+						Clarification: Forcefully regurgitate your prey due to your stomachache meter maxing out.
+					}
+				}
+
 				Calamity: {
 					EatCrawler: {
 						Name: Crunchy Crawler
@@ -1217,6 +1244,99 @@ Mods: {
 						Clarification: With a golf club, hit a golf ball into a predator that is 150+ tiles away from you.
 					}
 				}
+
+				BecomeSomeoneElse: {
+					Name: Become... Someone Else
+
+					Description: {
+						Default:
+							'''
+							Transform yourself via a transformation item.
+							'What is this, a crossover episode?'
+							'''
+						Clarification: Obtain and transform via a transformation item, mainly obtained through crafting with the Shimmer Distillation Cauldron.
+					}
+				}
+
+				MinorConsequences: {
+					Name: Minor Consequences
+
+					Description: {
+						Default:
+							'''
+							Snack a bit too much and notice a bit of padding on you.
+							[c/{$Mods.V2.CommonColorCodes.JumpsuCommentary}:i mean you signed up for this]
+							[c/{$Mods.V2.CommonColorCodes.JumpsuCommentary}:it says it on the item]
+							'''
+						Clarification:
+							'''
+							Reach a weight of 1.2, ignoring your stomach's contents.
+							[c/{$Mods.V2.CommonColorCodes.JumpsuCommentary}:do note that you can only gain weight with a transformation active]
+							'''
+					}
+				}
+
+				Chunky: {
+					Name: Chunky...
+
+					Description: {
+						Default:
+							'''
+							You just can't afford to take a break on eating, can you?
+							[c/{$Mods.V2.CommonColorCodes.JumpsuCommentary}:i endorse this]
+							[c/{$Mods.V2.CommonColorCodes.JumpsuCommentary}:keep eating... get fatter...]
+							'''
+						Clarification:
+							'''
+							Reach a weight of 2, ignoring your stomach's contents.
+							[c/{$Mods.V2.CommonColorCodes.JumpsuCommentary}:do note that you can only gain weight with a transformation active]
+							'''
+					}
+				}
+
+				EatFungalGift: {
+					Name: Strangely Delicious
+
+					Description: {
+						Default: You aren't sure what a 'Fungal Gift' ACTUALLY is, but it tastes good?
+						Clarification: Eat and digest a Fungal Gift.
+					}
+				}
+
+				DigestDungeonBrick: {
+					Name: Eat The Dungeon
+
+					Description: {
+						Default:
+							'''
+							Have your gut successfully melt a piece of the dungeon.
+							'...Wait, what do you mean you don't actually eat the dungeons in that game?'
+							'''
+						Clarification: Eat and digest a Pink, Green or Blue Brick.
+					}
+				}
+
+				EatBlazingWheel: {
+					Name: Not Movin' An Inch
+
+					Description: {
+						Default: Let a Blazing Wheel roll straight into your stomach.
+						Clarification: Eat and digest a Blazing Wheel.
+					}
+				}
+
+				EatSpikeBall: {
+					Name: Out Of The Way
+
+					Description: {
+						Default:
+							'''
+							Swallow one of those annoying spinning spike balls from the dungeon.
+							'Good riddance!'
+							'''
+						Clarification: Eat and digest a Blazing Wheel.
+					}
+				}
 			}
 
 			Intermediate: {
@@ -1374,6 +1494,50 @@ Mods: {
 						Clarification: Eat and digest any Sofa.
 					}
 				}
+
+				Fatty: {
+					Name: Fatty!
+
+					Description: {
+						Default:
+							'''
+							I think you've had enough prey for a long time.
+							[c/{$Mods.V2.CommonColorCodes.JumpsuCommentary}:i think you HAVEN'T had enough and that you need MORE]
+							'''
+						Clarification:
+							'''
+							Reach a weight of 3.5, ignoring your stomach's contents.
+							[c/{$Mods.V2.CommonColorCodes.JumpsuCommentary}:do note that you can only gain weight with a transformation active]
+							'''
+					}
+				}
+
+				JustABitMore: {
+					Name: One More Bite Couldn't Hurt
+
+					Description: {
+						Default: Have three times your stomach capacity in food inside your gut. How are you keeping all of that in?
+						Clarification: Have 300% or more stomach fullness.
+					}
+				}
+
+				PerfectMeal: {
+					Name: Perfect Meal
+
+					Description: {
+						Default: Get the maximum stat boost you can get from Well Fed.
+						Clarification: Have enough delicious stuff in your stomach to get the best boost possible from the Well Fed buff.
+					}
+				}
+
+				EatRainbowDye: {
+					Name: Taste the Rainbow
+
+					Description: {
+						Default: Go through the whole process of making rainbow dye, just to eat it? Okay, whatever.
+						Clarification: Swallow and digest rainbow dye.
+					}
+				}
 			}
 
 			Skilled: {
@@ -1454,6 +1618,106 @@ Mods: {
 							'''
 					}
 				}
+
+				MajorConsequences: {
+					Name: Major Consequences
+
+					Description: {
+						Default:
+							'''
+							What have you been eating?! I hope you have something to help with lugging your fat gut around.
+							[c/{$Mods.V2.CommonColorCodes.JumpsuCommentary}:a thing to note; the bigger a pred is, the less weight they gain from eating]
+							[c/{$Mods.V2.CommonColorCodes.JumpsuCommentary}:additionally for player preds like you, they'll lose weight faster too]
+							[c/{$Mods.V2.CommonColorCodes.JumpsuCommentary}:so you better greedily devour everything you see if you hope to get here]
+							'''
+						Clarification:
+							'''
+							Reach a weight of 10!
+							[c/{$Mods.V2.CommonColorCodes.JumpsuCommentary}:stomach weight is still excluded]
+							'''
+					}
+				}
+
+				HaveWeGoneTooFar: {
+					Name: '''"...Have we gone too far?"'''
+
+					Description: {
+						Default:
+							'''
+							We? Who's WE? This is all on you! How would you even get this fat?
+							[c/{$Mods.V2.CommonColorCodes.JumpsuCommentary}:i believe you can do this somehow]
+							[c/{$Mods.V2.CommonColorCodes.JumpsuCommentary}:afterall, you want those points, right?]
+							'''
+						Clarification:
+							'''
+							Reach a weight of... 40!? WHAT.
+							[c/{$Mods.V2.CommonColorCodes.JumpsuCommentary}:stomach weight is still excluded]
+							'''
+					}
+				}
+
+				HowDidWeGetHere: {
+					Name: How Did We Get Here?
+
+					Description: {
+						Default:
+							'''
+							...I'm out.
+							[c/{$Mods.V2.CommonColorCodes.JumpsuCommentary}:its the final challenge!]
+							[c/{$Mods.V2.CommonColorCodes.JumpsuCommentary}:100 weight or bust, can you do it?]
+							'''
+						Clarification:
+							'''
+							[c/{$Mods.V2.CommonColorCodes.JumpsuCommentary}:reach a weight of a grand total of 100]
+							[c/{$Mods.V2.CommonColorCodes.JumpsuCommentary}:how many empresses did you have to eat for this]
+							'''
+					}
+				}
+
+				Recycler: {
+					Name: Recycler
+
+					Description: {
+						Default: Get the worst stat debuffs you can get from Well Fed.
+						Clarification: Have enough dubiously edible stuff in your stomach to get the worst debuff possible from the Well Fed 'buff'.
+					}
+				}
+
+				EatReaper: {
+					Name: Ch'eating' Death
+
+					Description: {
+						Default:
+							'''
+							Give Death a taste of it's own medicine... With your own twist on it.
+							[c/{$Mods.V2.CommonColorCodes.JumpsuCommentary}:okay they arent really like. THE grim reaper and just... regular reapers]
+							[c/{$Mods.V2.CommonColorCodes.JumpsuCommentary}:whatever go eat one]
+							'''
+						Clarification: Eat and digest a Reaper during a Solar Eclipse.
+					}
+				}
+
+				DigestTempleBrick: {
+					Name: Temple Mulcher
+
+					Description: {
+						Default: Manage to digest a piece of the so called 'impenetrable' temple.
+						Clarification: Eat and digest a Lihzahrd Brick.
+					}
+				}
+
+				EatMothronEgg: {
+					Name: Raw Moth Omelette
+
+					Description: {
+						Default:
+							'''
+							Consume a Mothron egg.
+							[c/{$Mods.V2.CommonColorCodes.JumpsuCommentary}:what would an omelette made with a mothron egg taste like]
+							'''
+						Clarification: Eat and digest a Mothron Egg, spawned from Mothron during a Solar Eclipse.
+					}
+				}
 			}
 		}
 
@@ -1477,6 +1741,42 @@ Mods: {
 				}
 
 				Accessories: {
+					Thingymajigs: {
+						FullNameForExternalUse: {
+							Blank: Blank Thing
+							Forest: Flower Thing
+							Shimmer: Shimmering Thing
+							Sky: Planetary Thing
+							Snow: Cold Thing
+							Desert: Hot Thing
+							Jungle: Lush Thing
+							Corrupt: Rotting Thing
+							Crimson: Visceral Thing
+							Hallow: Hallowed Thing
+							Mushroom: Strange Thing
+							Dungeon: Eerie Thing
+							Underworld: Hellish Thing
+							Ocean: Aquatic Thing
+						}
+
+						Name: {
+							Blank: Blank
+							Forest: Flower
+							Shimmer: Shimmering
+							Sky: Planetary
+							Snow: Cold
+							Desert: Hot
+							Jungle: Lush
+							Corrupt: Rotting
+							Crimson: Visceral
+							Hallow: Hallowed
+							Mushroom: Strange
+							Dungeon: Eerie
+							Underworld: Hellish
+							Ocean: Aquatic
+						}
+					}
+
 					Informational: {
 						MealSizeScanner: Sizemic Scanner
 						PredCapacityScanner: Servant's Scanner
@@ -1491,20 +1791,7 @@ Mods: {
 
 				Consumables: {
 					Catchables.Pinky: Pinky
-
-					PermanentUpgrades: {
-						Jujus: {
-							BlankJuju: Blank Juju
-							ShimmerJuju: Shimmering Juju
-							BiomeJujuForest: Forest Juju
-							BiomeJujuDesert: Sandy Juju
-							BiomeJujuSnow: Snowy Juju
-							BiomeJujuJungle: Jungle Juju
-							BiomeJujuSky: Cloudy Juju
-						}
-
-						PureSwallowBoost1: Swallowing Stimulant
-					}
+					PermanentUpgrades.PureSwallowBoost1: Swallowing Stimulant
 
 					Potions: {
 						FastDigestionPotion: Digestive Aid Potion
@@ -1542,6 +1829,33 @@ Mods: {
 					Summon: {
 						PaperMaidSummon: Enchanted Origami Bell
 						ShroomFairySummon: Fungal Fairy Staff
+					}
+				}
+
+				TransformationItems: {
+					BaelzTransformationItem: {
+						ActiveName: Loaded Die
+						InactiveName: Loaded Die (Inactive)
+					}
+
+					KroniiTransformationItem: {
+						ActiveName: " to do; name this thing"
+						InactiveName: to do; name this thing
+					}
+
+					OllieTransformationItem: {
+						ActiveName: to do; name this thing
+						InactiveName: to do; name this thing
+					}
+
+					SoraTransformationItem: {
+						ActiveName: to do; name this thing
+						InactiveName: to do; name this thing
+					}
+
+					MintTransformationItem: {
+						ActiveName: to do; name this thing
+						InactiveName: to do; name this thing
 					}
 				}
 
@@ -2088,7 +2402,7 @@ Mods: {
 							Flavor:
 								'''
 								A beginner-level potion mixed using the refreshing waters of a cactus and the sporadicity of blinkroot.
-								While digesting, it tends towards making the consumer feel lighter on their feet, even with a full stomacch.
+								While digesting, it tends towards making the consumer feel lighter on their feet, even with a full stomach.
 								'''
 						}
 
@@ -2114,6 +2428,48 @@ Mods: {
 								An amateur-level potion fashioned from the oils of a spiteful fish which makes its home in pitch-dark purple Corrupted waters.
 								While digesting, it makes the consumer rather angry, increasing their combat and predatory prowesses alike. An adventurer with this would-be curse could easily carve up and churn down their fellows into a healthy layer of fat just as easily as they could their foes.
 								'''
+						}
+
+						WellFed: {
+							Short:
+								'''
+								Minor improvements to all stats
+								{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+								'''
+							Long:
+								'''
+								The 'Well Fed' buff is based on a value between -3.5 and 3.5, multiplying the effect of the buff.
+								[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases the Well Fed value] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{FedValue}].
+								'''
+							Flavor: "[c/{$Mods.V2.CommonColorCodes.White}:Minor improvements to all stats]"
+						}
+
+						WellFed2: {
+							Short:
+								'''
+								Medium improvements to all stats
+								{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+								'''
+							Long:
+								'''
+								The 'Well Fed' buff is based on a value between -3.5 and 3.5, multiplying the effect of the buff.
+								[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases the Well Fed value] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{FedValue}].
+								'''
+							Flavor: "[c/{$Mods.V2.CommonColorCodes.White}:Medium improvements to all stats]"
+						}
+
+						WellFed3: {
+							Short:
+								'''
+								Major improvements to all stats
+								{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+								'''
+							Long:
+								'''
+								The 'Well Fed' buff is based on a value between -3.5 and 3.5, multiplying the effect of the buff.
+								[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases the Well Fed value] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{FedValue}].
+								'''
+							Flavor: "[c/{$Mods.V2.CommonColorCodes.White}:Major improvements to all stats]"
 						}
 					}
 
@@ -2563,6 +2919,33 @@ Mods: {
 								'''
 							Flavor: A simple bow fashioned from oak wood, and tasting about the same.
 						}
+<<<<<<< Updated upstream
+=======
+
+						FlareGun: {
+							Short:
+								'''
+								Can fire flares to deal damage; must be reloaded between shots
+								Light and easy to use in a belly
+								{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+								'''
+							Long:
+								'''
+								[c/{$Mods.V2.CommonColorCodes.DoSomething}:Left-click] to shoot a flare, dealing [c/{$Mods.V2.CommonColorCodes.DealDamage}:{FlareGunDamageRatio} damage] to the first target it hits.
+								Some flares may have [c/{$Mods.V2.CommonColorCodes.DoSomething}:special properties]; examine these in the tooltips of your flares.
+
+								Can only fire a flare if said flare is loaded into the barrel.
+								[c/{$Mods.V2.CommonColorCodes.DoSomething}:Right-click] to begin loading a flare into the barrel. This takes {FlareGunReloadTime} seconds.
+								Only one flare can be loaded into the barrel at a time.
+
+								Can be used in any stomach.
+								When successfully fired in a stomach, [c/{$Mods.V2.CommonColorCodes.DealDamage}:deals struggle damage] instead.
+								Effectiveness is reduced if not done to the beat of the current pred's struggle chart.
+								Deals [c/{$Mods.V2.CommonColorCodes.PositiveEffect}:+{FlareGunNonBurnproofBonus} damage] against the stomachs of preds which are not burnproof. Deals [c/{$Mods.V2.CommonColorCodes.NegativeEffect}:no damage] against those of preds who are.
+								'''
+							Flavor: While sadly not used much in the well-respected profession of hunting compared to other ranged weapons of its caliber, flare guns are a common tool amongst adventurers and spelunkers alike to mark important locations or raise visibility in dark caves. The gun's design marks it as predominantly for usage outside of a stomach...but that doesn't make it a bad queasing weapon in a pinch, so long as you have flares left undigested to load it with.
+						}
+>>>>>>> Stashed changes
 					}
 				}
 
@@ -2597,26 +2980,23 @@ Mods: {
 						'''
 					Flavor: Tastes similar to sweet jelly, and closer to a berry - similar to Blueberries!
 				}
+
+				Cobweb: {
+					Short:
+						'''
+						'Nature's cotton candy'
+						{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+						'''
+					Long:
+						'''
+						Can be used to craft silk at a loom.
+						Can also be used alongside bones to craft some gear.
+						'''
+					Flavor: It... might taste good? I've never eaten cobwebs myself so i can't confirm.
+				}
 			}
 
 			Voraria: {
-				Mounts: {
-					BeeTransformationItem: {
-						Short:
-							'''
-							[c/FF0000:This item is not properly finished, and doesn't do much, yet.]
-							Ever wanted to become a bee gal? Now's your chance!
-							'''
-						Long:
-							'''
-							Transforms you into a bee that can fly around.
-							Mobility is decreased with stomach weight.
-							While absorbing food, your little (soon to be not-so-little) bee body will gain weight.
-							'''
-						Flavor: Ya like jazz?
-					}
-				}
-
 				Armor: {
 					CloverArmorSetBonus: 7 defense, drastically increased struggling strength
 					FungalFairySetBonus: Enables eating regular projectiles, automatically eat projectiles that are about to hit you
@@ -2854,6 +3234,331 @@ Mods: {
 				}
 
 				Accessories: {
+					Thingymajigs: {
+						Blank: {
+							Short:
+								'''
+								Can be crafted into special accessories that can provide stat boosts
+								{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+								'''
+							Long: This item does nothing on its own; instead it is used to craft a variety of stat boosting accessories, that can additionally be digested for a minor permanent boost.
+							Flavor:
+								'''
+								One of Clover's strange creations.
+								It is a fragment of unknown energy, waiting for the right conditions to be awakened.
+								'''
+						}
+
+						Crimson: {
+							Short:
+								'''
+								Increases damage and digestion damage
+								Reduces max stomachache
+								If eaten for the first time, permanently gain slight buffs related to these effects
+								{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+								'''
+							Long:
+								'''
+								[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases damage] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{Dmg}%].
+								[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases digestion damage] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{Dig}%].
+								[c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:Decreases max stomachache] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{Ache}%].
+								When eaten:
+								- [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Permanently increases digestion damage] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{PermDig}%].
+								This bonus only applies once. Eating this item after you have already done so [c/{$Mods.V2.CommonColorCodes.NegativeEffect}:will have no further effect].
+								'''
+							Flavor:
+								'''
+								You listen close...
+								...You hear a faint heartbeat.
+								'''
+						}
+
+						Corruption: {
+							Short:
+								'''
+								Increases damage and max stomachache
+								Reduces digestion damage
+								If eaten for the first time, permanently gain slight buffs related to these effects
+								{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+								'''
+							Long:
+								'''
+								[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases damage] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{Dmg}%].
+								[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases max stomachache] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{Ache}%].
+								[c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:Decreases digestion damage] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{Dig}%].
+								When eaten:
+								- [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Permanently increases max stomachache] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{PermAche}%].
+								This bonus only applies once. Eating this item after you have already done so [c/{$Mods.V2.CommonColorCodes.NegativeEffect}:will have no further effect].
+								'''
+							Flavor:
+								'''
+								You listen close...
+								...You hear something splat onto a surface.
+								'''
+						}
+
+						Desert: {
+							Short:
+								'''
+								Increases struggle damage
+								Decreases max stomachache
+								If eaten for the first time, permanently gain slight buffs related to these effects
+								{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+								'''
+							Long:
+								'''
+								[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases struggle damage] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{Str}%].
+								[c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:Decreases max stomachache] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{Ache}%].
+								When eaten:
+								- [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Permanently increases struggle damage] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{PermStr}%].
+								This bonus only applies once. Eating this item after you have already done so [c/{$Mods.V2.CommonColorCodes.NegativeEffect}:will have no further effect].
+								'''
+							Flavor:
+								'''
+								You listen close...
+								...You hear a loud 'Ow!', presumably due to someone getting pricked by a cactus.
+								'''
+						}
+
+						Dungeon: {
+							Short:
+								'''
+								Increases acid strength and max stomachache
+								Reduces damage taken and stomach capacity
+								If eaten for the first time, permanently gain slight buffs related to these effects
+								{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+								'''
+							Long:
+								'''
+								[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Reduces damage taken] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{Endu}%].
+								[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases digestion damage] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{Dig}%].
+								[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases max stomachache] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{Ache}%].
+								[c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:Decreases stomach capacity] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{Cap}%].
+								When eaten:
+								- [c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Permanently increases defense] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{PermDef}].
+								- [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Permanently increases max stomachache] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{PermAche}%].
+								This bonus only applies once. Eating this item after you have already done so [c/{$Mods.V2.CommonColorCodes.NegativeEffect}:will have no further effect].
+								'''
+							Flavor:
+								'''
+								You listen close...
+								...You hear, what can only be described as a rave. What the shit? Do they like party all the time there and stop IMMEDIATELY when you get close? Bullshit.
+								'''
+						}
+
+						Forest: {
+							Short:
+								'''
+								Increases swallow capacity and food absorption rate
+								If eaten for the first time, permanently gain slight buffs related to these effects
+								{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+								'''
+							Long:
+								'''
+								[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases swallow capacity] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{Buff}%].
+								[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases food absorption rate] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{Buff}%].
+								When eaten:
+								- [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Permanently increases swallow capacity] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{Perm}%].
+								- [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Permanently increases prey absorption rate] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{Perm}%].
+								This bonus only applies once. Eating this item after you have already done so [c/{$Mods.V2.CommonColorCodes.NegativeEffect}:will have no further effect].
+								'''
+							Flavor:
+								'''
+								You listen close...
+								...You hear the wind grazing.
+								'''
+						}
+
+						Hallow: {
+							Short:
+								'''
+								Increases movement speed and prey absorption rate
+								Reduces max stomachache
+								If eaten for the first time, permanently gain slight buffs related to these effects
+								{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+								'''
+							Long:
+								'''
+								[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases movement speed] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{Spd}%].
+								[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases prey absorption rate] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{Abs}%].
+								[c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:Decreases max stomachache] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{Ache}%].
+								When eaten:
+								- [c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Permanently increases movement speed] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{PermSpd}%].
+								- [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Permanently increases prey absorption rate] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{PermAbs}%].
+								This bonus only applies once. Eating this item after you have already done so [c/{$Mods.V2.CommonColorCodes.NegativeEffect}:will have no further effect].
+								'''
+							Flavor:
+								'''
+								You listen close...
+								...You hear a double rainbow. You don't actually know what that'd sound like, or if rainbows even make sound at all.
+								'''
+						}
+
+						Jungle: {
+							Short:
+								'''
+								Increases stomach capacity
+								If eaten for the first time, permanently gain slight buffs related to these effects
+								{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+								'''
+							Long:
+								'''
+								[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases stomach capacity] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{Cap}%].
+								When eaten:
+								- [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Permanently increases stomach capacity] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{PermCap}%].
+								This bonus only applies once. Eating this item after you have already done so [c/{$Mods.V2.CommonColorCodes.NegativeEffect}:will have no further effect].
+								'''
+							Flavor:
+								'''
+								You listen close...
+								...You hear bees buzzing.
+								'''
+						}
+
+						Mushroom: {
+							Short:
+								'''
+								Decreases body weight
+								Increases stomach weight
+								Increases stomach capacity based on how fat you are
+								If eaten for the first time, permanently gain slight buffs related to these effects
+								{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+								'''
+							Long:
+								'''
+								[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Decreases body weight by] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{BWeight}%].
+								[c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:Increases stomach weight by] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{SWeight}%].
+								[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases stomach capacity] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:1/4th of your extra body weight].
+								When eaten:
+								- [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Permanently decreases body weight by] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{PermBWeight}%].
+								This bonus only applies once. Eating this item after you have already done so [c/{$Mods.V2.CommonColorCodes.NegativeEffect}:will have no further effect].
+								'''
+							Flavor:
+								'''
+								You listen close...
+								...You hear funky beats.
+								'''
+						}
+
+						Ocean: {
+							Short:
+								'''
+								Requires wearer to be submerged in water or honey
+								Increases digestion damage and prey absorption rate
+								Decreases damage taken
+								If eaten for the first time, permanently gain slight buffs related to these effects
+								{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+								'''
+							Long:
+								'''
+								If you [c/{$Mods.V2.CommonColorCodes.DoSomething}:aren't submerged in water or honey], [c/{$Mods.V2.CommonColorCodes.NegativeEffect}:this accessory will have no effect].
+								The [c/{$Mods.V2.CommonColorCodes.DoSomething}:Wet] debuff and [c/{$Mods.V2.CommonColorCodes.DoSomething}:Honey] buff count for this accessory.
+								[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases digestion damage] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{Stat}%].
+								[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases prey absorption rate] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{Stat}%].
+								[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Decreases damage taken] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{Endu}%].
+								When eaten:
+								- [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases digestion damage] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{Perm}%].
+								- [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases prey absorption rate] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{Perm}%].
+								This bonus only applies once. Eating this item after you have already done so [c/{$Mods.V2.CommonColorCodes.NegativeEffect}:will have no further effect].
+								'''
+							Flavor:
+								'''
+								You listen close...
+								...You hear the ocean's waves.
+								'''
+						}
+
+						Shimmer: {
+							Short:
+								'''
+								Increases swallow capacity, stomach capacity, acid strength and prey absorption rate
+								If eaten for the first time, permanently gain slight buffs related to these effects
+								{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+								'''
+							Long:
+								'''
+								[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases swallow capacity, stomach capacity, digestion damage and prey absorption rate] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{Stat}%].
+								When eaten:
+								- [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Permanently increases GLP, TUM, ACI & ABS] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{Perm}].
+								This bonus only applies once. Eating this item after you have already done so [c/{$Mods.V2.CommonColorCodes.NegativeEffect}:will have no further effect].
+								'''
+							Flavor:
+								'''
+								You listen close...
+								...You hear "Terraria 1.4.4 OST - 'Aether'"
+								'''
+						}
+
+						Sky: {
+							Short:
+								'''
+								Increases flight time
+								Decreases stomach and body weight
+								If eaten for the first time, permanently gain slight buffs related to these effects
+								{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+								'''
+							Long:
+								'''
+								[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases flight time] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{Wing}%].
+								[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Decreases stomach weight] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{Stat}%].
+								[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Decreases body weight] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{Stat}%].
+								When eaten:
+								- [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Decreases stomach weight] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{Perm}%].
+								- [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Decreases body weight] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{Perm}%].
+								This bonus only applies once. Eating this item after you have already done so [c/{$Mods.V2.CommonColorCodes.NegativeEffect}:will have no further effect].
+								'''
+							Flavor:
+								'''
+								You listen close...
+								...You hear tinnitus.
+								'''
+						}
+
+						Snow: {
+							Short:
+								'''
+								Increases max stomachache
+								Decreases struggle damage
+								If eaten for the first time, permanently gain slight buffs related to these effects
+								{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+								'''
+							Long:
+								'''
+								[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases max stomachache] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{Ache}%].
+								[c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:Decreases struggle damage] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{Str}%].
+								When eaten:
+								- [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Permanently increases max stomachache] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{PermAche}%].
+								This bonus only applies once. Eating this item after you have already done so [c/{$Mods.V2.CommonColorCodes.NegativeEffect}:will have no further effect].
+								'''
+							Flavor:
+								'''
+								You listen close...
+								...You hear someone slip and fall on their ass.
+								'''
+						}
+
+						Underworld: {
+							Short:
+								'''
+								Increases acid strength
+								If eaten for the first time, permanently gain slight buffs related to these effects
+								{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+								'''
+							Long:
+								'''
+								[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases digestion damage] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{Dig}%].
+								When eaten:
+								- [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Permanently increases digestion damage] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{PermDig}%].
+								This bonus only applies once. Eating this item after you have already done so [c/{$Mods.V2.CommonColorCodes.NegativeEffect}:will have no further effect].
+								'''
+							Flavor:
+								'''
+								You listen close...
+								...You hear lava bubbling.
+								'''
+						}
+					}
+
 					Informational: {
 						MealSizeScanner: {
 							Short:
@@ -2864,7 +3569,7 @@ Mods: {
 								'''
 							Long:
 								'''
-								Most things that you can eat [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:display their size as a meal above themselves].
+								Most things that you can eat [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:display their size as a meal below themselves].
 								If their size number is [c/00FF00:green], you are able to swallow them with ease.
 								[c/7F7F7F:This means that your target meal would fit in your stomach normally, and nothing is keeping you from gobbling them up on sight. Go indulge a little!]
 								If their size number is [c/FFFF00:yellow], you are able to swallow them, but might have a bit of trouble keeping them down or properly mulching them.
@@ -2894,7 +3599,7 @@ Mods: {
 								'''
 							Long:
 								'''
-								Most things that can eat you [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:display their stomach capacity as predators below themselves].
+								Most things that can eat you [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:display their stomach capacity as predators above themselves].
 								If their capacity number is [c/00FF00:green], they're able to swallow you with ease.
 								[c/7F7F7F:This means that your choice predator could fit you in their stomach normally, and nothing is keeping them from gobbling you up on sight. Ready to get gurgled?]
 								If their capacity number is [c/FFFF00:yellow], they're able to swallow you, but might have a bit of trouble keeping you down or properly mulching you.
@@ -3125,139 +3830,6 @@ Mods: {
 					}
 
 					PermanentUpgrades: {
-						Jujus: {
-							BlankJuju: {
-								Short:
-									'''
-									Can be crafted into juju accessories that can provide stat boosts
-									{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
-									'''
-								Long: This item does nothing on its own; instead it is used to craft a variety of stat boosting accessories, that can additionally be digested for a minor permanent boost.
-								Flavor:
-									'''
-									One of Clover's strange creations.
-									It is a fragment of magical energy, waiting for the right conditions to be awakened.
-									'''
-							}
-
-							ShimmerJuju: {
-								Short:
-									'''
-									Increases maximum prey swallowing size, stomach capacity, acid strength and food absorption rate
-									If eaten for the first time, permanently gain slight buffs related to this juju's effects
-									{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
-									'''
-								Long:
-									'''
-									[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases GLP, TUM, ACI & ABS] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{All}].
-									When eaten:
-									- [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Permanently increases GLP, TUM, ACI & ABS] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{PermAll}].
-									This bonus only applies once. Eating this item after you have already done so [c/{$Mods.V2.CommonColorCodes.NegativeEffect}:will have no further effect].
-									'''
-								Flavor: '''[c/{$Mods.V2.CommonColorCodes.CloverQuote}:"The Aether? The shimmer lake is sooo cooool! I bet it tastes like candy!" -Clover]'''
-							}
-
-							BiomeJujuForest: {
-								Short:
-									'''
-									Increases stomach capacity and food absorption rate
-									If eaten for the first time, permanently gain slight buffs related to this juju's effects
-									{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
-									'''
-								Long:
-									'''
-									[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases TUM] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{TUM}].
-									[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases ABS] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{ABS}].
-									When eaten:
-									- [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Permanently increases TUM] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{PermTUM}].
-									- [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Permanently increases ABS] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{PermABS}].
-									This bonus only applies once. Eating this item after you have already done so [c/{$Mods.V2.CommonColorCodes.NegativeEffect}:will have no further effect].
-									'''
-								Flavor: '''[c/{$Mods.V2.CommonColorCodes.CloverQuote}:"The forest? Hmm, layin' around in the grass with a tum full of candy is always fun!" -Clover]'''
-							}
-
-							BiomeJujuDesert: {
-								Short:
-									'''
-									Increases acid strength and struggling strength
-									If eaten for the first time, permanently gain slight buffs related to this juju's effects
-									{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
-									'''
-								Long:
-									'''
-									[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases ACI] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{ACI}].
-									[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases struggle strength] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{STR}%].
-									When eaten:
-									- [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Permanently increases ACI] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{PermACI}].
-									- [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Permanently increases struggle strength] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{PermSTR}%].
-									This bonus only applies once. Eating this item after you have already done so [c/{$Mods.V2.CommonColorCodes.NegativeEffect}:will have no further effect].
-									'''
-								Flavor: '''[c/{$Mods.V2.CommonColorCodes.CloverQuote}:"The desert? Ugh, it feels awful with the constant heat! Never going there!" -Clover]'''
-							}
-
-							BiomeJujuSnow: {
-								Short:
-									'''
-									Increases maximum prey swallowing size and food absorption rate
-									If eaten for the first time, permanently gain slight buffs related to this juju's effects
-									{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
-									'''
-								Long:
-									'''
-									[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases GLP] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{GLP}].
-									[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases ABS] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{ABS}].
-									When eaten:
-									- [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Permanently increases GLP] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{PermGLP}].
-									- [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Permanently increases ABS] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{PermABS}].
-									This bonus only applies once. Eating this item after you have already done so [c/{$Mods.V2.CommonColorCodes.NegativeEffect}:will have no further effect].
-									'''
-								Flavor: '''[c/{$Mods.V2.CommonColorCodes.CloverQuote}:"The tundra? Not a fan of ice, but the snow makes me think of ice cream!" -Clover]'''
-							}
-
-							BiomeJujuJungle: {
-								Short:
-									'''
-									Increases stomach capacity
-									Decreases movement speed
-									If eaten for the first time, permanently gain slight buffs related to this juju's effects
-									{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
-									'''
-								Long:
-									'''
-									[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Increases TUM] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{TUM}].
-									[c/{$Mods.V2.CommonColorCodes.NegativeEffect}:Decreases movement speed] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{SPD}%].
-									When eaten:
-									- [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Permanently increases TUM] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{PermTUM}].
-									This bonus only applies once. Eating this item after you have already done so [c/{$Mods.V2.CommonColorCodes.NegativeEffect}:will have no further effect].
-									'''
-								Flavor:
-									'''
-									[c/{$Mods.V2.CommonColorCodes.CloverQuote}:"The jungle? Reminds me of the time where I drank like three gallons]
-									[c/{$Mods.V2.CommonColorCodes.CloverQuote}:of honey and then got all sticky... Took a while to crawl out of the hive." -Clover]
-									'''
-							}
-
-							BiomeJujuSky: {
-								Short:
-									'''
-									Decreases stomach weight
-									Increases movement speed & jump height
-									If eaten for the first time, permanently gain slight buffs related to this juju's effects
-									{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
-									'''
-								Long:
-									'''
-									[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Decreases stomach weight] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{WeightReduce}%].
-									[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases movement speed] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{SPD}%].
-									[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases jump speed] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{Jump}%].
-									When eaten:
-									- [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Permanently decreases stomach weight] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{PermWeightReduce}%].
-									This bonus only applies once. Eating this item after you have already done so [c/{$Mods.V2.CommonColorCodes.NegativeEffect}:will have no further effect].
-									'''
-								Flavor: '''[c/{$Mods.V2.CommonColorCodes.CloverQuote}:"The sky? The lower gravity up there makes my tum feel all kinds of funny..." -Clover]'''
-							}
-						}
-
 						PureSwallowBoost1: {
 							Short:
 								'''
@@ -3558,6 +4130,104 @@ Mods: {
 					}
 				}
 
+				TransformationItems: {
+					BaelzTransformationItem: {
+						Short:
+							'''
+							Transforms you into a chaotic rat girl while in the inventory
+							You may be susceptible to weight gain under the effect
+							Right click to toggle effect
+							{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+							'''
+						Long:
+							'''
+							While active:
+							By default, you have [c/{$Mods.V2.CommonColorCodes.PositiveEffect}:+10%] critical chance, [c/{$Mods.V2.CommonColorCodes.PositiveEffect}:+15%] attack speed,
+							[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:+30%] movement speed, [c/{$Mods.V2.CommonColorCodes.NegativeEffect}:-35%] damage, [c/{$Mods.V2.CommonColorCodes.NegativeEffect}:-15%] damage reduction,
+							[c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:-20%] stomach capacity & [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:+25%] absorption rate
+							Critical chance increases when gaining weight.
+							On a critical hit, the chance is rolled again, dealing a double crit that [c/{$Mods.V2.CommonColorCodes.PositiveEffect}:doubles damage] if successful.
+							Additionally, prey in your stomach can take critical damage, using the critical chance given by this item.
+							'''
+						Flavor: tba
+					}
+
+					KroniiTransformationItem: {
+						Short:
+							'''
+							Transforms you into a (seemingly) elegant lady while in the inventory
+							You may be susceptible to weight gain under the effect
+							Right click to toggle effect
+							{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+							'''
+						Long:
+							'''
+							While active:
+							By default, you have +10% movement speed, +20% jump height, -25% damage reduction,
+							+33% body weight reduction, -1 flat body weight & -15% stomach weight reduction.
+							Melee attacks add 1.25 seconds of [c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Time Acceleration], which increases melee attack speed, acid & absorption effectiveness.
+							Time Acceleration can stack up to [c/{$Mods.V2.CommonColorCodes.DoSomething}:30 seconds].
+							Melee attacks additionally have a [c/{$Mods.V2.CommonColorCodes.PositiveEffect}:10% chance to freeze an enemy in time] for [c/{$Mods.V2.CommonColorCodes.DoSomething}:2 seconds].
+							This chance is affected by luck.
+							After the enemy is unfrozen, they cannot be frozen again for a second, or 5 seconds if it's a boss.
+							'''
+						Flavor: tba
+					}
+
+					OllieTransformationItem: {
+						Short:
+							'''
+							Transforms you into a crazy zombie girl while in the inventory
+							You may be susceptible to weight gain under the effect
+							Right click to toggle effect
+							{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+							'''
+						Long:
+							'''
+							While active:
+							By default, you have [c/{$Mods.V2.CommonColorCodes.PositiveEffect}:+20%] movement speed, [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:+45%] stomach capacity, [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:-1] flat stomach weight,
+							[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:+67%] stomach weight reduction, [c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:-67%] acid damage, [c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:-67%] absorption rate & [c/{$Mods.V2.CommonColorCodes.NegativeEffect}:-10%] ranged damage.
+							Non-homing ranged attacks deal more damage the further away the target is, up to [c/{$Mods.V2.CommonColorCodes.DoSomething}:1.75x damage].
+							You can [c/{$Mods.V2.CommonColorCodes.DoSomething}:dash toward your cursor] by pressing [c/{$Mods.V2.CommonColorCodes.DoSomething}:(Ollie: Dash)], dodging enemies and projectiles while granting
+							a [c/{$Mods.V2.CommonColorCodes.PositiveEffect}:drastically increased firing rate] for a short time.
+							[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:You may also end up 'accidentally' swallowing things you dash into...]
+							'''
+						Flavor: tba
+					}
+
+					SoraTransformationItem: {
+						Short:
+							'''
+							Transforms you into an idol while in the inventory
+							You may be susceptible to weight gain under the effect
+							Right click to toggle effect
+							{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+							'''
+						Long: tba
+						Flavor: tba
+					}
+
+					MintTransformationItem: {
+						Short:
+							'''
+							Transforms you into a ghost maid while in the inventory
+							You may be susceptible to weight gain under the effect
+							Right click to toggle effect
+							{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+							'''
+						Long:
+							'''
+							While active:
+							Ghost and ghostlike enemies are instantly absorbed into your stomach on contact.
+							A wisp meter appears below you, filling up as you absorb prey.
+							The size of the meter and the rate it fills up is based on your maximum amount of minion slots.
+							Once a segment of the meter has filled, you can press (Mint: Summon Wisp) to summon a friendly wisp minion.
+							The wisp fires projectiles at nearby enemies, and after 7 shots, may charge into an enemy to explode.
+							'''
+						Flavor: tba
+					}
+				}
+
 				Weapons: {
 					Ranged: {
 						Throwables: {
@@ -3806,12 +4476,30 @@ Mods: {
 			GraniteChair_ProjectileEntity.DisplayName: Granite Chair
 			ThrowingDice.DisplayName: Throwing Dice
 			Girthquake.DisplayName: Girthquake
+<<<<<<< Updated upstream
 			FallingHitbox.DisplayName: Falling Hitbox
 			SpoonProjectile.DisplayName: Spoon Projectile
 >>>>>>> Stashed changes
+=======
+			FallingHitbox.DisplayName: Girth
+			SpoonProjectile.DisplayName: Spoon
+			ItemRoller.DisplayName: Item Roller
+			MintWisp.DisplayName: Mint Wisp
+			MintWispShot.DisplayName: Mint Wisp Shot
+			MintWispCharge.DisplayName: Mint Wisp Charge
+			MintWispExplode.DisplayName: Mint Wisp Explode
 		}
 
-		InfoDisplayName.TallyCounterVore: Meal Count
+		InfoDisplayName: {
+			TallyCounterVore: Meal Count
+
+			WeightDisplayer: {
+				Weight: Body Weight
+				Saturation: Saturation
+			}
+>>>>>>> Stashed changes
+		}
+
 		InfoDisplayText.TallyCounterVore.InvalidMeal: Meal count unavailable
 
 		StatusEffects: {
@@ -3933,8 +4621,8 @@ Mods: {
 						Name: Fungal Blessing
 						Description:
 							'''
-							[c/{$Mods.V2.CommonColorCodes.Heal}:Increases health regeneration] by [c/{$Mods.V2.CommonColorCodes.DoSomething}: 1 for every 3 seconds of the buff duration, up to 10 HP/sec]. [c/7F7F7F:(Artificial)]
-							Max duration is [c/{$Mods.V2.CommonColorCodes.DoSomething}:1 minute].
+							[c/{$Mods.V2.CommonColorCodes.Heal}:Increases health regeneration] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{Regen} HP/sec]. [c/7F7F7F:(Artificial)]
+							Max duration is [c/{$Mods.V2.CommonColorCodes.DoSomething}:3 minutes]
 							'Inhaling spores seems like the polar opposite of healthy, if you ask me.'
 							'''
 					}
@@ -3945,8 +4633,8 @@ Mods: {
 						Name: Healing Jam
 						Description:
 							'''
-							[c/{$Mods.V2.CommonColorCodes.Heal}:Increases health regeneration] by [c/{$Mods.V2.CommonColorCodes.DoSomething}: 2 HP/sec] [c/7F7F7F:(Artificial)]
-							[c/{$Mods.V2.CommonColorCodes.ManaHeal}:Increases mana regeneration] by [c/{$Mods.V2.CommonColorCodes.DoSomething}: 6 MP/sec] [c/7F7F7F:(Artificial)]
+							[c/{$Mods.V2.CommonColorCodes.Heal}:Increases health regeneration] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:2 HP/sec] [c/7F7F7F:(Artificial)]
+							[c/{$Mods.V2.CommonColorCodes.ManaHeal}:Increases mana regeneration] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:6 MP/sec] [c/7F7F7F:(Artificial)]
 							'Turns out, it was filled with jam!'
 							'''
 					}
@@ -3956,7 +4644,9 @@ Mods: {
 
 					WellFed: {
 						Name: {
-							-1: Horrendously Filled
+							-3: Disastrous Dinner
+							-2: Horrendously Filled
+							-1: Sickly Supper
 							0: ...Not Filled In A Good Nor Bad Way I Guess?
 							1: Well Fed
 							2: Plenty Satisfied
@@ -3977,6 +4667,14 @@ Mods: {
 								'''
 						}
 					}
+
+					GeneralWeightGainStatChanges:
+						'''
+						Due to excess weight;
+						{Damage} damage
+						{AttackSpeed} attack speed
+						{MaxHealth} max life
+						'''
 
 					BaelzTransformation: {
 						Name: {
@@ -4015,12 +4713,25 @@ Mods: {
 							StatChanges:
 								'''
 								{Damage} damage
-								{Defense} defense
+								{DamageReduction} damage reduction
 								{Critical} critical strike chance
 								{AttackSpeed} attack speed
 								{RunSpeed} movement speed
 								'''
 						}
+					}
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+
+					KroniiSpeed: {
+						Name: Time Acceleration
+						Description.StatChanges:
+							'''
+							{AttackSpeed} melee attack speed
+							{Digestion} acid damage & tick rate
+							{Absorption} prey absorption rate
+							'''
 					}
 >>>>>>> Stashed changes
 				}
@@ -4142,6 +4853,11 @@ Mods: {
 							This may attract the attention and appetite of predators that like fruity flavors
 							'Just follow your nose!'
 							'''
+					}
+
+					OllieDashCooldown: {
+						Name: Ollie: Dash Cooldown
+						Description: Cannot dash
 					}
 				}
 
@@ -4636,14 +5352,28 @@ Mods: {
 
 			FlattenedByAFatAss: {
 				Universal: {
-					1: "{Player} forgot to look up."
-					2: "{Player} was crushed by {NPC}'s fat ass."
-					3: "{Player} caught a big one!"
-					4: "{NPC} either accidentally or intentionally flattened {Player}."
-					5: Thanks to {NPC}, {Player} is now equivalent to a sheet of paper.
-					6: "{NPC} flattened {Player} into a pancake."
-					7: Well, good luck finding {Player} under {NPC}'s body.
+					1: "{0} forgot to look up."
+					2: "{0} was crushed by {1}'s fat ass."
+					3: "{0} caught a big one!"
+					4: "{1} either accidentally or intentionally flattened {0}."
+					5: Thanks to {1}, {0} is now equivalent to a sheet of paper.
+					6: "{1} flattened {0} into a pancake."
+					7: Well, good luck finding {0} under {1}'s body.
 				}
+			}
+
+			SwallowDamage: {
+				Cactus: "{0} tried to deepthroat a cactus."
+				Crystals: "{0} swallowed sharp crystals. Really..?"
+				Spikes: "{0} ate spikes. What'd you think was going to happen?"
+				Fruitcake: "{0} thought fruitcake was a good idea to eat. Ever."
+				NurseNeedle: "{0} thought they were taking a shot, not getting one."
+				CactusFurniture: "{0} attempted to consume furniture made out of cactus spines."
+				CrystalFurniture: "{0} attempted to consume furniture made out of crystals."
+				Poop: "{0} ate shit."
+				BlazingWheel: "{0} thought they could safely consume a flaming wheel."
+				SpikeBall: "{0} attempted to swallow a giant spiky ball."
+				DeadlySphere: "{0} didn't think twice about eating a metal ball covered in spikes."
 			}
 		}
 
@@ -4958,10 +5688,52 @@ Mods: {
 >>>>>>> Stashed changes
 =======
 			JungleFairy.DisplayName: Jungle Fairy
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+			GumdropSlime.DisplayName: Gumdrop Slime
 >>>>>>> Stashed changes
 		}
 
 		ItemObtainmentDetails.Voraria.Accessories.Vanity.BalloonBelly: Mods.V2.ItemObtainmentDetails.Voraria.Accessories.Vanity.BalloonBelly
+
+		ObjectNames: {
+			1: Object
+			2: Item
+			3: Thing
+			4: Thingymajig
+			5: Thingamajig
+			6: Thingamabob
+			7: Doodad
+			8: Doodah
+			9: Dingus
+			10: Doohickey
+			11: Whatchamacallit
+			12: Whatdoyoucallit
+			13: Whatsit
+			14: Artifact
+			15: Matter
+			16: Apparatus
+			17: Gadget
+			18: Trinket
+			19: Widget
+			20: Curio
+			21: Accessory
+			22: Mechanism
+			23: Thingo
+			24: Thingummyjig
+			25: Knickknack
+			26: Thingy
+			27: Thingie
+			28: Dingbat
+			29: Thingy-dingy
+			30: Whatzit
+			31: Thingamabobber
+			32: Dealie
+			33: Thang
+			34: Whosawhatsit
+			35: Thingamahickey
+		}
 
 		Items: {
 			CloverHeadAccessories.Tooltip: ""
@@ -5002,6 +5774,14 @@ Mods: {
 
 			ThrowingDice: {
 				DisplayName: Throwing Dice
+				Tooltip: ""
+			}
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+
+			PredToggleRod: {
+				DisplayName: Pred Toggle Rod
 				Tooltip: ""
 			}
 >>>>>>> Stashed changes

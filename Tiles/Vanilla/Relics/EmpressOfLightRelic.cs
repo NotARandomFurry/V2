@@ -150,6 +150,7 @@ namespace V2.Tiles.Vanilla.Relics
                             // Draw the main texture
                             spriteBatch.Draw(texture, drawPos, frame, color, 0f, origin, 1f, effects, 0f);
 
+<<<<<<< Updated upstream
                             // Draw the periodic glow effect
                             float scale = (float)Math.Sin(Main.GlobalTimeWrappedHourly * TwoPi / 2f) * 0.3f + 0.7f;
                             Color effectColor = color;
@@ -218,6 +219,115 @@ namespace V2.Tiles.Vanilla.Relics
                 int width = 3;
                 int height = 4;
                 NetMessage.SendTileSquare(Main.myPlayer, i, j, width, height);
+=======
+							// Draw the periodic glow effect
+							float scale = (float)Math.Sin(Main.GlobalTimeWrappedHourly * TwoPi / 2f) * 0.3f + 0.7f;
+							Color effectColor = color;
+							effectColor.A = 0;
+							effectColor = effectColor * 0.1f * scale;
+							for (float num5 = 0f; num5 < 1f; num5 += 355f / (678f * (float)Math.PI))
+							{
+								spriteBatch.Draw(texture, drawPos + (TwoPi * num5).ToRotationVector2() * (6f + offset * 2f), frame, effectColor, 0f, origin, 1f, effects, 0f);
+                            }
+
+                            Vector2 zero = Main.drawToScreen ? Vector2.Zero : new Vector2(Main.offScreenRange);
+                            Player plr = Main.LocalPlayer;
+                            if (plr.AsV2Player().HoldingPredToggleRod)
+                            {
+                                Texture2D cornerTexture = ModContent.Request<Texture2D>("V2/Items/Voraria/Tools/PredToggleRodInactiveCorner").Value;
+                                if (npc.ai[2] == 1)
+                                    cornerTexture = ModContent.Request<Texture2D>("V2/Items/Voraria/Tools/PredToggleRodActiveCorner").Value;
+
+                                spriteBatch.Draw( // Upper Left
+                                    cornerTexture,
+                                    new Vector2(i * 16 - (int)Main.screenPosition.X, j * 16 - (int)Main.screenPosition.Y) + zero -
+									new Vector2(192, 192),
+                                    new Rectangle(0, 0, 10, 10),
+                                    Color.White, 0f, default, 1f, SpriteEffects.None, 0f);
+                                spriteBatch.Draw( // Upper Right
+                                    cornerTexture,
+                                    new Vector2(i * 16 - (int)Main.screenPosition.X + (npc.width), j * 16 - (int)Main.screenPosition.Y) + zero -
+                                    new Vector2(192, 192),
+                                    new Rectangle(0, 0, 10, 10),
+                                    Color.White, 1.5708f, default, 1f, SpriteEffects.None, 0f);
+                                spriteBatch.Draw( // Bottom Left
+                                    cornerTexture,
+                                    new Vector2(i * 16 - (int)Main.screenPosition.X, j * 16 - (int)Main.screenPosition.Y + (npc.height)) + zero -
+                                    new Vector2(192, 192),
+                                    new Rectangle(0, 0, 10, 10),
+                                    Color.White, 4.71239f, default, 1f, SpriteEffects.None, 0f);
+                                spriteBatch.Draw( // Bottom Right
+                                    cornerTexture,
+                                    new Vector2(i * 16 - (int)Main.screenPosition.X + (npc.width), j * 16 - (int)Main.screenPosition.Y + (npc.height)) + zero -
+                                    new Vector2(192, 192),
+                                    new Rectangle(0, 0, 10, 10),
+                                    Color.White, 3.14159f, default, 1f, SpriteEffects.None, 0f);
+                            }
+                        }
+					}
+				}
+			}
+		}
+	}
+
+	public class EmpressOfLightRelic_TileEntity : ModTileEntity
+	{
+		public Projectile connectedNPC = null;
+		public double WeightOnLoad = 0;
+        public bool CurrentlyEnabled = true;
+
+        public override void Update()
+		{
+			if (connectedNPC is null)
+			{
+				Activate();
+			}
+			else if (!connectedNPC.active || connectedNPC.type != ModContent.ProjectileType<EmpressOfLightRelic_ProjectileEntity>())
+			{
+				Activate();
+            }
+            else
+            {
+                CurrentlyEnabled = connectedNPC.ai[2] == 1 ? true : false;
+            }
+
+        }
+		public void Activate()
+		{
+			foreach (var npc in Main.ActiveProjectiles)
+			{
+				if (npc.active && (npc.position / 16).Distance(Position.ToVector2()) < 2f && npc.type == ModContent.ProjectileType<EmpressOfLightRelic_ProjectileEntity>())
+				{
+					connectedNPC = npc;
+					return;
+				}
+			}
+			if (Main.netMode != NetmodeID.MultiplayerClient)
+			{
+				int num = Projectile.NewProjectile(new EntitySource_TileEntity(this, null), new Vector2((int)(Position.X * 16) + 24, (int)(Position.Y * 16) + 32), Vector2.Zero, ModContent.ProjectileType<EmpressOfLightRelic_ProjectileEntity>(), 0, 0, ai2: CurrentlyEnabled ? 1 : 0);
+				connectedNPC = Main.projectile[num];
+				connectedNPC.AsPred().ExtraWeight = WeightOnLoad;
+				Main.projectile[num].netUpdate = true;
+				if (Main.netMode != NetmodeID.SinglePlayer)
+				{
+					NetMessage.SendData(MessageID.TileEntitySharing, -1, -1, null, ID, (float)Position.X, (float)Position.Y);
+				}
+			}
+		}
+		public override bool IsTileValidForEntity(int x, int y)
+		{
+			Tile tile = Main.tile[x, y];
+			return tile.HasTile && tile.TileType == ModContent.TileType<EmpressOfLightRelic>();
+		}
+		public override int Hook_AfterPlacement(int i, int j, int type, int style, int direction, int alternate)
+		{
+			if (Main.netMode == NetmodeID.MultiplayerClient)
+			{
+				// Sync the entire multitile's area.  Modify "width" and "height" to the size of your multitile in tiles
+				int width = 3;
+				int height = 4;
+				NetMessage.SendTileSquare(Main.myPlayer, i, j, width, height);
+>>>>>>> Stashed changes
 
                 // Sync the placement of the tile entity with other clients
                 // The "type" parameter refers to the tile type which placed the tile entity, so "Type" (the type of the tile entity) needs to be used here instead
@@ -225,6 +335,7 @@ namespace V2.Tiles.Vanilla.Relics
                 return -1;
             }
 
+<<<<<<< Updated upstream
             // ModTileEntity.Place() handles checking if the entity can be placed, then places it for you
             int placedEntity = Place(i, j);
             return placedEntity;
@@ -259,6 +370,47 @@ namespace V2.Tiles.Vanilla.Relics
             Projectile.timeLeft = 6000;
             Projectile.tileCollide = false;
 
+=======
+			// ModTileEntity.Place() handles checking if the entity can be placed, then places it for you
+			int placedEntity = Place(i, j);
+			return placedEntity;
+		}
+		public override void OnNetPlace()
+		{
+			if (Main.netMode == NetmodeID.Server)
+			{
+				NetMessage.SendData(MessageID.TileEntitySharing, number: ID, number2: Position.X, number3: Position.Y);
+			}
+		}
+		public override void SaveData(TagCompound tag)
+        {
+            if (connectedNPC is not null)
+                tag.Add("ExtraWeight", connectedNPC.AsPred().ExtraWeight);
+            tag.Add("CurrentlyEnabled", CurrentlyEnabled);
+        }
+
+		public override void LoadData(TagCompound tag)
+		{
+			WeightOnLoad = tag.GetDouble("ExtraWeight");
+            CurrentlyEnabled = tag.GetBool("CurrentlyEnabled");
+        }
+	}
+	public class EmpressOfLightRelic_ProjectileEntity : ModProjectile
+	{
+		public override string Texture => "V2/Tiles/InvisibleImage";
+		public override void SetDefaults()
+		{
+			Projectile.friendly = true;
+			Projectile.width = 48;
+			Projectile.height = 64;
+			Projectile.aiStyle = -1;
+			Projectile.damage = 0;
+			Projectile.timeLeft = 6000;
+			Projectile.tileCollide = false;
+
+            Projectile.AsPred().IsPredTileEntity = true;
+
+>>>>>>> Stashed changes
             Projectile.AsFood().CannotBeEatenDueToShenanigans = true;
 
             Projectile.AsFood().DefinedSize = 24;
@@ -286,6 +438,7 @@ namespace V2.Tiles.Vanilla.Relics
 
             Projectile.AsPred().GetPreyAbsorptionRate = GetPreyAbsorptionRate;
 
+<<<<<<< Updated upstream
             Projectile.AsPred().GetVisualBellySize = GetVisualBellySize;
             Projectile.AsPred().GetVisualWeightStage = GetVisualWeightStage;
         }
@@ -334,4 +487,54 @@ namespace V2.Tiles.Vanilla.Relics
             return baseAbsorptionRate;
         }
     }
+=======
+			Projectile.AsPred().GetVisualBellySize = GetVisualBellySize;
+			Projectile.AsPred().GetVisualWeightStage = GetVisualWeightStage;
+		}
+		public override bool? CanHitNPC(NPC target) => false;
+		public override bool CanHitPlayer(Player target) => false;
+		public override bool CanHitPvp(Player target) => false;
+		public static bool CanPaintingBeForceFed(Projectile projectile) => true;
+		public override void AI()
+		{
+			Projectile.ai[0]--;
+			if (Projectile.ai[0] <= 0) Projectile.ai[0] = Main.rand.Next(300, 600);
+			Projectile.timeLeft = 6000;
+			Projectile.velocity = Vector2.Zero;
+			Tile Painting = Main.tile[Projectile.position.ToTileCoordinates()];
+			if (!Painting.HasTile || Painting.TileType != ModContent.TileType<EmpressOfLightRelic>())
+			{
+				Projectile.active = false;
+			}
+			if (Main.rand.NextBool(100) && Projectile.ai[2] == 1) Projectile.DoContactGulpage();
+		}
+		public override void PostAI()
+		{
+			Projectile.velocity = Vector2.Zero;
+		}
+		public static int GetVisualBellySize(Projectile projectile)
+		{
+			return Math.Min(
+				(int)Math.Floor(6 * Math.Sqrt(PredProjectile.GetCurrentBellyWeight(projectile))),
+				5
+			);
+		}
+		public static int GetVisualWeightStage(Projectile projectile)
+		{
+			return Math.Min(
+				(int)Math.Floor(2 * Math.Sqrt(projectile.AsPred().ExtraWeight)),
+				0
+			);
+		}
+		public static double GetDigestionTickDamage(Projectile projectile, PreyData prey) => 22;
+		public static double GetDigestionTickRate(Projectile projectile, PreyData prey) => 1.2;
+		public static double GetPreyAbsorptionRate(Projectile projectile)
+		{
+			double baseAbsorptionRate = 1.0 / (double)V2Utils.SensibleTime(
+				seconds: 45
+			);
+			return baseAbsorptionRate;
+		}
+	}
+>>>>>>> Stashed changes
 }
