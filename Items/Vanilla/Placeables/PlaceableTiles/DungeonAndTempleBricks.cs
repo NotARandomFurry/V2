@@ -7,7 +7,7 @@ using V2.PlayerHandling.PredPlayerGoals.Amateur;
 using V2.PlayerHandling.PredPlayerGoals.Intermediate;
 using V2.PlayerHandling.PredPlayerGoals.Skilled;
 
-namespace V2.Items.Vanilla.Placeables.Tile
+namespace V2.Items.Vanilla.Placeables.PlaceableTiles
 {
 	public class LihzahrdBrick : GlobalItem
 	{

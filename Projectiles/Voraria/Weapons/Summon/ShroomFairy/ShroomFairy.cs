@@ -1,17 +1,5 @@
-<<<<<<< Updated upstream:Projectiles/Voraria/Weapons/Summon/ShroomFairy.cs
-﻿using Microsoft.CodeAnalysis.Text;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Mono.Cecil;
-using ReLogic.Content;
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
-=======
-﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -19,16 +7,13 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
->>>>>>> Stashed changes:Projectiles/Voraria/Weapons/Summon/ShroomFairy/ShroomFairy.cs
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
-<<<<<<< Updated upstream:Projectiles/Voraria/Weapons/Summon/ShroomFairy.cs
 using Terraria.GameContent.Personalities;
-=======
+
 using Terraria.Graphics.Shaders;
->>>>>>> Stashed changes:Projectiles/Voraria/Weapons/Summon/ShroomFairy/ShroomFairy.cs
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -37,27 +22,22 @@ using Terraria.WorldBuilding;
 using V2.Core;
 using V2.Items;
 using V2.Items.Voraria;
-<<<<<<< Updated upstream:Projectiles/Voraria/Weapons/Summon/ShroomFairy.cs
-<<<<<<< Updated upstream
 using V2.Items.Voraria.Consumables.Potions;
 using V2.PlayerHandling;
 using V2.Projectiles.Vanilla.Summons.Pets;
 using V2.Projectiles.Voraria.Pets;
-=======
+
 using V2.NPCs;
 using V2.PlayerHandling;
-=======
+
 using V2.Items.Voraria.Consumables.Potions;
 using V2.NPCs;
 using V2.PlayerHandling;
 using V2.Projectiles.Vanilla.Summons.Pets;
 using V2.Projectiles.Voraria.Pets;
->>>>>>> Stashed changes:Projectiles/Voraria/Weapons/Summon/ShroomFairy/ShroomFairy.cs
 using V2.Projectiles.Voraria.Weapons.Ranged.Throwables;
->>>>>>> Stashed changes
 using V2.Sounds.Vore;
 using V2.StatusEffects.Voraria.Buffs;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace V2.Projectiles.Voraria.Weapons.Summon.ShroomFairy
 {
@@ -105,27 +85,17 @@ namespace V2.Projectiles.Voraria.Weapons.Summon.ShroomFairy
         }
         public override bool PreDraw(Dust dust)
         {
-<<<<<<< Updated upstream:Projectiles/Voraria/Weapons/Summon/ShroomFairy.cs
-            Main.spriteBatch.Draw(Texture2D.Value, dust.position - Main.screenPosition, dust.frame, Color.FromNonPremultiplied(255,255,255,255 - dust.alpha), dust.rotation, new Vector2(9, 9), 1f, SpriteEffects.None, 0f);
-=======
             Main.spriteBatch.Draw(Texture2D.Value, dust.position - Main.screenPosition, dust.frame, Color.FromNonPremultiplied(255, 255, 255, 255 - dust.alpha), dust.rotation, new Vector2(9, 9), 1f, SpriteEffects.None, 0f);
->>>>>>> Stashed changes:Projectiles/Voraria/Weapons/Summon/ShroomFairy/ShroomFairy.cs
             return false;
         }
         public override bool Update(Dust dust)
         {
             dust.position += dust.velocity;
-<<<<<<< Updated upstream:Projectiles/Voraria/Weapons/Summon/ShroomFairy.cs
-            dust.rotation += ((float)dust.customData/5f);
-            dust.alpha += 5;
-            dust.velocity *= 0.1f;
-			dust.customData = (float)dust.customData * 0.95f;
-=======
+
             dust.rotation += ((float)dust.customData / 5f);
             dust.alpha += 5;
             dust.velocity *= 0.1f;
             dust.customData = (float)dust.customData * 0.95f;
->>>>>>> Stashed changes:Projectiles/Voraria/Weapons/Summon/ShroomFairy/ShroomFairy.cs
             float light = 0.01f * (255 - dust.alpha);
 
             Lighting.AddLight(dust.position, new Vector3(0.3f * light, 0.4f * light, light));
@@ -138,11 +108,7 @@ namespace V2.Projectiles.Voraria.Weapons.Summon.ShroomFairy
             return false;
         }
     }
-<<<<<<< Updated upstream:Projectiles/Voraria/Weapons/Summon/ShroomFairy.cs
     public class ShroomFairyBuff : ModBuff
-=======
-	public class ShroomFairyBuff : ModBuff
->>>>>>> Stashed changes:Projectiles/Voraria/Weapons/Summon/ShroomFairy/ShroomFairy.cs
 	{
 		public override LocalizedText DisplayName => Language.GetText("Mods.V2.StatusEffects.Voraria.Summons.ShroomFairy.Name");
 		public override LocalizedText Description => Language.GetText("Mods.V2.StatusEffects.Voraria.Summons.ShroomFairy.Description");
@@ -197,17 +163,8 @@ namespace V2.Projectiles.Voraria.Weapons.Summon.ShroomFairy
 
 	public class ShroomFairy : ModProjectile
 	{
-<<<<<<< Updated upstream
-		public (Projectile, NPC) target = (null, null);
-		
-=======
 		public (Projectile, NPC, Point) target = (null, null, Point.Zero);
-<<<<<<< Updated upstream:Projectiles/Voraria/Weapons/Summon/ShroomFairy.cs
-
->>>>>>> Stashed changes
-=======
-		public bool DroppedFungalGift = false; 
->>>>>>> Stashed changes:Projectiles/Voraria/Weapons/Summon/ShroomFairy/ShroomFairy.cs
+		public bool DroppedFungalGift = false;
 		public override void SetStaticDefaults()
 		{
 			Main.projFrames[Projectile.type] = 4;
@@ -345,29 +302,13 @@ namespace V2.Projectiles.Voraria.Weapons.Summon.ShroomFairy
 		{
 			return false;
 		}
-<<<<<<< Updated upstream
-        public override void OnSpawn(IEntitySource source)
-        {
-=======
 		public override void OnSpawn(IEntitySource source)
 		{
 			Projectile.ai[0] = Main.rand.Next(1, 4);
->>>>>>> Stashed changes
 			DustEffect(Projectile);
         }
         public static void DustEffect(Projectile projectile)
 		{
-<<<<<<< Updated upstream:Projectiles/Voraria/Weapons/Summon/ShroomFairy.cs
-            Dust.NewDustDirect(projectile.Center - new Vector2(8, 8), 32, 32, ModContent.DustType<ShroomFairyDust>(), 0, 2f);
-            Dust.NewDustDirect(projectile.Center - new Vector2(8, 8), 32, 32, ModContent.DustType<ShroomFairyDust>(), 1.5f, 1.5f);
-            Dust.NewDustDirect(projectile.Center - new Vector2(8, 8), 32, 32, ModContent.DustType<ShroomFairyDust>(), 2f, 0);
-            Dust.NewDustDirect(projectile.Center - new Vector2(8, 8), 32, 32, ModContent.DustType<ShroomFairyDust>(), 1.5f, -1.5f);
-            Dust.NewDustDirect(projectile.Center - new Vector2(8, 8), 32, 32, ModContent.DustType<ShroomFairyDust>(), 0, -2f);
-            Dust.NewDustDirect(projectile.Center - new Vector2(8, 8), 32, 32, ModContent.DustType<ShroomFairyDust>(), -1.5f, -1.5f);
-            Dust.NewDustDirect(projectile.Center - new Vector2(8, 8), 32, 32, ModContent.DustType<ShroomFairyDust>(), -2f, 0);
-            Dust.NewDustDirect(projectile.Center - new Vector2(8, 8), 32, 32, ModContent.DustType<ShroomFairyDust>(), -1.5f, 1.5f);
-            Dust.NewDustPerfect(projectile.Center, ModContent.DustType<ShroomFairyDust2>(), Vector2.Zero);
-=======
 			projectile.TryGetOwner(out Player player);
 			if (player == null) return;
 
@@ -389,7 +330,6 @@ namespace V2.Projectiles.Voraria.Weapons.Summon.ShroomFairy
             dust.shader = GameShaders.Armor.GetSecondaryShader(player.cMinion, player);
             dust = Dust.NewDustPerfect(projectile.Center, ModContent.DustType<ShroomFairyDust2>(), Vector2.Zero);
             dust.shader = GameShaders.Armor.GetSecondaryShader(player.cMinion, player);
->>>>>>> Stashed changes:Projectiles/Voraria/Weapons/Summon/ShroomFairy/ShroomFairy.cs
         }
 		public static Vector2 AnglePosition(int Count, int TotalCount)
 		{
@@ -440,11 +380,7 @@ namespace V2.Projectiles.Voraria.Weapons.Summon.ShroomFairy
 				return;
 			}
 			if (Projectile.ai[1] > 0f) Projectile.ai[1] -= 1f;
-<<<<<<< Updated upstream
-            target = (null, null);
-=======
 			target = (null, null, Point.Zero);
->>>>>>> Stashed changes
 			FindTarget(owner);
 			if (target.Item1 != null && Projectile.ai[1] <= 0f)
 			{
@@ -454,18 +390,8 @@ namespace V2.Projectiles.Voraria.Weapons.Summon.ShroomFairy
 			{
 				CHARGE(owner, target.Item2, SetSpeedMulti());
 			}
-<<<<<<< Updated upstream:Projectiles/Voraria/Weapons/Summon/ShroomFairy.cs
-
-            /*else if (target.Item3 != Point.Zero && Projectile.ai[1] <= 0f)
-            {
-            	CHARGE_Tile(owner, target.Item3, SetSpeedMulti());
-            }*/
-            else Chill(owner, SetSpeedMulti());
-			if (Projectile.ai[0] > 0f && GetVisualWeightStage(Projectile) == 8)
-=======
 			else Chill(owner, SetSpeedMulti());
 			if (!DroppedFungalGift && GetVisualWeightStage(Projectile) == 8)
->>>>>>> Stashed changes:Projectiles/Voraria/Weapons/Summon/ShroomFairy/ShroomFairy.cs
 			{
 				DroppedFungalGift = true;
 				if (Main.netMode != NetmodeID.MultiplayerClient)
@@ -519,35 +445,6 @@ namespace V2.Projectiles.Voraria.Weapons.Summon.ShroomFairy
 			float npcDistance = 99999f;
             float tileDistance = 99999f;
 
-<<<<<<< Updated upstream
-			List<(PreyType, int)> IgnoreThese = [
-                (PreyType.Projectile, ProjectileID.LastPrismLaser),
-                (PreyType.Projectile, ProjectileID.RainCloudRaining),
-                (PreyType.Projectile, ProjectileID.RainCloudMoving),
-                (PreyType.Projectile, ProjectileID.BloodCloudRaining),
-                (PreyType.Projectile, ProjectileID.BloodCloudMoving),
-                (PreyType.Projectile, ProjectileID.RainbowFront),
-                (PreyType.Projectile, ProjectileID.SpectreWrath),
-                (PreyType.Projectile, ProjectileID.SpiritHeal),
-                (PreyType.Projectile, ProjectileID.TerrarianBeam),
-                (PreyType.Projectile, ProjectileID.MagnetSphereBall),
-                (PreyType.Projectile, ProjectileID.TinyEater),
-                ];
-
-            List<(PreyType, int)> EdibleNPCs = [
-                (PreyType.NPC, NPCID.WaterSphere),
-                (PreyType.NPC, NPCID.ChaosBall),
-                (PreyType.NPC, NPCID.ChaosBallTim),
-                (PreyType.NPC, NPCID.BurningSphere),
-                (PreyType.NPC, NPCID.VileSpit),
-                (PreyType.NPC, NPCID.VileSpitEaterOfWorlds),
-                (PreyType.NPC, NPCID.MartianDrone),
-                (PreyType.NPC, NPCID.Spore),
-                (PreyType.NPC, NPCID.FungiSpore),
-                (PreyType.NPC, NPCID.BlazingWheel),
-                (PreyType.NPC, NPCID.SpikeBall),
-                (PreyType.NPC, NPCID.ChatteringTeethBomb),
-=======
             List<(PreyType, int)> IgnoreThese = [
 				(PreyType.Projectile, ProjectileID.LastPrismLaser),
 				(PreyType.Projectile, ProjectileID.RainCloudRaining),
@@ -582,7 +479,6 @@ namespace V2.Projectiles.Voraria.Weapons.Summon.ShroomFairy
                 (PreyType.NPC, NPCID.SolarGoop),
                 (PreyType.NPC, NPCID.AncientLight),
                 (PreyType.NPC, NPCID.AncientDoom),
->>>>>>> Stashed changes
                 ];
 
 			List<(string, int)> EdibleTiles = [
@@ -591,43 +487,6 @@ namespace V2.Projectiles.Voraria.Weapons.Summon.ShroomFairy
                 (null, TileID.RollingCactus),
                 ];
 
-<<<<<<< Updated upstream
-            foreach (var npc in Main.ActiveNPCs)
-			{
-                if (npc.CurrentCaptor() is not null) continue;
-                if (npc.type == NPCID.WaterSphere || npc.type == NPCID.ChaosBall || npc.type == NPCID.ChaosBallTim || npc.type == NPCID.BurningSphere || npc.type == NPCID.VileSpit || npc.type == NPCID.VileSpitEaterOfWorlds)
-                {
-                    float distance = npc.position.Distance(owner.position);
-                    if (distance < npcDistance)
-                    {
-                        closestNPC = npc;
-                        npcDistance = distance;
-                    }
-                }
-            }
-            foreach (var proj in Main.ActiveProjectiles)
-            {
-                if (proj.CurrentCaptor() is not null) continue;
-                if ((!proj.friendly || proj.hostile) && proj.damage > 0 && !proj.IsMinionOrSentryRelated)
-                {
-                    bool shouldIgnore = false;
-                    foreach ((PreyType type, int ID) in IgnoreThese)
-                    {
-                        if (ID == proj.type)
-                            shouldIgnore = true;
-                    }
-                    if (shouldIgnore)
-                        continue;
-                    float distance = proj.position.Distance(owner.position);
-                    if (distance < projDistance)
-                    {
-                        closestProj = proj;
-                        projDistance = distance;
-                    }
-                }
-            }
-			if (projDistance > 320) closestProj = null;
-=======
             List<(string, int)> IgnoreTileIfThisIsAbove = [
                 (null, TileID.Trees),
                 (null, TileID.Cactus),
@@ -660,17 +519,6 @@ namespace V2.Projectiles.Voraria.Weapons.Summon.ShroomFairy
             foreach (var npc in Main.ActiveNPCs)
 			{
 				if (npc.CurrentCaptor() is not null) continue;
-<<<<<<< Updated upstream:Projectiles/Voraria/Weapons/Summon/ShroomFairy.cs
-                bool shouldIgnore = true;
-                foreach ((PreyType type, int ID) in EdibleNPCs)
-                {
-                    if (ID == npc.type || (npc.AsFood().TastyStrange && !npc.boss))
-                        shouldIgnore = false;
-                }
-                if (shouldIgnore)
-                    continue;
-                float distance = npc.position.Distance(owner.position);
-=======
 				if (npc.AsFood().CannotBeEatenDueToShenanigans) continue;
 				bool shouldIgnore = true;
 				foreach ((PreyType type, int ID) in EdibleNPCs)
@@ -684,7 +532,6 @@ namespace V2.Projectiles.Voraria.Weapons.Summon.ShroomFairy
 				if (shouldIgnore)
 					continue;
 				float distance = npc.position.Distance(owner.position);
->>>>>>> Stashed changes:Projectiles/Voraria/Weapons/Summon/ShroomFairy/ShroomFairy.cs
 					if (distance < npcDistance)
 					{
 						closestNPC = npc;
@@ -716,24 +563,6 @@ namespace V2.Projectiles.Voraria.Weapons.Summon.ShroomFairy
 					}
 				}
 			}
-<<<<<<< Updated upstream:Projectiles/Voraria/Weapons/Summon/ShroomFairy.cs
-            Rectangle CheckingArea = new Rectangle((int)owner.Center.X - 128, (int)owner.Center.Y - 128, 256, 256);
-            List<Point> NearbyTiles = Collision.GetTilesIn(CheckingArea.TopLeft(), CheckingArea.BottomRight());
-            foreach (var point in NearbyTiles)
-            {
-                Tile tile = Framing.GetTileSafely(point);
-                if (tile.HasTile)
-                {
-                    bool shouldIgnore = true;
-                    foreach ((string nothin, int ID) in EdibleTiles)
-                    {
-                        if (ID == tile.TileType)
-                            shouldIgnore = false;
-                    }
-                    if (shouldIgnore)
-                        continue;
-                    Tile tile2 = Framing.GetTileSafely(point + new Point(0,-1));
-=======
 			Rectangle CheckingArea = new Rectangle((int)owner.Center.X - 128, (int)owner.Center.Y - 128, 256, 256);
 			List<Point> NearbyTiles = Collision.GetTilesIn(CheckingArea.TopLeft(), CheckingArea.BottomRight());
 			foreach (var point in NearbyTiles)
@@ -753,7 +582,6 @@ namespace V2.Projectiles.Voraria.Weapons.Summon.ShroomFairy
 					if (shouldIgnore)
 						continue;
 					Tile tile2 = Framing.GetTileSafely(point + new Point(0,-1));
->>>>>>> Stashed changes:Projectiles/Voraria/Weapons/Summon/ShroomFairy/ShroomFairy.cs
 					if (tile2.HasTile)
 					{
 						foreach ((string nothin, int ID) in IgnoreTileIfThisIsAbove)
@@ -777,7 +605,6 @@ namespace V2.Projectiles.Voraria.Weapons.Summon.ShroomFairy
                 }
             }
             if (projDistance > 320) closestProj = null;
->>>>>>> Stashed changes
 			if (npcDistance > 320) closestNPC = null;
 			if (tileDistance <= projDistance && tileDistance <= npcDistance)
 			{
@@ -830,24 +657,6 @@ namespace V2.Projectiles.Voraria.Weapons.Summon.ShroomFairy
 				Projectile.netUpdate = true;
                 DustEffect(Projectile);
             }
-
-			//float overlapVelocity = 0.04f;
-
-			/*foreach (var proj in Main.ActiveProjectiles)
-			{
-                if (proj != Projectile && proj.active && proj.type != ModContent.ProjectileType<ShroomFairySpore>() && proj.CurrentCaptor() is null && proj.owner == Projectile.owner && Math.Abs(Projectile.position.X - proj.position.X) + Math.Abs(Projectile.position.Y - proj.position.Y) < Projectile.width)
-                {
-                    if (Projectile.position.X < proj.position.X)
-                        Projectile.velocity.X -= overlapVelocity;
-                    else
-                        Projectile.velocity.X += overlapVelocity;
-
-                    if (Projectile.position.Y < proj.position.Y)
-                        Projectile.velocity.Y -= overlapVelocity;
-                    else
-                        Projectile.velocity.Y += overlapVelocity;
-                }
-            }*/
 
 			if (!ateOwner)
 			{
@@ -916,13 +725,8 @@ namespace V2.Projectiles.Voraria.Weapons.Summon.ShroomFairy
                 Dust.NewDustDirect(Projectile.Center - new Vector2(8, 8), 32, 32, ModContent.DustType<ShroomFairyDust>(), direction2.X, direction2.Y, 0, default, 1.75f);
                 Dust.NewDustDirect(Projectile.Center - new Vector2(8, 8), 32, 32, ModContent.DustType<ShroomFairyDust>(), direction2.X, direction2.Y, 0, default, 2f);
 
-<<<<<<< Updated upstream:Projectiles/Voraria/Weapons/Summon/ShroomFairy.cs
-                Projectile.ai[1] = 8f / SpeedMulti;
-                Projectile.position = target.position;
-=======
 				Projectile.ai[1] = 8f - (GetVisualWeightStage(Projectile) / 1.5f);
-				Projectile.position = target.position;
->>>>>>> Stashed changes:Projectiles/Voraria/Weapons/Summon/ShroomFairy/ShroomFairy.cs
+				Projectile.Center = target.Center;
 				PredProjectile.Swallow(Projectile, target);
 
                 DustEffect(Projectile);
@@ -949,17 +753,6 @@ namespace V2.Projectiles.Voraria.Weapons.Summon.ShroomFairy
             if (!target.HasTile)
                 return;
 
-<<<<<<< Updated upstream:Projectiles/Voraria/Weapons/Summon/ShroomFairy.cs
-            float speed = 25f;
-            float inertia = 25f;
-            Vector2 direction = Projectile.position.DirectionTo(GlobalPosition);
-            direction.Normalize();
-            Vector2 direction2 = direction * 10f;
-            float distance = Projectile.position.Distance(GlobalPosition);
-            if (distance <= 180)
-            {
-                DustEffect(Projectile);
-=======
 			float speed = 25f;
 			float inertia = 25f;
 			Vector2 direction = Projectile.position.DirectionTo(GlobalPosition);
@@ -969,7 +762,6 @@ namespace V2.Projectiles.Voraria.Weapons.Summon.ShroomFairy
             if (distance <= (195 * SpeedMulti))
             {
 				DustEffect(Projectile);
->>>>>>> Stashed changes:Projectiles/Voraria/Weapons/Summon/ShroomFairy/ShroomFairy.cs
 
                 Dust.NewDustDirect(Projectile.Center - new Vector2(8, 8), 32, 32, ModContent.DustType<ShroomFairyDust>(), direction2.X, direction2.Y, 0, default, 1f);
                 Dust.NewDustDirect(Projectile.Center - new Vector2(8, 8), 32, 32, ModContent.DustType<ShroomFairyDust>(), direction2.X, direction2.Y, 0, default, 1.25f);
@@ -977,17 +769,10 @@ namespace V2.Projectiles.Voraria.Weapons.Summon.ShroomFairy
                 Dust.NewDustDirect(Projectile.Center - new Vector2(8, 8), 32, 32, ModContent.DustType<ShroomFairyDust>(), direction2.X, direction2.Y, 0, default, 1.75f);
                 Dust.NewDustDirect(Projectile.Center - new Vector2(8, 8), 32, 32, ModContent.DustType<ShroomFairyDust>(), direction2.X, direction2.Y, 0, default, 2f);
 
-<<<<<<< Updated upstream:Projectiles/Voraria/Weapons/Summon/ShroomFairy.cs
-                Projectile.ai[1] = 8f / SpeedMulti;
-                Projectile.position = GlobalPosition;
-                int takenItem = TileBullshit.HelperMethods.PickItem(target);
-                if (Main.netMode != NetmodeID.MultiplayerClient && takenItem >= 0)
-=======
                 Projectile.ai[1] = 8f - (GetVisualWeightStage(Projectile) / 1.5f);
                 Projectile.position = GlobalPosition;
 				int takenItem = TileBullshit.HelperMethods.PickItem(target);
 				if (Main.netMode != NetmodeID.MultiplayerClient && takenItem >= 0)
->>>>>>> Stashed changes:Projectiles/Voraria/Weapons/Summon/ShroomFairy/ShroomFairy.cs
 				{
 					int DroppedItem = Item.NewItem(Projectile.GetSource_FromAI(), new Vector2(Projectile.Center.X, Projectile.Center.Y), Vector2.One, takenItem);
 					PredProjectile.Swallow(Projectile, Main.item[DroppedItem]);
@@ -1045,11 +830,6 @@ namespace V2.Projectiles.Voraria.Weapons.Summon.ShroomFairy
 			bool HealablePlayerExists = false;
 			foreach (var plr in Main.ActivePlayers)
 			{
-<<<<<<< Updated upstream:Projectiles/Voraria/Weapons/Summon/ShroomFairy.cs
-				Projectile.ai[2] -= 1500;
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, ModContent.ProjectileType<ShroomFairySpore>(), 0, 0, owner.whoAmI);
-            }
-=======
 				if (plr.statLife < plr.statLifeMax2 && plr.Center.Distance(Projectile.Center) <= 800)
                 {
                     HealablePlayerExists = true;
@@ -1070,7 +850,6 @@ namespace V2.Projectiles.Voraria.Weapons.Summon.ShroomFairy
                     }
                 }
 			}
->>>>>>> Stashed changes:Projectiles/Voraria/Weapons/Summon/ShroomFairy/ShroomFairy.cs
 		}
 		public override bool PreDraw(ref Color lightColor)
 		{
@@ -1152,44 +931,6 @@ namespace V2.Projectiles.Voraria.Weapons.Summon.ShroomFairy
 
     public class ShroomFairySpore : ModProjectile
 	{
-<<<<<<< Updated upstream:Projectiles/Voraria/Weapons/Summon/ShroomFairy.cs
-        public override void SetStaticDefaults()
-        {
-            Main.projFrames[Projectile.type] = 3;
-        }
-        public sealed override void SetDefaults()
-        {
-            Projectile.width = 18;
-            Projectile.height = 18;
-            Projectile.tileCollide = false;
-            Projectile.friendly = true;
-            Projectile.DamageType = DamageClass.Generic;
-            Projectile.penetrate = -1;
-
-            Projectile.AsFood().DefinedSize = 0.12;
-            Projectile.AsFood().MaxHealth = 5;
-            Projectile.AsFood().Health = 5;
-            Projectile.AsFood().OnKilledByDigestion += OnKilledByDigestion;
-        }
-        public override void OnSpawn(IEntitySource source)
-        {
-            Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<ShroomFairyDust2>(), Vector2.Zero);
-        }
-        public static void OnKilledByDigestion(Projectile projectile, Entity pred)
-        {
-            if (pred is Player)
-			{
-				Player player = (Player)pred;
-                player.Heal(15);
-				if (Main.player[projectile.owner].AsV2Player().ShroomNecklace) player.AddBuff(ModContent.BuffType<SporeRegen>(), V2Utils.SensibleTime(seconds: 12));
-            }
-        }
-        public override bool? CanDamage()
-        {
-			return false;
-        }
-		public Player FindClosestPlayer()
-=======
 		public int targetPlayer = -1;
         public override string Texture => "V2/Projectiles/Voraria/Weapons/Summon/ShroomFairy/FungalSpore";
         public override void SetStaticDefaults()
@@ -1226,18 +967,8 @@ namespace V2.Projectiles.Voraria.Weapons.Summon.ShroomFairy
             targetPlayer = reader.ReadUInt16();
         }
 		public void GetClosestPlayerIndex()
->>>>>>> Stashed changes:Projectiles/Voraria/Weapons/Summon/ShroomFairy/ShroomFairy.cs
 		{
 			float Distance = 99999f;
-<<<<<<< Updated upstream:Projectiles/Voraria/Weapons/Summon/ShroomFairy.cs
-            foreach (var player in Main.ActivePlayers)
-            {
-				if (plr == null)
-				{
-					plr = player;
-                    Distance = plr.position.Distance(Projectile.position);
-                }
-=======
 			foreach (var player in Main.ActivePlayers)
 			{
 				if (targetPlayer == -1)
@@ -1246,80 +977,12 @@ namespace V2.Projectiles.Voraria.Weapons.Summon.ShroomFairy
                     if (player.statLife < player.statLifeMax2)
 						Distance = player.position.Distance(Projectile.position);
 				}
->>>>>>> Stashed changes:Projectiles/Voraria/Weapons/Summon/ShroomFairy/ShroomFairy.cs
 				else
 				{
                     if (player.statLife >= player.statLifeMax2)
                         continue;
                     float distance2 = player.position.Distance(Projectile.position);
 					if (distance2 < Distance)
-<<<<<<< Updated upstream:Projectiles/Voraria/Weapons/Summon/ShroomFairy.cs
-					{
-						plr = player;
-                        Distance = distance2;
-                    }
-				}
-            }
-            return plr;
-		}
-        public override void AI()
-        {
-			Player target = FindClosestPlayer();
-			if (target != null)
-			{
-                Vector2 direction = Projectile.position.DirectionTo(target.position);
-                direction.Normalize();
-				Projectile.velocity += direction / 8f;
-                Projectile.velocity.X = Math.Clamp(Projectile.velocity.X, -5, 5);
-                Projectile.velocity.Y = Math.Clamp(Projectile.velocity.Y, -5, 5);
-				if (Projectile.Center.Distance(target.Center) <= 150)
-				{
-					Projectile.velocity *= 0.93f;
-				}
-                if (Projectile.Hitbox.Intersects(target.Hitbox))
-				{
-					target.Heal(5);
-                    if (Main.player[Projectile.owner].AsV2Player().ShroomNecklace) target.AddBuff(ModContent.BuffType<SporeRegen>(), V2Utils.SensibleTime(seconds: 4));
-                    ShroomFairy.DustEffect(Projectile);
-					Projectile.Kill();
-				}
-			}
-			Projectile.ai[0] += 1;
-        }
-        public override void PostAI()
-        {
-			if (Projectile.ai[0] >= 500)
-			{
-                ShroomFairy.DustEffect(Projectile);
-                Projectile.Kill();
-            }
-            Projectile.rotation = Projectile.velocity.X * 0.04f;
-            int framerate = 5;
-            Projectile.frameCounter++;
-            if (Projectile.frameCounter >= framerate)
-            {
-                Projectile.frameCounter = 0;
-                Projectile.frame++;
-                if (Projectile.frame >= Main.projFrames[Projectile.type])
-                {
-                    Projectile.frame = 0;
-                }
-            }
-            Lighting.AddLight(Projectile.Center, Color.Blue.ToVector3() * 0.7f);
-        }
-        public override bool PreDraw(ref Color lightColor)
-        {
-            Rectangle sourceRect = new Rectangle(18 * Projectile.frame, 0, 18, 18);
-            SpriteEffects val = Projectile.direction != -1 ? 0 : (SpriteEffects)1;
-            SpriteEffects spriteEffects = val;
-            Texture2D sprite = ModContent.Request<Texture2D>("V2/Projectiles/Voraria/Weapons/Summon/ShroomFairySpore").Value;
-            Main.EntitySpriteDraw(sprite, Projectile.position - Main.screenPosition, (Rectangle)sourceRect, lightColor, Projectile.rotation, Vector2.Zero, 1f, spriteEffects, 0f);
-            Texture2D sprite2 = ModContent.Request<Texture2D>("V2/Projectiles/Voraria/Weapons/Summon/ShroomFairySpore_Fullbright").Value;
-            Main.EntitySpriteDraw(sprite2, Projectile.position - Main.screenPosition, (Rectangle)sourceRect, new Color(255, 255, 255), Projectile.rotation, Vector2.Zero, 1f, spriteEffects, 0f);
-            return false;
-        }
-    }
-=======
                     {
                         targetPlayer = player.whoAmI;
                         Distance = distance2;
@@ -1395,5 +1058,4 @@ namespace V2.Projectiles.Voraria.Weapons.Summon.ShroomFairy
 			return false;
 		}
 	}
->>>>>>> Stashed changes:Projectiles/Voraria/Weapons/Summon/ShroomFairy/ShroomFairy.cs
 }

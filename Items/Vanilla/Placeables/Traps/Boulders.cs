@@ -24,14 +24,7 @@ namespace V2.Items.Vanilla.Placeables.Traps
 			item.AsFood().MaxHealth = 500;
 			item.AsFood().Size = 1.4;
 		}
-<<<<<<< Updated upstream
 	}
-    public class LifeCrystalBoulder : GlobalItem
-    {
-        public override bool InstancePerEntity => true;
-        public override bool AppliesToEntity(Item entity, bool lateInstantiation) => entity.type == ItemID.LifeCrystalBoulder;
-=======
-    }
     public class BouncyBoulder : GlobalItem
     {
         public override bool InstancePerEntity => true;
@@ -48,7 +41,6 @@ namespace V2.Items.Vanilla.Placeables.Traps
 	{
 		public override bool InstancePerEntity => true;
 		public override bool AppliesToEntity(Item entity, bool lateInstantiation) => entity.type == ItemID.LifeCrystalBoulder;
->>>>>>> Stashed changes
 
         public override void SetDefaults(Item item)
         {
@@ -69,18 +61,9 @@ namespace V2.Items.Vanilla.Placeables.Traps
         {
             item.AsFood().MaxHealth = 200;
             item.AsFood().Size = 1.4;
-
-<<<<<<< Updated upstream
-            item.AsFood().OnSwallowDamage = 25;
-            item.AsFood().OnSwallowDeathReason = "{0} tried to deepthroat a cactus.";
-            item.AsFood().OnSwallowSoreThroatTime = V2Utils.SensibleTime(seconds: 9);
-        }
-    }
-=======
 			item.AsFood().OnSwallowDamage = 25;
 			item.AsFood().OnSwallowDeathReason = "Mods.V2.Death.SwallowDamage.Cactus";
 			item.AsFood().OnSwallowSoreThroatTime = V2Utils.SensibleTime(seconds: 9);
 		}
 	}
->>>>>>> Stashed changes
 }

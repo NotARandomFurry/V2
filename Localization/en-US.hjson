@@ -5196,6 +5196,7 @@ Mods: {
 								'''
 						}
 					}
+
 					KroniiSpeed: {
 						Name: Time Acceleration
 						Description.StatChanges:
@@ -6235,6 +6236,7 @@ Mods: {
 				DisplayName: Throwing Dice
 				Tooltip: ""
 			}
+
 			PredToggleRod: {
 				DisplayName: Pred Toggle Rod
 				Tooltip: ""

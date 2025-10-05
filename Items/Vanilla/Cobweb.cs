@@ -9,11 +9,7 @@ namespace V2.Items.Vanilla
 	public class Cobweb : GlobalItem
 	{
 		public override bool InstancePerEntity => true;
-<<<<<<< Updated upstream:Items/Vanilla/Weapons/Melee/OakWoodSword.cs
-		public override bool AppliesToEntity(Item entity, bool lateInstantiation) => entity.type == ItemID.WoodenSword;
-=======
 		public override bool AppliesToEntity(Item entity, bool lateInstantiation) => entity.type == ItemID.Cobweb;
->>>>>>> Stashed changes:Items/Vanilla/Cobweb.cs
 
 		public override void SetDefaults(Item item)
 		{

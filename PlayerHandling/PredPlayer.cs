@@ -635,21 +635,6 @@ namespace V2.PlayerHandling
 
 		public bool SizeScanner { get; set; }
 
-        public bool Rose { get; set; }
-		public bool Venomizeous { get; set; }
-		public bool FungalFairySetBonus { get; set; }
-
-		//basically everything related to wg
-		public double BeeTransformation_ExtraWeight { get; set; }
-		public double BaeTransformation_ExtraWeight { get; set; }
-		public double WellFed_Multiplier { get; set; }
-		public bool WeightDisplay { get; set; }
-		public double ActuallyReasonableAmountOfFood { get; set; }
-		public double BaseWeightGainRatio { get; set; }
-		public double WeightGainMultiplier { get; set; }
-		public double WeightLossMultiplier { get; set; }
-		public bool HasJumped { get; set; }
-
 		public int ItemCooldownWhenSwallowingANonStackedItemFromTheMouseSlotBecauseThisGameIsCoolAndAwesome { get; set; }
 
 		public bool Rose { get; set; }

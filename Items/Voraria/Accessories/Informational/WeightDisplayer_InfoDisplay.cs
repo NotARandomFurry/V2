@@ -27,11 +27,7 @@ namespace V2.Items.Voraria.Accessories.Informational
 			return "Current Weight: " + Size.CastToDecimalPlaces(3).ToString();
 		}
     }
-<<<<<<< Updated upstream
-    public class WeightDisplayer2SaturationDisplay : InfoDisplay
-    {
-        public override string Texture => "V2/Items/Vanilla/Accessories/Informational/TallyCounter_VoreInfoDisplay_Icon";
-=======
+
     public class WeightDisplayer_Weight_Baelz : InfoDisplay
     {
         public override string Texture => "V2/Items/Voraria/Accessories/Informational/WeightDisplayerIcons/WeightDisplayer_BaelzWeight_Icon";
@@ -111,18 +107,8 @@ namespace V2.Items.Voraria.Accessories.Informational
     public class WeightDisplayer_Saturation_Unknown : InfoDisplay
 	{
 		public override string Texture => "V2/Items/Voraria/Accessories/Informational/WeightDisplayerIcons/WeightDisplayer_UnknownSatu_Icon";
->>>>>>> Stashed changes
-
         public override LocalizedText DisplayName => Language.GetText("Mods.V2.InfoDisplayName.WeightDisplayer.Saturation");
 
-<<<<<<< Updated upstream
-        public override bool Active() => Main.player[Main.myPlayer].AsPred().WeightDisplay;
-
-        public override string DisplayValue(ref Color displayColor, ref Color displayShadowColor)
-        {
-            Player player = Main.player[Main.myPlayer];
-			double Amount = player.AsPred().ActuallyReasonableAmountOfFood;
-=======
 		public override bool Active() => Main.player[Main.myPlayer].AsPred().WeightDisplay && !Main.player[Main.myPlayer].AsV2Player().HasTransformation;
 
         public override string DisplayValue(ref Color displayColor, ref Color displayShadowColor)
@@ -204,7 +190,6 @@ namespace V2.Items.Voraria.Accessories.Informational
         {
             Player player = Main.player[Main.myPlayer];
             double Amount = player.AsPred().ActuallyReasonableAmountOfFood;
->>>>>>> Stashed changes
             return "Saturation: " + Amount.CastToDecimalPlaces(3).ToString();
         }
     }

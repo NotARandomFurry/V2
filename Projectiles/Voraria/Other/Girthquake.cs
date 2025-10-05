@@ -132,27 +132,8 @@ namespace V2.Projectiles.Voraria.Other
             Projectile.usesIDStaticNPCImmunity = true;
             Projectile.idStaticNPCHitCooldown = 10;
 
-<<<<<<< Updated upstream
             Projectile.AsFood().CannotBeEatenDueToShenanigans = true;
         }
-        public override bool CanHitPlayer(Player target)
-        {
-            return false;
-        }
-        public override bool? CanHitNPC(NPC target)
-        {
-            if (!target.AsV2NPC().CanBeDamagedByFallingPeople) return false;
-            return null;
-        }
-        public override void OnSpawn(IEntitySource source)
-        {
-            Projectile.width = (int)Projectile.ai[0] + 4;
-            Projectile.height = (int)Projectile.ai[1] + 4;
-            Projectile.position.X -= Projectile.width / 2;
-            Projectile.position.Y -= Projectile.height / 2;
-=======
-			Projectile.AsFood().CannotBeEatenDueToShenanigans = true;
-		}
 		public override bool CanHitPlayer(Player target)
 		{
 			return false;
@@ -276,7 +257,6 @@ namespace V2.Projectiles.Voraria.Other
 			CurrentID = 1;
 			EdibleItems = 0;
 			EntirelyErasedItems = 0;
->>>>>>> Stashed changes
         }
     }
 }

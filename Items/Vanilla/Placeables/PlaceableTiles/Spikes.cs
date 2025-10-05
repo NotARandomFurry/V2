@@ -4,7 +4,7 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 
-namespace V2.Items.Vanilla.Placeables.Tile
+namespace V2.Items.Vanilla.Placeables.PlaceableTiles
 {
 	public class Spike : GlobalItem
 	{
@@ -16,18 +16,10 @@ namespace V2.Items.Vanilla.Placeables.Tile
 			item.AsFood().MaxHealth = 333;
 			item.AsFood().Size = 0.07;
             item.AsFood().AcidResistTier = 1;
-
-<<<<<<< Updated upstream
-            item.AsFood().OnSwallowDamage = 15;
-            item.AsFood().OnSwallowDeathReason = "{0} ate spikes. What'd you think was going to happen?";
-            item.AsFood().OnSwallowSoreThroatTime = V2Utils.SensibleTime(seconds: 2);
-        }
-=======
 			item.AsFood().OnSwallowDamage = 15;
 			item.AsFood().OnSwallowDeathReason = "Mods.V2.Death.SwallowDamage.Spikes";
 			item.AsFood().OnSwallowSoreThroatTime = V2Utils.SensibleTime(seconds: 2);
 		}
->>>>>>> Stashed changes
 	}
     public class WoodenSpike : GlobalItem
     {
@@ -38,18 +30,9 @@ namespace V2.Items.Vanilla.Placeables.Tile
         {
             item.AsFood().MaxHealth = 90;
             item.AsFood().Size = 0.07;
-
-<<<<<<< Updated upstream
-            item.AsFood().OnSwallowDamage = 30;
-            item.AsFood().OnSwallowDeathReason = "{0} ate spikes. What'd you think was going to happen?";
-            item.AsFood().OnSwallowSoreThroatTime = V2Utils.SensibleTime(seconds: 6);
-        }
-    }
-=======
 			item.AsFood().OnSwallowDamage = 30;
 			item.AsFood().OnSwallowDeathReason = "Mods.V2.Death.SwallowDamage.Spikes";
 			item.AsFood().OnSwallowSoreThroatTime = V2Utils.SensibleTime(seconds: 6);
 		}
 	}
->>>>>>> Stashed changes
 }

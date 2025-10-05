@@ -62,29 +62,6 @@ namespace V2.Items.ItemGroupUtils
 		}
 		public static Dictionary<FurnitureMaterial, (double HealthMult, int AcidResist, double CalorieMult, double WellFedPower)> FurnitureMaterialMappings => new Dictionary<FurnitureMaterial, (double HealthMult, int AcidResist, double CalorieMult, double WellFedPower)>
 		{
-<<<<<<< Updated upstream
-			{ FurnitureMaterial.OakWood,             ( 1.000, 0) },
-			{ FurnitureMaterial.BorealWood,          ( 1.015, 0) },
-			{ FurnitureMaterial.PalmWood,            ( 1.025, 0) },
-			{ FurnitureMaterial.Ebonwood,            ( 1.050, 0) },
-			{ FurnitureMaterial.Shadewood,           ( 1.050, 0) },
-			{ FurnitureMaterial.JungleWood,          ( 1.080, 0) },
-			{ FurnitureMaterial.Pearlwood,           ( 1.080, 0) },
-			{ FurnitureMaterial.AshWood,             ( 0.925, 0) },
-			{ FurnitureMaterial.SpookyWood,          ( 1.850, 0) },
-			{ FurnitureMaterial.Bamboo,              ( 1.085, 0) },
-			{ FurnitureMaterial.Cactus,              ( 1.100, 0) },
-			{ FurnitureMaterial.Pumpkin,             ( 0.985, 0) },
-			{ FurnitureMaterial.Mushroom,            ( 1.035, 0) },
-			{ FurnitureMaterial.Marble,              ( 2.125, 1) },
-			{ FurnitureMaterial.Granite,             ( 2.215, 1) },
-			{ FurnitureMaterial.Sandstone,           ( 2.150, 0) },
-			{ FurnitureMaterial.Ice,              ( 0.950, 0) },
-			{ FurnitureMaterial.Coral,                ( 1.250, 0) },
-			{ FurnitureMaterial.Golden,              ( 3.750, 2) },
-			{ FurnitureMaterial.Crystal,             ( 1.400, 1) },
-		};
-=======
 			{ FurnitureMaterial.OakWood,		( 1.000, 0, 1, 0) },
 			{ FurnitureMaterial.BorealWood,		( 1.015, 0, 1, 0) },
 			{ FurnitureMaterial.PalmWood,		( 1.025, 0, 1, 0) },
@@ -129,6 +106,5 @@ namespace V2.Items.ItemGroupUtils
             { FurnitureMaterial.Stone,			( 2.2, 1, 1, 0) },
             { FurnitureMaterial.Metal,			( 2.75, 2, 1, 0) },
         };
->>>>>>> Stashed changes
 	}
 }

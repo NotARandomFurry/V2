@@ -6,10 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Terraria;
-<<<<<<< Updated upstream
-=======
 using Terraria.DataStructures;
->>>>>>> Stashed changes
 using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.Personalities;
@@ -132,19 +129,12 @@ namespace V2.NPCs.Voraria.TownNPCs.Ghost
 			NPC.AsPred().GetVisualBellySize = GetVisualBellySize;
 
 			NPC.AsFood().OnDigestedBy = PreyNPC.OnKilledByDigestion_GrantLivePreyGoal;
-<<<<<<< Updated upstream
 		}
-		public override void ModifyTypeName(ref string typeName) => typeName = "Ghost";
-=======
-        }
         public override void OnSpawn(IEntitySource source)
         {
             NPC.velocity.Y = -2f;
         }
         public override void ModifyTypeName(ref string typeName) => typeName = "Ghost";
->>>>>>> Stashed changes
-
-		//public override bool CanTownNPCSpawn(int numTownNPCs) => ModContent.GetInstance<V2MasterSystem>().freedEnigma;
 
         public static void OnDigestionKill(NPC npc, PreyData digestedPrey)
         {
@@ -272,41 +262,16 @@ namespace V2.NPCs.Voraria.TownNPCs.Ghost
 				70
 			);
 		}
-<<<<<<< Updated upstream
-		public override void PostAI()
-<<<<<<< Updated upstream
-=======
-
         public override void AI()
         {
             ModdedTownNPCAI.AI_007_TownEntities(NPC);
         }
         public override void PostAI()
->>>>>>> Stashed changes
 		{
-			GhostStuff.GhostProfile.frameWait++;
-=======
-        {
             Lighting.AddLight(NPC.Center, Color.SkyBlue.ToVector3());
-<<<<<<< Updated upstream
-			//yes i know this doesnt work properly if multiple echos exist but that shouldnt happen in the first place so fuck you
-            GhostStuff.GhostProfile.frameWait++;
->>>>>>> Stashed changes
-			if (GhostStuff.GhostProfile.frameWait >= GhostStuff.GhostProfile.frameDelay)
-			{
-				GhostStuff.GhostProfile.frameWait = 0;
-				GhostStuff.GhostProfile.currentFrame++;
-				if (GhostStuff.GhostProfile.currentFrame >= 4) GhostStuff.GhostProfile.currentFrame = 0;
-			}
-=======
             int idleFrame = (int)(Main.GlobalTimeWrappedHourly * 5) % 4;
 			if (!Main.gamePaused)
-<<<<<<< Updated upstream
 				NPC.frame.Y = idleFrame;
->>>>>>> Stashed changes
-=======
-				//NPC.frame.Y = idleFrame;
->>>>>>> Stashed changes
 			switch (GetVisualBellySize(NPC))
 			{
 				case 0 or 1:
@@ -323,7 +288,6 @@ namespace V2.NPCs.Voraria.TownNPCs.Ghost
 					NPCID.Sets.PlayerDistanceWhilePetting[NPC.type] = 54; break;
 
 			}
-<<<<<<< Updated upstream
 			switch (GetVisualWeightStage(NPC))
 			{
 				case 0 or 1: break;
@@ -343,8 +307,6 @@ namespace V2.NPCs.Voraria.TownNPCs.Ghost
                     NPC.velocity.X *= 0.15f;
                     break;
             }
-		}
-=======
 
 			Rectangle SwallowHitbox = new Rectangle((int)NPC.position.X, (int)NPC.position.Y, NPC.width, NPC.height);
 			Entity target = null;
@@ -360,7 +322,6 @@ namespace V2.NPCs.Voraria.TownNPCs.Ghost
                 PredNPC.Swallow(NPC, target);
             }
         }
->>>>>>> Stashed changes
 
 		public void ExtraMainSpriteSize(int weight, out Vector2 SpriteSize, out Vector2 SpriteOffset)
 		{
@@ -435,38 +396,15 @@ namespace V2.NPCs.Voraria.TownNPCs.Ghost
                     break;
             }
         }
-
-<<<<<<< Updated upstream
-        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
-        {
-            SpriteEffects val = NPC.direction != -1 ? 0 : (SpriteEffects)1;
-            SpriteEffects spriteEffects = val;
-=======
-        public override void FindFrame(int frameHeight)
-        {
-            int idleFrame = (int)(Main.GlobalTimeWrappedHourly * 5) % 4;
-            if (!Main.gamePaused)
-                NPC.frame.Y = idleFrame;
-            int weightStage = GetVisualWeightStage(NPC);
-            ExtraMainSpriteSize(weightStage, out var SpriteSize, out var SpriteOffset);
-            NPC.frame = new Rectangle(0, NPC.frame.Y * (int)SpriteSize.Y, (int)SpriteSize.X, (int)SpriteSize.Y);
-        }
-
 		public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
 		{
 			SpriteEffects val = NPC.direction != -1 ? 0 : (SpriteEffects)1;
 			SpriteEffects spriteEffects = val;
->>>>>>> Stashed changes
 
             string Folder = "V2/NPCs/Voraria/TownNPCs/Ghost/";
 			int weightStage = GetVisualWeightStage(NPC);
 			int tumSize = GetVisualBellySize(NPC);
 			ExtraMainSpriteSize(weightStage, out var SpriteSize, out var SpriteOffset);
-<<<<<<< Updated upstream
-            Rectangle sourceRect = new Rectangle(0, NPC.frame.Y * (int)SpriteSize.Y, (int)SpriteSize.X, (int)SpriteSize.Y);
-            Texture2D spriteMain = ModContent.Request<Texture2D>(Folder + "Echo_Weight" + weightStage).Value;
-=======
-			//Rectangle sourceRect = new Rectangle(0, NPC.frame.Y * (int)SpriteSize.Y, (int)SpriteSize.X, (int)SpriteSize.Y);
 			Rectangle sourceRect = NPC.frame;
 
             Texture2D spriteMain = ModContent.Request<Texture2D>(Folder + "Echo_Weight" + weightStage).Value;
@@ -475,7 +413,6 @@ namespace V2.NPCs.Voraria.TownNPCs.Ghost
 
 			GameShaders.Armor.Apply(NPC.AsPred().LastSwallowedDye, NPC, new DrawData(spriteMain, NPC.position - Main.screenPosition + new Vector2(-12 - (int)SpriteOffset.X, -20 - (int)SpriteOffset.Y), sourceRect, new Color(255, 255, 255), NPC.rotation, new Vector2(0, 0), 1f, spriteEffects, 0f));
 
->>>>>>> Stashed changes
             spriteBatch.Draw(spriteMain, NPC.position - Main.screenPosition + new Vector2(-12 - (int)SpriteOffset.X, -20 - (int)SpriteOffset.Y), sourceRect, new Color(255, 255, 255), NPC.rotation, new Vector2(0, 0), 1f, spriteEffects, 0f);
 			if (tumSize > 0)
             {
@@ -484,14 +421,6 @@ namespace V2.NPCs.Voraria.TownNPCs.Ghost
 				Vector2 TumOffset = new Vector2((int)SpriteOffset2R.X, (int)SpriteOffset2R.Y);
 				if (NPC.direction == -1) TumOffset = new Vector2((int)SpriteOffset2L.X, (int)SpriteOffset2L.Y);
 				TumOffset -= SpriteOffset;
-<<<<<<< Updated upstream
-                Texture2D spriteTum = ModContent.Request<Texture2D>(Folder + "EchoTum_Weight" + weightStage).Value;
-				spriteBatch.Draw(spriteTum, NPC.position - Main.screenPosition + TumOffset, sourceRect2, new Color(255, 255, 255), NPC.rotation, new Vector2(10, 10), 1f, spriteEffects, 0f);
-			}
-            return false;
-        }
-    }
-=======
 				Texture2D spriteTum = ModContent.Request<Texture2D>(Folder + "EchoTum_Weight" + weightStage).Value;
                 GameShaders.Armor.Apply(NPC.AsPred().LastSwallowedDye, NPC, new DrawData(spriteTum, NPC.position - Main.screenPosition + TumOffset, sourceRect2, new Color(255, 255, 255), NPC.rotation, new Vector2(10, 10), 1f, spriteEffects, 0f));
                 spriteBatch.Draw(spriteTum, NPC.position - Main.screenPosition + TumOffset, sourceRect2, new Color(255, 255, 255), NPC.rotation, new Vector2(10, 10), 1f, spriteEffects, 0f);
@@ -509,5 +438,4 @@ namespace V2.NPCs.Voraria.TownNPCs.Ghost
 			NPC.AsPred().LastSwallowedDye = tag.GetInt("LastDye");
         }
 	}
->>>>>>> Stashed changes
 }

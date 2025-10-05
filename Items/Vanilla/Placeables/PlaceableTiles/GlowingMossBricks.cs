@@ -4,7 +4,7 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 
-namespace V2.Items.Vanilla.Placeables.Tile
+namespace V2.Items.Vanilla.Placeables.TilesPlaceableTiles
 {
 	public class GlowingMossBricks : GlobalItem
 	{

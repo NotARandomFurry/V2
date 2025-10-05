@@ -63,8 +63,6 @@ namespace V2.PlayerHandling
 		public List<(Vector2, bool)> OllieAfterimage = new List<(Vector2, bool)>();
         public double MintWispSummonMeter { get; set; }
         public double MintWispSummonMeterMax { get; set; }
-
-        public Vector2 GrappleLastSpeed { get; set; }
 		public SlotId LastSound { get; set; }
 
 		public float ManaRegenOverallMod { get; set; }
@@ -566,6 +564,14 @@ namespace V2.PlayerHandling
                         drawLayer.Hide();
                 }
             }
+        }
+        public bool HasVisitedLocation(string place)
+        {
+            if (LocationsVisited.TryGetValue(place, out bool value))
+                return value;
+
+            LocationsVisited.TryAdd(place, false);
+            return false;
         }
         public override void SaveData(TagCompound tag)
 		{

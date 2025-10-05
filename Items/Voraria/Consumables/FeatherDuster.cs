@@ -60,10 +60,6 @@ namespace V2.Items.Voraria.Consumables
 		public static void UseInStomach(Item item, Player player, Entity pred)
 		{
 			player.CurrentCaptor().ModifyPredStomachacheMeter(StruggleDamage);
-<<<<<<< Updated upstream
-		}
-=======
-
             if (player.whoAmI == Main.myPlayer && player.inventory[58] == item)
             {
                 Main.mouseItem.stack--;
@@ -80,8 +76,6 @@ namespace V2.Items.Voraria.Consumables
                     item.TurnToAir();
             }
         }
->>>>>>> Stashed changes
-
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
 			tooltips.AddVorariaDynamicItemTooltip(

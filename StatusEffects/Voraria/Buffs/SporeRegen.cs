@@ -19,10 +19,6 @@ namespace V2.StatusEffects.Voraria.Buffs
 	{
 		public override LocalizedText DisplayName => Language.GetText("Mods.V2.StatusEffects.Voraria.Buffs.SporeRegen.Name");
 		public override LocalizedText Description => Language.GetText("Mods.V2.StatusEffects.Voraria.Buffs.SporeRegen.Description");
-<<<<<<< Updated upstream
-        public override bool RightClick(int buffIndex) => false;
-=======
->>>>>>> Stashed changes
 
 		public override void ModifyBuffText(ref string buffName, ref string tip, ref int rare)
 		{
@@ -33,39 +29,21 @@ namespace V2.StatusEffects.Voraria.Buffs
 			tip = Language.GetTextValueWith(
                 "Mods.V2.StatusEffects.Voraria.Buffs.SporeRegen.Description",
 				new
-<<<<<<< Updated upstream
-				{
-
-=======
                 {
                     Regen = (0.5 + Power / 1800f).CastToDecimalPlaces(1).ToString(),
->>>>>>> Stashed changes
                 }
 			);
 		}
-
-<<<<<<< Updated upstream
-        public override bool ReApply(Player player, int time, int buffIndex)
-        {
-            player.buffTime[buffIndex] = Math.Min(player.buffTime[buffIndex] + time, 3600);
-            return true;
-        }
-=======
 		public override bool ReApply(Player player, int time, int buffIndex)
 		{
 			player.buffTime[buffIndex] = Math.Min(player.buffTime[buffIndex] + time, 10800);
 			return true;
 		}
->>>>>>> Stashed changes
 
         public override void Update(Player player, ref int buffIndex)
 		{
 			player.AddHealthRegenEffect(
-<<<<<<< Updated upstream
-				healthPerSecond: Math.Min((int)Math.Ceiling(player.buffTime[buffIndex] / 180f), 10)
-=======
 				healthPerSecond: 0.5 + (double)(player.buffTime[buffIndex] / 1800f)
->>>>>>> Stashed changes
             );
 		}
 	}

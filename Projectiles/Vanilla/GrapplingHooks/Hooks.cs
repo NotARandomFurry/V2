@@ -20,8 +20,6 @@ namespace V2.Projectiles.Vanilla.GrapplingHooks
 	{
 		public override bool IsLoadingEnabled(Mod mod) => !V2.GetFooled;
 		public override bool InstancePerEntity => true;
-
-<<<<<<< Updated upstream
         public float SetPullingStrength(Projectile projectile)
         {
             switch(projectile.type)
@@ -474,7 +472,7 @@ namespace V2.Projectiles.Vanilla.GrapplingHooks
         {
             projectile.aiStyle = 7;
         }
-=======
+
 		public float SetPullingStrength(Projectile projectile)
 		{
 			switch(projectile.type)
@@ -928,7 +926,6 @@ namespace V2.Projectiles.Vanilla.GrapplingHooks
 		{
 			projectile.aiStyle = 7;
 		}
->>>>>>> Stashed changes
 */
     }
 }

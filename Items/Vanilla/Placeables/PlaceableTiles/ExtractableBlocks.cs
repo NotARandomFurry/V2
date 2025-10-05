@@ -10,7 +10,7 @@ using V2.PlayerHandling.PredPlayerGoals.Beginner;
 using V2.Sounds.MuffledSounds;
 using V2.Sounds.Vore;
 
-namespace V2.Items.Vanilla.Placeables.Tile
+namespace V2.Items.Vanilla.Placeables.PlaceableTiles
 {
 	public class Silt : GlobalItem
 	{
@@ -21,23 +21,7 @@ namespace V2.Items.Vanilla.Placeables.Tile
 		{
 			item.AsFood().MaxHealth = 30;
 			item.AsFood().Size = 0.1;
-<<<<<<< Updated upstream
 		}
-        public static bool OnBreak(Item item, Entity pred, bool direct)
-        {
-            SoundEngine.PlaySound(MuffledMiscSounds.Shatter, pred.Center);
-            SoundEngine.PlaySound(StomachNoises.Muffled, pred.Center);
-
-            if (pred is Player playerPred)
-            {
-               
-            }
-            else if (pred is NPC NPCPred)
-            {
-                
-=======
-            item.AsFood().OnBreak += OnBreak;
-        }
 		public static bool OnBreak(Item item, Entity pred, bool direct)
 		{
             int stack = item.stack;
@@ -67,24 +51,12 @@ namespace V2.Items.Vanilla.Placeables.Tile
             {
                 stack--;
                 V2Utils.ExtractItemInTum(item.type, pred);
->>>>>>> Stashed changes
             }
             return true;
         }
     }
     public class Fossil : GlobalItem
-<<<<<<< Updated upstream
     {
-        public override bool InstancePerEntity => true;
-        public override bool AppliesToEntity(Item entity, bool lateInstantiation) => entity.type == ItemID.DesertFossil;
-
-        public override void SetDefaults(Item item)
-        {
-            item.AsFood().MaxHealth = 250;
-            item.AsFood().AcidResistTier = 1;
-            item.AsFood().Size = 0.15;
-=======
-	{
 		public override bool InstancePerEntity => true;
 		public override bool AppliesToEntity(Item entity, bool lateInstantiation) => entity.type is ItemID.DesertFossil;
 
@@ -104,7 +76,6 @@ namespace V2.Items.Vanilla.Placeables.Tile
                 V2Utils.ExtractItemInTum(item.type, pred);
             }
             return true;
->>>>>>> Stashed changes
         }
     }
 }

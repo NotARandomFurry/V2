@@ -607,8 +607,6 @@ namespace V2.Core
 					exactType: preyProjectile.type,
 					name: preyProjectile.Name,
 					calmul: preyProjectile.AsFood().CalorieMultiplier,
-					fedadd: preyProjectile.AsFood().WellFedPower
-					calmul: preyProjectile.AsFood().CalorieMultiplier,
 					fedadd: preyProjectile.AsFood().WellFedPower,
                     cantRegurg: preyProjectile.AsFood().CannotBeRegurgitated
                 );

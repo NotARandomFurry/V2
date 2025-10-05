@@ -2537,13 +2537,6 @@ namespace V2.PlayerHandling
 
 			if (!noGravity)
 			{
-<<<<<<< Updated upstream
-                double PlayerWeight = self.AsPred().StomachWeight + 1.0;
-                if (self.AsV2Player().BaeTransformation)
-                {
-                    PlayerWeight += self.AsPred().BaeTransformation_ExtraWeight;
-                }
-=======
 				double PlayerWeight = self.AsPred().StomachWeight + 1.0;
 				if (self.AsV2Player().BaeTransformation)
 					PlayerWeight += self.AsPred().BaeTransformation_ExtraWeight;
@@ -2555,7 +2548,6 @@ namespace V2.PlayerHandling
                     PlayerWeight += self.AsPred().SoraTransformation_ExtraWeight;
                 else if (self.AsV2Player().MintTransformation)
                     PlayerWeight += self.AsPred().MintTransformation_ExtraWeight;
->>>>>>> Stashed changes
                 float additionalWeight = ((float)Math.Max(0, PlayerWeight - 1) / 4f);
 				Vector2 TargetForce = Vector2.Zero;
 				float HookStrength = 0f;
@@ -2808,22 +2800,6 @@ namespace V2.PlayerHandling
                 itemToPickUp = new Item();
             }
 			else if (self.HasBuff<Trance>() && itemToPickUp.AsFood().Health > 0)
-<<<<<<< Updated upstream
-            {
-                PredPlayer.Swallow(self, itemToPickUp, ForceSwallow: true);
-                itemToPickUp = new Item();
-            }
-            else
-            {
-                itemToPickUp = self.GetItem(playerIndex, itemToPickUp, GetItemSettings.PickupItemFromWorld);
-            }
-            Main.item[worldItemArrayIndex] = itemToPickUp;
-            if (Main.netMode == 1)
-            {
-                NetMessage.SendData(MessageID.SyncItem, -1, -1, null, worldItemArrayIndex, 0f, 0f, 0f, 0, 0, 0);
-            }
-            return itemToPickUp;
-=======
 			{
 				if (itemToPickUp.stack > 25)
 				{
@@ -2848,7 +2824,6 @@ namespace V2.PlayerHandling
 				NetMessage.SendData(MessageID.SyncItem, -1, -1, null, worldItemArrayIndex, 0f, 0f, 0f, 0, 0, 0);
 			}
 			return itemToPickUp;
->>>>>>> Stashed changes
 		}
 
         public static void KillMe(Player player, PlayerDeathReason damageSource, double dmg, int hitDirection, bool pvp = false)
