@@ -23,7 +23,6 @@ using V2.PlayerHandling.PredPlayerGoals.Intermediate;
 using V2.PlayerHandling.PredPlayerGoals.Skilled;
 using V2.Projectiles;
 using V2.Projectiles.Voraria.Other;
-using V2.Sounds.TransformationSounds.Baelz;
 using V2.StatusEffects.Voraria.Buffs;
 using V2.StatusEffects.Voraria.Debuffs;
 using V2.UI;
@@ -63,7 +62,6 @@ namespace V2.PlayerHandling
 		public List<(Vector2, bool)> OllieAfterimage = new List<(Vector2, bool)>();
         public double MintWispSummonMeter { get; set; }
         public double MintWispSummonMeterMax { get; set; }
-		public SlotId LastSound { get; set; }
 
 		public float ManaRegenOverallMod { get; set; }
 		public float ManaRegenStillMod { get; set; }
@@ -191,27 +189,18 @@ namespace V2.PlayerHandling
 		}
 		public override void Kill(double damage, int hitDirection, bool pvp, PlayerDeathReason damageSource)
 		{
-			if (Player.AsV2Player().BaeTransformation)
+            if (Player.AsV2Player().BaeTransformation)
 			{
 				Dust.NewDustPerfect(Player.position, ModContent.DustType<DeadBaelz>(), new Vector2(Main.rand.Next(-100, 101) / 15f, Main.rand.Next(-100, -50) / 15f));
-				if (LastSound.IsValid)
-				{
-					if (SoundEngine.TryGetActiveSound(LastSound, out ActiveSound? snd))
-						snd.Stop();
-				}
-				SoundEngine.PlaySound(
-					BaelzSounds.BaelzDeath,
-					Player.TrueCenter()
-				);
 			}
 		}
 		public override void ModifyHurt(ref Player.HurtModifiers modifiers)
 		{
-			if (Player.AsV2Player().BaeTransformation || OllieDashDuration <= 0)
+			if (Player.AsV2Player().HasTransformation && OllieDashDuration <= 0)
 			{
 				modifiers.DisableSound();
-				LastSound = SoundEngine.PlaySound(
-					BaelzSounds.BaelzHurt,
+				SoundEngine.PlaySound(
+					SoundID.NPCHit1,
 					Player.TrueCenter()
 				);
 			}

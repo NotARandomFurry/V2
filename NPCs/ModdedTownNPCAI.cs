@@ -841,7 +841,7 @@ namespace V2.NPCs
                         num17 = 2f;
                         num18 = 0.2f;
                     }
-                    float weightMult = (float)(1.0 / Math.Max(PreyData.GetPreySize(npc) - 1.4, 1));
+                    float weightMult = (float)(1.0 / Math.Max(PreyData.GetPreySize(npc) / 1.67 - npc.AsFood().DefinedBaseSize, 1));
                     num17 *= Math.Min(1.0f, weightMult * 2);
                     num18 *= weightMult;
 

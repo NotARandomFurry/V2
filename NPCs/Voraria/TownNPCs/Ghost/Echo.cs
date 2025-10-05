@@ -136,6 +136,63 @@ namespace V2.NPCs.Voraria.TownNPCs.Ghost
         }
         public override void ModifyTypeName(ref string typeName) => typeName = "Ghost";
 
+        public static List<(TargetType, int, TargetPriorityLevel)> Diet
+        {
+            get
+            {
+                List<(TargetType, int, TargetPriorityLevel)> diet = [
+					// slimes
+					(TargetType.NPC, NPCID.BigCrimslime, TargetPriorityLevel.Neutral),
+                    (TargetType.NPC, NPCID.LittleCrimslime, TargetPriorityLevel.Neutral),
+                    (TargetType.NPC, NPCID.JungleSlime, TargetPriorityLevel.Neutral),
+                    (TargetType.NPC, NPCID.YellowSlime, TargetPriorityLevel.Neutral),
+                    (TargetType.NPC, NPCID.RedSlime, TargetPriorityLevel.Neutral),
+                    (TargetType.NPC, NPCID.PurpleSlime, TargetPriorityLevel.Neutral),
+                    (TargetType.NPC, NPCID.BlackSlime, TargetPriorityLevel.Neutral),
+                    (TargetType.NPC, NPCID.BabySlime, TargetPriorityLevel.Neutral),
+                    (TargetType.NPC, NPCID.Pinky, TargetPriorityLevel.Neutral),
+                    (TargetType.NPC, NPCID.GreenSlime, TargetPriorityLevel.Neutral),
+                    (TargetType.NPC, NPCID.Slimer2, TargetPriorityLevel.Neutral),
+                    (TargetType.NPC, NPCID.Slimeling, TargetPriorityLevel.Neutral),
+                    (TargetType.NPC, NPCID.BlueSlime, TargetPriorityLevel.Neutral),
+                    (TargetType.NPC, NPCID.MotherSlime, TargetPriorityLevel.Neutral),
+                    (TargetType.NPC, NPCID.LavaSlime, TargetPriorityLevel.Neutral),
+                    (TargetType.NPC, NPCID.DungeonSlime, TargetPriorityLevel.Neutral),
+                    (TargetType.NPC, NPCID.CorruptSlime, TargetPriorityLevel.Neutral),
+                    (TargetType.NPC, NPCID.Slimer, TargetPriorityLevel.Neutral),
+                    (TargetType.NPC, NPCID.Gastropod, TargetPriorityLevel.Neutral),
+                    (TargetType.NPC, NPCID.IlluminantSlime, TargetPriorityLevel.Neutral),
+                    (TargetType.NPC, NPCID.ToxicSludge, TargetPriorityLevel.Neutral),
+                    (TargetType.NPC, NPCID.IceSlime, TargetPriorityLevel.Neutral),
+                    (TargetType.NPC, NPCID.Crimslime, TargetPriorityLevel.Neutral),
+                    (TargetType.NPC, NPCID.SpikedIceSlime, TargetPriorityLevel.Neutral),
+                    (TargetType.NPC, NPCID.SpikedJungleSlime, TargetPriorityLevel.Neutral),
+                    (TargetType.NPC, NPCID.UmbrellaSlime, TargetPriorityLevel.Neutral),
+                    (TargetType.NPC, NPCID.RainbowSlime, TargetPriorityLevel.Neutral),
+                    (TargetType.NPC, NPCID.SlimeMasked, TargetPriorityLevel.Neutral),
+                    (TargetType.NPC, NPCID.BunnySlimed, TargetPriorityLevel.Neutral),
+                    (TargetType.NPC, NPCID.SlimeRibbonWhite, TargetPriorityLevel.Neutral),
+                    (TargetType.NPC, NPCID.SlimeRibbonYellow, TargetPriorityLevel.Neutral),
+                    (TargetType.NPC, NPCID.SlimeRibbonGreen, TargetPriorityLevel.Neutral),
+                    (TargetType.NPC, NPCID.SlimeRibbonRed, TargetPriorityLevel.Neutral),
+                    (TargetType.NPC, NPCID.SlimeSpiked, TargetPriorityLevel.Neutral),
+                    (TargetType.NPC, NPCID.SandSlime, TargetPriorityLevel.Neutral),
+                    (TargetType.NPC, NPCID.QueenSlimeMinionBlue, TargetPriorityLevel.Neutral),
+                    (TargetType.NPC, NPCID.QueenSlimeMinionPink, TargetPriorityLevel.Neutral),
+                    (TargetType.NPC, NPCID.QueenSlimeMinionPurple, TargetPriorityLevel.Neutral),
+                    (TargetType.NPC, NPCID.ShimmerSlime, TargetPriorityLevel.Neutral),
+
+					//there can only be one ghost
+                    (TargetType.NPC, NPCID.Ghost, TargetPriorityLevel.Neutral),
+                    (TargetType.NPC, NPCID.Wraith, TargetPriorityLevel.Neutral),
+                    (TargetType.NPC, NPCID.Poltergeist, TargetPriorityLevel.Neutral),
+                    (TargetType.NPC, NPCID.DungeonSpirit, TargetPriorityLevel.Neutral),
+                    (TargetType.NPC, NPCID.PirateGhost, TargetPriorityLevel.Neutral),
+                ];
+                return diet;
+            }
+        }
+
         public static void OnDigestionKill(NPC npc, PreyData digestedPrey)
         {
             if (digestedPrey.Type == PreyType.Item)
@@ -271,7 +328,7 @@ namespace V2.NPCs.Voraria.TownNPCs.Ghost
             Lighting.AddLight(NPC.Center, Color.SkyBlue.ToVector3());
             int idleFrame = (int)(Main.GlobalTimeWrappedHourly * 5) % 4;
 			if (!Main.gamePaused)
-				NPC.frame.Y = idleFrame;
+				NPC.frame.Y = idleFrame * NPC.frame.Height;
 			switch (GetVisualBellySize(NPC))
 			{
 				case 0 or 1:
@@ -288,25 +345,6 @@ namespace V2.NPCs.Voraria.TownNPCs.Ghost
 					NPCID.Sets.PlayerDistanceWhilePetting[NPC.type] = 54; break;
 
 			}
-			switch (GetVisualWeightStage(NPC))
-			{
-				case 0 or 1: break;
-                case 2:
-                    NPC.velocity.X *= 0.99f;
-                    break;
-                case 3:
-					NPC.velocity.X *= 0.97f;
-                    break;
-                case 4:
-                    NPC.velocity.X *= 0.94f;
-                    break;
-                case 5:
-                    NPC.velocity.X *= 0.9f;
-                    break;
-                default:
-                    NPC.velocity.X *= 0.15f;
-                    break;
-            }
 
 			Rectangle SwallowHitbox = new Rectangle((int)NPC.position.X, (int)NPC.position.Y, NPC.width, NPC.height);
 			Entity target = null;
@@ -321,6 +359,7 @@ namespace V2.NPCs.Voraria.TownNPCs.Ghost
             {
                 PredNPC.Swallow(NPC, target);
             }
+            NPC.DoContactGulpage(Diet);
         }
 
 		public void ExtraMainSpriteSize(int weight, out Vector2 SpriteSize, out Vector2 SpriteOffset)

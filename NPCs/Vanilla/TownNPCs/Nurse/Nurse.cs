@@ -103,13 +103,13 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 
 		public override void SetDefaults(NPC npc)
 		{
-			npc.aiStyle = -1;
+			npc.aiStyle = 7;
 
 			npc.AsV2NPC().Gender = EntityGender.Female;
 
 			npc.AsV2NPC().GetNewDialogue = GetNurseChat;
 
-			//npc.AsV2NPC().NewAIMethod = V2NurseAI;
+			npc.AsV2NPC().NewAIMethod = V2NurseAI;
 
 			npc.AsFood().DefinedBaseSize = 1.1625;
 			npc.AsPred().WeightGainRatio = 0.56; //0.06

@@ -68,7 +68,12 @@ namespace V2.NPCs
 			return happyBurpyOffsetDirectionized;
 		}
 
-		public SoundStyle? SmallGulps { get; set; }
+        /// <summary>
+        /// Denotes whether or not an NPC has eaten someone friendly yet.<br/>
+        /// NPCs which have digested a player or townsperson at least once since spawning do not despawn naturally and are saved with the world.<br/>
+        /// </summary>
+        public bool AteFriendly { get; set; }
+        public SoundStyle? SmallGulps { get; set; }
 		public double SmallGulpThreshold { get; set; }
 		public SoundStyle? BigGulps { get; set; }
 
@@ -151,8 +156,9 @@ namespace V2.NPCs
 			ExtraWeight = 0.0;
 			WeightGainRatio = 0.0;
 			CanSwallowBosses = false;
-			
-			GetDigestionTickRate = null;
+            AteFriendly = false;
+
+            GetDigestionTickRate = null;
 			GetDigestionTickDamage = null;
 			GetPreyAbsorptionRate = null;
 
@@ -596,8 +602,9 @@ namespace V2.NPCs
 									if (ModContent.GetInstance<V2ServerConfig>().DebugChatMessages)
 										Main.NewText("Successfully dealt digestion damage to prey: " + preyPlayer.name);
 									if (prey.NoHealth)
-									{
-										if (pred.AsPred().OnDigestionKill is not null)
+                                    {
+                                        pred.AsPred().AteFriendly = true;
+                                        if (pred.AsPred().OnDigestionKill is not null)
 											pred.AsPred().OnDigestionKill.Invoke(pred, prey);
 										PlayDigestionBelch(pred, prey);
 									}
@@ -619,8 +626,10 @@ namespace V2.NPCs
 									else if (ModContent.GetInstance<V2ServerConfig>().DebugChatMessages)
 										Main.NewText("Failed to deal digestion damage to prey: " + preyNPC.GivenOrTypeName);
 									if (prey.NoHealth)
-									{
-										if (pred.AsPred().OnDigestionKill is not null)
+                                    {
+                                        if (preyNPC.isLikeATownNPC)
+                                            pred.AsPred().AteFriendly = true;
+                                        if (pred.AsPred().OnDigestionKill is not null)
 											pred.AsPred().OnDigestionKill.Invoke(pred, prey);
 										PlayDigestionBelch(pred, prey);
 									}
@@ -857,7 +866,14 @@ namespace V2.NPCs
 			return false;
 		}
 
-		public override void SaveData(NPC npc, TagCompound tag)
+        public override bool CheckActive(NPC npc)
+        {
+            if (npc.AsPred().AteFriendly)
+                return false;
+            return true;
+        }
+
+        public override void SaveData(NPC npc, TagCompound tag)
 		{
 			tag.Add("ExtraWeight", npc.AsPred().ExtraWeight);
 		}

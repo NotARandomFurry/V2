@@ -17,6 +17,7 @@ namespace V2.NPCs.Voraria.Underworld.HellHarpy
 	{
 		public override void SetStaticDefaults()
 		{
+			NPCID.Sets.CantTakeLunchMoney[NPC.type] = true;
 			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers()
 			{
 				CustomTexturePath = "V2/NPCs/Voraria/Underworld/HellHarpy/HellHarpy",
