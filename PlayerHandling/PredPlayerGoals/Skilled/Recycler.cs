@@ -17,6 +17,6 @@ namespace V2.PlayerHandling.PredPlayerGoals.Skilled
 
 		public override int StatPointsFromCompletion => 22;
 
-        public override ProgressionStage Stage => ModContent.GetInstance<SkilledStage>();
-    }
+		public override ProgressionStage Stage => ModContent.GetInstance<SkilledStage>();
+	}
 }

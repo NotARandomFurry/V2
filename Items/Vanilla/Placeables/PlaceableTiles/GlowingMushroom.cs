@@ -14,8 +14,8 @@ namespace V2.Items.Vanilla.Placeables.TilesPlaceableTiles
 		{
 			item.AsFood().MaxHealth = 16;
 			item.AsFood().Size = 0.08;
-            item.AsFood().WellFedPower = 0.15;
-            item.AsFood().CalorieMultiplier = 1.5;
-        }
-    }
+			item.AsFood().WellFedPower = 0.15;
+			item.AsFood().CalorieMultiplier = 1.5;
+		}
+	}
 }

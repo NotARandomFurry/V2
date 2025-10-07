@@ -19,17 +19,17 @@ namespace V2.Items.Vanilla.Placeables.PlaceableTiles
 			item.AsFood().MaxHealth = 50000;
 			item.AsFood().Size = 0.125;
 			item.AsFood().AcidResistTier = 2;
-            item.AsFood().OnBreak += OnBreak;
-        }
-        public static bool OnBreak(Item item, Entity pred, bool direct)
-        {
-            if (pred is Player predPlayer)
-            {
-                ModContent.GetInstance<DigestTempleBrick>().TrySetCompletion(predPlayer);
-            }
-            return true;
-        }
-    }
+			item.AsFood().OnBreak += OnBreak;
+		}
+		public static bool OnBreak(Item item, Entity pred, bool direct)
+		{
+			if (pred is Player predPlayer)
+			{
+				ModContent.GetInstance<DigestTempleBrick>().TrySetCompletion(predPlayer);
+			}
+			return true;
+		}
+	}
 	public class DungeonBrick : GlobalItem
 	{
 		public override bool InstancePerEntity => true;
@@ -40,15 +40,15 @@ namespace V2.Items.Vanilla.Placeables.PlaceableTiles
 			item.AsFood().MaxHealth = 2000;
 			item.AsFood().Size = 0.125;
 			item.AsFood().AcidResistTier = 2;
-            item.AsFood().OnBreak += OnBreak;
-        }
-        public static bool OnBreak(Item item, Entity pred, bool direct)
-        {
-            if (pred is Player predPlayer)
-            {
-                ModContent.GetInstance<DigestDungeonBrick>().TrySetCompletion(predPlayer);
-            }
-            return true;
-        }
-    }
+			item.AsFood().OnBreak += OnBreak;
+		}
+		public static bool OnBreak(Item item, Entity pred, bool direct)
+		{
+			if (pred is Player predPlayer)
+			{
+				ModContent.GetInstance<DigestDungeonBrick>().TrySetCompletion(predPlayer);
+			}
+			return true;
+		}
+	}
 }

@@ -34,7 +34,7 @@ namespace V2.Items.Vanilla.Consumables
 			item.AsFood().WellFedPower = 1;
 			item.AsFood().CalorieMultiplier = 1.5;
 
-            item.AsFood().UpdateInStomach += UpdateInStomach;
+			item.AsFood().UpdateInStomach += UpdateInStomach;
 			item.AsFood().OnBreak += OnBreak;
 
 			item.AsFood().EdibleOnUse = true;

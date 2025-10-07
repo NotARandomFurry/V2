@@ -74,35 +74,35 @@ namespace V2.Tiles.Vanilla.Paintings
 								new Vector2(i * 16 - (int)Main.screenPosition.X, j * 16 - (int)Main.screenPosition.Y) + zero,
 								sourceRect,
 								Lighting.GetColor(i, j), 0f, default, 1f, SpriteEffects.None, 0f);
-                            Player plr = Main.LocalPlayer;
-                            if (plr.AsV2Player().HoldingPredToggleRod)
-                            {
-                                Texture2D cornerTexture = ModContent.Request<Texture2D>("V2/Items/Voraria/Tools/PredToggleRodInactiveCorner").Value;
-                                if (npc.ai[2] == 1)
-                                    cornerTexture = ModContent.Request<Texture2D>("V2/Items/Voraria/Tools/PredToggleRodActiveCorner").Value;
+							Player plr = Main.LocalPlayer;
+							if (plr.AsV2Player().HoldingPredToggleRod)
+							{
+								Texture2D cornerTexture = ModContent.Request<Texture2D>("V2/Items/Voraria/Tools/PredToggleRodInactiveCorner").Value;
+								if (npc.ai[2] == 1)
+									cornerTexture = ModContent.Request<Texture2D>("V2/Items/Voraria/Tools/PredToggleRodActiveCorner").Value;
 
-                                spriteBatch.Draw( // Upper Left
-                                    cornerTexture,
-                                    new Vector2(i * 16 - (int)Main.screenPosition.X, j * 16 - (int)Main.screenPosition.Y) + zero,
-                                    new Rectangle(0, 0, 10, 10),
-                                    Color.White, 0f, default, 1f, SpriteEffects.None, 0f);
-                                spriteBatch.Draw( // Upper Right
-                                    cornerTexture,
-                                    new Vector2(i * 16 - (int)Main.screenPosition.X + (npc.width), j * 16 - (int)Main.screenPosition.Y) + zero,
-                                    new Rectangle(0, 0, 10, 10),
-                                    Color.White, 1.5708f, default, 1f, SpriteEffects.None, 0f);
-                                spriteBatch.Draw( // Bottom Left
-                                    cornerTexture,
-                                    new Vector2(i * 16 - (int)Main.screenPosition.X, j * 16 - (int)Main.screenPosition.Y + (npc.height)) + zero,
-                                    new Rectangle(0, 0, 10, 10),
-                                    Color.White, 4.71239f, default, 1f, SpriteEffects.None, 0f);
-                                spriteBatch.Draw( // Bottom Right
-                                    cornerTexture,
-                                    new Vector2(i * 16 - (int)Main.screenPosition.X + (npc.width), j * 16 - (int)Main.screenPosition.Y + (npc.height)) + zero,
-                                    new Rectangle(0, 0, 10, 10),
-                                    Color.White, 3.14159f, default, 1f, SpriteEffects.None, 0f);
-                            }
-                        }
+								spriteBatch.Draw( // Upper Left
+									cornerTexture,
+									new Vector2(i * 16 - (int)Main.screenPosition.X, j * 16 - (int)Main.screenPosition.Y) + zero,
+									new Rectangle(0, 0, 10, 10),
+									Color.White, 0f, default, 1f, SpriteEffects.None, 0f);
+								spriteBatch.Draw( // Upper Right
+									cornerTexture,
+									new Vector2(i * 16 - (int)Main.screenPosition.X + (npc.width), j * 16 - (int)Main.screenPosition.Y) + zero,
+									new Rectangle(0, 0, 10, 10),
+									Color.White, 1.5708f, default, 1f, SpriteEffects.None, 0f);
+								spriteBatch.Draw( // Bottom Left
+									cornerTexture,
+									new Vector2(i * 16 - (int)Main.screenPosition.X, j * 16 - (int)Main.screenPosition.Y + (npc.height)) + zero,
+									new Rectangle(0, 0, 10, 10),
+									Color.White, 4.71239f, default, 1f, SpriteEffects.None, 0f);
+								spriteBatch.Draw( // Bottom Right
+									cornerTexture,
+									new Vector2(i * 16 - (int)Main.screenPosition.X + (npc.width), j * 16 - (int)Main.screenPosition.Y + (npc.height)) + zero,
+									new Rectangle(0, 0, 10, 10),
+									Color.White, 3.14159f, default, 1f, SpriteEffects.None, 0f);
+							}
+						}
 					}
 				}
 			}
@@ -113,9 +113,9 @@ namespace V2.Tiles.Vanilla.Paintings
 	{
 		public Projectile connectedNPC = null;
 		public double WeightOnLoad = 0;
-        public bool CurrentlyEnabled = true;
+		public bool CurrentlyEnabled = true;
 
-        public override void Update()
+		public override void Update()
 		{
 			if (connectedNPC is null)
 			{
@@ -124,13 +124,13 @@ namespace V2.Tiles.Vanilla.Paintings
 			else if (!connectedNPC.active || connectedNPC.type != ModContent.ProjectileType<DoNotEatTheVileMushroom_ProjectileEntity>())
 			{
 				Activate();
-            }
-            else
-            {
-                CurrentlyEnabled = connectedNPC.ai[2] == 1 ? true : false;
-            }
+			}
+			else
+			{
+				CurrentlyEnabled = connectedNPC.ai[2] == 1 ? true : false;
+			}
 
-        }
+		}
 		public void Activate()
 		{
 			foreach (var npc in Main.ActiveProjectiles)
@@ -185,17 +185,17 @@ namespace V2.Tiles.Vanilla.Paintings
 			}
 		}
 		public override void SaveData(TagCompound tag)
-        {
-            if (connectedNPC is not null)
-                tag.Add("ExtraWeight", connectedNPC.AsPred().ExtraWeight);
-            tag.Add("CurrentlyEnabled", CurrentlyEnabled);
-        }
+		{
+			if (connectedNPC is not null)
+				tag.Add("ExtraWeight", connectedNPC.AsPred().ExtraWeight);
+			tag.Add("CurrentlyEnabled", CurrentlyEnabled);
+		}
 
 		public override void LoadData(TagCompound tag)
 		{
 			WeightOnLoad = tag.GetDouble("ExtraWeight");
-            CurrentlyEnabled = tag.GetBool("CurrentlyEnabled");
-        }
+			CurrentlyEnabled = tag.GetBool("CurrentlyEnabled");
+		}
 	}
 	public class DoNotEatTheVileMushroom_ProjectileEntity : ModProjectile
 	{
@@ -210,9 +210,9 @@ namespace V2.Tiles.Vanilla.Paintings
 			Projectile.timeLeft = 6000;
 			Projectile.tileCollide = false;
 
-            Projectile.AsPred().IsPredTileEntity = true;
+			Projectile.AsPred().IsPredTileEntity = true;
 
-            Projectile.AsFood().CannotBeEatenDueToShenanigans = true;
+			Projectile.AsFood().CannotBeEatenDueToShenanigans = true;
 
 			Projectile.AsFood().DefinedSize = 24;
 			Projectile.AsPred().WeightGainRatio = 0;

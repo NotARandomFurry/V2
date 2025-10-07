@@ -12,9 +12,9 @@ using V2.PlayerHandling;
 namespace V2.StatusEffects.Voraria.Debuffs
 {
 	public class OllieDashCooldown : ModBuff
-    {
-        public override string Texture => "V2/StatusEffects/Voraria/Debuffs/DebuffPlaceholder";
-        public override LocalizedText DisplayName => Language.GetText("Mods.V2.StatusEffects.Voraria.Debuffs.OllieDashCooldown.Name");
+	{
+		public override string Texture => "V2/StatusEffects/Voraria/Debuffs/DebuffPlaceholder";
+		public override LocalizedText DisplayName => Language.GetText("Mods.V2.StatusEffects.Voraria.Debuffs.OllieDashCooldown.Name");
 		public override LocalizedText Description => Language.GetText("Mods.V2.StatusEffects.Voraria.Debuffs.OllieDashCooldown.Description");
 
 		public override void SetStaticDefaults()

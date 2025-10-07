@@ -33,10 +33,10 @@ namespace V2.Items
 		public DelegateAccessoryVanityEffectCode AccessoryVanityEffectCode { get; internal set; }
 
 		public bool ShouldSaveSummonWeights { get; set; }
-        public IList<double> SavedSummonWeights = new List<double>();
-        public IList<bool> InUseSummonWeights = new List<bool>();
+		public IList<double> SavedSummonWeights = new List<double>();
+		public IList<bool> InUseSummonWeights = new List<bool>();
 
-        public int ReleasedNPCNetID;
+		public int ReleasedNPCNetID;
 
 		public float StruggleDamageBaseMod { get; set; }
 
@@ -62,61 +62,61 @@ namespace V2.Items
 			player.AsFood().StruggleDamageModifier.Base += StruggleDamageBaseMod;
 		}
 
-        public override bool WingUpdate(int wings, Player player, bool inUse) //For transformation item visuals
-        {
+		public override bool WingUpdate(int wings, Player player, bool inUse) //For transformation item visuals
+		{
 			if (player.AsV2Player().HasTransformation)
 				if (player.AsV2Player().BaeTransformation)
 				{
-                    if (inUse)
-                    {
-                        Vector2 velocity = Vector2.Zero;
-                        Vector2 AngleLeft = Vector2.Zero;
-                        Vector2 AngleRight = Vector2.Zero;
-                        float boostX = (Main.GlobalTimeWrappedHourly * 40) % 20;
-                        if (boostX > 10)
-                            boostX = 20 - boostX;
-                        bool DecideIfDust = Main.rand.NextBool(8);
-                        if (player.direction == 1)
-                        {
-                            if (DecideIfDust)
-                            {
-                                velocity = new(Main.rand.Next(-125, -49) / 33f, Main.rand.Next(-100, -10) / 33f);
-                                Dust.NewDustPerfect(player.BottomLeft + new Vector2(0, -3), ModContent.DustType<BaelzDust>(), velocity);
-                            }
-                            velocity = new(-boostX, 6);
-                            AngleLeft = player.BottomLeft.DirectionTo(player.BottomLeft + velocity);
-                            AngleRight = player.BottomRight.DirectionTo(player.BottomRight + velocity);
-                            Dust.NewDustPerfect(player.BottomRight + new Vector2(0, -3), ModContent.DustType<BaelzSparkleDustBlack>(), AngleRight * 0.8f);
-                            Dust.NewDustPerfect(player.BottomLeft + new Vector2(0, -3), ModContent.DustType<BaelzSparkleDustCyan>(), AngleLeft * 0.8f);
-                            velocity = new(boostX, 6);
-                            AngleLeft = player.BottomLeft.DirectionTo(player.BottomLeft + velocity);
-                            AngleRight = player.BottomRight.DirectionTo(player.BottomRight + velocity);
-                            Dust.NewDustPerfect(player.BottomRight + new Vector2(0, -3), ModContent.DustType<BaelzSparkleDustYellow>(), AngleRight * 0.8f);
-                            Dust.NewDustPerfect(player.BottomLeft + new Vector2(0, -3), ModContent.DustType<BaelzSparkleDustRed>(), AngleLeft * 0.8f);
-                        }
-                        else
-                        {
-                            if (DecideIfDust)
-                            {
-                                velocity = new(Main.rand.Next(50, 126) / 33f, Main.rand.Next(-100, -10) / 33f);
-                                Dust.NewDustPerfect(player.BottomRight + new Vector2(0, -3), ModContent.DustType<BaelzDust>(), velocity);
-                            }
-                            velocity = new(-boostX, 6);
-                            AngleLeft = player.BottomLeft.DirectionTo(player.BottomLeft + velocity);
-                            AngleRight = player.BottomRight.DirectionTo(player.BottomRight + velocity);
-                            Dust.NewDustPerfect(player.BottomLeft + new Vector2(0, -3), ModContent.DustType<BaelzSparkleDustBlack>(), AngleLeft * 0.8f);
-                            Dust.NewDustPerfect(player.BottomRight + new Vector2(0, -3), ModContent.DustType<BaelzSparkleDustCyan>(), AngleRight * 0.8f);
-                            velocity = new(boostX, 6);
-                            AngleLeft = player.BottomLeft.DirectionTo(player.BottomLeft + velocity);
-                            AngleRight = player.BottomRight.DirectionTo(player.BottomRight + velocity);
-                            Dust.NewDustPerfect(player.BottomLeft + new Vector2(0, -3), ModContent.DustType<BaelzSparkleDustYellow>(), AngleLeft * 0.8f);
-                            Dust.NewDustPerfect(player.BottomRight + new Vector2(0, -3), ModContent.DustType<BaelzSparkleDustRed>(), AngleRight * 0.8f);
-                        }
-                    }
-                    return true;
-                } 
-            return base.WingUpdate(wings, player, inUse);
-        }
+					if (inUse)
+					{
+						Vector2 velocity = Vector2.Zero;
+						Vector2 AngleLeft = Vector2.Zero;
+						Vector2 AngleRight = Vector2.Zero;
+						float boostX = (Main.GlobalTimeWrappedHourly * 40) % 20;
+						if (boostX > 10)
+							boostX = 20 - boostX;
+						bool DecideIfDust = Main.rand.NextBool(8);
+						if (player.direction == 1)
+						{
+							if (DecideIfDust)
+							{
+								velocity = new(Main.rand.Next(-125, -49) / 33f, Main.rand.Next(-100, -10) / 33f);
+								Dust.NewDustPerfect(player.BottomLeft + new Vector2(0, -3), ModContent.DustType<BaelzDust>(), velocity);
+							}
+							velocity = new(-boostX, 6);
+							AngleLeft = player.BottomLeft.DirectionTo(player.BottomLeft + velocity);
+							AngleRight = player.BottomRight.DirectionTo(player.BottomRight + velocity);
+							Dust.NewDustPerfect(player.BottomRight + new Vector2(0, -3), ModContent.DustType<BaelzSparkleDustBlack>(), AngleRight * 0.8f);
+							Dust.NewDustPerfect(player.BottomLeft + new Vector2(0, -3), ModContent.DustType<BaelzSparkleDustCyan>(), AngleLeft * 0.8f);
+							velocity = new(boostX, 6);
+							AngleLeft = player.BottomLeft.DirectionTo(player.BottomLeft + velocity);
+							AngleRight = player.BottomRight.DirectionTo(player.BottomRight + velocity);
+							Dust.NewDustPerfect(player.BottomRight + new Vector2(0, -3), ModContent.DustType<BaelzSparkleDustYellow>(), AngleRight * 0.8f);
+							Dust.NewDustPerfect(player.BottomLeft + new Vector2(0, -3), ModContent.DustType<BaelzSparkleDustRed>(), AngleLeft * 0.8f);
+						}
+						else
+						{
+							if (DecideIfDust)
+							{
+								velocity = new(Main.rand.Next(50, 126) / 33f, Main.rand.Next(-100, -10) / 33f);
+								Dust.NewDustPerfect(player.BottomRight + new Vector2(0, -3), ModContent.DustType<BaelzDust>(), velocity);
+							}
+							velocity = new(-boostX, 6);
+							AngleLeft = player.BottomLeft.DirectionTo(player.BottomLeft + velocity);
+							AngleRight = player.BottomRight.DirectionTo(player.BottomRight + velocity);
+							Dust.NewDustPerfect(player.BottomLeft + new Vector2(0, -3), ModContent.DustType<BaelzSparkleDustBlack>(), AngleLeft * 0.8f);
+							Dust.NewDustPerfect(player.BottomRight + new Vector2(0, -3), ModContent.DustType<BaelzSparkleDustCyan>(), AngleRight * 0.8f);
+							velocity = new(boostX, 6);
+							AngleLeft = player.BottomLeft.DirectionTo(player.BottomLeft + velocity);
+							AngleRight = player.BottomRight.DirectionTo(player.BottomRight + velocity);
+							Dust.NewDustPerfect(player.BottomLeft + new Vector2(0, -3), ModContent.DustType<BaelzSparkleDustYellow>(), AngleLeft * 0.8f);
+							Dust.NewDustPerfect(player.BottomRight + new Vector2(0, -3), ModContent.DustType<BaelzSparkleDustRed>(), AngleRight * 0.8f);
+						}
+					}
+					return true;
+				} 
+			return base.WingUpdate(wings, player, inUse);
+		}
 
 		public override void HorizontalWingSpeeds(Item item, Player player, ref float speed, ref float acceleration)
 		{
@@ -127,12 +127,12 @@ namespace V2.Items
 		public override void VerticalWingSpeeds(Item item, Player player, ref float ascentWhenFalling, ref float ascentWhenRising, ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float constantAscend)
 		{
 			float weightMovementMult = PredPlayer.WeightMovementMultiplier(player); //(float)Math.Min(1.0, 1.0 / (player.AsPred().StomachWeight + 1.0));
-            ascentWhenFalling *= weightMovementMult / 2f;
+			ascentWhenFalling *= weightMovementMult / 2f;
 			ascentWhenRising *= Math.Min(1.0f, weightMovementMult * 3f);
-            maxCanAscendMultiplier *= Math.Min(1.0f, weightMovementMult * 7.5f);
-            maxAscentMultiplier *= Math.Min(1.0f, weightMovementMult * 7.5f);
-            constantAscend *= Math.Min(1.0f, weightMovementMult * 1.75f);
-        }
+			maxCanAscendMultiplier *= Math.Min(1.0f, weightMovementMult * 7.5f);
+			maxAscentMultiplier *= Math.Min(1.0f, weightMovementMult * 7.5f);
+			constantAscend *= Math.Min(1.0f, weightMovementMult * 1.75f);
+		}
 
 		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
 		{
@@ -215,23 +215,23 @@ namespace V2.Items
 			}
 		}
 
-        public override void SaveData(Item item, TagCompound tag)
-        {
+		public override void SaveData(Item item, TagCompound tag)
+		{
 			if (ShouldSaveSummonWeights)
-            {
-                tag["SavedWeights"] = SavedSummonWeights;
-            }
-        }
-        public override void LoadData(Item item, TagCompound tag)
-        {
-            if (ShouldSaveSummonWeights)
-            {
-                SavedSummonWeights = tag.GetList<double>("SavedWeights");
+			{
+				tag["SavedWeights"] = SavedSummonWeights;
+			}
+		}
+		public override void LoadData(Item item, TagCompound tag)
+		{
+			if (ShouldSaveSummonWeights)
+			{
+				SavedSummonWeights = tag.GetList<double>("SavedWeights");
 				foreach (double value in SavedSummonWeights)
 				{
 					InUseSummonWeights.Add(false);
 				}
-            }
-        }
-    }
+			}
+		}
+	}
 }

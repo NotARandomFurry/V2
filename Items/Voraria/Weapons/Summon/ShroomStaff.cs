@@ -23,7 +23,7 @@ namespace V2.Items.Voraria.Weapons.Summon
 {
 	public class ShroomStaff : ModItem
 	{
-        public override LocalizedText DisplayName => Language.GetText("Mods.V2.ItemName.Voraria.Weapons.Summon.ShroomFairySummon");
+		public override LocalizedText DisplayName => Language.GetText("Mods.V2.ItemName.Voraria.Weapons.Summon.ShroomFairySummon");
 		public override LocalizedText Tooltip => Language.GetText("Mods.V2.ItemTooltip.Voraria.Weapons.Summon.ShroomFairySummon.Short");
 		public override void SetStaticDefaults()
 		{
@@ -69,16 +69,16 @@ namespace V2.Items.Voraria.Weapons.Summon
 				}
 				FairyIndex++;
 			}
-            if (FairyIndex > Item.AsAnItem().SavedSummonWeights.Count)
-            {
-                Item.AsAnItem().SavedSummonWeights.Add(0.0);
-                Item.AsAnItem().InUseSummonWeights.Add(false);
-            }
-            projectile.AsPred().ExtraWeight = Item.AsAnItem().SavedSummonWeights[FairyIndex - 1];
-            Item.AsAnItem().InUseSummonWeights[FairyIndex - 1] = true;
+			if (FairyIndex > Item.AsAnItem().SavedSummonWeights.Count)
+			{
+				Item.AsAnItem().SavedSummonWeights.Add(0.0);
+				Item.AsAnItem().InUseSummonWeights.Add(false);
+			}
+			projectile.AsPred().ExtraWeight = Item.AsAnItem().SavedSummonWeights[FairyIndex - 1];
+			Item.AsAnItem().InUseSummonWeights[FairyIndex - 1] = true;
 			projectile.AsPred().TiedToSummonItem = Item;
 			projectile.AsPred().TiedToSummonIndex = FairyIndex - 1;
-            return false;
+			return false;
 		}
 		public override void AddRecipes()
 		{
@@ -98,8 +98,8 @@ namespace V2.Items.Voraria.Weapons.Summon
 
 				}
 			);
-        }
-    }
+		}
+	}
 	public class SlimeStaff : GlobalItem
 	{
 		public override bool AppliesToEntity(Item entity, bool lateInstantiation) => entity.type == ItemID.SlimeStaff;

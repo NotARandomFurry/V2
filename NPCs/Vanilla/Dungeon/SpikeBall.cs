@@ -34,10 +34,10 @@ namespace V2.NPCs.Vanilla.Dungeon
 			npc.defense = 65;
 			npc.AsFood().DefinedBaseSize = 1.2;
 
-            npc.AsFood().OnSwallowDamage = npc.damage;
-            npc.AsFood().OnSwallowDeathReason = "Mods.V2.Death.SwallowDamage.SpikeBall";
+			npc.AsFood().OnSwallowDamage = npc.damage;
+			npc.AsFood().OnSwallowDeathReason = "Mods.V2.Death.SwallowDamage.SpikeBall";
 
-            npc.AsFood().OnDigestedBy += OnKilledByDigestion_GrantSpikeBallGoal;
+			npc.AsFood().OnDigestedBy += OnKilledByDigestion_GrantSpikeBallGoal;
 		}
 
 		public static void OnKilledByDigestion_GrantSpikeBallGoal(NPC npc, Entity pred)

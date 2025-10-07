@@ -338,10 +338,10 @@ namespace V2.NPCs
 					specificWhitelist.RemoveAll(x => x.Type == TargetType.NPC && V2.VoreNPCBlacklist.Contains(x.ID));
 					specificWhitelist.RemoveAll(x => x.Type == TargetType.Projectile && V2.VoreProjectileBlacklist.Contains(x.ID));
 				}
-            }
-            foreach (var prey in Main.ActiveNPCs)
-            {
-                NPC preyNPC = prey;
+			}
+			foreach (var prey in Main.ActiveNPCs)
+			{
+				NPC preyNPC = prey;
 				if (preyNPC.active && preyNPC.life > 0 && preyNPC.whoAmI != npc.whoAmI)
 				{
 					bool inSpecificWhitelist = false;
@@ -381,10 +381,10 @@ namespace V2.NPCs
 							PredNPC.Swallow(npc, preyNPC);
 					}
 				}
-            }
-            foreach (var prey in Main.ActivePlayers)
-            {
-                Player preyPlayer = prey;
+			}
+			foreach (var prey in Main.ActivePlayers)
+			{
+				Player preyPlayer = prey;
 				if (preyPlayer.active && !preyPlayer.dead)
 				{
 					bool inSpecificWhitelist = false;
@@ -436,7 +436,7 @@ namespace V2.NPCs
 						PredNPC.Swallow(npc, preyProjectile);
 				}
 			}
-            /*
+			/*
 			for (int i = 0; i < Main.maxNPCs; i++)
 			{
 				NPC preyNPC = Main.npc[i];
@@ -535,108 +535,108 @@ namespace V2.NPCs
 				}
 			}
 			*/
-        }
-        public static void DoContactFeed(this NPC npc, List<(TargetType, int, TargetPriorityLevel)> specificWhitelistInput = null)
-        {
-            if (npc.CurrentCaptor() is not null)
-                return;
+		}
+		public static void DoContactFeed(this NPC npc, List<(TargetType, int, TargetPriorityLevel)> specificWhitelistInput = null)
+		{
+			if (npc.CurrentCaptor() is not null)
+				return;
 
-            List<(TargetType Type, int ID, TargetPriorityLevel PriorityLevel)> specificWhitelist = null;
-            if (specificWhitelistInput is not null)
-            {
-                specificWhitelist = new List<(TargetType, int, TargetPriorityLevel)>(specificWhitelistInput);
-                if (V2.BlacklistsActive)
-                {
-                    specificWhitelist.RemoveAll(x => x.Type == TargetType.NPC && V2.VoreNPCBlacklist.Contains(x.ID));
-                    specificWhitelist.RemoveAll(x => x.Type == TargetType.Projectile && V2.VoreProjectileBlacklist.Contains(x.ID));
-                }
-            }
-            foreach (var pred in Main.ActiveNPCs)
-            {
-                NPC predNPC = pred;
-                if (predNPC.active && predNPC.life > 0 && predNPC.whoAmI != npc.whoAmI)
-                {
-                    bool inSpecificWhitelist = false;
-                    if (specificWhitelist is not null)
-                    {
-                        foreach ((TargetType type, int ID, TargetPriorityLevel priority) in specificWhitelist)
-                        {
-                            if (type == TargetType.NPC && ID == predNPC.netID)
-                            {
-                                inSpecificWhitelist = true;
-                                break;
-                            }
-                        }
-                    }
-                    else
-                        inSpecificWhitelist = true;
+			List<(TargetType Type, int ID, TargetPriorityLevel PriorityLevel)> specificWhitelist = null;
+			if (specificWhitelistInput is not null)
+			{
+				specificWhitelist = new List<(TargetType, int, TargetPriorityLevel)>(specificWhitelistInput);
+				if (V2.BlacklistsActive)
+				{
+					specificWhitelist.RemoveAll(x => x.Type == TargetType.NPC && V2.VoreNPCBlacklist.Contains(x.ID));
+					specificWhitelist.RemoveAll(x => x.Type == TargetType.Projectile && V2.VoreProjectileBlacklist.Contains(x.ID));
+				}
+			}
+			foreach (var pred in Main.ActiveNPCs)
+			{
+				NPC predNPC = pred;
+				if (predNPC.active && predNPC.life > 0 && predNPC.whoAmI != npc.whoAmI)
+				{
+					bool inSpecificWhitelist = false;
+					if (specificWhitelist is not null)
+					{
+						foreach ((TargetType type, int ID, TargetPriorityLevel priority) in specificWhitelist)
+						{
+							if (type == TargetType.NPC && ID == predNPC.netID)
+							{
+								inSpecificWhitelist = true;
+								break;
+							}
+						}
+					}
+					else
+						inSpecificWhitelist = true;
 
-                    if (!inSpecificWhitelist)
-                        continue;
+					if (!inSpecificWhitelist)
+						continue;
 
-                    if (npc.Hitbox.Intersects(predNPC.Hitbox))
-                    {
-                        PredNPC.Swallow(predNPC, npc);
-                    }
-                }
-            }
-            foreach (var pred in Main.ActivePlayers)
-            {
-                Player predPlayer = pred;
-                if (predPlayer.active && !predPlayer.dead)
-                {
-                    bool inSpecificWhitelist = false;
-                    if (specificWhitelist is not null)
-                    {
-                        foreach ((TargetType type, int ID, TargetPriorityLevel priority) in specificWhitelist)
-                        {
-                            if (type == TargetType.Player)
-                            {
-                                inSpecificWhitelist = true;
-                                break;
-                            }
-                        }
-                    }
-                    else
-                        inSpecificWhitelist = true;
+					if (npc.Hitbox.Intersects(predNPC.Hitbox))
+					{
+						PredNPC.Swallow(predNPC, npc);
+					}
+				}
+			}
+			foreach (var pred in Main.ActivePlayers)
+			{
+				Player predPlayer = pred;
+				if (predPlayer.active && !predPlayer.dead)
+				{
+					bool inSpecificWhitelist = false;
+					if (specificWhitelist is not null)
+					{
+						foreach ((TargetType type, int ID, TargetPriorityLevel priority) in specificWhitelist)
+						{
+							if (type == TargetType.Player)
+							{
+								inSpecificWhitelist = true;
+								break;
+							}
+						}
+					}
+					else
+						inSpecificWhitelist = true;
 
-                    if (!inSpecificWhitelist)
-                        continue;
+					if (!inSpecificWhitelist)
+						continue;
 
-                    if (npc.Hitbox.Intersects(predPlayer.Hitbox))
-                        PredPlayer.Swallow(predPlayer, npc);
-                }
-            }
-            foreach (var pred in Main.ActiveProjectiles)
-            {
-                Projectile predProjectile = pred;
-                if (predProjectile.active)
-                {
-                    bool inSpecificWhitelist = false;
-                    if (specificWhitelist is not null)
-                    {
-                        foreach ((TargetType type, int ID, TargetPriorityLevel priority) in specificWhitelist)
-                        {
-                            if (type == TargetType.Projectile && ID == predProjectile.type)
-                            {
-                                inSpecificWhitelist = true;
-                                break;
-                            }
-                        }
-                    }
-                    else
-                        inSpecificWhitelist = true;
+					if (npc.Hitbox.Intersects(predPlayer.Hitbox))
+						PredPlayer.Swallow(predPlayer, npc);
+				}
+			}
+			foreach (var pred in Main.ActiveProjectiles)
+			{
+				Projectile predProjectile = pred;
+				if (predProjectile.active)
+				{
+					bool inSpecificWhitelist = false;
+					if (specificWhitelist is not null)
+					{
+						foreach ((TargetType type, int ID, TargetPriorityLevel priority) in specificWhitelist)
+						{
+							if (type == TargetType.Projectile && ID == predProjectile.type)
+							{
+								inSpecificWhitelist = true;
+								break;
+							}
+						}
+					}
+					else
+						inSpecificWhitelist = true;
 
-                    if (!inSpecificWhitelist)
-                        continue;
+					if (!inSpecificWhitelist)
+						continue;
 
-                    if (npc.Hitbox.Intersects(predProjectile.Hitbox))
-                        PredProjectile.Swallow(predProjectile, npc);
-                }
-            }
-        }
+					if (npc.Hitbox.Intersects(predProjectile.Hitbox))
+						PredProjectile.Swallow(predProjectile, npc);
+				}
+			}
+		}
 
-        public static int SoftenedStacks(this NPC npc) => Math.Min(Softened.MaxStacks, (int)Math.Floor((double)npc.AsFood().SoftenedDigestionDamageTaken / (npc.lifeMax * Softened.MaxHealthDigestedForOneStack)));
+		public static int SoftenedStacks(this NPC npc) => Math.Min(Softened.MaxStacks, (int)Math.Floor((double)npc.AsFood().SoftenedDigestionDamageTaken / (npc.lifeMax * Softened.MaxHealthDigestedForOneStack)));
 
 		public static bool CanItemsBeThievedBy(this NPC npc, Entity pred)
 		{

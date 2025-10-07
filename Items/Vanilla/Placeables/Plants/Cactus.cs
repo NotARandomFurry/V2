@@ -15,10 +15,10 @@ namespace V2.Items.Vanilla.Placeables.Plants
 			item.AsFood().MaxHealth = 15;
 			item.AsFood().Size = 0.08;
 
-            item.AsFood().OnSwallowDamage = 3;
-            item.AsFood().OnSwallowDeathReason = "Mods.V2.Death.SwallowDamage.Cactus";
-            item.AsFood().OnSwallowSoreThroatTime = V2Utils.SensibleTime(seconds: 1, frames: 30);
+			item.AsFood().OnSwallowDamage = 3;
+			item.AsFood().OnSwallowDeathReason = "Mods.V2.Death.SwallowDamage.Cactus";
+			item.AsFood().OnSwallowSoreThroatTime = V2Utils.SensibleTime(seconds: 1, frames: 30);
 
-        }
-    }
+		}
+	}
 }

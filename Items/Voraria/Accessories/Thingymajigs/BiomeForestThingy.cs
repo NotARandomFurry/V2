@@ -24,114 +24,114 @@ namespace V2.Items.Voraria.Accessories.Thingymajigs
 	public class BiomeForestThingy : ModItem
 	{
 		public override bool IsLoadingEnabled(Mod mod) => !V2.GetFooled;
-        public override LocalizedText DisplayName => Language.GetText("Mods.V2.ItemName.Voraria.Accessories.Thingymajigs.FullNameForExternalUse.Forest");
-        public override LocalizedText Tooltip => Language.GetText("Mods.V2.ItemTooltip.Voraria.Accessories.Thingymajigs.Forest.Short");
+		public override LocalizedText DisplayName => Language.GetText("Mods.V2.ItemName.Voraria.Accessories.Thingymajigs.FullNameForExternalUse.Forest");
+		public override LocalizedText Tooltip => Language.GetText("Mods.V2.ItemTooltip.Voraria.Accessories.Thingymajigs.Forest.Short");
 
-        public static float StatBuff = 0.15f;
-        public static float PermBuff = 0.06f;
+		public static float StatBuff = 0.15f;
+		public static float PermBuff = 0.06f;
 
-        private static Asset<Texture2D> MainTexture;
-        private static Asset<Texture2D> OutlineTexture;
+		private static Asset<Texture2D> MainTexture;
+		private static Asset<Texture2D> OutlineTexture;
 
-        public override void Load()
-        {
-            MainTexture = ModContent.Request<Texture2D>("V2/Items/Voraria/Accessories/Thingymajigs/BiomeForestThingy");
-            OutlineTexture = ModContent.Request<Texture2D>("V2/Items/Voraria/Accessories/Thingymajigs/BiomeForestThingyOutline");
-        }
-
-        public override void Unload()
-        {
-            MainTexture = null;
-            OutlineTexture = null;
-        }
-
-        public override void SetStaticDefaults()
+		public override void Load()
 		{
-            ItemID.Sets.ItemNoGravity[Item.type] = true;
+			MainTexture = ModContent.Request<Texture2D>("V2/Items/Voraria/Accessories/Thingymajigs/BiomeForestThingy");
+			OutlineTexture = ModContent.Request<Texture2D>("V2/Items/Voraria/Accessories/Thingymajigs/BiomeForestThingyOutline");
+		}
+
+		public override void Unload()
+		{
+			MainTexture = null;
+			OutlineTexture = null;
+		}
+
+		public override void SetStaticDefaults()
+		{
+			ItemID.Sets.ItemNoGravity[Item.type] = true;
 			Item.ResearchUnlockCount = 1;
-        }
+		}
 		public override void PostUpdate()
 		{
 			Lighting.AddLight(Item.Center, new Vector3(255,255,255) * 0.005f);
 		}
 		public override void SetDefaults()
-        {
-            Item.accessory = true;
+		{
+			Item.accessory = true;
 
-            Item.width = 32;
-            Item.height = 32;
-            Item.maxStack = 1;
+			Item.width = 32;
+			Item.height = 32;
+			Item.maxStack = 1;
 
-            Item.value = Item.sellPrice(0, 3);
-            Item.rare = ItemRarityID.Lime;
+			Item.value = Item.sellPrice(0, 3);
+			Item.rare = ItemRarityID.Lime;
 
-            Item.AsFood().Size = 0.5;
-            Item.AsFood().MaxHealth = 1500;
+			Item.AsFood().Size = 0.5;
+			Item.AsFood().MaxHealth = 1500;
 
-            Item.AsFood().EdibleOnUse = true;
+			Item.AsFood().EdibleOnUse = true;
 
-            Item.AsFood().OnBreak += OnBreak;
-        }
-        public static bool OnBreak(Item item, Entity pred, bool direct)
-        {
-            SoundEngine.PlaySound(StomachNoises.Muffled, pred.Center);
-            if (pred is Player playerPred)
-            {
-                if (!playerPred.AsPred().PermanentUpgradesGained.ContainsKey("Thingy_BiomeForest"))
-                    playerPred.AsPred().PermanentUpgradesGained.Add("Thingy_BiomeForest", false);
+			Item.AsFood().OnBreak += OnBreak;
+		}
+		public static bool OnBreak(Item item, Entity pred, bool direct)
+		{
+			SoundEngine.PlaySound(StomachNoises.Muffled, pred.Center);
+			if (pred is Player playerPred)
+			{
+				if (!playerPred.AsPred().PermanentUpgradesGained.ContainsKey("Thingy_BiomeForest"))
+					playerPred.AsPred().PermanentUpgradesGained.Add("Thingy_BiomeForest", false);
 
-                if (!playerPred.AsPred().PermanentUpgradesGained["Thingy_BiomeForest"])
-                    playerPred.AsPred().PermanentUpgradesGained["Thingy_BiomeForest"] = true;
-            }
-            return true;
-        }
-        public override void UpdateAccessory(Player player, bool hideVisual)
-        {
-            player.AsPred().SwallowCapacityModifier += StatBuff;
-            player.AsPred().PreyAbsorptionRateModifier += StatBuff;
-        }
-        public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
-        {
-            BlankThingy.DrawThingymajig(spriteBatch, position, scale, 0f, MainTexture, OutlineTexture, new Color(65, 255, 135), new Color(135, 255, 65), true);
-            return false;
-        }
-        public override bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
-        {
-            if (Item.CurrentCaptor() is not null)
-                return false;
-            BlankThingy.DrawThingymajig(spriteBatch, Item.Center - Main.screenPosition, scale, rotation, MainTexture, OutlineTexture, new Color(65, 255, 135), new Color(135, 255, 65));
-            return false;
-        }
+				if (!playerPred.AsPred().PermanentUpgradesGained["Thingy_BiomeForest"])
+					playerPred.AsPred().PermanentUpgradesGained["Thingy_BiomeForest"] = true;
+			}
+			return true;
+		}
+		public override void UpdateAccessory(Player player, bool hideVisual)
+		{
+			player.AsPred().SwallowCapacityModifier += StatBuff;
+			player.AsPred().PreyAbsorptionRateModifier += StatBuff;
+		}
+		public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
+		{
+			BlankThingy.DrawThingymajig(spriteBatch, position, scale, 0f, MainTexture, OutlineTexture, new Color(65, 255, 135), new Color(135, 255, 65), true);
+			return false;
+		}
+		public override bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
+		{
+			if (Item.CurrentCaptor() is not null)
+				return false;
+			BlankThingy.DrawThingymajig(spriteBatch, Item.Center - Main.screenPosition, scale, rotation, MainTexture, OutlineTexture, new Color(65, 255, 135), new Color(135, 255, 65));
+			return false;
+		}
 
-        public override void PostDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
-        {
-            if (Main.HoverItem.type == Item.type || Main.guideItem == Item || new Rectangle((int)position.X - frame.Width / 2, (int)position.Y - frame.Height / 2, frame.Width, frame.Height).Contains(Main.MouseScreen.ToPoint()) || Item == Main.LocalPlayer.inventory[Main.LocalPlayer.selectedItem])
-                return;
-            Item.SetNameOverride(Language.GetText("Mods.V2.ItemName.Voraria.Accessories.Thingymajigs.Name.Forest")
-                + " " + Language.GetText("Mods.V2.ObjectNames." + Main.rand.Next(1, 36).ToString()).Value);
-        }
+		public override void PostDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
+		{
+			if (Main.HoverItem.type == Item.type || Main.guideItem == Item || new Rectangle((int)position.X - frame.Width / 2, (int)position.Y - frame.Height / 2, frame.Width, frame.Height).Contains(Main.MouseScreen.ToPoint()) || Item == Main.LocalPlayer.inventory[Main.LocalPlayer.selectedItem])
+				return;
+			Item.SetNameOverride(Language.GetText("Mods.V2.ItemName.Voraria.Accessories.Thingymajigs.Name.Forest")
+				+ " " + Language.GetText("Mods.V2.ObjectNames." + Main.rand.Next(1, 36).ToString()).Value);
+		}
 
-        public override void ModifyTooltips(List<TooltipLine> tooltips)
-        {
-            Player player = Main.LocalPlayer;
-            tooltips.AddVorariaDynamicItemTooltip(
-                "Voraria.Accessories.Thingymajigs.Forest",
-                new
-                {
-                    Buff = Math.Round(StatBuff * 100),
-                    Perm = Math.Round(PermBuff * 100),
-                }
-            );
-        }
+		public override void ModifyTooltips(List<TooltipLine> tooltips)
+		{
+			Player player = Main.LocalPlayer;
+			tooltips.AddVorariaDynamicItemTooltip(
+				"Voraria.Accessories.Thingymajigs.Forest",
+				new
+				{
+					Buff = Math.Round(StatBuff * 100),
+					Perm = Math.Round(PermBuff * 100),
+				}
+			);
+		}
 
-        public override void AddRecipes()
-        {
-            CreateRecipe()
-                .AddIngredient<BlankThingy>()
-                .AddIngredient(ItemID.FlowerPacketWild, 10)
-                .AddIngredient(ItemID.Sunflower, 3)
-                .AddIngredient(ItemID.Wood, 25)
-                .Register();
-        }
-    }
+		public override void AddRecipes()
+		{
+			CreateRecipe()
+				.AddIngredient<BlankThingy>()
+				.AddIngredient(ItemID.FlowerPacketWild, 10)
+				.AddIngredient(ItemID.Sunflower, 3)
+				.AddIngredient(ItemID.Wood, 25)
+				.Register();
+		}
+	}
 }

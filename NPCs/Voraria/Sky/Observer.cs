@@ -20,7 +20,7 @@ namespace V2.NPCs.Voraria.Sky
 		{
 			Main.npcFrameCount[NPC.type] = 3;
 			NPCID.Sets.NeedsExpertScaling[NPC.type] = true;
-            NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers()
+			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers()
 			{
 				CustomTexturePath = "V2/NPCs/Voraria/Sky/ObserverRed",
 				Position = new Vector2(0, 8),
@@ -85,9 +85,9 @@ namespace V2.NPCs.Voraria.Sky
 			NPC.TargetClosest(false);
 			if (NPC.collideX)
 				NPC.velocity.X *= -1;
-            if (NPC.collideY)
-                NPC.velocity.Y *= -1;
-            if (NPC.HasValidTarget)
+			if (NPC.collideY)
+				NPC.velocity.Y *= -1;
+			if (NPC.HasValidTarget)
 			{
 				Player? target = Main.player[NPC.target];
 				if (target != null)
@@ -197,8 +197,8 @@ namespace V2.NPCs.Voraria.Sky
 		public override void SetStaticDefaults()
 		{
 			Main.npcFrameCount[NPC.type] = 3;
-            NPCID.Sets.NeedsExpertScaling[NPC.type] = true;
-            NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers()
+			NPCID.Sets.NeedsExpertScaling[NPC.type] = true;
+			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers()
 			{
 				CustomTexturePath = "V2/NPCs/Voraria/Sky/ObserverGreen",
 				Position = new Vector2(0, 8),
@@ -218,8 +218,8 @@ namespace V2.NPCs.Voraria.Sky
 			NPC.DeathSound = SoundID.NPCDeath63;
 			NPC.value = 2500f;
 			NPC.noGravity = true;
-            NPC.knockBackResist = 0.2f;
-            NPC.AsFood().DefinedBaseSize = 10.0;
+			NPC.knockBackResist = 0.2f;
+			NPC.AsFood().DefinedBaseSize = 10.0;
 			NPC.AsFood().WellFedPower = -0.1;
 			NPC.AsFood().OnDigestedBy += ObserverRed.OnDigestedBy_GrantObserverGoal;
 		}
@@ -261,11 +261,11 @@ namespace V2.NPCs.Voraria.Sky
 		public override void AI()
 		{
 			NPC.TargetClosest(false);
-            if (NPC.collideX)
-                NPC.velocity.X *= -1;
-            if (NPC.collideY)
-                NPC.velocity.Y *= -1;
-            if (NPC.HasValidTarget)
+			if (NPC.collideX)
+				NPC.velocity.X *= -1;
+			if (NPC.collideY)
+				NPC.velocity.Y *= -1;
+			if (NPC.HasValidTarget)
 			{
 				Player? target = Main.player[NPC.target];
 				if (target != null)
@@ -370,8 +370,8 @@ namespace V2.NPCs.Voraria.Sky
 		public override void SetStaticDefaults()
 		{
 			Main.npcFrameCount[NPC.type] = 3;
-            NPCID.Sets.NeedsExpertScaling[NPC.type] = true;
-            NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers()
+			NPCID.Sets.NeedsExpertScaling[NPC.type] = true;
+			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers()
 			{
 				CustomTexturePath = "V2/NPCs/Voraria/Sky/ObserverPurple",
 				Position = new Vector2(0, 8),
@@ -391,8 +391,8 @@ namespace V2.NPCs.Voraria.Sky
 			NPC.DeathSound = SoundID.NPCDeath63;
 			NPC.value = 2500f;
 			NPC.noGravity = true;
-            NPC.knockBackResist = 0.4f;
-            NPC.AsFood().DefinedBaseSize = 10.0;
+			NPC.knockBackResist = 0.4f;
+			NPC.AsFood().DefinedBaseSize = 10.0;
 			NPC.AsFood().WellFedPower = -0.1;
 			NPC.AsFood().OnDigestedBy += ObserverRed.OnDigestedBy_GrantObserverGoal;
 		}
@@ -434,11 +434,11 @@ namespace V2.NPCs.Voraria.Sky
 		public override void AI()
 		{
 			NPC.TargetClosest(false);
-            if (NPC.collideX)
-                NPC.velocity.X *= -1;
-            if (NPC.collideY)
-                NPC.velocity.Y *= -1;
-            if (NPC.HasValidTarget)
+			if (NPC.collideX)
+				NPC.velocity.X *= -1;
+			if (NPC.collideY)
+				NPC.velocity.Y *= -1;
+			if (NPC.HasValidTarget)
 			{
 				Player? target = Main.player[NPC.target];
 				if (target != null)

@@ -31,8 +31,8 @@ namespace V2.NPCs
 			return NetworkText.FromKey(
 				finalDeathReasonKey,
 				victim.name,
-                npc.GivenOrTypeName
-            );
+				npc.GivenOrTypeName
+			);
 		}
 		public static void DamageTiles(NPC npc, Rectangle Hitbox, int power = 0)
 		{

@@ -223,9 +223,9 @@ namespace V2.NPCs.Sets
 				flag = true;
 
 			if (npc.type == ModContent.NPCType<GumdropSlime>())
-                flag = true;
+				flag = true;
 
-            if (npc.type == NPCID.RainbowSlime)
+			if (npc.type == NPCID.RainbowSlime)
 			{
 				flag = true;
 				npc.ai[0] += 2f;

@@ -19,23 +19,23 @@ namespace V2.StatusEffects.Voraria.Buffs
 		public float CritBoost = 1.25f;
 		public float BaseEndu = -0.15f;
 
-        public override LocalizedText DisplayName => Language.GetText("Mods.V2.StatusEffects.Voraria.Buffs.BaelzTransformation.Name");
+		public override LocalizedText DisplayName => Language.GetText("Mods.V2.StatusEffects.Voraria.Buffs.BaelzTransformation.Name");
 		public override LocalizedText Description => Language.GetText("Mods.V2.StatusEffects.Voraria.Buffs.BaelzTransformation.Description");
-        public override bool RightClick(int buffIndex) => false;
+		public override bool RightClick(int buffIndex) => false;
 
-        public override void SetStaticDefaults()
-        {
-            Main.buffNoTimeDisplay[Type] = true;
-        }
+		public override void SetStaticDefaults()
+		{
+			Main.buffNoTimeDisplay[Type] = true;
+		}
 
 		public override void ModifyBuffText(ref string buffName, ref string tip, ref int rare)
-        {
-            float weightMul = GetWeightMul(Main.LocalPlayer);
-            int crit = (int)Math.Round(BaseCrit + (CritBoost * weightMul));
+		{
+			float weightMul = GetWeightMul(Main.LocalPlayer);
+			int crit = (int)Math.Round(BaseCrit + (CritBoost * weightMul));
 
 			PlayerGaining.GetPlayerWeightGainStats(Main.LocalPlayer, out float dmgMult, out float atkspdMult, out int maxlife);
 
-            int chosenName = BaelzInfo.GetVisualWeightStage(Main.LocalPlayer);
+			int chosenName = BaelzInfo.GetVisualWeightStage(Main.LocalPlayer);
 
 			rare = ItemRarityID.Red;
 
@@ -57,28 +57,28 @@ namespace V2.StatusEffects.Voraria.Buffs
 			string statTip = Language.GetTextValueWith(
 				"Mods.V2.StatusEffects.Voraria.Buffs.BaelzTransformation.Description.StatChanges",
 				new
-                {
-                    Damage = V2Utils.GetStatChangeString((int)(BaseDmg * 100)),
-                    DamageReduction = V2Utils.GetStatChangeString((int)(BaseEndu * 100)),
-                    Critical = V2Utils.GetStatChangeString(crit),
-                    AttackSpeed = V2Utils.GetStatChangeString((int)(BaseSpd * 100)),
-                    RunSpeed = V2Utils.GetStatChangeString((int)(SpeedBoost * 100))
+				{
+					Damage = V2Utils.GetStatChangeString((int)(BaseDmg * 100)),
+					DamageReduction = V2Utils.GetStatChangeString((int)(BaseEndu * 100)),
+					Critical = V2Utils.GetStatChangeString(crit),
+					AttackSpeed = V2Utils.GetStatChangeString((int)(BaseSpd * 100)),
+					RunSpeed = V2Utils.GetStatChangeString((int)(SpeedBoost * 100))
 
-                }
+				}
 			);
 			string weightTip = Language.GetTextValueWith(
-                "Mods.V2.StatusEffects.Voraria.Buffs.GeneralWeightGainStatChanges",
-                new
-                {
-                    Damage = V2Utils.GetStatChangeString(dmgMult.CastToDecimalPlaces(2), IsMultiplier: true),
-                    AttackSpeed = V2Utils.GetStatChangeString(atkspdMult.CastToDecimalPlaces(2), IsMultiplier: true),
-                    MaxHealth = V2Utils.GetStatChangeString(maxlife, true),
-                }
-            );
-            tip = baseTooltip + "\n" + statTip;
+				"Mods.V2.StatusEffects.Voraria.Buffs.GeneralWeightGainStatChanges",
+				new
+				{
+					Damage = V2Utils.GetStatChangeString(dmgMult.CastToDecimalPlaces(2), IsMultiplier: true),
+					AttackSpeed = V2Utils.GetStatChangeString(atkspdMult.CastToDecimalPlaces(2), IsMultiplier: true),
+					MaxHealth = V2Utils.GetStatChangeString(maxlife, true),
+				}
+			);
+			tip = baseTooltip + "\n" + statTip;
 			if (weightMul > 0.1)
 				tip += "\n" + weightTip;
-        }
+		}
 
 		public float GetWeightMul(Player player)
 		{
@@ -87,8 +87,8 @@ namespace V2.StatusEffects.Voraria.Buffs
 
 		public static int GetCritChanceForDigestionTicks(Player player)
 		{
-            return 10 + (int)Math.Round(player.AsPred().BaeTransformation_ExtraWeight * 4);
-        }
+			return 10 + (int)Math.Round(player.AsPred().BaeTransformation_ExtraWeight * 4);
+		}
 
 		public override void Update(Player player, ref int buffIndex)
 		{
@@ -97,11 +97,11 @@ namespace V2.StatusEffects.Voraria.Buffs
 			player.AsPred().BaseWeightGainRatio = BaelzInfo.WeightGainRatio;
 			player.moveSpeed += SpeedBoost;
 			player.endurance += BaseEndu;
-            player.GetAttackSpeed(DamageClass.Generic) += BaseSpd;
-            player.GetDamage(DamageClass.Generic) += BaseDmg;
+			player.GetAttackSpeed(DamageClass.Generic) += BaseSpd;
+			player.GetDamage(DamageClass.Generic) += BaseDmg;
 
 
-            float weightMul = GetWeightMul(player);
+			float weightMul = GetWeightMul(player);
 
 			int crit = (int)Math.Round(BaseCrit + (CritBoost * weightMul));
 

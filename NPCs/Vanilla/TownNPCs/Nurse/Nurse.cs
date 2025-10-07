@@ -546,10 +546,10 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 			return nurseChatPool;
 		}
 
-        public override void AI(NPC npc)
-        {
-            ModdedTownNPCAI.AI_007_TownEntities(npc);
-        }
+		public override void AI(NPC npc)
+		{
+			ModdedTownNPCAI.AI_007_TownEntities(npc);
+		}
 
 		public override void PostAI(NPC npc)
 		{

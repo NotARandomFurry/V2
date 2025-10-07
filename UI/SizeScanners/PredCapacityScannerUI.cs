@@ -17,138 +17,138 @@ using V2.PlayerHandling;
 
 namespace V2.UI.SizeScanners
 {
-    public class PredCapacityScannerUI : UIState
-    {
-        public static bool Visible { get; set; }
+	public class PredCapacityScannerUI : UIState
+	{
+		public static bool Visible { get; set; }
 
-        public override void Update(GameTime gameTime)
-        {
-            Visible = false;
-            Player player = Main.LocalPlayer;
-            if (player.AsFood().PredScanner)
-                Visible = true;
-        }
+		public override void Update(GameTime gameTime)
+		{
+			Visible = false;
+			Player player = Main.LocalPlayer;
+			if (player.AsFood().PredScanner)
+				Visible = true;
+		}
 
-        public override void Draw(SpriteBatch spriteBatch)
-        {
-            if (!Visible)
-                return;
+		public override void Draw(SpriteBatch spriteBatch)
+		{
+			if (!Visible)
+				return;
 
-            double maxEntityDistanceForDrawing = V2Utils.TileCountAsPixelCount(100.0);
-            Player player = Main.LocalPlayer;
-            double playerSize = PreyData.GetPreySize(player);
-            PreyData playerAsFood = PreyData.NewData(player);
-            for (int i = 0; i < Main.maxNPCs; i++)
-            {
-                NPC futurePred = Main.npc[i];
-                if (!futurePred.active || futurePred.CurrentCaptor() is not null)
-                    continue;
+			double maxEntityDistanceForDrawing = V2Utils.TileCountAsPixelCount(100.0);
+			Player player = Main.LocalPlayer;
+			double playerSize = PreyData.GetPreySize(player);
+			PreyData playerAsFood = PreyData.NewData(player);
+			for (int i = 0; i < Main.maxNPCs; i++)
+			{
+				NPC futurePred = Main.npc[i];
+				if (!futurePred.active || futurePred.CurrentCaptor() is not null)
+					continue;
 
-                if (futurePred.Distance(player.TrueCenter()) >= maxEntityDistanceForDrawing)
-                    continue;
+				if (futurePred.Distance(player.TrueCenter()) >= maxEntityDistanceForDrawing)
+					continue;
 
-                double futurePredGutCapacity = futurePred.AsPred().MaxStomachCapacity;
-                double futurePredGutFullness = PredNPC.GetCurrentBellyWeight(futurePred);
+				double futurePredGutCapacity = futurePred.AsPred().MaxStomachCapacity;
+				double futurePredGutFullness = PredNPC.GetCurrentBellyWeight(futurePred);
 
-                string size = "[c/";
+				string size = "[c/";
 
-                if (futurePred.AsPred().GetDigestionTickDamage is null || futurePred.AsPred().GetDigestionTickRate is null)
-                    size = "[c/FF0000:N/A]";
-                else if (futurePred.AsPred().MaxStomachCapacity >= 9999999.0)
-                    size = "[c/00FFFF:∞]";
-                else
-                {
-                    if (player.AsFood().PerfectMeal)
-                        size += "00FFFF";
-                    else if (futurePredGutCapacity < playerSize)
-                        size += "FF0000";
-                    else
-                    {
-                        double futurePredGutFreeRoom = futurePredGutCapacity - futurePredGutFullness;
-                        double futurePredGutTickDamage = Math.Max(futurePred.AsPred().GetDigestionTickDamage.Invoke(futurePred, playerAsFood) - player.statDefense, 0);
-                        double futurePredGutDPS = futurePredGutTickDamage * futurePred.AsPred().GetDigestionTickRate.Invoke(futurePred, playerAsFood);
-                        if (futurePredGutFreeRoom < playerSize)
-                            size += "FFFF00";
-                        else if (futurePredGutTickDamage <= 0)
-                            size += "FFFF00";
-                        else if (player.statLife > futurePredGutDPS * 60.0)
-                            size += "FFFF00";
-                        else
-                            size += "00FF00";
-                    }
+				if (futurePred.AsPred().GetDigestionTickDamage is null || futurePred.AsPred().GetDigestionTickRate is null)
+					size = "[c/FF0000:N/A]";
+				else if (futurePred.AsPred().MaxStomachCapacity >= 9999999.0)
+					size = "[c/00FFFF:∞]";
+				else
+				{
+					if (player.AsFood().PerfectMeal)
+						size += "00FFFF";
+					else if (futurePredGutCapacity < playerSize)
+						size += "FF0000";
+					else
+					{
+						double futurePredGutFreeRoom = futurePredGutCapacity - futurePredGutFullness;
+						double futurePredGutTickDamage = Math.Max(futurePred.AsPred().GetDigestionTickDamage.Invoke(futurePred, playerAsFood) - player.statDefense, 0);
+						double futurePredGutDPS = futurePredGutTickDamage * futurePred.AsPred().GetDigestionTickRate.Invoke(futurePred, playerAsFood);
+						if (futurePredGutFreeRoom < playerSize)
+							size += "FFFF00";
+						else if (futurePredGutTickDamage <= 0)
+							size += "FFFF00";
+						else if (player.statLife > futurePredGutDPS * 60.0)
+							size += "FFFF00";
+						else
+							size += "00FF00";
+					}
 
-                    size += ":" + futurePredGutCapacity + "]";
-                }
+					size += ":" + futurePredGutCapacity + "]";
+				}
 
-                spriteBatch.End();
-                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
-                ChatManager.DrawColorCodedStringWithShadow(
-                    spriteBatch,
-                    FontAssets.MouseText.Value,
-                    size,
-                    (futurePred.Center + new Vector2(
-                        0,
-                        -((futurePred.height / 2) + 16)
-                    ) - Main.screenPosition),
-                    Color.White,
-                    0f,
-                    ChatManager.GetStringSize(FontAssets.MouseText.Value, size, Vector2.One) * 0.5f,
-                    new Vector2(1.25f, 1.25f) / Main.GameZoomTarget
-                );
-                spriteBatch.End();
-                spriteBatch.Begin();
-            }
+				spriteBatch.End();
+				spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
+				ChatManager.DrawColorCodedStringWithShadow(
+					spriteBatch,
+					FontAssets.MouseText.Value,
+					size,
+					(futurePred.Center + new Vector2(
+						0,
+						-((futurePred.height / 2) + 16)
+					) - Main.screenPosition),
+					Color.White,
+					0f,
+					ChatManager.GetStringSize(FontAssets.MouseText.Value, size, Vector2.One) * 0.5f,
+					new Vector2(1.25f, 1.25f) / Main.GameZoomTarget
+				);
+				spriteBatch.End();
+				spriteBatch.Begin();
+			}
 
-            for (int i = 0; i < Main.maxPlayers; i++)
-            {
-                Player futurePred = Main.player[i];
-                if (!futurePred.active || futurePred.dead || futurePred.whoAmI == Main.myPlayer || futurePred.CurrentCaptor() is not null)
-                    continue;
+			for (int i = 0; i < Main.maxPlayers; i++)
+			{
+				Player futurePred = Main.player[i];
+				if (!futurePred.active || futurePred.dead || futurePred.whoAmI == Main.myPlayer || futurePred.CurrentCaptor() is not null)
+					continue;
 
-                if (futurePred.Distance(player.TrueCenter()) >= maxEntityDistanceForDrawing)
-                    continue;
+				if (futurePred.Distance(player.TrueCenter()) >= maxEntityDistanceForDrawing)
+					continue;
 
-                double futurePredGutCapacity = futurePred.AsPred().StomachCapacity;
-                double futurePredGutFullness = futurePred.AsPred().StomachFullness;
+				double futurePredGutCapacity = futurePred.AsPred().StomachCapacity;
+				double futurePredGutFullness = futurePred.AsPred().StomachFullness;
 
-                string size = "[c/";
-                if (futurePredGutCapacity < playerSize)
-                    size += "FF00";
-                else
-                {
-                    double futurePredGutFreeRoom = futurePredGutCapacity - futurePredGutFullness;
-                    double futurePredGutTickDamage = Math.Max(futurePred.AsPred().DigestionTickDamage - player.statDefense, 0);
-                    double futurePredGutDPS = futurePredGutTickDamage * futurePred.AsPred().DigestionTickRate;
-                    if (futurePredGutFreeRoom < playerSize)
-                        size += "FFFF";
-                    else if (futurePredGutTickDamage <= 0)
-                        size += "FFFF";
-                    else if (player.statLife > futurePredGutDPS * 60.0)
-                        size += "FFFF";
-                    else
-                        size += "00FF";
-                }
+				string size = "[c/";
+				if (futurePredGutCapacity < playerSize)
+					size += "FF00";
+				else
+				{
+					double futurePredGutFreeRoom = futurePredGutCapacity - futurePredGutFullness;
+					double futurePredGutTickDamage = Math.Max(futurePred.AsPred().DigestionTickDamage - player.statDefense, 0);
+					double futurePredGutDPS = futurePredGutTickDamage * futurePred.AsPred().DigestionTickRate;
+					if (futurePredGutFreeRoom < playerSize)
+						size += "FFFF";
+					else if (futurePredGutTickDamage <= 0)
+						size += "FFFF";
+					else if (player.statLife > futurePredGutDPS * 60.0)
+						size += "FFFF";
+					else
+						size += "00FF";
+				}
 
-                size += "00:" + futurePredGutCapacity + "]";
+				size += "00:" + futurePredGutCapacity + "]";
 
-                spriteBatch.End();
-                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
-                ChatManager.DrawColorCodedStringWithShadow(
-                    spriteBatch,
-                    FontAssets.MouseText.Value,
-                    size,
-                    (futurePred.Center + new Vector2(
-                        0,
-                        -((futurePred.height / 2) + 16)
-                    ) - Main.screenPosition),
-                    Color.White,
-                    0f,
-                    ChatManager.GetStringSize(FontAssets.MouseText.Value, size, Vector2.One) * 0.5f,
-                    new Vector2(1.25f, 1.25f) / Main.GameZoomTarget
-                );
-                spriteBatch.End();
-                spriteBatch.Begin();
-            }
-        }
-    }
+				spriteBatch.End();
+				spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
+				ChatManager.DrawColorCodedStringWithShadow(
+					spriteBatch,
+					FontAssets.MouseText.Value,
+					size,
+					(futurePred.Center + new Vector2(
+						0,
+						-((futurePred.height / 2) + 16)
+					) - Main.screenPosition),
+					Color.White,
+					0f,
+					ChatManager.GetStringSize(FontAssets.MouseText.Value, size, Vector2.One) * 0.5f,
+					new Vector2(1.25f, 1.25f) / Main.GameZoomTarget
+				);
+				spriteBatch.End();
+				spriteBatch.Begin();
+			}
+		}
+	}
 }

@@ -534,35 +534,35 @@ namespace V2
 			return;
 			Fail:
 			InformOfIncorrectPacketRecipe();
-        }
-        /*public void HandlePacket_SyncTilePredActivity(BinaryReader reader, int whoAmI)
-        {
-            if (Main.netMode != NetmodeID.MultiplayerClient)
-                goto Fail;
+		}
+		/*public void HandlePacket_SyncTilePredActivity(BinaryReader reader, int whoAmI)
+		{
+			if (Main.netMode != NetmodeID.MultiplayerClient)
+				goto Fail;
 
-            Entity pred = reader.ReadByte() switch
-            {
-                0 => Main.tile,
-                1 => Main.npc[reader.ReadInt32()],
-                2 => Main.projectile[reader.ReadInt32()],
-                _ => null,
-            };
-            if (pred is null)
-                goto Fail;
+			Entity pred = reader.ReadByte() switch
+			{
+				0 => Main.tile,
+				1 => Main.npc[reader.ReadInt32()],
+				2 => Main.projectile[reader.ReadInt32()],
+				_ => null,
+			};
+			if (pred is null)
+				goto Fail;
 
-            int preyIndex = reader.ReadInt32();
+			int preyIndex = reader.ReadInt32();
 
-            int originalClientWhoAmI = reader.ReadInt32();
-            if (pred is Player predPlayer)
-                PredPlayer.Regurgitate(predPlayer, preyIndex, 3, originalClientWhoAmI);
-            else if (pred is NPC predNPC)
-                PredNPC.Regurgitate(predNPC, preyIndex, 3, originalClientWhoAmI);
-            else if (pred is Projectile predProjectile)
-                PredProjectile.Regurgitate(predProjectile, preyIndex, 3, originalClientWhoAmI);
+			int originalClientWhoAmI = reader.ReadInt32();
+			if (pred is Player predPlayer)
+				PredPlayer.Regurgitate(predPlayer, preyIndex, 3, originalClientWhoAmI);
+			else if (pred is NPC predNPC)
+				PredNPC.Regurgitate(predNPC, preyIndex, 3, originalClientWhoAmI);
+			else if (pred is Projectile predProjectile)
+				PredProjectile.Regurgitate(predProjectile, preyIndex, 3, originalClientWhoAmI);
 
-            return;
-        Fail:
-            InformOfIncorrectPacketRecipe();
-        }*/
-    }
+			return;
+		Fail:
+			InformOfIncorrectPacketRecipe();
+		}*/
+	}
 }

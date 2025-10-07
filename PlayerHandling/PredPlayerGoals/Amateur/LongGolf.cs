@@ -16,9 +16,9 @@ namespace V2.PlayerHandling.PredPlayerGoals.Amateur
 		public override string InternalName => "LongGolf";
 		public override string DisplayName(Player pred) => "Mods.V2.PredPlayerGoals.Amateur.LongGolf.Name";
 		public override string Description(Player pred) => "Mods.V2.PredPlayerGoals.Amateur.LongGolf.Description";
-        public override bool Available(Player pred) => NPC.AnyNPCs(NPCID.Golfer) || Complete(pred);
+		public override bool Available(Player pred) => NPC.AnyNPCs(NPCID.Golfer) || Complete(pred);
 
-        public override int StatPointsFromCompletion => 5;
+		public override int StatPointsFromCompletion => 5;
 
 		public override ProgressionStage Stage => ModContent.GetInstance<AmateurStage>();
 	}

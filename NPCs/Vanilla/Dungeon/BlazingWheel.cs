@@ -35,10 +35,10 @@ namespace V2.NPCs.Vanilla.Dungeon
 			npc.AsFood().DefinedBaseSize = 0.6;
 
 			npc.AsFood().OnSwallowDamage = npc.damage;
-            npc.AsFood().OnSwallowDeathReason = "Mods.V2.Death.SwallowDamage.BlazingWheel";
+			npc.AsFood().OnSwallowDeathReason = "Mods.V2.Death.SwallowDamage.BlazingWheel";
 
 
-            npc.AsFood().OnDigestedBy += OnKilledByDigestion_GrantBlazingWheelGoal;
+			npc.AsFood().OnDigestedBy += OnKilledByDigestion_GrantBlazingWheelGoal;
 		}
 
 		public static void OnKilledByDigestion_GrantBlazingWheelGoal(NPC npc, Entity pred)

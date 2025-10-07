@@ -41,7 +41,7 @@ namespace V2.UI.MintWispSummonMeter
 			Stored = player.AsV2Player().MintWispSummonMeter;
 			CapacityMax = player.AsV2Player().MintWispSummonMeterMax;
 			numCapacitySegments = (int)player.AsV2Player().MintWispSummonMeterMax;
-        }
+		}
 	}
 
 	public class MintWispSummonMeterUI : UIState
@@ -74,18 +74,18 @@ namespace V2.UI.MintWispSummonMeter
 			PrepareFields(Main.LocalPlayer);
 
 			Vector2 topLeftCorner = Main.LocalPlayer.Center - Main.screenPosition;
-            topLeftCorner.X -= (20 + _wispSegmentsCount * (_wispCapacityPanelMiddle.Value.Width / 2)) * Main.UIScale;
-            topLeftCorner.Y += 62 * Main.UIScale * Main.GameZoomTarget;
+			topLeftCorner.X -= (20 + _wispSegmentsCount * (_wispCapacityPanelMiddle.Value.Width / 2)) * Main.UIScale;
+			topLeftCorner.Y += 62 * Main.UIScale * Main.GameZoomTarget;
 
 			topLeftCorner /= Main.UIScale;
 
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.UIScaleMatrix);
+			spriteBatch.End();
+			spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.UIScaleMatrix);
 
-            for (int i = 0; i < _wispSegmentsCount; i++)
+			for (int i = 0; i < _wispSegmentsCount; i++)
 			{
 				spriteBatch.Draw(
-                    _wispCapacityPanelMiddle.Value,
+					_wispCapacityPanelMiddle.Value,
 					topLeftCorner + new Vector2(28 + (i * _wispCapacityPanelMiddle.Value.Width), 0),
 					_wispCapacityPanelMiddle.Value.Bounds,
 					Color.White,
@@ -153,7 +153,7 @@ namespace V2.UI.MintWispSummonMeter
 				(int)topLeftCorner.X - 8,
 				(int)topLeftCorner.Y + 4,
 				20 + (_wispSegmentsCount * (_wispCapacityPanelMiddle.Value.Width + 1)) + _wispCapacityPanelRight.Value.Width + 8,
-                _wispCapacityPanelMiddle.Value.Height
+				_wispCapacityPanelMiddle.Value.Height
 			);
 			_wispCapacityHovered = hoverRect.Contains(Main.MouseScreen.ToPoint());
 			if (_wispCapacityHovered && !Main.mouseText && !Main.LocalPlayer.AsPred().InPredStatsMenu)
@@ -165,21 +165,21 @@ namespace V2.UI.MintWispSummonMeter
 					  + localPlayer.AsV2Player().MintWispSummonMeter.CastToDecimalPlaces(2)
 					  + "/"
 					  + localPlayer.AsV2Player().MintWispSummonMeterMax.CastToDecimalPlaces(2);
-                Main.instance.MouseTextHackZoom(normalText);
-                Main.mouseText = true;
+				Main.instance.MouseTextHackZoom(normalText);
+				Main.mouseText = true;
 			}
 
-            spriteBatch.End();
-            spriteBatch.Begin();
-        }
+			spriteBatch.End();
+			spriteBatch.Begin();
+		}
 
 		private void PrepareFields(Player player)
 		{
-            MintSummonMeterSnapshot WispMeterSnapshot = new MintSummonMeterSnapshot(player);
+			MintSummonMeterSnapshot WispMeterSnapshot = new MintSummonMeterSnapshot(player);
 
-            _wispSegmentsCount = WispMeterSnapshot.AmountOfCapacitySegments;
+			_wispSegmentsCount = WispMeterSnapshot.AmountOfCapacitySegments;
 			_wispFilledSegmentsCount = (int)Math.Floor(player.AsV2Player().MintWispSummonMeter);
-            _capacityPercent = (float)(player.AsV2Player().MintWispSummonMeter / player.AsV2Player().MintWispSummonMeterMax);
-        }
+			_capacityPercent = (float)(player.AsV2Player().MintWispSummonMeter / player.AsV2Player().MintWispSummonMeterMax);
+		}
 	}
 }

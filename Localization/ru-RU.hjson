@@ -321,6 +321,11 @@ Mods: {
 				Тусовщица не переедет к вам, пока в вашем маленьком уголке мира не будет полно других горожан.
 				В конце концов, что за вечеринка без множества совершенно готовых гостей, которых можно... пригласить на нее?
 				'''
+			/* GutSlutAngelHint:
+				'''
+				After you've cleared out one of the (many) delicious major threats of the world, you might find someone roaming the Tundra's snowy fields.
+				She's not the most bug-free, but helping her out as opposed to just gobbling her up on the spot might net you a much tastier (and more helpful) meal!
+				''' */
 			PredStats:
 				'''
 				У вас есть четыре стата: сила глотания (GLP), сила кислоты (ACI), сила желудка (TUM) и сила поглощения (ABS).
@@ -1318,7 +1323,7 @@ Mods: {
 				}
 
 				BecomeSomeoneElse: {
-					// Name: Become... Someone Else
+					// Name: Become...Someone Else
 
 					Description: {
 						/* Default:
@@ -1326,7 +1331,7 @@ Mods: {
 							Transform yourself via a transformation item.
 							'What is this, a crossover episode?'
 							''' */
-						// Clarification: Obtain and transform via a transformation item, mainly obtained through crafting with the Shimmer Distillation Cauldron.
+						// Clarification: Obtain and transform via a transformation item, mainly obtained through crafting with the Shimmer Concentration Cauldron.
 					}
 				}
 
@@ -1361,7 +1366,7 @@ Mods: {
 						/* Clarification:
 							'''
 							Reach a weight of 2, ignoring your stomach's contents.
-							[c/{$Mods.V2.CommonColorCodes.JumpsuCommentary}:do note that you can only gain weight with a transformation active]
+							[c/{$Mods.V2.CommonColorCodes.JumpsuCommentary}:do note that you can (still) only gain weight with a transformation active]
 							''' */
 					}
 				}
@@ -1370,7 +1375,7 @@ Mods: {
 					// Name: Strangely Delicious
 
 					Description: {
-						// Default: You aren't sure what a 'Fungal Gift' ACTUALLY is, but it tastes good?
+						// Default: You aren't sure what a 'Fungal Gift' ACTUALLY is, but it tastes...really good, actually? Well, down the hatch with it!
 						// Clarification: Eat and digest a Fungal Gift.
 					}
 				}
@@ -1382,7 +1387,7 @@ Mods: {
 						/* Default:
 							'''
 							Have your gut successfully melt a piece of the dungeon.
-							'...Wait, what do you mean you don't actually eat the dungeons in that game?'
+							'...wait, what do you mean you don't actually eat the dungeons in that game?'
 							''' */
 						// Clarification: Eat and digest a Pink, Green or Blue Brick.
 					}
@@ -1607,7 +1612,7 @@ Mods: {
 
 					Description: {
 						// Default: Go through the whole process of making rainbow dye, just to eat it? Okay, whatever.
-						// Clarification: Swallow and digest rainbow dye.
+						// Clarification: Swallow and digest Rainbow Dye, which can be made at a Dye Vat using a menagerie of other dyes.
 					}
 				}
 			}
@@ -1723,7 +1728,7 @@ Mods: {
 						/* Clarification:
 							'''
 							Reach a weight of... 40!? WHAT.
-							[c/{$Mods.V2.CommonColorCodes.JumpsuCommentary}:stomach weight is still excluded]
+							[c/{$Mods.V2.CommonColorCodes.JumpsuCommentary}:stomach weight is STILL excluded]
 							''' */
 					}
 				}
@@ -1773,7 +1778,7 @@ Mods: {
 					// Name: Temple Mulcher
 
 					Description: {
-						// Default: Manage to digest a piece of the so called 'impenetrable' temple.
+						// Default: Manage to digest a piece of the so-called 'impenetrable' temple.
 						// Clarification: Eat and digest a Lihzahrd Brick.
 					}
 				}
@@ -1784,10 +1789,10 @@ Mods: {
 					Description: {
 						/* Default:
 							'''
-							Consume a Mothron egg.
+							Consume a Mothron's egg.
 							[c/{$Mods.V2.CommonColorCodes.JumpsuCommentary}:what would an omelette made with a mothron egg taste like]
 							''' */
-						// Clarification: Eat and digest a Mothron Egg, spawned from Mothron during a Solar Eclipse.
+						// Clarification: Eat and digest a Mothron Egg, spawned from a Mothron during a Solar Eclipse.
 					}
 				}
 			}
@@ -1856,6 +1861,7 @@ Mods: {
 
 					Vanity.BalloonBelly: Воздушный шар в форме живота
 					AntiDigestionSash: Гарантированная створка
+					// HungryCursorEnabler: Mimicursor
 					PromethiaAntiDigestionSash: Створка с ангельскими узорами
 					NymphHairScarf: Шарф хитрой охотницы
 					// ShroomNecklace: Shroom Necklace
@@ -1950,7 +1956,7 @@ Mods: {
 					''' */
 				/* EdibleFromNormalUse:
 					'''
-					Using this item from the hotbar while holding the Eat Items keybind causes you to swallow it
+					Using this item from the hotbar while holding the Swallow Item keybind causes you to swallow it
 					If this is a stack of multiple items, this only swallows items one at a time unless otherwise stated
 					''' */
 				/* EatenByNormalUse:
@@ -3731,7 +3737,7 @@ Mods: {
 								Can be crafted into special accessories that can provide stat boosts
 								{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
 								''' */
-							// Long: This item does nothing on its own; instead it is used to craft a variety of stat boosting accessories, that can additionally be digested for a minor permanent boost.
+							// Long: This item does nothing on its own; instead, it is used to craft a variety of stat boosting accessories which can additionally be digested for small but permanent boosts.
 							/* Flavor:
 								'''
 								One of Clover's strange creations.
@@ -3759,7 +3765,8 @@ Mods: {
 							/* Flavor:
 								'''
 								You listen close...
-								...You hear a faint heartbeat.
+
+								...you hear a faint heartbeat, and...something else. The sound sickens you.
 								''' */
 						}
 
@@ -3783,7 +3790,8 @@ Mods: {
 							/* Flavor:
 								'''
 								You listen close...
-								...You hear something splat onto a surface.
+
+								...you hear something splat onto a surface, and the flickering of an unnatural fire.
 								''' */
 						}
 
@@ -3806,7 +3814,8 @@ Mods: {
 							/* Flavor:
 								'''
 								You listen close...
-								...You hear a loud 'Ow!', presumably due to someone getting pricked by a cactus.
+
+								...you hear a loud 'ow!', as if from someone getting pricked by a cactus.
 								''' */
 						}
 
@@ -3832,7 +3841,8 @@ Mods: {
 							/* Flavor:
 								'''
 								You listen close...
-								...You hear, what can only be described as a rave. What the shit? Do they like party all the time there and stop IMMEDIATELY when you get close? Bullshit.
+
+								...you hear what can only be described as a rave. What the shit? Do they, like. Party all the time there, and stop IMMEDIATELY when you get close? Bullshit.
 								''' */
 						}
 
@@ -3855,7 +3865,8 @@ Mods: {
 							/* Flavor:
 								'''
 								You listen close...
-								...You hear the wind grazing.
+
+								...you hear the wind grazing, and the chirping of birds yet to eat the early worms (and lamia).
 								''' */
 						}
 
@@ -3880,7 +3891,8 @@ Mods: {
 							/* Flavor:
 								'''
 								You listen close...
-								...You hear a double rainbow. You don't actually know what that'd sound like, or if rainbows even make sound at all.
+
+								...you hear a double rainbow. You don't actually know what that'd sound like, or if rainbows even make sound at all...though the faint rumbling and gurgling coming from somewhere within the double rainbow gives you an idea of how it became one.
 								''' */
 						}
 
@@ -3901,7 +3913,8 @@ Mods: {
 							/* Flavor:
 								'''
 								You listen close...
-								...You hear bees buzzing.
+
+								...you hear bees buzzing, and honey flowing through combs. At least one of the bees is also full of...something, though you can't make out what or who via sound alone.
 								''' */
 						}
 
@@ -3926,7 +3939,8 @@ Mods: {
 							/* Flavor:
 								'''
 								You listen close...
-								...You hear funky beats.
+
+								...you hear funky beats.
 								''' */
 						}
 
@@ -3954,7 +3968,8 @@ Mods: {
 							/* Flavor:
 								'''
 								You listen close...
-								...You hear the ocean's waves.
+
+								...you hear the ocean's waves, intermingling with thoroughly-muffled burbling and gurgling from the depths below them.
 								''' */
 						}
 
@@ -3975,7 +3990,10 @@ Mods: {
 							/* Flavor:
 								'''
 								You listen close...
-								...You hear "Terraria 1.4.4 OST - 'Aether'"
+
+								...you hear "Terraria 1.4.4 OST - 'Aether'".
+
+								...wait, how do you even know what that is? Like, from an in-universe perspective?
 								''' */
 						}
 
@@ -4000,7 +4018,8 @@ Mods: {
 							/* Flavor:
 								'''
 								You listen close...
-								...You hear tinnitus.
+
+								...you hear tinnitus. And the rumbling of clouds, but mainly tinnitus.
 								''' */
 						}
 
@@ -4023,7 +4042,8 @@ Mods: {
 							/* Flavor:
 								'''
 								You listen close...
-								...You hear someone slip and fall on their ass.
+
+								...you hear someone slip and fall on their ass. Evidently, said ass wasn't very big, judging from the impact sound.
 								''' */
 						}
 
@@ -4044,7 +4064,8 @@ Mods: {
 							/* Flavor:
 								'''
 								You listen close...
-								...You hear lava bubbling.
+
+								...you hear lava bubbling, and demonfolk laughing and belching as they share a conversation you can't make out. How much of the lava is bubbling away in their bellies rather than outside of them is uncertain.
 								''' */
 						}
 					}
@@ -4145,6 +4166,27 @@ Mods: {
 							A simple sash made out of leathers, feathers, and silk, often hastily put together and worn by less confident adventurers.
 							While it won't hold up to a continued gastric assault, it can help stave off the acids of a hungry tummy in a pinch.
 							''' */
+					}
+
+					HungryCursorEnabler: {
+						/* Short:
+							'''
+							...what does this...do?
+							{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+							''' */
+						/* Long:
+							'''
+							[c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Allows your cursor to eat certain entities] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:pressing Swallow Item while hovering over them with nothing in your hand].
+							[c/7F7F7F:>] [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:No swallow capacity limit (+ can swallow bosses)]
+							[c/7F7F7F:> Stomach capacity:] [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:{MiniCandyFairyStomachCapacity}]
+							[c/7F7F7F:>] [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:Cannot be escaped]
+							[c/7F7F7F:> Digestion tick damage:] [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:{CursorDigestDamage}]
+							[c/7F7F7F:> Digestion tick rate:] [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:{CursorDigestRate}/sec]
+							[c/7F7F7F:> Absorption rate:] [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:{CursorAbsorbRate}/min]
+							Your cursor [c/{$Mods.V2.CommonColorCodes.PositiveVoreEffect}:digests better] while you're sleeping.
+							[c/7F7F7F:> 1.25x digestion tick rate and absorption rate; also makes both scale with the speed of time.]
+							''' */
+						// Flavor: An incredibly strange item which rests ominously in your hand. It takes the shape of a digital screen's cursor, yet trying to use it directly bears no fruit. Even if we don't assume this strange artifact is probably itself a mimic (or at the very least wants to eat you), given it came from inside one, just what purpose could it serve that requires this particular shape...?
 					}
 
 					NymphHairScarf: {
@@ -5855,6 +5897,21 @@ Mods: {
 		}
 
 		Menu: {
+			ShimmerCraftingStation: {
+				Decrafting: {
+					// Title: Separation
+					/* Description:
+						'''
+						Place an item in the item slot shown below to see what you will receive from separating it into its constituent components.
+						If you're certain you'd like to separate the item, press the visage of a button to begin.
+						[c/{$Mods.V2.BasicColorCodes.Red:Only separate an item if you are content with what you will receive from doing so; the process cannot be undone.]
+						''' */
+				}
+
+				// Transmuting.Title: Transmutation
+				// CrossoverItemCrafting.Title: Parallel Projection
+			}
+
 			MiscVanilla: {
 				// HairWindowGutCut: Gut Cut ({Price})
 				// HairWindowGutCutFree: Gut Cut (Free)
@@ -5863,8 +5920,8 @@ Mods: {
 
 		TownNPCMood: {
 			Angel: {
-				// Content: I- I'm doing wonderfully, thank you! Of course, if you'd like me to, I wouldn't object to...e- examining your internals...j- just in case there's any dissonance in there!
-				// NoHome: As...e- exciting as it is to study and experience the various i- ins and outs of the creatures of this world, I wouldn't mind someplace to stay in my downtime between band practice and...w- well, my actual line of work.
+				// Content: I- I'm doing wonderfully, thank you! Of course, if you'd like me to, I wouldn't object to...e- examining your internals...j- just in case there's any tonal dissonance in there! You'd be surprised how easy it can well up in even the b- best predators.
+				// NoHome: As...e- exciting as it is to study and experience the various i- ins and outs of the creatures of this world...w- well, I wouldn't mind someplace to stay as a home-away-from-home in my downtime between band practice and...w- well, my actual line of work.
 				// FarFromHome: W- wow! I've certainly traveled farther than usual today...hrm. What predatory thing could I have been attempting to s- soothe or s- study this far out...?
 
 				Biomes: {
@@ -5887,17 +5944,16 @@ Mods: {
 					}
 
 					SpecificNPCs: {
-						// LoveSuccubus: Th- the demon lady? Lucinda!? I- I do NOT have...I d- don't...oh, who am I kidding? I- I could NEVER be anything less than s- SMITTEN for that b- beautiful body...and that s- strong, searing s- stomach...PERFECT! I o- only wish I had a professional reason t- to rest on her th- thighs for a while...
-						// LoveTavernkeep: "{NPCName}...the tavernk- keeper. Ooohhhhh...j- just LOOK at those arms. Those m- massive, manly muscles...unf, my t- temperature's rising just THINKING about him! I- I can only imagine how s- strong and s- sturdy his s- s- stomach must be...d- do you think he needs a medicinal g- gastronomist to snack on...?~"
+						// LoveSuccubus: Th- the demon lady? Lucinda!? I- I do NOT have...I d- don't...oh, who am I kidding? I- I could NEVER be anything less than s- SMITTEN for that b- beautiful body...and that s- strong, searing s- stomach...so STIMULATING! I o- only wish I had a professional reason t- to rest on her th- thighs for a while...
+						// LoveTavernkeep: "{NPCName}...the tavernk- keeper. Ooohhhhh...j- just LOOK at those arms. Those m- massive, manly muscles...unf, my t- temperature's rising just THINKING about him! I- I can only imagine how s- strong and s- sturdy his s- s- stomach must be...d- do you think he needs a medicinal g- gastronomer to snack on...?~"
 						// LikeNurse: "{NPCName} is such a wonderful woman, m- making sure everyone is happy, healthy, AND healthily hungry!...p- primarily because they can't really help me with my w- work if they're too sick to e- eat me."
 						// LikeDryad: Dryads are a very fascinating creature from external AND i- internal perspectives, so it should be no surprise that I find {NPCName} particularly fruitful to study!...a- and particularly...a- attractive. N- not NEARLY as attractive as Melodia, mind you, but still attractive!
 						// DislikeZoologist: B- by all accounts, I should like {NPCName} more than I do. Her s- system...changes dramatically in certain conditions, providing a rare opportunity to s- study and potentially soothe two states at once...and yet, it just bothers me. M- maybe it's just because other people's i- internals are the same experience each time...her s- stomach is inconsistent by comparison.
 						// DislikeArmsDealer: "{NPCName} bothers me slightly. I- it's not even that he doesn't want to eat me, o- or that I don't let him; he's m- MORE than enthusiastic enough, a- and I don't mind helping him! The problem is, he's...n- not my type, but he keeps insisting he is."
-						// HateAngler: "{NPCName}? Oh, that little fisherman's no fun. Too young to eat me, too young to get WHY I want to be eaten so much on any front --- hell, he doesn't even know who my employer IS --- and he poses no noticeably distinct qualities whatsoever except for how much of a little BRAT he is!"
+						// HateAngler: "{NPCName}? Oh, that little fisherman's no fun. Too young to eat me, too young to get WHY I want to be eaten so much on any front --- heavens, he doesn't even know who my employer IS --- and he poses no noticeably distinct qualities whatsoever except for how much of a little BRAT he is!"
 
 						Calamity: {
 							// LikeAmidias: Th- that seahorse king is great! He always gives me all sorts of information about the- ...the marine life that once populated his old home! He, himself, is also quite...i- interesting...compared to most I meet!
-							// LikeCirrus: It's q- quite fascinating to study Cirrus' internals! Sh- she always drinks so much to chase down her...m- meals, to the point one might think her liver is broken...b- but it's actually stronger than any normal person's! O- of course, she also has...q- quite the...a- appealing figure. There's always s- something to soothe in there, too...
 							// HateCalamitas: I once asked the witch to allow me to...s- study her internals for my job...a- and she threatened to burn me on the spot for asking! Seriously, what did HER boss m- make her put up with to make her such a k- killjoy!?
 						}
 					}
@@ -5906,7 +5962,7 @@ Mods: {
 
 			Succubus: {
 				// Content: Aside from you not fillin' out my gut right now, I think I'm fine.
-				// NoHome: My stomach's a good spot for a mortal morsel like you, but I need a real place to live if I'm gonna feed this gut of mine on the regular.
+				// NoHome: My stomach's a good spot for a good morsel like you, but I need a real place to live if I'm gonna feed this gut of mine on the regular.
 				// FarFromHome: Well, I've headed off a little far from home today, eh? Then again, it's all worth gettin' the right meal.
 
 				Biomes: {
@@ -5924,7 +5980,7 @@ Mods: {
 						// Alone: This area is pretty quiet, huh? Nobody to eat around here...but I guess the solitude ain't all that bad. Just be sure to gimme a sexy snack or seven every once in a while, alright?
 						// GoodCompany: This area's pretty quiet...but there's still a couple decent snacks around.
 						// BadCompany: This area's pretty quiet. Don't really like that, and I don't like the people you've got me with, either.
-						// GoodCrowd: I'm lovin' it here...plenty of healthy, mortal meals around to gulp down and get nice and fat off of. You're the best, y'know that?
+						// GoodCrowd: I'm lovin' it here...plenty of healthy, meaty meals around to gulp down and get nice and fat off of. You're the best, y'know that?
 						// NeutralCrowd: It's a bit crowded here. Some good eats, sure, but you could probably stand to...burn off the fat, if you catch my drift.
 						// BadCrowd: Seriously!? You REALLY had to cram me in with all the WORST of this lot!?
 					}
@@ -5940,7 +5996,6 @@ Mods: {
 						// HateTaxCollector: You've already done the impossible twice; once to get me outta that shithole I called home, and once to take down that massive fleshbag from the other edge. Do it a third time and get {NPCName} to either shut the hell up or move out; I'm already more than sick of him.
 
 						Calamity: {
-							// LoveCirrus: That royal bombshell, Cirrus? "Lethal alcohol contents" my ass! Just look at those thick, thundery thighs and titanic tankers she hauls around! She'll make some grade-A+ gut fat, y'hear me?
 							// DislikeCalamitas: There's bein' an apex predator, and then there's bein a stupid predator. Anyone tryin' to eat that grumpy old witch'll learn pretty fast that they're the latter...and I don't like that. Might scare off my food.
 							// HateAmidias: That old seahorse is just no fun at all. Won't let me have any, either. I honestly don't even feel like eating him. He's just...he's THAT kinda guy, y'know? Anyway, move him.
 						}
@@ -5959,7 +6014,7 @@ Mods: {
 				Neighbors: {
 					SpecificNPCs: {
 						// LoveCyborg: It's quite a good show, having {NPCName} around. The old bucket of bolts and I always have plenty of lovely things to chit and chat about!
-						// LikePainter: The painter? Yeah, {NPCName}'s a good sort. Spruces up my works all the time! Plenty nice bloke, he is, save for how often I end up tuning up his system. Can't say I blame him; he's always awfully hungry!
+						// LikePainter: The painter? Yeah, {NPCName}'s a good sort. Spruces up my works all the time! Plenty nice bloke, he is, save for how often I end up tuning up his system. Can't say I blame him; he's always awfully hungry, and he's got good taste to be snackin' on me so much!
 						// HateMechanic: "{NPCName}? She can put a sock right in it, for all I care! I'm NOT falling for her gaudy gizmos and gadgets!"
 					}
 				}
@@ -5971,14 +6026,14 @@ Mods: {
 				// FarFromHome: I think... I got lost. Whoops!
 
 				Biomes: {
-					// Mushroom: It's... beautiful. Sure, the mushrooms are somewhat inedible which is a shame but blue is such a nice color! I love it here!!!
-					// Hallow: This place is pretty and everything tastes like candy! But those DAMN gastropods. I HATE THOSE!!! So, it kinda evens out, this place is nice.
+					// Mushroom: It's... beautiful. Sure, the mushrooms are somewhat inedible, which is a shame...but blue is such a nice color! I love it here!!!
+					// Hallow: This place is pretty and everything tastes like candy! But those DAMN gastropods...I HATE THOSE!!! So, it kinda evens out, this place is nice.
 					// Jungle: There's something about this place that just... makes my magic power thingymajigs... easier to do? Not complaining at all!
 					// Desert: It is hot as hell in this fucky ass hot ass room im in! How is nobody else complaining about the heat???
 					// Tundra: One time I slipped on ice. I now hold a grudge against ice for the rest of my life.
 					// Corruption: This place, sucks. That's all there really is to say on the matter.
 					// Crimson: This place, sucks. That's all there really is to say on the matter.
-					// Underworld: Yeesh, I might just pass out from being in here. Unfortunately for me the underworld isn't a seperate biome according to happiness so im forced to be neutral about this. Ugh.
+					// Underworld: Yeesh, I might just pass out from being in here. Unfortunately for me, the Underworld isn't a separate biome according to happiness metrics, so I'm forced to be neutral about this. Ugh.
 					// Dungeon: This place, sucks. That's all there really is to say on the matter.
 				}
 
@@ -5986,15 +6041,15 @@ Mods: {
 					CrowdLevel: {
 						// Alone: Can't complain about isolation, I guess. I'm not that good at socializing...
 						// GoodCompany: There's a few nice people around, it's great!
-						// BadCompany: Few people around is... alright? Don't really appreciate the few that are here though...
-						// GoodCrowd: Wow that's, quite the amount of people!
-						// NeutralCrowd: Wow that's, quite the amount of people!.. eugh...
+						// BadCompany: Few people around is...alright? Don't really appreciate the few that are here though...
+						// GoodCrowd: Wow, that's quite the amount of people!
+						// NeutralCrowd: Wow, that's quite the amount of people!..,eugh...
 						// BadCrowd: Why them. Of all people. Why?
 					}
 
 					SpecificNPCs: {
 						// LoveTruffle: "{NPCName} is such a silly guy, I love him!.. What, did you expect me to say fun guy? Nah."
-						// LikePrincess: Ah, the princess. She's fun to hang out with, but I'm kinda running out on stuff to change the topic to everytime she asks about my 'magical items', since they aren't quite... For her age.
+						// LikePrincess: Ah, the princess. She's fun to hang out with, but I'm kinda running out of stuff to change the topic to everytime she asks about my 'magical items', since they aren't quite...for her age.
 						// LikeAngler: Fish are so cool! And {NPCName} understands that! Most people seem to find him annoying though, but I think his attitude makes him funnier!
 						// HateTaxCollector: "{NPCName}..? Fuck that guy, I need my money to buy sweets!"
 					}

@@ -71,9 +71,9 @@ namespace V2.NPCs
 
 		public Vector2? VelocityBeforeTimeStun { get; set; }
 		public int TimeStunCooldown { get; set; }
-        public int TimeStunCounter { get; set; }
+		public int TimeStunCounter { get; set; }
 
-        public int Aggro { get; set; }
+		public int Aggro { get; set; }
 
 		public int FatassCrushingIFrames { get; set; }
 		public bool CanBeDamagedByFallingPeople { get; set; }
@@ -159,13 +159,13 @@ namespace V2.NPCs
 		}
 
 
-        public override void DrawEffects(NPC npc, ref Color drawColor)
-        {
-            if (npc.HasBuff<TimeStun>())
-                drawColor = new Color(0, 0, 255);
+		public override void DrawEffects(NPC npc, ref Color drawColor)
+		{
+			if (npc.HasBuff<TimeStun>())
+				drawColor = new Color(0, 0, 255);
 			else if (npc.realLife > -1 && Main.npc[npc.realLife].active && Main.npc[npc.realLife].HasBuff<TimeStun>())
-                drawColor = new Color(0, 0, 255);
-        }
+				drawColor = new Color(0, 0, 255);
+		}
 
 		public override bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
 		{

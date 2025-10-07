@@ -21,8 +21,8 @@ namespace V2.Projectiles
 	public partial class PreyProjectile : GlobalProjectile
 	{
 		public bool CannotBeEatenDueToShenanigans { get; set; }
-        public bool CannotBeRegurgitated { get; set; }
-        public int EatenSafetyFrames { get; set; }
+		public bool CannotBeRegurgitated { get; set; }
+		public int EatenSafetyFrames { get; set; }
 		public bool Digested { get; set; }
 
 		public double DefinedSize { get; set; }
@@ -91,21 +91,21 @@ namespace V2.Projectiles
 			DigestingHitSound = null;
 			DigestedDeathSound = null;
 		}
-        public override bool CanHitPlayer(Projectile projectile, Player target)
-        {
+		public override bool CanHitPlayer(Projectile projectile, Player target)
+		{
 			if (projectile.CurrentCaptor() is not null)
 				return false;
 
 			return true;
-        }
-        public override bool? CanHitNPC(Projectile projectile, NPC target)
-        {
+		}
+		public override bool? CanHitNPC(Projectile projectile, NPC target)
+		{
 			if (projectile.CurrentCaptor() is not null || target.CurrentCaptor() is not null)
 				return false;
 
 			return null;
-        } 
-        public override bool PreKill(Projectile projectile, int timeLeft)
+		} 
+		public override bool PreKill(Projectile projectile, int timeLeft)
 		{
 			if (projectile.AsFood().Digested)
 				return false;

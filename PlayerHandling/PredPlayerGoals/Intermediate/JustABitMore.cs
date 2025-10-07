@@ -16,7 +16,7 @@ namespace V2.PlayerHandling.PredPlayerGoals.Intermediate
 		public override string DisplayName(Player pred) => "Mods.V2.PredPlayerGoals.Intermediate.JustABitMore.Name";
 		public override string Description(Player pred) => "Mods.V2.PredPlayerGoals.Intermediate.JustABitMore.Description";
 
-        public override int StatPointsFromCompletion => 12;
+		public override int StatPointsFromCompletion => 12;
 
 		public override ProgressionStage Stage => ModContent.GetInstance<IntermediateStage>();
 	}

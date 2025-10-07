@@ -50,23 +50,23 @@ namespace V2.Projectiles
 		{
 			int trueDigestionDamage = Main.DamageVar((float)digestionDamage);
 
-            //Baelz digestion crit (we are so fuckin good at making content)
-            bool digestionCrit = false;
-            Color DigestionTextColor = Color.DarkGreen;
-            if (pred is Player)
-            {
-                Player predPlayer = pred as Player;
-                int chance = Main.rand.Next(101);
-                int critChance = BaelzTransformation.GetCritChanceForDigestionTicks(predPlayer);
-                if (chance <= critChance)
-                {
-                    digestionCrit = true;
-                    trueDigestionDamage *= 2;
-                    DigestionTextColor = Color.FromNonPremultiplied(125, 175, 0, 255);
-                }
-            }
+			//Baelz digestion crit (we are so fuckin good at making content)
+			bool digestionCrit = false;
+			Color DigestionTextColor = Color.DarkGreen;
+			if (pred is Player)
+			{
+				Player predPlayer = pred as Player;
+				int chance = Main.rand.Next(101);
+				int critChance = BaelzTransformation.GetCritChanceForDigestionTicks(predPlayer);
+				if (chance <= critChance)
+				{
+					digestionCrit = true;
+					trueDigestionDamage *= 2;
+					DigestionTextColor = Color.FromNonPremultiplied(125, 175, 0, 255);
+				}
+			}
 
-            projectile.AsFood().Health -= trueDigestionDamage;
+			projectile.AsFood().Health -= trueDigestionDamage;
 			switch (Main.netMode)
 			{
 				case NetmodeID.SinglePlayer:
@@ -75,9 +75,9 @@ namespace V2.Projectiles
 
 					CombatText digestionDamageText = Main.combatText[CombatText.NewText(
 						projectile.Hitbox,
-                        DigestionTextColor,
+						DigestionTextColor,
 						trueDigestionDamage,
-                        digestionCrit,
+						digestionCrit,
 						true
 					)];
 					digestionDamageText.position.X = pred.Center.X + (pred.direction * 28);

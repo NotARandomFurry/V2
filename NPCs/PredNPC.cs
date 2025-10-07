@@ -68,12 +68,12 @@ namespace V2.NPCs
 			return happyBurpyOffsetDirectionized;
 		}
 
-        /// <summary>
-        /// Denotes whether or not an NPC has eaten someone friendly yet.<br/>
-        /// NPCs which have digested a player or townsperson at least once since spawning do not despawn naturally and are saved with the world.<br/>
-        /// </summary>
-        public bool AteFriendly { get; set; }
-        public SoundStyle? SmallGulps { get; set; }
+		/// <summary>
+		/// Denotes whether or not an NPC has eaten someone friendly yet.<br/>
+		/// NPCs which have digested a player or townsperson at least once since spawning do not despawn naturally and are saved with the world.<br/>
+		/// </summary>
+		public bool AteFriendly { get; set; }
+		public SoundStyle? SmallGulps { get; set; }
 		public double SmallGulpThreshold { get; set; }
 		public SoundStyle? BigGulps { get; set; }
 
@@ -156,9 +156,9 @@ namespace V2.NPCs
 			ExtraWeight = 0.0;
 			WeightGainRatio = 0.0;
 			CanSwallowBosses = false;
-            AteFriendly = false;
+			AteFriendly = false;
 
-            GetDigestionTickRate = null;
+			GetDigestionTickRate = null;
 			GetDigestionTickDamage = null;
 			GetPreyAbsorptionRate = null;
 
@@ -328,12 +328,12 @@ namespace V2.NPCs
 					break;
 				case PreyType.Item:
 					Item item = prey as Item;
-                    if (item.AsFood().PreSwallow is not null && !item.AsFood().PreSwallow.Invoke(item, pred))
-                    {
-                        food = null;
-                        return;
-                    }
-                    item.AsFood().OnSwallow?.Invoke(item, pred);
+					if (item.AsFood().PreSwallow is not null && !item.AsFood().PreSwallow.Invoke(item, pred))
+					{
+						food = null;
+						return;
+					}
+					item.AsFood().OnSwallow?.Invoke(item, pred);
 					if (item.AsFood().OnSwallowDamage > 0)
 					{
 						pred.StrikeNPC(
@@ -351,8 +351,8 @@ namespace V2.NPCs
 					break;
 			}
 
-            AddNewPrey(pred, food);
-            pred.netUpdate = true;
+			AddNewPrey(pred, food);
+			pred.netUpdate = true;
 
 			if (MPstate == 1)
 			{
@@ -388,9 +388,9 @@ namespace V2.NPCs
 
 			double totalRegurgiweight = 0.0;
 
-            List<PreyData> clearedPrey = new List<PreyData>();
+			List<PreyData> clearedPrey = new List<PreyData>();
 
-            void Regurgitate_Inner(NPC pred, PreyData prey)
+			void Regurgitate_Inner(NPC pred, PreyData prey)
 			{
 				if (prey.CannotBeRegurgitated)
 					return;
@@ -420,27 +420,27 @@ namespace V2.NPCs
 				else if (realPrey is Item realPreyItem)
 				{
 					realPreyItem.noGrabDelay = 60;
-                    for (int i = 0; i < realPreyItem.stack; i++)
-                        if (realPreyItem.AsFood().OnRegurgitate is not null && realPreyItem.AsFood().OnRegurgitate.Invoke(realPreyItem, pred))
-                        {
-                            realPreyItem.stack--;
-                        }
-                    if (realPreyItem.stack <= 0)
-                        realPreyItem.TurnToAir();
-                }
+					for (int i = 0; i < realPreyItem.stack; i++)
+						if (realPreyItem.AsFood().OnRegurgitate is not null && realPreyItem.AsFood().OnRegurgitate.Invoke(realPreyItem, pred))
+						{
+							realPreyItem.stack--;
+						}
+					if (realPreyItem.stack <= 0)
+						realPreyItem.TurnToAir();
+				}
 				totalRegurgiweight += prey.WeightLeftToDigest;
-                clearedPrey.Add(prey);
-            }
+				clearedPrey.Add(prey);
+			}
 			if (index == -1)
-            {
-                foreach (PreyData prey in GetStomachTracker(pred).Prey)
-                {
-                    Regurgitate_Inner(pred, prey);
-                }
+			{
+				foreach (PreyData prey in GetStomachTracker(pred).Prey)
+				{
+					Regurgitate_Inner(pred, prey);
+				}
 				foreach (PreyData prey in clearedPrey)
-                {
-                    GetStomachTracker(pred).Prey.Remove(prey);
-                }
+				{
+					GetStomachTracker(pred).Prey.Remove(prey);
+				}
 				GetStomachTracker(pred).RefreshStruggleChartList();
 			}
 			else
@@ -602,9 +602,9 @@ namespace V2.NPCs
 									if (ModContent.GetInstance<V2ServerConfig>().DebugChatMessages)
 										Main.NewText("Successfully dealt digestion damage to prey: " + preyPlayer.name);
 									if (prey.NoHealth)
-                                    {
-                                        pred.AsPred().AteFriendly = true;
-                                        if (pred.AsPred().OnDigestionKill is not null)
+									{
+										pred.AsPred().AteFriendly = true;
+										if (pred.AsPred().OnDigestionKill is not null)
 											pred.AsPred().OnDigestionKill.Invoke(pred, prey);
 										PlayDigestionBelch(pred, prey);
 									}
@@ -626,10 +626,10 @@ namespace V2.NPCs
 									else if (ModContent.GetInstance<V2ServerConfig>().DebugChatMessages)
 										Main.NewText("Failed to deal digestion damage to prey: " + preyNPC.GivenOrTypeName);
 									if (prey.NoHealth)
-                                    {
-                                        if (preyNPC.isLikeATownNPC)
-                                            pred.AsPred().AteFriendly = true;
-                                        if (pred.AsPred().OnDigestionKill is not null)
+									{
+										if (preyNPC.isLikeATownNPC)
+											pred.AsPred().AteFriendly = true;
+										if (pred.AsPred().OnDigestionKill is not null)
 											pred.AsPred().OnDigestionKill.Invoke(pred, prey);
 										PlayDigestionBelch(pred, prey);
 									}
@@ -654,28 +654,28 @@ namespace V2.NPCs
 									}
 								}
 								break;
-                            case PreyType.Item:
-                                Item preyItem = prey.Instance as Item;
-                                if (preyItem.IsAir)
-                                    break;
+							case PreyType.Item:
+								Item preyItem = prey.Instance as Item;
+								if (preyItem.IsAir)
+									break;
 
-                                bool shouldDigestItem = true;
-                                if (shouldDigestItem)
-                                {
-                                    prey.NoHealth = preyItem.TakeDigestionDamage(pred, digestionDamage);
-                                    if (ModContent.GetInstance<V2ServerConfig>().DebugChatMessages)
-                                        Main.NewText("Successfully dealt digestion damage to prey: " + preyItem.Name);
-                                    else if (ModContent.GetInstance<V2ServerConfig>().DebugChatMessages)
-                                        Main.NewText("Failed to deal digestion damage to prey: " + preyItem.Name);
-                                    if (prey.NoHealth)
-                                    {
-                                        if (pred.AsPred().OnDigestionKill is not null)
-                                            pred.AsPred().OnDigestionKill.Invoke(pred, prey);
-                                        PlayDigestionBelch(pred, prey);
-                                    }
-                                }
-                                break;
-                        }
+								bool shouldDigestItem = true;
+								if (shouldDigestItem)
+								{
+									prey.NoHealth = preyItem.TakeDigestionDamage(pred, digestionDamage);
+									if (ModContent.GetInstance<V2ServerConfig>().DebugChatMessages)
+										Main.NewText("Successfully dealt digestion damage to prey: " + preyItem.Name);
+									else if (ModContent.GetInstance<V2ServerConfig>().DebugChatMessages)
+										Main.NewText("Failed to deal digestion damage to prey: " + preyItem.Name);
+									if (prey.NoHealth)
+									{
+										if (pred.AsPred().OnDigestionKill is not null)
+											pred.AsPred().OnDigestionKill.Invoke(pred, prey);
+										PlayDigestionBelch(pred, prey);
+									}
+								}
+								break;
+						}
 					}
 				}
 				else
@@ -866,14 +866,14 @@ namespace V2.NPCs
 			return false;
 		}
 
-        public override bool CheckActive(NPC npc)
-        {
-            if (npc.AsPred().AteFriendly)
-                return false;
-            return true;
-        }
+		public override bool CheckActive(NPC npc)
+		{
+			if (npc.AsPred().AteFriendly)
+				return false;
+			return true;
+		}
 
-        public override void SaveData(NPC npc, TagCompound tag)
+		public override void SaveData(NPC npc, TagCompound tag)
 		{
 			tag.Add("ExtraWeight", npc.AsPred().ExtraWeight);
 		}

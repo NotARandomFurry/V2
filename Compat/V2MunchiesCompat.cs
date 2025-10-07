@@ -25,20 +25,20 @@ namespace V2.Compat
 		public override void ApplyCompatibility()
 		{
 			AddSingleConsumablePlayer<PureSwallowBoost1>("PureSwallow1");
-            AddSingleConsumablePlayer<BiomeCorruptionThingy>("Thingy_BiomeCorruption");
-            AddSingleConsumablePlayer<BiomeCrimsonThingy>("Thingy_BiomeCrimson");
-            AddSingleConsumablePlayer<BiomeDesertThingy>("Thingy_BiomeDesert");
+			AddSingleConsumablePlayer<BiomeCorruptionThingy>("Thingy_BiomeCorruption");
+			AddSingleConsumablePlayer<BiomeCrimsonThingy>("Thingy_BiomeCrimson");
+			AddSingleConsumablePlayer<BiomeDesertThingy>("Thingy_BiomeDesert");
 			AddSingleConsumablePlayer<BiomeDungeonThingy>("Thingy_BiomeDungeon");
-            AddSingleConsumablePlayer<BiomeForestThingy>("Thingy_BiomeForest");
-            AddSingleConsumablePlayer<BiomeHallowThingy>("Thingy_BiomeHallow");
-            AddSingleConsumablePlayer<BiomeJungleThingy>("Thingy_BiomeJungle");
-            AddSingleConsumablePlayer<BiomeMushroomThingy>("Thingy_BiomeMushroom");
-            AddSingleConsumablePlayer<BiomeOceanThingy>("Thingy_BiomeOcean");
-            AddSingleConsumablePlayer<BiomeShimmerThingy>("Thingy_BiomeShimmer");
-            AddSingleConsumablePlayer<BiomeSkyThingy>("Thingy_BiomeSky");
-            AddSingleConsumablePlayer<BiomeSnowThingy>("Thingy_BiomeSnow");
-            AddSingleConsumablePlayer<BiomeUnderworldThingy>("Thingy_BiomeUnderworld");
-        }
+			AddSingleConsumablePlayer<BiomeForestThingy>("Thingy_BiomeForest");
+			AddSingleConsumablePlayer<BiomeHallowThingy>("Thingy_BiomeHallow");
+			AddSingleConsumablePlayer<BiomeJungleThingy>("Thingy_BiomeJungle");
+			AddSingleConsumablePlayer<BiomeMushroomThingy>("Thingy_BiomeMushroom");
+			AddSingleConsumablePlayer<BiomeOceanThingy>("Thingy_BiomeOcean");
+			AddSingleConsumablePlayer<BiomeShimmerThingy>("Thingy_BiomeShimmer");
+			AddSingleConsumablePlayer<BiomeSkyThingy>("Thingy_BiomeSky");
+			AddSingleConsumablePlayer<BiomeSnowThingy>("Thingy_BiomeSnow");
+			AddSingleConsumablePlayer<BiomeUnderworldThingy>("Thingy_BiomeUnderworld");
+		}
 		public override void UnapplyCompatibility()
 		{
 

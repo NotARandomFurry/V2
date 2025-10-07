@@ -15,9 +15,9 @@ namespace V2.PlayerHandling.PredPlayerGoals.Skilled
 		public override string InternalName => "MajorConsequences";
 		public override string DisplayName(Player pred) => "Mods.V2.PredPlayerGoals.Skilled.MajorConsequences.Name";
 		public override string Description(Player pred) => "Mods.V2.PredPlayerGoals.Skilled.MajorConsequences.Description";
-        public override bool Available(Player pred) => HasCompleted(pred, "Fatty") || Complete(pred);
+		public override bool Available(Player pred) => HasCompleted(pred, "Fatty") || Complete(pred);
 
-        public override int StatPointsFromCompletion => 25;
+		public override int StatPointsFromCompletion => 25;
 
 		public override ProgressionStage Stage => ModContent.GetInstance<SkilledStage>();
 	}

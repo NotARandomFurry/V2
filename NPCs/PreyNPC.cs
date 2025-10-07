@@ -21,6 +21,7 @@ using V2.PlayerHandling;
 using V2.PlayerHandling.PredPlayerGoals.Starter;
 using V2.StatusEffects.Voraria.Buffs;
 using V2.StatusEffects.Voraria.Debuffs;
+using V2.UI;
 
 namespace V2.NPCs
 {
@@ -41,14 +42,19 @@ namespace V2.NPCs
 
 	public partial class PreyNPC : GlobalNPC
 	{
+		/// <summary>
+		/// Prevents this NPC from being eaten, even.<br/>
+		/// Works well for things that really should not be able to be eaten, such as certain tile entities' NPCs.<br/>
+		/// Defaults to false.<br/>
+		/// </summary>
 		public bool CannotBeEatenDueToShenanigans { get; set; }
-        /// <summary>
-        /// Prevents this NPC from being regurgitated, ever.<br/>
-        /// Works well for super spiky or sticky things that'd get jammed in a gut, or something.<br/>
-        /// Defaults to false.<br/>
-        /// </summary>
-        public bool CannotBeRegurgitated { get; set; }
-        public int EatenSafetyFrames { get; set; }
+		/// <summary>
+		/// Prevents this NPC from being regurgitated, ever.<br/>
+		/// Works well for super spiky or sticky things that'd get jammed in a gut, or something.<br/>
+		/// Defaults to false.<br/>
+		/// </summary>
+		public bool CannotBeRegurgitated { get; set; }
+		public int EatenSafetyFrames { get; set; }
 		public bool Digested { get; set; }
 
 		public delegate void DelegatePreyAI(NPC npc, Entity pred);
@@ -59,9 +65,11 @@ namespace V2.NPCs
 		public double CalorieMultiplier { get; set; }
 		public double WellFedPower { get; set; }
 
+		public bool CanBeCursorFood { get; set; }
+
 		public bool IsAGhostlySnackForACertainMaid { get; set; }
 
-        public bool TastySweet { get; set; }
+		public bool TastySweet { get; set; }
 		public bool TastySpicy { get; set; }
 		public bool TastySour { get; set; }
 		public bool TastyMeaty { get; set; }
@@ -89,11 +97,11 @@ namespace V2.NPCs
 
 		public delegate void DelegateOnKilledByDigestion(NPC npc, Entity pred);
 		public DelegateOnKilledByDigestion OnDigestedBy { get; set; }
-        public int OnSwallowDamage { get; set; }
-        public string OnSwallowDeathReason { get; set; }
-        public int OnSwallowSoreThroatTime { get; set; }
+		public int OnSwallowDamage { get; set; }
+		public string OnSwallowDeathReason { get; set; }
+		public int OnSwallowSoreThroatTime { get; set; }
 
-        public bool CanChatAsPrey { get; set; }
+		public bool CanChatAsPrey { get; set; }
 
 		public SoundStyle? DigestingHitSound;
 		public SoundStyle? DigestedDeathSound;
@@ -119,7 +127,7 @@ namespace V2.NPCs
 			OnSwallowDeathReason = null;
 			OnSwallowSoreThroatTime = 0;
 
-        STR = 0;
+			STR = 0;
 			StruggleEffectiveness = 5;
 
 			OnDigestedBy = null;
@@ -224,6 +232,18 @@ namespace V2.NPCs
 				boundingBox = Rectangle.Empty;
 		}
 
+		public override bool PreHoverInteract(NPC npc, bool mouseIntersects)
+		{
+			if (npc.AsFood().CanBeCursorFood && Main.LocalPlayer.AsV2Player().HungryCursor && mouseIntersects && Main.LocalPlayer.HeldItem.IsAir && V2.ItemGulpHotkey.JustPressed)
+			{
+				if (CursorPredInformation.CursorPreds[Main.myPlayer].CursorPred is null)
+					VoreTracker.NewTracker(null, [PreyData.NewData(npc)], "fatassCursor", Main.myPlayer);
+				else
+					CursorPredInformation.CursorPreds[Main.myPlayer].CursorPred.QueueNewPrey(PreyData.NewData(npc));
+			}
+			return true;
+		}
+
 		public override void ModifyHitNPC(NPC npc, NPC target, ref NPC.HitModifiers modifiers)
 		{
 			if (target.type == ModContent.NPCType<Lucinda>() && PredNPC.CanSwallow(target, npc))
@@ -242,23 +262,23 @@ namespace V2.NPCs
 			}
 		}
 
-        public override void ModifyHitPlayer(NPC npc, Player target, ref Player.HurtModifiers modifiers)
-        {
-            if (npc.AsFood().IsAGhostlySnackForACertainMaid && target.AsV2Player().MintTransformation)
-            {
-                modifiers.FinalDamage *= 0;
-                modifiers.Knockback.Base = 0f;
-            }
-        }
-        public override void OnHitPlayer(NPC npc, Player target, Player.HurtInfo hurtInfo)
-        {
-            if (npc.AsFood().IsAGhostlySnackForACertainMaid && target.AsV2Player().MintTransformation)
-            {
+		public override void ModifyHitPlayer(NPC npc, Player target, ref Player.HurtModifiers modifiers)
+		{
+			if (npc.AsFood().IsAGhostlySnackForACertainMaid && target.AsV2Player().MintTransformation)
+			{
+				modifiers.FinalDamage *= 0;
+				modifiers.Knockback.Base = 0f;
+			}
+		}
+		public override void OnHitPlayer(NPC npc, Player target, Player.HurtInfo hurtInfo)
+		{
+			if (npc.AsFood().IsAGhostlySnackForACertainMaid && target.AsV2Player().MintTransformation)
+			{
 				PredPlayer.Swallow(target, npc, ForceSwallow: true);
-            }
-        }
+			}
+		}
 
-        public override bool? CanChat(NPC npc)
+		public override bool? CanChat(NPC npc)
 		{
 			if (npc.CurrentCaptor() is not null)
 				return npc.AsFood().CanChatAsPrey;
@@ -300,7 +320,7 @@ namespace V2.NPCs
 			//Baelz digestion crit (we are so fuckin good at making content)
 			bool digestionCrit = false;
 			Color DigestionTextColor = npc.friendly ? Color.DarkGreen : Color.LimeGreen;
-            if (pred is Player && !voodoo)
+			if (pred is Player && !voodoo)
 			{
 				Player predPlayer = pred as Player;
 				int chance = Main.rand.Next(101);
@@ -309,8 +329,8 @@ namespace V2.NPCs
 				{
 					digestionCrit = true;
 					trueDigestionDamage *= 2;
-                    DigestionTextColor = npc.friendly ? Color.FromNonPremultiplied(125, 175, 0, 255) : Color.FromNonPremultiplied(205, 255, 0, 255);
-                }
+					DigestionTextColor = npc.friendly ? Color.FromNonPremultiplied(125, 175, 0, 255) : Color.FromNonPremultiplied(205, 255, 0, 255);
+				}
 			}
 
 			npc.life -= trueDigestionDamage;
@@ -322,7 +342,7 @@ namespace V2.NPCs
 
 					CombatText digestionDamageText = Main.combatText[CombatText.NewText(
 						npc.Hitbox,
-                        DigestionTextColor,
+						DigestionTextColor,
 						trueDigestionDamage,
 						digestionCrit,
 						true

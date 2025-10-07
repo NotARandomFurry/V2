@@ -60,22 +60,22 @@ namespace V2.Items.Voraria.Consumables
 		public static void UseInStomach(Item item, Player player, Entity pred)
 		{
 			player.CurrentCaptor().ModifyPredStomachacheMeter(StruggleDamage);
-            if (player.whoAmI == Main.myPlayer && player.inventory[58] == item)
-            {
-                Main.mouseItem.stack--;
-                if (Main.mouseItem.stack <= 0)
+			if (player.whoAmI == Main.myPlayer && player.inventory[58] == item)
+			{
+				Main.mouseItem.stack--;
+				if (Main.mouseItem.stack <= 0)
 				{
-                    player.AsPred().ItemCooldownWhenSwallowingANonStackedItemFromTheMouseSlotBecauseThisGameIsCoolAndAwesome = 7;
-                    Main.mouseItem.TurnToAir();
-                }
-            }
+					player.AsPred().ItemCooldownWhenSwallowingANonStackedItemFromTheMouseSlotBecauseThisGameIsCoolAndAwesome = 7;
+					Main.mouseItem.TurnToAir();
+				}
+			}
 			else
-            {
-                item.stack--;
-                if (item.stack <= 0)
-                    item.TurnToAir();
-            }
-        }
+			{
+				item.stack--;
+				if (item.stack <= 0)
+					item.TurnToAir();
+			}
+		}
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
 			tooltips.AddVorariaDynamicItemTooltip(

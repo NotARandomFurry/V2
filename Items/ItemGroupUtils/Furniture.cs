@@ -23,22 +23,22 @@ namespace V2.Items.ItemGroupUtils
 			item.AsFood().MaxHealth = (int)Math.Round((double)FurnitureTypeMappings[FurnitureDefinitionMappings[item.type].Type].BaseHealth * FurnitureMaterialMappings[FurnitureDefinitionMappings[item.type].Material].HealthMult);
 			item.AsFood().AcidResistTier = FurnitureMaterialMappings[FurnitureDefinitionMappings[item.type].Material].AcidResist;
 
-            item.AsFood().CalorieMultiplier = FurnitureMaterialMappings[FurnitureDefinitionMappings[item.type].Material].CalorieMult;
-            item.AsFood().WellFedPower = FurnitureMaterialMappings[FurnitureDefinitionMappings[item.type].Material].WellFedPower;
+			item.AsFood().CalorieMultiplier = FurnitureMaterialMappings[FurnitureDefinitionMappings[item.type].Material].CalorieMult;
+			item.AsFood().WellFedPower = FurnitureMaterialMappings[FurnitureDefinitionMappings[item.type].Material].WellFedPower;
 
 			if (FurnitureDefinitionMappings[item.type].Material == FurnitureMaterial.Cactus)
-            {
-                item.AsFood().OnSwallowDamage = (int)Math.Ceiling(2.5 * item.AsFood().Size);
-                item.AsFood().OnSwallowDeathReason = "Mods.V2.Death.SwallowDamage.CactusFurniture";
-                item.AsFood().OnSwallowSoreThroatTime = V2Utils.SensibleTime(seconds: 1, frames: item.AsFood().OnSwallowDamage * 20);
-            }
-            else if (FurnitureDefinitionMappings[item.type].Material == FurnitureMaterial.Crystal)
-            {
-                item.AsFood().OnSwallowDamage = (int)Math.Ceiling(1.5 * item.AsFood().Size);
-                item.AsFood().OnSwallowDeathReason = "Mods.V2.Death.SwallowDamage.CrystalFurniture";
-            }
+			{
+				item.AsFood().OnSwallowDamage = (int)Math.Ceiling(2.5 * item.AsFood().Size);
+				item.AsFood().OnSwallowDeathReason = "Mods.V2.Death.SwallowDamage.CactusFurniture";
+				item.AsFood().OnSwallowSoreThroatTime = V2Utils.SensibleTime(seconds: 1, frames: item.AsFood().OnSwallowDamage * 20);
+			}
+			else if (FurnitureDefinitionMappings[item.type].Material == FurnitureMaterial.Crystal)
+			{
+				item.AsFood().OnSwallowDamage = (int)Math.Ceiling(1.5 * item.AsFood().Size);
+				item.AsFood().OnSwallowDeathReason = "Mods.V2.Death.SwallowDamage.CrystalFurniture";
+			}
 
-            item.AsFood().OnSwallow += OnSwallow_GrantFurnitureGoals;
+			item.AsFood().OnSwallow += OnSwallow_GrantFurnitureGoals;
 		}
 
 		public static void OnSwallow_GrantFurnitureGoals(Item item, Entity pred)

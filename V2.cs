@@ -32,15 +32,15 @@ namespace V2
 
 		public static ModKeybind RespawnAfterDigestionHotkey { get; set; }
 
-        public static ModKeybind OllieDashHotkey { get; set; }
-        public static ModKeybind MintWispHotkey { get; set; }
+		public static ModKeybind OllieDashHotkey { get; set; }
+		public static ModKeybind MintWispHotkey { get; set; }
 
-        /// <summary>
-        /// A special flag which decides whether or not the vore blacklists are actually filled.<br/>
-        /// Defaults to <see langword="true"/>. If set to <see langword="false"/> instead, the blacklists remain empty.<br/>
-        /// This allows several entities which otherwise would not be included in vore mechanics, namely as predators, to instead be given full reign.<br/>
-        /// </summary>
-        public static bool BlacklistsActive { get; set; }
+		/// <summary>
+		/// A special flag which decides whether or not the vore blacklists are actually filled.<br/>
+		/// Defaults to <see langword="true"/>. If set to <see langword="false"/> instead, the blacklists remain empty.<br/>
+		/// This allows several entities which otherwise would not be included in vore mechanics, namely as predators, to instead be given full reign.<br/>
+		/// </summary>
+		public static bool BlacklistsActive { get; set; }
 		public static List<int> VoreNPCBlacklist { get; set; }
 		public static List<int> VoreProjectileBlacklist { get; set; }
 
@@ -89,10 +89,10 @@ namespace V2
 
 			RespawnAfterDigestionHotkey = KeybindLoader.RegisterKeybind(this, "RespawnAfterDigestion", "LeftShift");
 
-            OllieDashHotkey = KeybindLoader.RegisterKeybind(this, "OllieDash", "Q");
-            MintWispHotkey = KeybindLoader.RegisterKeybind(this, "MintSummonWisp", "Q");
+			OllieDashHotkey = KeybindLoader.RegisterKeybind(this, "OllieDash", "Q");
+			MintWispHotkey = KeybindLoader.RegisterKeybind(this, "MintSummonWisp", "Q");
 
-            BetterDialogue.BetterDialogue.SupportedNPCs.Add(ModContent.NPCType<Lucinda>());
+			BetterDialogue.BetterDialogue.SupportedNPCs.Add(ModContent.NPCType<Lucinda>());
 			BetterDialogue.BetterDialogue.SupportedNPCs.Add(ModContent.NPCType<LucindaBound>());
 
 			BetterDialogue.BetterDialogue.SupportedNPCs.Add(ModContent.NPCType<Clover>());

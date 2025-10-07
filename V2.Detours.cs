@@ -21,21 +21,6 @@ namespace V2
 {
 	public partial class V2 : Mod
 	{
-		/*
-		private delegate void orig_UIModSourceItem_Constructor(string mod, object builtMod);
-		private static Type ModLoaderCore_LocalMod_Type = typeof(Main).Assembly.GetType("Terraria.ModLoader.Core.LocalMod");
-		private static Type ModLoaderUI_UIModSourceItem_Type = typeof(Main).Assembly.GetType("Terraria.ModLoader.UI.UIModSourceItem");
-		private static Type[] ModLoaderUI_UIModSourceItem_ConstructorArgs = new Type[] { typeof(string), ModLoaderCore_LocalMod_Type };
-		internal static Hook ModLoaderUI_UIModSourceItem_ConstructorHook;
-		private static ConstructorInfo ModLoaderUI_UIModSourceItem_ConstructorInfo =
-			ModLoaderUI_UIModSourceItem_Type!.GetConstructor(BindingFlags.NonPublic | BindingFlags.Instance, ModLoaderUI_UIModSourceItem_ConstructorArgs)!;
-
-		private delegate void orig_UpdateUI(GameTime gameTime);
-		internal static Hook SystemLoader_UpdateUI_Hook;
-		private static readonly MethodInfo SystemLoader_UpdateUI_MethodInfo =
-			typeof(Main).Assembly.GetType("Terraria.ModLoader.SystemLoader")!.GetMethod("UpdateUI", BindingFlags.Public | BindingFlags.Static)!;
-		*/
-
 		private delegate void orig_NPCAI(NPC npc);
 		internal static Hook NPCLoader_NPCAI_Hook;
 		private static readonly MethodInfo NPCLoader_NPCAI_MethodInfo =
@@ -48,21 +33,6 @@ namespace V2
 
 		public static void EngageVoraciousGameFuckery()
 		{
-			// the following is my attempt to feed the publish button to the Stylist so it can never get misclicked
-			// NEVER touch this unless you are 130% certain you know what you're doin'
-			/*
-			ModLoaderUI_UIModSourceItem_ConstructorHook = new Hook(ModLoaderUI_UIModSourceItem_ConstructorInfo, (orig_UIModSourceItem_Constructor orig, object instance, string mod, object builtMod) => {
-				orig(mod, builtMod);
-			});
-
-			// feed the Publish button to the Stylist, just in case
-			SystemLoader_UpdateUI_Hook = new Hook(SystemLoader_UpdateUI_MethodInfo, (orig_UpdateUI orig, GameTime gameTime) =>
-			{
-				AntiPublishProtection.EnsurePublishButtonGetsGulped();
-				orig(gameTime);
-			});
-			*/
-			// and now, the rest of the detours
 			NPCLoader_NPCAI_Hook = new Hook(NPCLoader_NPCAI_MethodInfo, (orig_NPCAI orig, NPC npc) =>
 			{
 				GeneralNPC npcAsV2NPC = npc.AsV2NPC(risky: true);
@@ -71,11 +41,11 @@ namespace V2
 				{
 					npc.frameCounter = 0;
 					if (npc.AsV2NPC().VelocityBeforeTimeStun == null)
-                        npc.AsV2NPC().VelocityBeforeTimeStun = npc.velocity;
-                    npc.velocity = Vector2.Zero;
+						npc.AsV2NPC().VelocityBeforeTimeStun = npc.velocity;
+					npc.velocity = Vector2.Zero;
 					npc.GravityMultiplier *= 0;
-                    return;
-                }
+					return;
+				}
 				if (npcAsV2NPC is null || npcAsPrey is null)
 					orig(npc);
 				else

@@ -15,27 +15,27 @@ namespace V2.Items.Vanilla.Placeables.TilesPlaceableTiles
 		{
 			item.AsFood().MaxHealth = 1;
 			item.AsFood().Size = 0.06;
-            item.AsFood().MealSizeTextOverride = "please don't.";
+			item.AsFood().MealSizeTextOverride = "please don't.";
 
-            item.AsFood().OnSwallowDamage = 999999;
-            item.AsFood().OnSwallowDeathReason = "Mods.V2.Death.SwallowDamage.Poop";
-            item.AsFood().OnSwallowSoreThroatTime = V2Utils.SensibleTime(hours: 24);
-        }
+			item.AsFood().OnSwallowDamage = 999999;
+			item.AsFood().OnSwallowDeathReason = "Mods.V2.Death.SwallowDamage.Poop";
+			item.AsFood().OnSwallowSoreThroatTime = V2Utils.SensibleTime(hours: 24);
+		}
 	}
-    public class PooWall : GlobalItem
-    {
-        public override bool InstancePerEntity => true;
-        public override bool AppliesToEntity(Item entity, bool lateInstantiation) => entity.type == ItemID.PoopWall;
+	public class PooWall : GlobalItem
+	{
+		public override bool InstancePerEntity => true;
+		public override bool AppliesToEntity(Item entity, bool lateInstantiation) => entity.type == ItemID.PoopWall;
 
-        public override void SetDefaults(Item item)
-        {
-            item.AsFood().MaxHealth = 1;
-            item.AsFood().Size = 0.6;
-            item.AsFood().MealSizeTextOverride = "please don't.";
+		public override void SetDefaults(Item item)
+		{
+			item.AsFood().MaxHealth = 1;
+			item.AsFood().Size = 0.6;
+			item.AsFood().MealSizeTextOverride = "please don't.";
 
-            item.AsFood().OnSwallowDamage = 999999;
-            item.AsFood().OnSwallowDeathReason = "Mods.V2.Death.SwallowDamage.Poop";
-            item.AsFood().OnSwallowSoreThroatTime = V2Utils.SensibleTime(hours: 24);
-        }
-    }
+			item.AsFood().OnSwallowDamage = 999999;
+			item.AsFood().OnSwallowDeathReason = "Mods.V2.Death.SwallowDamage.Poop";
+			item.AsFood().OnSwallowSoreThroatTime = V2Utils.SensibleTime(hours: 24);
+		}
+	}
 }

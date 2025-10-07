@@ -21,24 +21,24 @@ namespace V2.Items.ItemGroupUtils
 			item.AsFood().Size = 0.95;
 			item.AsFood().MaxHealth = 175;
 		}
-    }
-    public class EnemyBanners : GlobalItem
-    {
-        public override bool AppliesToEntity(Item entity, bool lateInstantiation) => V2Utils.ItemIDSets.EnemyBanners.Contains(entity.type);
+	}
+	public class EnemyBanners : GlobalItem
+	{
+		public override bool AppliesToEntity(Item entity, bool lateInstantiation) => V2Utils.ItemIDSets.EnemyBanners.Contains(entity.type);
 
-        public override void SetDefaults(Item item)
-        {
-            item.AsFood().Size = 0.95;
-            item.AsFood().MaxHealth = 175;
-            //item.AsFood().OnBreak += OnBreak;
-        }
-        /*public static bool OnBreak(Item item, Entity pred, bool direct)
-        {
-            if (pred is Player predPlayer && (item.type == ItemID.RainbowDye || item.type == ItemID.IntenseRainbowDye))
-            {
-                ModContent.GetInstance<EatRainbowDye>().TrySetCompletion(predPlayer);
-            }
-            return true;
-        }*/
-    }
+		public override void SetDefaults(Item item)
+		{
+			item.AsFood().Size = 0.95;
+			item.AsFood().MaxHealth = 175;
+			//item.AsFood().OnBreak += OnBreak;
+		}
+		/*public static bool OnBreak(Item item, Entity pred, bool direct)
+		{
+			if (pred is Player predPlayer && (item.type == ItemID.RainbowDye || item.type == ItemID.IntenseRainbowDye))
+			{
+				ModContent.GetInstance<EatRainbowDye>().TrySetCompletion(predPlayer);
+			}
+			return true;
+		}*/
+	}
 }

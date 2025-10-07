@@ -726,7 +726,7 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 			}
 		}
 
-        public static bool V2UnreasonablyThickFairyAI(NPC npc)
+		public static bool V2UnreasonablyThickFairyAI(NPC npc)
 		{
 			if (npc.ai[0] is 8f or 9f)
 				npc.DoContactGulpage();

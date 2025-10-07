@@ -52,23 +52,23 @@ namespace V2.Items
 			if (trueDigestionDamage < 1)
 				trueDigestionDamage = 1;
 
-            //Baelz digestion crit (we are so fuckin good at making content)
-            bool digestionCrit = false;
-            Color DigestionTextColor = Color.DarkGreen;
-            if (pred is Player)
-            {
-                Player predPlayer = pred as Player;
-                int chance = Main.rand.Next(101);
-                int critChance = BaelzTransformation.GetCritChanceForDigestionTicks(predPlayer);
-                if (chance <= critChance)
-                {
-                    digestionCrit = true;
-                    trueDigestionDamage *= 2;
-                    DigestionTextColor = Color.FromNonPremultiplied(125, 175, 0, 255);
-                }
-            }
+			//Baelz digestion crit (we are so fuckin good at making content)
+			bool digestionCrit = false;
+			Color DigestionTextColor = Color.DarkGreen;
+			if (pred is Player)
+			{
+				Player predPlayer = pred as Player;
+				int chance = Main.rand.Next(101);
+				int critChance = BaelzTransformation.GetCritChanceForDigestionTicks(predPlayer);
+				if (chance <= critChance)
+				{
+					digestionCrit = true;
+					trueDigestionDamage *= 2;
+					DigestionTextColor = Color.FromNonPremultiplied(125, 175, 0, 255);
+				}
+			}
 
-            item.AsFood().Health -= trueDigestionDamage;
+			item.AsFood().Health -= trueDigestionDamage;
 			if (item.type == ItemID.GuideVoodooDoll)
 			{
 				foreach (NPC npc in Main.ActiveNPCs)
@@ -115,8 +115,8 @@ namespace V2.Items
 			{
 				item.AsFood().Health = 0;
 				bool? churnable = null;
-                for (int i = 0; i < item.stack; i++)
-                    churnable = item.AsFood().OnBreak?.Invoke(item, pred, direct);
+				for (int i = 0; i < item.stack; i++)
+					churnable = item.AsFood().OnBreak?.Invoke(item, pred, direct);
 				bool indirectValid = !direct && indirectWhoAmI != -1;
 				if (indirectValid)
 				{
@@ -150,29 +150,29 @@ namespace V2.Items
 		{
 			get => _health;
 			set => _health = Math.Min(value, MaxHealth);
-        }
-        /// <summary>
-        /// Prevents this possibly tasty looking item from being eaten, ever.<br/>
-        /// Defaults to false.<br/>
-        /// </summary>
-        public bool CannotBeEatenDueToShenanigans { get; set; }
-        /// <summary>
-        /// Prevents this item from being regurgitated.<br/>
-        /// Defaults to false.<br/>
-        /// </summary>
-        public bool CannotBeRegurgitated { get; set; }
-        public double Size { get; set; } = 0.0;
+		}
+		/// <summary>
+		/// Prevents this possibly tasty looking item from being eaten, ever.<br/>
+		/// Defaults to false.<br/>
+		/// </summary>
+		public bool CannotBeEatenDueToShenanigans { get; set; }
+		/// <summary>
+		/// Prevents this item from being regurgitated.<br/>
+		/// Defaults to false.<br/>
+		/// </summary>
+		public bool CannotBeRegurgitated { get; set; }
+		public double Size { get; set; } = 0.0;
 		public int VanillaWellFedDuration { get; set; } = 0;
-        /// <summary>
-        /// Multiplies the weight that preds gain from fully digesting this item.<br/>
-        /// Defaults to 1.<br/>
-        /// </summary>
+		/// <summary>
+		/// Multiplies the weight that preds gain from fully digesting this item.<br/>
+		/// Defaults to 1.<br/>
+		/// </summary>
 		public double CalorieMultiplier { get; set; } = 1;
-        /// <summary>
-        /// Equal to how much 'Power' a player recieves on their Well Fed buff from having consumed 1 weight unit of this item.<br/>
-        /// The Well Fed buff ranges between -3.5 and 3.5.<br/>
-        /// Defaults to 0.<br/>
-        /// </summary>
+		/// <summary>
+		/// Equal to how much 'Power' a player recieves on their Well Fed buff from having consumed 1 weight unit of this item.<br/>
+		/// The Well Fed buff ranges between -3.5 and 3.5.<br/>
+		/// Defaults to 0.<br/>
+		/// </summary>
 		public double WellFedPower { get; set; } = 0;
 		/// <summary>
 		/// The minimum acid tier required to digest (deal durability damage to) this item.<br/>
@@ -182,23 +182,23 @@ namespace V2.Items
 		public string MealSizeTextOverride { get; set; } = null;
 
 		public delegate bool DelegatePreSwallow(Item item, Entity pred);
-        /// <summary>
-        /// Allows you to make an item do stuff right when it's about to be swallowed.<br/>
+		/// <summary>
+		/// Allows you to make an item do stuff right when it's about to be swallowed.<br/>
 		/// Return false to prevent the item from actually being swallowed.<br/>
-        /// </summary>
-        public DelegatePreSwallow PreSwallow { get; set; } = null;
+		/// </summary>
+		public DelegatePreSwallow PreSwallow { get; set; } = null;
 
 		public delegate void DelegateOnSwallow(Item item, Entity pred);
 		public DelegateOnSwallow OnSwallow { get; set; } = null;
 
-        public delegate bool DelegateOnRegurgitate(Item item, Entity pred);
-        /// <summary>
-        /// Allows you to make an item do stuff right when it gets regurgitated.<br/>
+		public delegate bool DelegateOnRegurgitate(Item item, Entity pred);
+		/// <summary>
+		/// Allows you to make an item do stuff right when it gets regurgitated.<br/>
 		/// This seems... very niche, actually. But you never know!<br/>
 		/// Return true to delete the item after the code runs.<br/>
-        /// </summary>
-        public DelegateOnRegurgitate OnRegurgitate { get; set; } = null;
-        public int OnSwallowDamage { get; set; } = 0;
+		/// </summary>
+		public DelegateOnRegurgitate OnRegurgitate { get; set; } = null;
+		public int OnSwallowDamage { get; set; } = 0;
 		public string OnSwallowDeathReason { get; set; } = null;
 		public int OnSwallowSoreThroatTime { get; set; } = 0;
 
@@ -283,12 +283,12 @@ namespace V2.Items
 			if (item.IsAir)
 				return false;
 
-            if (player.AsPred().ItemCooldownWhenSwallowingANonStackedItemFromTheMouseSlotBecauseThisGameIsCoolAndAwesome > 0)
-            {
-                return false;
-            }
+			if (player.AsPred().ItemCooldownWhenSwallowingANonStackedItemFromTheMouseSlotBecauseThisGameIsCoolAndAwesome > 0)
+			{
+				return false;
+			}
 
-            if (player.CurrentCaptor() is not null)
+			if (player.CurrentCaptor() is not null)
 			{
 				if (item.AsFood().CanUseInStomach is not null && item.AsFood().CanUseInStomach.Invoke(item, player, player.CurrentCaptor().Predator))
 					item.AsFood().UseInStomach?.Invoke(item, player, player.CurrentCaptor().Predator);
@@ -317,8 +317,8 @@ namespace V2.Items
 						PredPlayer.Swallow(player, itemDrop);
 						item.stack = origStack - 1;
 						if (player.whoAmI == Main.myPlayer && player.inventory[58] == item)
-                            Main.mouseItem.stack = origStack - 1;
-                    }
+							Main.mouseItem.stack = origStack - 1;
+					}
 					else
 					{
 						player.ForceDropItem(player.Center, ref item, out Item itemDrop);
@@ -326,9 +326,9 @@ namespace V2.Items
 						if (player.whoAmI == Main.myPlayer && player.inventory[58] == item)
 						{
 							player.AsPred().ItemCooldownWhenSwallowingANonStackedItemFromTheMouseSlotBecauseThisGameIsCoolAndAwesome = 7;
-                            Main.mouseItem.TurnToAir();
-                        }
-                    }
+							Main.mouseItem.TurnToAir();
+						}
+					}
 					ModContent.GetInstance<FirstItemEaten>().TrySetCompletion(player);
 				}
 				else

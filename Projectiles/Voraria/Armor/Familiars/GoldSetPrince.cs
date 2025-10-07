@@ -291,7 +291,7 @@ namespace V2.Projectiles.Voraria.Armor.Familiars
 				sourceRect,
 				lightColor,
 				Projectile.rotation,
-				Projectile.direction == 1 ? new Vector2(10f, 26f) : new Vector2(texture.Width - 10f, 26f),
+				Projectile.direction == 1 ? new Vector2(10f, 26f) : new Vector2(sourceRect.Width - 10f, 26f),
 				1,
 				spriteEffects,
 				0f

@@ -108,9 +108,9 @@ namespace V2.Projectiles.Voraria.Armor.Familiars
 					projectile.velocity *= 0.925f;
 			}
 
-			if (projectile.velocity.Length() > 6f)
+			if (projectile.velocity.Length() > 4f)
 			{
-				float rotationSpeed = projectile.velocity.X * 0.1f;
+				float rotationSpeed = projectile.velocity.X * 0.08f;
 				if (Math.Abs(projectile.rotation - rotationSpeed) >= (float)Math.PI)
 				{
 					if (rotationSpeed < projectile.rotation)
@@ -129,7 +129,7 @@ namespace V2.Projectiles.Voraria.Armor.Familiars
 						projectile.frame = 0;
 				}
 
-				if (projectile.frameCounter == 0 || Main.rand.NextBool(15))
+				if (Main.rand.NextBool(47) || Main.GameUpdateCount % 93 == 0)
 				{
 					int num974 = Dust.NewDust(
 						projectile.position,
@@ -161,13 +161,28 @@ namespace V2.Projectiles.Voraria.Armor.Familiars
 				else
 					projectile.rotation *= 0.96f;
 
-				if (++projectile.frameCounter >= 5)
+				if (Main.rand.NextBool(83) || Main.GameUpdateCount % 107 == 0)
 				{
-					projectile.frameCounter = 0;
-					projectile.frame++;
-					if (projectile.frame >= Main.projFrames[projectile.type])
-						projectile.frame = 0;
+					int num974 = Dust.NewDust(
+						projectile.position,
+						projectile.width,
+						projectile.height,
+						Main.rand.NextFromCollection(new List<int> {
+							DustID.Gold,
+							DustID.GoldCoin,
+							DustID.GoldCritter,
+							DustID.GoldCritter_LessOutline,
+							DustID.GoldFlame,
+						}),
+						0f,
+						0f,
+						50,
+						default,
+						2f
+					);
+					Main.dust[num974].noGravity = true;
 				}
+
 			}
 			return false;
 		}

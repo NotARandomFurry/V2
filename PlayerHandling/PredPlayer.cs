@@ -575,10 +575,10 @@ namespace V2.PlayerHandling
 								break;
 						}
 					}
-                }
-                totalBellyWeight = (double)StomachWeightModifier.ApplyTo((float)totalBellyWeight);
-                return Math.Max(totalBellyWeight + FlatStomachWeightModifier, 0);
-            }
+				}
+				totalBellyWeight = (double)StomachWeightModifier.ApplyTo((float)totalBellyWeight);
+				return Math.Max(totalBellyWeight + FlatStomachWeightModifier, 0);
+			}
 		}
 
 		public double KickyStomachWeight
@@ -613,10 +613,10 @@ namespace V2.PlayerHandling
 								break;
 						}
 					}
-                }
+				}
 				totalBellyWeight = (double)StomachWeightModifier.ApplyTo((float)totalBellyWeight);
-                return Math.Max(totalBellyWeight + FlatStomachWeightModifier, 0);
-            }
+				return Math.Max(totalBellyWeight + FlatStomachWeightModifier, 0);
+			}
 		}
 
 		public double PercentBellySizeModifier { get; set; }
@@ -640,34 +640,34 @@ namespace V2.PlayerHandling
 		public bool Rose { get; set; }
 		public bool Venomizeous { get; set; }
 		public bool FungalFairySetBonus { get; set; }
-        public double WellFed_Multiplier { get; set; }
+		public double WellFed_Multiplier { get; set; }
 
-        //basically everything related to wg or other things
-        public double BaeTransformation_ExtraWeight { get; set; }
-        public double KroniiTransformation_ExtraWeight { get; set; }
-        public double OllieTransformation_ExtraWeight { get; set; }
-        public double SoraTransformation_ExtraWeight { get; set; }
-        public double MintTransformation_ExtraWeight { get; set; }
+		//basically everything related to wg or other things
+		public double BaeTransformation_ExtraWeight { get; set; }
+		public double KroniiTransformation_ExtraWeight { get; set; }
+		public double OllieTransformation_ExtraWeight { get; set; }
+		public double SoraTransformation_ExtraWeight { get; set; }
+		public double MintTransformation_ExtraWeight { get; set; }
 		public bool WeightDisplay { get; set; }
 		public double ActuallyReasonableAmountOfFood { get; set; }
 		public double BaseWeightGainRatio { get; set; }
 		public double WeightGainMultiplier { get; set; }
 		public double WeightLossMultiplier { get; set; }
 
-        public StatModifier BodyWeightModifier;
-        public double FlatBodyWeightModifier { get; set; }
-        public bool HasJumped { get; set; }
+		public StatModifier BodyWeightModifier;
+		public double FlatBodyWeightModifier { get; set; }
+		public bool HasJumped { get; set; }
 
 		//study shows that being really heavy and then falling on other people hurts said people
-        public int isAtCrushingSpeed { get; set; }
-        public int CrushingDamage { get; set; }
-        public int LandState { get; set; }
+		public int isAtCrushingSpeed { get; set; }
+		public int CrushingDamage { get; set; }
+		public int LandState { get; set; }
 
-        public bool StrangeThingymajig {  get; set; }
+		public bool StrangeThingymajig {  get; set; }
 		public bool AquaticThingymajig {  get; set; }
-        public bool PermanentAquaticThingymajig { get; set; }
+		public bool PermanentAquaticThingymajig { get; set; }
 
-        public override void Initialize()
+		public override void Initialize()
 		{
 			SmallGulps = Gulps.Short;
 			BigGulps = Gulps.Standard;
@@ -725,11 +725,11 @@ namespace V2.PlayerHandling
 			StomachWeightAtSleepStart = 0.0;
 			OverfullTime = 0;
 			BaeTransformation_ExtraWeight = 0;
-            KroniiTransformation_ExtraWeight = 0;
-            OllieTransformation_ExtraWeight = 0;
-            SoraTransformation_ExtraWeight = 0;
-            MintTransformation_ExtraWeight = 0;
-        }
+			KroniiTransformation_ExtraWeight = 0;
+			OllieTransformation_ExtraWeight = 0;
+			SoraTransformation_ExtraWeight = 0;
+			MintTransformation_ExtraWeight = 0;
+		}
 
 		public override void ResetEffects()
 		{
@@ -813,7 +813,7 @@ namespace V2.PlayerHandling
 				Player.AsPred().HasJumped = false;
 			if (Player.AsPred().ItemCooldownWhenSwallowingANonStackedItemFromTheMouseSlotBecauseThisGameIsCoolAndAwesome > 0)
 				Player.AsPred().ItemCooldownWhenSwallowingANonStackedItemFromTheMouseSlotBecauseThisGameIsCoolAndAwesome--;
-        }
+		}
 
 		public void UpdatePredStatPointsFromPermUpgrades()
 		{
@@ -832,53 +832,53 @@ namespace V2.PlayerHandling
 				ABS.Base += BiomeShimmerThingy.PermBuff;
 			}
 			if (PermanentUpgradesGained.TryGetValue("Thingy_BiomeSky", out bool eatenSkyThingy) && eatenSkyThingy)
-            {
-                StomachWeightModifier += BiomeSkyThingy.PermBuff;
-                BodyWeightModifier += BiomeSkyThingy.PermBuff;
-            }
-            if (PermanentUpgradesGained.TryGetValue("Thingy_BiomeSnow", out bool eatenSnowThingy) && eatenSnowThingy)
-            {
+			{
+				StomachWeightModifier += BiomeSkyThingy.PermBuff;
+				BodyWeightModifier += BiomeSkyThingy.PermBuff;
+			}
+			if (PermanentUpgradesGained.TryGetValue("Thingy_BiomeSnow", out bool eatenSnowThingy) && eatenSnowThingy)
+			{
 				StomachacheMeterCapacityModifier += BiomeSnowThingy.PermAcheBuff;
-            }
-            if (PermanentUpgradesGained.TryGetValue("Thingy_BiomeDesert", out bool eatenDesertThingy) && eatenDesertThingy)
-            {
-                Player.AsFood().StruggleDamageModifier += BiomeDesertThingy.PermStrBuff;
-            }
-            if (PermanentUpgradesGained.TryGetValue("Thingy_BiomeJungle", out bool eatenJungleThingy) && eatenJungleThingy)
-            {
+			}
+			if (PermanentUpgradesGained.TryGetValue("Thingy_BiomeDesert", out bool eatenDesertThingy) && eatenDesertThingy)
+			{
+				Player.AsFood().StruggleDamageModifier += BiomeDesertThingy.PermStrBuff;
+			}
+			if (PermanentUpgradesGained.TryGetValue("Thingy_BiomeJungle", out bool eatenJungleThingy) && eatenJungleThingy)
+			{
 				StomachCapacityModifier += BiomeJungleThingy.PermCapBuff;
-            }
-            if (PermanentUpgradesGained.TryGetValue("Thingy_BiomeCorruption", out bool eatenCorruptionThingy) && eatenCorruptionThingy)
-            {
-                StomachacheMeterCapacityModifier += BiomeCorruptionThingy.PermAcheBuff;
-            }
-            if (PermanentUpgradesGained.TryGetValue("Thingy_BiomeCrimson", out bool eatenCrimsonThingy) && eatenCrimsonThingy)
-            {
-                DigestionTickDamageModifier += BiomeCrimsonThingy.PermDigestBuff;
-            }
-            if (PermanentUpgradesGained.TryGetValue("Thingy_BiomeHallow", out bool eatenHallowThingy) && eatenHallowThingy)
-            {
-                Player.moveSpeed += BiomeHallowThingy.PermSpdBuff;
-                PreyAbsorptionRateModifier += BiomeHallowThingy.PermAbsBuff;
-            }
-            if (PermanentUpgradesGained.TryGetValue("Thingy_BiomeMushroom", out bool eatenMushroomThingy) && eatenMushroomThingy)
-            {
-                BodyWeightModifier += BiomeMushroomThingy.PermBWeightBuff;
-            }
-            if (PermanentUpgradesGained.TryGetValue("Thingy_BiomeDungeon", out bool eatenDungeonThingy) && eatenDungeonThingy)
-            {
+			}
+			if (PermanentUpgradesGained.TryGetValue("Thingy_BiomeCorruption", out bool eatenCorruptionThingy) && eatenCorruptionThingy)
+			{
+				StomachacheMeterCapacityModifier += BiomeCorruptionThingy.PermAcheBuff;
+			}
+			if (PermanentUpgradesGained.TryGetValue("Thingy_BiomeCrimson", out bool eatenCrimsonThingy) && eatenCrimsonThingy)
+			{
+				DigestionTickDamageModifier += BiomeCrimsonThingy.PermDigestBuff;
+			}
+			if (PermanentUpgradesGained.TryGetValue("Thingy_BiomeHallow", out bool eatenHallowThingy) && eatenHallowThingy)
+			{
+				Player.moveSpeed += BiomeHallowThingy.PermSpdBuff;
+				PreyAbsorptionRateModifier += BiomeHallowThingy.PermAbsBuff;
+			}
+			if (PermanentUpgradesGained.TryGetValue("Thingy_BiomeMushroom", out bool eatenMushroomThingy) && eatenMushroomThingy)
+			{
+				BodyWeightModifier += BiomeMushroomThingy.PermBWeightBuff;
+			}
+			if (PermanentUpgradesGained.TryGetValue("Thingy_BiomeDungeon", out bool eatenDungeonThingy) && eatenDungeonThingy)
+			{
 				Player.statDefense += BiomeDungeonThingy.PermDefBuff;
-                StomachacheMeterCapacityModifier += BiomeDungeonThingy.PermAcheBuff;
-            }
-            if (PermanentUpgradesGained.TryGetValue("Thingy_BiomeUnderworld", out bool eatenUnderworldThingy) && eatenUnderworldThingy)
-            {
-                DigestionTickDamageModifier += BiomeUnderworldThingy.PermDigestBuff;
-            }
-            if (PermanentUpgradesGained.TryGetValue("Thingy_BiomeOcean", out bool eatenOceanThingy) && eatenOceanThingy)
-            {
+				StomachacheMeterCapacityModifier += BiomeDungeonThingy.PermAcheBuff;
+			}
+			if (PermanentUpgradesGained.TryGetValue("Thingy_BiomeUnderworld", out bool eatenUnderworldThingy) && eatenUnderworldThingy)
+			{
+				DigestionTickDamageModifier += BiomeUnderworldThingy.PermDigestBuff;
+			}
+			if (PermanentUpgradesGained.TryGetValue("Thingy_BiomeOcean", out bool eatenOceanThingy) && eatenOceanThingy)
+			{
 				PermanentAquaticThingymajig = true;
-            }
-        }
+			}
+		}
 
 		public override bool HoverSlot(Item[] inventory, int context, int slot)
 		{
@@ -939,25 +939,25 @@ namespace V2.PlayerHandling
 					Player.statMana = Player.statManaMax2;
 			}
 		}
-        public override void ModifyHitByProjectile(Projectile proj, ref Player.HurtModifiers modifiers)
-        {
-            if (Player.AsPred().FungalFairySetBonus)
-            {
-                if (CanSwallow(Player, proj))
-                {
-                    Swallow(Player, proj);
-                    modifiers.Cancel();
-                }
-            }
-        }
-        public override void ModifyHitByNPC(NPC npc, ref Player.HurtModifiers modifiers)
-        {
-            if (Player.AsV2Player().MintTransformation && npc.AsFood().IsAGhostlySnackForACertainMaid)
-            {
-                Swallow(Player, npc, ForceSwallow: true, Silent: true);
-                modifiers.Cancel();
-            }
-        }
+		public override void ModifyHitByProjectile(Projectile proj, ref Player.HurtModifiers modifiers)
+		{
+			if (Player.AsPred().FungalFairySetBonus)
+			{
+				if (CanSwallow(Player, proj))
+				{
+					Swallow(Player, proj);
+					modifiers.Cancel();
+				}
+			}
+		}
+		public override void ModifyHitByNPC(NPC npc, ref Player.HurtModifiers modifiers)
+		{
+			if (Player.AsV2Player().MintTransformation && npc.AsFood().IsAGhostlySnackForACertainMaid)
+			{
+				Swallow(Player, npc, ForceSwallow: true, Silent: true);
+				modifiers.Cancel();
+			}
+		}
 
 		public override void PostUpdateBuffs()
 		{
@@ -967,15 +967,15 @@ namespace V2.PlayerHandling
 				multiplier = Math.Max(-Overstuff * 3, -10);
 				StomachacheMeterCapacityModifier -= (float)Math.Min(Overstuff / 2f, 0.8);
 				if (Overstuff >= 3)
-                    ModContent.GetInstance<JustABitMore>().TrySetCompletion(Player);
-            }
+					ModContent.GetInstance<JustABitMore>().TrySetCompletion(Player);
+			}
 			else
 			{
 				if (multiplier >= 3.5)
 					ModContent.GetInstance<PerfectMeal>().TrySetCompletion(Player);
 				else if (multiplier <= -3.5)
-                    ModContent.GetInstance<Recycler>().TrySetCompletion(Player);
-            }
+					ModContent.GetInstance<Recycler>().TrySetCompletion(Player);
+			}
 			int def = (int)Math.Round(WellFed.Def * multiplier);
 			int crit = (int)Math.Round(WellFed.Crit * multiplier);
 			float atkspd = (float)Math.Round((int)(WellFed.AtkSpd * 100) * multiplier) / 100;
@@ -991,7 +991,7 @@ namespace V2.PlayerHandling
 			Player.GetKnockback(DamageClass.Generic) += kb;
 			Player.moveSpeed = (float)Math.Max(Player.moveSpeed + runspd, 0.01);
 			Player.pickSpeed -= minespd;
-        }
+		}
 
 		public bool IsRunningAgainstConveyor(Player player)
 		{
@@ -1012,16 +1012,16 @@ namespace V2.PlayerHandling
 			if (RightConveyors == LeftConveyors) return false;
 			if (RightConveyors > LeftConveyors && player.controlRight)
 				return true;
-            if (RightConveyors < LeftConveyors && player.controlLeft)
-                return true;
-            return false;
-        }
+			if (RightConveyors < LeftConveyors && player.controlLeft)
+				return true;
+			return false;
+		}
 		public static float WeightMovementMultiplier(Player player)
 		{
 			float Weight = (float)PlayerGaining.GetPlayerWeight(player, true);
 
-            return 1.0f / (float)Math.Max(1.0, Weight);
-        }
+			return 1.0f / (float)Math.Max(1.0, Weight);
+		}
 
 		public override void PostUpdateEquips()
 		{
@@ -1045,12 +1045,12 @@ namespace V2.PlayerHandling
 				}
 			}
 
-            //moar weight bull
-            PlayerGaining.GetPlayerWeightGainStats(Player, out float DamageMult, out float AttackSpeedMult, out int MaxLifeIncrease);
-            Player.GetDamage(DamageClass.Generic) *= DamageMult;
-            Player.GetAttackSpeed(DamageClass.Generic) *= AttackSpeedMult;
-            Player.statLifeMax2 += MaxLifeIncrease;
-        }
+			//moar weight bull
+			PlayerGaining.GetPlayerWeightGainStats(Player, out float DamageMult, out float AttackSpeedMult, out int MaxLifeIncrease);
+			Player.GetDamage(DamageClass.Generic) *= DamageMult;
+			Player.GetAttackSpeed(DamageClass.Generic) *= AttackSpeedMult;
+			Player.statLifeMax2 += MaxLifeIncrease;
+		}
 
 		public override void PostUpdateRunSpeeds()
 		{
@@ -1058,7 +1058,7 @@ namespace V2.PlayerHandling
 			{
 				float weightMovementMult = WeightMovementMultiplier(Player);
 
-                Player.runAcceleration *= weightMovementMult;
+				Player.runAcceleration *= weightMovementMult;
 				Player.jumpSpeed *= Math.Min(1.0f, weightMovementMult * 2);
 				Player.jumpHeight = (int)Math.Round((float)Player.jumpHeight * Math.Min(1.0f, weightMovementMult * 2));
 				Player.gravity /= (2f + weightMovementMult) / 3f;
@@ -1067,32 +1067,32 @@ namespace V2.PlayerHandling
 				Player.maxRunSpeed *= weightSpeedMult;
 				Player.accRunSpeed *= weightSpeedMult;
 				Player.rocketTimeMax = (int)Math.Ceiling(Player.rocketTimeMax * Math.Min(1.0f, weightMovementMult * 3f));
-                if (Player.rocketTime > Player.rocketTimeMax)
-                    Player.rocketTime = Player.rocketTimeMax;
-                Player.wingTimeMax = (int)Math.Ceiling(Player.wingTimeMax * Math.Min(1.0f, weightMovementMult * 1.25f));
+				if (Player.rocketTime > Player.rocketTimeMax)
+					Player.rocketTime = Player.rocketTimeMax;
+				Player.wingTimeMax = (int)Math.Ceiling(Player.wingTimeMax * Math.Min(1.0f, weightMovementMult * 1.25f));
 				if (Player.wingTime > Player.wingTimeMax)
 					Player.wingTime = Player.wingTimeMax;
 			}
 		}
-        public int FallingForce(Player player)
-        {
-            return (int)Math.Ceiling(player.velocity.Length() * PlayerGaining.GetPlayerWeight(player, true, false) / 3.5) - 20;
-        }
-        public bool CheckForSolidGround(Player player)
-        {
-            List<Point> tiles = Collision.GetTilesIn(player.Hitbox.BottomLeft() - new Vector2(-2, -2), player.Hitbox.BottomRight() + new Vector2(2, 6));
-            bool HasSolidTile = false;
-            foreach (var point in tiles)
-            {
-                Tile tile = Framing.GetTileSafely(point);
-                if (tile.HasTile)
-                {
-                    if (Main.tileSolid[tile.TileType])
-                        HasSolidTile = true;
-                    if (Main.tileSolidTop[tile.TileType])
-                        HasSolidTile = true;
-                }
-            }
+		public int FallingForce(Player player)
+		{
+			return (int)Math.Ceiling(player.velocity.Length() * PlayerGaining.GetPlayerWeight(player, true, false) / 3.5) - 20;
+		}
+		public bool CheckForSolidGround(Player player)
+		{
+			List<Point> tiles = Collision.GetTilesIn(player.Hitbox.BottomLeft() - new Vector2(-2, -2), player.Hitbox.BottomRight() + new Vector2(2, 6));
+			bool HasSolidTile = false;
+			foreach (var point in tiles)
+			{
+				Tile tile = Framing.GetTileSafely(point);
+				if (tile.HasTile)
+				{
+					if (Main.tileSolid[tile.TileType])
+						HasSolidTile = true;
+					if (Main.tileSolidTop[tile.TileType])
+						HasSolidTile = true;
+				}
+			}
 			if (HasSolidTile)
 			{
 				if (LandState == 0)
@@ -1103,80 +1103,80 @@ namespace V2.PlayerHandling
 			else
 				LandState = 0;
 			return HasSolidTile;
-        }
+		}
 
-        public override void PostUpdate()
-        {
-            if (Player.pulley)
-            {
+		public override void PostUpdate()
+		{
+			if (Player.pulley)
+			{
 
-                double PlayerWeight = Player.AsPred().StomachWeight + 1.0;
-                if (Player.AsV2Player().BaeTransformation)
-                {
-                    PlayerWeight += Player.AsPred().BaeTransformation_ExtraWeight;
-                }
+				double PlayerWeight = Player.AsPred().StomachWeight + 1.0;
+				if (Player.AsV2Player().BaeTransformation)
+				{
+					PlayerWeight += Player.AsPred().BaeTransformation_ExtraWeight;
+				}
 
-                float additionalWeight = ((float)Math.Max(1.0, PlayerWeight) - 1) / 5f;
+				float additionalWeight = ((float)Math.Max(1.0, PlayerWeight) - 1) / 5f;
 
-                float DownWeigh = 0.5f * additionalWeight;
-                if (!Player.controlDown)
-                {
-                    DownWeigh = Math.Max(0, DownWeigh - 0.1f);
-                }
-                if (Player.controlUp)
-                {
-                    DownWeigh = Math.Max(0, DownWeigh / 1.25f);
-                }
-                Player.velocity.Y += DownWeigh;
-            }
+				float DownWeigh = 0.5f * additionalWeight;
+				if (!Player.controlDown)
+				{
+					DownWeigh = Math.Max(0, DownWeigh - 0.1f);
+				}
+				if (Player.controlUp)
+				{
+					DownWeigh = Math.Max(0, DownWeigh / 1.25f);
+				}
+				Player.velocity.Y += DownWeigh;
+			}
 
-            double overstuff = Player.AsPred().StomachFullness / Player.AsPred().StomachCapacity;
-            Overstuff = overstuff;
-            if (overstuff > 1)
-            {
-                Player.ClearBuff(ModContent.BuffType<WellFed>());
-                Player.AddBuff(ModContent.BuffType<Overstuffed>(), 3);
-            }
+			double overstuff = Player.AsPred().StomachFullness / Player.AsPred().StomachCapacity;
+			Overstuff = overstuff;
+			if (overstuff > 1)
+			{
+				Player.ClearBuff(ModContent.BuffType<WellFed>());
+				Player.AddBuff(ModContent.BuffType<Overstuffed>(), 3);
+			}
 
-            if (Main.myPlayer == Player.whoAmI)
-            {
-                Player.AsPred().isAtCrushingSpeed = Math.Max(Player.AsPred().isAtCrushingSpeed - 1, 0);
-                if (FallingForce(Player) > 15)
-                {
-                    Player.AsPred().isAtCrushingSpeed = 3;
-                    Player.AsPred().CrushingDamage = FallingForce(Player);
-                    Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center + Player.velocity, Vector2.Zero, ModContent.ProjectileType<FallingHitbox>(), Player.AsPred().CrushingDamage, (int)Math.Ceiling(Math.Sqrt(Player.AsPred().CrushingDamage)), Main.myPlayer, Player.width, Player.height);
-                }
-                if (CheckForSolidGround(Player) && Player.AsPred().isAtCrushingSpeed > 0)
-                {
-                    Player.AsPred().isAtCrushingSpeed = 0;
-                    if (LandState == 1)
-                        Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Vector2.Zero, ModContent.ProjectileType<Girthquake>(), Player.AsPred().CrushingDamage, (int)Math.Ceiling(Math.Sqrt(Player.AsPred().CrushingDamage)), Main.myPlayer, 0, 5f + (Player.AsPred().CrushingDamage / 10f));
-                }
-                if (Player.AsPred().isAtCrushingSpeed == 0)
-                {
-                    Player.AsPred().CrushingDamage = 0;
-                }
-            }
-            UpdateWellFed(Player);
+			if (Main.myPlayer == Player.whoAmI)
+			{
+				Player.AsPred().isAtCrushingSpeed = Math.Max(Player.AsPred().isAtCrushingSpeed - 1, 0);
+				if (FallingForce(Player) > 15)
+				{
+					Player.AsPred().isAtCrushingSpeed = 3;
+					Player.AsPred().CrushingDamage = FallingForce(Player);
+					Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center + Player.velocity, Vector2.Zero, ModContent.ProjectileType<FallingHitbox>(), Player.AsPred().CrushingDamage, (int)Math.Ceiling(Math.Sqrt(Player.AsPred().CrushingDamage)), Main.myPlayer, Player.width, Player.height);
+				}
+				if (CheckForSolidGround(Player) && Player.AsPred().isAtCrushingSpeed > 0)
+				{
+					Player.AsPred().isAtCrushingSpeed = 0;
+					if (LandState == 1)
+						Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Vector2.Zero, ModContent.ProjectileType<Girthquake>(), Player.AsPred().CrushingDamage, (int)Math.Ceiling(Math.Sqrt(Player.AsPred().CrushingDamage)), Main.myPlayer, 0, 5f + (Player.AsPred().CrushingDamage / 10f));
+				}
+				if (Player.AsPred().isAtCrushingSpeed == 0)
+				{
+					Player.AsPred().CrushingDamage = 0;
+				}
+			}
+			UpdateWellFed(Player);
 
-            if (AquaticThingymajig && (Player.wet || Player.honeyWet || Player.HasBuff(BuffID.Wet) || Player.HasBuff(BuffID.Honey)))
-            {
-                DigestionTickDamageModifier += BiomeOceanThingy.StatBuff;
-                PreyAbsorptionRateModifier += BiomeOceanThingy.StatBuff;
-                Player.endurance += BiomeOceanThingy.EnduBuff;
-            }
-            if (PermanentAquaticThingymajig && (Player.wet || Player.honeyWet || Player.HasBuff(BuffID.Wet) || Player.HasBuff(BuffID.Honey)))
-            {
-                DigestionTickDamageModifier += BiomeOceanThingy.PermBuff;
-                PreyAbsorptionRateModifier += BiomeOceanThingy.PermBuff;
-            }
-            if (StrangeThingymajig)
-            {
-                double fat = PlayerGaining.GetPlayerWeight(Player, false, false, true) / 4;
-                StomachCapacityModifier += (float)fat;
-            }
-        }
+			if (AquaticThingymajig && (Player.wet || Player.honeyWet || Player.HasBuff(BuffID.Wet) || Player.HasBuff(BuffID.Honey)))
+			{
+				DigestionTickDamageModifier += BiomeOceanThingy.StatBuff;
+				PreyAbsorptionRateModifier += BiomeOceanThingy.StatBuff;
+				Player.endurance += BiomeOceanThingy.EnduBuff;
+			}
+			if (PermanentAquaticThingymajig && (Player.wet || Player.honeyWet || Player.HasBuff(BuffID.Wet) || Player.HasBuff(BuffID.Honey)))
+			{
+				DigestionTickDamageModifier += BiomeOceanThingy.PermBuff;
+				PreyAbsorptionRateModifier += BiomeOceanThingy.PermBuff;
+			}
+			if (StrangeThingymajig)
+			{
+				double fat = PlayerGaining.GetPlayerWeight(Player, false, false, true) / 4;
+				StomachCapacityModifier += (float)fat;
+			}
+		}
 		public override void PostItemCheck()
 		{
 			if (Main.netMode != NetmodeID.Server && Player.whoAmI == Main.myPlayer && !Player.AsPred().BlockSwallowAttempts)
@@ -1437,97 +1437,97 @@ namespace V2.PlayerHandling
 				);
 			}
 			pred.AsPred().lastSwallowWasDrinking = false;
-            switch (food.Type)
-            {
-                case PreyType.Player:
-                    Player player = prey as Player;
-                    player.AsFood().TotalTimesSwallowed += 1;
-                    pred.AsPred().lastEntitySwallowed = "Player";
-                    pred.AsPred().lastEntitySwallowedMod = "Terraria";
-                    break;
-                case PreyType.NPC:
-                    NPC npc = prey as NPC;
-                    npc.AsFood().OnSwallowedBy?.Invoke(npc, pred);
+			switch (food.Type)
+			{
+				case PreyType.Player:
+					Player player = prey as Player;
+					player.AsFood().TotalTimesSwallowed += 1;
+					pred.AsPred().lastEntitySwallowed = "Player";
+					pred.AsPred().lastEntitySwallowedMod = "Terraria";
+					break;
+				case PreyType.NPC:
+					NPC npc = prey as NPC;
+					npc.AsFood().OnSwallowedBy?.Invoke(npc, pred);
 
-                    if (npc.AsFood().OnSwallowDamage > 0 && npc.AsFood().OnSwallowDeathReason is not null)
-                    {
-                        pred.Hurt(
-                            damageSource: PlayerDeathReason.ByCustomReason(NetworkText.FromKey(
-                                npc.AsFood().OnSwallowDeathReason,
-                                pred.name)),
-                            Damage: npc.AsFood().OnSwallowDamage,
-                            hitDirection: 0,
-                            dodgeable: false,
-                            scalingArmorPenetration: 1f
-                        );
-                    }
+					if (npc.AsFood().OnSwallowDamage > 0 && npc.AsFood().OnSwallowDeathReason is not null)
+					{
+						pred.Hurt(
+							damageSource: PlayerDeathReason.ByCustomReason(NetworkText.FromKey(
+								npc.AsFood().OnSwallowDeathReason,
+								pred.name)),
+							Damage: npc.AsFood().OnSwallowDamage,
+							hitDirection: 0,
+							dodgeable: false,
+							scalingArmorPenetration: 1f
+						);
+					}
 
-                    // this is a really fuckin' stupid way to have to do this check
-                    // basically, if this is the original call, look through the entire NPC list for NPCs attached to this NPC via realLife
-                    // if there are any, swallow all of those connected NPCs as well
-                    // this exists purely to allow swallowin' worm enemies all at once instead of havin' to spam your Swallow bind to eat 'em
-                    // ideally there'd be a sensible way to allow, like. slurpin' up the tasty noodles gradually instead of havin' to eat them all at once
-                    // but this is Terraria and a lot of what you have to do isn't ideal here, so whatever
-                    if (!skipRealLifeCheck)
-                    {
-                        for (int i = 0; i < Main.maxNPCs; i++)
-                        {
-                            if (i != npc.whoAmI && Main.npc[i].realLife != -1 && Main.npc[i].realLife == npc.whoAmI)
-                            {
-                                Swallow(pred, Main.npc[i], MPstate, MPwhoAmI, true);
-                            }
-                        }
-                    }
+					// this is a really fuckin' stupid way to have to do this check
+					// basically, if this is the original call, look through the entire NPC list for NPCs attached to this NPC via realLife
+					// if there are any, swallow all of those connected NPCs as well
+					// this exists purely to allow swallowin' worm enemies all at once instead of havin' to spam your Swallow bind to eat 'em
+					// ideally there'd be a sensible way to allow, like. slurpin' up the tasty noodles gradually instead of havin' to eat them all at once
+					// but this is Terraria and a lot of what you have to do isn't ideal here, so whatever
+					if (!skipRealLifeCheck)
+					{
+						for (int i = 0; i < Main.maxNPCs; i++)
+						{
+							if (i != npc.whoAmI && Main.npc[i].realLife != -1 && Main.npc[i].realLife == npc.whoAmI)
+							{
+								Swallow(pred, Main.npc[i], MPstate, MPwhoAmI, true);
+							}
+						}
+					}
 
-                    pred.AsPred().lastEntitySwallowed = npc.TypeName;
-                    pred.AsPred().lastEntitySwallowedMod = npc.ModNPC != null ? npc.ModNPC.Mod.DisplayName : "Terraria";
-                    break;
-                case PreyType.Projectile:
-                    Projectile projectile = prey as Projectile;
-                    if (projectile.AsFood().MaxHealth == -1)
-                    {
-                        food = PreyData.NewData(PreyType.Projectile, projectile.type, projectile.Name, PreyData.GetPreySize(projectile));
-                        projectile.active = false;
-                    }
-                    else
-                    {
-                        projectile.AsFood().OnSwallowedBy?.Invoke(projectile, pred);
+					pred.AsPred().lastEntitySwallowed = npc.TypeName;
+					pred.AsPred().lastEntitySwallowedMod = npc.ModNPC != null ? npc.ModNPC.Mod.DisplayName : "Terraria";
+					break;
+				case PreyType.Projectile:
+					Projectile projectile = prey as Projectile;
+					if (projectile.AsFood().MaxHealth == -1)
+					{
+						food = PreyData.NewData(PreyType.Projectile, projectile.type, projectile.Name, PreyData.GetPreySize(projectile));
+						projectile.active = false;
+					}
+					else
+					{
+						projectile.AsFood().OnSwallowedBy?.Invoke(projectile, pred);
 
-                        pred.AsPred().lastEntitySwallowed = projectile.Name;
-                        pred.AsPred().lastEntitySwallowedMod = projectile.ModProjectile != null ? projectile.ModProjectile.Mod.DisplayName : "Terraria";
-                    }
-                    break;
-                case PreyType.Item:
-                    Item item = prey as Item;
-                    pred.AsPred().lastEntitySwallowed = item.Name;
-                    pred.AsPred().lastEntitySwallowedMod = item.ModItem != null ? item.ModItem.Mod.DisplayName : "Terraria";
+						pred.AsPred().lastEntitySwallowed = projectile.Name;
+						pred.AsPred().lastEntitySwallowedMod = projectile.ModProjectile != null ? projectile.ModProjectile.Mod.DisplayName : "Terraria";
+					}
+					break;
+				case PreyType.Item:
+					Item item = prey as Item;
+					pred.AsPred().lastEntitySwallowed = item.Name;
+					pred.AsPred().lastEntitySwallowedMod = item.ModItem != null ? item.ModItem.Mod.DisplayName : "Terraria";
 
-                    if (item.AsFood().PreSwallow is not null && !item.AsFood().PreSwallow.Invoke(item, pred))
-                    {
-                        food = null;
-                        return;
-                    }
+					if (item.AsFood().PreSwallow is not null && !item.AsFood().PreSwallow.Invoke(item, pred))
+					{
+						food = null;
+						return;
+					}
 
-                    for (int i = 0; i < item.stack; i++)
-                        item.AsFood().OnSwallow?.Invoke(item, pred);
+					for (int i = 0; i < item.stack; i++)
+						item.AsFood().OnSwallow?.Invoke(item, pred);
 
-                    if (item.AsFood().OnSwallowDamage > 0 && item.AsFood().OnSwallowDeathReason is not null)
-                    {
-                        pred.Hurt(
-                            damageSource: PlayerDeathReason.ByCustomReason(NetworkText.FromKey(
-                                item.AsFood().OnSwallowDeathReason,
-                                pred.name)),
-                            Damage: item.AsFood().OnSwallowDamage * item.stack,
-                            hitDirection: 0,
-                            dodgeable: false,
-                            scalingArmorPenetration: 1f
-                        );
-                    }
-                    if (item.AsFood().OnSwallowSoreThroatTime > 0)
-                        pred.AddBuff(ModContent.BuffType<SoreThroat>(), item.AsFood().OnSwallowSoreThroatTime);
-                    break;
-            }
-            if (food is null)
+					if (item.AsFood().OnSwallowDamage > 0 && item.AsFood().OnSwallowDeathReason is not null)
+					{
+						pred.Hurt(
+							damageSource: PlayerDeathReason.ByCustomReason(NetworkText.FromKey(
+								item.AsFood().OnSwallowDeathReason,
+								pred.name)),
+							Damage: item.AsFood().OnSwallowDamage * item.stack,
+							hitDirection: 0,
+							dodgeable: false,
+							scalingArmorPenetration: 1f
+						);
+					}
+					if (item.AsFood().OnSwallowSoreThroatTime > 0)
+						pred.AddBuff(ModContent.BuffType<SoreThroat>(), item.AsFood().OnSwallowSoreThroatTime);
+					break;
+			}
+			if (food is null)
 				return;
 			AddNewPrey(pred, food);
 
@@ -1666,17 +1666,17 @@ namespace V2.PlayerHandling
 
 			double totalRegurgiweight = 0.0;
 
-            List<PreyData> clearedPrey = new List<PreyData>();
+			List<PreyData> clearedPrey = new List<PreyData>();
 
-            void Regurgitate_Inner(Player pred, PreyData prey)
+			void Regurgitate_Inner(Player pred, PreyData prey)
 			{
 				if (prey.Instance is null || prey.NoHealth)
 					return;
 
-                if (prey.CannotBeRegurgitated)
-                    return;
+				if (prey.CannotBeRegurgitated)
+					return;
 
-                Entity realPrey = prey.Type switch
+				Entity realPrey = prey.Type switch
 				{
 					PreyType.Player => prey.Instance as Player,
 					PreyType.NPC => prey.Instance as NPC,
@@ -1701,8 +1701,8 @@ namespace V2.PlayerHandling
 				else if (realPrey is Item realPreyItem)
 				{
 					realPreyItem.noGrabDelay = 60;
-                    for (int i = 0; i < realPreyItem.stack; i++)
-                        if (realPreyItem.AsFood().OnRegurgitate is not null && realPreyItem.AsFood().OnRegurgitate.Invoke(realPreyItem, pred))
+					for (int i = 0; i < realPreyItem.stack; i++)
+						if (realPreyItem.AsFood().OnRegurgitate is not null && realPreyItem.AsFood().OnRegurgitate.Invoke(realPreyItem, pred))
 						{
 							realPreyItem.stack--;
 						}
@@ -1710,28 +1710,28 @@ namespace V2.PlayerHandling
 						realPreyItem.TurnToAir();
 				}
 				totalRegurgiweight += prey.WeightLeftToDigest;
-                clearedPrey.Add(prey);
-            }
+				clearedPrey.Add(prey);
+			}
 
 			if (index == -1)
 			{
 				foreach (PreyData prey in pred.AsPred().StomachTracker.Prey)
 					Regurgitate_Inner(pred, prey);
 
-                foreach (PreyData prey in clearedPrey)
-                {
-                    pred.AsPred().StomachTracker.Prey.Remove(prey);
-                }
-                pred.AsPred().StomachTracker.RefreshStruggleChartList();
+				foreach (PreyData prey in clearedPrey)
+				{
+					pred.AsPred().StomachTracker.Prey.Remove(prey);
+				}
+				pred.AsPred().StomachTracker.RefreshStruggleChartList();
 			}
 			else
 			{
 				PreyData prey = pred.AsPred().StomachTracker.Prey[index];
 				Regurgitate_Inner(pred, prey);
 
-                if (clearedPrey.Count > 0)
-                    pred.AsPred().StomachTracker.Prey.Remove(prey);
-            }
+				if (clearedPrey.Count > 0)
+					pred.AsPred().StomachTracker.Prey.Remove(prey);
+			}
 
 			if (totalRegurgiweight > 0)
 				SoundEngine.PlaySound(
@@ -1780,7 +1780,7 @@ namespace V2.PlayerHandling
 				ModContent.GetInstance<BLUH>().TrySetCompletion(pred);
 				return;
 			}
-            bool hasDoneDigestionTick = false;
+			bool hasDoneDigestionTick = false;
 			foreach (PreyData prey in pred.AsPred().StomachTracker.Prey)
 			{
 				if (!prey.NoHealth)
@@ -1835,8 +1835,8 @@ namespace V2.PlayerHandling
 								break;
 							}
 							preyItem.AsFood().UpdateInStomach?.Invoke(preyItem, pred, prey.NoHealth);
-                            preyItem.velocity = Vector2.Zero;
-                            preyItem.position = pred.position;
+							preyItem.velocity = Vector2.Zero;
+							preyItem.position = pred.position;
 							bool canProperlyDigestItem = pred.AsPred().AcidTier >= preyItem.AsFood().AcidResistTier;
 							if (canProperlyDigestItem)
 								pred.AsPred().WellFed_Multiplier += prey.WellFedPower * prey.WeightLeftToDigest;
@@ -1871,9 +1871,9 @@ namespace V2.PlayerHandling
 										pred.AsPred().mealCount.TryAdd("Terraria: Player", 0);
 										pred.AsPred().mealCount["Terraria: Player"] += 1;
 										SoundEngine.PlaySound(
-                                            prey.WeightLeftToDigest < 0.3 ? pred.AsPred().SmallBurps with { Pitch = pred.AsPred().BurpPitchOffset }
-                                            : pred.AsPred().StandardBurps with { Pitch = pred.AsPred().BurpPitchOffset },
-                                            pred.TrueCenter() + new Vector2(pred.direction * 8f, -14f)
+											prey.WeightLeftToDigest < 0.3 ? pred.AsPred().SmallBurps with { Pitch = pred.AsPred().BurpPitchOffset }
+											: pred.AsPred().StandardBurps with { Pitch = pred.AsPred().BurpPitchOffset },
+											pred.TrueCenter() + new Vector2(pred.direction * 8f, -14f)
 										);
 									}
 								}
@@ -1896,9 +1896,9 @@ namespace V2.PlayerHandling
 										pred.AsPred().mealCount.TryAdd(preyNPCMod + ": " + preyNPC.TypeName, 0);
 										pred.AsPred().mealCount[preyNPCMod + ": " + preyNPC.TypeName] += 1;
 										SoundEngine.PlaySound(
-                                            prey.WeightLeftToDigest < 0.3 ? pred.AsPred().SmallBurps with { Pitch = pred.AsPred().BurpPitchOffset }
-                                            : pred.AsPred().StandardBurps with { Pitch = pred.AsPred().BurpPitchOffset },
-                                            pred.TrueCenter() + new Vector2(pred.direction * 8f, -14f)
+											prey.WeightLeftToDigest < 0.3 ? pred.AsPred().SmallBurps with { Pitch = pred.AsPred().BurpPitchOffset }
+											: pred.AsPred().StandardBurps with { Pitch = pred.AsPred().BurpPitchOffset },
+											pred.TrueCenter() + new Vector2(pred.direction * 8f, -14f)
 										);
 									}
 								}
@@ -1924,9 +1924,9 @@ namespace V2.PlayerHandling
 										pred.AsPred().mealCount.TryAdd(preyProjectileMod + ": " + preyProjectile.Name, 0);
 										pred.AsPred().mealCount[preyProjectileMod + ": " + preyProjectile.Name] += 1;
 										SoundEngine.PlaySound(
-                                            prey.WeightLeftToDigest < 0.3 ? pred.AsPred().SmallBurps with { Pitch = pred.AsPred().BurpPitchOffset }
-                                            : pred.AsPred().StandardBurps with { Pitch = pred.AsPred().BurpPitchOffset },
-                                            pred.TrueCenter() + new Vector2(pred.direction * 8f, -14f)
+											prey.WeightLeftToDigest < 0.3 ? pred.AsPred().SmallBurps with { Pitch = pred.AsPred().BurpPitchOffset }
+											: pred.AsPred().StandardBurps with { Pitch = pred.AsPred().BurpPitchOffset },
+											pred.TrueCenter() + new Vector2(pred.direction * 8f, -14f)
 										);
 									}
 								}
@@ -1969,15 +1969,15 @@ namespace V2.PlayerHandling
 					{
 						PlayerGaining.AddWeight(pred, prey.WeightLeftToDigest, prey);
 						if (pred.AsV2Player().MintTransformation)
-                            pred.AsV2Player().MintWispSummonMeter += prey.WeightLeftToDigest * prey.CalorieMultiplier * (0.4 + (pred.maxMinions - 1) / 10.0);
-                        prey.WeightLeftToDigest = 0;
+							pred.AsV2Player().MintWispSummonMeter += prey.WeightLeftToDigest * prey.CalorieMultiplier * (0.4 + (pred.maxMinions - 1) / 10.0);
+						prey.WeightLeftToDigest = 0;
 					}
 					else
 					{
 						PlayerGaining.AddWeight(pred, absorptionRate, prey);
-                        if (pred.AsV2Player().MintTransformation)
-                            pred.AsV2Player().MintWispSummonMeter += absorptionRate * prey.CalorieMultiplier * (0.4 + (pred.maxMinions - 1) / 10.0);
-                        prey.WeightLeftToDigest -= absorptionRate;
+						if (pred.AsV2Player().MintTransformation)
+							pred.AsV2Player().MintWispSummonMeter += absorptionRate * prey.CalorieMultiplier * (0.4 + (pred.maxMinions - 1) / 10.0);
+						prey.WeightLeftToDigest -= absorptionRate;
 						pred.AsPred().WellFed_Multiplier += prey.WellFedPower * prey.WeightLeftToDigest;
 					}
 
@@ -2094,15 +2094,15 @@ namespace V2.PlayerHandling
 		}
 
 		public static void UpdateWellFed(Player player)
-        {
-            player.AsPred().WellFed_Multiplier = 0;
-            if (player.HasBuff(BuffID.WellFed3))
-                player.AsPred().WellFed_Multiplier += 1.5;
-            else if (player.HasBuff(BuffID.WellFed2))
-                player.AsPred().WellFed_Multiplier += 1;
-            else if (player.HasBuff(BuffID.WellFed))
-                player.AsPred().WellFed_Multiplier += 0.5;
-        }
+		{
+			player.AsPred().WellFed_Multiplier = 0;
+			if (player.HasBuff(BuffID.WellFed3))
+				player.AsPred().WellFed_Multiplier += 1.5;
+			else if (player.HasBuff(BuffID.WellFed2))
+				player.AsPred().WellFed_Multiplier += 1;
+			else if (player.HasBuff(BuffID.WellFed))
+				player.AsPred().WellFed_Multiplier += 0.5;
+		}
 
 		public static NetworkText GetDigestedPlayerDeathReason(Player player, Player prey)
 		{
@@ -2214,7 +2214,7 @@ namespace V2.PlayerHandling
 				Swallow(Player, Player);
 			}
 		}
-        public static void CountDigestionKillForBannersAndDropThem(Player player, NPC npc)
+		public static void CountDigestionKillForBannersAndDropThem(Player player, NPC npc)
 		{
 			int num = Item.NPCtoBanner(npc.BannerID());
 			if (num <= 0 || npc.ExcludedFromDeathTally())
@@ -2277,11 +2277,11 @@ namespace V2.PlayerHandling
 			}
 
 			tag.Add("Bae_ExtraWeight", BaeTransformation_ExtraWeight);
-            tag.Add("Kronii_ExtraWeight", KroniiTransformation_ExtraWeight);
-            tag.Add("Ollie_ExtraWeight", OllieTransformation_ExtraWeight);
-            tag.Add("Sora_ExtraWeight", SoraTransformation_ExtraWeight);
-            tag.Add("Mint_ExtraWeight", MintTransformation_ExtraWeight);
-            tag.Add("Saturation", ActuallyReasonableAmountOfFood);
+			tag.Add("Kronii_ExtraWeight", KroniiTransformation_ExtraWeight);
+			tag.Add("Ollie_ExtraWeight", OllieTransformation_ExtraWeight);
+			tag.Add("Sora_ExtraWeight", SoraTransformation_ExtraWeight);
+			tag.Add("Mint_ExtraWeight", MintTransformation_ExtraWeight);
+			tag.Add("Saturation", ActuallyReasonableAmountOfFood);
 		}
 
 		public override void LoadData(TagCompound tag)
@@ -2326,11 +2326,11 @@ namespace V2.PlayerHandling
 				}
 			}
 			BaeTransformation_ExtraWeight = tag.GetDouble("Bae_ExtraWeight");
-            KroniiTransformation_ExtraWeight = tag.GetDouble("Kronii_ExtraWeight");
-            OllieTransformation_ExtraWeight = tag.GetDouble("Ollie_ExtraWeight");
-            SoraTransformation_ExtraWeight = tag.GetDouble("Sora_ExtraWeight");
-            MintTransformation_ExtraWeight = tag.GetDouble("Mint_ExtraWeight");
-            ActuallyReasonableAmountOfFood = tag.GetDouble("Saturation");
+			KroniiTransformation_ExtraWeight = tag.GetDouble("Kronii_ExtraWeight");
+			OllieTransformation_ExtraWeight = tag.GetDouble("Ollie_ExtraWeight");
+			SoraTransformation_ExtraWeight = tag.GetDouble("Sora_ExtraWeight");
+			MintTransformation_ExtraWeight = tag.GetDouble("Mint_ExtraWeight");
+			ActuallyReasonableAmountOfFood = tag.GetDouble("Saturation");
 		}
 	}
 }
