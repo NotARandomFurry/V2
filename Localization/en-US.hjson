@@ -35,6 +35,7 @@ ItemName: {
 	WoodenBow: Oak Wood Bow
 	# Misc.
 	Feather: Harpy Feather
+	# Vanilla item name replacements end here
 }
 
 Bestiary_FlavorText: {
@@ -43,6 +44,8 @@ Bestiary_FlavorText: {
 	# Caverns
 	npc_LostGirl: A lady of no clothes or cruel countenance (don't mind the ominous rumbling or that she's licking her lips), patiently awaiting a savior that can rescue her and return her to the surface.
 	npc_Nymph: Masterfully deceives the common fool by posing as a lost, scared lady, then lunges forward and gobbles up her prey before they can so much as touch her. Also enjoys certain card and board games.
+	# Forest
+	npc_Butterfly: Beautiful fluttering insects that love sunrises and tasty flowers. Fish are attracted to these based on their color variety and how healthily they've been eating.
 	# Hallow
 	npc_EmpressButterfly: The collective foremothers and forefathers of all prismatic fairies, these beautiful little butterflies are one of the favorite foods of many fairies, including the hallowed 'goddess' herself.
 	# Solar Eclipse
@@ -1383,7 +1386,7 @@ Mods: {
 						Default:
 							'''
 							Have your gut successfully melt a piece of the dungeon.
-							'...wait, what do you mean you don't actually eat the dungeons in that game?'
+							'...wait, what do you mean you don't actually eat the dungeons in that game? What a scam.'
 							'''
 						Clarification: Eat and digest a Pink, Green or Blue Brick.
 					}
@@ -1407,7 +1410,7 @@ Mods: {
 							Swallow one of those annoying spinning spike balls from the dungeon.
 							'Good riddance!'
 							'''
-						Clarification: Eat and digest a Blazing Wheel.
+						Clarification: Eat and digest a Spike Ball.
 					}
 				}
 			}
@@ -1452,7 +1455,7 @@ Mods: {
 						Default:
 							'''
 							Swallow up a sand elemental and add her to your figure.
-							'Everyone hates sand. It's coarse, it's rough, and it gets all over you. It even gets all over your stomach walls when you gulp down a pretty girl made out of it. Thankfully, your stomach can resolve that problem fairly quickly by melting down even the smallest grains of sand into smooth, soft, squishy cellulite.'
+							'Everyone hates sand. It's coarse, it's rough, and it gets all over you. It even gets all over your stomach walls when you gulp down a pretty girl made out of it. Thankfully, your stomach can resolve that problem fairly quickly by melting down even the smallest grains of sand, and the biggest and prettiest of sand girls, into smooth, soft, squishy cellulite.'
 							'''
 						Clarification:
 							'''

@@ -186,115 +186,52 @@ namespace V2.NPCs.Voraria.TownNPCs.Enigma
 			bool isFoodForPlayer = npc.IsFoodFor(player);
 			if (playerIsFood && !playerWasAlreadyDigested)
 			{
-				{
-					EnigmaChatPool.AddRange(new List<string>
-					{
-						"So...uh...how long are you going to stay there?",
-						"Hmm... I mean, I don't dislike this, I suppose.",
-						"Well, I hope you're having fun doing your...thing?",
-					});
-				}
+				EnigmaChatPool.AddRange([
+					"So...uh...how long are you going to stay there?",
+					"Hmm... I mean, I don't dislike this, I suppose.",
+					"Well, I hope you're having fun doing your...thing?",
+				]);
 			}
 			else
 			{
+				EnigmaChatPool.AddRange([
+					"Sup.",
+					"Hey!",
+					"Hello!",
+					"AH! Hi, I didn't notice you!",
+				]);
+
+				if (Main.dayTime)
 				{
-					/*if (PredNPC.GetStomachTracker(npc) is not null)
+					EnigmaChatPool.AddRange([
+						"Sure is bright today! Uh... Yeah. What's up?",
+					]);
+
+					if (Main.IsItAHappyWindyDay)
 					{
-						switch (GetVisualBellySize(npc))
-						{
-							default:
-								EnigmaChatPool.AddRange(new List<string>
-								{
-									"I can't figure out if my gut is or isn't empty. How about you give me a little help solvin' that problem?",
-									"The worst kind of food is the kind that doesn't bloat up your gut. Howzabout you be a better brunch than whatever's currently in or out of mine?",
-								});
-								break;
-							case 1:
-								EnigmaChatPool.AddRange(new List<string>
-								{
-									"Hey. Don't mind the- [c/00BB00:*urp!*] -rumbles from my waist. Just ate a little appetizer.",
-									"Hm? Oh, this? Well, a day's always better with a good snack! Now, why don't you help turn that into a decent meal?",
-									"Oh, this? Just had a light snack, that's all. Think you'll wanna add to that?",
-									"Hey. Just had a- [c/00FF00:*hic!*] -little treat for myself. Don't mind me.",
-								});
-								break;
-							case 2:
-								EnigmaChatPool.AddRange(new List<string>
-								{
-									"[c/00BB00:*belch!*]\nAhhh, that's the good stuff. Nothing like a bloated little belly to make a better day. Definitely want some more, though.",
-									"Just finished up a good appetizer here. Could go for a lot more, though...you offerin'?",
-									"Huh? Oh, this. Just a nice little- [c/00BB00:*burp!*] -snack to tide me over until lunch. Don't worry about it, lunch.",
-									"Finally got the starts of a good meal goin' here. Mind if I make it a little better with you as the next course?",
-									"Hey there, f-[c/00BB00:*oourp.*]- ...food. Care to help me fix up my post-snack munchies a little better?",
-								});
-								break;
-							case 3:
-								EnigmaChatPool.AddRange(new List<string>
-								{
-									"[c/00BB00:*BWORP!*]\nTHERE we go...that's some good eats right in there, though I'll go for a little more, I think. Got any recommendations, such as yourself?",
-									"Nice day, yeah? Even better now that I've got a good-sized meal in my gut. Then again...could always use a second course.",
-									"Huh? Yeah, I could go for more. I've still got a TON of room in this gut for morsels like you, just you wait!",
-								});
-								break;
-							case 4:
-								EnigmaChatPool.AddRange(new List<string>
-								{
-									"[c/00BB00:*BWOOOURRP!*]\nNow THAT's a good meal. Almost makes me not wanna eatcha...almost. You free to be food?",
-									"Huh? Yeah, I could go for more! Just...takin' a minute before I do. Don't wanna eat too fast and get hiccups.",
-									"You know, if you're lookin' for a way to do this sorta thing yourself, the dragonfruit vine tells me there's a heavenly little treat who'd just LOVE to cram herself down your throat...unless you'd rather I get to her first.",
-									"What's the matter, hotshot? Jealous of my big, food-filled belly? You should be, because I'm just- [c/00FF00:*hic!*] -...er...j- just gettin' started.",
-								});
-								break;
-						}
+						EnigmaChatPool.AddRange([
+							"Agh, so windy! I don't wanna lose my hat!! Oh, hey there!",
+						]);
 					}
-					else*/
-					{
-						EnigmaChatPool.AddRange(new List<string>
-						{
-							"Sup.",
-							"Hey!",
-							"Hello!",
-							"AH! Hi, I didn't notice you!",
-						});
+				}
+				else
+				{
+					EnigmaChatPool.AddRange([
+						"Ah, the cool breeze during nights feels so nice. Oh, 'sup.",
+					]);
+				}
 
-						if (Main.dayTime)
-						{
-							EnigmaChatPool.AddRange(new List<string>
-							{
-								"Sure is bright today! Uh... Yeah. What's up?",
-							});
-
-							if (Main.IsItAHappyWindyDay)
-							{
-								EnigmaChatPool.AddRange(new List<string>
-								{
-									"Agh, so windy! I don't wanna lose my hat!! Oh, hey there!",
-								});
-							}
-						}
-						else
-						{
-							EnigmaChatPool.AddRange(new List<string>
-							{
-								"Ah, the cool breeze during nights feels so nice. Oh, 'sup.",
-							});
-						}
-
-						if (Main.IsItRaining)
-						{
-							EnigmaChatPool.AddRange(new List<string>
-							{
-								"Do you ever think about what a rain cloud would taste like?",
-							});
-						}
-						if (Main.IsItStorming)
-						{
-							EnigmaChatPool.AddRange(new List<string>
-							{
-								"Augh, the damn lightning! ...wait, do you think, if I got struck by lightning, my magic would become stronger? Never mind, that's stupid.",
-							});
-						}
-					}
+				if (Main.IsItRaining)
+				{
+					EnigmaChatPool.AddRange([
+						"Do you ever think about what a rain cloud would taste like?",
+					]);
+				}
+				if (Main.IsItStorming)
+				{
+					EnigmaChatPool.AddRange([
+						"Augh, the damn lightning! ...wait, do you think, if I got struck by lightning, my magic would become stronger? Never mind, that's stupid.",
+					]);
 				}
 			}
 			return EnigmaChatPool;
@@ -322,12 +259,11 @@ namespace V2.NPCs.Voraria.TownNPCs.Enigma
 				npc,
 				player,
 				"[c/7F7F7F:<After a quick glance at Clover, you jump into her mouth without warning, rocketing almost cartoonishly down her throat as she's left hacking and coughing for a moment in an attempt to recover some air (and general throat control) forced out of her by the sudden snack.>]\n"
-			  + Main.rand.NextFromCollection(new List<string>
-				{
+			  + Main.rand.NextFromCollection([
 					"[c/7F7F8F:*cough*] What!? Uh, wait, I... Well, I guess I don't have to make dinner for myself now? If you do plan on staying there, that is??",
 					"Oh. Well, I hope this won't have any consequences on m- [c/00BF00:*hic!*] -...me.",
 					"...what? On purpose? Jeez, the people here can be so weird sometimes...",
-				})
+				])
 			);
 		}
 
