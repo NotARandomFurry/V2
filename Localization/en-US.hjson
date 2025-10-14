@@ -35,7 +35,6 @@ ItemName: {
 	WoodenBow: Oak Wood Bow
 	# Misc.
 	Feather: Harpy Feather
-	# Vanilla item name replacements end here
 }
 
 Bestiary_FlavorText: {
@@ -51,7 +50,7 @@ Bestiary_FlavorText: {
 	# Solar Eclipse
 	npc_ThePossessed: Oftentimes, under the Eclipse's blacklight glow, malevolent spirits will set out to possess once-meek peasants like this unfortunate girl and glut themselves on the unprepared.
 	# Town NPCs
-	npc_Nurse: A freelance nurse-enary, if you can call that a word, that earned her medical license basically entirely to have an excuse to try to pack some bums onto her bum. Much to her chagrin, everyone seems to stick around top-side for her...
+	npc_Nurse: A freelance nurseenary, if you can call that a word, that earned her medical license basically entirely to have an excuse to try to pack some bums onto her bum. Much to her chagrin, everyone seems to stick around top-side for her...
 	npc_Dryad: While dryads are rarely found in civilized country, they are more plentiful than anyone would have you believe; this one in particular seems very hung up on the idea that the world is impure. Given how often her people and ancestors alike get glorped by vegans and vegetarians, this isn't a surprise.
 	npc_Stylist: Originally hailing from northwest Avarsici, Amber eventually found herself running away when her best gal pal was outcast from their hometown. She's still a stellar hair styler, though, and she and her gut will gladly whip your hair up nice!
 	npc_Mechanic: A masterful robotics worker whose exact country of origin is unknown; only that she was held against her will by a mysterious group to make new parts for an unknown master.
@@ -1867,7 +1866,124 @@ Mods: {
 				}
 
 				Consumables: {
-					Catchables.Pinky: Pinky
+					Catchables: {
+						Pinky: Pinky
+
+						Butterflies: {
+							Monarch: {
+								WeightGain1: Soft Monarch Butterfly
+								WeightGain2: Chubby Monarch Butterfly
+								# for later
+								WeightGain3: Tubby Monarch Butterfly
+								WeightGain4: Fatty Monarch Butterfly
+								WeightGain5: Fattier Monarch Butterfly
+								WeightGain6: Wobbly Monarch Butterfly
+								WeightGain7: Large Monarch Butterfly
+								WeightGain8: Huge Monarch Butterfly
+								WeightGain9: Enormous Monarch Butterfly
+								WeightGain10: Fat Fuck Monarch Butterfly
+							}
+
+							PurpleEmperor: {
+								WeightGain1: Soft Purple Emperor Butterfly
+								WeightGain2: Chubby Purple Emperor Butterfly
+								# for later
+								WeightGain3: Tubby Purple Emperor Butterfly
+								WeightGain4: Fatty Purple Emperor Butterfly
+								WeightGain5: Fattier Purple Emperor Butterfly
+								WeightGain6: Wobbly Purple Emperor Butterfly
+								WeightGain7: Large Purple Emperor Butterfly
+								WeightGain8: Huge Purple Emperor Butterfly
+								WeightGain9: Enormous Purple Emperor Butterfly
+								WeightGain10: Fat Fuck Purple Emperor Butterfly
+							}
+
+							RedAdmiral: {
+								WeightGain1: Soft Red Admiral Butterfly
+								WeightGain2: Chubby Red Admiral Butterfly
+								# for later
+								WeightGain3: Tubby Red Admiral Butterfly
+								WeightGain4: Fatty Red Admiral Butterfly
+								WeightGain5: Fattier Red Admiral Butterfly
+								WeightGain6: Wobbly Red Admiral Butterfly
+								WeightGain7: Large Red Admiral Butterfly
+								WeightGain8: Huge Red Admiral Butterfly
+								WeightGain9: Enormous Red Admiral Butterfly
+								WeightGain10: Fat Fuck Red Admiral Butterfly
+							}
+
+							Ulysses: {
+								WeightGain1: Soft Ulysses Butterfly
+								WeightGain2: Chubby Ulysses Butterfly
+								# for later
+								WeightGain3: Tubby Ulysses Butterfly
+								WeightGain4: Fatty Ulysses Butterfly
+								WeightGain5: Fattier Ulysses Butterfly
+								WeightGain6: Wobbly Ulysses Butterfly
+								WeightGain7: Large Ulysses Butterfly
+								WeightGain8: Huge Ulysses Butterfly
+								WeightGain9: Enormous Ulysses Butterfly
+								WeightGain10: Fat Fuck Ulysses Butterfly
+							}
+
+							Sulphur: {
+								WeightGain1: Soft Sulphur Butterfly
+								WeightGain2: Chubby Sulphur Butterfly
+								# for later
+								WeightGain3: Tubby Sulphur Butterfly
+								WeightGain4: Fatty Sulphur Butterfly
+								WeightGain5: Fattier Sulphur Butterfly
+								WeightGain6: Wobbly Sulphur Butterfly
+								WeightGain7: Large Sulphur Butterfly
+								WeightGain8: Huge Sulphur Butterfly
+								WeightGain9: Enormous Sulphur Butterfly
+								WeightGain10: Fat Fuck Sulphur Butterfly
+							}
+
+							TreeNymph: {
+								WeightGain1: Soft Tree Nymph Butterfly
+								WeightGain2: Chubby Tree Nymph Butterfly
+								# for later
+								WeightGain3: Tubby Tree Nymph Butterfly
+								WeightGain4: Fatty Tree Nymph Butterfly
+								WeightGain5: Fattier Tree Nymph Butterfly
+								WeightGain6: Wobbly Tree Nymph Butterfly
+								WeightGain7: Large Tree Nymph Butterfly
+								WeightGain8: Huge Tree Nymph Butterfly
+								WeightGain9: Enormous Tree Nymph Butterfly
+								WeightGain10: Fat Fuck Tree Nymph Butterfly
+							}
+
+							ZebraSwallowtail: {
+								WeightGain1: Soft Zebra Swallowtail Butterfly
+								WeightGain2: Chubby Zebra Swallowtail Butterfly
+								# for later
+								WeightGain3: Tubby Zebra Swallowtail Butterfly
+								WeightGain4: Fatty Zebra Swallowtail Butterfly
+								WeightGain5: Fattier Zebra Swallowtail Butterfly
+								WeightGain6: Wobbly Zebra Swallowtail Butterfly
+								WeightGain7: Large Zebra Swallowtail Butterfly
+								WeightGain8: Huge Zebra Swallowtail Butterfly
+								WeightGain9: Enormous Zebra Swallowtail Butterfly
+								WeightGain10: Fat Fuck Zebra Swallowtail Butterfly
+							}
+
+							Julia: {
+								WeightGain1: Soft Julia Butterfly
+								WeightGain2: Chubby Julia Butterfly
+								# for later
+								WeightGain3: Tubby Julia Butterfly
+								WeightGain4: Fatty Julia Butterfly
+								WeightGain5: Fattier Julia Butterfly
+								WeightGain6: Wobbly Julia Butterfly
+								WeightGain7: Large Julia Butterfly
+								WeightGain8: Huge Julia Butterfly
+								WeightGain9: Enormous Julia Butterfly
+								WeightGain10: Fat Fuck Julia Butterfly
+							}
+						}
+					}
+
 					PermanentUpgrades.PureSwallowBoost1: Swallowing Stimulant
 
 					Potions: {
@@ -4353,10 +4469,299 @@ Mods: {
 							Flavor:
 								'''
 								With how diverse slimes are in size, shape, and savor, it's no surprise that some slimes end up hunted almost exclusively for their beloved flavor. No slime embodies this more directly than the Pinky, a very small slime which is HIGHLY prized for the following traits:
-								1) Its bite-size nature, allowing even the smallest and most inexperienced of predators to swallow it with relative ease.
+								1) Its bite-size nature, allowing even the smallest and most inexperienced or incapable of predators to swallow it with relative ease.
 								2) Its lovely flavor, which much resembles cotton candy, though almost all are uncertain as to where this sweet flavoring actually originated.
 								3) Its vibrant pink coloration, from which it gets its name.
 								'''
+						}
+
+						Butterflies: {
+							Generic: {
+								BaseWeight: This butterfly doesn't seem to have had any particularly good meals, judging from the unfortunate lack of fat on its frame.
+								WeightGain1: This butterfly seems to be eating okay; a small deposit of chub has formed on its abdominals.
+								WeightGain2: This butterfly seems to be eating decently; a healthy amount of flab has been stocked up around its belly.
+								# for later
+								WeightGain3: ""
+								WeightGain4: ""
+								WeightGain5: ""
+								WeightGain6: ""
+								WeightGain7: ""
+								WeightGain8: ""
+								WeightGain9: ""
+								WeightGain10: Your finger sinks into the butterfly's plush expanses of fat as you poke it, and you can't help but wonder if you'll be next up in there...for better or worse.
+							}
+
+							Monarch: {
+								Flavor: A species of butterfly named partially for its majestic coloration, and partially for the fact that one was the gastric tomb of Queen Andria Maria von Sember VII of Avarsici and three of her four royal daughters. The lone surviving daughter kept that butterfly as a pet, and kept it very well-fed with wannabe rival princesses until she took the throne.
+
+								WeightGain1: {
+									Short:
+										'''
+										When used, a harmless little butterfly is released into the world
+										Hold the Swallow key while using this item to instantly gulp down the released butterfly
+										{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+										'''
+									Long: Has no special effects when eaten.
+									Flavor:
+										'''
+										{$Mods.V2.ItemTooltip.Voraria.Consumables.Catchables.Butterflies.Monarch.Flavor}
+										{$Mods.V2.ItemTooltip.Voraria.Consumables.Catchables.Butterflies.Generic.WeightGain1}
+										'''
+								}
+
+								WeightGain2: {
+									Short:
+										'''
+										When used, a harmless little butterfly is released into the world
+										Hold the Swallow key while using this item to instantly gulp down the released butterfly
+										{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+										'''
+									Long: Has no special effects when eaten.
+									Flavor:
+										'''
+										{$Mods.V2.ItemTooltip.Voraria.Consumables.Catchables.Butterflies.Monarch.Flavor}
+										{$Mods.V2.ItemTooltip.Voraria.Consumables.Catchables.Butterflies.Generic.WeightGain2}
+										'''
+								}
+							}
+
+							PurpleEmperor: {
+								Flavor: Named for being the favorite butterfly of King Markus Caldera, who many referred to as the 'Elegant Purple Emperor' of a golden-age Avarsici, this butterfly eats like royalty: dining upon only the fanciest of flowers, living or otherwise. If offered, it will also help itself to any maids or butlers in the area.
+
+								WeightGain1: {
+									Short:
+										'''
+										When used, a harmless little butterfly is released into the world
+										Hold the Swallow key while using this item to instantly gulp down the released butterfly
+										{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+										'''
+									Long: Has no special effects when eaten.
+									Flavor:
+										'''
+										{$Mods.V2.ItemTooltip.Voraria.Consumables.Catchables.Butterflies.PurpleEmperor.Flavor}
+										{$Mods.V2.ItemTooltip.Voraria.Consumables.Catchables.Butterflies.Generic.WeightGain1}
+										'''
+								}
+
+								WeightGain2: {
+									Short:
+										'''
+										When used, a harmless little butterfly is released into the world
+										Hold the Swallow key while using this item to instantly gulp down the released butterfly
+										{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+										'''
+									Long: Has no special effects when eaten.
+									Flavor:
+										'''
+										{$Mods.V2.ItemTooltip.Voraria.Consumables.Catchables.Butterflies.PurpleEmperor.Flavor}
+										{$Mods.V2.ItemTooltip.Voraria.Consumables.Catchables.Butterflies.Generic.WeightGain2}
+										'''
+								}
+							}
+
+							RedAdmiral: {
+								Flavor: This butterfly, surprisingly, is ACTUALLY named for its coloration, being resemblant of a sea dog's finest red-and-black garb when its wings are fully spread. Perhaps rather fittingly, it prefers to eat seafood, be it plant or fish.
+
+								WeightGain1: {
+									Short:
+										'''
+										When used, a harmless little butterfly is released into the world
+										Hold the Swallow key while using this item to instantly gulp down the released butterfly
+										{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+										'''
+									Long: Has no special effects when eaten.
+									Flavor:
+										'''
+										{$Mods.V2.ItemTooltip.Voraria.Consumables.Catchables.Butterflies.RedAdmiral.Flavor}
+										{$Mods.V2.ItemTooltip.Voraria.Consumables.Catchables.Butterflies.Generic.WeightGain1}
+										'''
+								}
+
+								WeightGain2: {
+									Short:
+										'''
+										When used, a harmless little butterfly is released into the world
+										Hold the Swallow key while using this item to instantly gulp down the released butterfly
+										{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+										'''
+									Long: Has no special effects when eaten.
+									Flavor:
+										'''
+										{$Mods.V2.ItemTooltip.Voraria.Consumables.Catchables.Butterflies.RedAdmiral.Flavor}
+										{$Mods.V2.ItemTooltip.Voraria.Consumables.Catchables.Butterflies.Generic.WeightGain2}
+										'''
+								}
+							}
+
+							Ulysses: {
+								Flavor: No one has any idea why this butterfly's species was originally named 'Ulysses', as the records which could have informed us so have been lost to time; many have instead taken to calling it a 'sky blue swallowtail' butterfly, with research suggesting it may be a more sky-bound relative of the zebra swallowtail.
+
+								WeightGain1: {
+									Short:
+										'''
+										When used, a harmless little butterfly is released into the world
+										Hold the Swallow key while using this item to instantly gulp down the released butterfly
+										{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+										'''
+									Long: Has no special effects when eaten.
+									Flavor:
+										'''
+										{$Mods.V2.ItemTooltip.Voraria.Consumables.Catchables.Butterflies.Ulysses.Flavor}
+										{$Mods.V2.ItemTooltip.Voraria.Consumables.Catchables.Butterflies.Generic.WeightGain1}
+										'''
+								}
+
+								WeightGain2: {
+									Short:
+										'''
+										When used, a harmless little butterfly is released into the world
+										Hold the Swallow key while using this item to instantly gulp down the released butterfly
+										{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+										'''
+									Long: Has no special effects when eaten.
+									Flavor:
+										'''
+										{$Mods.V2.ItemTooltip.Voraria.Consumables.Catchables.Butterflies.Ulysses.Flavor}
+										{$Mods.V2.ItemTooltip.Voraria.Consumables.Catchables.Butterflies.Generic.WeightGain2}
+										'''
+								}
+							}
+
+							Sulphur: {
+								Flavor: Originally tokened Sveeglis butterflies back when Sveetia was still finding its footing again after the downfall of the Halrise dynasty, they were later discovered to be more closely colored towards the non-Sveetian substance of sulphur, rather than gilded sugar cane as they were originally named after.
+
+								WeightGain1: {
+									Short:
+										'''
+										When used, a harmless little butterfly is released into the world
+										Hold the Swallow key while using this item to instantly gulp down the released butterfly
+										{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+										'''
+									Long: Has no special effects when eaten.
+									Flavor:
+										'''
+										{$Mods.V2.ItemTooltip.Voraria.Consumables.Catchables.Butterflies.Sulphur.Flavor}
+										{$Mods.V2.ItemTooltip.Voraria.Consumables.Catchables.Butterflies.Generic.WeightGain1}
+										'''
+								}
+
+								WeightGain2: {
+									Short:
+										'''
+										When used, a harmless little butterfly is released into the world
+										Hold the Swallow key while using this item to instantly gulp down the released butterfly
+										{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+										'''
+									Long: Has no special effects when eaten.
+									Flavor:
+										'''
+										{$Mods.V2.ItemTooltip.Voraria.Consumables.Catchables.Butterflies.Sulphur.Flavor}
+										{$Mods.V2.ItemTooltip.Voraria.Consumables.Catchables.Butterflies.Generic.WeightGain2}
+										'''
+								}
+							}
+
+							TreeNymph: {
+								Flavor: An infamous, and infamously elusive, species of butterfly. Where does it get its name? Well...let's just say there's a reason dryads aren't at the top of the food chain.
+
+								WeightGain1: {
+									Short:
+										'''
+										When used, a harmless little butterfly is released into the world
+										Hold the Swallow key while using this item to instantly gulp down the released butterfly
+										{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+										'''
+									Long: Has no special effects when eaten.
+									Flavor:
+										'''
+										{$Mods.V2.ItemTooltip.Voraria.Consumables.Catchables.Butterflies.TreeNymph.Flavor}
+										{$Mods.V2.ItemTooltip.Voraria.Consumables.Catchables.Butterflies.Generic.WeightGain1}
+										'''
+								}
+
+								WeightGain2: {
+									Short:
+										'''
+										When used, a harmless little butterfly is released into the world
+										Hold the Swallow key while using this item to instantly gulp down the released butterfly
+										{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+										'''
+									Long: Has no special effects when eaten.
+									Flavor:
+										'''
+										{$Mods.V2.ItemTooltip.Voraria.Consumables.Catchables.Butterflies.TreeNymph.Flavor}
+										{$Mods.V2.ItemTooltip.Voraria.Consumables.Catchables.Butterflies.Generic.WeightGain2}
+										'''
+								}
+							}
+
+							ZebraSwallowtail: {
+								Flavor: A butterfly which, at one point, was purely native to the vast savannahs a ways west-southwest from Turean outskirts. Over time, it migrated to cooler climates with more abundant flowery foods...though it gave up its one preferred large prey, and thus, the primary use case of its camouflage.
+
+								WeightGain1: {
+									Short:
+										'''
+										When used, a harmless little butterfly is released into the world
+										Hold the Swallow key while using this item to instantly gulp down the released butterfly
+										{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+										'''
+									Long: Has no special effects when eaten.
+									Flavor:
+										'''
+										{$Mods.V2.ItemTooltip.Voraria.Consumables.Catchables.Butterflies.ZebraSwallowtail.Flavor}
+										{$Mods.V2.ItemTooltip.Voraria.Consumables.Catchables.Butterflies.Generic.WeightGain1}
+										'''
+								}
+
+								WeightGain2: {
+									Short:
+										'''
+										When used, a harmless little butterfly is released into the world
+										Hold the Swallow key while using this item to instantly gulp down the released butterfly
+										{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+										'''
+									Long: Has no special effects when eaten.
+									Flavor:
+										'''
+										{$Mods.V2.ItemTooltip.Voraria.Consumables.Catchables.Butterflies.ZebraSwallowtail.Flavor}
+										{$Mods.V2.ItemTooltip.Voraria.Consumables.Catchables.Butterflies.Generic.WeightGain2}
+										'''
+								}
+							}
+
+							Julia: {
+								Flavor: Grand Bismarke Julia Lesenta Halrise XVII, the tyrannical and titanically fat overlord of Old Sveetia, was put to gastric rest by one of this species of butterfly as the focal point of an assassination plot to overthrow the cruel woman. It has been coined the Julia butterfly ever since.
+
+								WeightGain1: {
+									Short:
+										'''
+										When used, a harmless little butterfly is released into the world
+										Hold the Swallow key while using this item to instantly gulp down the released butterfly
+										{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+										'''
+									Long: Has no special effects when eaten.
+									Flavor:
+										'''
+										{$Mods.V2.ItemTooltip.Voraria.Consumables.Catchables.Butterflies.Julia.Flavor}
+										{$Mods.V2.ItemTooltip.Voraria.Consumables.Catchables.Butterflies.Generic.WeightGain1}
+										'''
+								}
+
+								WeightGain2: {
+									Short:
+										'''
+										When used, a harmless little butterfly is released into the world
+										Hold the Swallow key while using this item to instantly gulp down the released butterfly
+										{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+										'''
+									Long: Has no special effects when eaten.
+									Flavor:
+										'''
+										{$Mods.V2.ItemTooltip.Voraria.Consumables.Catchables.Butterflies.Julia.Flavor}
+										{$Mods.V2.ItemTooltip.Voraria.Consumables.Catchables.Butterflies.Generic.WeightGain2}
+										'''
+								}
+							}
 						}
 					}
 
@@ -6299,6 +6704,8 @@ Mods: {
 				DisplayName: Pred Toggle Rod
 				Tooltip: ""
 			}
+
+			CaughtButterflyZebraSwallowtailWG2.Tooltip: ""
 		}
 	}
 }

@@ -9,6 +9,7 @@ using Terraria.ModLoader;
 using Terraria.Utilities;
 using V2.Core;
 using V2.Items.Voraria;
+using V2.Items.Voraria.Consumables.Catchables;
 using V2.NPCs.Vanilla.Cavern;
 using V2.NPCs.Vanilla.Forest;
 using V2.PlayerHandling;
@@ -150,19 +151,28 @@ namespace V2.NPCs.Sets
 
 			if (Main.netMode != NetmodeID.MultiplayerClient)
 			{
-				if (npc.ai[2] == 0f && npc.type != NPCID.EmpressButterfly)
+				if (npc.type == NPCID.Butterfly)
 				{
-					WeightedRandom<int> possibleSpecies = new WeightedRandom<int>([
-						new((int)NormalButterflyStuff.VanillaButterflySpecies.Monarch, 25),
-						new((int)NormalButterflyStuff.VanillaButterflySpecies.PurpleEmperor, 2),
-						new((int)NormalButterflyStuff.VanillaButterflySpecies.RedAdmiral, 6),
-						new((int)NormalButterflyStuff.VanillaButterflySpecies.Ulysses, 15),
-						new((int)NormalButterflyStuff.VanillaButterflySpecies.Sulphur, 22),
-						new((int)NormalButterflyStuff.VanillaButterflySpecies.TreeNymph, 1),
-						new((int)NormalButterflyStuff.VanillaButterflySpecies.ZebraSwallowtail, 19),
-						new((int)NormalButterflyStuff.VanillaButterflySpecies.Julia, 10),
-					]);
-					npc.ai[2] = 1 + possibleSpecies;
+					if (npc.ai[2] == 0f)
+					{
+						WeightedRandom<int> possibleSpecies = new WeightedRandom<int>([
+							new((int)NormalButterflyStuff.VanillaButterflySpecies.Monarch, 25),
+							new((int)NormalButterflyStuff.VanillaButterflySpecies.PurpleEmperor, 2),
+							new((int)NormalButterflyStuff.VanillaButterflySpecies.RedAdmiral, 6),
+							new((int)NormalButterflyStuff.VanillaButterflySpecies.Ulysses, 15),
+							new((int)NormalButterflyStuff.VanillaButterflySpecies.Sulphur, 22),
+							new((int)NormalButterflyStuff.VanillaButterflySpecies.TreeNymph, 1),
+							new((int)NormalButterflyStuff.VanillaButterflySpecies.ZebraSwallowtail, 19),
+							new((int)NormalButterflyStuff.VanillaButterflySpecies.Julia, 10),
+						]);
+						npc.ai[2] = 1 + possibleSpecies;
+					}
+					else if (npc.ai[2] > 8f)
+					{
+						int weightGainTarget = (int)Math.Floor(npc.ai[2] / 8.0);
+						NormalButterfly.SetVisualWeightStage(npc, weightGainTarget);
+						npc.ai[2] -= 8f * weightGainTarget;
+					}
 				}
 
 				if (npc.ai[3] == 0f)
@@ -304,13 +314,35 @@ namespace V2.NPCs.Sets
 						npc.AsFood().CalorieMultiplier = 0.50;
 						break;
 					case 1:
-						npc.catchItem = (short)(1994f + npc.ai[2] - 1f);
+						npc.catchItem = (npc.ai[2] - 1) switch
+						{
+							(int)NormalButterflyStuff.VanillaButterflySpecies.Monarch => ModContent.ItemType<CaughtButterflyMonarchWG1>(),
+							(int)NormalButterflyStuff.VanillaButterflySpecies.PurpleEmperor => ModContent.ItemType<CaughtButterflyPurpleEmperorWG1>(),
+							(int)NormalButterflyStuff.VanillaButterflySpecies.RedAdmiral => ModContent.ItemType<CaughtButterflyRedAdmiralWG1>(),
+							(int)NormalButterflyStuff.VanillaButterflySpecies.Ulysses => ModContent.ItemType<CaughtButterflyUlyssesWG1>(),
+							(int)NormalButterflyStuff.VanillaButterflySpecies.Sulphur => ModContent.ItemType<CaughtButterflySulphurWG1>(),
+							(int)NormalButterflyStuff.VanillaButterflySpecies.TreeNymph => ModContent.ItemType<CaughtButterflyTreeNymphWG1>(),
+							(int)NormalButterflyStuff.VanillaButterflySpecies.ZebraSwallowtail => ModContent.ItemType<CaughtButterflyZebraSwallowtailWG1>(),
+							(int)NormalButterflyStuff.VanillaButterflySpecies.Julia => ModContent.ItemType<CaughtButterflyJuliaWG1>(),
+							_ => ModContent.ItemType<CaughtButterflyMonarchWG1>(),
+						};
 						npc.AsPred().MaxStomachCapacity = 1.65;
 						npc.AsFood().WellFedPower = 0.075;
 						npc.AsFood().CalorieMultiplier = 0.75;
 						break;
 					case 2:
-						npc.catchItem = (short)(1994f + npc.ai[2] - 1f);
+						npc.catchItem = (npc.ai[2] - 1) switch
+						{
+							(int)NormalButterflyStuff.VanillaButterflySpecies.Monarch => ModContent.ItemType<CaughtButterflyMonarchWG2>(),
+							(int)NormalButterflyStuff.VanillaButterflySpecies.PurpleEmperor => ModContent.ItemType<CaughtButterflyPurpleEmperorWG2>(),
+							(int)NormalButterflyStuff.VanillaButterflySpecies.RedAdmiral => ModContent.ItemType<CaughtButterflyRedAdmiralWG2>(),
+							(int)NormalButterflyStuff.VanillaButterflySpecies.Ulysses => ModContent.ItemType<CaughtButterflyUlyssesWG2>(),
+							(int)NormalButterflyStuff.VanillaButterflySpecies.Sulphur => ModContent.ItemType<CaughtButterflySulphurWG2>(),
+							(int)NormalButterflyStuff.VanillaButterflySpecies.TreeNymph => ModContent.ItemType<CaughtButterflyTreeNymphWG2>(),
+							(int)NormalButterflyStuff.VanillaButterflySpecies.ZebraSwallowtail => ModContent.ItemType<CaughtButterflyZebraSwallowtailWG2>(),
+							(int)NormalButterflyStuff.VanillaButterflySpecies.Julia => ModContent.ItemType<CaughtButterflyJuliaWG2>(),
+							_ => ModContent.ItemType<CaughtButterflyMonarchWG1>(),
+						};
 						npc.AsPred().MaxStomachCapacity = 2.40;
 						npc.AsFood().WellFedPower = 0.011;
 						npc.AsFood().CalorieMultiplier = 1.10;
