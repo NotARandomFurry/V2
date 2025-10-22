@@ -4530,7 +4530,7 @@ Mods: {
 							}
 
 							PurpleEmperor: {
-								// Flavor: Named for being the favorite butterfly of King Markus Caldera, who many referred to as the 'Purple Emperor' of a golden-age Avarsici, this butterfly eats like royalty: dining upon only the fanciest of flowers, living or otherwise. If offered, it will also help itself to any maids or butlers in the area.
+								// Flavor: Named for being the favorite butterfly of King Markus Caldera, who many referred to as the 'Elegant Purple Emperor' of a golden-age Avarsici, this butterfly eats like royalty: dining upon only the fanciest of flowers, living or otherwise. If offered, it will also help itself to any maids or butlers in the area.
 
 								WeightGain1: {
 									/* Short:
@@ -5670,6 +5670,15 @@ Mods: {
 							[c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:Your stomach is getting melted from the inside by the lava you drank.]
 							[c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:Maybe don't drink lava without a way to prevent this outcome.]
 							'do you are have stupid'
+							''' */
+					}
+
+					Overstuffed: {
+						// Name: Overstuffed
+						/* Description:
+							'''
+							[c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:Just about anything could give you a stomachache right about now.]
+							[c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:You really should slow down, fatty.]
 							''' */
 					}
 

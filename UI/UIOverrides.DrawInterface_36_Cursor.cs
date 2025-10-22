@@ -27,10 +27,11 @@ namespace V2.UI
 {
 	public class CursorPredInformation
 	{
-		public static CursorPredInformation[] CursorPreds { get; set; } = new CursorPredInformation[255];
+		public static List<CursorPredInformation> CursorPreds { get; set; } = [];
 
 		public int Index { get; set; }
 		public VoreTracker CursorPred => ModContent.GetInstance<V2MasterSystem>().VoreTrackers.FirstOrDefault(x => x.Predator is null && x.SecondaryPredatorContext == "fatassCursor" && x.SecondaryContextOwner == Index);
+		public double CursorExtraWeight { get; set; }
 		public int CursorWeightGainStage { get; set; }
 		public double CursorStomachCapacity
 		{
@@ -137,9 +138,8 @@ namespace V2.UI
 				if (flag2)
 					Main.spriteBatch.Draw(TextureAssets.Cursors[Main.cursorOverride].Value, new Vector2(Main.mouseX, Main.mouseY), null, white, rotation, vector * TextureAssets.Cursors[Main.cursorOverride].Value.Size(), Main.cursorScale * num, SpriteEffects.None, 0f);
 			}
-			else if (CursorPredInformation.CursorPreds[Main.myPlayer].CursorPred is not null || CursorPredInformation.CursorPreds[Main.myPlayer].CursorWeightGainStage > 0.0)
+			else if (CursorPredInformation.CursorPreds.FirstOrDefault(x => x.Index == Main.myPlayer) is CursorPredInformation myHungryCursor && (myHungryCursor.CursorPred is not null || myHungryCursor.CursorWeightGainStage > 0.0))
 			{
-				CursorPredInformation myHungryCursor = CursorPredInformation.CursorPreds[Main.myPlayer];
 				Color cursorColor = Main.cursorColor;
 				string fatCursor = "V2/UI/CursorVore/CursorVore_BaseWeight";
 				if (myHungryCursor.CursorWeightGainStage >= 1)

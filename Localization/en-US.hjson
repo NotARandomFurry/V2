@@ -5669,6 +5669,15 @@ Mods: {
 							'''
 					}
 
+					Overstuffed: {
+						Name: Overstuffed
+						Description:
+							'''
+							[c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:Just about anything could give you a stomachache right about now.]
+							[c/{$Mods.V2.CommonColorCodes.NegativeVoreEffect}:You really should slow down, fatty.]
+							'''
+					}
+
 					ShimmeringStomach: {
 						Name: Shimmering Stomach
 						Description:

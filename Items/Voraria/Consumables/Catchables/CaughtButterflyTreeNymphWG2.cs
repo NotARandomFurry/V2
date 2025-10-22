@@ -10,8 +10,8 @@ namespace V2.Items.Voraria.Consumables.Catchables
 	public class CaughtButterflyTreeNymphWG2 : ModItem
 	{
 		public override bool IsLoadingEnabled(Mod mod) => !V2.GetFooled;
-		public override LocalizedText DisplayName => Language.GetText("Mods.V2.ItemName.Voraria.Consumables.Catchables.Butterflies.TreeNymph.WeightGain1");
-		public override LocalizedText Tooltip => Language.GetText("Mods.V2.ItemTooltip.Voraria.Consumables.Catchables.Butterflies.TreeNymph.WeightGain1.Short");
+		public override LocalizedText DisplayName => Language.GetText("Mods.V2.ItemName.Voraria.Consumables.Catchables.Butterflies.TreeNymph.WeightGain2");
+		public override LocalizedText Tooltip => Language.GetText("Mods.V2.ItemTooltip.Voraria.Consumables.Catchables.Butterflies.TreeNymph.WeightGain2.Short");
 		public override void SetStaticDefaults()
 		{
 			Item.ResearchUnlockCount = 5;

@@ -371,8 +371,6 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 
 			string exactMainBodyTexture = "V2/NPCs/Vanilla/Bosses/EmpressOfLight/EmpressOfLight_MainBody" + fatFuckingTummyTypeString;
 
-			string fatassBitchGiantessFairyWeightString = GetVisualWeightStage(npc) > 0 ? ("_WeightGain" + GetVisualWeightStage(npc)) : "_BaseWeight";
-
 			Texture2D mainBody = ModContent.Request<Texture2D>(exactMainBodyTexture, AssetRequestMode.ImmediateLoad).Value;
 			Vector2 npcCenterOnScreen = npc.Center - screenPos;
 			bool inPhase2 = npc.AI_120_HallowBoss_IsInPhase2();
