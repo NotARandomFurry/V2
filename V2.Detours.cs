@@ -199,13 +199,13 @@ namespace V2
 			On_Player.PickupItem += PlayerDetours.Detour_PickupItem;
 			On_Player.GrappleMovement += PlayerDetours.Detour_GrappleMovement;
 			On_DeadMansChestBiome.TurnGoldChestIntoDeadMansChest += (orig, instance, position) => WorldGenDetours.TurnGoldChestIntoDeadMansChest(position);
-            On_WorldGen.SpreadInfectionToNearbyTile += (orig, x, y, conversionType, range) => WorldGenDetours.SpreadInfectionToNearbyTile(orig, x, y, conversionType, range);
-            On_WorldGen.SpreadGrass += (orig, i, j, dirt, grass, repeat, color) => WorldGenDetours.SpreadGrass(orig, i, j, dirt, grass, repeat, color);
-            On_WorldGen.hardUpdateWorld += (orig, i, j) => WorldGenDetours.hardUpdateWorld(orig, i, j);
+			On_WorldGen.SpreadInfectionToNearbyTile += (orig, x, y, conversionType, range) => WorldGenDetours.SpreadInfectionToNearbyTile(orig, x, y, conversionType, range);
+			On_WorldGen.SpreadGrass += (orig, i, j, dirt, grass, repeat, color) => WorldGenDetours.SpreadGrass(orig, i, j, dirt, grass, repeat, color);
+			On_WorldGen.hardUpdateWorld += (orig, i, j) => WorldGenDetours.hardUpdateWorld(orig, i, j);
 			//On_HiveBiome.Place += (orig, self, origin, structures) => WorldGenDetours.HiveBiome_Place(self, origin, structures);
 		}
 
-        public static void DisengageVoraciousGameFuckery()
+		public static void DisengageVoraciousGameFuckery()
 		{
 			if (NPCLoader_NPCAI_Hook is not null)
 			{
