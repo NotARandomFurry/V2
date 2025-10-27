@@ -11,7 +11,7 @@ namespace V2.NPCs.Vanilla.Forest
 	{
 		public class NormalButterflyStruggleChart : StruggleChart
 		{
-			public override double ProgressRate => 4.0f;
+			public override double ProgressRate => 2.5f;
 			public override double NoteSpacingFactor => 1.0f;
 			public override List<StruggleChartNote[]> Notes =>
 			[

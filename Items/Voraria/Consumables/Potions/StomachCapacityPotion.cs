@@ -46,9 +46,6 @@ namespace V2.Items.Voraria.Consumables.Potions
 			Item.useTime = 17;
 			Item.consumable = true;
 
-			Item.buffType = ModContent.BuffType<StomachCapacityPotionBuff>();
-			Item.buffTime = DigestedCapacityBoostTime;
-
 			Item.value = Item.buyPrice(0, 1, 25, 0);
 			Item.rare = ItemRarityID.Green;
 

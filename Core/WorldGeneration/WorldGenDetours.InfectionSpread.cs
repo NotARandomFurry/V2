@@ -155,6 +155,7 @@ namespace V2.Core.WorldGeneration
 					}
 					if (flag || !TileID.Sets.CanBeClearedDuringGeneration[Main.tile[i, j].TileType] || ((grass == 23 || grass == 661) && (Main.tile[i, j - 1].TileType == 27 || Main.tile[i, j - 1].TileType == ModContent.TileType<Sunflower>())) || ((grass == 199 || grass == 662) && (Main.tile[i, j - 1].TileType == 27 || Main.tile[i, j - 1].TileType == ModContent.TileType<Sunflower>())) || (grass == 109 && (Main.tile[i, j - 1].TileType == 27 || Main.tile[i, j - 1].TileType == ModContent.TileType<Sunflower>())))
 						return;
+
 					Main.tile[i, j].TileType = (ushort)grass;
 					Main.tile[i, j].UseBlockColors(color);
 					for (int m = num2; m < num3; m++)
