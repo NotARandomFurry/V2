@@ -90,16 +90,16 @@ namespace V2.UI.StomachCapacityMeter
 
 			PrepareFields(Main.LocalPlayer);
 
-			Vector2 topLeftCorner = new Vector2(
-				Main.screenWidth / 2,
-				Main.screenHeight / 2
-			);
-			topLeftCorner.X -= 20 + (_capacitySegmentsCount * (_stomachCapacityPanelMiddle.Value.Width / 2));
-			topLeftCorner.Y += 32 * Main.GameZoomTarget;
-			topLeftCorner += Main.LocalPlayer.Center - (Main.screenPosition + new Vector2(Main.screenWidth / 2 * Main.UIScale, Main.screenHeight / 2));
-			
-			topLeftCorner.Y /= Main.UIScale;
-			
+			Vector2 topLeftCorner = Main.LocalPlayer.Center - Main.screenPosition;
+
+			topLeftCorner.X -= (20 + _capacitySegmentsCount * (_stomachCapacityPanelMiddle.Value.Width / 2)) * Main.UIScale;
+			topLeftCorner.Y += 32 * Main.UIScale * Main.GameZoomTarget;
+
+			topLeftCorner /= Main.UIScale;
+
+			spriteBatch.End();
+			spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.UIScaleMatrix);
+
 			for (int i = 0; i < _capacitySegmentsCount; i++)
 			{
 				spriteBatch.Draw(
@@ -109,7 +109,7 @@ namespace V2.UI.StomachCapacityMeter
 					Color.White,
 					0f,
 					default,
-					Main.UIScale,
+					1,
 					SpriteEffects.None,
 					0f
 				);
@@ -136,7 +136,7 @@ namespace V2.UI.StomachCapacityMeter
 					Color.White,
 					0f,
 					default,
-					Main.UIScale,
+					1,
 					SpriteEffects.None,
 					0f
 				);
@@ -160,7 +160,7 @@ namespace V2.UI.StomachCapacityMeter
 					Color.White,
 					0f,
 					default,
-					Main.UIScale,
+					1,
 					SpriteEffects.None,
 					0f
 				);
@@ -173,7 +173,7 @@ namespace V2.UI.StomachCapacityMeter
 				Color.White,
 				0f,
 				default,
-				Main.UIScale,
+				1,
 				SpriteEffects.None,
 				0f
 			);
@@ -184,7 +184,7 @@ namespace V2.UI.StomachCapacityMeter
 				Color.White,
 				0f,
 				default,
-				Main.UIScale,
+				1,
 				SpriteEffects.None,
 				0f
 			);
@@ -228,6 +228,9 @@ namespace V2.UI.StomachCapacityMeter
 				}
 				Main.mouseText = true;
 			}
+
+			spriteBatch.End();
+			spriteBatch.Begin();
 		}
 
 		private void PrepareFields(Player player)

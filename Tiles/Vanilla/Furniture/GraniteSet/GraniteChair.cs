@@ -4,8 +4,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.Enums;
-using Terraria.GameContent.ObjectInteractions;
 using Terraria.GameContent;
+using Terraria.GameContent.ObjectInteractions;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -14,6 +14,7 @@ using Terraria.ObjectData;
 using V2.Core;
 using V2.Items.Voraria.Placeables;
 using V2.NPCs;
+using V2.PlayerHandling;
 using V2.Projectiles;
 using V2.Sounds.Vore;
 
@@ -78,11 +79,12 @@ namespace V2.Tiles.Vanilla.Furniture.GraniteSet
 							Texture2D texture = ModContent.Request<Texture2D>("V2/Tiles/Vanilla/Furniture/GraniteSet/GraniteChair_SpriteSheet").Value;
 							Rectangle sourceRect = new Rectangle(62 * weightSize, 34 * tumSize, 62, 34);
 							Vector2 zero = Main.drawToScreen ? Vector2.Zero : new Vector2(Main.offScreenRange);
-							zero.X += 24;
-							zero.Y += 34;
+							//zero.X += 24;
+							//zero.Y += 34;
 							spriteBatch.Draw(
 								texture,
-								new Vector2(i * 16 - (int)Main.screenPosition.X - 16, j * 16 - (int)Main.screenPosition.Y - 14) + zero,
+								new Vector2(i * 16 - (int)Main.screenPosition.X - 16, j * 16 - (int)Main.screenPosition.Y - 14) + zero +
+								new Vector2(tile.TileFrameX != 0 ? 24 : -16, 36),
 								sourceRect,
 								Lighting.GetColor(i, j),
 								0f,
@@ -91,6 +93,38 @@ namespace V2.Tiles.Vanilla.Furniture.GraniteSet
 								tile.TileFrameX != 0 ? SpriteEffects.None : SpriteEffects.FlipHorizontally,
 								0f
 							);
+							Player plr = Main.LocalPlayer;
+							if (plr.AsV2Player().HoldingPredToggleRod)
+							{
+								Texture2D cornerTextureA = ModContent.Request<Texture2D>("V2/Items/Voraria/Tools/PredToggleRodInactiveCornerThin").Value;
+								Texture2D cornerTextureB = ModContent.Request<Texture2D>("V2/Items/Voraria/Tools/PredToggleRodInactiveCornerShort").Value;
+								if (npc.ai[2] == 1)
+								{
+									cornerTextureA = ModContent.Request<Texture2D>("V2/Items/Voraria/Tools/PredToggleRodActiveCornerThin").Value;
+									cornerTextureB = ModContent.Request<Texture2D>("V2/Items/Voraria/Tools/PredToggleRodActiveCornerShort").Value;
+								}
+
+								spriteBatch.Draw( // Upper Left
+									cornerTextureA,
+									new Vector2(i * 16 - (int)Main.screenPosition.X, j * 16 - (int)Main.screenPosition.Y) + zero,
+									new Rectangle(0, 0, 10, 10),
+									Color.White, 0f, default, 1f, SpriteEffects.None, 0f);
+								spriteBatch.Draw( // Upper Right
+									cornerTextureB,
+									new Vector2(i * 16 - (int)Main.screenPosition.X + (npc.width), j * 16 - (int)Main.screenPosition.Y) + zero,
+									new Rectangle(0, 0, 10, 10),
+									Color.White, 1.5708f, default, 1f, SpriteEffects.None, 0f);
+								spriteBatch.Draw( // Bottom Left
+									cornerTextureB,
+									new Vector2(i * 16 - (int)Main.screenPosition.X, j * 16 - (int)Main.screenPosition.Y + (npc.height)) + zero,
+									new Rectangle(0, 0, 10, 10),
+									Color.White, 4.71239f, default, 1f, SpriteEffects.None, 0f);
+								spriteBatch.Draw( // Bottom Right
+									cornerTextureA,
+									new Vector2(i * 16 - (int)Main.screenPosition.X + (npc.width), j * 16 - (int)Main.screenPosition.Y + (npc.height)) + zero,
+									new Rectangle(0, 0, 10, 10),
+									Color.White, 3.14159f, default, 1f, SpriteEffects.None, 0f);
+							}
 						}
 					}
 				}
@@ -115,6 +149,50 @@ namespace V2.Tiles.Vanilla.Furniture.GraniteSet
 			if (tile.TileFrameX != 0)
 			{
 				info.TargetDirection = 1; // Facing right if sat down on the right alternate (added through addAlternate in SetStaticDefaults earlier)
+			}
+
+			if (TileEntity.ByPosition.TryGetValue(new Point16(i, j - 1), out TileEntity tileEntity))
+			{
+				if (tileEntity is GraniteChair_TileEntity)
+				{
+					foreach (var npc in Main.ActiveProjectiles)
+					{
+						if (npc.active && (npc.position / 16).Distance(tileEntity.Position.ToVector2()) < 1f && npc.type == ModContent.ProjectileType<GraniteChair_ProjectileEntity>())
+						{
+							int tumSize = GraniteChair_ProjectileEntity.GetVisualBellySize(npc);
+							int weightSize = GraniteChair_ProjectileEntity.GetVisualWeightStage(npc);
+							Vector2 Offset = Vector2.Zero;
+							switch (tumSize)
+							{
+								case 0:
+									Offset = new Vector2(0, 0);
+									break;
+								case 1:
+									Offset = new Vector2(0, -2);
+									break;
+								case 2:
+									Offset = new Vector2(2, -4);
+									break;
+								case 3:
+									Offset = new Vector2(4, -4);
+									break;
+								case 4:
+								case 5:
+									Offset = new Vector2(8, -4);
+									break;
+								case 6:
+									Offset = new Vector2(12, -6);
+									break;
+								case 7:
+									Offset = new Vector2(20, -8);
+									break;
+							}
+							if (weightSize >= 2 && tumSize == 0)
+								Offset = new Vector2(0, 0);
+							info.VisualOffset = Offset;
+						}
+					}
+				}
 			}
 
 			// The anchor represents the bottom-most tile of the chair. This is used to align the entity hitbox
@@ -159,6 +237,7 @@ namespace V2.Tiles.Vanilla.Furniture.GraniteSet
 	{
 		public Projectile connectedNPC = null;
 		public double WeightOnLoad = 0;
+		public bool CurrentlyEnabled = false;
 		public override void Update()
 		{
 			if (connectedNPC is null)
@@ -168,6 +247,10 @@ namespace V2.Tiles.Vanilla.Furniture.GraniteSet
 			else if (!connectedNPC.active || connectedNPC.type != ModContent.ProjectileType<GraniteChair_ProjectileEntity>())
 			{
 				Activate();
+			}
+			else
+			{
+				CurrentlyEnabled = connectedNPC.ai[2] == 1 ? true : false;
 			}
 
 		}
@@ -184,7 +267,7 @@ namespace V2.Tiles.Vanilla.Furniture.GraniteSet
 			//ill be honest i dont exactly know the grounds for the offset for the npc but i *think* its like, half of the X tiles and all Y tiles
 			if (Main.netMode != NetmodeID.MultiplayerClient)
 			{
-				int num = Projectile.NewProjectile(new EntitySource_TileEntity(this, null), new Vector2((int)(Position.X * 16) + 8, (int)(Position.Y * 16) + 24), Vector2.Zero, ModContent.ProjectileType<GraniteChair_ProjectileEntity>(), 0, 0);
+				int num = Projectile.NewProjectile(new EntitySource_TileEntity(this, null), new Vector2((int)(Position.X * 16) + 8, (int)(Position.Y * 16) + 16), Vector2.Zero, ModContent.ProjectileType<GraniteChair_ProjectileEntity>(), 0, 0, ai2: CurrentlyEnabled ? 1 : 0);
 				connectedNPC = Main.projectile[num];
 				connectedNPC.AsPred().ExtraWeight = WeightOnLoad;
 				Main.projectile[num].netUpdate = true;
@@ -222,12 +305,15 @@ namespace V2.Tiles.Vanilla.Furniture.GraniteSet
 
 		public override void SaveData(TagCompound tag)
 		{
-			tag.Add("ExtraWeight", connectedNPC.AsPred().ExtraWeight);
+			if (connectedNPC is not null)
+				tag.Add("ExtraWeight", connectedNPC.AsPred().ExtraWeight);
+			tag.Add("CurrentlyEnabled", CurrentlyEnabled);
 		}
 
 		public override void LoadData(TagCompound tag)
 		{
 			WeightOnLoad = tag.GetDouble("ExtraWeight");
+			CurrentlyEnabled = tag.GetBool("CurrentlyEnabled");
 		}
 	}
 	public class GraniteChair_ProjectileEntity : ModProjectile
@@ -242,6 +328,8 @@ namespace V2.Tiles.Vanilla.Furniture.GraniteSet
 			Projectile.damage = 0;
 			Projectile.timeLeft = 6000;
 			Projectile.tileCollide = false;
+
+			Projectile.AsPred().IsPredTileEntity = true;
 
 			Projectile.AsFood().CannotBeEatenDueToShenanigans = true;
 
@@ -286,7 +374,7 @@ namespace V2.Tiles.Vanilla.Furniture.GraniteSet
 			{
 				Projectile.active = false;
 			}
-			if (Main.rand.NextBool(100)) Projectile.DoContactGulpage();
+			if (Main.rand.NextBool(100) && Projectile.ai[2] == 1) Projectile.DoContactGulpage();
 		}
 		public override void PostAI()
 		{

@@ -12,6 +12,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using V2.Core.StruggleSystem;
 using V2.Items;
+using V2.Items.Voraria.TransformationItems.Baelz;
 using V2.NPCs;
 using V2.PlayerHandling;
 using V2.Projectiles;
@@ -54,6 +55,8 @@ namespace V2.Core
 		public double StruggleChartProgress { get; set; }
 
 		public Entity Predator { get; internal set; }
+		public string SecondaryPredatorContext { get; internal set; }
+		public int SecondaryContextOwner { get; internal set; } // there's probably a more flexible way to do this but I really don't wanna sort it out right now, I just wanna make it work
 		public PredType PredatorType {
 			get
 			{
@@ -64,6 +67,9 @@ namespace V2.Core
 				if (Predator is Projectile)
 					return PredType.Projectile;
 
+				if (Predator is null && SecondaryPredatorContext is not null)
+					return PredType.Custom;
+
 				return PredType.Undefined;
 			}
 		}
@@ -72,11 +78,13 @@ namespace V2.Core
 		public List<PreyData> PreyQueue { get; internal set; }
 		public StruggleChart PredatorStruggleChart { get; internal set; }
 
-		public static void NewTracker(Entity pred, List<PreyData> prey)
+		public static void NewTracker(Entity pred, List<PreyData> prey, string predContext = null, int predContext2 = -1)
 		{
 			VoreTracker tracker = new VoreTracker();
 	
 			tracker.Predator = pred;
+			tracker.SecondaryPredatorContext = predContext;
+			tracker.SecondaryContextOwner = predContext2;
 
 			tracker.Prey = prey;
 			tracker.PreyQueue = [];
@@ -455,6 +463,7 @@ namespace V2.Core
 		public string Name { get; set; }
 		public bool NoHealth { get; set; }
 		public bool InventoryItem { get; set; }
+		public bool CannotBeRegurgitated { get; set; }
 		public double InitialWeight { get; set; }
 		public double InitialSize { get; set; }
 		public double WeightLeftToDigest { get; set; }
@@ -481,7 +490,7 @@ namespace V2.Core
 		/// <param name="exactType"></param>
 		/// <param name="weightRemainingIfDead"></param>
 		/// <returns></returns>
-		public static PreyData NewData(PreyType type, int exactType, string name, double weightRemainingIfDead = -1, double calmul = 1.0, double fedadd = 0.0)
+		public static PreyData NewData(PreyType type, int exactType, string name, double weightRemainingIfDead = -1, double calmul = 1.0, double fedadd = 0.0, bool cantRegurg = false)
 		{
 			PreyData data = new PreyData();
 			data.Type = type;
@@ -489,6 +498,7 @@ namespace V2.Core
 			data.Name = name;
 			data.CalorieMultiplier = calmul;
 			data.WellFedPower = fedadd;
+			data.CannotBeRegurgitated = cantRegurg;
 			if (weightRemainingIfDead != -1)
 			{
 				data.WeightLeftToDigest = weightRemainingIfDead;
@@ -550,10 +560,10 @@ namespace V2.Core
 			};
 			data.CalorieMultiplier = liquidType switch
 			{
-				LiquidID.Water => 0.1,
+				LiquidID.Water => 0.01,
 				LiquidID.Lava => 3,
 				LiquidID.Honey => 1.5,
-				LiquidID.Shimmer => -1.5,
+				LiquidID.Shimmer => -3,
 				_ => 0.1,
 			};
 			data.WellFedPower = liquidType switch
@@ -597,7 +607,8 @@ namespace V2.Core
 					exactType: preyNPC.type,
 					name: preyNPC.GivenOrTypeName,
 					calmul: preyNPC.AsFood().CalorieMultiplier,
-					fedadd: preyNPC.AsFood().WellFedPower
+					fedadd: preyNPC.AsFood().WellFedPower,
+					cantRegurg: preyNPC.AsFood().CannotBeRegurgitated
 				);
 				data.Instance = preyNPC;
 				if (tracker is not null)
@@ -612,7 +623,8 @@ namespace V2.Core
 					exactType: preyProjectile.type,
 					name: preyProjectile.Name,
 					calmul: preyProjectile.AsFood().CalorieMultiplier,
-					fedadd: preyProjectile.AsFood().WellFedPower
+					fedadd: preyProjectile.AsFood().WellFedPower,
+					cantRegurg: preyProjectile.AsFood().CannotBeRegurgitated
 				);
 				data.Instance = preyProjectile;
 				if (tracker is not null)
@@ -627,7 +639,8 @@ namespace V2.Core
 					exactType: preyItem.type,
 					name: preyItem.AffixName(),
 					calmul: preyItem.AsFood().CalorieMultiplier,
-					fedadd: preyItem.AsFood().WellFedPower
+					fedadd: preyItem.AsFood().WellFedPower,
+					cantRegurg: preyItem.AsFood().CannotBeRegurgitated
 				);
 				data.Instance = preyItem;
 				if (tracker is not null)
@@ -670,6 +683,13 @@ namespace V2.Core
 					ExactType = 0;
 					double playerToPlayerWidthRatio = (double)preyPlayer.width / refPlayerWidth;
 					double playerToPlayerHeightRatio = (double)preyPlayer.height / refPlayerHeight;
+					if (preyPlayer.AsV2Player().HasTransformation)
+					{
+						playerToPlayerWidthRatio = 1;
+						playerToPlayerHeightRatio = 1;
+						if (preyPlayer.AsV2Player().BaeTransformation)
+							playerToPlayerWidthRatio = BaelzInfo.BaseWeight;
+					}
 					InitialWeight = InitialSize = WeightLeftToDigest = playerToPlayerWidthRatio * playerToPlayerHeightRatio;
 					if (ConnectedTracker is not null)
 					{
@@ -780,10 +800,10 @@ namespace V2.Core
 			};
 			CalorieMultiplier = liquidType switch
 			{
-				LiquidID.Water => 0.1,
+				LiquidID.Water => 0.01,
 				LiquidID.Lava => 3,
 				LiquidID.Honey => 1.5,
-				LiquidID.Shimmer => -1.5,
+				LiquidID.Shimmer => -3,
 				_ => 0.1,
 			};
 			WellFedPower = liquidType switch
@@ -813,10 +833,10 @@ namespace V2.Core
 			};
 			CalorieMultiplier = liquidType switch
 			{
-				LiquidID.Water => 0.1,
+				LiquidID.Water => 0.01,
 				LiquidID.Lava => 3,
 				LiquidID.Honey => 1.5,
-				LiquidID.Shimmer => -1,
+				LiquidID.Shimmer => -3,
 				_ => 0.1,
 			};
 			WellFedPower = liquidType switch
@@ -843,9 +863,15 @@ namespace V2.Core
 			{
 				double actualSize = preyPlayer.AsPred().StomachFullness;
 				if (preyPlayer.AsV2Player().BaeTransformation)
-				{
 					actualSize += preyPlayer.AsPred().BaeTransformation_ExtraWeight;
-				}
+				else if (preyPlayer.AsV2Player().KroniiTransformation)
+					actualSize += preyPlayer.AsPred().KroniiTransformation_ExtraWeight;
+				else if (preyPlayer.AsV2Player().OllieTransformation)
+					actualSize += preyPlayer.AsPred().OllieTransformation_ExtraWeight;
+				else if (preyPlayer.AsV2Player().SoraTransformation)
+					actualSize += preyPlayer.AsPred().SoraTransformation_ExtraWeight;
+				else if (preyPlayer.AsV2Player().MintTransformation)
+					actualSize += preyPlayer.AsPred().MintTransformation_ExtraWeight;
 				return initialSize + actualSize;
 			}
 			if (preyEntity is NPC preyNPC)

@@ -1,15 +1,16 @@
-﻿using Microsoft.Xna.Framework;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI.Chat;
 using V2.Core;
+using V2.StatusEffects.Voraria.Buffs;
 
 namespace V2.Projectiles
 {
@@ -48,6 +49,23 @@ namespace V2.Projectiles
 		public static bool TakeDigestionDamage(this Projectile projectile, Entity pred, double digestionDamage)
 		{
 			int trueDigestionDamage = Main.DamageVar((float)digestionDamage);
+
+			//Baelz digestion crit (we are so fuckin good at making content)
+			bool digestionCrit = false;
+			Color DigestionTextColor = Color.DarkGreen;
+			if (pred is Player)
+			{
+				Player predPlayer = pred as Player;
+				int chance = Main.rand.Next(101);
+				int critChance = BaelzTransformation.GetCritChanceForDigestionTicks(predPlayer);
+				if (chance <= critChance)
+				{
+					digestionCrit = true;
+					trueDigestionDamage *= 2;
+					DigestionTextColor = Color.FromNonPremultiplied(125, 175, 0, 255);
+				}
+			}
+
 			projectile.AsFood().Health -= trueDigestionDamage;
 			switch (Main.netMode)
 			{
@@ -57,9 +75,9 @@ namespace V2.Projectiles
 
 					CombatText digestionDamageText = Main.combatText[CombatText.NewText(
 						projectile.Hitbox,
-						Color.DarkGreen,
+						DigestionTextColor,
 						trueDigestionDamage,
-						false,
+						digestionCrit,
 						true
 					)];
 					digestionDamageText.position.X = pred.Center.X + (pred.direction * 28);

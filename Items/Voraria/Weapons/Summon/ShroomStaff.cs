@@ -1,10 +1,10 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -13,9 +13,11 @@ using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 using V2.Core;
 using V2.PlayerHandling;
-using V2.Projectiles.Voraria.Weapons.Summon;
+using V2.Projectiles;
+using V2.Projectiles.Voraria.Weapons.Summon.ShroomFairy;
 
 namespace V2.Items.Voraria.Weapons.Summon
 {
@@ -32,6 +34,8 @@ namespace V2.Items.Voraria.Weapons.Summon
 		}
 		public override void SetDefaults()
 		{
+			Item.AsAnItem().ShouldSaveSummonWeights = true;
+
 			Item.knockBack = 3f;
 			Item.mana = 10;
 			Item.width = 46;
@@ -56,6 +60,24 @@ namespace V2.Items.Voraria.Weapons.Summon
 			player.AddBuff(Item.buffType, 2);
 			var projectile = Projectile.NewProjectileDirect(source, position, velocity, type, 0, 0, Main.myPlayer);
 			projectile.originalDamage = 0;
+			int FairyIndex = 1;
+			foreach (bool flag in Item.AsAnItem().InUseSummonWeights)
+			{
+				if (!flag)
+				{
+					break;
+				}
+				FairyIndex++;
+			}
+			if (FairyIndex > Item.AsAnItem().SavedSummonWeights.Count)
+			{
+				Item.AsAnItem().SavedSummonWeights.Add(0.0);
+				Item.AsAnItem().InUseSummonWeights.Add(false);
+			}
+			projectile.AsPred().ExtraWeight = Item.AsAnItem().SavedSummonWeights[FairyIndex - 1];
+			Item.AsAnItem().InUseSummonWeights[FairyIndex - 1] = true;
+			projectile.AsPred().TiedToSummonItem = Item;
+			projectile.AsPred().TiedToSummonIndex = FairyIndex - 1;
 			return false;
 		}
 		public override void AddRecipes()

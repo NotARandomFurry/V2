@@ -26,7 +26,7 @@ namespace V2.Items.Vanilla.Weapons.Melee
 			item.AsFood().Size = 0.52;
 
 			item.AsFood().OnSwallowDamage = 6;
-			item.AsFood().OnSwallowDeathReason = "{0} tried to deepthroat a cactus.";
+			item.AsFood().OnSwallowDeathReason = "Mods.V2.Death.SwallowDamage.Cactus";
 			item.AsFood().OnSwallowSoreThroatTime = V2Utils.SensibleTime(seconds: 3, frames: 30);
 
 			item.AsFood().UpdateInStomach += UpdateInStomach;

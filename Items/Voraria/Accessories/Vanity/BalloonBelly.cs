@@ -174,7 +174,12 @@ namespace V2.Items.Voraria.Accessories.Vanity
 				},
 				AssetRequestMode.ImmediateLoad
 			);
-			return true;
+			Vector2 Center = new Vector2(TextureAssets.Item[Type].Value.Bounds.Width / 2,
+				TextureAssets.Item[Type].Value.Bounds.Height / 2);
+
+			spriteBatch.Draw(TextureAssets.Item[Type].Value, position, frame, SkinColor, 0f, Center, scale, SpriteEffects.None, 0f);
+
+			return false;
 		}
 
 		public override bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
@@ -191,7 +196,9 @@ namespace V2.Items.Voraria.Accessories.Vanity
 				},
 				AssetRequestMode.ImmediateLoad
 			);
-			return true;
+			spriteBatch.Draw(TextureAssets.Item[Type].Value, Item.position - Main.screenPosition +
+				new Vector2(0, 32 - TextureAssets.Item[Type].Value.Bounds.Height), TextureAssets.Item[Type].Value.Bounds, lightColor, rotation, Vector2.Zero, scale, SpriteEffects.None, 0f);
+			return false;
 		}
 
 		public override void SaveData(TagCompound tag)

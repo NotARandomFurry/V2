@@ -51,9 +51,6 @@ namespace V2.Items.Voraria.Consumables.Potions
 			Item.useTime = 17;
 			Item.consumable = true;
 
-			Item.buffType = ModContent.BuffType<FastDigestionPotionBuff>();
-			Item.buffTime = V2Utils.SensibleTime(minutes: 1);
-
 			Item.value = Item.sellPrice(silver: 75);
 			Item.rare = ItemRarityID.Blue;
 

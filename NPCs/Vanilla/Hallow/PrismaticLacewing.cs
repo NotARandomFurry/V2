@@ -22,7 +22,7 @@ namespace V2.NPCs.Vanilla.Hallow
 		}
 	}
 
-	public class PrismaticLacewing : GlobalNPC
+	public partial class PrismaticLacewing : GlobalNPC
 	{
 		public override bool IsLoadingEnabled(Mod mod) => !V2.GetFooled;
 		public override bool InstancePerEntity => true;
@@ -32,10 +32,14 @@ namespace V2.NPCs.Vanilla.Hallow
 		public override void SetDefaults(NPC npc)
 		{
 			npc.AsV2NPC().Gender = EntityGender.Other;
+			npc.AsV2NPC().NewAIMethod = V2PrismaticLacewingAI;
 
 			npc.AsFood().DefinedBaseSize = 0.035;
+			npc.AsPred().WeightGainRatio = 0.10;
 			npc.AsPred().MaxStomachCapacity = 5.0;
 			npc.AsPred().BaseStomachacheMeterCapacity = 10000.0;
+			npc.AsFood().WellFedPower = 0.05;
+			npc.AsFood().CalorieMultiplier = 0.50;
 
 			npc.AsPred().SmallGulpThreshold = 0.00;
 			npc.AsPred().BigGulps = null;

@@ -32,6 +32,9 @@ namespace V2
 
 		public static ModKeybind RespawnAfterDigestionHotkey { get; set; }
 
+		public static ModKeybind OllieDashHotkey { get; set; }
+		public static ModKeybind MintWispHotkey { get; set; }
+
 		/// <summary>
 		/// A special flag which decides whether or not the vore blacklists are actually filled.<br/>
 		/// Defaults to <see langword="true"/>. If set to <see langword="false"/> instead, the blacklists remain empty.<br/>
@@ -85,6 +88,9 @@ namespace V2
 			StruggleSpecialHotkey = KeybindLoader.RegisterKeybind(this, "StruggleSpecial", "Space");
 
 			RespawnAfterDigestionHotkey = KeybindLoader.RegisterKeybind(this, "RespawnAfterDigestion", "LeftShift");
+
+			OllieDashHotkey = KeybindLoader.RegisterKeybind(this, "OllieDash", "Q");
+			MintWispHotkey = KeybindLoader.RegisterKeybind(this, "MintSummonWisp", "Q");
 
 			BetterDialogue.BetterDialogue.SupportedNPCs.Add(ModContent.NPCType<Lucinda>());
 			BetterDialogue.BetterDialogue.SupportedNPCs.Add(ModContent.NPCType<LucindaBound>());

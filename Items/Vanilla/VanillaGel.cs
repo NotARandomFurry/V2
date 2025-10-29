@@ -16,8 +16,8 @@ namespace V2.Items.Vanilla
 		public override void SetDefaults(Item entity)
 		{
 			entity.AsFood().MaxHealth = 6;
-			entity.AsFood().Size = 0.006d;
-			entity.AsFood().WellFedPower = 0.1;
+			entity.AsFood().Size = 0.006;
+			entity.AsFood().WellFedPower = 0.15;
 		}
 
 		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
@@ -32,8 +32,9 @@ namespace V2.Items.Vanilla
 		public override void SetDefaults(Item entity)
 		{
 			entity.AsFood().MaxHealth = 24;
-			entity.AsFood().Size = 0.006d;
-			entity.AsFood().WellFedPower = 0.5;
+			entity.AsFood().Size = 0.006;
+			entity.AsFood().WellFedPower = 0.75;
+			entity.AsFood().CalorieMultiplier = 1.5;
 		}
 	}
 }

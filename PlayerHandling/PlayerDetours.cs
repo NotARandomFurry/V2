@@ -2541,9 +2541,15 @@ namespace V2.PlayerHandling
 			{
 				double PlayerWeight = self.AsPred().StomachWeight + 1.0;
 				if (self.AsV2Player().BaeTransformation)
-				{
 					PlayerWeight += self.AsPred().BaeTransformation_ExtraWeight;
-				}
+				else if (self.AsV2Player().KroniiTransformation)
+					PlayerWeight += self.AsPred().KroniiTransformation_ExtraWeight;
+				else if (self.AsV2Player().OllieTransformation)
+					PlayerWeight += self.AsPred().OllieTransformation_ExtraWeight;
+				else if (self.AsV2Player().SoraTransformation)
+					PlayerWeight += self.AsPred().SoraTransformation_ExtraWeight;
+				else if (self.AsV2Player().MintTransformation)
+					PlayerWeight += self.AsPred().MintTransformation_ExtraWeight;
 				float additionalWeight = ((float)Math.Max(0, PlayerWeight - 1) / 4f);
 				Vector2 TargetForce = Vector2.Zero;
 				float HookStrength = 0f;
@@ -2797,8 +2803,18 @@ namespace V2.PlayerHandling
 			}
 			else if (self.HasBuff<Trance>() && itemToPickUp.AsFood().Health > 0)
 			{
-				PredPlayer.Swallow(self, itemToPickUp, ForceSwallow: true);
-				itemToPickUp = new Item();
+				if (itemToPickUp.stack > 25)
+				{
+					itemToPickUp.stack -= 25;
+					Item eatenItem = new Item();
+					eatenItem.SetDefaults(itemToPickUp.type);
+					eatenItem.stack = 25;
+					self.ForceDropItem(self.Center, ref eatenItem, out Item itemDrop);
+					PredPlayer.Swallow(self, itemDrop, ForceSwallow: true);
+					itemToPickUp = self.GetItem(playerIndex, itemToPickUp, GetItemSettings.PickupItemFromWorld);
+				}
+				else
+					PredPlayer.Swallow(self, itemToPickUp, ForceSwallow: true);
 			}
 			else
 			{

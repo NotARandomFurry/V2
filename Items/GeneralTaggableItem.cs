@@ -22,6 +22,13 @@ namespace V2.Items
 		public bool Gun { get; set; }
 		public bool NormalFood { get; set; }
 		public bool NormalDrink { get; set; }
+		public bool Pickaxe { get; set; }
+		public bool Axe { get; set; }
+		public bool Drill { get; set; }
+		public bool Chainsaw { get; set; }
+		public bool Hammer { get; set; }
+		public bool Hamaxe { get; set; }
+		public bool Jackhammer { get; set; } //remember that one chlorophyte tool? yeah.
 
 		public GeneralTaggableItem()
 		{
@@ -31,6 +38,13 @@ namespace V2.Items
 			Gun = false;
 			NormalFood = false;
 			NormalDrink = false;
+			Pickaxe = false;
+			Axe = false;
+			Drill = false;
+			Chainsaw = false;
+			Hammer = false;
+			Hamaxe = false;
+			Jackhammer = false;
 		}
 	}
 }

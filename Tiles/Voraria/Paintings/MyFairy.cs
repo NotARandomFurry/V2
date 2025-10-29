@@ -1,6 +1,6 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -10,6 +10,7 @@ using Terraria.ModLoader.IO;
 using Terraria.ObjectData;
 using V2.Core;
 using V2.NPCs;
+using V2.PlayerHandling;
 using V2.Projectiles;
 using V2.Sounds.Vore;
 
@@ -61,6 +62,34 @@ namespace V2.Tiles.Voraria.Paintings
 								new Vector2(i * 16 - (int)Main.screenPosition.X, j * 16 - (int)Main.screenPosition.Y) + zero,
 								sourceRect,
 								Lighting.GetColor(i, j), 0f, default, 1f, SpriteEffects.None, 0f);
+							Player plr = Main.LocalPlayer;
+							if (plr.AsV2Player().HoldingPredToggleRod)
+							{
+								Texture2D cornerTexture = ModContent.Request<Texture2D>("V2/Items/Voraria/Tools/PredToggleRodInactiveCorner").Value;
+								if (npc.ai[2] == 1)
+									cornerTexture = ModContent.Request<Texture2D>("V2/Items/Voraria/Tools/PredToggleRodActiveCorner").Value;
+
+								spriteBatch.Draw( // Upper Left
+									cornerTexture,
+									new Vector2(i * 16 - (int)Main.screenPosition.X, j * 16 - (int)Main.screenPosition.Y) + zero,
+									new Rectangle(0, 0, 10, 10),
+									Color.White, 0f, default, 1f, SpriteEffects.None, 0f);
+								spriteBatch.Draw( // Upper Right
+									cornerTexture,
+									new Vector2(i * 16 - (int)Main.screenPosition.X + (npc.width), j * 16 - (int)Main.screenPosition.Y) + zero,
+									new Rectangle(0, 0, 10, 10),
+									Color.White, 1.5708f, default, 1f, SpriteEffects.None, 0f);
+								spriteBatch.Draw( // Bottom Left
+									cornerTexture,
+									new Vector2(i * 16 - (int)Main.screenPosition.X, j * 16 - (int)Main.screenPosition.Y + (npc.height)) + zero,
+									new Rectangle(0, 0, 10, 10),
+									Color.White, 4.71239f, default, 1f, SpriteEffects.None, 0f);
+								spriteBatch.Draw( // Bottom Right
+									cornerTexture,
+									new Vector2(i * 16 - (int)Main.screenPosition.X + (npc.width), j * 16 - (int)Main.screenPosition.Y + (npc.height)) + zero,
+									new Rectangle(0, 0, 10, 10),
+									Color.White, 3.14159f, default, 1f, SpriteEffects.None, 0f);
+							}
 						}
 					}
 				}
@@ -72,6 +101,7 @@ namespace V2.Tiles.Voraria.Paintings
 	{
 		public Projectile connectedNPC = null;
 		public double WeightOnLoad = 0;
+		public bool CurrentlyEnabled = true;
 		public override void Update()
 		{
 			if (connectedNPC is null)
@@ -82,7 +112,11 @@ namespace V2.Tiles.Voraria.Paintings
 			{
 				Activate();
 			}
-				
+			else
+			{
+				CurrentlyEnabled = connectedNPC.ai[2] == 1 ? true : false;
+			}
+
 		}
 		public void Activate()
 		{
@@ -96,7 +130,7 @@ namespace V2.Tiles.Voraria.Paintings
 			}
 			if (Main.netMode != NetmodeID.MultiplayerClient)
 			{
-				int num = Projectile.NewProjectile(new EntitySource_TileEntity(this, null), new Vector2((int)(Position.X * 16) + 32, (int)(Position.Y * 16) + 32), Vector2.Zero, ModContent.ProjectileType<MyFairy_ProjectileEntity>(), 0, 0);
+				int num = Projectile.NewProjectile(new EntitySource_TileEntity(this, null), new Vector2((int)(Position.X * 16) + 32, (int)(Position.Y * 16) + 32), Vector2.Zero, ModContent.ProjectileType<MyFairy_ProjectileEntity>(), 0, 0, ai2: CurrentlyEnabled ? 1 : 0);
 				connectedNPC = Main.projectile[num];
 				connectedNPC.AsPred().ExtraWeight = WeightOnLoad;
 				Main.projectile[num].netUpdate = true;
@@ -134,12 +168,15 @@ namespace V2.Tiles.Voraria.Paintings
 
 		public override void SaveData(TagCompound tag)
 		{
-			tag.Add("ExtraWeight", connectedNPC.AsPred().ExtraWeight);
+			if (connectedNPC is not null)
+				tag.Add("ExtraWeight", connectedNPC.AsPred().ExtraWeight);
+			tag.Add("CurrentlyEnabled", CurrentlyEnabled);
 		}
 
 		public override void LoadData(TagCompound tag)
 		{
 			WeightOnLoad = tag.GetDouble("ExtraWeight");
+			CurrentlyEnabled = tag.GetBool("CurrentlyEnabled");
 		}
 	}
 	public class MyFairy_ProjectileEntity : ModProjectile
@@ -154,6 +191,8 @@ namespace V2.Tiles.Voraria.Paintings
 			Projectile.damage = 0;
 			Projectile.timeLeft = 6000;
 			Projectile.tileCollide = false;
+
+			Projectile.AsPred().IsPredTileEntity = true;
 
 			Projectile.AsFood().CannotBeEatenDueToShenanigans = true;
 
@@ -198,7 +237,7 @@ namespace V2.Tiles.Voraria.Paintings
 			{
 				Projectile.active = false;
 			}
-			if (Main.rand.NextBool(100)) Projectile.DoContactGulpage();
+			if (Main.rand.NextBool(100) && Projectile.ai[2] == 1) Projectile.DoContactGulpage();
 		}
 		public override void PostAI()
 		{

@@ -31,7 +31,7 @@ namespace V2.Items.Vanilla.Consumables
 		{
 			item.AsFood().MaxHealth = 500;
 			item.AsFood().Size = 0.34;
-			item.AsFood().WellFedPower = 0.4;
+			item.AsFood().WellFedPower = 1;
 			item.AsFood().CalorieMultiplier = 1.5;
 
 			item.AsFood().UpdateInStomach += UpdateInStomach;

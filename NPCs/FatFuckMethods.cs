@@ -14,7 +14,7 @@ namespace V2.NPCs
 {
 	public class FatFuckMethods
 	{
-		public static string FatassDeathReason(NPC npc, Player victim)
+		public static NetworkText FatassDeathReason(NPC npc, Player victim)
 		{
 			List<string> deathMessageKeyList =
 			[
@@ -28,13 +28,10 @@ namespace V2.NPCs
 			];
 			string finalDeathReasonKey = Main.rand.NextFromCollection(deathMessageKeyList);
 
-			return Language.GetTextValueWith(
+			return NetworkText.FromKey(
 				finalDeathReasonKey,
-				new
-				{
-					Player = victim.name,
-					NPC = npc.TypeName,
-				}
+				victim.name,
+				npc.GivenOrTypeName
 			);
 		}
 		public static void DamageTiles(NPC npc, Rectangle Hitbox, int power = 0)

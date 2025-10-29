@@ -80,19 +80,23 @@ namespace V2.UI.SizeScanners
 					size += ":" + futurePredGutCapacity + "]";
 				}
 
+				spriteBatch.End();
+				spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
 				ChatManager.DrawColorCodedStringWithShadow(
 					spriteBatch,
 					FontAssets.MouseText.Value,
 					size,
-					futurePred.Center + new Vector2(
+					(futurePred.Center + new Vector2(
 						0,
-						((futurePred.height / 2) + 29) * Main.GameZoomTarget
-					) - Main.screenPosition,
+						-((futurePred.height / 2) + 16)
+					) - Main.screenPosition),
 					Color.White,
 					0f,
 					ChatManager.GetStringSize(FontAssets.MouseText.Value, size, Vector2.One) * 0.5f,
-					Vector2.One
+					new Vector2(1.25f, 1.25f) / Main.GameZoomTarget
 				);
+				spriteBatch.End();
+				spriteBatch.Begin();
 			}
 
 			for (int i = 0; i < Main.maxPlayers; i++)
@@ -127,20 +131,23 @@ namespace V2.UI.SizeScanners
 
 				size += "00:" + futurePredGutCapacity + "]";
 
-
+				spriteBatch.End();
+				spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
 				ChatManager.DrawColorCodedStringWithShadow(
 					spriteBatch,
 					FontAssets.MouseText.Value,
 					size,
-					futurePred.Center + new Vector2(
+					(futurePred.Center + new Vector2(
 						0,
-						(futurePred.height / 2) + 16
-					) - Main.screenPosition,
+						-((futurePred.height / 2) + 16)
+					) - Main.screenPosition),
 					Color.White,
 					0f,
 					ChatManager.GetStringSize(FontAssets.MouseText.Value, size, Vector2.One) * 0.5f,
-					Vector2.One
+					new Vector2(1.25f, 1.25f) / Main.GameZoomTarget
 				);
+				spriteBatch.End();
+				spriteBatch.Begin();
 			}
 		}
 	}

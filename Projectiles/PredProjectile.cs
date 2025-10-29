@@ -31,8 +31,14 @@ namespace V2.Projectiles
 		public EntityDigestionType DigestionType { get; set; }
 		public double MaxStomachCapacity { get; set; }
 		public float MaxSwallowRange { get; set; }
+		public bool IsPredTileEntity { get; set; }
 		public double ExtraWeight { get; set; }
 		public double WeightGainRatio { get; set; }
+		/// <summary>
+		/// Tracks how much food this pred has absorbed, including the food's calorie multiplier.<br/>
+		/// Can be used for making things happen after having digested enough food, i suppose!<br/>
+		/// </summary>
+		public double FoodAbsorbed { get; set; }
 		/// <summary>
 		/// Allows this projectile to eat bosses despite not being a boss themselves.<br/>
 		/// Defaults to false.<br/>
@@ -117,6 +123,9 @@ namespace V2.Projectiles
 		public delegate int DelegateGetVisualWeightStage(Projectile projectile);
 		public DelegateGetVisualWeightStage GetVisualWeightStage { get; set; }
 
+		public Item TiedToSummonItem { get; set; }
+		public int TiedToSummonIndex { get; set; }
+
 		public SlotId ActiveStomachNoises { get; set; }
 
 		public override bool InstancePerEntity => true;
@@ -130,6 +139,11 @@ namespace V2.Projectiles
 			ExtraWeight = 0.0;
 			WeightGainRatio = 0.4;
 			CanSwallowBosses = false;
+
+			TiedToSummonItem = null;
+			TiedToSummonIndex = -1;
+
+			IsPredTileEntity = false;
 
 			GetDigestionTickRate = null;
 			GetDigestionTickDamage = null;
@@ -270,7 +284,6 @@ namespace V2.Projectiles
 			}
 
 			PreyData food = PreyData.NewData(prey);
-			AddNewPrey(pred, food);
 			PlaySwallowGulp(pred, food);
 			switch (food.Type)
 			{
@@ -294,11 +307,19 @@ namespace V2.Projectiles
 					break;
 				case PreyType.Item:
 					Item item = prey as Item;
+					if (item.AsFood().PreSwallow is not null && !item.AsFood().PreSwallow.Invoke(item, pred))
+					{
+						food = null;
+						return;
+					}
 					item.AsFood().OnSwallow?.Invoke(item, pred);
 					if (item.AsFood().OnSwallowDamage > 0)
 						pred.AsFood().Health -= item.AsFood().OnSwallowDamage;
 					break;
 			}
+
+			AddNewPrey(pred, food);
+
 			pred.netUpdate = true;
 
 			if (MPstate == 1)
@@ -363,6 +384,13 @@ namespace V2.Projectiles
 				else if (realPrey is Item realPreyItem)
 				{
 					realPreyItem.noGrabDelay = 60;
+					for (int i = 0; i < realPreyItem.stack; i++)
+						if (realPreyItem.AsFood().OnRegurgitate is not null && realPreyItem.AsFood().OnRegurgitate.Invoke(realPreyItem, pred))
+						{
+							realPreyItem.stack--;
+						}
+					if (realPreyItem.stack <= 0)
+						realPreyItem.TurnToAir();
 				}
 				totalRegurgiweight += prey.WeightLeftToDigest;
 			}
@@ -568,12 +596,16 @@ namespace V2.Projectiles
 					double digestedWeightPerTick = pred.AsPred().GetPreyAbsorptionRate.Invoke(pred) / (double)GetStomachTracker(pred).Prey.Count;
 					if (prey.WeightLeftToDigest <= digestedWeightPerTick)
 					{
-						pred.AsPred().ExtraWeight += prey.WeightLeftToDigest * pred.AsPred().WeightGainRatio;
+						pred.AsPred().ExtraWeight += prey.WeightLeftToDigest * prey.CalorieMultiplier * pred.AsPred().WeightGainRatio;
+						pred.AsPred().FoodAbsorbed += prey.WeightLeftToDigest * prey.CalorieMultiplier;
+
 						prey.WeightLeftToDigest = 0;
 					}
 					else
 					{
-						pred.AsPred().ExtraWeight += digestedWeightPerTick * pred.AsPred().WeightGainRatio;
+						pred.AsPred().ExtraWeight += digestedWeightPerTick * prey.CalorieMultiplier * pred.AsPred().WeightGainRatio;
+						pred.AsPred().FoodAbsorbed += digestedWeightPerTick * prey.CalorieMultiplier;
+
 						prey.WeightLeftToDigest -= digestedWeightPerTick;
 					}
 				}

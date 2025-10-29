@@ -108,5 +108,21 @@ namespace V2.PlayerHandling.PredPlayerGoals
 
 			return pred.AsPred().GoalsCompleted[InternalName];
 		}
+		/// <summary>
+		/// Checks whether a specific goal has been completed by the given predatory player.<br/>
+		/// </summary>
+		/// <param name="pred">
+		/// The predatory player to check for.<br/>
+		/// </param>
+		/// <param name="internalName">
+		/// The internal name of the goal to check.<br/>
+		/// </param>
+		public bool HasCompleted(Player pred, string internalName)
+		{
+			if (!pred.AsPred().GoalsCompleted.ContainsKey(internalName))
+				pred.AsPred().GoalsCompleted.Add(internalName, false);
+
+			return pred.AsPred().GoalsCompleted[internalName];
+		}
 	}
 }

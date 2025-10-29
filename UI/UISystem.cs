@@ -10,6 +10,7 @@ using V2.UI.SizeScanners;
 using V2.UI.StomachacheMeter;
 using V2.UI.StomachCapacityMeter;
 using V2.UI.StruggleSystem;
+using V2.UI.MintWispSummonMeter;
 
 namespace V2.UI
 {
@@ -39,6 +40,9 @@ namespace V2.UI
 		public MealSizeScannerUI MealSizeScannerInterface;
 		public UserInterface PredCapacityScannerInterfaceLayer;
 		public PredCapacityScannerUI PredCapacityScannerInterface;
+
+		public UserInterface MintWispSummonMeterInterfaceLayer;
+		public MintWispSummonMeterUI MintWispSummonMeterInterface;
 
 		public override void OnWorldLoad()
 		{
@@ -84,6 +88,11 @@ namespace V2.UI
 			PredCapacityScannerInterface = new PredCapacityScannerUI();
 			PredCapacityScannerInterface.Activate();
 			PredCapacityScannerInterfaceLayer.SetState(PredCapacityScannerInterface);
+
+			MintWispSummonMeterInterfaceLayer = new UserInterface();
+			MintWispSummonMeterInterface = new MintWispSummonMeterUI();
+			MintWispSummonMeterInterface.Activate();
+			MintWispSummonMeterInterfaceLayer.SetState(MintWispSummonMeterInterface);
 		}
 
 		public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
@@ -94,7 +103,7 @@ namespace V2.UI
 				layers.Remove(hairStyleWindowLegacyLayer);
 				layers.Insert(
 					hairStyleWindowLegacyLayerIndex, new LegacyGameInterfaceLayer(
-						"Vanilla: Hair Window (Voraria II Override)",
+						"Vanilla: Hair Window (VSC Override)",
 						delegate
 						{
 							if (Main.LocalPlayer.talkNPC != -1)
@@ -115,7 +124,7 @@ namespace V2.UI
 				layers.Remove(deathTextLegacyLayer);
 				layers.Insert(
 					deathTextLegacyLayerIndex, new LegacyGameInterfaceLayer(
-						"Vanilla: Death Text (Voraria II Override)",
+						"Vanilla: Death Text (VSC Override)",
 						delegate
 						{
 							UIOverrides.DrawInterface_35_YouDied();
@@ -127,10 +136,23 @@ namespace V2.UI
 			}
 			if (layers.FirstOrDefault(x => x.Name == "Vanilla: Cursor") is LegacyGameInterfaceLayer cursorLegacyLayer)
 			{
-				AddInterfaceLayer(layers, MouseRestrictionDummyLayer, MouseRestrictionDummy, layers.IndexOf(cursorLegacyLayer), "Voraria II: Mouse Restriction Dummy State");
+				int cursorLegacyLayerIndex = layers.IndexOf(cursorLegacyLayer);
+				layers.Remove(cursorLegacyLayer);
+				layers.Insert(
+					cursorLegacyLayerIndex, new LegacyGameInterfaceLayer(
+						"Vanilla: Cursor (VSC Override)",
+						delegate
+						{
+							UIOverrides.DrawInterface_36_Cursor();
+							return true;
+						},
+						InterfaceScaleType.UI
+					)
+				);
+				AddInterfaceLayer(layers, MouseRestrictionDummyLayer, MouseRestrictionDummy, cursorLegacyLayerIndex, "Mouse Restriction Dummy State");
 			}
 
-			int OverriddenHairWindowIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Hair Window (Voraria II Override)"));
+			int OverriddenHairWindowIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Hair Window (VSC Override)"));
 			if (OverriddenHairWindowIndex != -1)
 			{
 				AddInterfaceLayer(layers, StomachCapacityBarInterfaceLayer, StomachCapacityBarInterface, OverriddenHairWindowIndex, "Stomach Capacity Meter");
@@ -140,6 +162,7 @@ namespace V2.UI
 				AddInterfaceLayer(layers, PlayerPredStruggleInterfaceLayer, PlayerPredStruggleInterface, OverriddenHairWindowIndex + 4, "Player Pred Struggles");
 				AddInterfaceLayer(layers, PredStatsMenuInterfaceLayer, PredStatsMenuInterface, OverriddenHairWindowIndex + 5, "Pred Stats Menu");
 				AddInterfaceLayer(layers, PredStatsMenuMouthInterfaceLayer, PredStatsMenuMouthInterface, OverriddenHairWindowIndex + 6, "Rose");
+				AddInterfaceLayer(layers, MintWispSummonMeterInterfaceLayer, MintWispSummonMeterInterface, OverriddenHairWindowIndex + 7, "Mint Wisp Summon Meter");
 			}
 			int MouseTextIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Mouse Text"));
 			if (MouseTextIndex != -1)
@@ -154,7 +177,7 @@ namespace V2.UI
 			else
 				name = customName;
 
-			layers.Insert(index, new LegacyGameInterfaceLayer("Voraria II: " + name,
+			layers.Insert(index, new LegacyGameInterfaceLayer("VSC: " + name,
 				delegate
 				{
 					userInterface.Update(Main._drawInterfaceGameTime);

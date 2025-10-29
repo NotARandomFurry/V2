@@ -16,9 +16,9 @@ namespace V2.NPCs.Sets
 {
 	public static class AnyGemCritterStuff
 	{
-		public static AnyButterfly AsGemCritter(this NPC npc)
+		public static Butterfly AsGemCritter(this NPC npc)
 		{
-			if (!npc.TryGetGlobalNPC(out AnyButterfly tastySparklySnack))
+			if (!npc.TryGetGlobalNPC(out Butterfly tastySparklySnack))
 				throw new Exception("this instance of a gem critter, supposedly, doesn't exist");
 
 			return tastySparklySnack;

@@ -29,5 +29,10 @@ namespace V2
 		[TooltipKey("$Mods.V2.Configs.Client.Visual.TheGutSlutVisionOMatic.Tooltip")]
 		[DefaultValue(false)]
 		public bool TheGutSlutVisionOMatic { get; set; }
+
+		[LabelKey("$Mods.V2.Configs.Client.Visual.StreamerMode.Label")]
+		[TooltipKey("$Mods.V2.Configs.Client.Visual.StreamerMode.Tooltip")]
+		[DefaultValue(true)]
+		public bool StreamerMode { get; set; }
 	}
 }

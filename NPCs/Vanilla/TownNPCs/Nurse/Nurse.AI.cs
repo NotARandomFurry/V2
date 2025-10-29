@@ -605,6 +605,10 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 						num18 = 0.1f;
 					}
 
+					float weightMult = (float)(1.0 / Math.Max(PreyData.GetPreySize(npc) / 1.67 - npc.AsFood().DefinedBaseSize, 1));
+					num17 *= Math.Min(1.0f, weightMult * 2);
+					num18 *= weightMult;
+
 					if (npc.velocity.X < 0f - num17 || npc.velocity.X > num17)
 					{
 						if (npc.velocity.Y == 0f)

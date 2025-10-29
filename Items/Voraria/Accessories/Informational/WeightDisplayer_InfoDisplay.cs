@@ -10,30 +10,181 @@ using Terraria.ModLoader;
 using V2.Core;
 using V2.PlayerHandling;
 
-namespace V2.Items.Vanilla.Accessories.Informational
+namespace V2.Items.Voraria.Accessories.Informational
 {
-	public class WeightDisplayer1SizeDisplay : InfoDisplay
+	public class WeightDisplayer_Weight_Unknown : InfoDisplay
 	{
-		public override string Texture => "V2/Items/Vanilla/Accessories/Informational/TallyCounter_VoreInfoDisplay_Icon";
+		public override string Texture => "V2/Items/Voraria/Accessories/Informational/WeightDisplayerIcons/WeightDisplayer_UnknownWeight_Icon";
 
-		public override LocalizedText DisplayName => Language.GetText("Mods.V2.InfoDisplayName.WeightDisplayer.Size");
+		public override LocalizedText DisplayName => Language.GetText("Mods.V2.InfoDisplayName.WeightDisplayer.Weight");
 
-		public override bool Active() => Main.player[Main.myPlayer].AsPred().WeightDisplay;
+		public override bool Active() => Main.player[Main.myPlayer].AsPred().WeightDisplay && !Main.player[Main.myPlayer].AsV2Player().HasTransformation;
 
 		public override string DisplayValue(ref Color displayColor, ref Color displayShadowColor)
 		{
 			Player player = Main.player[Main.myPlayer];
-			double Size = PreyData.GetPreySize(player);
-			return "Current Size: " + Size.CastToDecimalPlaces(3).ToString();
+			double Size = PlayerGaining.GetPlayerWeight(player, true, false);
+			return "Current Weight: " + Size.CastToDecimalPlaces(3).ToString();
 		}
 	}
-	public class WeightDisplayer2SaturationDisplay : InfoDisplay
+
+	public class WeightDisplayer_Weight_Baelz : InfoDisplay
 	{
-		public override string Texture => "V2/Items/Vanilla/Accessories/Informational/TallyCounter_VoreInfoDisplay_Icon";
+		public override string Texture => "V2/Items/Voraria/Accessories/Informational/WeightDisplayerIcons/WeightDisplayer_BaelzWeight_Icon";
+
+		public override LocalizedText DisplayName => Language.GetText("Mods.V2.InfoDisplayName.WeightDisplayer.Weight");
+
+		public override bool Active() => Main.player[Main.myPlayer].AsPred().WeightDisplay && Main.player[Main.myPlayer].AsV2Player().BaeTransformation;
+
+		public override string DisplayValue(ref Color displayColor, ref Color displayShadowColor)
+		{
+			Player player = Main.player[Main.myPlayer];
+			double Size = PlayerGaining.GetPlayerWeight(player, true, false);
+			return "Current Weight: " + Size.CastToDecimalPlaces(3).ToString();
+		}
+	}
+	public class WeightDisplayer_Weight_Kronii : InfoDisplay
+	{
+		public override string Texture => "V2/Items/Voraria/Accessories/Informational/WeightDisplayerIcons/WeightDisplayer_KroniiWeight_Icon";
+
+		public override LocalizedText DisplayName => Language.GetText("Mods.V2.InfoDisplayName.WeightDisplayer.Weight");
+
+		public override bool Active() => Main.player[Main.myPlayer].AsPred().WeightDisplay && Main.player[Main.myPlayer].AsV2Player().KroniiTransformation;
+
+		public override string DisplayValue(ref Color displayColor, ref Color displayShadowColor)
+		{
+			Player player = Main.player[Main.myPlayer];
+			double Size = PlayerGaining.GetPlayerWeight(player, true, false);
+			return "Current Weight: " + Size.CastToDecimalPlaces(3).ToString();
+		}
+	}
+	public class WeightDisplayer_Weight_Ollie : InfoDisplay
+	{
+		public override string Texture => "V2/Items/Voraria/Accessories/Informational/WeightDisplayerIcons/WeightDisplayer_OllieWeight_Icon";
+
+		public override LocalizedText DisplayName => Language.GetText("Mods.V2.InfoDisplayName.WeightDisplayer.Weight");
+
+		public override bool Active() => Main.player[Main.myPlayer].AsPred().WeightDisplay && Main.player[Main.myPlayer].AsV2Player().OllieTransformation;
+
+		public override string DisplayValue(ref Color displayColor, ref Color displayShadowColor)
+		{
+			Player player = Main.player[Main.myPlayer];
+			double Size = PlayerGaining.GetPlayerWeight(player, true, false);
+			return "Current Weight: " + Size.CastToDecimalPlaces(3).ToString();
+		}
+	}
+	public class WeightDisplayer_Weight_Sora : InfoDisplay
+	{
+		public override string Texture => "V2/Items/Voraria/Accessories/Informational/WeightDisplayerIcons/WeightDisplayer_SoraWeight_Icon";
+
+		public override LocalizedText DisplayName => Language.GetText("Mods.V2.InfoDisplayName.WeightDisplayer.Weight");
+
+		public override bool Active() => Main.player[Main.myPlayer].AsPred().WeightDisplay && Main.player[Main.myPlayer].AsV2Player().SoraTransformation;
+
+		public override string DisplayValue(ref Color displayColor, ref Color displayShadowColor)
+		{
+			Player player = Main.player[Main.myPlayer];
+			double Size = PlayerGaining.GetPlayerWeight(player, true, false);
+			return "Current Weight: " + Size.CastToDecimalPlaces(3).ToString();
+		}
+	}
+	public class WeightDisplayer_Weight_Mint : InfoDisplay
+	{
+		public override string Texture => "V2/Items/Voraria/Accessories/Informational/WeightDisplayerIcons/WeightDisplayer_MintWeight_Icon";
+
+		public override LocalizedText DisplayName => Language.GetText("Mods.V2.InfoDisplayName.WeightDisplayer.Weight");
+
+		public override bool Active() => Main.player[Main.myPlayer].AsPred().WeightDisplay && Main.player[Main.myPlayer].AsV2Player().MintTransformation;
+
+		public override string DisplayValue(ref Color displayColor, ref Color displayShadowColor)
+		{
+			Player player = Main.player[Main.myPlayer];
+			double Size = PlayerGaining.GetPlayerWeight(player, true, false);
+			return "Current Weight: " + Size.CastToDecimalPlaces(3).ToString();
+		}
+	}
+	//---
+	public class WeightDisplayer_Saturation_Unknown : InfoDisplay
+	{
+		public override string Texture => "V2/Items/Voraria/Accessories/Informational/WeightDisplayerIcons/WeightDisplayer_UnknownSatu_Icon";
+		public override LocalizedText DisplayName => Language.GetText("Mods.V2.InfoDisplayName.WeightDisplayer.Saturation");
+
+		public override bool Active() => Main.player[Main.myPlayer].AsPred().WeightDisplay && !Main.player[Main.myPlayer].AsV2Player().HasTransformation;
+
+		public override string DisplayValue(ref Color displayColor, ref Color displayShadowColor)
+		{
+			Player player = Main.player[Main.myPlayer];
+			double Amount = player.AsPred().ActuallyReasonableAmountOfFood;
+			return "Saturation: " + Amount.CastToDecimalPlaces(3).ToString();
+		}
+	}
+	public class WeightDisplayer_Saturation_Baelz : InfoDisplay
+	{
+		public override string Texture => "V2/Items/Voraria/Accessories/Informational/WeightDisplayerIcons/WeightDisplayer_BaelzSatu_Icon";
 
 		public override LocalizedText DisplayName => Language.GetText("Mods.V2.InfoDisplayName.WeightDisplayer.Saturation");
 
-		public override bool Active() => Main.player[Main.myPlayer].AsPred().WeightDisplay;
+		public override bool Active() => Main.player[Main.myPlayer].AsPred().WeightDisplay && Main.player[Main.myPlayer].AsV2Player().BaeTransformation;
+
+		public override string DisplayValue(ref Color displayColor, ref Color displayShadowColor)
+		{
+			Player player = Main.player[Main.myPlayer];
+			double Amount = player.AsPred().ActuallyReasonableAmountOfFood;
+			return "Saturation: " + Amount.CastToDecimalPlaces(3).ToString();
+		}
+	}
+	public class WeightDisplayer_Saturation_Kronii : InfoDisplay
+	{
+		public override string Texture => "V2/Items/Voraria/Accessories/Informational/WeightDisplayerIcons/WeightDisplayer_KroniiSatu_Icon";
+
+		public override LocalizedText DisplayName => Language.GetText("Mods.V2.InfoDisplayName.WeightDisplayer.Saturation");
+
+		public override bool Active() => Main.player[Main.myPlayer].AsPred().WeightDisplay && Main.player[Main.myPlayer].AsV2Player().KroniiTransformation;
+
+		public override string DisplayValue(ref Color displayColor, ref Color displayShadowColor)
+		{
+			Player player = Main.player[Main.myPlayer];
+			double Amount = player.AsPred().ActuallyReasonableAmountOfFood;
+			return "Saturation: " + Amount.CastToDecimalPlaces(3).ToString();
+		}
+	}
+	public class WeightDisplayer_Saturation_Ollie : InfoDisplay
+	{
+		public override string Texture => "V2/Items/Voraria/Accessories/Informational/WeightDisplayerIcons/WeightDisplayer_OllieSatu_Icon";
+
+		public override LocalizedText DisplayName => Language.GetText("Mods.V2.InfoDisplayName.WeightDisplayer.Saturation");
+
+		public override bool Active() => Main.player[Main.myPlayer].AsPred().WeightDisplay && Main.player[Main.myPlayer].AsV2Player().OllieTransformation;
+
+		public override string DisplayValue(ref Color displayColor, ref Color displayShadowColor)
+		{
+			Player player = Main.player[Main.myPlayer];
+			double Amount = player.AsPred().ActuallyReasonableAmountOfFood;
+			return "Saturation: " + Amount.CastToDecimalPlaces(3).ToString();
+		}
+	}
+	public class WeightDisplayer_Saturation_Sora : InfoDisplay
+	{
+		public override string Texture => "V2/Items/Voraria/Accessories/Informational/WeightDisplayerIcons/WeightDisplayer_SoraSatu_Icon";
+
+		public override LocalizedText DisplayName => Language.GetText("Mods.V2.InfoDisplayName.WeightDisplayer.Saturation");
+
+		public override bool Active() => Main.player[Main.myPlayer].AsPred().WeightDisplay && Main.player[Main.myPlayer].AsV2Player().SoraTransformation;
+
+		public override string DisplayValue(ref Color displayColor, ref Color displayShadowColor)
+		{
+			Player player = Main.player[Main.myPlayer];
+			double Amount = player.AsPred().ActuallyReasonableAmountOfFood;
+			return "Saturation: " + Amount.CastToDecimalPlaces(3).ToString();
+		}
+	}
+	public class WeightDisplayer_Saturation_Mint : InfoDisplay
+	{
+		public override string Texture => "V2/Items/Voraria/Accessories/Informational/WeightDisplayerIcons/WeightDisplayer_MintSatu_Icon";
+
+		public override LocalizedText DisplayName => Language.GetText("Mods.V2.InfoDisplayName.WeightDisplayer.Saturation");
+
+		public override bool Active() => Main.player[Main.myPlayer].AsPred().WeightDisplay && Main.player[Main.myPlayer].AsV2Player().MintTransformation;
 
 		public override string DisplayValue(ref Color displayColor, ref Color displayShadowColor)
 		{

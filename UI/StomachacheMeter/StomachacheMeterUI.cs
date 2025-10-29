@@ -149,6 +149,9 @@ namespace V2.UI.StomachacheMeter
 			if (!Visible)
 				return;
 
+			spriteBatch.End();
+			spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.UIScaleMatrix);
+
 			void Draw(Entity pred)
 			{
 				if (pred.CurrentCaptor() is not null)
@@ -160,16 +163,13 @@ namespace V2.UI.StomachacheMeter
 				if (!_predHasStomachFull && _stomachacheExactCurrent <= 0)
 					return;
 
-				Vector2 topLeftCorner = new Vector2(
-					Main.screenWidth / 2,
-					Main.screenHeight / 2
-				);
-				topLeftCorner.X -= 14 + (_stomachacheSegments * (_stomachachePanelMiddle.Value.Width / 2));
-				topLeftCorner.Y -= 40 * Main.GameZoomTarget;
-				topLeftCorner += pred.Center - (Main.screenPosition + new Vector2(Main.screenWidth / 2 * Main.UIScale, Main.screenHeight / 2));
+				Vector2 topLeftCorner = pred.Center - Main.screenPosition;
 
-				topLeftCorner.Y /= Main.UIScale;
-				
+				topLeftCorner.X -= (14 + _stomachacheSegments * (_stomachachePanelMiddle.Value.Width / 2)) * Main.UIScale;
+				topLeftCorner.Y -= 40 * Main.UIScale * Main.GameZoomTarget;
+
+				topLeftCorner /= Main.UIScale;
+
 				for (int i = 0; i < _stomachacheSegments; i++)
 				{
 					spriteBatch.Draw(
@@ -179,7 +179,7 @@ namespace V2.UI.StomachacheMeter
 						Color.White,
 						0f,
 						default,
-						Main.UIScale,
+						1,
 						SpriteEffects.None,
 						0f
 					);
@@ -206,7 +206,7 @@ namespace V2.UI.StomachacheMeter
 						Color.White,
 						0f,
 						default,
-						Main.UIScale,
+						1,
 						SpriteEffects.None,
 						0f
 					);
@@ -219,7 +219,7 @@ namespace V2.UI.StomachacheMeter
 					Color.White,
 					0f,
 					default,
-					Main.UIScale,
+					1,
 					SpriteEffects.None,
 					0f
 				);
@@ -230,7 +230,7 @@ namespace V2.UI.StomachacheMeter
 					Color.White,
 					0f,
 					default,
-					Main.UIScale,
+					1,
 					SpriteEffects.None,
 					0f
 				);
@@ -318,6 +318,10 @@ namespace V2.UI.StomachacheMeter
 				PrepareFields(projectile);
 				Draw(projectile);
 			}
+
+
+			spriteBatch.End();
+			spriteBatch.Begin();
 		}
 
 		private void PrepareFields(Player player)

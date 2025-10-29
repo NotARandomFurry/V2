@@ -34,7 +34,7 @@ namespace V2.NPCs.Vanilla.Hallow
 			npc.AsV2NPC().FirstFramePreAIMethod = V2RainbowSlimeFirstFrameAI;
 			npc.AsV2NPC().NewAIMethod = V2RainbowSlimeAI;
 
-			npc.AsSlime().JumpSpeed = new Vector2(4f, 7f);
+			npc.AsSlime().JumpSpeed = new Vector2(3.5f, 6.5f);
 			npc.AsSlime().JumpDelayBase = V2Utils.SensibleTime(
 				seconds: 1
 			);
@@ -50,8 +50,8 @@ namespace V2.NPCs.Vanilla.Hallow
 
 			npc.AsSlime().OccasionalHighJumps = true;
 			npc.AsSlime().HighJumpFrequency = 4;
-			npc.AsSlime().HighJumpXModifier += 1f;
-			npc.AsSlime().HighJumpYModifier -= 0.6f;
+			npc.AsSlime().HighJumpXModifier += 0.8f;
+			npc.AsSlime().HighJumpYModifier -= 0.2f;
 
 			npc.AsFood().DefinedBaseSize = 3;
 			npc.AsPred().MaxStomachCapacity = 1.5;
