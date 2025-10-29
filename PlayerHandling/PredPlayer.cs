@@ -58,6 +58,10 @@ namespace V2.PlayerHandling
 	}
 	public partial class PredPlayer : ModPlayer
 	{
+		/// <summary>
+		/// Flags if a <see href="https://terraria.wiki.gg/wiki/Grab_bags">Grab bag</see> or similar item was opened.<br/>
+		/// Causes content to spill into the predator's gut.
+		/// </summary>
 		public bool LootWasJustDigested { get; set; }
 		public bool SyncRequired_PredPoints { get; set; }
 		public VoreTracker StomachTracker

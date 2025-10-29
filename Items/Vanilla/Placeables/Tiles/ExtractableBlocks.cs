@@ -13,7 +13,7 @@ using V2.PlayerHandling.PredPlayerGoals.Beginner;
 using V2.Sounds.MuffledSounds;
 using V2.Sounds.Vore;
 
-namespace V2.Items.Vanilla.Placeables.Tile
+namespace V2.Items.Vanilla.Placeables.Tiles
 {
 	public class Silt : GlobalItem
 	{

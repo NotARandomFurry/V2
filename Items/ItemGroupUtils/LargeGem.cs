@@ -24,7 +24,7 @@ namespace V2.Items.ItemGroupUtils
 
 			item.AsFood().OnBreak += OnBreak_GrantLargeGemMultiPreyGoal;
 		}
-
+	
 		public static bool OnBreak_GrantLargeGemMultiPreyGoal(Item item, Entity pred, bool direct)
 		{
 			if (pred is Player predPlayer)
