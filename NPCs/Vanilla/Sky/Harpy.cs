@@ -124,6 +124,7 @@ namespace V2.NPCs.Vanilla.Sky
 			npc.AsV2NPC().TargetRequiresLineOfSight = true;
 
 			npc.AsFood().DefinedBaseSize = 1.335;
+			npc.AsFood().WellFedPower = 0.5;
 			npc.AsPred().MaxStomachCapacity = 1.9;
 			npc.AsPred().BaseStomachacheMeterCapacity = 250.0;
 			npc.AsPred().WeightGainRatio = 0.15;

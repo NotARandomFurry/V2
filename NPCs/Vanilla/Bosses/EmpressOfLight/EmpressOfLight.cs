@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Microsoft.Build.Evaluation;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Graphics.PackedVector;
 using ReLogic.Content;
@@ -724,10 +725,31 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 			}
 		}
 
+		public static List<(TargetType, int)> PredsInDiet
+		{
+			get
+			{
+				List<(TargetType, int)> diet = [
+					(TargetType.NPC, NPCID.PartyGirl),
+				];
+				if (ModContent.GetInstance<V2ServerConfig>().EasilyEdibleEmpress)
+				{
+					diet.AddRange([
+						(TargetType.NPC, NPCID.Dryad),
+						(TargetType.NPC, NPCID.Stylist),
+						(TargetType.NPC, NPCID.TheBride),
+						(TargetType.NPC, NPCID.EmpressButterfly),
+						(TargetType.Projectile, ProjectileID.FairyQueenPet),
+					]);
+				}
+				return diet;
+			}
+		}
+
 		public static bool V2UnreasonablyThickFairyAI(NPC npc)
 		{
 			if (npc.ai[0] is 8f or 9f)
-				npc.DoContactGulpage();
+				npc.DoContactGulpage(null, PredsInDiet);
 
 			if (npc.target == -1 || !Main.player[npc.target].IsFoodFor(npc, out bool pastTense) || pastTense)
 				return true;

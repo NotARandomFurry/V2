@@ -1,5 +1,5 @@
+# Vanilla item name replacements here
 ItemName: {
-	# Vanilla item name replacements start here
 	# Armor
 	WoodHelmet: Oak Wood Helm
 	WoodBreastplate: Oak Wood Chestguard
@@ -37,6 +37,11 @@ ItemName: {
 	Feather: Harpy Feather
 }
 
+# Vanilla NPC name replacements here
+# for later use
+NPCName: {
+}
+
 Bestiary_FlavorText: {
 	# Bosses
 	npc_HallowBoss: The most gluttonous prismatic fairy to ever inhabit Terraria, rumored to have eaten a titaness whole and alive, body and soul, to gain her modern-day size and strength. She wishes to one day shine with the feast-worthy, fattening light of the digested sun.
@@ -47,13 +52,15 @@ Bestiary_FlavorText: {
 	npc_Butterfly: Beautiful fluttering insects that love sunrises and tasty flowers. Fish are attracted to these based on their color variety and how healthily they've been eating.
 	# Hallow
 	npc_EmpressButterfly: The collective foremothers and forefathers of all prismatic fairies, these beautiful little butterflies are one of the favorite foods of many fairies, including the hallowed 'goddess' herself.
+	# Rain
+	npc_FlyingFish: A peculiar species of fish which gains the ability to swim through the sky when it rains. While they aren't averse to gobbling up those that bother them, be they seafood, land-dwellers, or aviators, they're actually quite docile otherwise.
 	# Solar Eclipse
 	npc_ThePossessed: Oftentimes, under the Eclipse's blacklight glow, malevolent spirits will set out to possess once-meek peasants like this unfortunate girl and glut themselves on the unprepared.
 	# Town NPCs
 	npc_Nurse: A freelance nurseenary, if you can call that a word, that earned her medical license basically entirely to have an excuse to try to pack some bums onto her bum. Much to her chagrin, everyone seems to stick around top-side for her...
 	npc_Dryad: While dryads are rarely found in civilized country, they are more plentiful than anyone would have you believe; this one in particular seems very hung up on the idea that the world is impure. Given how often her people and ancestors alike get glorped by vegans and vegetarians, this isn't a surprise.
 	npc_Stylist: Originally hailing from northwest Avarsici, Amber eventually found herself running away when her best gal pal was outcast from their hometown. She's still a stellar hair styler, though, and she and her gut will gladly whip your hair up nice!
-	npc_Mechanic: A masterful robotics worker whose exact country of origin is unknown; only that she was held against her will by a mysterious group to make new parts for an unknown master.
+	npc_Mechanic: A masterful robotics worker whose exact country of origin is unknown; only that she was held against her will by a mysterious group to make new parts for an equally mysterious master.
 }
 
 Mods: {
@@ -2053,6 +2060,7 @@ Mods: {
 				}
 
 				Mounts.BeeTransformationItem: Something Vaguely Related To Bees
+				FlyingFishScale: Rain-Slicked Scale
 				NymphHairStrand: Sky Blue Strand
 				ObserverPupil: Oversized Pupil
 				AstralFairyController: Astral Remote
@@ -5288,14 +5296,31 @@ Mods: {
 					}
 				}
 
+				FlyingFishScale: {
+					Short:
+						'''
+						Not very useful, but may sell well
+						{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+						'''
+					Long:
+						'''
+						Can be obtained by [c/{$Mods.V2.CommonColorCodes.DoSomething}:killing or digesting a Flying Fish].
+						Not very 
+						'''
+					Flavor: A small scale cut from a flying fish, no doubt alongside a batch of others. While they aren't particularly useful thanks to the rain flying fish swim in making them slicker than usual, they taste nice and sell quite well.
+				}
+
 				NymphHairStrand: {
 					Short:
 						'''
 						Used to make Sky Blue Dye
-						'Thieved from a deceitful, yet delicious damsel'
 						{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
 						'''
-					Long: Can only be obtained by [c/{$Mods.V2.CommonColorCodes.DoSomething}:eating and digesting a Nymph with the Charm of the Thief equipped].
+					Long:
+						'''
+						Can be obtained by [c/{$Mods.V2.CommonColorCodes.DoSomething}:digesting a Nymph].
+						Can be used to make Sky Blue Dye at a Dye Vat.
+						'''
 					Flavor: A lock of a nymph's succulent silvery-blue hair, somehow spared from the gastric gauntlet of a gut such as yours. One could make a potent dye or a comfortable scarf out of this. A hair stylist would also quite like something as unique as this...
 				}
 
@@ -5305,8 +5330,8 @@ Mods: {
 						'Now i've seen everything.'
 						{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
 						'''
-					Long: Obtained by killing an Observer. They can be found in the sky.
-					Flavor: A large pupil. That's all there really is to say on the matter.
+					Long: Can be obtained by [c/{$Mods.V2.CommonColorCodes.DoSomething}:killing or digesting an Observer].
+					Flavor: A large pupil from a huge yet harmless demon eye. 
 				}
 
 				AstralFairyController: {
