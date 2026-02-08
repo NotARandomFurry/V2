@@ -324,19 +324,29 @@ namespace V2.NPCs
 			return false;
 		}
 
-		public static void DoContactGulpage(this NPC npc, List<(TargetType, int, TargetPriorityLevel)> specificWhitelistInput = null)
+		public static void DoContactGulpage(this NPC npc, List<(TargetType, int, TargetPriorityLevel)> specificWhitelistInput = null, List<(TargetType, int)> specificPredWhitelistInput = null)
 		{
 			if (npc.CurrentCaptor() is not null)
 				return;
 
 			List<(TargetType Type, int ID, TargetPriorityLevel PriorityLevel)> specificWhitelist = null;
+			List<(TargetType Type, int ID)> specificPredWhitelist = null;
 			if (specificWhitelistInput is not null)
 			{
-				specificWhitelist = new List<(TargetType, int, TargetPriorityLevel)>(specificWhitelistInput);
+				specificWhitelist = [.. specificWhitelistInput];
 				if (V2.BlacklistsActive)
 				{
 					specificWhitelist.RemoveAll(x => x.Type == TargetType.NPC && V2.VoreNPCBlacklist.Contains(x.ID));
 					specificWhitelist.RemoveAll(x => x.Type == TargetType.Projectile && V2.VoreProjectileBlacklist.Contains(x.ID));
+				}
+			}
+			if (specificPredWhitelistInput is not null)
+			{
+				specificPredWhitelist = [.. specificPredWhitelistInput];
+				if (V2.BlacklistsActive)
+				{
+					specificPredWhitelist.RemoveAll(x => x.Type == TargetType.NPC && V2.VoreNPCBlacklist.Contains(x.ID));
+					specificPredWhitelist.RemoveAll(x => x.Type == TargetType.Projectile && V2.VoreProjectileBlacklist.Contains(x.ID));
 				}
 			}
 			foreach (var prey in Main.ActiveNPCs)
@@ -364,18 +374,8 @@ namespace V2.NPCs
 
 					if (npc.Hitbox.Intersects(preyNPC.Hitbox))
 					{
-						bool empressGetsGulped = preyNPC.type == NPCID.PartyGirl;
-						if (ModContent.GetInstance<V2ServerConfig>().EasilyEdibleEmpress)
-						{
-							empressGetsGulped |= new List<int>
-							{
-								NPCID.Dryad,
-								NPCID.Stylist,
-								NPCID.TheBride,
-								NPCID.EmpressButterfly,
-							}.Contains(preyNPC.type);
-						}
-						if (npc.type == NPCID.HallowBoss && empressGetsGulped)
+						bool turnTables = specificPredWhitelist is not null && specificPredWhitelist.Contains((TargetType.NPC, preyNPC.type));
+						if (turnTables)
 							PredNPC.Swallow(preyNPC, npc);
 						else
 							PredNPC.Swallow(npc, preyNPC);
