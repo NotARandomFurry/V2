@@ -26,7 +26,7 @@ using Terraria.Graphics.Renderers;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.Graphics;
 using V2.Core.MainDetours;
-using V2.Items.Vanilla.Placeables.Tile;
+using V2.Items.Vanilla.Placeables.Tiles;
 using V2.StatusEffects.Voraria.Debuffs;
 
 namespace V2.PlayerHandling

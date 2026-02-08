@@ -298,7 +298,7 @@ namespace V2.Core.WorldGeneration
 					{
 						if (j > 0 && j <= Main.maxTilesY - 1)
 						{
-							if (Main.tile[i, j].HasTile && Main.tile[i, j].TileType == ItemID.LihzahrdBrick)
+							if (Main.tile[i, j].HasTile && Main.tile[i, j].TileType == TileID.LihzahrdBrick)
 							{
 								return true;
 							}
