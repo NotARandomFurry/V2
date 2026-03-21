@@ -15,7 +15,7 @@ namespace V2.Items.Vanilla.Armor
 {
 	public class BorealWoodGreaves : GlobalItem
 	{
-		public static double MoveSpeedInCold => 0.8;
+		public static double MoveSpeedInCold => 0.08;
 		public override bool AppliesToEntity(Item entity, bool lateInstantiation) => entity.type == ItemID.BorealWoodGreaves;
 
 		public override void SetDefaults(Item item)
