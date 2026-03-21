@@ -14,6 +14,8 @@ namespace V2.Items.Vanilla.Armor
 {
 	public class OakWoodBreastplate : GlobalItem
 	{
+		public static int SunlightDefenseBonus => 1;
+
 		public override bool AppliesToEntity(Item entity, bool lateInstantiation) => entity.type == ItemID.WoodBreastplate;
 
 		public override void SetDefaults(Item item)
@@ -31,7 +33,7 @@ namespace V2.Items.Vanilla.Armor
 		public static void OakWoodBreastplateEffect(Item item, Player player)
 		{
 			if (player.position.Y < Main.worldSurface && player.behindBackWall && Main.dayTime)
-				player.statDefense++;
+				player.statDefense += SunlightDefenseBonus;
 		}
 
 		public static bool OnBreak(Item item, Entity pred, bool direct) => direct;

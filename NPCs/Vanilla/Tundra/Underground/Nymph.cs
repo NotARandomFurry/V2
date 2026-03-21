@@ -10,7 +10,7 @@ using V2.Items.Voraria.Charms;
 using V2.PlayerHandling.PredPlayerGoals.Amateur;
 using V2.Sounds.Vore;
 
-namespace V2.NPCs.Vanilla.Cavern
+namespace V2.NPCs.Vanilla.Tundra.Underground
 {
 	public static class NymphStuff
 	{
@@ -115,11 +115,10 @@ namespace V2.NPCs.Vanilla.Cavern
 		public static void GetDigestedPlayerAdditionalDeathMessages(NPC npc, Player player, List<string> deathReasonKeyList)
 		{
 			deathReasonKeyList.AddHumanoidPredMessages();
-			deathReasonKeyList.AddRange(new List<string>
-			{
+			deathReasonKeyList.AddRange([
 				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Cavern.Nymph.1",
 				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Cavern.Nymph.2",
-			});
+			]);
 			if (player.difficulty == PlayerDifficultyID.Hardcore)
 			{
 				deathReasonKeyList.Clear();
@@ -137,7 +136,7 @@ namespace V2.NPCs.Vanilla.Cavern
 
 		public static double GetPreyAbsorptionRate(NPC npc)
 		{
-			double baseAbsorptionRate = 1.0 / (double)V2Utils.SensibleTime(
+			double baseAbsorptionRate = 1.0 / V2Utils.SensibleTime(
 				minutes: 1,
 				seconds: 15
 			);

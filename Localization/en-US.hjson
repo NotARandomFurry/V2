@@ -301,10 +301,26 @@ Mods: {
 
 			StruggleUIOrientation: {
 				Tooltip: ""
-				Horizontal.Label: Horizontal
-				HorizontalFlipped.Label: Horizontal (Inverted)
-				FNF.Label: Upscroll
-				GuitarHero.Label: Downscroll
+
+				Horizontal: {
+					Label: Horizontal
+					Tooltip: ""
+				}
+
+				HorizontalFlipped: {
+					Label: Horizontal (Inverted)
+					Tooltip: ""
+				}
+
+				FNF: {
+					Label: Upscroll
+					Tooltip: ""
+				}
+
+				GuitarHero: {
+					Label: Downscroll
+					Tooltip: ""
+				}
 			}
 		}
 
@@ -2015,6 +2031,8 @@ Mods: {
 					RegenFromAbsorption: Revitalization Charm
 				}
 
+				Tools.PredToggleRod: Rod of Objectum
+
 				Weapons: {
 					Ranged: {
 						Throwables: {
@@ -2117,13 +2135,21 @@ Mods: {
 					Long: This item counts twice as much towards Well Fed tiers while digesting.
 				}
 
-				LongTooltipHelpers.SunlightExposureRules:
-					'''
-					[c/7F7F7F:You are considered exposed to sunlight when:]
-					[c/7F7F7F:- You are above 0']
-					[c/7F7F7F:- You are not in front of a background wall]
-					[c/7F7F7F:- It is daytime]
-					'''
+				LongTooltipHelpers: {
+					ColdTemperatureRules:
+						'''
+						[c/7F7F7F:You are considered in the cold when one or more of the following is true:]
+						[c/7F7F7F:- You are in the Tundra and not standing on tiles classified as hot]
+						[c/7F7F7F:- You are standing on Ice or Snow in a biome not classified as hot]
+						'''
+					SunlightExposureRules:
+						'''
+						[c/7F7F7F:You are considered exposed to sunlight when all of the following are true:]
+						[c/7F7F7F:- You are above 0']
+						[c/7F7F7F:- You are not in front of a background wall]
+						[c/7F7F7F:- It is daytime]
+						'''
+				}
 			}
 
 			Vanilla: {
@@ -2142,7 +2168,7 @@ Mods: {
 							CandyFairyMasterPetItem: {
 								Short:
 									'''
-									Summons a fairy princess to provide light and guard you from certain mobs (by eating them)
+									Summons a self-proclaimed fairy princess to provide light and guard you from certain mobs (by eating them)
 									{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
 									'''
 								Long:
@@ -2236,7 +2262,7 @@ Mods: {
 								'''
 							Long:
 								'''
-								[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases defense] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:1] when [c/{$Mods.V2.CommonColorCodes.DoSomething}:exposed to sunlight].
+								[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases defense] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{OakWoodHelmSunDefenseBonus}] when [c/{$Mods.V2.CommonColorCodes.DoSomething}:exposed to sunlight].
 								{$Mods.V2.ItemTooltip.Generic.LongTooltipHelpers.SunlightExposureRules}
 								Has no special effects when eaten.
 								'''
@@ -2255,7 +2281,7 @@ Mods: {
 								'''
 							Long:
 								'''
-								[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases defense] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:1] when [c/{$Mods.V2.CommonColorCodes.DoSomething}:exposed to sunlight].
+								[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases defense] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{OakWoodChestguardSunDefenseBonus}] when [c/{$Mods.V2.CommonColorCodes.DoSomething}:exposed to sunlight].
 								{$Mods.V2.ItemTooltip.Generic.LongTooltipHelpers.SunlightExposureRules}
 								Has no special effects when eaten.
 								'''
@@ -2274,9 +2300,9 @@ Mods: {
 								'''
 							Long:
 								'''
-								[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases defense] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:1] when [c/{$Mods.V2.CommonColorCodes.DoSomething}:exposed to sunlight].
+								[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increase defense] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{OakWoodMakeshiftBootsSunDefenseBonus}] when [c/{$Mods.V2.CommonColorCodes.DoSomething}:exposed to sunlight].
 								{$Mods.V2.ItemTooltip.Generic.LongTooltipHelpers.SunlightExposureRules}
-								Has no special effects when eaten.
+								Have no special effects when eaten.
 								'''
 							Flavor:
 								'''
@@ -2284,10 +2310,64 @@ Mods: {
 								They have a very plain taste.
 								'''
 						}
+					}
 
-						SetBonus: {
-							Short: Boosts natural health regeneration, moreso in daylight
-							Long: "[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increases natural health regeneration] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:5%]; this is [c/{$Mods.V2.CommonColorCodes.PositiveEffect}:doubled] when [c/{$Mods.V2.CommonColorCodes.DoSomething}:exposed to sunlight]."
+					BorealWood: {
+						Head: {
+							Short:
+								'''
+								Increases mana regen very slightly in the cold
+								{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+								'''
+							Long:
+								'''
+								[c/{$Mods.V2.CommonColorCodes.ManaHeal}:Increases mana regen] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{BorealWoodHelmColdManaRegenBonus}/sec] when [c/{$Mods.V2.CommonColorCodes.DoSomething}:in the cold].
+								{$Mods.V2.ItemTooltip.Generic.LongTooltipHelpers.ColdTemperatureRules}
+								Has no special effects when eaten.
+								'''
+							Flavor:
+								'''
+								A makeshift helmet fashioned from boreal wood.
+								It's cold to the tongue.
+								'''
+						}
+
+						Chest: {
+							Short:
+								'''
+								Increases health regen very slightly in the cold
+								{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+								'''
+							Long:
+								'''
+								[c/{$Mods.V2.CommonColorCodes.Heal}:Increases health regen] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{BorealWoodBreastplateColdHealthRegenBonus}/sec] when [c/{$Mods.V2.CommonColorCodes.DoSomething}:in the cold].
+								{$Mods.V2.ItemTooltip.Generic.LongTooltipHelpers.ColdTemperatureRules}
+								Has no special effects when eaten.
+								'''
+							Flavor:
+								'''
+								A makeshift chestplate fashioned from boreal wood.
+								It's cold to the tongue.
+								'''
+						}
+
+						Legs: {
+							Short:
+								'''
+								Increase movement speed very slightly in the cold
+								{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
+								'''
+							Long:
+								'''
+								[c/{$Mods.V2.CommonColorCodes.PositiveEffect}:Increase movement speed] by [c/{$Mods.V2.CommonColorCodes.DoSomething}:{BorealWoodBootsColdMoveSpeedBonus}] when [c/{$Mods.V2.CommonColorCodes.DoSomething}:in the cold].
+								{$Mods.V2.ItemTooltip.Generic.LongTooltipHelpers.ColdTemperatureRules}
+								Have no special effects when eaten.
+								'''
+							Flavor:
+								'''
+								A makeshift pair of boots fashioned from boreal wood.
+								They're cold to the tongue.
+								'''
 						}
 					}
 
@@ -2454,7 +2534,7 @@ Mods: {
 							Flavor:
 								'''
 								A pair of fanciful combat boots melded from gold and finished with rubies.
-								Boots like these greatly ease traveling over rocky terrain, and can easily score some points at the local infantry base looks contest, too. That said, they're usually not forged from gold --- such boots as these should only be on backline casters who can afford steadying themselves with only one or two enemies to a gut and need the extra ease of casting.
+								Boots like these greatly ease traveling over rocky terrain, and can easily score some points at the local infantry base's fashion contests, too. That said, they're usually not forged from gold --- such boots as these should only be on backline casters who can afford steadying themselves with only one or two enemies to a gut and need the extra ease of casting.
 								'''
 						}
 
@@ -5227,8 +5307,6 @@ Mods: {
 						PaperMaidSummon: {
 							Short:
 								'''
-								[c/FF0000:This item is not currently functional, and will not be until beta 5]
-								[c/FF0000:This tooltip acts as a preview of its intended functionality]
 								Summons a capable maid(...?) to fight for you
 								She requires {NeededMinionSlots} minion slots available to be summoned, and has no sisters
 								Can throw paper plates and simple silverware at enemies, as well as eat them or you
@@ -5239,8 +5317,6 @@ Mods: {
 								'''
 							Long:
 								'''
-								[c/FF0000:This item is not currently functional, and will not be until beta 5]
-								[c/FF0000:This tooltip acts as a preview of its intended functionality]
 								[c/{$Mods.V2.CommonColorCodes.DoSomething}:Left-click] to summon a maid to your cursor position. Her name is {Name}!
 								{Name} requires {NeededMinionSlots} minion slots available to be summoned. There can only be one of her at once.
 								[c/{$Mods.V2.CommonColorCodes.DoSomething}:Left-click] again while summoned and no instructions are being performed to teleport {Name} to your position.
@@ -5266,8 +5342,9 @@ Mods: {
 								'''
 							Flavor:
 								'''
-								Magical implements used by adventurers that have since lost their lives to the gluttony of the undergrowth are often twisted by wherever they happen to get got. This poor thing's owner must have perished in a cave full of mushrooms.
-								Notably, the fairies that stay around these preferred regions seemed to like implements like these a lot; if you were to shake this about, perhaps one would come to your aid and shield you from oncoming fire (with, of course, their greedy tummy).
+								A well-crafted origami piece; one of countless made by the master papersmiths that populate the country of Sveetia, known for its acres upon acres of highly-prized sugar cane.
+								This bell, when rung, cuts off and unfolds an infinitesmally small piece of itself, soon refashioning and refolding that mere speck into a sizable maid, ready to serve any master that needs her.
+								Able to subdue foes in a wide variety of fashions, her preferred method is, of course, swallowing her targets whole so as to minimize and efficiently remove external clutter, living or otherwise.
 								'''
 						}
 
@@ -5331,7 +5408,7 @@ Mods: {
 						{$Mods.V2.ItemTooltip.Generic.HoldForInDepthFunctionAndLore}
 						'''
 					Long: Can be obtained by [c/{$Mods.V2.CommonColorCodes.DoSomething}:killing or digesting an Observer].
-					Flavor: A large pupil from a huge yet harmless demon eye. 
+					Flavor: A large pupil from a huge yet harmless demon eye.
 				}
 
 				AstralFairyController: {

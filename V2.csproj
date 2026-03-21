@@ -16,6 +16,7 @@
   </ItemGroup>
   <ItemGroup>
 	<Folder Include="Gores\" />
+	<Folder Include="Tiles\Vanilla\Natural\" />
   </ItemGroup>
   <ItemGroup>
 	<Reference Include="BetterDialogue">

@@ -20,7 +20,7 @@ namespace V2.PlayerHandling
 {
 	public partial class V2Player : ModPlayer
 	{
-		public static List<NPC> _hallucinationCandidates = new List<NPC>();
+		public static List<NPC> _hallucinationCandidates = [];
 
 		public bool setBonusActive;
 		public bool setBonusShouldBeDisplayed;
@@ -43,7 +43,7 @@ namespace V2.PlayerHandling
 					player.DoBootsEffect(player.DoBootsEffect_PlaceFlowersOnTile);
 			}
 
-			if (armorPiece.type == 5001)
+			if (armorPiece.type == ItemID.MoonLordLegs)
 			{
 				player.moveSpeed += 0.25f;
 				player.moonLordLegs = true;
