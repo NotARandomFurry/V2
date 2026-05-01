@@ -22,17 +22,17 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 	{
 		public static class ItemTheftRules
 		{
-			public static ItemTheftRule ClothingHat => new ItemTheftRule(
+			public static DigestionLootRule ClothingHat => new DigestionLootRule(
 				type: (npc, pred) => ItemID.NurseHat,
 				amount: (npc, pred) => 1,
 				chance: (npc, pred) => 1.0
 			);
-			public static ItemTheftRule ClothingTop => new ItemTheftRule(
+			public static DigestionLootRule ClothingTop => new DigestionLootRule(
 				type: (npc, pred) => ItemID.NurseShirt,
 				amount: (npc, pred) => 1,
 				chance: (npc, pred) => 1.0
 			);
-			public static ItemTheftRule ClothingBottom => new ItemTheftRule(
+			public static DigestionLootRule ClothingBottom => new DigestionLootRule(
 				type: (npc, pred) => ItemID.NursePants,
 				amount: (npc, pred) => 1,
 				chance: (npc, pred) => 1.0
@@ -145,7 +145,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Nurse
 
 			npc.AsFood().OnDigestedBy += OnKilledByDigestion_GrantCheapskateGoal;
 
-			npc.AsFood().ItemTheftRules = new List<ItemTheftRule>
+			npc.AsFood().ItemTheftRules = new List<DigestionLootRule>
 			{
 				NurseStuff.ItemTheftRules.ClothingHat,
 				NurseStuff.ItemTheftRules.ClothingTop,

@@ -18,7 +18,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Guide
 	{
 		public static class ItemTheftRules
 		{
-			public static ItemTheftRule GreenCap => new ItemTheftRule(
+			public static DigestionLootRule GreenCap => new DigestionLootRule(
 				type: (npc, pred) => ItemID.GreenCap,
 				amount: (npc, pred) => 1,
 				chance: (npc, pred) => npc.GivenName == "Andrew" ? 1.0 : 0.0

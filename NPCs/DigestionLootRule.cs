@@ -9,9 +9,8 @@ namespace V2.NPCs
 {
 	/// <summary>
 	/// Used to define rules for stealing items from digested NPCs.<br/>
-	///	Currently used solely for the Charm of the Thief.<br/>
 	/// </summary>
-	public struct ItemTheftRule
+	public struct DigestionLootRule
 	{
 		public delegate int GetItemType(NPC npc, Entity pred);
 		public GetItemType ItemType { get; set; }
@@ -20,7 +19,7 @@ namespace V2.NPCs
 		public delegate double GetItemChance(NPC npc, Entity pred);
 		public GetItemChance ItemChance { get; set; }
 
-		public ItemTheftRule(GetItemType type, GetItemAmount amount, GetItemChance chance)
+		public DigestionLootRule(GetItemType type, GetItemAmount amount, GetItemChance chance)
 		{
 			ItemType = type;
 			ItemAmount = amount;

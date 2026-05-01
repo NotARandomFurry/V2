@@ -23,7 +23,7 @@ namespace V2.NPCs
 	public partial class PreyNPC : GlobalNPC
 	{
 		public static double LeftoversHealthModifier => 0.9;
-		public List<ItemTheftRule> ItemTheftRules { get; set; }
+		public List<DigestionLootRule> ItemTheftRules { get; set; }
 		public static void HandlePreyItemTheft(NPC npc, Entity pred)
 		{
 			if (!npc.CanItemsBeThievedBy(pred))
@@ -32,7 +32,7 @@ namespace V2.NPCs
 			if (npc.AsFood().ItemTheftRules is null || npc.AsFood().ItemTheftRules.Count <= 0)
 				return;
 
-			foreach (ItemTheftRule rule in npc.AsFood().ItemTheftRules)
+			foreach (DigestionLootRule rule in npc.AsFood().ItemTheftRules)
 			{
 				double ruleChance = rule.ItemChance.Invoke(npc, pred);
 				if (pred is not Player)

@@ -798,6 +798,10 @@ namespace V2
 
 		public static void AddVorariaDynamicItemTooltip(this List<TooltipLine> tooltips, string itemTooltipKey, object tooltipVariables)
 		{
+			tooltipVariables = (
+				tooltipVariables,
+				CheckAEMButton: ""
+			);
 			TooltipLine dynamicTooltip = new TooltipLine(
 				V2.Instance,
 				"V2DynamicTooltip",

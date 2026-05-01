@@ -23,7 +23,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Mechanic
 	{
 		public static class ItemTheftRules
 		{
-			public static ItemTheftRule CombatWrench => new ItemTheftRule(
+			public static DigestionLootRule CombatWrench => new DigestionLootRule(
 				type: (npc, pred) => ItemID.CombatWrench,
 				amount: (npc, pred) => 1,
 				chance: (npc, pred) => {
@@ -35,7 +35,7 @@ namespace V2.NPCs.Vanilla.TownNPCs.Mechanic
 					};
 				}
 			);
-			public static ItemTheftRule MealSizeScanner => new ItemTheftRule(
+			public static DigestionLootRule MealSizeScanner => new DigestionLootRule(
 				type: (npc, pred) => ModContent.ItemType<MealSizeScanner>(),
 				amount: (npc, pred) => 1,
 				chance: (npc, pred) => {

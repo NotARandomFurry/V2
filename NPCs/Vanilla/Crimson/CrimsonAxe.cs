@@ -16,7 +16,7 @@ namespace V2.NPCs.Vanilla.Crimson
 	{
 		public static class ItemTheftRules
 		{
-			public static ItemTheftRule Crimtane => new ItemTheftRule(
+			public static DigestionLootRule Crimtane => new DigestionLootRule(
 				type: (npc, pred) => ItemID.CrimtaneOre,
 				amount: (npc, pred) => {
 					return Main.GameMode switch

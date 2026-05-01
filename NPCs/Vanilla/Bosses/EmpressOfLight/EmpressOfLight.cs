@@ -26,7 +26,7 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 	{
 		public static class ItemTheftRules
 		{
-			public static ItemTheftRule WeaponDrops => new ItemTheftRule(
+			public static DigestionLootRule WeaponDrops => new DigestionLootRule(
 				type: (npc, pred) => {
 					List<int> weapons = [
 						ItemID.PiercingStarlight,
@@ -46,7 +46,7 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 					};
 				}
 			);
-			public static ItemTheftRule StarGuitar => new ItemTheftRule(
+			public static DigestionLootRule StarGuitar => new DigestionLootRule(
 				type: (npc, pred) => ItemID.SparkleGuitar,
 				amount: (npc, pred) => 1,
 				chance: (npc, pred) => {
@@ -58,7 +58,7 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 					};
 				}
 			);
-			public static ItemTheftRule EmpressWings => new ItemTheftRule(
+			public static DigestionLootRule EmpressWings => new DigestionLootRule(
 				type: (npc, pred) => ItemID.RainbowWings,
 				amount: (npc, pred) => 1,
 				chance: (npc, pred) => {
@@ -70,7 +70,7 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 					};
 				}
 			);
-			public static ItemTheftRule PrismaticDye => new ItemTheftRule(
+			public static DigestionLootRule PrismaticDye => new DigestionLootRule(
 				type: (npc, pred) => ItemID.HallowBossDye,
 				amount: (npc, pred) => 1,
 				chance: (npc, pred) => {
@@ -82,7 +82,7 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 					};
 				}
 			);
-			public static ItemTheftRule Mask => new ItemTheftRule(
+			public static DigestionLootRule Mask => new DigestionLootRule(
 				type: (npc, pred) => ItemID.FairyQueenMask,
 				amount: (npc, pred) => 1,
 				chance: (npc, pred) => {
@@ -94,7 +94,7 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 					};
 				}
 			);
-			public static ItemTheftRule Trophy => new ItemTheftRule(
+			public static DigestionLootRule Trophy => new DigestionLootRule(
 				type: (npc, pred) => ItemID.FairyQueenTrophy,
 				amount: (npc, pred) => 1,
 				chance: (npc, pred) => {
@@ -106,7 +106,7 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 					};
 				}
 			);
-			public static ItemTheftRule ExpertDrop => new ItemTheftRule(
+			public static DigestionLootRule ExpertDrop => new DigestionLootRule(
 				type: (npc, pred) => ItemID.EmpressFlightBooster,
 				amount: (npc, pred) => 1,
 				chance: (npc, pred) => {
@@ -118,7 +118,7 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 					};
 				}
 			);
-			public static ItemTheftRule MasterTrophy => new ItemTheftRule(
+			public static DigestionLootRule MasterTrophy => new DigestionLootRule(
 				type: (npc, pred) => ItemID.FairyQueenMasterTrophy,
 				amount: (npc, pred) => 1,
 				chance: (npc, pred) => {
@@ -129,7 +129,7 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 					};
 				}
 			);
-			public static ItemTheftRule MasterPetItem => new ItemTheftRule(
+			public static DigestionLootRule MasterPetItem => new DigestionLootRule(
 				type: (npc, pred) => ItemID.FairyQueenPetItem,
 				amount: (npc, pred) => 1,
 				chance: (npc, pred) => {
@@ -140,7 +140,7 @@ namespace V2.NPCs.Vanilla.Bosses.EmpressOfLight
 					};
 				}
 			);
-			public static ItemTheftRule HangrySwordDrop => new ItemTheftRule(
+			public static DigestionLootRule HangrySwordDrop => new DigestionLootRule(
 				type: (npc, pred) => ItemID.EmpressBlade,
 				amount: (npc, pred) => 1,
 				chance: (npc, pred) => (npc.AI_120_HallowBoss_IsGenuinelyEnraged() && pred is Player) ? 1f : 0f

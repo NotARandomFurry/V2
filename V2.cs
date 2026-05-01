@@ -20,6 +20,7 @@ namespace V2
 	{
 		internal static V2 Instance;
 
+		public static ModKeybind CheckAEMHotkey { get; set; }
 		public static ModKeybind SwallowHotkey { get; set; }
 		public static ModKeybind RegurgitateHotkey { get; set; }
 		public static ModKeybind FeedHotkey { get; set; }
@@ -61,9 +62,9 @@ namespace V2
 		/// overall, this was made by yours truly stepping backwards about a decade in time mentally and channeling that energy into assessment of mod quality<br/>
 		/// now get the fuck out of my house<br/>
 		/// </summary>
-		public static bool GetFooled { get; set; }
+		public static bool GetFooled => DateTime.Today.Month == 4 && DateTime.Today.Day == 1;
 
-		public static List<ResourcePack> EnabledResourcePacks => Main.AssetSourceController.ActiveResourcePackList.EnabledPacks.ToList();
+		public static List<ResourcePack> EnabledResourcePacks => [.. Main.AssetSourceController.ActiveResourcePackList.EnabledPacks];
 
 		public static Dictionary<int, GlobalBuff> ModifiedStatusEffects { get; set; }
 
@@ -77,16 +78,18 @@ namespace V2
 
 		public override void Load()
 		{
+			CheckAEMHotkey = KeybindLoader.RegisterKeybind(this, "Check Item AEM Entry", "Q");
+
 			SwallowHotkey = KeybindLoader.RegisterKeybind(this, "Swallow", "V");
 			RegurgitateHotkey = KeybindLoader.RegisterKeybind(this, "Regurgitate", "X");
 			FeedHotkey = KeybindLoader.RegisterKeybind(this, "Feed", "G");
 			ItemGulpHotkey = KeybindLoader.RegisterKeybind(this, "EatItems", "RightShift");
+
 			StruggleUpHotkey = KeybindLoader.RegisterKeybind(this, "StruggleUp", "Up");
 			StruggleLeftHotkey = KeybindLoader.RegisterKeybind(this, "StruggleLeft", "Left");
 			StruggleRightHotkey = KeybindLoader.RegisterKeybind(this, "StruggleRight", "Right");
 			StruggleDownHotkey = KeybindLoader.RegisterKeybind(this, "StruggleDown", "Down");
 			StruggleSpecialHotkey = KeybindLoader.RegisterKeybind(this, "StruggleSpecial", "Space");
-
 			RespawnAfterDigestionHotkey = KeybindLoader.RegisterKeybind(this, "RespawnAfterDigestion", "LeftShift");
 
 			OllieDashHotkey = KeybindLoader.RegisterKeybind(this, "OllieDash", "Q");
@@ -109,19 +112,14 @@ namespace V2
 
 		public override void PostSetupContent()
 		{
-			VoreNPCBlacklist = new List<int>
-			{
+			VoreNPCBlacklist = [
 				NPCID.Angler,
 				NPCID.SleepingAngler,
 				NPCID.Princess,
-			};
-			if (ModContent.TryFind("Fargowiltas", "Deviantt", out ModNPC Deviantt))
-				VoreNPCBlacklist.Add(Deviantt.Type);
+			];
 
-			VoreProjectileBlacklist = new List<int>
-			{
-
-			};
+			VoreProjectileBlacklist = [
+			];
 
 			if (!BlacklistsActive || GetFooled)
 			{

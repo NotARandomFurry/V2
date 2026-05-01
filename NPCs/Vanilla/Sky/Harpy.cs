@@ -78,7 +78,7 @@ namespace V2.NPCs.Vanilla.Sky
 		}
 		public static class ItemTheftRules
 		{
-			public static ItemTheftRule GiantHarpyFeather => new ItemTheftRule(
+			public static DigestionLootRule GiantHarpyFeather => new DigestionLootRule(
 				type: (npc, pred) => ItemID.GiantHarpyFeather,
 				amount: (npc, pred) => 1,
 				chance: (npc, pred) => {

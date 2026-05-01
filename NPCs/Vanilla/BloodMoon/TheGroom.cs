@@ -19,12 +19,12 @@ namespace V2.NPCs.Vanilla.BloodMoon
 	{
 		public static class ItemTheftRules
 		{
-			public static ItemTheftRule TopHat => new ItemTheftRule(
+			public static DigestionLootRule TopHat => new DigestionLootRule(
 				type: (npc, pred) => ItemID.TopHat,
 				amount: (npc, pred) => 1,
 				chance: (npc, pred) => 1.0
 			);
-			public static ItemTheftRule TuxedoShirt => new ItemTheftRule(
+			public static DigestionLootRule TuxedoShirt => new DigestionLootRule(
 				type: (npc, pred) => ItemID.TuxedoShirt,
 				amount: (npc, pred) => 1,
 				chance: (npc, pred) => {
@@ -36,7 +36,7 @@ namespace V2.NPCs.Vanilla.BloodMoon
 					};
 				}
 			);
-			public static ItemTheftRule TuxedoPants => new ItemTheftRule(
+			public static DigestionLootRule TuxedoPants => new DigestionLootRule(
 				type: (npc, pred) => ItemID.TuxedoPants,
 				amount: (npc, pred) => 1,
 				chance: (npc, pred) => {
@@ -94,7 +94,7 @@ namespace V2.NPCs.Vanilla.BloodMoon
 			npc.AsPred().GetPreyAbsorptionRate = GetPreyAbsorptionRate;
 
 			npc.AsFood().OnDigestedBy += OnKilledByDigestion_GrantBrideAndGroomGoal;
-			npc.AsFood().ItemTheftRules = new List<ItemTheftRule>()
+			npc.AsFood().ItemTheftRules = new List<DigestionLootRule>()
 			{
 				TheGroomStuff.ItemTheftRules.TopHat,
 				TheGroomStuff.ItemTheftRules.TuxedoShirt,
