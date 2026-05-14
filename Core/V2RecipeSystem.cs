@@ -18,7 +18,7 @@ namespace V2.Core
 		public override bool IsLoadingEnabled(Mod mod) => !V2.GetFooled;
 		public override void AddRecipes()
 		{
-			// surprisingly, I don't actually usw this as a recipe method; that title belongs to the shitshow that is EstablishRecipeCollection below
+			// surprisingly, I don't actually use this as a recipe method; that title belongs to the shitshow that is EstablishRecipeCollection below
 			// this is instead used to set custom bestiary star amounts, since I damn well can't do it elsewhere (lol!)
 			// ContentSamples.NpcBestiaryRarityStars[NPC type here] = X;
 		}

@@ -47,10 +47,10 @@ namespace V2
 
 		/// <summary>
 		/// A special flag which decides whether or not the April Fool's branch is active.<br/>
-		/// Defaults to <see langword="false"/>. If set to <see langword="true"/> instead, the following things become true:<br/>
+		/// Defaults to <see langword="false"/>. If it is April Fool's Day, thus making this return <see langword="false"/>, the following things become true:<br/>
 		/// - <see cref="BlacklistsActive"/> is overridden to <see langword="false"/>. Nothing shall escape the fury of the Great Fool of April.<br/>
 		/// - All normal <see cref="GlobalNPC"/>s used for specific NPCs are inactive; instead, the universal AprilFoolsPredNPC is used.<br/>
-		/// - All of the nice, well-made belly sprites are replaced with a unified circle tool from Paint.NET because I can't be bothered to rember if I still have MS Paint on here.<br/>
+		/// - All of the nice, well-made belly sprites are replaced with a unified circle tool from Paint.NET because I can't be bothered to remember if I still have MS Paint on here.<br/>
 		/// - Only one tum gurgly sound is used. This sound is never used in the normal game.<br/>
 		/// - Only one burp sound is used. This sound is also never used in the normal game.<br/>
 		/// - Both of the above are intentionally made to sound incredibly bad.<br/>
@@ -59,7 +59,7 @@ namespace V2
 		/// - None of VSC's unique content is loaded.<br/>
 		/// More may be added if time permits.<br/>
 		/// <br/>
-		/// overall, this was made by yours truly stepping backwards about a decade in time mentally and channeling that energy into assessment of mod quality<br/>
+		/// overall, this was made by yours truly stepping backwards about 13-14 years in time mentally and channeling that energy into assessment of mod quality<br/>
 		/// now get the fuck out of my house<br/>
 		/// </summary>
 		public static bool GetFooled => DateTime.Today.Month == 4 && DateTime.Today.Day == 1;
@@ -72,13 +72,12 @@ namespace V2
 		{
 			Instance = this;
 			BlacklistsActive = true;
-			GetFooled = false;
 			ModifiedStatusEffects = [];
 		}
 
 		public override void Load()
 		{
-			CheckAEMHotkey = KeybindLoader.RegisterKeybind(this, "Check Item AEM Entry", "Q");
+			CheckAEMHotkey = KeybindLoader.RegisterKeybind(this, "CheckAEM", "Q");
 
 			SwallowHotkey = KeybindLoader.RegisterKeybind(this, "Swallow", "V");
 			RegurgitateHotkey = KeybindLoader.RegisterKeybind(this, "Regurgitate", "X");

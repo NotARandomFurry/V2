@@ -95,7 +95,6 @@ namespace V2.Items.Voraria.Consumables.Potions
 					StomachCapacityPotionCapacityBonus = StomachCapacityBonus.ToPercentage(3),
 				}
 			);
-			tooltips.FirstOrDefault(x => x.Name == "BuffTime").Hide();
 		}
 	}
 }
