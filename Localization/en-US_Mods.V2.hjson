@@ -2054,6 +2054,15 @@ ItemTooltip: {
 					'''
 			}
 
+			Offensive: {
+				SharkToothNecklace:
+					'''
+					Grants a light amount of armor penetration
+					Slightly improves your throat and acids
+					{$Mods.V2.ItemTooltip.Generic.CheckTheAEM}
+					'''
+			}
+
 			Pets: {
 				Light: {
 					CandyFairyMasterPetItem: {

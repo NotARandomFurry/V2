@@ -796,11 +796,47 @@ namespace V2
 			}
 		}
 
+		public static void AddVorariaItemTooltip(this List<TooltipLine> tooltips, string itemTooltipKey, object tooltipVariables)
+		{
+			tooltipVariables = (
+				tooltipVariables,
+				CheckAEMButton: V2.CheckAEMHotkey.GetAssignedKeys().ToString()
+			);
+			TooltipLine tooltip = new TooltipLine(
+				V2.Instance,
+				"V2DynamicTooltip",
+				Language.GetTextValueWith(
+					"Mods.V2.ItemTooltip." + itemTooltipKey,
+					tooltipVariables
+				)
+			);
+
+			if (tooltips.FirstOrDefault(x => x.Mod == "Terraria" && x.Name.Contains("Tooltip")) is TooltipLine tooltipLine)
+			{
+				foreach (TooltipLine potentialTooltipLine in tooltips)
+				{
+					if (potentialTooltipLine.Mod == "Terraria" && potentialTooltipLine.Name.Contains("Tooltip"))
+						potentialTooltipLine.Hide();
+				}
+				tooltips.Insert(
+					tooltips.IndexOf(tooltipLine) + 1,
+					tooltip
+				);
+			}
+			else if (FindLastTooltipLineBeforeFlavorText(tooltips, out TooltipLine lastPreFlavorLine))
+			{
+				tooltips.Insert(
+					tooltips.IndexOf(lastPreFlavorLine) + 1,
+					tooltip
+				);
+			}
+		}
+
 		public static void AddVorariaDynamicItemTooltip(this List<TooltipLine> tooltips, string itemTooltipKey, object tooltipVariables)
 		{
 			tooltipVariables = (
 				tooltipVariables,
-				CheckAEMButton: ""
+				CheckAEMButton: V2.CheckAEMHotkey.GetAssignedKeys().ToString()
 			);
 			TooltipLine dynamicTooltip = new TooltipLine(
 				V2.Instance,
