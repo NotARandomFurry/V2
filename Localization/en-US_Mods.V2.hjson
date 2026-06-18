@@ -4920,17 +4920,15 @@ ItemTooltip: {
 					In any event, incomprehensible as it may be at a cursory glance, as you go to look at it closer, the runes fade into the background somewhat, and a second layer of text fades in which is actually comprehensible to the average person:
 
 					[c/FF3FBF:CHORUS (sing in D# major):]
-					[c/FF3FBF:From heavens inward and a cauldron outward, the Conductress' graces shall smile.]
-					[c/FF3FBF:By Melodia's song, this verse, when not wrong, shall save from a fate all too vile.]
+					[c/FF3FBF:From heavens inward and a cauldron outward, the Songstress' graces shall smile.]
+					[c/FF3FBF:By Melodia's song, this verse, if not wrong, shall save from a fate all too vile.]
 
 					[c/FF3FBF:I near face the Veil, the edge of our great hail, as a chance predator's left me weak,]
 					[c/FF3FBF:So by Melodia's song, I sing a chorus along, for my strength to return to its peak.]
 
 					[c/7F1F5F:POST-CHORUS (composer's note):]
 					[c/7F1F5F:But the song must rest, asleep in its nest, 'fore its strength can remend its own peak,]
-					[c/7F1F5F:So by my sacred song, don't dare sing this wrong; I've no care for the melodically weak.]
-
-					...you can't help but wonder if Promethia stole this from someone.
+					[c/7F1F5F:So by my sacred song, don't dare sing this wrong; I care not for the melodically weak.]
 					'''
 			}
 
@@ -6313,16 +6311,16 @@ Death: {
 
 	SwallowDamage: {
 		Cactus: "{0} tried to deepthroat a cactus."
-		Crystals: "{0} swallowed sharp crystals. Really..?"
+		Crystals: "{0} crunched some crystals too fast."
 		Spikes: "{0} ate spikes. What'd you think was going to happen?"
 		Fruitcake: "{0} thought fruitcake was a good idea to eat. Ever."
 		NurseNeedle: "{0} thought they were taking a shot, not getting one."
 		CactusFurniture: "{0} attempted to consume furniture made out of cactus spines."
 		CrystalFurniture: "{0} attempted to consume furniture made out of crystals."
 		Poop: "{0} ate shit."
-		BlazingWheel: "{0} thought they could safely consume a flaming wheel."
-		SpikeBall: "{0} attempted to swallow a giant spiky ball."
-		DeadlySphere: "{0} didn't think twice about eating a metal ball covered in spikes."
+		BlazingWheel: "{0} thought they could safely scarf down a ring of fire."
+		SpikeBall: "{0} mistook a giant metal ball for a giant meatball."
+		DeadlySphere: "{0} learned firsthand where Deadly Spheres get their name."
 	}
 }
 
@@ -6351,7 +6349,7 @@ Menu: {
 TownNPCMood: {
 	Angel: {
 		Content: I- I'm doing wonderfully, thank you! Of course, if you'd like me to, I wouldn't object to...e- examining your internals...j- just in case there's any tonal dissonance in there! You'd be surprised how easy it can well up in even the b- best predators.
-		NoHome: As...e- exciting as it is to study and experience the various i- ins and outs of the creatures of this world...w- well, I wouldn't mind someplace to stay as a home-away-from-home in my downtime between band practice and...w- well, my actual line of work.
+		NoHome: As...e- exciting as it is to study and experience the various i- ins and outs of the creatures of this world...w- well, I wouldn't mind someplace to stay as another home-away-from-home in my downtime between band practice and...w- well, my actual line of work.
 		FarFromHome: W- wow! I've certainly traveled farther than usual today...hrm. What predatory thing could I have been attempting to s- soothe or s- study this far out...?
 
 		Biomes: {
@@ -6490,30 +6488,17 @@ TownNPCMood: {
 Bestiary: {
 	Meteorite: {
 		MeteorMarble: A small, curious construct which is never (at first) seen without its numerous small rocks orbiting its core. The core's inside is something of a compressive cage that burns anything (and, if made possible, anyONE) that enters.
-		MeteorMaiden: A fascinating, almost woman-like construct, though built without the waist or anything under. The top and bottom halves of her torso can separate seemingly-infinitely to reveal a magically-formed stomach which torches anything inside. The sand-like slurry her digestive process makes has a wide variety of uses.
+		MeteorMaiden: A fascinating woman-like construct, though built without the waist or anything under. The top and bottom halves of her torso can separate seemingly-infinitely to reveal a magically-formed stomach which torches anything inside.
 	}
 
-	Sky.Observer: Every so often, a Demon Eye sees much more than it is meant to see in its life as a result of a defect. This, of course, leads to the eye becoming far too large to move freely about the skies. While functionally harmless, their sheer size makes them hard to swallow without good practice.
+	Sky.Observer: Every so often, a Demon Eye sees much more than it is meant to see in its life as a result of a defect. This, of course, leads to the eye becoming far too large to move freely about the skies. While functionally harmless due to being calmed by the weights of knowledge, their sheer size makes them hard to swallow without good practice.
 	Underworld.HellHarpy: Harpies are often kidnapped and carted to the Underworld via Desperai's innumerable ingredient hunters. Some of these harpies escape the gluttony of demonkind, though...but not without adjustments to their figure and form. A few demons might still be jostling around on any given one's chest and thighs.
 	Mushroom.OversizedFairy: Okay, first of all, no idea how you'd unlock this entry. But good job.
 
 	TownNPCs: {
 		Succubus: Having lived on the outskirts of Desperai for many years before deciding to pack up and leave, Lucinda's a demon that just wants people to believe she's a strong, independent predator who doesn't NEED no stupid charms!...even though she can barely hold her prey the same way her superiors could.
 		Enigma: A silly girl with silly creation magic. She made her equipment herself, but at the time, didn't know how to make a color other than green. Her favourite color is actually blue, but she thinks it'd be weird if she suddenly changed her whole color scheme.
-	}
-
-	Divine: {
-		Sinhunters: {
-			StPromethia: If ever there was a word for a Sinhunter who was everything many others aspire not to be, that word would be "Promethia". St. Promethia is a turbo-masochist gut slut who'd love nothing more than to be a heaping helping of fat on any predator she finds...and, of course, her job ends up letting her do this very often. Word on the street is she even gets to fatten up her employer's rear end every once in a while as a reward for good performance.
-			StJerne: A fearsome Sinhunter with over a millenium of experience under her belt, St. Jerne is the bane of any being that thinks they can threaten Her Twinkling Majesty. Even the most stoic of Sinhunters can have lofty aspirations, though, and very occasionally, a select few have noticed her looking longingly, almost hungrily, at Aurora's titanic form...
-		}
-
-		Gods: {
-			Constitua: A truly unparalleled mechanic with a knack for working with otherworldly materials, Constitua is nothing if not amazingly gifted with their work. They are responsible for a vast quantity of the more modern-looking inventions across the Divine Realm, taking inspiration from mortals and immortals alike.
-			Judico: The great judge of the Divine Realm; equal parts masculine and feminine, Judico truly seeks nothing more than fair, equal, and uncompromising judgement --- even for the deities he is obligated to call his peers. His path to monotheism has been laced with trouble after trouble, but victory is within his grasp...
-			Aurora: The titanic woman known as the Mother of the Stars. Countless stars have both been birthed by her and ended up right back in her gargantuan gut to be churned into ever more fat for her figure; her truly immeasurably strong belches are said to be the source of the aurora borealis that paint vast swathes of space.
-			Chrona: The endless march of time shall forget countless things. It shall not forget Chrona, the being that granted the flow of time to the universe, and in turn, was granted a place to reside as the supreme ruler of the Divine Realm and all creatures within it. To devour their soul would be to upend the very treads of time itself, just for an immaculately mega-powerful meal.
-		}
+		StPromethia: An intensely masochistic Amateur Saint to the Songstress of the Divine, St. Promethia'd love nothing more than to be a heaping helping of fat on any predator she finds...and, of course, her job as a walking, talking gastrointestinal medicine ends up letting her do this very often.
 	}
 }
 
