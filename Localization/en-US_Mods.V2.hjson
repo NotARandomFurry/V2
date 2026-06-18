@@ -399,29 +399,18 @@ PredStatsMenu: {
 				[c/7F7F7F:| +{StruggleGraceTimePer5Levels}sec per 5 stat points invested.]
 				'''
 
-			RelevantStats: {
-				Normal:
-					'''
-					Total GLP: [c/{$Mods.V2.Colors.GoodThingVore}:{GLPTotal}]
-					[c/7F7F7F:| {GLPSpent} from invested stat points]
-					[c/7F7F7F:| {GLPBase} from permanent bonuses]
-					[c/7F7F7F:| {GLPExtra} from temporary bonuses (potions, charms, etc.)]
+			RelevantStats:
+				'''
+				Total GLP: [c/{$Mods.V2.Colors.GoodThingVore}:{GLPTotal}]
+				[c/7F7F7F:| {GLPSpent} from invested stat points]
+				[c/7F7F7F:| {GLPBase} from permanent bonuses]
+				[c/7F7F7F:| {GLPExtra} from temporary bonuses (potions, charms, etc.)]
 
-					{$Mods.V2.PredStatsMenu.StatDescription.HoldSHIFTToSeeDescription}
-					Swallow Capacity: {PreySwallowSize}
-					Drinking Rate: {LiquidSwallowRate} tiles/second
-					Struggle Grace Period: {StruggleGracePeriod}
-					'''
-				Chronological:
-					'''
-					Total GLP: [c/{$Mods.V2.Colors.GoodThingVore}:∞]
-					[c/7F7F7F:| ∞ from digesting at least one Timekeeper]
-
-					Swallow Capacity: [c/{$Mods.V2.Colors.GoodThingVore}:∞]
-					Drinking Rate: [c/{$Mods.V2.Colors.GoodThingVore}:Countless universes/second, should you will it]
-					Struggle Grace Period: [c/{$Mods.V2.Colors.GoodThingVore}:Unnecessary]
-					'''
-			}
+				{$Mods.V2.PredStatsMenu.StatDescription.HoldSHIFTToSeeDescription}
+				Swallow Capacity: {PreySwallowSize}
+				Drinking Rate: {LiquidSwallowRate} tiles/second
+				Struggle Grace Period: {StruggleGracePeriod}
+				'''
 		}
 
 		TUM: {
@@ -437,29 +426,18 @@ PredStatsMenu: {
 				[c/7F7F7F:| +{StomachacheMeterCapacityPer5Levels} per 5 stat points invested.]
 				'''
 
-			RelevantStats: {
-				Normal:
-					'''
-					Total TUM: [c/{$Mods.V2.Colors.GoodThingVore}:{TUMTotal}]
-					[c/7F7F7F:| {TUMSpent} from invested stat points]
-					[c/7F7F7F:| {TUMBase} from permanent bonuses]
-					[c/7F7F7F:| {TUMExtra} from temporary bonuses (potions, charms, etc.)]
+			RelevantStats:
+				'''
+				Total TUM: [c/{$Mods.V2.Colors.GoodThingVore}:{TUMTotal}]
+				[c/7F7F7F:| {TUMSpent} from invested stat points]
+				[c/7F7F7F:| {TUMBase} from permanent bonuses]
+				[c/7F7F7F:| {TUMExtra} from temporary bonuses (potions, charms, etc.)]
 
-					{$Mods.V2.PredStatsMenu.StatDescription.HoldSHIFTToSeeDescription}
-					Stomach Capacity: {StomachCapacity}
-					Stomachache Meter Capacity: {StomachacheMeterCapacity}
-					General Struggle Chart Difficulty: {StruggleChartEstimatedDifficulty}
-					'''
-				Chronological:
-					'''
-					Total TUM: [c/{$Mods.V2.Colors.GoodThingVore}:∞]
-					[c/7F7F7F:| ∞ from digesting at least one Timekeeper]
-
-					Stomach Capacity: [c/{$Mods.V2.Colors.GoodThingVore}:∞]
-					Stomachache Meter Capacity: [c/{$Mods.V2.Colors.GoodThingVore}:∞]
-					General Struggle Chart Difficulty: [c/{$Mods.V2.Colors.GoodThingVore}:Even entire universes can't "struggle" inside someone as gluttonous as you]
-					'''
-			}
+				{$Mods.V2.PredStatsMenu.StatDescription.HoldSHIFTToSeeDescription}
+				Stomach Capacity: {StomachCapacity}
+				Stomachache Meter Capacity: {StomachacheMeterCapacity}
+				General Struggle Chart Difficulty: {StruggleChartEstimatedDifficulty}
+				'''
 		}
 
 		ACI: {
@@ -477,39 +455,21 @@ PredStatsMenu: {
 				[c/{$Mods.V2.Colors.BadThingVore}:Certain items, such as bones, metals, certain clothing pieces, and plastics, cannot be properly digested by normal stomach acids alone.] In order to digest these items, you will need to either use external digestive aids, or upgrade your stomach acids in a more specialized manner.
 				'''
 
-			RelevantStats: {
-				Normal:
-					'''
-					Total ACI: [c/{$Mods.V2.Colors.GoodThingVore}:{ACITotal}]
-					[c/7F7F7F:| {ACISpent} from invested stat points]
-					[c/7F7F7F:| {ACIBase} from permanent bonuses]
-					[c/7F7F7F:| {ACIExtra} from temporary bonuses (potions, charms, etc.)]
+			RelevantStats:
+				'''
+				Total ACI: [c/{$Mods.V2.Colors.GoodThingVore}:{ACITotal}]
+				[c/7F7F7F:| {ACISpent} from invested stat points]
+				[c/7F7F7F:| {ACIBase} from permanent bonuses]
+				[c/7F7F7F:| {ACIExtra} from temporary bonuses (potions, charms, etc.)]
 
-					{$Mods.V2.PredStatsMenu.StatDescription.HoldSHIFTToSeeDescription}
-					Digestion Tick Base Damage: {DigestionDamage}
-					Digestion Tick Rate: {DigestionRate} ticks/second
-					{AcidTierWithDescription}
-					'''
-				Chronological:
-					'''
-					Total ACI: [c/{$Mods.V2.Colors.GoodThingVore}:∞]
-					[c/7F7F7F:| ∞ from digesting at least one Timekeeper]
-
-					Digestion Damage: ∞
-					Digestion Damage Tick Rate: ∞/sec
-					Stomach Acid Tier: [c/FFFF00:Chronological (∞)]
-					Your will to gobble up the entire world, the whole of the Divine Realm included, has gone through in full, granting you a now-former Timekeeper's control over the very flow of time.
-					What was once a living, breathing universe with countless creatures residing in it has been reduced to naught but pudge for your tummy, yet you're still absolutely starving.
-
-					Thankfully, there exist a virtually infinite number of other universes out there, all with one newfound shared purpose: as an endless food supply for you. Your acids are reality's new great constant, dissolving entire bubbles of existence in moments, should you will it.
-
-					Reality is your buffet. All that exists, has ever existed, and ever will have existed is doomed- no, destined- ...no. DESIGNED to end up as fat for your frame in time.
-					Bon appetit.~
-					'''
-			}
+				{$Mods.V2.PredStatsMenu.StatDescription.HoldSHIFTToSeeDescription}
+				Digestion Tick Base Damage: {DigestionDamage}
+				Digestion Tick Rate: {DigestionRate} ticks/second
+				{AcidTierWithDescription}
+				'''
 
 			AcidTiers: {
-				NormalBeta:
+				Normal:
 					'''
 					Stomach Acid Tier: [c/9F9F9F:Normal (1)]
 					Your stomach acids are just as mundane as the next predator's.
@@ -517,42 +477,6 @@ PredStatsMenu: {
 
 					[c/601818:The next acid upgrade method has not yet been implemented!]
 					[c/C03030:Please wait until a future update implements the next acid upgrade method.]
-					'''
-				Normal:
-					'''
-					Stomach Acid Tier: [c/9F9F9F:Normal (1)]
-					Your stomach acids are just as mundane as the next predator's.
-					[c/{$Mods.V2.Colors.BadThingVore}:Bones, clothing, and various other materials are easily able to survive your hungry tummy, despite its best efforts to melt them down.]
-
-					An old researcher from Avarsici is rumored to live below the surface of the tundra.
-					She's past her prime, sure, but she's no less wise or witty for it, and may be able to help remedy this fault, for a price...
-					'''
-				Recursive:
-					'''
-					Stomach Acid Tier: [c/FF4FFF:Recursive (2)]
-					Your stomach acids have been enchanted to digest prey recursively as a token of gratitude from a rather...eccentric fairy enchantress living within a pocket dimension inside the belly of an old Avarsician space researcher.
-					Bones and clothing can no longer escape their fate of being fat on your frame anywhere near as easily. However, [c/{$Mods.V2.Colors.BadThingVore}:plastics and various metals still manage to evade your gut's gastric assault with ease.]
-
-					That said, there were advertisements in the enchantress' room about a product made and sold entirely within Avarsician borders which can resolve this problem...
-					'''
-				Royal:
-					'''
-					Stomach Acid Tier: [c/167200:Royal (3)]
-					Your stomach acids, thanks to a bioalteration spell produced and sold en masse in Avarsici's own borders, are now mixed with nitric acid to create what most simply call "royal acids".
-					Now, virtually nothing of this plane can escape the will of your stomach.
-					However, be aware that [c/{$Mods.V2.Colors.BadThingVore}:various items of otherworldly origin] are still impervious to your glorious gastrointestinal gauntlet.
-					Additionally, you still [c/{$Mods.V2.Colors.BadThingVore}:cannot hold and digest the souls of your prey] without the help of a charm or pred ability.
-
-					There is little short of a deity's blessing that could grant you greater digestive potential.
-					'''
-				Divine:
-					'''
-					Stomach Acid Tier: [c/167200:Divine (4)]
-					By the will of Melodia, as gratitude for bringing her beloved Lead Conductor back to her, your royal acids have been further granted the privilege which only an angel can otherwise enjoy.
-					Nothing shall escape your stomach --- you can even hold and digest non-divine souls innately, and not even the delicacies of the Divine Realm can outlast your supreme digestive system.
-					Thus, all your battles with breakfast (and other meals) are now a war of attrition --- one which, should you will it, you are destined to win.
-
-					An even greater boost would be necessary to begin digesting the souls of the Divine Realm's inhabitants on your quest to truly become the apex and someday, hopefully soon, devour the WHOLE of the world in which you live...but where would one even BEGIN to gain such raw, unadulterated gastric strength, never mind the edge needed to break though divine soul protection?
 					'''
 			}
 		}
@@ -570,28 +494,18 @@ PredStatsMenu: {
 				[c/7F7F7F:| Debuff time is divided by +{DebuffLossPer5Levels} per 5 stat points invested.]
 				'''
 
-			RelevantStats: {
-				Normal:
-					'''
-					Total ABS: [c/{$Mods.V2.Colors.GoodThingVore}:{ABSTotal}]
-					[c/7F7F7F:| {ABSSpent} from invested stat points]
-					[c/7F7F7F:| {ABSBase} from permanent bonuses]
-					[c/7F7F7F:| {ABSExtra} from temporary bonuses (potions, charms, etc.)]
+			RelevantStats:
+				'''
+				Total ABS: [c/{$Mods.V2.Colors.GoodThingVore}:{ABSTotal}]
+				[c/7F7F7F:| {ABSSpent} from invested stat points]
+				[c/7F7F7F:| {ABSBase} from permanent bonuses]
+				[c/7F7F7F:| {ABSExtra} from temporary bonuses (potions, charms, etc.)]
 
-					{$Mods.V2.PredStatsMenu.StatDescription.HoldSHIFTToSeeDescription}
-					Absorption rate: {AbsorptionRate} weight/minute
-					Buffs from snacks have {BuffExtensionTime} duration
-					Debuffs from snacks have {DebuffDisextensionTime} duration
-					'''
-				Chronological:
-					'''
-					Total ABS: [c/{$Mods.V2.Colors.GoodThingVore}:∞]
-					[c/7F7F7F:| ∞ from digesting at least one Timekeeper]
-
-					Absorption rate: ∞ weight/minute
-					Buffs from eaten prey are infinite and infinitely stackable
-					Debuffs are never gained from eaten prey at all
-					'''
+				{$Mods.V2.PredStatsMenu.StatDescription.HoldSHIFTToSeeDescription}
+				Absorption rate: {AbsorptionRate} weight/minute
+				Buffs from snacks have {BuffExtensionTime} duration
+				Debuffs from snacks have {DebuffDisextensionTime} duration
+				'''
 			}
 		}
 	}
