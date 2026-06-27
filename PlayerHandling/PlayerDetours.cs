@@ -1,31 +1,32 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
+using Terraria.Chat;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.Achievements;
-using Terraria.ModLoader;
+using Terraria.GameInput;
+using Terraria.Graphics;
+using Terraria.Graphics.Renderers;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.Localization;
-using Terraria.Chat;
-using Terraria.Graphics.Shaders;
-using System.Reflection;
-using V2.Items;
-using V2.Core;
-using V2.Items.Voraria.Tools;
-using Terraria.WorldBuilding;
-using V2.Projectiles;
+using Terraria.ModLoader;
 using Terraria.ObjectData;
-using V2.Tiles;
-using Terraria.Graphics.Renderers;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.Graphics;
+using Terraria.WorldBuilding;
+using V2.Core;
+using V2.Items;
+using V2.Items.Voraria.Tools;
+using V2.Projectiles;
 using V2.StatusEffects.Voraria.Debuffs;
+using V2.Tiles;
 
 namespace V2.PlayerHandling
 {
@@ -2523,23 +2524,13 @@ namespace V2.PlayerHandling
 
 		private static void UpdateStormTigerStatus(Player player)
 		{
-			int num;
-			switch (GetDesiredStormTigerMinionRank(player))
+			var num = GetDesiredStormTigerMinionRank(player) switch
 			{
-				default:
-					num = -1;
-					break;
-				case 1:
-					num = 833;
-					break;
-				case 2:
-					num = 834;
-					break;
-				case 3:
-					num = 835;
-					break;
-			}
-
+				1 => 833,
+				2 => 834,
+				3 => 835,
+				_ => -1,
+			};
 			bool flag = false;
 			if (num == -1)
 				flag = true;
@@ -3210,7 +3201,360 @@ namespace V2.PlayerHandling
 			}
 		}
 
+		/*
+		this doesn't really matter yet but is kept here for ease of access
+		the Extractinator's eventual rework will make it into something you can feed extractibles to and fuck off from for a while and come back to free loot (and a fatter Extractinator)
+		when this happens, I will need to redo this entire method to have a, frankly, even remotely sensible - extensible - comprehensible loot table system compared to the current approach
+		DropItemFromExtractinator is not used in the final product at all but will be kept for compatibility when the time comes to rig up the detour properly
+		*/
+		public static void ExtractinatorUse(Player player, int extractType, int extractinatorBlockType)
+		{
+			int num = 5000;
+			int num2 = 25;
+			int num3 = 50;
+			int num4 = -1;
+			int num5 = -1;
+			int num6 = -1;
+			int num7 = 1;
+			switch (extractType)
+			{
+				case ItemID.DesertFossil:
+					num /= 3;
+					num2 *= 2;
+					num3 = 20;
+					num4 = 10;
+					break;
+				case ItemID.OldShoe:
+					num = -1;
+					num2 = -1;
+					num3 = -1;
+					num4 = -1;
+					num5 = 1;
+					num7 = -1;
+					break;
+				case ItemID.LavaMoss:
+					num = -1;
+					num2 = -1;
+					num3 = -1;
+					num4 = -1;
+					num5 = -1;
+					num7 = -1;
+					num6 = 1;
+					break;
+			}
 
+			int extractItem = -1;
+			int extractStack = 1;
+			if (num4 != -1 && Main.rand.Next(num4) == 0)
+			{
+				extractItem = 3380;
+				if (Main.rand.NextBool(5))
+					extractStack += Main.rand.Next(2);
 
+				if (Main.rand.NextBool(10))
+					extractStack += Main.rand.Next(3);
+
+				if (Main.rand.NextBool(15))
+					extractStack += Main.rand.Next(4);
+			}
+			else if (num7 != -1 && Main.rand.NextBool(2))
+			{
+				if (Main.rand.NextBool(12000))
+				{
+					extractItem = 74;
+					if (Main.rand.NextBool(14))
+						extractStack += Main.rand.Next(0, 2);
+
+					if (Main.rand.NextBool(14))
+						extractStack += Main.rand.Next(0, 2);
+
+					if (Main.rand.NextBool(14))
+						extractStack += Main.rand.Next(0, 2);
+				}
+				else if (Main.rand.NextBool(800))
+				{
+					extractItem = 73;
+					if (Main.rand.NextBool(6))
+						extractStack += Main.rand.Next(1, 21);
+
+					if (Main.rand.NextBool(6))
+						extractStack += Main.rand.Next(1, 21);
+
+					if (Main.rand.NextBool(6))
+						extractStack += Main.rand.Next(1, 21);
+
+					if (Main.rand.NextBool(6))
+						extractStack += Main.rand.Next(1, 21);
+
+					if (Main.rand.NextBool(6))
+						extractStack += Main.rand.Next(1, 20);
+				}
+				else if (Main.rand.NextBool(60))
+				{
+					extractItem = 72;
+					if (Main.rand.NextBool(4))
+						extractStack += Main.rand.Next(5, 26);
+
+					if (Main.rand.NextBool(4))
+						extractStack += Main.rand.Next(5, 26);
+
+					if (Main.rand.NextBool(4))
+						extractStack += Main.rand.Next(5, 26);
+
+					if (Main.rand.NextBool(4))
+						extractStack += Main.rand.Next(5, 25);
+				}
+				else
+				{
+					extractItem = 71;
+					if (Main.rand.NextBool(3))
+						extractStack += Main.rand.Next(10, 26);
+
+					if (Main.rand.NextBool(3))
+						extractStack += Main.rand.Next(10, 26);
+
+					if (Main.rand.NextBool(3))
+						extractStack += Main.rand.Next(10, 26);
+
+					if (Main.rand.NextBool(3))
+						extractStack += Main.rand.Next(10, 25);
+				}
+			}
+			else if (num != -1 && Main.rand.Next(num) == 0)
+			{
+				extractItem = 1242;
+			}
+			else if (num5 != -1)
+			{
+				extractItem = ((Main.rand.NextBool(4)) ? 2674 : ((Main.rand.NextBool(3)) ? 2006 : ((Main.rand.NextBool(3)) ? 2675 : 2002)));
+			}
+			else if (num6 != -1 && extractinatorBlockType == 642)
+			{
+				if (Main.rand.NextBool(10))
+				{
+					extractItem = Main.rand.Next(5) switch
+					{
+						0 => 4354,
+						1 => 4389,
+						2 => 4377,
+						3 => 5127,
+						_ => 4378,
+					};
+				}
+				else
+				{
+					extractItem = Main.rand.Next(5) switch
+					{
+						0 => 4349,
+						1 => 4350,
+						2 => 4351,
+						3 => 4352,
+						_ => 4353,
+					};
+				}
+			}
+			else if (num6 != -1)
+			{
+				extractItem = Main.rand.Next(5) switch
+				{
+					0 => 4349,
+					1 => 4350,
+					2 => 4351,
+					3 => 4352,
+					_ => 4353,
+				};
+			}
+			else if (num2 != -1 && Main.rand.Next(num2) == 0)
+			{
+				extractItem = Main.rand.Next(6) switch
+				{
+					0 => 181,
+					1 => 180,
+					2 => 177,
+					3 => 179,
+					4 => 178,
+					_ => 182,
+				};
+				if (Main.rand.NextBool(20))
+					extractStack += Main.rand.Next(0, 2);
+
+				if (Main.rand.NextBool(30))
+					extractStack += Main.rand.Next(0, 3);
+
+				if (Main.rand.NextBool(40))
+					extractStack += Main.rand.Next(0, 4);
+
+				if (Main.rand.NextBool(50))
+					extractStack += Main.rand.Next(0, 5);
+
+				if (Main.rand.NextBool(60))
+					extractStack += Main.rand.Next(0, 6);
+			}
+			else if (num3 != -1 && Main.rand.Next(num3) == 0)
+			{
+				extractItem = 999;
+				if (Main.rand.NextBool(20))
+					extractStack += Main.rand.Next(0, 2);
+
+				if (Main.rand.NextBool(30))
+					extractStack += Main.rand.Next(0, 3);
+
+				if (Main.rand.NextBool(40))
+					extractStack += Main.rand.Next(0, 4);
+
+				if (Main.rand.NextBool(50))
+					extractStack += Main.rand.Next(0, 5);
+
+				if (Main.rand.NextBool(60))
+					extractStack += Main.rand.Next(0, 6);
+			}
+			else if (Main.rand.NextBool(3))
+			{
+				if (Main.rand.NextBool(5000))
+				{
+					extractItem = 74;
+					if (Main.rand.NextBool(10))
+						extractStack += Main.rand.Next(0, 3);
+
+					if (Main.rand.NextBool(10))
+						extractStack += Main.rand.Next(0, 3);
+
+					if (Main.rand.NextBool(10))
+						extractStack += Main.rand.Next(0, 3);
+
+					if (Main.rand.NextBool(10))
+						extractStack += Main.rand.Next(0, 3);
+
+					if (Main.rand.NextBool(10))
+						extractStack += Main.rand.Next(0, 3);
+				}
+				else if (Main.rand.NextBool(400))
+				{
+					extractItem = 73;
+					if (Main.rand.NextBool(5))
+						extractStack += Main.rand.Next(1, 21);
+
+					if (Main.rand.NextBool(5))
+						extractStack += Main.rand.Next(1, 21);
+
+					if (Main.rand.NextBool(5))
+						extractStack += Main.rand.Next(1, 21);
+
+					if (Main.rand.NextBool(5))
+						extractStack += Main.rand.Next(1, 21);
+
+					if (Main.rand.NextBool(5))
+						extractStack += Main.rand.Next(1, 20);
+				}
+				else if (Main.rand.NextBool(30))
+				{
+					extractItem = 72;
+					if (Main.rand.NextBool(3))
+						extractStack += Main.rand.Next(5, 26);
+
+					if (Main.rand.NextBool(3))
+						extractStack += Main.rand.Next(5, 26);
+
+					if (Main.rand.NextBool(3))
+						extractStack += Main.rand.Next(5, 26);
+
+					if (Main.rand.NextBool(3))
+						extractStack += Main.rand.Next(5, 25);
+				}
+				else
+				{
+					extractItem = 71;
+					if (Main.rand.NextBool(2))
+						extractStack += Main.rand.Next(10, 26);
+
+					if (Main.rand.NextBool(2))
+						extractStack += Main.rand.Next(10, 26);
+
+					if (Main.rand.NextBool(2))
+						extractStack += Main.rand.Next(10, 26);
+
+					if (Main.rand.NextBool(2))
+						extractStack += Main.rand.Next(10, 25);
+				}
+			}
+			else if (extractinatorBlockType == 642)
+			{
+				extractItem = Main.rand.Next(14) switch
+				{
+					0 => 12,
+					1 => 11,
+					2 => 14,
+					3 => 13,
+					4 => 699,
+					5 => 700,
+					6 => 701,
+					7 => 702,
+					8 => 364,
+					9 => 1104,
+					10 => 365,
+					11 => 1105,
+					12 => 366,
+					_ => 1106,
+				};
+				if (Main.rand.NextBool(20))
+					extractStack += Main.rand.Next(0, 2);
+
+				if (Main.rand.NextBool(30))
+					extractStack += Main.rand.Next(0, 3);
+
+				if (Main.rand.NextBool(40))
+					extractStack += Main.rand.Next(0, 4);
+
+				if (Main.rand.NextBool(50))
+					extractStack += Main.rand.Next(0, 5);
+
+				if (Main.rand.NextBool(60))
+					extractStack += Main.rand.Next(0, 6);
+			}
+			else
+			{
+				extractItem = Main.rand.Next(8) switch
+				{
+					0 => 12,
+					1 => 11,
+					2 => 14,
+					3 => 13,
+					4 => 699,
+					5 => 700,
+					6 => 701,
+					_ => 702,
+				};
+				if (Main.rand.NextBool(20))
+					extractStack += Main.rand.Next(0, 2);
+
+				if (Main.rand.NextBool(30))
+					extractStack += Main.rand.Next(0, 3);
+
+				if (Main.rand.NextBool(40))
+					extractStack += Main.rand.Next(0, 4);
+
+				if (Main.rand.NextBool(50))
+					extractStack += Main.rand.Next(0, 5);
+
+				if (Main.rand.NextBool(60))
+					extractStack += Main.rand.Next(0, 6);
+			}
+
+			ItemLoader.ExtractinatorUse(ref extractItem, ref extractStack, extractType, extractinatorBlockType);
+
+			if (extractItem > 0)
+				DropItemFromExtractinator(player, extractItem, extractStack);
+		}
+
+		public static void DropItemFromExtractinator(Player player, int itemType, int stack)
+		{
+			Vector2 vector = Main.ReverseGravitySupport(Main.MouseScreen) + Main.screenPosition;
+			if (Main.SmartCursorIsUsed || PlayerInput.UsingGamepad)
+				vector = player.Center;
+
+			int number = Item.NewItem(player.GetSource_TileInteraction(Player.tileTargetX, Player.tileTargetY), (int)vector.X, (int)vector.Y, 1, 1, itemType, stack, noBroadcast: false, -1);
+			if (Main.netMode == NetmodeID.MultiplayerClient)
+				NetMessage.SendData(MessageID.SyncItem, -1, -1, null, number, 1f);
+		}
 	}
 }
