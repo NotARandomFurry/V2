@@ -84,7 +84,7 @@ namespace V2.Items.Voraria.Tools
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
 			tooltips.AddVorariaDynamicItemTooltip(
-				"Voraria.AstralFairyController",
+				"Voraria.Tools.PredToggleRod",
 				new
 				{
 

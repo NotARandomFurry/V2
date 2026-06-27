@@ -41,7 +41,7 @@ namespace V2.NPCs.Vanilla.BloodMoon
 		};
 		public static class ItemTheftRules
 		{
-			public static ItemTheftRule WeddingVeil => new ItemTheftRule(
+			public static DigestionLootRule WeddingVeil => new DigestionLootRule(
 				type: (npc, pred) => ItemID.TheBrideHat,
 				amount: (npc, pred) => 1,
 				chance: (npc, pred) => {
@@ -57,7 +57,7 @@ namespace V2.NPCs.Vanilla.BloodMoon
 					};
 				}
 			);
-			public static ItemTheftRule WeddingDress => new ItemTheftRule(
+			public static DigestionLootRule WeddingDress => new DigestionLootRule(
 				type: (npc, pred) => ItemID.TheBrideDress,
 				amount: (npc, pred) => 1,
 				chance: (npc, pred) => {

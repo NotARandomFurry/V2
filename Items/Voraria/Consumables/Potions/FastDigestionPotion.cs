@@ -102,7 +102,6 @@ namespace V2.Items.Voraria.Consumables.Potions
 					FastDigestionPotionABSBonus = ABSBonus,
 				}
 			);
-			tooltips.FirstOrDefault(x => x.Name == "BuffTime").Hide();
 		}
 	}
 }

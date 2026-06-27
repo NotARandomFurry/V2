@@ -18,12 +18,12 @@ namespace V2.NPCs.Vanilla.TownNPCs.Painter
 	{
 		public static class ItemTheftRules
 		{
-			public static ItemTheftRule PaintballGun => new ItemTheftRule(
+			public static DigestionLootRule PaintballGun => new DigestionLootRule(
 				type: (npc, pred) => ItemID.PainterPaintballGun,
 				amount: (npc, pred) => 1,
 				chance: (npc, pred) => 1.0
 			);
-			public static ItemTheftRule JimsCap => new ItemTheftRule(
+			public static DigestionLootRule JimsCap => new DigestionLootRule(
 				type: (npc, pred) => ItemID.JimsCap,
 				amount: (npc, pred) => 1,
 				chance: (npc, pred) => npc.GivenName == "Jim" ? 1.0 : 0.0

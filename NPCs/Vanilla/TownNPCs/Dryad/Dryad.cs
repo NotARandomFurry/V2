@@ -20,12 +20,12 @@ namespace V2.NPCs.Vanilla.TownNPCs.Dryad
 	{
 		public static class ItemTheftRules
 		{
-			public static ItemTheftRule ClothingTop => new ItemTheftRule(
+			public static DigestionLootRule ClothingTop => new DigestionLootRule(
 				type: (npc, pred) => ItemID.DryadCoverings,
 				amount: (npc, pred) => 1,
 				chance: (npc, pred) => 1.0
 			);
-			public static ItemTheftRule ClothingBottom => new ItemTheftRule(
+			public static DigestionLootRule ClothingBottom => new DigestionLootRule(
 				type: (npc, pred) => ItemID.DryadLoincloth,
 				amount: (npc, pred) => 1,
 				chance: (npc, pred) => 1.0

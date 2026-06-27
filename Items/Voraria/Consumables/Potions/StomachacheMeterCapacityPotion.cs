@@ -97,7 +97,6 @@ namespace V2.Items.Voraria.Consumables.Potions
 					StomachacheMeterCapacityPotionUneaseDefenseBonus = StomachacheDefenseBonus,
 				}
 			);
-			tooltips.FirstOrDefault(x => x.Name == "BuffTime").Hide();
 		}
 	}
 }

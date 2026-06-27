@@ -7,50 +7,108 @@ using Terraria.ModLoader;
 using V2.Core;
 using V2.Items.Voraria;
 using V2.Items.Voraria.Charms;
+using V2.PlayerHandling;
 using V2.PlayerHandling.PredPlayerGoals.Amateur;
 using V2.Sounds.Vore;
 
-namespace V2.NPCs.Vanilla.Cavern
+namespace V2.NPCs.Vanilla.Tundra.Underground
 {
 	public static class NymphStuff
 	{
 		public static class ItemTheftRules
 		{
-			public static ItemTheftRule NymphHairStrands => new ItemTheftRule(
+			public static DigestionLootRule NymphHairStrands => new DigestionLootRule(
 				type: (npc, pred) => ModContent.ItemType<NymphHairStrand>(),
 				amount: (npc, pred) => {
+					if (pred is Player playerPred)
+					{
+						return playerPred.GetModPlayer<PredPlayer>().PreyStealLootLevel switch
+						{
+							1 => Main.GameMode switch
+							{
+								GameModeID.Master => 3,
+								GameModeID.Expert => Main.rand.NextBool() ? 3 : 2,
+								_ => 2,
+							},
+							_ => Main.GameMode switch
+							{
+								GameModeID.Master => Main.rand.NextBool() ? 2 : 1,
+								GameModeID.Expert => Main.rand.NextBool(4) ? 2 : 1,
+								_ => 1,
+							},
+						};
+					}
+
 					return Main.GameMode switch
 					{
-						GameModeID.Master => 2,
-						GameModeID.Expert => Main.rand.Next(1, 2 + 1),
+						GameModeID.Master => Main.rand.NextBool() ? 2 : 1,
+						GameModeID.Expert => Main.rand.NextBool(4) ? 2 : 1,
 						_ => 1,
 					};
 				},
 				chance: (npc, pred) => 1.0
 			);
 
-			public static ItemTheftRule MetalDetector => new ItemTheftRule(
+			public static DigestionLootRule MetalDetector => new DigestionLootRule(
 				type: (npc, pred) => ItemID.MetalDetector,
 				amount: (npc, pred) => 1,
 				chance: (npc, pred) => {
+					if (pred is Player playerPred)
+					{
+						return playerPred.GetModPlayer<PredPlayer>().PreyStealLootLevel switch
+						{
+							1 => Main.GameMode switch
+							{
+								GameModeID.Master => 0.375,
+								GameModeID.Expert => 0.3125,
+								_ => 0.25,
+							},
+							_ => Main.GameMode switch
+							{
+								GameModeID.Master => 0.15,
+								GameModeID.Expert => 0.125,
+								_ => 0.10,
+							},
+						};
+					}
+
 					return Main.GameMode switch
 					{
-						GameModeID.Master => 0.175,
-						GameModeID.Expert => 0.15,
+						GameModeID.Master => 0.15,
+						GameModeID.Expert => 0.125,
 						_ => 0.10,
 					};
 				}
 			);
 
-			public static ItemTheftRule FatassCharm => new ItemTheftRule(
+			public static DigestionLootRule FatassCharm => new DigestionLootRule(
 				type: (npc, pred) => ModContent.ItemType<CharmFatass>(),
 				amount: (npc, pred) => 1,
 				chance: (npc, pred) => {
+					if (pred is Player playerPred)
+					{
+						return playerPred.GetModPlayer<PredPlayer>().PreyStealLootLevel switch
+						{
+							1 => Main.GameMode switch
+							{
+								GameModeID.Master => 0.375,
+								GameModeID.Expert => 0.3125,
+								_ => 0.25,
+							},
+							_ => Main.GameMode switch
+							{
+								GameModeID.Master => 0.15,
+								GameModeID.Expert => 0.125,
+								_ => 0.10,
+							},
+						};
+					}
+
 					return Main.GameMode switch
 					{
-						GameModeID.Master => 1.0,
-						GameModeID.Expert => 0.875,
-						_ => 0.75,
+						GameModeID.Master => 0.15,
+						GameModeID.Expert => 0.125,
+						_ => 0.10,
 					};
 				}
 			);
@@ -115,11 +173,10 @@ namespace V2.NPCs.Vanilla.Cavern
 		public static void GetDigestedPlayerAdditionalDeathMessages(NPC npc, Player player, List<string> deathReasonKeyList)
 		{
 			deathReasonKeyList.AddHumanoidPredMessages();
-			deathReasonKeyList.AddRange(new List<string>
-			{
+			deathReasonKeyList.AddRange([
 				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Cavern.Nymph.1",
 				"Mods.V2.Death.DigestedPlayer.SpecificNPC.Cavern.Nymph.2",
-			});
+			]);
 			if (player.difficulty == PlayerDifficultyID.Hardcore)
 			{
 				deathReasonKeyList.Clear();
@@ -137,7 +194,7 @@ namespace V2.NPCs.Vanilla.Cavern
 
 		public static double GetPreyAbsorptionRate(NPC npc)
 		{
-			double baseAbsorptionRate = 1.0 / (double)V2Utils.SensibleTime(
+			double baseAbsorptionRate = 1.0 / V2Utils.SensibleTime(
 				minutes: 1,
 				seconds: 15
 			);
@@ -152,6 +209,25 @@ namespace V2.NPCs.Vanilla.Cavern
 
 		public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
 		{
+			npcLoot.Add(
+				new V2CommonDropRules.DifficultyScalingDrop(
+					new CommonDrop(
+						itemId: ModContent.ItemType<NymphHairStrand>(),
+						chanceNumerator: 1,
+						chanceDenominator: 2
+					),
+					new CommonDrop(
+						itemId: ModContent.ItemType<NymphHairStrand>(),
+						chanceNumerator: 5,
+						chanceDenominator: 8
+					),
+					new CommonDrop(
+						itemId: ModContent.ItemType<NymphHairStrand>(),
+						chanceNumerator: 3,
+						chanceDenominator: 4
+					)
+				)
+			);
 			npcLoot.Add(
 				new V2CommonDropRules.DifficultyScalingDrop(
 					new CommonDrop(

@@ -676,11 +676,11 @@ namespace V2.UI.PredStatsMenu
 
 				if (hoveredStatSlice != "none")
 				{
-					string explainHoveredStatHow = "RelevantStats.Normal";
+					string explainHoveredStatHow = "RelevantStats";
 					if (Main.keyState.IsKeyDown(Keys.LeftShift))
 						explainHoveredStatHow = "Description";
 
-					string acidTierKey = "Mods.V2.PredStatsMenu.StatDescription.ACI.AcidTiers.NormalBeta";
+					string acidTierKey = "Mods.V2.PredStatsMenu.StatDescription.ACI.AcidTiers.Normal";
 
 					ChatManager.DrawColorCodedStringWithShadow(
 						spriteBatch,

@@ -1,0 +1,108 @@
+Items: {
+	Accessories: {
+		Offensive: {
+			SharkToothNecklace: {
+				Name: Shark Tooth Necklace
+				Overview:
+					'''
+					Can be worn as a necklace.
+					While worn, confers the following effects:
+					> [c/{$Mods.V2.Colors.Action}:All of your attacks] gain [c/{$Mods.V2.Colors.Yellow}:+{SharkToothNecklaceArmorPen} armor penetration].
+					> [c/{$Mods.V2.Colors.Lime}:+{SharkToothNecklacePredPoints} point] in [c/{$Mods.V2.Colors.Green}:GLP and ACI pred stats].
+					'''
+			}
+			StingerNecklace: {
+				Name: Stinger Necklace
+				Overview:
+					'''
+					Can be worn as a necklace.
+					While worn, confers the following effects:
+					> [c/{$Mods.V2.Colors.Action}:All of your attacks] gain [c/{$Mods.V2.Colors.Yellow}:+{StingerNecklaceArmorPen} armor penetration].
+					> [c/{$Mods.V2.Colors.Lime}:+{StingerNecklacePredPoints} point] in [c/{$Mods.V2.Colors.Green}:GLP and ACI pred stats].
+					> [c/{$Mods.V2.Colors.Yellow}:+{StingerNecklaceCritDMG} critical strike damage].
+					'''
+			}
+		}
+	}
+}
+NPCs: {
+	Generic: {
+		BehaviorNoteUnlock: " to reveal this note."
+		LootTableUnlock: Defeat or digest a {Title} to reveal possible loot.
+	}
+
+	Tundra: {
+		Nymph: {
+			Name: Nymph
+			Subtitle: Damsel (Or Not) Of Distress
+		}
+	}
+
+	Jungle: {
+		Piranha: {
+			Name: Piranha
+			Subtitle: Quite Unlike A Present
+			Overview: A r- ravenous species of fish which dwells within the Jungle's many rivers and lakes. Often found swimming in modestly-sized groups, or alone in small enough bodies of water, they'll waste no time t- tearing apart and gulping down any oh-s- so-unfortunate f- food that enters their territory. They can even prove a threat outside of water, though they can't remain outside of it for long, l- lest they put themselves at risk of asphyxiation.
+			SpawnCondition: This common species of fish is found [c/{$Mods.V2.Colors.Aqua}:in the Jungle's waters]! While small bodies of water can produce lone piranhas, they are most often found in [c/{$Mods.V2.Colors.Aqua}:schools of 2-5].
+
+			BehaviorNotes: {
+				Passive: {
+					Function: If you're not in the water and haven't provoked them, Piranhas will [c/{$Mods.V2.Colors.Aqua}:swim around peacefully], only preying upon [c/{$Mods.V2.Colors.Aqua}:other sea creatures] such as fish and turtles.
+					Flavor: Believe it or not, piranhas aren't actually intrinsically out to g- gobble up adventurers or citizens!...e- even if I wish they'd do it to m- me! They're very calm when people don't disturb the waters (or o- offer themselves up as f- fish food), and their most common prey include other jungle fish; they'll usually swallow smaller prey wh- whole.
+				}
+
+				HostileInWater: {
+					Unlock: Dive into water near a Piranha
+					Function: Entering water while a Piranha is nearby will [c/{$Mods.V2.Colors.Action}:cause it to target you]; it will give chase for as long as you remain in the water.
+					Flavor: You won't want to dip your feet into the water when a piranha's around, u- unless you're looking to end up as f- fish food; th- they'll see you, recognize you as a potential m- meal, and swim towards you super fast to try and get their fill of a- adventurer meat.
+				}
+
+				HostileOutOfWater: {
+					Unlock: Lead a Piranha out of water, or have one latched to you out of water,
+					Function: Piranhs will [c/{$Mods.V2.Colors.Damage}:continue to chase you] when you leave the body of water they inhabit if they had aggro'd on you previously.
+					Flavor: Piranhas are very persistent when, ah...t- trying to make a m- meal of something, or someone! Of course, out of water, they can't eat you TOO easily...they'll only s- swallow you up once there's a good stream of blood coming out. It's like an organic lubricant, and it also fires up their p- predatory instincts!
+				}
+
+				Schooling: {
+					Unlock: Encounter a school of Piranhas
+					Function:
+						'''
+						Piranhas will form schools when many are nearby.
+						Swallowing a Piranha which is part of a school will [c/{$Mods.V2.Colors.BadThing}:cause all other Piranhas in that school to immediately aggro onto you]. Piranhas which are aggro'd this way will not try to eat you, but will deal damage via biting more often once latched on.
+						'''
+					Flavor: While they have a very p- particular 'first come, first served' rule on their food, piranhas are very communal by nature; they often school for a sense of protection from p- predators! If you g- gobble up a piranha near its schoolmates, the others will r- really aggressively chase you down to s- save their friend, even leaping out from the water r- right towards you!
+				}
+
+				CatchAndRelease: {
+					Unlock: Catch a Piranha with a net
+					Function:
+						'''
+						Piranhas can be [c/{$Mods.V2.Colors.Action}:caught with a Bug Net or better], granting you an item: [i:CaughtPiranha].
+						Unlike most catchable creatures, releasing a caught Piranha throws it as a throwing weapon.
+						The first entity the Piranha contacts will take damage, scaling with your throwing damage bonuses.
+						If the entity is [c/{$Mods.V2.Colors.Red}:Bleeding], they will be [c/{$Mods.V2.Colors.GoodThingVore}:instantly swallowed] by the Piranha.
+						'''
+					Flavor: Piranhas...don't like being caught. At all. Even when being carried around, they'll often do their best to chomp on you and get a meal!
+				}
+
+				ExpertLifesteal: {
+					Unlock: Take damage from a Piranha
+					Function: The biting damage from a Piranha will [c/{$Mods.V2.Colors.Heal}:heal] the Piranha for [c/{$Mods.V2.Colors.Damage}:{PiranhaLifestealModifier} of damage dealt] (rounds down).
+					Flavor: The blood which piranhas tend to draw from their victims can often find itself r- running back into the piranha's maw...which, alongside its natural lubricating properties, also helps to revitalize them! Studies have shown that piranhas' i- intestinal tracts can dilute blood into an extra-nutritious mixture which is s- swiftly distributed to the rest of the body to boost cell regeneration a- and speed up the healing of wounds!
+				}
+
+				MasterSmartFlop: {
+					Unlock: Lead a Piranha out of water
+					Function: Piranhas which are out of water will [c/{$Mods.V2.Colors.Aqua}:actively flop towards nearby bodies of water] if any are available and they are not currently hunting a meal.
+					Flavor: Piranhas, while much less actionable overall out of water, are very smart fish; they'll always try to flop and hop their way back to water if they end up out of it for too long without good food to chase. After all, while they CAN survive quite a while outside of water, they don't want to die of oxygen loss!
+				}
+
+				Stomach: {
+					Unlock: Feed St. Promethia to, or get eaten by, a Piranha
+					Function: Piranhas' stomach acids innately have [c/{$Mods.V2.Colors.Damage}:8 armor penetration].
+					Flavor: ...m-mmf...they're so slick and s- slippery inside, but their a- acids are quick to g- get in there when food's r- ready to digest. It's like a little bloodth-thirsty pond of comfortable, c- crackling belly juices...and their stomach a- acids hit just as hard as their teeth, too! They're...mhf- v- very adept at getting past the natural a- armor of their most common prey, that being o- other fish...a- and m- me, when I'm l- lucky enough to f- find one...
+				}
+			}
+		}
+	}
+}

@@ -1,15 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using Terraria.ModLoader.IO;
-using V2.Core.StruggleSystem;
 using V2.Items.Voraria;
 using V2.Items.Voraria.Accessories;
 using V2.Items.Voraria.Accessories.Informational;
@@ -26,7 +18,7 @@ namespace V2.Core
 		public override bool IsLoadingEnabled(Mod mod) => !V2.GetFooled;
 		public override void AddRecipes()
 		{
-			// surprisingly, I don't actually usw this as a recipe method; that title belongs to the shitshow that is EstablishRecipeCollection below
+			// surprisingly, I don't actually use this as a recipe method; that title belongs to the shitshow that is EstablishRecipeCollection below
 			// this is instead used to set custom bestiary star amounts, since I damn well can't do it elsewhere (lol!)
 			// ContentSamples.NpcBestiaryRarityStars[NPC type here] = X;
 		}
@@ -37,96 +29,96 @@ namespace V2.Core
 		}
 		public override void AddRecipeGroups()
 		{
-			RecipeGroup group = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Evil Wood", new int[]
-			{
+			RecipeGroup group = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Evil Wood",
+			[
 				ItemID.Ebonwood,
 				ItemID.Shadewood,
-			});
+			]);
 			RecipeGroup.RegisterGroup("V2:EvilWood", group);
 
-			group = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Ordinary Fish", new int[]
-			{
+			group = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Ordinary Fish",
+			[
 				ItemID.Bass,
 				ItemID.Tuna,
 				ItemID.Trout,
 				ItemID.Salmon,
 				ItemID.AtlanticCod,
-			});
+			]);
 			RecipeGroup.RegisterGroup("V2:Fish", group);
 
-			group = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Copper Bar", new int[]
-			{
+			group = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Copper Bar",
+			[
 				ItemID.TinBar,
 				ItemID.CopperBar,
-			});
+			]);
 			RecipeGroup.RegisterGroup("V2:Copper", group);
 
-			group = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Silver Bar", new int[]
-			{
+			group = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Silver Bar",
+			[
 				ItemID.SilverBar,
 				ItemID.TungstenBar,
-			}); ;
+			]); ;
 			RecipeGroup.RegisterGroup("V2:Silver", group);
 
-			group = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Gold Bar", new int[]
-			{
+			group = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Gold Bar",
+			[
 				ItemID.GoldBar,
 				ItemID.PlatinumBar,
-			});
+			]);
 			RecipeGroup.RegisterGroup("V2:Gold", group);
 
-			group = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Ice", new int[]
-			{
+			group = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Ice",
+			[
 				ItemID.IceBlock,
 				ItemID.PurpleIceBlock,
 				ItemID.RedIceBlock,
 				ItemID.PinkIceBlock,
-			});
+			]);
 			RecipeGroup.RegisterGroup("V2:Ice", group);
 
-			group = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Sand", new int[]
-			{
+			group = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Sand",
+			[
 				ItemID.SandBlock,
 				ItemID.EbonsandBlock,
 				ItemID.CrimsandBlock,
 				ItemID.PearlsandBlock,
-			});
+			]);
 			RecipeGroup.RegisterGroup("V2:Sand", group);
 
-			group = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Dungeon Brick", new int[]
-			{
+			group = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Dungeon Brick",
+			[
 				ItemID.PinkBrick,
 				ItemID.GreenBrick,
 				ItemID.BlueBrick,
-			});
+			]);
 			RecipeGroup.RegisterGroup("V2:DungeonBrick", group);
 
-			group = new RecipeGroup(() => "Cobalt or Palladium Bars", new int[]
-			{
+			group = new RecipeGroup(() => "Cobalt or Palladium Bars",
+			[
 				ItemID.CobaltBar,
 				ItemID.PalladiumBar,
-			});
+			]);
 			RecipeGroup.RegisterGroup("V2:T1AltarMetals", group);
 
-			group = new RecipeGroup(() => "Mythril or Orichalcum Bars", new int[]
-			{
+			group = new RecipeGroup(() => "Mythril or Orichalcum Bars",
+			[
 				ItemID.MythrilBar,
 				ItemID.OrichalcumBar,
-			});
+			]);
 			RecipeGroup.RegisterGroup("V2:T2AltarMetals", group);
 
-			group = new RecipeGroup(() => "Titanium or Adamantite Bars", new int[]
-			{
+			group = new RecipeGroup(() => "Titanium or Adamantite Bars",
+			[
 				ItemID.TitaniumBar,
 				ItemID.AdamantiteBar,
-			});
+			]);
 			RecipeGroup.RegisterGroup("V2:T3AltarMetals", group);
 
-			group = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Hardmode Anvil", new int[]
-			{
+			group = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Hardmode Anvil",
+			[
 				ItemID.MythrilAnvil,
 				ItemID.OrichalcumAnvil,
-			});
+			]);
 			RecipeGroup.RegisterGroup("V2:HMAnvils", group);
 		}
 

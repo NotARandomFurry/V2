@@ -170,6 +170,7 @@ namespace V2.PlayerHandling
 			}
 			ResetHealthRegenEffectList();
 			ResetManaRegenEffectList();
+			ResetEnvironmentEffects();
 		}
 
 		public override void ModifyLuck(ref float luck)
