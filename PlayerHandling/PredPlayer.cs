@@ -56,7 +56,7 @@ namespace V2.PlayerHandling
 	}
 	public partial class PredPlayer : ModPlayer
 	{
-		private bool lootRecentlyDigested = false;
+		public bool LootRecentlyDigested { get; set; } = false;
 		public bool SyncRequired_PredPoints { get; set; }
 		public VoreTracker StomachTracker
 		{
@@ -2345,14 +2345,14 @@ namespace V2.PlayerHandling
 
 		public bool LootDigested()
 		{
-			if (!lootRecentlyDigested) return lootRecentlyDigested;
-			lootRecentlyDigested = false;
+			if (!LootRecentlyDigested) return LootRecentlyDigested;
+			LootRecentlyDigested = false;
 			return true;
 		}
 
 		public void MarkLootDigested()
 		{
-			lootRecentlyDigested = true;
+			LootRecentlyDigested = true;
 		}
 	}
 }

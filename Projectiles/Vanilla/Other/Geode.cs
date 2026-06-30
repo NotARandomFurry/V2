@@ -22,9 +22,9 @@ public class Geode : GlobalProjectile
     {
         if (pred is Player predPlayer)
         {
-            predPlayer.AsPred().LootWasJustDigested = true;
+            predPlayer.AsPred().LootRecentlyDigested = true;
             Projectile.DropGeodeLoot(pred);
-            predPlayer.AsPred().LootWasJustDigested = false;
+            predPlayer.AsPred().LootRecentlyDigested = false;
         }
     }
 }
