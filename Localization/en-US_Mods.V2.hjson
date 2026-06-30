@@ -506,7 +506,6 @@ PredStatsMenu: {
 				Buffs from snacks have {BuffExtensionTime} duration
 				Debuffs from snacks have {DebuffDisextensionTime} duration
 				'''
-			}
 		}
 	}
 }
