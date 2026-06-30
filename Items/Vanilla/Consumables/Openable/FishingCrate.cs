@@ -24,12 +24,15 @@ public class FishingCrate : GlobalItem
 
     private static bool OnBreak(Item item, Entity pred, bool direct)
     {
+        
         if (pred is not Player predPlayer) return true;
-        
-        predPlayer.AsPred().LootWasJustDigested = true;
-        predPlayer.DropFromItem(item.type);
-        predPlayer.AsPred().LootWasJustDigested = false;
-        
+
+        for (int i = 0; i < item.stack; i++)
+        {
+            V2Utils.MarkLootDigested(predPlayer);
+            predPlayer.DropFromItem(item.type);
+        }
+
         return true;
     }
 }

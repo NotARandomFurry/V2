@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using MonoMod.Cil;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -38,16 +39,18 @@ namespace V2.Items.Vanilla.Placeables.Tiles
 			SoundEngine.PlaySound(MuffledMiscSounds.Shatter, pred.Center);
 			SoundEngine.PlaySound(StomachNoises.Muffled, pred.Center);
 
-			if (pred is Player playerPred)
+			for (int i = 0; i < item.stack; i++)
 			{
-				int extractType = ItemID.Sets.ExtractinatorMode[item.type];
-				playerPred.AsPred().LootWasJustDigested = true;
-				Player_ExtractinatorUse.Invoke(playerPred, [extractType, TileID.Extractinator]);
-				playerPred.AsPred().LootWasJustDigested = false;
-			}
-			else if (pred is NPC NPCPred)
-			{
-				
+				if (pred is Player playerPred)
+				{
+					int extractType = ItemID.Sets.ExtractinatorMode[item.type];
+					V2Utils.MarkLootDigested(playerPred);
+					Player_ExtractinatorUse.Invoke(playerPred, [extractType, TileID.Extractinator]);
+				}
+				else if (pred is NPC NPCPred)
+				{
+
+				}
 			}
 			return true;
 		}

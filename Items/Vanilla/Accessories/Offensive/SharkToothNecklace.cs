@@ -35,8 +35,7 @@ namespace V2.Items.Vanilla.Accessories.Offensive
 
 		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
 		{
-			tooltips.AddVorariaItemTooltip(
-				"Vanilla.Accessories.Offensive.SharkToothNecklace",
+			tooltips.AddVorariaDynamicItemTooltip("Vanilla.Accessories.Offensive.SharkToothNecklace",
 				new
 				{
 					

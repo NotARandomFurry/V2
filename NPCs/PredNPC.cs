@@ -38,6 +38,7 @@ namespace V2.NPCs
 	public partial class PredNPC : GlobalNPC
 	{
 		public EntityGender Gender { get; set; }
+		private bool lootRecentlyDigested = false;
 
 		public int LastSwallowedDye { get; set; }
 
@@ -881,6 +882,18 @@ namespace V2.NPCs
 		public override void LoadData(NPC npc, TagCompound tag)
 		{
 			npc.AsPred().ExtraWeight = tag.GetDouble("ExtraWeight");
+		}
+
+		public bool LootDigested()
+		{
+			if (!lootRecentlyDigested) return lootRecentlyDigested;
+			lootRecentlyDigested = false;
+			return true;
+		}
+
+		public void MarkLootDigested()
+		{
+			lootRecentlyDigested = true;
 		}
 	}
 }

@@ -113,7 +113,7 @@ namespace V2
 				=> TravellingMerchant.SetupTravelShop_GetItem(playerWithHighestLuck, rarity, ref it, minimumRarity);
 
 			On_Main.UpdateAudio_DecideOnNewMusic += (orig, instance) => MainDetours.UpdateAudio_DecideOnNewMusic();
-			On_Item.NewItem_Inner += MainDetours.SpillLootInToGut;
+			On_Item.NewItem_Inner += MainDetours.SpillLootInToGutFromItemDrops;
 			On_Main.DrawInterface_36_Cursor += (orig) =>
 			{
 				if (PredStatsMenuMouthUI.MouthState is not (PredStatsMenuMouthState.EatingCursor or PredStatsMenuMouthState.RegurgitatingCursor))
