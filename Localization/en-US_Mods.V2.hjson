@@ -3717,7 +3717,21 @@ ItemTooltip: {
 					[c/7F7F7F:> ][c/{$Mods.V2.Colors.GoodThingVore}:Increases absorption rate by a factor of 8.]
 					Several item effects and UI elements will be modified while this item or any of its counterparts are equipped.
 					'''
-				Flavor: "[c/{$Mods.V2.Colors.VenomCommentary}:Test]"
+				Flavor:
+					'''
+					[c/{$Mods.V2.Colors.VenomCommentary}:Venomizeous being a slim, fit vampire may make one think that they're no predator]
+					[c/{$Mods.V2.Colors.VenomCommentary}:and that the slim and fit body would not even be able to fit a single casually sized prey.]
+					[c/{$Mods.V2.Colors.VenomCommentary}:But don't let the size fool any predator or prey.]
+					[c/{$Mods.V2.Colors.VenomCommentary}:Venomizeous being the glutton he is, will really consume anything.]
+					[c/{$Mods.V2.Colors.VenomCommentary}:Be it a anything from small snacks to universe-sized meals, they]
+					[c/{$Mods.V2.Colors.VenomCommentary}:somehow always have capacity for more.]
+					[c/{$Mods.V2.Colors.VenomCommentary}:Venomizous who has devoured a large set of both small and large meals.]
+					[c/{$Mods.V2.Colors.VenomCommentary}:Will still have the belly occasionally groan and gurgle for even more.]
+					[c/{$Mods.V2.Colors.VenomCommentary}:What puts a stop to them is laziness, like any other predator perhaps.]
+					
+					[c/{$Mods.V2.Colors.VenomCommentary}:This flower is watered with Venomizeous' own tears.]
+					[c/{$Mods.V2.Colors.VenomCommentary}:Which somehow provides the same predatory capabilities that Venomizeous posses.]
+					'''
 			}
 
 			SecondBestAngelFeather: {
