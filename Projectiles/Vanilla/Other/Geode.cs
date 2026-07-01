@@ -22,6 +22,7 @@ public class Geode : GlobalProjectile
     {
         if (pred is Player predPlayer)
         {
+            // TODO: this probably needs a better implementation 
             predPlayer.AsPred().LootRecentlyDigested = true;
             Projectile.DropGeodeLoot(pred);
             predPlayer.AsPred().LootRecentlyDigested = false;
