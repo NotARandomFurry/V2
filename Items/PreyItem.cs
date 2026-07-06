@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -297,8 +298,9 @@ namespace V2.Items
 			gulpOnUseAttempt |= item.AsFood().AlwaysEatenByUse | item.AsFood().EdibleOnUse;
 
             bool attemptingToUse = Main.mouseLeft;
-			if (!item.autoReuse)
-				attemptingToUse &= Main.mouseLeftRelease;
+			 if (!Main.keyState.IsKeyDown(Keys.LeftShift))
+                attemptingToUse &= Main.mouseLeftRelease;
+
 			attemptingToUse &= item == player.HeldItem;
 			attemptingToUse &= !player.mouseInterface;
 			if (gulpOnUseAttempt && attemptingToUse)
@@ -336,6 +338,9 @@ namespace V2.Items
 
 				return false;
 			}
+			//prevents the player from eating an item simultaneously to placing said item, consuming two stacks
+			if (player.whoAmI == Main.myPlayer && V2.ItemGulpHotkey.Current)
+				return false;
 			return true;
 		}
 
