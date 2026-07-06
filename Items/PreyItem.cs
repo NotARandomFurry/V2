@@ -294,13 +294,14 @@ namespace V2.Items
 				return false;
 			}
 			bool gulpOnUseAttempt = item != player.inventory[58] && player.whoAmI == Main.myPlayer && V2.ItemGulpHotkey.Current;
-			gulpOnUseAttempt |= item.AsFood().AlwaysEatenByUse;
-			bool attemptingToUse = Main.mouseLeft;
+			gulpOnUseAttempt |= item.AsFood().AlwaysEatenByUse | item.AsFood().EdibleOnUse;
+
+            bool attemptingToUse = Main.mouseLeft;
 			if (!item.autoReuse)
 				attemptingToUse &= Main.mouseLeftRelease;
 			attemptingToUse &= item == player.HeldItem;
 			attemptingToUse &= !player.mouseInterface;
-			if (item.AsFood().EdibleOnUse && gulpOnUseAttempt && attemptingToUse)
+			if (gulpOnUseAttempt && attemptingToUse)
 			{
 				Main.mouseLeftRelease = false;
 				int origStack = item.stack;
