@@ -295,7 +295,7 @@ namespace V2.Items
 				return false;
 			}
 			bool gulpOnUseAttempt = item != player.inventory[58] && player.whoAmI == Main.myPlayer && V2.ItemGulpHotkey.Current;
-			gulpOnUseAttempt |= item.AsFood().AlwaysEatenByUse | item.AsFood().EdibleOnUse;
+			gulpOnUseAttempt |= item.AsFood().AlwaysEatenByUse;
 
             bool attemptingToUse = Main.mouseLeft;
 			 if (!Main.keyState.IsKeyDown(Keys.LeftShift))
@@ -303,7 +303,7 @@ namespace V2.Items
 
 			attemptingToUse &= item == player.HeldItem;
 			attemptingToUse &= !player.mouseInterface;
-			if (gulpOnUseAttempt && attemptingToUse)
+			if (/*item.AsFood().EdibleOnUse && */ gulpOnUseAttempt && attemptingToUse)
 			{
 				Main.mouseLeftRelease = false;
 				int origStack = item.stack;
@@ -339,9 +339,7 @@ namespace V2.Items
 				return false;
 			}
 			//prevents the player from eating an item simultaneously to placing said item, consuming two stacks
-			if (player.whoAmI == Main.myPlayer && V2.ItemGulpHotkey.Current)
-				return false;
-			return true;
+			return !(player.whoAmI == Main.myPlayer && V2.ItemGulpHotkey.Current);
 		}
 
 		public override bool CanStack(Item destination, Item source)
